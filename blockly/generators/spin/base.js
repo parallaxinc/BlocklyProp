@@ -58,6 +58,21 @@ Blockly.Language.inout_digital_read = {
     }
 };
 
+Blockly.Language.base_delay = {
+    category: 'Control',
+    helpUrl: 'http://arduino.cc/en/Reference/delay',
+    init: function() {
+        this.setColour(120);
+        this.appendValueInput("DELAY_TIME", Number)
+                .appendTitle("Delay (ms)")
+                .setCheck(Number);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('Delay specific time');
+    }
+};
+
 
 // define generators
 Blockly.Spin = Blockly.Generator.get('Spin');
@@ -75,4 +90,10 @@ Blockly.Spin.inout_digital_read = function() {
     //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
     var code = 'ina[' + dropdown_pin + ']';
     return [code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.base_delay = function() {
+    var delay_time = Blockly.Spin.valueToCode(this, 'DELAY_TIME', Blockly.Spin.ORDER_ATOMIC) || '1000'
+    var code = 'waitcnt(clkfreq / 1000 * ' + delay_time + ' + cnt)\n';
+    return code;
 };

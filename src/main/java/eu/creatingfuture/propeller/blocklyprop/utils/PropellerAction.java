@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.creatingfuture.propeller.blocklyprop.propellent;
+package eu.creatingfuture.propeller.blocklyprop.utils;
 
 /**
  *
  * @author Michel
  */
-public enum PropellentAction {
+public enum PropellerAction {
 
     COMPILE,
     LOAD_RAM,

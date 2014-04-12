@@ -6,8 +6,8 @@
 package eu.creatingfuture.propeller.blocklyprop.servlets;
 
 import com.google.gson.Gson;
-import eu.creatingfuture.propeller.blocklyprop.propellent.Propellent;
-import eu.creatingfuture.propeller.blocklyprop.propellent.PropellentAction;
+import eu.creatingfuture.propeller.blocklyprop.BlocklyProp;
+import eu.creatingfuture.propeller.blocklyprop.utils.PropellerAction;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,9 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Michel
  */
-public class PropellentServlet extends HttpServlet {
-
-    private final Propellent propellent = new Propellent();
+public class PropellerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,7 +29,7 @@ public class PropellentServlet extends HttpServlet {
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
 
-        List<String> ports = propellent.getPorts();
+        List<String> ports = BlocklyProp.getPropellerCommunicator().getPorts(); // propellent.getPorts();
 
         out.print(gson.toJson(ports));
         out.flush();
@@ -53,10 +51,11 @@ public class PropellentServlet extends HttpServlet {
             result.setMessage("Action is not defined");
             out.print(gson.toJson(result));
             out.flush();
+            return;
         }
-        PropellentAction action = null;
+        PropellerAction action = null;
         try {
-            action = PropellentAction.valueOf(actionString);
+            action = PropellerAction.valueOf(actionString);
         } catch (IllegalArgumentException iae) {
             // return error
             result.setSucces(false);
@@ -64,6 +63,7 @@ public class PropellentServlet extends HttpServlet {
             result.setMessage("Invalid action");
             out.print(gson.toJson(result));
             out.flush();
+            return;
         }
         if (action == null) {
             result.setSucces(false);
@@ -71,6 +71,7 @@ public class PropellentServlet extends HttpServlet {
             result.setMessage("Invalid action");
             out.print(gson.toJson(result));
             out.flush();
+            return;
         }
 
         String spinCode = req.getParameter("code");
@@ -81,20 +82,56 @@ public class PropellentServlet extends HttpServlet {
             blocklyAppWriter.flush();
         }
 
-        boolean succes = false;
+        boolean success = false;
         switch (action) {
             case COMPILE:
-                succes = propellent.compile(blocklyAppFile);
+                success = BlocklyProp.getCompiler().compile(blocklyAppFile);
+                break;
+            case LOAD_RAM:
+            case LOAD_EEPROM:
+                success = compileAndRun(action, blocklyAppFile);
                 break;
         }
-        result.setSucces(succes);
-        result.setMessage(propellent.getLastOutput());
-        result.setCode(propellent.getLastExitValue());
+        result.setSucces(success);
+        result.setMessage(BlocklyProp.getCompiler().getLastOutput() + "\n\n" + BlocklyProp.getPropellerCommunicator().getLastOutput());
+        result.setCode(BlocklyProp.getCompiler().getLastExitValue());
 
         blocklyAppFile.delete();
 
         out.print(gson.toJson(result));
         out.flush();
+    }
+
+    private boolean compileAndRun(PropellerAction action, File blocklyAppFile) throws IOException {
+        boolean success = true;
+
+        File compiledFile = null;
+        switch (action) {
+            case LOAD_RAM:
+                compiledFile = File.createTempFile("blocklyapp", ".binary");
+                success = BlocklyProp.getCompiler().compileForRam(blocklyAppFile, compiledFile);
+                break;
+            case LOAD_EEPROM:
+                compiledFile = File.createTempFile("blocklyapp", ".eeprom");
+                success = BlocklyProp.getCompiler().compileForEeprom(blocklyAppFile, compiledFile);
+                break;
+        }
+        if (success) {
+            switch (action) {
+                case LOAD_RAM:
+                    success = BlocklyProp.getPropellerCommunicator().loadIntoRam(compiledFile, null);
+                    break;
+                case LOAD_EEPROM:
+                    success = BlocklyProp.getPropellerCommunicator().loadIntoEeprom(compiledFile, null);
+                    break;
+            }
+
+        }
+        if (compiledFile != null) {
+            compiledFile.delete();
+        }
+
+        return success;
     }
 
     public class PropellentResult {

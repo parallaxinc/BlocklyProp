@@ -37,14 +37,23 @@
                 <include>*/*/*/*.*</include>
             </includes>
         </fileSet>
-        <fileSet>
+        <!--        <fileSet>
             <directory>propellent</directory>
             <outputDirectory>propellent/</outputDirectory>
             <includes>
                 <include>*.*</include>
             </includes>
+        </fileSet>-->
+        <fileSet>
+            <directory>propeller-tools</directory>
+            <outputDirectory>propeller-tools/</outputDirectory>
+            <includes>
+                <include>*.*</include>
+                <include>*/*.*</include>
+            </includes>
         </fileSet>
     </fileSets>
+
     <dependencySets>
         <dependencySet>
             <outputDirectory>lib/</outputDirectory>

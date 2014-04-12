@@ -5,8 +5,14 @@
  */
 package eu.creatingfuture.propeller.blocklyprop;
 
+import eu.creatingfuture.propeller.blocklyprop.interfaces.Compiler;
+import eu.creatingfuture.propeller.blocklyprop.interfaces.PropellerCommunicator;
+import eu.creatingfuture.propeller.blocklyprop.propeller.WindowsOpenSpin;
+import eu.creatingfuture.propeller.blocklyprop.propeller.WindowsPropellerLoad;
+import eu.creatingfuture.propeller.blocklyprop.utils.OsCheck;
 import java.awt.Desktop;
 import java.net.URI;
+import java.util.logging.Logger;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -21,7 +27,20 @@ import org.eclipse.jetty.webapp.WebAppContext;
  */
 public class BlocklyProp {
 
+    private static final Logger logger = Logger.getLogger(BlocklyProp.class.getName());
+
+    private static Compiler compiler;
+    private static PropellerCommunicator propellerCommunicator;
+
     public static void main(String[] args) throws Exception {
+        OsCheck.OSType os = OsCheck.getOperatingSystemType();
+        switch (os) {
+            case Windows:
+                compiler = new WindowsOpenSpin();
+                propellerCommunicator = new WindowsPropellerLoad();
+            default:
+                logger.warning("This OS is currently not supported: " + os);
+        }
         //   PropertyConfigurator.configure("log4j.properties");
 
         Server server = new Server();
@@ -65,6 +84,14 @@ public class BlocklyProp {
 
         server.join();
 //        server.stop();
+    }
+
+    public static Compiler getCompiler() {
+        return compiler;
+    }
+
+    public static PropellerCommunicator getPropellerCommunicator() {
+        return propellerCommunicator;
     }
 
 }

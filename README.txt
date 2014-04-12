@@ -16,6 +16,8 @@ This does mean that I can't put up a server where you can test it because the se
 * Blockly http://code.google.com/p/blockly/
 * BlocklyDuino https://github.com/gasolin/BlocklyDuino
 * Parallax Propeller http://www.parallax.com/microcontrollers/propeller
+* Propeller-load https://sites.google.com/site/propellergcc/documentation/tutorials/load-propgcc-code-images
+* Openspin cross platform Spin/PASM Compiler https://code.google.com/p/open-source-spin-compiler/
 
 As soon as I have a version that can be used I will post a link to a zip file here.
 
@@ -25,7 +27,8 @@ Technical overview
 BlocklyProp runs in the browser, but is started using a bat file.
 This will start a Java application that contains an embedded Jetty server. When the server has started it will open your browser.
 
-Although it is written in Java it can only run on Windows because I use Propellent.exe to compile and communicate with the microcontroller.
+~~Although it is written in Java it can only run on Windows because I use Propellent.exe to compile and communicate with the microcontroller.~~
+Thanks to input and references to other projects done for the Parallax Propeller I've integrated a cross platform compiler and way to load the application in the microcontroller.
 
 Currently the bat file only starts the java jar: "java -jar BlocklyProp-1.0-SNAPSHOT.jar", but might be extended with more functionality in a later stage.
 
@@ -39,7 +42,8 @@ As there are a lot of static files I used the assembly plugin to create a zip fi
 Usage
 -----------------
 
-1. Run blocklyprop.bat to start the server (This might give some warning from Java, Windows and/or your firewall.
+1. On Windows run blocklyprop.bat to start the server (This might give some warning from Java, Windows and/or your firewall.
+On Linux run ?? to start the server. (This still needs to be implemented)
 2. Your browser should start, if not please open it manualy. The url will be shown in the console opened by the blocklyprop.bat file. It will be something as "Open url: http://localhost:57328")
 3. Drag and drop Blocks to create your program. If you are ready to test it click on Compile, Load into Ram or Load into Eeprom as wished.
 4. If you wish you can save your project
@@ -53,6 +57,9 @@ The project is inspired by and based on BlocklyDuino https://github.com/gasolin/
 Fred Lin is the creator of BlocklyDuino.
 
 Wich in turn is created using Blockly http://code.google.com/p/blockly/
+
+To compile your code I use Openspin https://code.google.com/p/open-source-spin-compiler/
+And to do the interaction the microcontroller I use Propeller-load from the Propgcc toolchain https://sites.google.com/site/propellergcc/
 
 Thanks to you all.
 

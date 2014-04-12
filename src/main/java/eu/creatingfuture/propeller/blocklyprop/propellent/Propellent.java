@@ -26,6 +26,7 @@ import org.apache.commons.exec.PumpStreamHandler;
  *
  * @author Michel
  */
+@Deprecated
 public class Propellent {
 
     private static final Logger logger = Logger.getLogger(Propellent.class.getName());

@@ -135,8 +135,7 @@ function init(blockly) {
 }
 
 /**
- * Save blocks to local file.
- * better include Blob and FileSaver for browser compatibility
+ *
  */
 function compile() {
     var spinCode = Blockly.Generator.workspaceToCode('Spin');
@@ -148,7 +147,49 @@ function compile() {
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
     console.log("Compiling");
 
-    $.post('/webapp/propellent.action', {action: "COMPILE", code: spinCode}, function(data) {
+    $.post('/webapp/propeller.action', {action: "COMPILE", code: spinCode}, function(data) {
+        console.log(data);
+    });
+
+//    var blob = new Blob([data], {type: 'text/xml'});
+//    saveAs(blob, 'spin.xml');
+}
+
+/**
+ *
+ */
+function loadIntoRam() {
+    var spinCode = Blockly.Generator.workspaceToCode('Spin');
+
+
+    // Store data in blob.
+    // var builder = new BlobBuilder();
+    // builder.append(data);
+    // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
+    console.log("Compiling");
+
+    $.post('/webapp/propeller.action', {action: "LOAD_RAM", code: spinCode}, function(data) {
+        console.log(data);
+    });
+
+//    var blob = new Blob([data], {type: 'text/xml'});
+//    saveAs(blob, 'spin.xml');
+}
+
+/**
+ *
+ */
+function loadIntoEeprom() {
+    var spinCode = Blockly.Generator.workspaceToCode('Spin');
+
+
+    // Store data in blob.
+    // var builder = new BlobBuilder();
+    // builder.append(data);
+    // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
+    console.log("Compiling");
+
+    $.post('/webapp/propeller.action', {action: "LOAD_EEPROM", code: spinCode}, function(data) {
         console.log(data);
     });
 

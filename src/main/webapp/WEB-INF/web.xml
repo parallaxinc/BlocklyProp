@@ -5,13 +5,13 @@
          version="3.0">
 
     <servlet>
-        <servlet-name>Propellent</servlet-name>
-        <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.PropellentServlet</servlet-class>
+        <servlet-name>Propeller</servlet-name>
+        <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.PropellerServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Propellent</servlet-name>
-        <url-pattern>/propellent.action</url-pattern>
+        <servlet-name>Propeller</servlet-name>
+        <url-pattern>/propeller.action</url-pattern>
     </servlet-mapping>
-    
+
 </web-app>
