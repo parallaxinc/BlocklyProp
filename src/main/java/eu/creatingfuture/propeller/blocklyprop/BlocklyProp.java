@@ -7,12 +7,16 @@ package eu.creatingfuture.propeller.blocklyprop;
 
 import eu.creatingfuture.propeller.blocklyprop.interfaces.Compiler;
 import eu.creatingfuture.propeller.blocklyprop.interfaces.PropellerCommunicator;
+import eu.creatingfuture.propeller.blocklyprop.propeller.LinuxOpenSpin;
+import eu.creatingfuture.propeller.blocklyprop.propeller.LinuxPropellerLoad;
 import eu.creatingfuture.propeller.blocklyprop.propeller.WindowsOpenSpin;
 import eu.creatingfuture.propeller.blocklyprop.propeller.WindowsPropellerLoad;
 import eu.creatingfuture.propeller.blocklyprop.utils.OsCheck;
+
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.logging.Logger;
+
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -38,8 +42,14 @@ public class BlocklyProp {
             case Windows:
                 compiler = new WindowsOpenSpin();
                 propellerCommunicator = new WindowsPropellerLoad();
+                break;
+            case Linux:
+            	compiler = new LinuxOpenSpin();
+            	propellerCommunicator = new LinuxPropellerLoad();
+            	break;
             default:
                 logger.warning("This OS is currently not supported: " + os);
+                System.exit(1);
         }
         //   PropertyConfigurator.configure("log4j.properties");
 
