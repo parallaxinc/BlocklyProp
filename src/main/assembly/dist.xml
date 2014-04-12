@@ -52,6 +52,13 @@
                 <include>*/*.*</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>src/main/webapp</directory>
+            <outputDirectory>src/main/webapp/</outputDirectory>
+            <includes>
+                <include>WEB-INF/web.xml</include>
+            </includes>
+        </fileSet>
     </fileSets>
 
     <dependencySets>
