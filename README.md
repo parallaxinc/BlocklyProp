@@ -19,7 +19,8 @@ This does mean that I can't put up a server where you can test it because the se
 * Propeller-load https://sites.google.com/site/propellergcc/documentation/tutorials/load-propgcc-code-images
 * Openspin cross platform Spin/PASM Compiler https://code.google.com/p/open-source-spin-compiler/
 
-As soon as I have a version that can be used I will post a link to a zip file here.
+The latest version can be downloaded from http://owncloud.creatingfuture.eu/public.php?service=files&t=0eae565db031cd3ca3f1163de91c5984
+(It needs Java 1.7 to run)
 
 Technical overview
 -----------------
