@@ -13,7 +13,7 @@ Whereas Blockly is only client side, I added some server code that compiles your
 
 ~~This does mean that I can't put up a server where you can test it because the server part has to run on your own computer in order to be able to compile and communicate with the microcontroller.~~
 
-I now created a second version that creates an demo application. This does not contain any server code, so compiling and interaction with the microcontroller are disabled.
+I now created a second version that creates a demo application. This does not contain any server code, so compiling and interaction with the microcontroller are disabled.
 You can test this on http://blocklyprop.creatingfuture.eu/index.html
 
 
