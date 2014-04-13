@@ -10,7 +10,11 @@ BlocklyProp is based on blockly, the web-based, graphical programming editor. Pr
 BlocklyProp generates Spin code, and can compile and load into the Propeller with a single click on the web-page.
 
 Whereas Blockly is only client side, I added some server code that compiles your code and load the generated code into the Propeller microcontroller.
-This does mean that I can't put up a server where you can test it because the server part has to run on your own computer in order to be able to compile and communicate with the microcontroller.
+
+~~This does mean that I can't put up a server where you can test it because the server part has to run on your own computer in order to be able to compile and communicate with the microcontroller.~~
+
+I now created a second version that creates an demo application. This does not contain any server code, so compiling and interaction with the microcontroller are disabled.
+You can test this on http://blocklyprop.creatingfuture.eu/index.html
 
 
 * Blockly http://code.google.com/p/blockly/
