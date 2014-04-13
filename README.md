@@ -39,6 +39,10 @@ It is created as a maven project wich should make importing and building the pro
 As there are a lot of static files I used the assembly plugin to create a zip file with all the files.
 (The application with dependencies, the bat file to start it, the compiler and all static files for the Blockly editor)
 
+There are multiple profiles to choose from:
+* java-server creates a version including an embedded java server that provides an interface to save your projects and do the microcontroller interaction
+* offline-demo creates a version without server components that can be run on any server, while not providing compile options. (Still needs to be run from a webserver due to the blockly iframe)
+
 
 Usage
 -----------------

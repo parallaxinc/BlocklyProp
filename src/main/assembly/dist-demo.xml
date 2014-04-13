@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/xsd/assembly-1.1.1.xsd">
+
+    <id>dist-demo</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>webcontent</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>index.html</include>
+                <include>frame.html</include>
+                <include>*.js</include>
+                <include>*.css</include>
+                <include>lib/*.js</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>blockly</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>*.*</include>
+                <include>*/*.*</include>
+                <include>*/*/*.*</include>
+                <include>*/*/*/*.*</include>
+            </includes>
+        </fileSet>
+        <!--        <fileSet>
+            <directory>propellent</directory>
+            <outputDirectory>propellent/</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+        </fileSet>-->
+    </fileSets>
+</assembly>
