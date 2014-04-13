@@ -3,15 +3,18 @@
         <meta charset="utf-8">
         <title>Blockly Demo: Code</title>
         <script type="text/javascript" src="apps/blockly_compressed.js"></script>
+
+        <script type="text/javascript" src="language/en/_messages.js"></script>
+
         <script type="text/javascript" src="generators/spin.js"></script>
-        <!--<script type="text/javascript" src="generators/arduino/control.js"></script>-->
+        <script type="text/javascript" src="generators/spin/control.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/logic.js"></script>-->
         <script type="text/javascript" src="generators/spin/math.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/text.js"></script>-->
         <!--<script type="text/javascript" src="generators/arduino/lists.js"></script>-->
         <!--<script type="text/javascript" src="generators/arduino/variables.js"></script>-->
         <!--<script type="text/javascript" src="generators/arduino/procedures.js"></script>-->
-        <script type="text/javascript" src="language/en/_messages.js"></script>
+
         <script type="text/javascript" src="language/common/control.js"></script>
         <script type="text/javascript" src="language/common/logic.js"></script>
         <script type="text/javascript" src="language/common/math.js"></script>
@@ -64,8 +67,8 @@
                     //grove bluetooth
                     //'grove_bluetooth_slave',
                     //control
-                    'base_delay',
-//                    'base_delay', 'controls_if', 'controls_if_if', 'controls_if_elseif', 'controls_if_else', 'controls_for',
+                    'base_delay', 'controls_repeat', 'controls_repeat_forever',
+//                    'controls_if', 'controls_if_if', 'controls_if_elseif', 'controls_if_else', 'controls_for',
                     //'controls_whileUntil', 'controls_flow_statements',
                     //math
                     'math_number'
