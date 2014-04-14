@@ -134,5 +134,5 @@ Blockly.Spin.variables_set = function() {
             Blockly.Spin.ORDER_ASSIGNMENT) || '0';
     var varName = Blockly.Spin.variableDB_.getName(this.getTitleValue('VAR'),
             Blockly.Variables.NAME_TYPE);
-    return varName + ' = ' + argument0 + ';\n';
+    return varName + ' := ' + argument0 + '\n';
 };
