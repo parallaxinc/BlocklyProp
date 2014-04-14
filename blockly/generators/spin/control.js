@@ -45,7 +45,25 @@ Blockly.Language.controls_repeat_forever = {
 
 Blockly.Spin = Blockly.Generator.get('Spin');
 
-
+Blockly.Spin.controls_if = function() {
+    // If/elseif/else condition.
+    var n = 0;
+    var argument = Blockly.Spin.valueToCode(this, 'IF' + n,
+            Blockly.Spin.ORDER_NONE) || 'FALSE';
+    var branch = Blockly.Spin.statementToCode(this, 'DO' + n);
+    var code = 'if ' + argument + '\n' + branch + '\n';
+    for (n = 1; n <= this.elseifCount_; n++) {
+        argument = Blockly.Spin.valueToCode(this, 'IF' + n,
+                Blockly.Spin.ORDER_NONE) || 'FALSE';
+        branch = Blockly.Spin.statementToCode(this, 'DO' + n);
+        code += ' elseif ' + argument + '\n' + branch + '';
+    }
+    if (this.elseCount_) {
+        branch = Blockly.Spin.statementToCode(this, 'ELSE');
+        code += 'else\n' + branch + '\n';
+    }
+    return code + '\n';
+};
 
 Blockly.Spin.controls_repeat = function() {
     // Repeat n times.

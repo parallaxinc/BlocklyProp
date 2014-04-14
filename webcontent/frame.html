@@ -8,11 +8,11 @@
 
         <script type="text/javascript" src="generators/spin.js"></script>
         <script type="text/javascript" src="generators/spin/control.js"></script>
-        <!--<script type="text/javascript" src="generators/arduino/logic.js"></script>-->
+        <script type="text/javascript" src="generators/spin/logic.js"></script>
         <script type="text/javascript" src="generators/spin/math.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/text.js"></script>-->
         <!--<script type="text/javascript" src="generators/arduino/lists.js"></script>-->
-        <!--<script type="text/javascript" src="generators/arduino/variables.js"></script>-->
+        <script type="text/javascript" src="generators/spin/variables.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/procedures.js"></script>-->
 
         <script type="text/javascript" src="language/common/control.js"></script>
@@ -67,18 +67,18 @@
                     //grove bluetooth
                     //'grove_bluetooth_slave',
                     //control
-                    'base_delay', 'controls_repeat', 'controls_repeat_forever',
-//                    'controls_if', 'controls_if_if', 'controls_if_elseif', 'controls_if_else', 'controls_for',
+                    'base_delay', 'controls_repeat', 'controls_repeat_forever', 'controls_if', 'controls_if_if', 'controls_if_elseif', 'controls_if_else',
+//                    'controls_if_if', 'controls_if_elseif', 'controls_if_else', 'controls_for',
                     //'controls_whileUntil', 'controls_flow_statements',
                     //math
-                    'math_number'
+                    'math_number',
 //                    'base_map', 'math_number', 'math_arithmetic', //'math_modulo',
-                            //text
+                    //text
 //                    'text', //'text_join','text_create_join_container','text_create_join_item',
-                            //logic
-//                    'logic_compare', 'logic_operation', 'logic_negate', 'logic_null', //'logic_boolean',
-                            //variable
-//                    'variables_get', 'variables_set', 'variables_declare',
+                    //logic
+                    'logic_compare', 'logic_operation', 'logic_negate', 'logic_boolean', //'logic_null',
+                    //variable
+                    'variables_get', 'variables_set', 'variables_declare'
                             //procedure
 //                    'procedures_defnoreturn', 'procedures_defreturn', 'procedures_callnoreturn', 'procedures_callreturn', 'procedures_mutatorcontainer', 'procedures_mutatorarg',
 //                    'procedures_ifreturn',

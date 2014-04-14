@@ -18,8 +18,8 @@
  */
 
 /**
- * @fileoverview Helper functions for generating Spin blocks.
- * @author gasolin@gmail.com (Fred Lin)
+ * @fileoverview Generating Spin for control blocks.
+ * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 'use strict';
 

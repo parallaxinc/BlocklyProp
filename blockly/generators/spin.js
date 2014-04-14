@@ -38,7 +38,7 @@ if (!Blockly.Spin.RESERVED_WORDS_) {
 
 Blockly.Spin.RESERVED_WORDS_ +=
         // http://arduino.cc/en/Reference/HomePage
-        'setup,loop,if,else,for,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
+        'if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
         ;
 
 /**
@@ -59,7 +59,7 @@ Blockly.Spin.ORDER_BITWISE_OR = 10;    // |
 Blockly.Spin.ORDER_LOGICAL_AND = 11;   // &&
 Blockly.Spin.ORDER_LOGICAL_OR = 12;    // ||
 Blockly.Spin.ORDER_CONDITIONAL = 13;   // expr ? expr : expr
-Blockly.Spin.ORDER_ASSIGNMENT = 14;    // = *= /= ~/= %= += -= <<= >>= &= ^= |=
+Blockly.Spin.ORDER_ASSIGNMENT = 14;    // := *= /= ~/= %= += -= <<= >>= &= ^= |=
 Blockly.Spin.ORDER_NONE = 99;          // (...)
 
 /*
@@ -87,6 +87,8 @@ Blockly.Spin.init = function() {
     // Create a dictionary of setups to be printed before the code.
     Blockly.Spin.setups_ = {};
 
+    Blockly.Spin.vartype_ = {};
+
     if (Blockly.Variables) {
         if (!Blockly.Spin.variableDB_) {
             Blockly.Spin.variableDB_ =
@@ -98,9 +100,10 @@ Blockly.Spin.init = function() {
         var defvars = [];
         var variables = Blockly.Variables.allVariables();
         for (var x = 0; x < variables.length; x++) {
-            defvars[x] = 'long ' +
-                    Blockly.Spin.variableDB_.getDistinctName(variables[x],
-                            Blockly.Variables.NAME_TYPE) + '\n';
+            var varName = Blockly.Spin.variableDB_.getDistinctName(variables[x],
+                    Blockly.Variables.NAME_TYPE);
+            defvars[x] = '  ' + '{{$var_type_' + variables[x].name + '}} ' +
+                    varName + '\n';
         }
         Blockly.Spin.definitions_['variables'] = defvars.join('\n');
     }
@@ -129,6 +132,12 @@ Blockly.Spin.finish = function(code) {
         }
     }
 
+    for (var def in definitions) {
+        for (var variable in Blockly.Spin.vartype_) {
+            definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}}", Blockly.Spin.vartype_[variable]);
+        }
+    }
+
     // Convert the setups dictionary into a list.
     var setups = [];
     for (var name in Blockly.Spin.setups_) {
@@ -136,7 +145,7 @@ Blockly.Spin.finish = function(code) {
     }
     setups.push('Start');
 
-    var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
+    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + '\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
     var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
     return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
 };
