@@ -134,8 +134,8 @@ Blockly.Spin.variables_set = function() {
             Blockly.Spin.ORDER_ASSIGNMENT) || '0';
     var varName = Blockly.Spin.variableDB_.getName(this.getTitleValue('VAR'),
             Blockly.Variables.NAME_TYPE);
-    if (typeof Blockly.Spin.vartype_[varName] == undefined) {
-        dBlockly.Spin.vartype_[varName] = 'long';
+    if (Blockly.Spin.vartype_[varName] === undefined) {
+        Blockly.Spin.vartype_[varName] = 'long';
     }
     return varName + ' := ' + argument0 + '\n';
 };

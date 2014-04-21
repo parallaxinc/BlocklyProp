@@ -122,11 +122,14 @@ Blockly.Spin.finish = function(code) {
 
     // Convert the definitions dictionary into a list.
     var imports = [];
+    var methods = [];
     var definitions = [];
     for (var name in Blockly.Spin.definitions_) {
         var def = Blockly.Spin.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
+        } else if (def.match(/^PUB/)) {
+            methods.push(def);
         } else {
             definitions.push(def);
         }
@@ -134,7 +137,14 @@ Blockly.Spin.finish = function(code) {
 
     for (var def in definitions) {
         for (var variable in Blockly.Spin.vartype_) {
-            definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}}", Blockly.Spin.vartype_[variable]);
+            if (definitions[def].indexOf("{{$var_type_" + variable + "}}") > -1) {
+                if (Blockly.Spin.vartype_[variable] !== 'LOCAL') {
+                    definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}}", Blockly.Spin.vartype_[variable]);
+                } else {
+                    definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable, "");
+                }
+            }
+            definitions[def] = definitions[def].replace("\n\n", "");
         }
     }
 
@@ -147,7 +157,7 @@ Blockly.Spin.finish = function(code) {
 
     var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + '\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
     var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
-    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
+    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
 };
 
 /**
