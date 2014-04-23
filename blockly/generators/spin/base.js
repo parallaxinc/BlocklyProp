@@ -58,6 +58,35 @@ Blockly.Language.inout_digital_read = {
     }
 };
 
+Blockly.Language.inout_digital_write_pin = {
+    category: 'In/Out',
+    helpUrl: 'http://arduino.cc/en/Reference/DigitalWrite',
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput("").appendTitle("DigitalWrite PIN#");
+        this.appendValueInput('PIN').setCheck('Number');
+        this.appendDummyInput("").appendTitle("Stat")
+                .appendTitle(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "STAT");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('Write digital value to a specific Port');
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.Language.inout_digital_read_pin = {
+    category: 'In/Out',
+    helpUrl: 'http://arduino.cc/en/Reference/DigitalRead',
+    init: function() {
+        this.setColour(230);
+        this.appendDummyInput("").appendTitle("DigitalRead PIN#");
+        this.appendValueInput('PIN').setCheck('Number');
+        this.setOutput(true, Boolean);
+        this.setTooltip('');
+        this.setInputsInline(true);
+    }
+};
+
 Blockly.Language.base_delay = {
     category: 'Control',
     helpUrl: 'http://arduino.cc/en/Reference/delay',
@@ -87,6 +116,21 @@ Blockly.Spin.inout_digital_write = function() {
 
 Blockly.Spin.inout_digital_read = function() {
     var dropdown_pin = this.getTitleValue('PIN');
+    //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
+    var code = 'ina[' + dropdown_pin + ']';
+    return [code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.inout_digital_write_pin = function() {
+    var dropdown_pin = Blockly.Spin.valueToCode(this, 'PIN', Blockly.Spin.ORDER_UNARY_PREFIX) || '0';
+    var dropdown_stat = this.getTitleValue('STAT');
+//    Blockly.Spin.setups_['setup_output_' + dropdown_pin] = 'dira[' + dropdown_pin + ']~~';
+    var code = 'dira[' + dropdown_pin + ']~~\n' + 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
+    return code;
+};
+
+Blockly.Spin.inout_digital_read_pin = function() {
+    var dropdown_pin = Blockly.Spin.valueToCode(this, 'PIN', Blockly.Spin.ORDER_UNARY_PREFIX) || '0';
     //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
     var code = 'ina[' + dropdown_pin + ']';
     return [code, Blockly.Spin.ORDER_ATOMIC];
