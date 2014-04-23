@@ -51,15 +51,15 @@ Blockly.Spin.ORDER_UNARY_PREFIX = 2;   // -expr !expr ~expr ++expr --expr
 Blockly.Spin.ORDER_MULTIPLICATIVE = 3; // * / % ~/
 Blockly.Spin.ORDER_ADDITIVE = 4;       // + -
 Blockly.Spin.ORDER_SHIFT = 5;          // << >>
-Blockly.Spin.ORDER_RELATIONAL = 6;     // is is! >= > <= <
-Blockly.Spin.ORDER_EQUALITY = 7;       // == != === !==
-Blockly.Spin.ORDER_BITWISE_AND = 8;    // &
-Blockly.Spin.ORDER_BITWISE_XOR = 9;    // ^
-Blockly.Spin.ORDER_BITWISE_OR = 10;    // |
-Blockly.Spin.ORDER_LOGICAL_AND = 11;   // &&
-Blockly.Spin.ORDER_LOGICAL_OR = 12;    // ||
-Blockly.Spin.ORDER_CONDITIONAL = 13;   // expr ? expr : expr
-Blockly.Spin.ORDER_ASSIGNMENT = 14;    // := *= /= ~/= %= += -= <<= >>= &= ^= |=
+Blockly.Spin.ORDER_RELATIONAL = 7;     // is is! >= > <= <
+Blockly.Spin.ORDER_EQUALITY = 8;       // == != === !==
+Blockly.Spin.ORDER_BITWISE_AND = 9;    // &
+Blockly.Spin.ORDER_BITWISE_XOR = 10;    // ^
+Blockly.Spin.ORDER_BITWISE_OR = 11;    // |
+Blockly.Spin.ORDER_LOGICAL_AND = 12;   // &&
+Blockly.Spin.ORDER_LOGICAL_OR = 13;    // ||
+Blockly.Spin.ORDER_CONDITIONAL = 14;   // expr ? expr : expr
+Blockly.Spin.ORDER_ASSIGNMENT = 15;    // := *= /= ~/= %= += -= <<= >>= &= ^= |=
 Blockly.Spin.ORDER_NONE = 99;          // (...)
 
 /*
