@@ -141,3 +141,36 @@ Blockly.Spin.base_delay = function() {
     var code = 'waitcnt(clkfreq / 1000 * ' + delay_time + ' + cnt)\n';
     return code;
 };
+
+// Cog actions
+Blockly.Language.cog_new = {
+    // Repeat forever.
+    category: Blockly.LANG_CATEGORY_COG,
+    helpUrl: '',
+    init: function() {
+        this.setColour(120);
+        this.appendDummyInput()
+                .appendTitle('Cognew ');
+
+        this.appendDummyInput().appendTitle('Stacksize ').appendTitle(new Blockly.FieldTextInput("48"), "STACK_SIZE");
+
+        this.appendStatementInput("METHOD")
+                .appendTitle("Method");
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setInputsInline(true);
+        // this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
+    }
+};
+
+Blockly.Spin.cog_new = function() {
+    var method = Blockly.Spin.statementToCode(this, 'METHOD');
+    method = method.replace("  ", "").replace("\n", "");
+    var stackSize = this.getTitleValue('STACK_SIZE');
+    var stackName = 'Stack' + Blockly.Spin.stacks_.length;
+
+    Blockly.Spin.stacks_.push('long ' + stackName + '[' + stackSize + ']');
+
+    var code = 'cognew(' + method + ', @' + stackName + ')\n';
+    return code;
+};

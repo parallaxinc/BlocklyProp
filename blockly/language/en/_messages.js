@@ -441,3 +441,5 @@ Blockly.LANG_PROCEDURES_IFRETURN_WARNING = 'Warning:\n' +
 
 // Bit Math Blocks.
 Blockly.LANG_CATEGORY_BIT_MATH = 'Bit math';
+
+Blockly.LANG_CATEGORY_COG = 'Cog';

@@ -87,6 +87,9 @@ Blockly.Spin.init = function() {
     // Create a dictionary of setups to be printed before the code.
     Blockly.Spin.setups_ = {};
 
+    // Create a list of stacks
+    Blockly.Spin.stacks_ = [];
+
     Blockly.Spin.vartype_ = {};
 
     if (Blockly.Variables) {
@@ -144,8 +147,12 @@ Blockly.Spin.finish = function(code) {
                     definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable, "");
                 }
             }
-            definitions[def] = definitions[def].replace("\n\n", "");
+            definitions[def] = definitions[def].replace("\n\n", "\n");
         }
+    }
+
+    for (var stack in Blockly.Spin.stacks_) {
+        definitions.push('  ' + Blockly.Spin.stacks_[stack]);
     }
 
     // Convert the setups dictionary into a list.
@@ -155,7 +162,7 @@ Blockly.Spin.finish = function(code) {
     }
     setups.push('Start');
 
-    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + '\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
+    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
     var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
     return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
 };
