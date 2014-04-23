@@ -437,3 +437,7 @@ Blockly.LANG_PROCEDURES_IFRETURN_TOOLTIP = 'If a value is true, then return a va
 Blockly.LANG_PROCEDURES_IFRETURN_WARNING = 'Warning:\n' +
         'This block may only be\n' +
         'used within a method.';
+
+
+// Bit Math Blocks.
+Blockly.LANG_CATEGORY_BIT_MATH = 'Bit math';
