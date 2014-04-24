@@ -55,6 +55,13 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>propeller-lib</directory>
+            <outputDirectory>propeller-lib/</outputDirectory>
+            <includes>
+                <include>*.spin</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>src/main/webapp</directory>
             <outputDirectory>src/main/webapp/</outputDirectory>
             <includes>

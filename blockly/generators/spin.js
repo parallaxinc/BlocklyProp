@@ -126,6 +126,7 @@ Blockly.Spin.finish = function(code) {
     // Convert the definitions dictionary into a list.
     var imports = [];
     var methods = [];
+    var objects = [];
     var definitions = [];
     for (var name in Blockly.Spin.definitions_) {
         var def = Blockly.Spin.definitions_[name];
@@ -133,6 +134,8 @@ Blockly.Spin.finish = function(code) {
             imports.push(def);
         } else if (def.match(/^PUB/)) {
             methods.push(def);
+        } else if (def.match(/^OBJ/)) {
+            objects.push('  ' + def.substring(3));
         } else {
             definitions.push(def);
         }
@@ -162,7 +165,9 @@ Blockly.Spin.finish = function(code) {
     }
     setups.push('Start');
 
-    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
+    var OBJ = (objects.length > 0) ? '\nOBJ\n' + objects.join('\n') + '\n' : '';
+
+    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
     var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
     return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
 };

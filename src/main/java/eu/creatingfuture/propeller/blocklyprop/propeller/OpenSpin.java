@@ -39,12 +39,15 @@ public abstract class OpenSpin implements Compiler {
     protected boolean compile(String executable, File sourceFile) {
         try {
             File temporaryDestinationFile = File.createTempFile("blocklyapp", ".binary");
+            File libDirectory = new File(new File(System.getProperty("user.dir")), "/propeller-lib");
             Map map = new HashMap();
             map.put("sourceFile", sourceFile);
             map.put("destinationFile", temporaryDestinationFile);
+            map.put("libDirectory", libDirectory);
 
             CommandLine cmdLine = new CommandLine(executable);
             cmdLine.addArgument("-o").addArgument("${destinationFile}");
+            cmdLine.addArgument("-L").addArgument("${libDirectory}");
             cmdLine.addArgument("${sourceFile}");
             cmdLine.setSubstitutionMap(map);
             DefaultExecutor executor = new DefaultExecutor();
@@ -94,13 +97,16 @@ public abstract class OpenSpin implements Compiler {
 
     protected boolean compileForRam(String executable, File sourceFile, File destinationFile) {
         try {
+            File libDirectory = new File(new File(System.getProperty("user.dir")), "/propeller-lib");
             Map map = new HashMap();
             map.put("sourceFile", sourceFile);
             map.put("destinationFile", destinationFile);
+            map.put("libDirectory", libDirectory);
 
             CommandLine cmdLine = new CommandLine(executable);
             cmdLine.addArgument("-b");
             cmdLine.addArgument("-o").addArgument("${destinationFile}");
+            cmdLine.addArgument("-L").addArgument("${libDirectory}");
             cmdLine.addArgument("${sourceFile}");
             cmdLine.setSubstitutionMap(map);
             DefaultExecutor executor = new DefaultExecutor();
@@ -149,13 +155,16 @@ public abstract class OpenSpin implements Compiler {
 
     protected boolean compileForEeprom(String executable, File sourceFile, File destinationFile) {
         try {
+            File libDirectory = new File(new File(System.getProperty("user.dir")), "/propeller-lib");
             Map map = new HashMap();
             map.put("sourceFile", sourceFile);
             map.put("destinationFile", destinationFile);
+            map.put("libDirectory", libDirectory);
 
             CommandLine cmdLine = new CommandLine(executable);
             cmdLine.addArgument("-e");
             cmdLine.addArgument("-o").addArgument("${destinationFile}");
+            cmdLine.addArgument("-L").addArgument("${libDirectory}");
             cmdLine.addArgument("${sourceFile}");
             cmdLine.setSubstitutionMap(map);
             DefaultExecutor executor = new DefaultExecutor();
