@@ -1,8 +1,7 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2012 Fred Lin.
- * https://github.com/gasolin/BlocklyDuino
+ * Copyright 2014 Michel Lampo
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +17,11 @@
  */
 
 /**
- * @fileoverview Generating Spin for control blocks.
+ * @fileoverview Generating Spin for sensor blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 'use strict';
 
-//To support syntax defined in http://arduino.cc/en/Reference/HomePage
 
 //define blocks
 if (!Blockly.Language)
@@ -31,19 +29,16 @@ if (!Blockly.Language)
 
 
 //servo block
-Blockly.Language.servo_move = {
-    category: 'Servo',
+Blockly.Language.sensor_ping = {
+    category: 'Sensors',
     helpUrl: '',
     init: function() {
-        this.setColour(180);
+        this.setColour(314);
         this.appendDummyInput("")
-                .appendTitle("Servo")
+                .appendTitle("Ping)))")
+                .appendTitle(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"], ["mm", "MM"]]), "UNIT")
                 .appendTitle("PIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN")
-        this.appendValueInput("PULSE", Number)
-                .setCheck(Number)
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendTitle("Pulse (1500~2500)");
+                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -52,13 +47,19 @@ Blockly.Language.servo_move = {
 // define generators
 Blockly.Spin = Blockly.Generator.get('Spin');
 
-Blockly.Spin.servo_move = function() {
+Blockly.Spin.sensor_ping = function() {
     var dropdown_pin = this.getTitleValue('PIN');
-    var pulse_time = Blockly.Spin.valueToCode(this, 'PULSE', Blockly.Spin.ORDER_NONE);
+    var unit = this.getTitleValue('UNIT');
+    var methodForUnit = Blockly.Spin.sensor_ping.UNITS[unit];
 
-    Blockly.Spin.definitions_['define_servo'] = 'OBJSERVO : "Servo32v7"';
-    Blockly.Spin.setups_['setup_servo'] = 'SERVO.Start\n';
+    Blockly.Spin.definitions_['define_ping'] = 'OBJPING : "ping"';
 
-    var code = 'SERVO.Set(' + dropdown_pin + ', ' + pulse_time + ')\n';
+    var code = 'PING.' + methodForUnit + '(' + dropdown_pin + ')\n';
     return code;
+};
+
+Blockly.Spin.sensor_ping.UNITS = {
+    INCHES: 'Inches',
+    CM: 'Centimeters',
+    MM: 'Millimeters'
 };

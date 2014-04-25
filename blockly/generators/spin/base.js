@@ -152,7 +152,7 @@ Blockly.Language.cog_new = {
         this.appendDummyInput()
                 .appendTitle('Cognew ');
 
-        this.appendDummyInput().appendTitle('Stacksize ').appendTitle(new Blockly.FieldTextInput("48"), "STACK_SIZE");
+        this.appendDummyInput().appendTitle('Stacksize ').appendTitle(new Blockly.FieldTextInput("48", Blockly.Language.math_number.validator), "STACK_SIZE");
 
         this.appendStatementInput("METHOD")
                 .appendTitle("Method");

@@ -165,7 +165,7 @@ Blockly.Spin.finish = function(code) {
     }
     setups.push('Start');
 
-    var OBJ = (objects.length > 0) ? '\nOBJ\n' + objects.join('\n') + '\n' : '';
+    var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
 
     var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
     var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
