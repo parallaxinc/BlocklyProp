@@ -64,7 +64,7 @@ Blockly.Language.inout_digital_write_pin = {
     init: function() {
         this.setColour(230);
         this.appendDummyInput("").appendTitle("DigitalWrite PIN#");
-        this.appendValueInput('PIN').setCheck('Number');
+        this.appendValueInput('PIN').setCheck(Number);
         this.appendDummyInput("").appendTitle("Stat")
                 .appendTitle(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "STAT");
         this.setPreviousStatement(true, null);
@@ -80,7 +80,7 @@ Blockly.Language.inout_digital_read_pin = {
     init: function() {
         this.setColour(230);
         this.appendDummyInput("").appendTitle("DigitalRead PIN#");
-        this.appendValueInput('PIN').setCheck('Number');
+        this.appendValueInput('PIN').setCheck(Number);
         this.setOutput(true, Boolean);
         this.setTooltip('');
         this.setInputsInline(true);

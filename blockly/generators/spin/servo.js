@@ -1,7 +1,7 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2012 Fred Lin.
+ * Copyright 2014 Michel Lampo
  * https://github.com/gasolin/BlocklyDuino
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,12 +18,11 @@
  */
 
 /**
- * @fileoverview Generating Spin for control blocks.
+ * @fileoverview Generating Spin for servo blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 'use strict';
 
-//To support syntax defined in http://arduino.cc/en/Reference/HomePage
 
 //define blocks
 if (!Blockly.Language)
@@ -57,7 +56,7 @@ Blockly.Spin.servo_move = function() {
     var pulse_time = Blockly.Spin.valueToCode(this, 'PULSE', Blockly.Spin.ORDER_NONE);
 
     Blockly.Spin.definitions_['define_servo'] = 'OBJSERVO : "Servo32v7"';
-    Blockly.Spin.setups_['setup_servo'] = 'SERVO.Start\n';
+    Blockly.Spin.setups_['setup_servo'] = 'SERVO.Start';
 
     var code = 'SERVO.Set(' + dropdown_pin + ', ' + pulse_time + ')\n';
     return code;
