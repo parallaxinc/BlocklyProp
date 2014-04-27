@@ -138,19 +138,31 @@ function init(blockly) {
  *
  */
 function compile() {
-    window.alert("In demo mode you cannot compile or communicate with a microcontroller");
+    $("#compile-dialog-title").text('Compile');
+    $("#compile-console").val('');
+    $('#compile-dialog').modal('show');
+
+    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
 }
 
 /**
  *
  */
 function loadIntoRam() {
-    window.alert("In demo mode you cannot compile or communicate with a microcontroller");
+    $("#compile-dialog-title").text('Load into ram');
+    $("#compile-console").val('');
+    $('#compile-dialog').modal('show');
+
+    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
 }
 
 /**
  *
  */
 function loadIntoEeprom() {
-    window.alert("In demo mode you cannot compile or communicate with a microcontroller");
+    $("#compile-dialog-title").text('Load into eeprom');
+    $("#compile-console").val('');
+    $('#compile-dialog').modal('show');
+
+    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
 }
