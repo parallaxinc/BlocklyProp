@@ -21,6 +21,13 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>target/html</directory>
+            <outputDirectory>/help</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>blockly</directory>
             <outputDirectory>/</outputDirectory>
             <includes>

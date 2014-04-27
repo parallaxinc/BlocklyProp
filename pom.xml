@@ -14,9 +14,15 @@
            http://central.maven.org/maven2/org/eclipse/jetty/jetty-maven-plugin/
         -->
         <jettyVersion>9.1.0.RC2</jettyVersion>
-
-        <guiceVersion>3.0</guiceVersion>
     </properties>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Creating Future</id>
+            <name>plugins-releases</name>
+            <url>http://maven.creatingfuture.eu/browse/libs-release-local</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <profiles>
         <profile>
@@ -138,6 +144,25 @@
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.ruleoftech</groupId>
+                <artifactId>markdown-page-generator-plugin</artifactId>
+                <version>0.3</version>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <inputDirectory>${project.basedir}/help/markdown/</inputDirectory>
+                    <headerHtmlFile>${project.basedir}/help/header.html</headerHtmlFile>
+                    <footerHtmlFile>${project.basedir}/help/footer.html</footerHtmlFile>
                 </configuration>
             </plugin>
 

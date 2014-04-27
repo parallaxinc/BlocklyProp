@@ -1,8 +1,8 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2012 Fred Lin.
- * https://github.com/gasolin/BlocklyDuino
+ * Copyright 2014 Michel Lampo.
+ *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,10 @@
  */
 
 /**
- * @fileoverview Generating Spin for control blocks.
+ * @fileoverview Generating Spin for basic blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 'use strict';
-
-//To support syntax defined in http://arduino.cc/en/Reference/HomePage
 
 //define blocks
 if (!Blockly.Language)
@@ -31,7 +29,7 @@ if (!Blockly.Language)
 
 Blockly.Language.inout_digital_write = {
     category: 'In/Out',
-    helpUrl: 'http://arduino.cc/en/Reference/DigitalWrite',
+    helpUrl: 'help/digitalpin.html#write',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("")
@@ -47,7 +45,7 @@ Blockly.Language.inout_digital_write = {
 
 Blockly.Language.inout_digital_read = {
     category: 'In/Out',
-    helpUrl: 'http://arduino.cc/en/Reference/DigitalRead',
+    helpUrl: 'help/digitalpin.html#read',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("")
@@ -60,7 +58,7 @@ Blockly.Language.inout_digital_read = {
 
 Blockly.Language.inout_digital_write_pin = {
     category: 'In/Out',
-    helpUrl: 'http://arduino.cc/en/Reference/DigitalWrite',
+    helpUrl: 'help/digitalpin.html#write-pin',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("").appendTitle("DigitalWrite PIN#");
@@ -76,7 +74,7 @@ Blockly.Language.inout_digital_write_pin = {
 
 Blockly.Language.inout_digital_read_pin = {
     category: 'In/Out',
-    helpUrl: 'http://arduino.cc/en/Reference/DigitalRead',
+    helpUrl: 'help/digitalpin.html#read-pin',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("").appendTitle("DigitalRead PIN#");
@@ -89,7 +87,7 @@ Blockly.Language.inout_digital_read_pin = {
 
 Blockly.Language.base_delay = {
     category: 'Control',
-    helpUrl: 'http://arduino.cc/en/Reference/delay',
+    helpUrl: 'help/delay.html',
     init: function() {
         this.setColour(120);
         this.appendValueInput("DELAY_TIME", Number)
@@ -146,7 +144,7 @@ Blockly.Spin.base_delay = function() {
 Blockly.Language.cog_new = {
     // Repeat forever.
     category: Blockly.LANG_CATEGORY_COG,
-    helpUrl: '',
+    helpUrl: 'help/cognew.html',
     init: function() {
         this.setColour(120);
         this.appendDummyInput()
