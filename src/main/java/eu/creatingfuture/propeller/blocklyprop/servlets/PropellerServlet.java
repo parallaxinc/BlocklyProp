@@ -11,6 +11,7 @@ import eu.creatingfuture.propeller.blocklyprop.utils.PropellerAction;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -82,24 +83,41 @@ public class PropellerServlet extends HttpServlet {
             blocklyAppWriter.flush();
         }
 
-        boolean success = false;
-        switch (action) {
-            case COMPILE:
-                success = BlocklyProp.getCompiler().compile(blocklyAppFile);
-                break;
-            case LOAD_RAM:
-            case LOAD_EEPROM:
-                success = compileAndRun(action, blocklyAppFile);
-                break;
+        if (action == PropellerAction.COMPILE) {
+
+            result.setSucces(BlocklyProp.getCompiler().compile(blocklyAppFile));
+            result.setMessage(BlocklyProp.getCompiler().getLastOutput());
+            result.setCode(BlocklyProp.getCompiler().getLastExitValue());
+
+            blocklyAppFile.delete();
+
+            out.print(gson.toJson(result));
+            out.flush();
+        } else {
+            List<PropellentResult> results = new ArrayList<>();
+            compileAndRun(action, blocklyAppFile);
+
+            PropellentResult compileResult = new PropellentResult();
+            boolean compileSuccess = BlocklyProp.getCompiler().wasLastSuccess();
+            compileResult.setSucces(compileSuccess);
+            compileResult.setMessage(BlocklyProp.getCompiler().getLastOutput());
+            compileResult.setCode(BlocklyProp.getCompiler().getLastExitValue());
+            results.add(compileResult);
+
+            if (compileSuccess) {
+                PropellentResult communicatorResult = new PropellentResult();
+                communicatorResult.setSucces(BlocklyProp.getPropellerCommunicator().wasLastSuccess());
+                communicatorResult.setMessage(BlocklyProp.getPropellerCommunicator().getLastOutput());
+                communicatorResult.setCode(BlocklyProp.getPropellerCommunicator().getLastExitValue());
+                results.add(communicatorResult);
+            }
+
+            blocklyAppFile.delete();
+
+            out.print(gson.toJson(results));
+            out.flush();
         }
-        result.setSucces(success);
-        result.setMessage(BlocklyProp.getCompiler().getLastOutput() + "\n\n" + BlocklyProp.getPropellerCommunicator().getLastOutput());
-        result.setCode(BlocklyProp.getCompiler().getLastExitValue());
 
-        blocklyAppFile.delete();
-
-        out.print(gson.toJson(result));
-        out.flush();
     }
 
     private boolean compileAndRun(PropellerAction action, File blocklyAppFile) throws IOException {

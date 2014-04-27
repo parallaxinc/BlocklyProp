@@ -21,6 +21,8 @@
  }
  Blockly.Language = newLanguage;*/
 
+var BlocklyProp = {};
+
 /**
  * List of tab names.
  * @private
@@ -139,14 +141,19 @@ function init(blockly) {
 function compile() {
     var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
+    $("#compile-dialog-title").text('Compile');
+    $("#compile-console").val('');
+    $('#compile-dialog').modal('show');
+
 
     // Store data in blob.
     // var builder = new BlobBuilder();
     // builder.append(data);
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-    console.log("Compiling");
+    //console.log("Compiling");
 
     $.post('/webapp/propeller.action', {action: "COMPILE", code: spinCode}, function(data) {
+        $("#compile-console").val(data.message);
         console.log(data);
     });
 
@@ -160,14 +167,25 @@ function compile() {
 function loadIntoRam() {
     var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
+    $("#compile-dialog-title").text('Load into ram');
+    $("#compile-console").val('');
+    $('#compile-dialog').modal('show');
 
     // Store data in blob.
     // var builder = new BlobBuilder();
     // builder.append(data);
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-    console.log("Compiling");
+    //console.log("Compiling");
 
     $.post('/webapp/propeller.action', {action: "LOAD_RAM", code: spinCode}, function(data) {
+        var combinedMessage = '';
+        data.forEach(function(dataPart) {
+            if (combinedMessage.length > 0) {
+                combinedMessage += '\n\n';
+            }
+            combinedMessage += dataPart.message;
+        });
+        $("#compile-console").val(combinedMessage);
         console.log(data);
     });
 
@@ -181,14 +199,25 @@ function loadIntoRam() {
 function loadIntoEeprom() {
     var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
+    $("#compile-dialog-title").text('Load into eeprom');
+    $("#compile-console").val('');
+    $('#compile-dialog').modal('show');
 
     // Store data in blob.
     // var builder = new BlobBuilder();
     // builder.append(data);
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-    console.log("Compiling");
+    //console.log("Compiling");
 
     $.post('/webapp/propeller.action', {action: "LOAD_EEPROM", code: spinCode}, function(data) {
+        var combinedMessage = '';
+        data.forEach(function(dataPart) {
+            if (combinedMessage.length > 0) {
+                combinedMessage += '\n\n';
+            }
+            combinedMessage += dataPart.message;
+        });
+        $("#compile-console").val(combinedMessage);
         console.log(data);
     });
 

@@ -23,4 +23,6 @@ public interface Compiler {
 
     public int getLastExitValue();
 
+    public boolean wasLastSuccess();
+
 }

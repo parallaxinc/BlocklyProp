@@ -26,6 +26,7 @@ public abstract class OpenSpin implements Compiler {
 
     private static final Logger logger = Logger.getLogger(OpenSpin.class.getName());
 
+    protected boolean success;
     protected int exitValue;
     protected String output;
 
@@ -62,6 +63,7 @@ public abstract class OpenSpin implements Compiler {
             } catch (ExecuteException ee) {
                 exitValue = ee.getExitValue();
                 logger.log(Level.SEVERE, "Unexpected exit value: {0}", exitValue);
+                success = false;
                 return false;
             } finally {
                 temporaryDestinationFile.delete();
@@ -88,9 +90,11 @@ public abstract class OpenSpin implements Compiler {
              */
 //            System.out.println("output: " + output);
 //            System.out.println("exitValue: " + exitValue);
+            success = true;
             return true;
         } catch (IOException ioe) {
             logger.log(Level.SEVERE, null, ioe);
+            success = false;
             return false;
         }
     }
@@ -121,6 +125,7 @@ public abstract class OpenSpin implements Compiler {
             } catch (ExecuteException ee) {
                 exitValue = ee.getExitValue();
                 logger.log(Level.SEVERE, "Unexpected exit value: {0}", exitValue);
+                success = false;
                 return false;
             } finally {
                 output = outputStream.toString();
@@ -146,9 +151,11 @@ public abstract class OpenSpin implements Compiler {
              */
 //            System.out.println("output: " + output);
 //            System.out.println("exitValue: " + exitValue);
+            success = true;
             return true;
         } catch (IOException ioe) {
             logger.log(Level.SEVERE, null, ioe);
+            success = false;
             return false;
         }
     }
@@ -179,6 +186,7 @@ public abstract class OpenSpin implements Compiler {
             } catch (ExecuteException ee) {
                 exitValue = ee.getExitValue();
                 logger.log(Level.SEVERE, "Unexpected exit value: {0}", exitValue);
+                success = false;
                 return false;
             } finally {
                 output = outputStream.toString();
@@ -204,9 +212,11 @@ public abstract class OpenSpin implements Compiler {
              */
 //            System.out.println("output: " + output);
 //            System.out.println("exitValue: " + exitValue);
+            success = true;
             return true;
         } catch (IOException ioe) {
             logger.log(Level.SEVERE, null, ioe);
+            success = false;
             return false;
         }
     }
@@ -219,6 +229,11 @@ public abstract class OpenSpin implements Compiler {
     @Override
     public int getLastExitValue() {
         return exitValue;
+    }
+
+    @Override
+    public boolean wasLastSuccess() {
+        return success;
     }
 
 }

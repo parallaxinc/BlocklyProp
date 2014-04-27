@@ -24,4 +24,6 @@ public interface PropellerCommunicator {
 
     public int getLastExitValue();
 
+    public boolean wasLastSuccess();
+
 }
