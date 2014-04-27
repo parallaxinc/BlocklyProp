@@ -25,7 +25,7 @@
                 <include>*.html</include>
                 <include>*.js</include>
                 <include>*.css</include>
-                <include>lib/*.js</include>
+                <include>lib/*/*.*</include>
             </includes>
         </fileSet>
         <fileSet>

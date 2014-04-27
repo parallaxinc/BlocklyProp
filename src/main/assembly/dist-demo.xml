@@ -17,7 +17,7 @@
                 <include>FileSaver.min.js</include>
                 <include>blockly_helper.js</include>
                 <include>*.css</include>
-                <include>lib/*.js</include>
+                <include>lib/*/*.*</include>
             </includes>
         </fileSet>
         <fileSet>
