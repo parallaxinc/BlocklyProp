@@ -1,3 +1,0 @@
-# Spin reference
-
-TODO

@@ -148,6 +148,25 @@
             </plugin>
 
             <plugin>
+                <groupId>eu.creatingfuture.plugins</groupId>
+                <artifactId>textile-page-generator-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <inputDirectory>${project.basedir}/help/textile/</inputDirectory>
+                    <headerHtmlFile>${project.basedir}/help/header.html</headerHtmlFile>
+                    <footerHtmlFile>${project.basedir}/help/footer.html</footerHtmlFile>
+                </configuration>
+            </plugin>
+
+            <!--            <plugin>
                 <groupId>com.ruleoftech</groupId>
                 <artifactId>markdown-page-generator-plugin</artifactId>
                 <version>0.3</version>
@@ -164,7 +183,7 @@
                     <headerHtmlFile>${project.basedir}/help/header.html</headerHtmlFile>
                     <footerHtmlFile>${project.basedir}/help/footer.html</footerHtmlFile>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
             <!--            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>

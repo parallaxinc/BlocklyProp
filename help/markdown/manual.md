@@ -1,3 +1,0 @@
-# BlocklyProp manual
-
-TODO
