@@ -29,7 +29,7 @@ if (!Blockly.Language)
 
 Blockly.Language.inout_digital_write = {
     category: 'In/Out',
-    helpUrl: 'help/digitalpin.html#write',
+    helpUrl: 'help/block-digitalpin.html#write',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("")
@@ -45,7 +45,7 @@ Blockly.Language.inout_digital_write = {
 
 Blockly.Language.inout_digital_read = {
     category: 'In/Out',
-    helpUrl: 'help/digitalpin.html#read',
+    helpUrl: 'help/block-digitalpin.html#read',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("")
@@ -58,7 +58,7 @@ Blockly.Language.inout_digital_read = {
 
 Blockly.Language.inout_digital_write_pin = {
     category: 'In/Out',
-    helpUrl: 'help/digitalpin.html#write-pin',
+    helpUrl: 'help/block-digitalpin.html#write-pin',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("").appendTitle("DigitalWrite PIN#");
@@ -74,7 +74,7 @@ Blockly.Language.inout_digital_write_pin = {
 
 Blockly.Language.inout_digital_read_pin = {
     category: 'In/Out',
-    helpUrl: 'help/digitalpin.html#read-pin',
+    helpUrl: 'help/block-digitalpin.html#read-pin',
     init: function() {
         this.setColour(230);
         this.appendDummyInput("").appendTitle("DigitalRead PIN#");
@@ -87,7 +87,7 @@ Blockly.Language.inout_digital_read_pin = {
 
 Blockly.Language.base_delay = {
     category: 'Control',
-    helpUrl: 'help/delay.html',
+    helpUrl: 'help/block-delay.html',
     init: function() {
         this.setColour(120);
         this.appendValueInput("DELAY_TIME", Number)
@@ -144,7 +144,7 @@ Blockly.Spin.base_delay = function() {
 Blockly.Language.cog_new = {
     // Repeat forever.
     category: Blockly.LANG_CATEGORY_COG,
-    helpUrl: 'help/cognew.html',
+    helpUrl: 'help/block-cognew.html',
     init: function() {
         this.setColour(120);
         this.appendDummyInput()

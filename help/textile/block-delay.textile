@@ -1,0 +1,5 @@
+h1. Delay
+
+Delay your application for a given amount of time.
+
+This uses the command: "waitcnt":spin-wait.html#waitcnt
