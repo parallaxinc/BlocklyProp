@@ -1,0 +1,74 @@
+<html><!-- manifest=node.manifest> -->
+    <head>
+        <meta charset="utf-8">
+        <title>BlocklyProp for Scribbler</title>
+        <!--script type="text/javascript" src="../blockly_compressed.js"></script-->
+        <script type="text/javascript" src="apps/blockly_compressed.js"></script>
+
+        <script type="text/javascript" src="language/en/_messages.js"></script>
+
+        <script type="text/javascript" src="language/common/scribbler.js"></script>
+
+        <script type="text/javascript" src="generators/scribbler.js"></script>
+        <script type="text/javascript" src="generators/scribbler/scribbler.js"></script>
+        <script type="text/javascript" src="generators/javascript/scribbler.js"></script>
+
+        <script type="text/javascript" src="Blob.js"></script>
+        <script type="text/javascript" src="lib/js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="FileSaver.min.js"></script>
+        <script type="text/javascript" src="blockly_helper.js"></script>
+        <script type="text/javascript" src="blocklyscribbler.js"></script>
+        <link href="lib/css/bootstrap.css" rel="stylesheet">
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <style>
+            #visualization {
+                width: 420px;
+                height: 420px;
+            }
+            #blockly {
+                position: fixed;
+                bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <table width="100%">
+            <tr>
+                <td>
+                    <h1><a href="https://github.com/michel-cf/BlocklyProp">BlocklyProp</a> &gt; web-based visual programming editor for spin</h1>
+                </td>
+            </tr>
+            <tr>
+
+            </tr>
+        </table>
+
+        <div id="visualization">
+
+        </div>
+        <div id="blockly"></div>
+
+        <div class="modal fade" id="compile-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="compile-dialog-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label for="compile-console">Result</label>
+                        <textarea class="form-control" rows="15" id="compile-console"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <script src="lib/js/bootstrap.min.js"></script>
+        <script>
+            BlocklyScribbler.init();
+        </script>
+    </body>
+</html>

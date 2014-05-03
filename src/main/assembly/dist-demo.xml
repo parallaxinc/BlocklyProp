@@ -18,6 +18,7 @@
                 <include>FileSaver.min.js</include>
                 <include>blockly_helper.js</include>
                 <include>blocklyprophelp.js</include>
+                <include>blocklyscribbler.js</include>
                 <include>lib/*/*.*</include>
             </includes>
         </fileSet>
@@ -37,6 +38,9 @@
                 <include>*/*/*.*</include>
                 <include>*/*/*/*.*</include>
             </includes>
+            <excludes>
+                <exclude>*.py</exclude>
+            </excludes>
         </fileSet>
         <fileSet>
             <directory>webcontent/version/demo</directory>
