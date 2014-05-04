@@ -19,7 +19,9 @@
                 <include>blockly_helper.js</include>
                 <include>blocklyprophelp.js</include>
                 <include>blocklyscribbler.js</include>
+                <include>scribblersimulator.js</include>
                 <include>lib/*/*.*</include>
+                <include>images/*.*</include>
             </includes>
         </fileSet>
         <fileSet>

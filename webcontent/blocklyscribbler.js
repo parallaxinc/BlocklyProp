@@ -31,10 +31,14 @@ var TABS_ = ['blocks', 'spin', 'xml'];
 
 var selected = 'blocks';
 
+var scribblerSim = new ScribblerSim();
+
+
 /**
  * Initialize Blockly and the maze.  Called on page load.
  */
 BlocklyScribbler.init = function() {
+    scribblerSim.init('visualization');
 //    BlocklyApps.init();
 
     /*
