@@ -1,12 +1,5 @@
-h1. Digital pin
+h1. Cognew
 
-h2(#write). Write to a selected pin
+h2(#cognew). Start a method in a new cog
 
-You select high or low and the pin you want to set.
-
-If you select high, a value of 3.3V will be set to selected pin. Low will pul the pin to ground.
-
-In the list of pins, not all pins might be available. This list depends on the profile you have selected.
-For example, on the demo board you get pins 0..7 and 16..23.
-
-h2(#write-pin). Write to a pin set using a variable pin
+Start a given method in a free cog. You'll also have to specify the stacksize that can be used.

@@ -71,7 +71,7 @@ BlocklyScribbler.init = function() {
     // Whitelist of blocks to keep.
     var newLanguage = {}
     var keepers = [
-        'move'
+        'move', 'line_sensor'
     ];
     for (var x = 0; x < keepers.length; x++) {
         newLanguage[keepers[x]] = Blockly.Language[keepers[x]];

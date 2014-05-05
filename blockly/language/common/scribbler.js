@@ -35,3 +35,15 @@ Blockly.Language.move = {
         this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
     }
 };
+
+Blockly.Language.line_sensor = {
+    category: Blockly.LANG_CATEGORY_CONTROLS,
+    helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
+    init: function() {
+        this.setColour(120);
+        this.appendDummyInput()
+                .appendTitle('Line sensor').appendTitle(new Blockly.FieldDropdown([["Left", "LEFT"], ["Right", "RIGHT"], ["Both", "BOTH"], ["Either", "EITHER"], ["Neither", "NEITHER"]]), "STAT");
+        this.setOutput(true, 'boolean');
+        this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
+    }
+};
