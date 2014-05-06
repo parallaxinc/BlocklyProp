@@ -17,6 +17,10 @@
  * limitations under the License.
  */
 
+var wheelRadius = 10;
+var wheelCircumference = 31.4;
+var wheelDistanceFromCenter = 15;
+
 ScribblerSim = function() {
 
     this.paper = null;
@@ -57,7 +61,14 @@ ScribblerSim = function() {
         } else if (leftMotor === -rightMotor) {
             this.scribbler.animate({transform: "r" + (leftMotor * time) / 1000 + "," + x + ", " + y}, time, null, readyCallback);
         } else {
-
+            // References
+            // http://rossum.sourceforge.net/papers/DiffSteer/
+            // http://planning.cs.uiuc.edu/node659.html
+            var leftDistance = wheelCircumference * leftMotor * (time / 1000);
+            var rightDistance = wheelCircumference * rightMotor * (time / 1000);
+            var angleDegrees = wheelRadius / (wheelDistanceFromCenter * 2 * (leftMotor - rightMotor) * (time / 1000));
+            var angleRadians = angleDegrees * Math.PI / 180;
+            var distanceFromCenter = ((leftDistance > rightDistance) ? (rightDistance / angleRadians) : (leftDistance / angleRadians)) + wheelDistanceFromCenter;
         }
     };
 };

@@ -42,7 +42,7 @@ Blockly.Language.line_sensor = {
     init: function() {
         this.setColour(120);
         this.appendDummyInput()
-                .appendTitle('Line sensor').appendTitle(new Blockly.FieldDropdown([["Left", "LEFT"], ["Right", "RIGHT"], ["Both", "BOTH"], ["Either", "EITHER"], ["Neither", "NEITHER"]]), "STAT");
+                .appendTitle('Line sensor').appendTitle(new Blockly.FieldDropdown([["Left", "LEFT"], ["Right", "RIGHT"], ["Either", "EITHER"], ["Both", "BOTH"], ["Neither", "NEITHER"]]), "STAT");
         this.setOutput(true, 'boolean');
         this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
     }

@@ -29,3 +29,8 @@ Blockly.Spin.move = function() {
     var code = 'MOTORS.move()';
     return code + '\n';
 };
+
+Blockly.Spin.line_sensor = function() {
+    var code = 'LINESENSOR.read()';
+    return code + '\n';
+};
