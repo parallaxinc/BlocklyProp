@@ -64,6 +64,7 @@ ScribblerSim = function() {
             // References
             // http://rossum.sourceforge.net/papers/DiffSteer/
             // http://planning.cs.uiuc.edu/node659.html
+            // http://rossum.sourceforge.net/papers/CalculationsForRobotics/CompendiumForKinematics.htm
             var leftDistance = wheelCircumference * leftMotor * (time / 1000);
             var rightDistance = wheelCircumference * rightMotor * (time / 1000);
             var angleDegrees = wheelRadius / (wheelDistanceFromCenter * 2 * (leftMotor - rightMotor) * (time / 1000));
