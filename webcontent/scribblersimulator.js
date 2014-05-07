@@ -28,9 +28,12 @@ ScribblerSim = function() {
     this.init = function(enclosingSelector) {
         this.paper = Raphael(enclosingSelector, 400, 400);
         this.scribbler = this.paper.image("images/lg_scribbler.gif", 190, 190, 20, 20);
-        scribblerSim.move(100, 100, 1000, function() {
-            scribblerSim.move(90, -90, 2000, function() {
-                scribblerSim.move(100, 100, 1000);
+        scribblerSim.move(50, 50, 1000, function() {
+            scribblerSim.move(90, -20, 1000, function() {
+                scribblerSim.move(10, 10, 1000, function() {
+                    scribblerSim.move(-20, 90, 1000, function() {
+                    });
+                });
             });
         });
 
@@ -65,11 +68,36 @@ ScribblerSim = function() {
             // http://rossum.sourceforge.net/papers/DiffSteer/
             // http://planning.cs.uiuc.edu/node659.html
             // http://rossum.sourceforge.net/papers/CalculationsForRobotics/CompendiumForKinematics.htm
-            var leftDistance = wheelCircumference * leftMotor * (time / 1000);
-            var rightDistance = wheelCircumference * rightMotor * (time / 1000);
-            var angleDegrees = wheelRadius / (wheelDistanceFromCenter * 2 * (leftMotor - rightMotor) * (time / 1000));
+            var leftDistance = wheelCircumference * (leftMotor * Math.PI / 180) * (time / 1000);
+            var rightDistance = wheelCircumference * (rightMotor * Math.PI / 180) * (time / 1000);
+            var angleDegrees = wheelRadius / (wheelDistanceFromCenter * 2) * (leftMotor - rightMotor) * (time / 1000);
             var angleRadians = angleDegrees * Math.PI / 180;
-            var distanceFromCenter = ((leftDistance > rightDistance) ? (rightDistance / angleRadians) : (leftDistance / angleRadians)) + wheelDistanceFromCenter;
+            var distanceFromLeftWheel = leftDistance / angleRadians;
+            var distanceFromCenter = ((leftDistance > rightDistance) ? (rightDistance / angleDegrees) : (leftDistance / angleDegrees));// + wheelDistanceFromCenter;
+            var distanceFromRightWheel = rightDistance / angleRadians;
+
+
+            console.log("angle degrees: " + angleDegrees);
+            console.log("angle radians: " + angleRadians);
+            console.log("left distance: " + leftDistance);
+            console.log("right distance: " + rightDistance);
+            console.log("distance from center: " + distanceFromCenter);
+            console.log("distance from left wheel: " + distanceFromLeftWheel);
+            console.log("distance from right wheel: " + distanceFromRightWheel);
+
+            var centerX = 0;
+            var centerY = 0;
+            if (leftDistance > rightDistance) {
+                // turn right
+                centerX = x + screenY * distanceFromCenter;
+                centerY = y + screenX * distanceFromCenter;
+            } else {
+                // turn left
+                centerX = x - screenY * distanceFromCenter;
+                centerY = y + screenX * distanceFromCenter;
+            }
+            this.scribbler.animate({transform: "r" + angleDegrees + "," + centerX + ", " + centerY}, time, null, readyCallback);
+
         }
     };
 };
