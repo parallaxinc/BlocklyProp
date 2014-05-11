@@ -7,9 +7,14 @@ package eu.creatingfuture.propeller.blocklyprop.servlets;
 
 import com.google.gson.Gson;
 import eu.creatingfuture.propeller.blocklyprop.BlocklyProp;
-import eu.creatingfuture.propeller.blocklyprop.utils.PropellerAction;
+import eu.creatingfuture.propeller.blocklyprop.utils.PropellentResult;
+import eu.creatingfuture.propeller.blocklyprop.utils.PropellerPostAction;
+import eu.creatingfuture.propeller.blocklyprop.utils.PropellerPutAction;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,7 @@ public class PropellerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new Gson();
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
@@ -54,9 +60,9 @@ public class PropellerServlet extends HttpServlet {
             out.flush();
             return;
         }
-        PropellerAction action = null;
+        PropellerPostAction action = null;
         try {
-            action = PropellerAction.valueOf(actionString);
+            action = PropellerPostAction.valueOf(actionString);
         } catch (IllegalArgumentException iae) {
             // return error
             result.setSucces(false);
@@ -80,12 +86,15 @@ public class PropellerServlet extends HttpServlet {
         String spinCode = req.getParameter("code");
 
         File blocklyAppFile = File.createTempFile("blocklyapp", ".spin");
-        try (PrintWriter blocklyAppWriter = new PrintWriter(blocklyAppFile)) {
+        try {
+            PrintWriter blocklyAppWriter = new PrintWriter(blocklyAppFile);
+
             blocklyAppWriter.print(spinCode);
             blocklyAppWriter.flush();
+        } catch (IOException ioe) {
         }
 
-        if (action == PropellerAction.COMPILE) {
+        if (action == PropellerPostAction.COMPILE) {
 
             result.setSucces(BlocklyProp.getCompiler().compile(blocklyAppFile));
             result.setMessage(BlocklyProp.getCompiler().getLastOutput());
@@ -96,7 +105,7 @@ public class PropellerServlet extends HttpServlet {
             out.print(gson.toJson(result));
             out.flush();
         } else {
-            List<PropellentResult> results = new ArrayList<>();
+            List<PropellentResult> results = new ArrayList<PropellentResult>();
             compileAndRun(action, blocklyAppFile, comPort);
 
             PropellentResult compileResult = new PropellentResult();
@@ -122,7 +131,7 @@ public class PropellerServlet extends HttpServlet {
 
     }
 
-    private boolean compileAndRun(PropellerAction action, File blocklyAppFile, String comPort) throws IOException {
+    private boolean compileAndRun(PropellerPostAction action, File blocklyAppFile, String comPort) throws IOException {
         boolean success = true;
 
         File compiledFile = null;
@@ -154,39 +163,103 @@ public class PropellerServlet extends HttpServlet {
         return success;
     }
 
-    public class PropellentResult {
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        Gson gson = new Gson();
+        PropellentResult result = new PropellentResult();
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
 
-        private boolean succes;
-        private int code;
-        private String message;
-
-        public PropellentResult() {
+        // Parse and validate parameters
+        String actionString = req.getParameter("action");
+        if (actionString == null) {
+            // return error
+            result.setSucces(false);
+            result.setCode(101);
+            result.setMessage("Action is not defined");
+            out.print(gson.toJson(result));
+            out.flush();
+            return;
         }
 
-        public void setSucces(boolean succes) {
-            this.succes = succes;
+        PropellerPutAction action = null;
+        try {
+            action = PropellerPutAction.valueOf(actionString);
+        } catch (IllegalArgumentException iae) {
+            // return error
+            result.setSucces(false);
+            result.setCode(102);
+            result.setMessage("Invalid action");
+            out.print(gson.toJson(result));
+            out.flush();
+            return;
+        }
+        if (action == null) {
+            result.setSucces(false);
+            result.setCode(102);
+            result.setMessage("Invalid action");
+            out.print(gson.toJson(result));
+            out.flush();
+            return;
         }
 
-        public void setCode(int code) {
-            this.code = code;
+        String comPort = req.getParameter("comPort");
+
+        File blocklyAppFile = null;
+
+        switch (action) {
+            case LOAD_RAM_BUF:
+                blocklyAppFile = File.createTempFile("blocklyapp", ".binary");
+                break;
+            case LOAD_EEPROM_BUF:
+                blocklyAppFile = File.createTempFile("blocklyapp", ".eeprom");
+                break;
+        }
+        if (blocklyAppFile == null) {
+            return;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
+        // String bin = req.getParameter("bin");
+        try {
+            byte[] buffer = new byte[1024 * 1024];
+            InputStream input = req.getInputStream();
+            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(blocklyAppFile));
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                System.out.println(bytesRead);
+                output.write(buffer, 0, bytesRead);
+            }
+            output.flush();
+            output.close();
+            input.close();
+        } catch (IOException ioe) {
+            blocklyAppFile.delete();
+            result.setSucces(false);
+            result.setCode(103);
+            result.setMessage(ioe.getMessage());
+            out.print(gson.toJson(result));
+            out.flush();
+            return;
         }
 
-        public boolean isSucces() {
-            return succes;
+        boolean success = false;
+        switch (action) {
+            case LOAD_RAM_BUF:
+                success = BlocklyProp.getPropellerCommunicator().loadIntoRam(blocklyAppFile, comPort);
+                break;
+            case LOAD_EEPROM_BUF:
+                success = BlocklyProp.getPropellerCommunicator().loadIntoEeprom(blocklyAppFile, comPort);
+                break;
         }
+        result.setSucces(success);
+        result.setMessage(BlocklyProp.getPropellerCommunicator().getLastOutput());
+        result.setCode(BlocklyProp.getPropellerCommunicator().getLastExitValue());
 
-        public int getCode() {
-            return code;
-        }
+        blocklyAppFile.delete();
 
-        public String getMessage() {
-            return message;
-        }
-
+        out.print(gson.toJson(result));
+        out.flush();
     }
 
 }

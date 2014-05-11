@@ -9,7 +9,7 @@ package eu.creatingfuture.propeller.blocklyprop.utils;
  *
  * @author Michel
  */
-public enum PropellerAction {
+public enum PropellerPostAction {
 
     COMPILE,
     LOAD_RAM,
