@@ -72,7 +72,7 @@ public class SerialSocket extends WebSocketAdapter {
                         }
                     } catch (SerialPortException ex) {
                         getSession().getRemote().sendString("Failed to connect to: " + message.substring(OPEN_CONNECTION_STRING.length()) + "\n\r(" + ex.getMessage() + ")\n\r");
-                        logger.log(Level.SEVERE, null, ex);
+                        logger.log(Level.SEVERE, "Failed to connect", ex);
                     }
                 }
             } else {
