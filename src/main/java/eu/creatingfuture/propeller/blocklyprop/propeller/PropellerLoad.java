@@ -81,6 +81,9 @@ public abstract class PropellerLoad implements PropellerCommunicator {
 
             CommandLine cmdLine = new CommandLine(executable);
             cmdLine.addArgument("-r");
+            if (comPort != null) {
+                cmdLine.addArgument("-p").addArgument(comPort);
+            }
             cmdLine.addArgument("${ramFile}");
 
             cmdLine.setSubstitutionMap(map);
@@ -119,6 +122,9 @@ public abstract class PropellerLoad implements PropellerCommunicator {
             CommandLine cmdLine = new CommandLine(executable);
             cmdLine.addArgument("-r");
             cmdLine.addArgument("-e");
+            if (comPort != null) {
+                cmdLine.addArgument("-p").addArgument(comPort);
+            }
             cmdLine.addArgument("${eepromFile}");
 
             cmdLine.setSubstitutionMap(map);

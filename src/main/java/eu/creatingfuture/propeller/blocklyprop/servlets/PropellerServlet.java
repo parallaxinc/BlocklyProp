@@ -75,6 +75,8 @@ public class PropellerServlet extends HttpServlet {
             return;
         }
 
+        String comPort = req.getParameter("comPort");
+
         String spinCode = req.getParameter("code");
 
         File blocklyAppFile = File.createTempFile("blocklyapp", ".spin");
@@ -95,7 +97,7 @@ public class PropellerServlet extends HttpServlet {
             out.flush();
         } else {
             List<PropellentResult> results = new ArrayList<>();
-            compileAndRun(action, blocklyAppFile);
+            compileAndRun(action, blocklyAppFile, comPort);
 
             PropellentResult compileResult = new PropellentResult();
             boolean compileSuccess = BlocklyProp.getCompiler().wasLastSuccess();
@@ -120,7 +122,7 @@ public class PropellerServlet extends HttpServlet {
 
     }
 
-    private boolean compileAndRun(PropellerAction action, File blocklyAppFile) throws IOException {
+    private boolean compileAndRun(PropellerAction action, File blocklyAppFile, String comPort) throws IOException {
         boolean success = true;
 
         File compiledFile = null;
@@ -137,10 +139,10 @@ public class PropellerServlet extends HttpServlet {
         if (success) {
             switch (action) {
                 case LOAD_RAM:
-                    success = BlocklyProp.getPropellerCommunicator().loadIntoRam(compiledFile, null);
+                    success = BlocklyProp.getPropellerCommunicator().loadIntoRam(compiledFile, comPort);
                     break;
                 case LOAD_EEPROM:
-                    success = BlocklyProp.getPropellerCommunicator().loadIntoEeprom(compiledFile, null);
+                    success = BlocklyProp.getPropellerCommunicator().loadIntoEeprom(compiledFile, comPort);
                     break;
             }
 
