@@ -44,6 +44,7 @@ public class PropellerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
         Gson gson = new Gson();
         PropellentResult result = new PropellentResult();
         resp.setContentType("application/json");

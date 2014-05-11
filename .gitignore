@@ -5,6 +5,7 @@
 nb-configuration.xml
 nbactions.xml
 target/
+*.log*
 
 
 #################

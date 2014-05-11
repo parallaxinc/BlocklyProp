@@ -14,4 +14,25 @@
         <url-pattern>/propeller.action</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>Serial connection</servlet-name>
+        <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.SerialServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Serial connection</servlet-name>
+        <url-pattern>/websockets/serial.connect</url-pattern>
+    </servlet-mapping>
+
+
+    <filter>
+        <filter-name>cross-origin</filter-name>
+        <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>cross-origin</filter-name>
+        <url-pattern>/websockets/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
