@@ -99,3 +99,15 @@ button:active {
 button:hover {
     box-shadow: 2px 2px 5px #888;
 }
+
+.console, .terminal {
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+
+#console-dialog .modal-dialog {
+    /* new custom width */
+    width: 610px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+    //margin-left: -305px;
+}

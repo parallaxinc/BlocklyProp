@@ -29,6 +29,8 @@ var TABS_ = ['blocks', 'spin', 'xml'];
 
 var selected = 'blocks';
 
+var term = null;
+
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} id ID of tab clicked.
@@ -165,4 +167,32 @@ function loadIntoEeprom() {
     $('#compile-dialog').modal('show');
 
     $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+}
+
+function serial_console() {
+    var newTerminal = false;
+    if (term === null) {
+        term = new Terminal({
+            cols: 80,
+            rows: 24,
+            useStyle: true,
+            screenKeys: true
+        });
+
+        newTerminal = true;
+    }
+
+
+    term.on('data', function(data) {
+        data = data.replace('\r', '\r\n');
+        term.write(data);
+    });
+
+    if (newTerminal) {
+        term.open(document.getElementById("serial_console"));
+        term.write("Simulated terminal because you are in demo mode\n\r");
+    }
+
+    $('#console-dialog').modal('show');
+
 }

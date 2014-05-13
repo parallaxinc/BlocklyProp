@@ -31,6 +31,8 @@ var TABS_ = ['blocks', 'spin', 'xml'];
 
 var selected = 'blocks';
 
+var term = null;
+
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} id ID of tab clicked.
@@ -224,3 +226,56 @@ function loadIntoEeprom() {
 //    var blob = new Blob([data], {type: 'text/xml'});
 //    saveAs(blob, 'spin.xml');
 }
+
+function serial_console() {
+    var newTerminal = false;
+    if (term === null) {
+        term = new Terminal({
+            cols: 80,
+            rows: 24,
+            useStyle: true,
+            screenKeys: true
+        });
+
+        newTerminal = true;
+    }
+
+    var url = document.location.protocol + document.location.host + '/webapp/websockets/serial.connect';
+    url = url.replace('http', 'ws');
+    var connection = new WebSocket(url);
+
+    // When the connection is open, open com port
+    connection.onopen = function() {
+        connection.send('+++ open port COM4');
+
+    };
+    // Log errors
+    connection.onerror = function(error) {
+        console.log('WebSocket Error ' + error);
+        console.log(error);
+        term.destroy();
+    };
+    // Log messages from the server
+    connection.onmessage = function(e) {
+        //console.log('Server: ' + e.data);
+        term.write(e.data);
+    };
+
+    term.on('data', function(data) {
+        //console.log(data);
+        connection.send(data);
+    });
+
+    if (newTerminal) {
+        term.open(document.getElementById("serial_console"));
+    }
+    connection.onClose = function() {
+        term.destroy();
+    };
+
+    $('#console-dialog').modal('show');
+    $('#console-dialog').on('hidden.bs.modal', function() {
+        connection.close();
+    });
+}
+
