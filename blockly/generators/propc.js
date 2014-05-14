@@ -18,12 +18,12 @@
  */
 
 /**
- * @fileoverview Helper functions for generating Spin for blocks.
+ * @fileoverview Helper functions for generating Prop-c for blocks.
  * @author michel@creatingfuture.eu (Michel Lampo)
  */
 'use strict';
 
-Blockly.Spin = Blockly.Generator.get('Spin');
+Blockly.propc = Blockly.Generator.get('propc');
 
 /**
  * List of illegal variable names.
@@ -32,11 +32,11 @@ Blockly.Spin = Blockly.Generator.get('Spin');
  * accidentally clobbering a built-in object or function.
  * @private
  */
-if (!Blockly.Spin.RESERVED_WORDS_) {
-    Blockly.Spin.RESERVED_WORDS_ = '';
+if (!Blockly.propc.RESERVED_WORDS_) {
+    Blockly.propc.RESERVED_WORDS_ = '';
 }
 
-Blockly.Spin.RESERVED_WORDS_ +=
+Blockly.propc.RESERVED_WORDS_ +=
         // http://arduino.cc/en/Reference/HomePage
         'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
         ;
@@ -45,22 +45,22 @@ Blockly.Spin.RESERVED_WORDS_ +=
  * Order of operation ENUMs.
  *
  */
-Blockly.Spin.ORDER_ATOMIC = 0;         // 0 "" ...
-Blockly.Spin.ORDER_UNARY_POSTFIX = 1;  // expr++ expr-- () [] .
-Blockly.Spin.ORDER_UNARY_PREFIX = 2;   // -expr !expr ~expr ++expr --expr
-Blockly.Spin.ORDER_MULTIPLICATIVE = 3; // * / % ~/
-Blockly.Spin.ORDER_ADDITIVE = 4;       // + -
-Blockly.Spin.ORDER_SHIFT = 5;          // << >>
-Blockly.Spin.ORDER_RELATIONAL = 7;     // is is! >= > <= <
-Blockly.Spin.ORDER_EQUALITY = 8;       // == != === !==
-Blockly.Spin.ORDER_BITWISE_AND = 9;    // &
-Blockly.Spin.ORDER_BITWISE_XOR = 10;    // ^
-Blockly.Spin.ORDER_BITWISE_OR = 11;    // |
-Blockly.Spin.ORDER_LOGICAL_AND = 12;   // &&
-Blockly.Spin.ORDER_LOGICAL_OR = 13;    // ||
-Blockly.Spin.ORDER_CONDITIONAL = 14;   // expr ? expr : expr
-Blockly.Spin.ORDER_ASSIGNMENT = 15;    // := *= /= ~/= %= += -= <<= >>= &= ^= |=
-Blockly.Spin.ORDER_NONE = 99;          // (...)
+Blockly.propc.ORDER_ATOMIC = 0;         // 0 "" ...
+Blockly.propc.ORDER_UNARY_POSTFIX = 1;  // expr++ expr-- () [] .
+Blockly.propc.ORDER_UNARY_PREFIX = 2;   // -expr !expr ~expr ++expr --expr
+Blockly.propc.ORDER_MULTIPLICATIVE = 3; // * / % ~/
+Blockly.propc.ORDER_ADDITIVE = 4;       // + -
+Blockly.propc.ORDER_SHIFT = 5;          // << >>
+Blockly.propc.ORDER_RELATIONAL = 7;     // is is! >= > <= <
+Blockly.propc.ORDER_EQUALITY = 8;       // == != === !==
+Blockly.propc.ORDER_BITWISE_AND = 9;    // &
+Blockly.propc.ORDER_BITWISE_XOR = 10;    // ^
+Blockly.propc.ORDER_BITWISE_OR = 11;    // |
+Blockly.propc.ORDER_LOGICAL_AND = 12;   // &&
+Blockly.propc.ORDER_LOGICAL_OR = 13;    // ||
+Blockly.propc.ORDER_CONDITIONAL = 14;   // expr ? expr : expr
+Blockly.propc.ORDER_ASSIGNMENT = 15;    // := *= /= ~/= %= += -= <<= >>= &= ^= |=
+Blockly.propc.ORDER_NONE = 99;          // (...)
 
 /*
  * Spin Board profiles
@@ -134,34 +134,34 @@ function setProfile(profileName) {
 /**
  * Initialise the database of variable names.
  */
-Blockly.Spin.init = function() {
+Blockly.propc.init = function() {
     // Create a dictionary of definitions to be printed before setups.
-    Blockly.Spin.definitions_ = {};
+    Blockly.propc.definitions_ = {};
     // Create a dictionary of setups to be printed before the code.
-    Blockly.Spin.setups_ = {};
+    Blockly.propc.setups_ = {};
 
     // Create a list of stacks
-    Blockly.Spin.stacks_ = [];
+    Blockly.propc.stacks_ = [];
 
-    Blockly.Spin.vartype_ = {};
+    Blockly.propc.vartype_ = {};
 
     if (Blockly.Variables) {
-        if (!Blockly.Spin.variableDB_) {
-            Blockly.Spin.variableDB_ =
-                    new Blockly.Names(Blockly.Spin.RESERVED_WORDS_);
+        if (!Blockly.propc.variableDB_) {
+            Blockly.propc.variableDB_ =
+                    new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
         } else {
-            Blockly.Spin.variableDB_.reset();
+            Blockly.propc.variableDB_.reset();
         }
 
         var defvars = [];
         var variables = Blockly.Variables.allVariables();
         for (var x = 0; x < variables.length; x++) {
-            var varName = Blockly.Spin.variableDB_.getDistinctName(variables[x],
+            var varName = Blockly.propc.variableDB_.getDistinctName(variables[x],
                     Blockly.Variables.NAME_TYPE);
             defvars[x] = '  ' + '{{$var_type_' + variables[x].name + '}} ' +
                     varName + '\n';
         }
-        Blockly.Spin.definitions_['variables'] = defvars.join('\n');
+        Blockly.propc.definitions_['variables'] = defvars.join('\n');
     }
 };
 
@@ -170,7 +170,7 @@ Blockly.Spin.init = function() {
  * @param {string} code Generated code.
  * @return {string} Completed code.
  */
-Blockly.Spin.finish = function(code) {
+Blockly.propc.finish = function(code) {
     // Indent every line.
     code = '  ' + code.replace(/\n/g, '\n  ');
     code = code.replace(/\n\s+$/, '\n');
@@ -181,8 +181,8 @@ Blockly.Spin.finish = function(code) {
     var methods = [];
     var objects = [];
     var definitions = [];
-    for (var name in Blockly.Spin.definitions_) {
-        var def = Blockly.Spin.definitions_[name];
+    for (var name in Blockly.propc.definitions_) {
+        var def = Blockly.propc.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
         } else if (def.match(/^PUB/)) {
@@ -195,7 +195,7 @@ Blockly.Spin.finish = function(code) {
     }
 
     for (var def in definitions) {
-        for (var variable in Blockly.Spin.vartype_) {
+        for (var variable in Blockly.propc.vartype_) {
             if (definitions[def].indexOf("{{$var_type_" + variable + "}}") > -1) {
                 if (Blockly.Spin.vartype_[variable] !== 'LOCAL') {
                     definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}}", Blockly.Spin.vartype_[variable]);
@@ -207,14 +207,14 @@ Blockly.Spin.finish = function(code) {
         }
     }
 
-    for (var stack in Blockly.Spin.stacks_) {
-        definitions.push('  ' + Blockly.Spin.stacks_[stack]);
+    for (var stack in Blockly.propc.stacks_) {
+        definitions.push('  ' + Blockly.propc.stacks_[stack]);
     }
 
     // Convert the setups dictionary into a list.
     var setups = [];
-    for (var name in Blockly.Spin.setups_) {
-        setups.push(Blockly.Spin.setups_[name]);
+    for (var name in Blockly.propc.setups_) {
+        setups.push(Blockly.propc.setups_[name]);
     }
     setups.push('Start');
 
@@ -231,17 +231,17 @@ Blockly.Spin.finish = function(code) {
  * @param {string} line Line of generated code.
  * @return {string} Legal line of code.
  */
-Blockly.Spin.scrubNakedValue = function(line) {
+Blockly.propc.scrubNakedValue = function(line) {
     return line + ';\n';
 };
 
 /**
  * Encode a string as a properly escaped Spin string, complete with quotes.
  * @param {string} string Text to encode.
- * @return {string} Spin string.
+ * @return {string} Prop-c string.
  * @private
  */
-Blockly.Spin.quote_ = function(string) {
+Blockly.propc.quote_ = function(string) {
     // TODO: This is a quick hack.  Replace with goog.string.quote
     string = string.replace(/\\/g, '\\\\')
             .replace(/\n/g, '\\\n')
@@ -251,16 +251,16 @@ Blockly.Spin.quote_ = function(string) {
 };
 
 /**
- * Common tasks for generating Spin from blocks.
+ * Common tasks for generating Prop-c from blocks.
  * Handles comments for the specified block and any connected value blocks.
  * Calls any statements following this block.
  * @param {!Blockly.Block} block The current block.
  * @param {string} code The Spin code created for this block.
- * @return {string} Spin code with comments and subsequent blocks added.
+ * @return {string} Prop-c code with comments and subsequent blocks added.
  * @this {Blockly.CodeGenerator}
  * @private
  */
-Blockly.Spin.scrub_ = function(block, code) {
+Blockly.propc.scrub_ = function(block, code) {
     if (code === null) {
         // Block has handled code generation itself.
         return '';

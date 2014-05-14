@@ -109,17 +109,28 @@
                         <h4 class="modal-title" id="compile-dialog-title">Project setup</h4>
                     </div>
                     <div class="modal-body">
-                        <label for="board-type">Board type</label>
-                        <select class="form-control" id="board-type">
-                            <option value="activity-board">Activity board</option>
-                            <option value="board-of-education">Board of Education</option>
-                            <option value="c3">Propeller C3</option>
-                            <option value="demo-board">Demo board</option>
-                            <option value="proto-board">Proto board</option>
-                            <option value="quickstart">Quickstart</option>
-                            <option value="scribbler2">Scribbler 2</option>
-                            <option value="other">Other</option>
-                        </select>
+                        <div class="form-group">
+                            <label for="board-type">Board type</label>
+                            <select class="form-control" id="board-type">
+                                <option value="activity-board">Activity board</option>
+                                <option value="board-of-education">Board of Education</option>
+                                <option value="c3">Propeller C3</option>
+                                <option value="demo-board">Demo board</option>
+                                <option value="proto-board">Proto board</option>
+                                <option value="quickstart">Quickstart</option>
+                                <option value="scribbler2">Scribbler 2</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="block-types">Block types</label>
+                            <select class="form-control" multiple="multiple" id="block-types">
+                                <option value="serial">Serial</option>
+                                <option value="serial-terminal">Serial terminal</option>
+                                <option value="c3">Debug LCD</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Start</button>
