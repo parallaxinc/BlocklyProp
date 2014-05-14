@@ -196,3 +196,11 @@ function serial_console() {
     $('#console-dialog').modal('show');
 
 }
+
+$(document).ready(function() {
+    $('#setup-dialog').modal('show');
+    $('#setup-dialog').on('hidden.bs.modal', function() {
+        window.frames["content_blocks"].setProfile($('#board-type').val());
+        window.frames["content_blocks"].init();
+    });
+});

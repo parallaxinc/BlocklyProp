@@ -279,3 +279,10 @@ function serial_console() {
     });
 }
 
+$(document).ready(function() {
+    $('#setup-dialog').modal('show');
+    $('#setup-dialog').on('hidden.bs.modal', function() {
+        window.frames["content_blocks"].setProfile($('#board-type').val());
+        window.frames["content_blocks"].init();
+    });
+});
