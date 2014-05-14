@@ -39,8 +39,7 @@ Blockly.Language.sensor_ping = {
                 .appendTitle(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"], ["mm", "MM"]]), "UNIT")
                 .appendTitle("PIN#")
                 .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+        this.setOutput(true, Number);
     }
 };
 
@@ -54,8 +53,8 @@ Blockly.Spin.sensor_ping = function() {
 
     Blockly.Spin.definitions_['define_ping'] = 'OBJPING : "ping"';
 
-    var code = 'PING.' + methodForUnit + '(' + dropdown_pin + ')\n';
-    return code;
+    var code = 'PING.' + methodForUnit + '(' + dropdown_pin + ')';
+    return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
 Blockly.Spin.sensor_ping.UNITS = {
