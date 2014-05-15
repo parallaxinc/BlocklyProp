@@ -137,6 +137,7 @@ function setProfile(profileName) {
 Blockly.propc.init = function() {
     // Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
+    Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
     // Create a dictionary of setups to be printed before the code.
     Blockly.propc.setups_ = {};
 
@@ -174,7 +175,7 @@ Blockly.propc.finish = function(code) {
     // Indent every line.
     code = '  ' + code.replace(/\n/g, '\n  ');
     code = code.replace(/\n\s+$/, '\n');
-    code = 'PUB Start\n\n' + code;
+    code = 'int main() {\n' + code + '\n}';
 
     // Convert the definitions dictionary into a list.
     var imports = [];
@@ -220,9 +221,9 @@ Blockly.propc.finish = function(code) {
 
     var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
 
-    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
-    var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
-    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
+    var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' + setups.join('\n  ') + '\n\n';
+    //   var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
+    return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
 };
 
 /**
