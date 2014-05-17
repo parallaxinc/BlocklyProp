@@ -18,7 +18,7 @@
  */
 
 /**
- * @fileoverview Generating Spin for control blocks.
+ * @fileoverview Generating Prop-C for control blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 'use strict';
@@ -31,7 +31,6 @@ Blockly.Language.controls_repeat_forever = {
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
     init: function() {
-        console.log("repeat forever");
         this.setColour(120);
         this.appendDummyInput()
                 .appendTitle(Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT);
@@ -44,6 +43,39 @@ Blockly.Language.controls_repeat_forever = {
 };
 
 Blockly.propc = Blockly.Generator.get('propc');
+
+Blockly.propc.controls_if = function() {
+    // If/elseif/else condition.
+    var n = 0;
+    var argument = Blockly.propc.valueToCode(this, 'IF' + n,
+            Blockly.propc.ORDER_NONE) || '0';
+    var branch = Blockly.propc.statementToCode(this, 'DO' + n);
+    var code = 'if (' + argument + ') {\n' + branch + '}\n';
+    for (n = 1; n <= this.elseifCount_; n++) {
+        argument = Blockly.propc.valueToCode(this, 'IF' + n,
+                Blockly.propc.ORDER_NONE) || '0';
+        branch = Blockly.propc.statementToCode(this, 'DO' + n);
+        code += 'else if (' + argument + ') {\n' + branch + '}';
+    }
+    if (this.elseCount_) {
+        branch = Blockly.propc.statementToCode(this, 'ELSE');
+        code += 'else {\n' + branch + '}\n';
+    }
+    return code + '\n';
+};
+
+Blockly.propc.controls_repeat = function() {
+    // Repeat n times.
+    var repeats = Number(this.getTitleValue('TIMES'));
+    var branch = Blockly.propc.statementToCode(this, 'DO');
+    if (Blockly.propc.INFINITE_LOOP_TRAP) {
+        branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
+                '\'' + this.id + '\'') + branch;
+    }
+    var code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
+            branch + '}\n';
+    return code;
+};
 
 Blockly.propc.controls_repeat_forever = function() {
     // Repeat forever
