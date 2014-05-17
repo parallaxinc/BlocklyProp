@@ -154,7 +154,7 @@ function compile() {
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
     //console.log("Compiling");
 
-    $.post('/webapp/propeller.action', {action: "COMPILE", code: propcCode}, function(data) {
+    $.post('/webapp/cpropeller.action', {action: "COMPILE", code: propcCode}, function(data) {
         $("#compile-console").val(data.message);
         console.log(data);
     });
@@ -179,7 +179,7 @@ function loadIntoRam() {
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
     //console.log("Compiling");
 
-    $.post('/webapp/propeller.action', {action: "LOAD_RAM", code: propcCode}, function(data) {
+    $.post('/webapp/cpropeller.action', {action: "LOAD_RAM", code: propcCode}, function(data) {
         var combinedMessage = '';
         data.forEach(function(dataPart) {
             if (combinedMessage.length > 0) {
@@ -211,7 +211,7 @@ function loadIntoEeprom() {
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
     //console.log("Compiling");
 
-    $.post('/webapp/propeller.action', {action: "LOAD_EEPROM", code: propcCode}, function(data) {
+    $.post('/webapp/cpropeller.action', {action: "LOAD_EEPROM", code: propcCode}, function(data) {
         var combinedMessage = '';
         data.forEach(function(dataPart) {
             if (combinedMessage.length > 0) {

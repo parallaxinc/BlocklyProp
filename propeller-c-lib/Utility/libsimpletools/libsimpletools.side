@@ -1,0 +1,59 @@
+libsimpletools.c
+source/count.c
+source/dac.c
+source/getDirection.c
+source/getOutput.c
+source/getOutputs.c
+source/getState.c
+source/getStates.c
+source/getDirections.c
+source/high.c
+source/input.c
+source/low.c
+source/mark.c
+source/pause.c
+source/pulseIn.c
+source/pulseOut.c
+source/pwm.c
+source/rcTime.c
+source/reverse.c
+source/setDirection.c
+source/setDirections.c
+source/setIoDt.c
+source/setOutput.c
+source/setOutputs.c
+source/setPauseDt.c
+source/setTimeout.c
+source/shiftIn.c
+source/shiftOut.c
+source/squareWave.c
+source/timeout.c
+source/toggle.c
+source/wait.c
+source/addfiledriver.c
+source/sddriverconfig.c
+source/itoa.c
+simpletools.h
+freqout.c -> source/freqout.c
+fpucog.c -> source/fpucog.c
+i2c_init.c -> source/i2c_init.c
+i2c_in.c -> source/i2c_in.c
+i2c_out.c -> source/i2c_out.c
+eeprom_init.c -> source/eeprom_init.c
+eeprom_getByte.c -> source/eeprom_getByte.c
+eeprom_getFloat.c -> source/eeprom_getFloat.c
+eeprom_getInt.c -> source/eeprom_getInt.c
+eeprom_getStr.c -> source/eeprom_getStr.c
+eeprom_putByte.c -> source/eeprom_putByte.c
+eeprom_putFloat.c -> source/eeprom_putFloat.c
+eeprom_putInt.c -> source/eeprom_putInt.c
+eeprom_putStr.c -> source/eeprom_putStr.c
+>compiler=C
+>memtype=cmm main ram compact
+>optimize=-Os
+>-m32bit-doubles
+>-fno-exceptions
+>defs::-std=c99
+>-lm
+>-create_library
+>BOARD::ACTIVITYBOARD

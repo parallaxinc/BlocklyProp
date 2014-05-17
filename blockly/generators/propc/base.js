@@ -43,6 +43,21 @@ Blockly.Language.inout_digital_write = {
     }
 };
 
+Blockly.Language.base_delay = {
+    category: 'Control',
+    helpUrl: 'help/block-delay.html',
+    init: function() {
+        this.setColour(120);
+        this.appendValueInput("DELAY_TIME", Number)
+                .appendTitle("Delay (ms)")
+                .setCheck(Number);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('Delay specific time');
+    }
+};
+
 
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
@@ -55,4 +70,10 @@ Blockly.propc.inout_digital_write = function() {
     } else {
         return 'low(' + dropdown_pin + ');\n';
     }
+};
+
+Blockly.propc.base_delay = function() {
+    var delay_time = Blockly.propc.valueToCode(this, 'DELAY_TIME', Blockly.propc.ORDER_ATOMIC) || '1000'
+    var code = 'pause(' + delay_time + ');\n';
+    return code;
 };

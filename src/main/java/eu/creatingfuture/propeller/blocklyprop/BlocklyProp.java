@@ -5,18 +5,19 @@
  */
 package eu.creatingfuture.propeller.blocklyprop;
 
-import eu.creatingfuture.propeller.blocklyprop.interfaces.Compiler;
+import eu.creatingfuture.propeller.blocklyprop.interfaces.CCompiler;
 import eu.creatingfuture.propeller.blocklyprop.interfaces.PropellerCommunicator;
+import eu.creatingfuture.propeller.blocklyprop.interfaces.SpinCompiler;
+import eu.creatingfuture.propeller.blocklyprop.propeller.LinuxGccCompiler;
 import eu.creatingfuture.propeller.blocklyprop.propeller.LinuxOpenSpin;
 import eu.creatingfuture.propeller.blocklyprop.propeller.LinuxPropellerLoad;
+import eu.creatingfuture.propeller.blocklyprop.propeller.WindowsGccCompiler;
 import eu.creatingfuture.propeller.blocklyprop.propeller.WindowsOpenSpin;
 import eu.creatingfuture.propeller.blocklyprop.propeller.WindowsPropellerLoad;
 import eu.creatingfuture.propeller.blocklyprop.utils.OsCheck;
-
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.logging.Logger;
-
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -33,8 +34,9 @@ public class BlocklyProp {
 
     private static final Logger logger = Logger.getLogger(BlocklyProp.class.getName());
 
-    private static Compiler compiler;
+    private static SpinCompiler compiler;
     private static PropellerCommunicator propellerCommunicator;
+    private static CCompiler cCompiler;
 
     public static void main(String[] args) throws Exception {
         OsCheck.OSType os = OsCheck.getOperatingSystemType();
@@ -42,11 +44,13 @@ public class BlocklyProp {
             case Windows:
                 compiler = new WindowsOpenSpin();
                 propellerCommunicator = new WindowsPropellerLoad();
+                cCompiler = new WindowsGccCompiler();
                 break;
             case Linux:
-            	compiler = new LinuxOpenSpin();
-            	propellerCommunicator = new LinuxPropellerLoad();
-            	break;
+                compiler = new LinuxOpenSpin();
+                propellerCommunicator = new LinuxPropellerLoad();
+                cCompiler = new LinuxGccCompiler();
+                break;
             default:
                 logger.warning("This OS is currently not supported: " + os);
                 System.exit(1);
@@ -55,6 +59,7 @@ public class BlocklyProp {
 
         Server server = new Server();
         ServerConnector connector = new ServerConnector(server);
+        connector.setPort(63012);
         server.addConnector(connector);
 
         // Replaced by filter in web.xml
@@ -96,12 +101,16 @@ public class BlocklyProp {
 //        server.stop();
     }
 
-    public static Compiler getCompiler() {
+    public static SpinCompiler getCompiler() {
         return compiler;
     }
 
     public static PropellerCommunicator getPropellerCommunicator() {
         return propellerCommunicator;
+    }
+
+    public static CCompiler getCCompiler() {
+        return cCompiler;
     }
 
 }

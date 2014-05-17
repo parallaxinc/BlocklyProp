@@ -1,0 +1,13 @@
+libvgatext.c
+vgatext.c
+vga.c
+vgatext.h
+>compiler=C
+>memtype=xmmc external flash code main ram data
+>optimize=-Os
+>-m32bit-doubles
+>-fno-exceptions
+>defs::-std=c99
+>-lm
+>-create_library
+>BOARD::ACTIVITYBOARD

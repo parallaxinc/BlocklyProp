@@ -5,7 +5,7 @@
  */
 package eu.creatingfuture.propeller.blocklyprop.propeller;
 
-import eu.creatingfuture.propeller.blocklyprop.interfaces.Compiler;
+import eu.creatingfuture.propeller.blocklyprop.interfaces.SpinCompiler;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import org.apache.commons.exec.PumpStreamHandler;
  *
  * @author Michel
  */
-public abstract class OpenSpin implements Compiler {
+public abstract class OpenSpin implements SpinCompiler {
 
     private static final Logger logger = Logger.getLogger(OpenSpin.class.getName());
 
@@ -52,7 +52,7 @@ public abstract class OpenSpin implements Compiler {
             cmdLine.addArgument("${sourceFile}");
             cmdLine.setSubstitutionMap(map);
             DefaultExecutor executor = new DefaultExecutor();
-            //  executor.setExitValues(new int[]{402, 101});
+            executor.setExitValues(new int[]{0, 1});
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);

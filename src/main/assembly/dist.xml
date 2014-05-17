@@ -71,6 +71,14 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>propeller-c-lib</directory>
+            <outputDirectory>propeller-c-lib/</outputDirectory>
+            <includes>
+                <include>*/*/*.h</include>
+                <include>*/*/*/*.a</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>src/main/webapp</directory>
             <outputDirectory>src/main/webapp/</outputDirectory>
             <includes>
