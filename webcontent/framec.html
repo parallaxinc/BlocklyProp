@@ -16,6 +16,7 @@
         <!--script type="text/javascript" src="../../language/common/variables.js"></script-->
         <script type="text/javascript" src="language/common/procedures.js"></script>
         <!-- define blocks -->
+        <script type="text/javascript" src="generators/propc/bit_math.js"></script>
         <script type="text/javascript" src="generators/propc/math.js"></script>
         <script type="text/javascript" src="generators/propc/base.js"></script>
         <script type="text/javascript" src="generators/propc/control.js"></script>
@@ -45,7 +46,7 @@
                 var keepers = [
                     //io
 //                    'inout_highlow',
-                    'inout_digital_write', // 'inout_digital_read', 'inout_digital_write_pin', 'inout_digital_read_pin',
+                    'inout_digital_write', 'inout_digital_read', 'inout_digital_write_pin', 'inout_digital_read_pin',
 //                    'inout_analog_write', 'inout_analog_read',
 //                    'serial_print', 'inout_buildin_led',
                     //servo
@@ -76,7 +77,7 @@
                     //math
                     'math_number', 'math_arithmetic', 'math_single', 'math_limit', 'math_crement',
                     //bit math
-//                    'bit_math_shift', 'bit_math_rotate', 'bit_math_operations', 'bit_math_not',
+                    'bit_math_shift', /* 'bit_math_rotate',*/ 'bit_math_operations', 'bit_math_not',
 //                    'base_map', 'math_number', 'math_arithmetic', //'math_modulo',
                     //text
 //                    'text', //'text_join','text_create_join_container','text_create_join_item',
