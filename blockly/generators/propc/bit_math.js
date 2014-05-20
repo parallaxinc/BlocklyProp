@@ -23,7 +23,7 @@
  */
 'use strict';
 
-//To support syntax defined in http://arduino.cc/en/Reference/HomePage
+
 
 //define blocks
 if (!Blockly.Language)
@@ -186,6 +186,6 @@ Blockly.propc.bit_math_not = function() {
 //        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
 //    }
 
-    var code = '!' + variable;
+    var code = '~' + variable;
     return [code, Blockly.propc.ORDER_UNARY_PREFIX];
 };
