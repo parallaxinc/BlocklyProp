@@ -126,7 +126,7 @@ function init(blockly) {
         }, 1);
     }
 
-    auto_save_and_restore_blocks();
+//    auto_save_and_restore_blocks();
 
     //load from url parameter (single param)
     //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
@@ -191,6 +191,8 @@ function serial_console() {
     if (newTerminal) {
         term.open(document.getElementById("serial_console"));
         term.write("Simulated terminal because you are in demo mode\n\r");
+
+        term.write("Connection established with: " + getComPort());
     }
 
     $('#console-dialog').modal('show');
@@ -203,4 +205,18 @@ $(document).ready(function() {
         window.frames["content_blocks"].setProfile($('#board-type').val());
         window.frames["content_blocks"].init();
     });
+
+    $("#comPort").append($('<option>', {
+        text: 'COM1'
+    }));
+    $("#comPort").append($('<option>', {
+        text: 'COM3'
+    }));
+    $("#comPort").append($('<option>', {
+        text: 'COM4'
+    }));
 });
+
+getComPort = function() {
+    return $('#comPort').find(":selected").text();
+};

@@ -127,7 +127,7 @@ function init(blockly) {
         }, 1);
     }
 
-    auto_save_and_restore_blocks();
+//    auto_save_and_restore_blocks();
 
     //load from url parameter (single param)
     //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
@@ -179,7 +179,7 @@ function loadIntoRam() {
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
     //console.log("Compiling");
 
-    $.post('/webapp/cpropeller.action', {action: "LOAD_RAM", code: propcCode}, function(data) {
+    $.post('/webapp/cpropeller.action', {action: "LOAD_RAM", code: propcCode, comPort: getComPort()}, function(data) {
         var combinedMessage = '';
         data.forEach(function(dataPart) {
             if (combinedMessage.length > 0) {
@@ -211,7 +211,7 @@ function loadIntoEeprom() {
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
     //console.log("Compiling");
 
-    $.post('/webapp/cpropeller.action', {action: "LOAD_EEPROM", code: propcCode}, function(data) {
+    $.post('/webapp/cpropeller.action', {action: "LOAD_EEPROM", code: propcCode, comPort: getComPort()}, function(data) {
         var combinedMessage = '';
         data.forEach(function(dataPart) {
             if (combinedMessage.length > 0) {
@@ -246,7 +246,7 @@ function serial_console() {
 
     // When the connection is open, open com port
     connection.onopen = function() {
-        connection.send('+++ open port COM4');
+        connection.send('+++ open port ' + getComPort());
 
     };
     // Log errors
@@ -285,4 +285,17 @@ $(document).ready(function() {
         window.frames["content_blocks"].setProfile($('#board-type').val());
         window.frames["content_blocks"].init();
     });
+
+    $.get("/webapp/cpropeller.action", function(data) {
+        $("#comPort").empty();
+        data.forEach(function(port) {
+            $("#comPort").append($('<option>', {
+                text: port
+            }));
+        });
+    });
 });
+
+getComPort = function() {
+    return $('#comPort').find(":selected").text();
+};
