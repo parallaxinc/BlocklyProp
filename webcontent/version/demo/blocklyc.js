@@ -193,7 +193,7 @@ function serial_console() {
         term.open(document.getElementById("serial_console"));
         term.write("Simulated terminal because you are in demo mode\n\r");
 
-        term.write("Connection established with: " + getComPort());
+        term.write("Connection established with: " + getComPort() + "\n\r");
     }
 
     $('#console-dialog').modal('show');
