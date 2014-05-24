@@ -52,6 +52,13 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>webcontent/version/community</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>php</directory>
             <outputDirectory>/php/</outputDirectory>
             <includes>

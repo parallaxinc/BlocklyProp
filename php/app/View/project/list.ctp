@@ -1,20 +1,16 @@
-[
-<?php $first = true; ?>
-<?php foreach ($projects as $project): ?>
-    <?php
-    if ($first) {
-        $first = false;
-    } else {
-        echo ',';
-    }
-    ?>
-    {
-    "id": <?php echo h($project['Project']['id']); ?>,
-    "name": "<?php echo h($project['Project']['name']); ?>",
-    "type": "<?php echo h($project['Project']['type']); ?>",
-    "board": "<?php echo h($project['Project']['board']); ?>",
-    "description": "<?php echo h($project['Project']['description']); ?>"
-    }
-<?php endforeach; ?>
-<?php unset($project); ?>
-]
+<?php
+
+foreach ($projects as $project) {
+
+    $result['data'][] = array(
+        "id" => h($project['Project']['id']),
+        "name" => h($project['Project']['name']),
+        "type" => h($project['Project']['type']),
+        "board" => h($project['Project']['board']),
+        "description" => h($project['Project']['description'])
+    );
+}
+unset($project);
+
+echo json_encode($result);
+

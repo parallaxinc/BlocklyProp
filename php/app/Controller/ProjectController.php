@@ -21,7 +21,11 @@ class ProjectController extends AppController {
         $this->layout = 'json/default';
     }
 
-    public function index($page = 0) {
+    public function index() {
+        $perPage = $this->request->data('perPage') ? : 10;
+        $page = $this->request->data('currentPage') ? : 1;
+        $sort = $this->request->data('sort') ? : array(array("id", "asc"));
+        $filter = $this->request->data('filter') ? : array("column_0" => "foo");
         $type = $this->request->data('type');
         $board = $this->request->data('board');
         $conditions = array();
@@ -31,11 +35,28 @@ class ProjectController extends AppController {
         if ($board != null) {
             $conditions['Project.board'] = $board;
         }
+        if (count($sort[0]) == 2) {
+            $order = array("Project." . $sort[0][0] => $sort[0][1]);
+        }
+
         $projects = $this->Project->find('all', array(
             'conditions' => $conditions,
-            'limit' => 20, 'page' => $page
+            'order' => $order,
+            'limit' => $perPage, 'page' => $page
         ));
+        $projectCount = $this->Project->find('count', array(
+            'conditions' => $conditions
+        ));
+        $result = array(
+            "totalRows" => $projectCount,
+            "perPage" => $perPage,
+            "sort" => $sort,
+            "currentPage" => $page,
+            "filter" => $filter,
+            "data" => array()
+        );
         $this->set('projects', $projects);
+        $this->set('result', $result);
         $this->render('list');
     }
 
