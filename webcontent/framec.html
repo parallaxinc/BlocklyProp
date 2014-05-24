@@ -122,8 +122,20 @@
                     alert(msg);
                 }
             }
+
+            function load(xmlText) {
+                var xmlDom = Blockly.Xml.textToDom(xmlText)
+                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+            }
+
+            function ready() {
+                if (window.parent.blocklyReady) {
+                    // Let the top-level application know that the frame is ready.
+                    window.parent.blocklyReady();
+                }
+            }
         </script>
     </head>
-    <body > <!-- onload="init()" -->
+    <body  onload="ready()" >
     </body>
 </html>

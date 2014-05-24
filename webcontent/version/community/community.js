@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+var selectedProject = 0;
 
 $(document).ready(function() {
     $("#table-project").datatable({
@@ -55,13 +56,24 @@ $(document).ready(function() {
             }
         ]
     });
+
+    $('#open-project').on('click', function() {
+//        alert('open project ' + selectedProject);
+        var types = {
+            'spin': 'blocklyfull.html',
+            'prop-c': 'blocklyc.html',
+            'scribbler': 'blocklyscribbler.html'
+        };
+        window.location.href = types[selectedProject['type']] + '?project=' + selectedProject['id'];
+    });
 });
 
 function showProject(data) {
-    console.log(data);
     $('#project-dialog').modal('show');
+    selectedProject = data;
     $('#type').text(data['type']);
     $('#board').text(data['board']);
     $('#name').text(data['name']);
     $('#description').text(data['description']);
 }
+
