@@ -9,6 +9,7 @@ create table projects (
     modified datetime default null,
     name varchar(255) not null,
     type varchar(50) not null,
+    board varchar(100),
     description LONGTEXT,
     code LONGTEXT
 );

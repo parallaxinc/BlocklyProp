@@ -16,11 +16,47 @@ class ProjectController extends AppController {
 
     public function beforeRender() {
         parent::beforeRender();
+//        $this->RequestHandler->setContent('json');
+        $this->response->type('json');
         $this->layout = 'json/default';
     }
 
-    public function index($id) {
+    public function index($page = 0) {
+        $type = $this->request->data('type');
+        $board = $this->request->data('board');
+        $conditions = array();
+        if ($type != null) {
+            $conditions['Project.type'] = $type;
+        }
+        if ($board != null) {
+            $conditions['Project.board'] = $board;
+        }
+        $projects = $this->Project->find('all', array(
+            'conditions' => $conditions,
+            'limit' => 20, 'page' => $page
+        ));
+        $this->set('projects', $projects);
+        $this->render('list');
+    }
 
+    public function foruser($id) {
+        if (!$id) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $type = $this->request->data('type');
+        $board = $this->request->data('board');
+        $conditions = array('Project.id_user' => $id);
+        if ($type != null) {
+            $conditions['Project.type'] = $type;
+        }
+        if ($board != null) {
+            $conditions['Project.board'] = $board;
+        }
+        $projects = $this->Project->find('all', array(
+            'conditions' => $conditions
+        ));
+        $this->set('projects', $projects);
+        $this->render('list');
     }
 
     public function view($id = null) {
@@ -32,10 +68,6 @@ class ProjectController extends AppController {
             throw new NotFoundException(__('Invalid project'));
         }
         $this->set('project', $project);
-    }
-
-    public function foruser($id) {
-        echo $id;
     }
 
     public function create() {
