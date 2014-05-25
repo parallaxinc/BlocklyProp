@@ -71,6 +71,15 @@ $(document).ready(function() {
         $('#project-list').collapse('show');
         $('#project-detail').collapse('hide');
     });
+
+    $('#tag').tagsinput({
+        typeahead: {
+            'source': function(query) {
+                return $.post('php/index.php/tag/index/', {query: query});
+            }
+        },
+        readonly: true
+    });
 });
 
 function showProject(data) {
@@ -80,6 +89,17 @@ function showProject(data) {
     $('#board').text(data['board']);
     $('#name').text(data['name']);
     $('#description').text(data['description']);
+//    var tags = [];
+    $('#tag').tagsinput('removeAll');
+    if (data['tags'] !== undefined) {
+        for (var tag in data['tags']) {
+//            tags.push(data['tags'][tag]['name']);
+            $('#tag').tagsinput('add', data['tags'][tag]['name']);
+        }
+    }
+//    console.log(tags);
+//    $('#tag').val(tags);
+
 
     $('#project-list').collapse('hide');
     $('#project-detail').collapse('show');

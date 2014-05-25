@@ -9,18 +9,19 @@
 App::uses('AppModel', 'Model');
 
 /**
- * CakePHP Project
+ * CakePHP Tag
  * @author Michel
  */
-class Project extends AppModel {
+class Tag extends AppModel {
 
+    public $useTable = 'tags';
     public $hasAndBelongsToMany = array(
-        'Tag' =>
+        'Project' =>
         array(
-            'className' => 'Tag',
+            'className' => 'Project',
             'joinTable' => 'projects_tags',
-            'foreignKey' => 'id_project',
-            'associationForeignKey' => 'id_tag',
+            'foreignKey' => 'id_tag',
+            'associationForeignKey' => 'id_project',
             'unique' => true,
             'conditions' => '',
             'fields' => '',
