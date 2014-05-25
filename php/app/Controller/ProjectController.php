@@ -95,6 +95,7 @@ class ProjectController extends AppController {
         if ($this->request->is('post')) {
             if ($this->request->data('id')) {
                 $this->Project->id = $this->request->data('id');
+                unset($this->request->data['modified']);
                 if ($this->Project->save($this->request->data)) {
                     $id = $this->Project->id;
                 } else {
