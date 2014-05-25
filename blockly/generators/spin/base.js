@@ -109,7 +109,7 @@ Blockly.Spin.inout_digital_write = function() {
     var dropdown_stat = this.getTitleValue('STAT');
 //    Blockly.Spin.setups_['setup_output_' + dropdown_pin] = 'dira[' + dropdown_pin + ']~~';
 //    var code = 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
-    var code = 'dira[' + dropdown_pin + ']~~\n' + 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
+    var code = 'dira[' + dropdown_pin + '] := 1\n' + 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
     return code;
 };
 
@@ -124,7 +124,7 @@ Blockly.Spin.inout_digital_write_pin = function() {
     var dropdown_pin = Blockly.Spin.valueToCode(this, 'PIN', Blockly.Spin.ORDER_UNARY_PREFIX) || '0';
     var dropdown_stat = this.getTitleValue('STAT');
 //    Blockly.Spin.setups_['setup_output_' + dropdown_pin] = 'dira[' + dropdown_pin + ']~~';
-    var code = 'dira[' + dropdown_pin + ']~~\n' + 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
+    var code = 'dira[' + dropdown_pin + '] := 1\n' + 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
     return code;
 };
 
