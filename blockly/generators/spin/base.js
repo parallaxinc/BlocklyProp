@@ -107,8 +107,9 @@ Blockly.Spin = Blockly.Generator.get('Spin');
 Blockly.Spin.inout_digital_write = function() {
     var dropdown_pin = this.getTitleValue('PIN');
     var dropdown_stat = this.getTitleValue('STAT');
-    Blockly.Spin.setups_['setup_output_' + dropdown_pin] = 'dira[' + dropdown_pin + ']~~';
-    var code = 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
+//    Blockly.Spin.setups_['setup_output_' + dropdown_pin] = 'dira[' + dropdown_pin + ']~~';
+//    var code = 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
+    var code = 'dira[' + dropdown_pin + ']~~\n' + 'outa[' + dropdown_pin + '] := ' + dropdown_stat + '\n';
     return code;
 };
 

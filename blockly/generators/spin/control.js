@@ -31,7 +31,6 @@ Blockly.Language.controls_repeat_forever = {
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
     init: function() {
-        console.log("repeat forever");
         this.setColour(120);
         this.appendDummyInput()
                 .appendTitle(Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT);
@@ -84,6 +83,9 @@ Blockly.Spin.controls_repeat_forever = function() {
     if (Blockly.Spin.INFINITE_LOOP_TRAP) {
         branch = Blockly.Spin.INFINITE_LOOP_TRAP.replace(/%1/g,
                 '\'' + this.id + '\'') + branch;
+    }
+    if (branch === '') {
+        branch = '  waitcnt(0)';
     }
     var code = 'repeat\n' +
             branch + '\n';
