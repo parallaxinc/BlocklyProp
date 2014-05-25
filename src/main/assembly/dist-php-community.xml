@@ -12,7 +12,6 @@
             <directory>webcontent</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>index.html</include>
                 <include>frame.html</include>
                 <include>framec.html</include>
                 <include>blocklyscribbler.html</include>
