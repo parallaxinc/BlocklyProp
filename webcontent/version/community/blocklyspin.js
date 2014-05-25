@@ -31,8 +31,7 @@ var selected = 'blocks';
 
 var term = null;
 
-var projectData = null;
-var ready = false;
+
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -132,20 +131,7 @@ function init(blockly) {
             // Account for the 19 pixel margin and on each side.
         }, 1);
     }
-
-//    auto_save_and_restore_blocks();
-
-    //load from url parameter (single param)
-    //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
-//    var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
-//    if (dest) {
-//        load_by_url(dest);
-//    }
-
-    if (projectData != null) {
-//        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, projectData['code']);
-        window.frames["content_blocks"].load(projectData['code']);
-    }
+    loadProject();
 }
 
 /**
@@ -212,25 +198,6 @@ function serial_console() {
 }
 
 $(document).ready(function() {
-    var idProject = getUrlParameters('project', '', false);
-
-    if (!idProject) {
-        $('#setup-dialog').modal('show');
-        $('#setup-dialog').on('hidden.bs.modal', function() {
-            window.frames["content_blocks"].setProfile($('#board-type').val());
-            window.frames["content_blocks"].init();
-        });
-    } else {
-        $.get('php/index.php/project/view/' + idProject, function(data) {
-            console.log(data);
-            projectData = data;
-            if (ready) {
-                window.frames["content_blocks"].setProfile(data['board']);
-                window.frames["content_blocks"].init();
-            }
-        });
-    }
-
     $("#comPort").append($('<option>', {
         text: 'COM1'
     }));
@@ -242,45 +209,8 @@ $(document).ready(function() {
     }));
 });
 
-blocklyReady = function() {
-    if (projectData != null) {
-        window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init();
-    } else {
-        ready = true;
-    }
-}
+
 
 getComPort = function() {
     return $('#comPort').find(":selected").text();
 };
-
-
-
-
-
-function getUrlParameters(parameter, staticURL, decode) {
-    /*
-     Function: getUrlParameters
-     Description: Get the value of URL parameters either from
-     current URL or static URL
-     Author: Tirumal
-     URL: www.code-tricks.com
-     */
-    var currLocation = (staticURL.length) ? staticURL : window.location.search,
-            parArr = currLocation.split("?")[1].split("&"),
-            returnBool = true;
-
-    for (var i = 0; i < parArr.length; i++) {
-        parr = parArr[i].split("=");
-        if (parr[0] == parameter) {
-            return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-            returnBool = true;
-        } else {
-            returnBool = false;
-        }
-    }
-
-    if (!returnBool)
-        return false;
-}

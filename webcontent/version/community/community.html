@@ -57,8 +57,13 @@
                 <div class="col-md-12" role="main">
                     <h1>BlocklyProp Community</h1>
                     <p>BlocklyProp community allows you to save your projects and share them with the community.</p>
+                    <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community is in active development so a lot of functionality is still missing. Currently all projects are shared and everyone can edit all projects.</div>
+                    <div class="alert alert-warning"><strong>Warning!</strong> BlocklyProp and BlocklyProp Community are in active development and there is no guarantee that your projects won't be erased or even that they keep working.</div>
                 </div>
             </div>
+        </div>
+
+        <div class="container collapse in" id="project-list">
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive" id="table-project">
@@ -67,41 +72,37 @@
             </div>
         </div>
 
-        <div class="modal fade" id="project-dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="compile-dialog-title">Project info</h4>
+        <div class="container collapse" id="project-detail">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2><button id="back-to-list" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>Project: <span id="name"></span></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <label class="form-control" id="type"></label>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group form-inline">
-                            <label for="type">Type:</label>
-                            <label id="type"></label>
-                        </div>
 
-                        <div class="form-group form-inline">
-                            <label for="board">Board:</label>
-                            <label id="board"></label>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <label class="form-control" id="name"></label>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description" readonly="readonly" rows="5"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="board">Board</label>
+                        <label class="form-control" id="board"></label>
                     </div>
-                    <div class="modal-footer">
-                        <button id="open-project" type="button" class="btn btn-primary">Open</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" readonly="readonly" rows="5"></textarea>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button id="open-project" class="btn btn-success">Open</button>
+                </div>
+            </div>
+        </div>
 
     </body>
 </html>

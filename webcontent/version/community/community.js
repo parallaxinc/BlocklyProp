@@ -21,7 +21,7 @@ $(document).ready(function() {
                 callback: function(data) {
                     return $('<button/>', {
                         text: 'View',
-                        class: 'btn btn-xs btn-default',
+                        class: 'btn btn-xs btn-primary',
                         click: function() {
 //                            alert(data.id);
                             showProject(data);
@@ -60,20 +60,29 @@ $(document).ready(function() {
     $('#open-project').on('click', function() {
 //        alert('open project ' + selectedProject);
         var types = {
-            'spin': 'blocklyfull.html',
+            'spin': 'blocklyspin.html',
             'prop-c': 'blocklyc.html',
             'scribbler': 'blocklyscribbler.html'
         };
         window.location.href = types[selectedProject['type']] + '?project=' + selectedProject['id'];
     });
+
+    $('#back-to-list').on('click', function() {
+        $('#project-list').collapse('show');
+        $('#project-detail').collapse('hide');
+    });
 });
 
 function showProject(data) {
-    $('#project-dialog').modal('show');
+//    $('#project-dialog').modal('show');
     selectedProject = data;
     $('#type').text(data['type']);
     $('#board').text(data['board']);
     $('#name').text(data['name']);
     $('#description').text(data['description']);
+
+    $('#project-list').collapse('hide');
+    $('#project-detail').collapse('show');
 }
+
 

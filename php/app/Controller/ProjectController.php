@@ -91,14 +91,29 @@ class ProjectController extends AppController {
         $this->set('project', $project);
     }
 
-    public function create() {
+    public function save() {
         if ($this->request->is('post')) {
-            $this->Project->create();
-            if ($this->Project->save($this->request->data)) {
-                echo 'added';
-            } else {
+            if ($this->request->data('id')) {
+                $this->Project->id = $this->request->data('id');
+                if ($this->Project->save($this->request->data)) {
+                    $id = $this->Project->id;
+                } else {
 
+                }
+            } else {
+                $this->Project->create();
+                if ($this->Project->save($this->request->data)) {
+                    $id = $this->Project->id;
+                } else {
+
+                }
             }
+            $project = $this->Project->findById($id);
+            if (!$project) {
+                throw new NotFoundException(__('Invalid project'));
+            }
+            $this->set('project', $project);
+            $this->render('view');
         }
     }
 

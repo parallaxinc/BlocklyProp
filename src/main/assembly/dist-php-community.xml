@@ -12,7 +12,10 @@
             <directory>webcontent</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>*.html</include>
+                <include>index.html</include>
+                <include>frame.html</include>
+                <include>framec.html</include>
+                <include>blocklyscribbler.html</include>
                 <include>*.css</include>
                 <include>Blob.js</include>
                 <include>FileSaver.min.js</include>
