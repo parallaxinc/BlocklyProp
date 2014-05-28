@@ -30,7 +30,7 @@ var TABS_ = ['blocks', 'spin', 'xml'];
 var selected = 'blocks';
 
 var term = null;
-
+var online = false;
 
 
 /**
@@ -138,33 +138,72 @@ function init(blockly) {
  *
  */
 function compile() {
+    if (online) {
+        var spinCode = Blockly.Generator.workspaceToCode('Spin');
+
+       $("#compile-dialog-title").text('Compile');
+       $("#compile-console").val('');
+       $('#compile-dialog').modal('show');
+
+       $.post('http://localhost:6009/', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
+           $("#compile-console").val(data.message);
+           console.log(data);
+       });
+   } else {
     $("#compile-dialog-title").text('Compile');
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
     $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+   }
 }
 
 /**
  *
  */
 function loadIntoRam() {
-    $("#compile-dialog-title").text('Load into ram');
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
+    if (online) {
+        var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
-    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+        $("#compile-dialog-title").text('Compile');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
+
+        $.post('http://localhost:6009/', {action: "RAM", language: "spin", code: spinCode, "com-port": getComPort()}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
+        });
+    } else {
+        $("#compile-dialog-title").text('Load into ram');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
+
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 /**
  *
  */
 function loadIntoEeprom() {
-    $("#compile-dialog-title").text('Load into eeprom');
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
+    if (online) {
+        var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
-    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+        $("#compile-dialog-title").text('Compile');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
+
+        $.post('http://localhost:6009/', {action: "EEPROM", language: "spin", code: spinCode, "com-port": getComPort()}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
+        });
+    } else {
+        $("#compile-dialog-title").text('Load into eeprom');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
+
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 function serial_console() {
@@ -198,18 +237,28 @@ function serial_console() {
 }
 
 $(document).ready(function() {
-    $("#comPort").append($('<option>', {
-        text: 'COM1'
-    }));
-    $("#comPort").append($('<option>', {
-        text: 'COM3'
-    }));
-    $("#comPort").append($('<option>', {
-        text: 'COM4'
-    }));
+    $.get("http://localhost:6009/ports.json", function(data) {
+        $("#comPort").empty();
+        data.forEach(function(port) {
+            $("#comPort").append($('<option>', {
+                text: port
+            }));
+        });
+        online = true;
+    }).fail(function() {
+        $("#comPort").append($('<option>', {
+            text: 'COM1'
+        }));
+        $("#comPort").append($('<option>', {
+            text: 'COM3'
+        }));
+        $("#comPort").append($('<option>', {
+            text: 'COM4'
+        }));
+        online = false;
+    });
+
 });
-
-
 
 getComPort = function() {
     return $('#comPort').find(":selected").text();
