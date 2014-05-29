@@ -137,8 +137,16 @@ function compile() {
     $("#compile-dialog-title").text('Compile');
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
+    if (online) {
+        var propcCode = Blockly.Generator.workspaceToCode('propc');
 
-    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+        $.post('http://localhost:6009/compile.action', {action: "COMPILE", language: "prop-c", code: propcCode}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
+        });
+    } else {
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 /**
@@ -149,7 +157,16 @@ function loadIntoRam() {
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
-    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    if (online) {
+        var propcCode = Blockly.Generator.workspaceToCode('propc');
+
+        $.post('http://localhost:6009/compile.action', {action: "RAM", language: "prop-c", code: propcCode, "comport": getComPort()}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
+        });
+    } else {
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 /**
@@ -160,7 +177,16 @@ function loadIntoEeprom() {
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
-    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    if (online) {
+        var propcCode = Blockly.Generator.workspaceToCode('propc');
+
+        $.post('http://localhost:6009/compile.action', {action: "EEPROM", language: "prop-c", code: propcCode, "comport": getComPort()}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
+        });
+    } else {
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 function serial_console() {
@@ -176,33 +202,81 @@ function serial_console() {
         newTerminal = true;
     }
 
+    if (online) {
+        //  var url = document.location.protocol + document.location.host + '/webapp/websockets/serial.connect';
+        //  url = url.replace('http', 'ws');
+        var connection = new WebSocket('ws://localhost:6009/serial.connect');
 
-    term.on('data', function(data) {
-        data = data.replace('\r', '\r\n');
-        term.write(data);
-    });
+        // When the connection is open, open com port
+        connection.onopen = function() {
+            connection.send('+++ open port ' + getComPort());
 
-    if (newTerminal) {
-        term.open(document.getElementById("serial_console"));
-        term.write("Simulated terminal because you are in demo mode\n\r");
+        };
+        // Log errors
+        connection.onerror = function(error) {
+            console.log('WebSocket Error ' + error);
+            console.log(error);
+            term.destroy();
+        };
+        // Log messages from the server
+        connection.onmessage = function(e) {
+            //console.log('Server: ' + e.data);
+            term.write(e.data);
+        };
 
-        term.write("Connection established with: " + getComPort() + "\n\r");
+        term.on('data', function(data) {
+            //console.log(data);
+            connection.send(data);
+        });
+
+        if (newTerminal) {
+            term.open(document.getElementById("serial_console"));
+        }
+        connection.onClose = function() {
+            term.destroy();
+        };
+
+        $('#console-dialog').on('hidden.bs.modal', function() {
+            connection.close();
+        });
+    } else {
+        term.on('data', function(data) {
+            data = data.replace('\r', '\r\n');
+            term.write(data);
+        });
+
+        if (newTerminal) {
+            term.open(document.getElementById("serial_console"));
+            term.write("Simulated terminal because you are in demo mode\n\r");
+
+            term.write("Connection established with: " + getComPort() + "\n\r");
+        }
     }
 
     $('#console-dialog').modal('show');
-
 }
 
 $(document).ready(function() {
-    $("#comPort").append($('<option>', {
-        text: 'COM1'
-    }));
-    $("#comPort").append($('<option>', {
-        text: 'COM3'
-    }));
-    $("#comPort").append($('<option>', {
-        text: 'COM4'
-    }));
+    $.get("http://localhost:6009/ports.json", function(data) {
+        $("#comPort").empty();
+        data.forEach(function(port) {
+            $("#comPort").append($('<option>', {
+                text: port
+            }));
+        });
+        online = true;
+    }).fail(function() {
+        $("#comPort").append($('<option>', {
+            text: 'COM1'
+        }));
+        $("#comPort").append($('<option>', {
+            text: 'COM3'
+        }));
+        $("#comPort").append($('<option>', {
+            text: 'COM4'
+        }));
+        online = false;
+    });
 });
 
 getComPort = function() {

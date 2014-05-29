@@ -145,7 +145,7 @@ function compile() {
        $("#compile-console").val('');
        $('#compile-dialog').modal('show');
 
-       $.post('http://localhost:6009/', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
+       $.post('http://localhost:6009/compile.action', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
            $("#compile-console").val(data.message);
            console.log(data);
        });
@@ -169,7 +169,7 @@ function loadIntoRam() {
         $("#compile-console").val('');
         $('#compile-dialog').modal('show');
 
-        $.post('http://localhost:6009/', {action: "RAM", language: "spin", code: spinCode, "com-port": getComPort()}, function(data) {
+        $.post('http://localhost:6009/compile.action', {action: "RAM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
             $("#compile-console").val(data.message);
             console.log(data);
         });
@@ -193,7 +193,7 @@ function loadIntoEeprom() {
         $("#compile-console").val('');
         $('#compile-dialog').modal('show');
 
-        $.post('http://localhost:6009/', {action: "EEPROM", language: "spin", code: spinCode, "com-port": getComPort()}, function(data) {
+        $.post('http://localhost:6009/compile.action', {action: "EEPROM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
             $("#compile-console").val(data.message);
             console.log(data);
         });
@@ -219,21 +219,58 @@ function serial_console() {
         newTerminal = true;
     }
 
+    if (online) {
+        //  var url = document.location.protocol + document.location.host + '/webapp/websockets/serial.connect';
+        //  url = url.replace('http', 'ws');
+        var connection = new WebSocket('ws://localhost:6009/serial.connect');
 
-    term.on('data', function(data) {
-        data = data.replace('\r', '\r\n');
-        term.write(data);
-    });
+        // When the connection is open, open com port
+        connection.onopen = function() {
+            connection.send('+++ open port ' + getComPort());
 
-    if (newTerminal) {
-        term.open(document.getElementById("serial_console"));
-        term.write("Simulated terminal because you are in demo mode\n\r");
+        };
+        // Log errors
+        connection.onerror = function(error) {
+            console.log('WebSocket Error ' + error);
+            console.log(error);
+            term.destroy();
+        };
+        // Log messages from the server
+        connection.onmessage = function(e) {
+            //console.log('Server: ' + e.data);
+            term.write(e.data);
+        };
 
-        term.write("Connection established with: " + getComPort() + "\n\r");
+        term.on('data', function(data) {
+            //console.log(data);
+            connection.send(data);
+        });
+
+        if (newTerminal) {
+            term.open(document.getElementById("serial_console"));
+        }
+        connection.onClose = function() {
+            term.destroy();
+        };
+
+        $('#console-dialog').on('hidden.bs.modal', function() {
+            connection.close();
+        });
+    } else {
+        term.on('data', function(data) {
+            data = data.replace('\r', '\r\n');
+            term.write(data);
+        });
+
+        if (newTerminal) {
+            term.open(document.getElementById("serial_console"));
+            term.write("Simulated terminal because you are in demo mode\n\r");
+
+            term.write("Connection established with: " + getComPort() + "\n\r");
+        }
     }
 
     $('#console-dialog').modal('show');
-
 }
 
 $(document).ready(function() {
