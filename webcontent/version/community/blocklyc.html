@@ -8,49 +8,67 @@
         <script type="text/javascript" src="lib/js/term.js"></script>
         <script type="text/javascript" src="FileSaver.min.js"></script>
         <script type="text/javascript" src="blockly_helper.js"></script>
+        <script type="text/javascript" src="blocklypropclient.js"></script>
         <script type="text/javascript" src="blocklyc.js"></script>
         <script type="text/javascript" src="project.js"></script>
         <link href="lib/css/bootstrap.css" rel="stylesheet">
         <link href="style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <table height="100%" width="100%">
+        <table id="content_table">
             <tr>
                 <td>
-                    <h1><a href="https://github.com/michel-cf/BlocklyProp">BlocklyProp</a> &gt; web-based visual programming editor for spin</h1>
+                    <nav class="navbar navbar-default" role="navigation">
+                        <div class="containter-fluid">
+                            <div class="navbar-header">
+                                <a class="navbar-brand" href="index.html">BlocklyProp</a>
+                            </div>
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="help/index.html">Manual</a></li>
+                                    <li><a href="community.html">Community</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li class="active" id="tab_blocks"><a href="#" onclick="tabClick('tab_blocks')">Blocks</a></li>
+                                            <li id="tab_propc"><a href="#" onclick="tabClick('tab_propc')">Propeller C</a></li>
+                                            <li id="tab_xml"><a href="#" onclick="tabClick('tab_xml')">XML</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li>
+                                        <p class="navbar-text" id="client_status">Checking for BlocklyPropClient</p>
+                                    </li>
+                                    <li>
+                                        <form class="navbar-form">
+                                            <div class="form-group">
+                                                <select class="form-control" id="comPort"></select>
+                                            </div>
+                                        </form>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Run <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" onclick="compile()">Compile</a></li>
+                                            <li><a href="#" onclick="loadIntoRam()">Load RAM</a></li>
+                                            <li><a href="#" onclick="loadIntoEeprom()">Load EEPROM</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#" onclick="serial_console()">Serial terminal</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#" onclick="configure_client()">Configure client</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#" onclick="project()">Project</a></li>
+                                </ul>
+                            </div><!-- /.navbar-collapse -->
+                        </div><!-- /.container-fluid -->
+                    </nav>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <table>
-                        <tr id="tabRow" height="1em">
-                            <td id="tab_blocks" class="tabon" onclick="tabClick(this.id)">Blocks</td>
-                            <td class="tabmin">&nbsp;</td>
-                            <!--td id="tab_javascript" class="taboff" onclick="tabClick(this.id)">JavaScript</td>
-                            <td class="tabmin">&nbsp;</td-->
-                            <!--td id="tab_dart" class="taboff" onclick="tabClick(this.id)">Dart</td>
-                            <td class="tabmin">&nbsp;</td>
-                            <td id="tab_python" class="taboff" onclick="tabClick(this.id)">Python</td>
-                            <td class="tabmin">&nbsp;</td-->
-                            <td id="tab_propc" class="taboff" onclick="tabClick(this.id)">Propeller&nbsp;C</td>
-                            <td class="tabmin">&nbsp;</td>
-                            <td id="tab_xml" class="taboff" onclick="tabClick(this.id)">XML</td>
-                            <td class="tabmax">
-                                <button onclick="compile()">Compile</button>
-                                <button onclick="loadIntoRam()">Load into Ram</button>
-                                <button onclick="loadIntoEeprom()">Load into Eeprom</button>
-                                <button onclick="serial_console()">Serial console</button>
-                                <select id="comPort"></select>
-                                <button onclick="project()">Project</button>
-                                <button onclick="community()">Community</button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td height="99%">
-                    <div id="content_blocks" style='height:99%;'>
+                <td id="content">
+                    <div id="content_blocks">
                         <iframe name="content_blocks" src="framec.html"></iframe>
                     </div>
                     <!--div id="content_blocks" style="height:auto !important;height:400px; min-height:400px;"></div-->

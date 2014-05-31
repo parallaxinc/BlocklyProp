@@ -30,7 +30,6 @@ var TABS_ = ['blocks', 'spin', 'xml'];
 var selected = 'blocks';
 
 var term = null;
-var online = false;
 
 
 /**
@@ -39,7 +38,7 @@ var online = false;
  */
 function tabClick(id) {
     // If the XML tab was open, save and render the content.
-    if (document.getElementById('tab_xml').className == 'tabon') {
+    if (document.getElementById('tab_xml').className == 'active') {
         var xmlTextarea = document.getElementById('textarea_xml');
         var xmlText = xmlTextarea.value;
         var xmlDom = null;
@@ -71,7 +70,7 @@ function tabClick(id) {
 
     // Select the active tab.
     selected = id.replace('tab_', '');
-    document.getElementById(id).className = 'tabon';
+    document.getElementById(id).className = 'active';
     // Show the selected pane.
     var content = document.getElementById('content_' + selected);
     content.style.display = 'block';
@@ -138,7 +137,7 @@ function init(blockly) {
  *
  */
 function compile() {
-    if (online) {
+    if (client_available) {
         var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
        $("#compile-dialog-title").text('Compile');
@@ -162,7 +161,7 @@ function compile() {
  *
  */
 function loadIntoRam() {
-    if (online) {
+    if (client_available) {
         var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
         $("#compile-dialog-title").text('Compile');
@@ -186,7 +185,7 @@ function loadIntoRam() {
  *
  */
 function loadIntoEeprom() {
-    if (online) {
+    if (client_available) {
         var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
         $("#compile-dialog-title").text('Compile');
@@ -219,7 +218,7 @@ function serial_console() {
         newTerminal = true;
     }
 
-    if (online) {
+    if (client_available) {
         //  var url = document.location.protocol + document.location.host + '/webapp/websockets/serial.connect';
         //  url = url.replace('http', 'ws');
         var connection = new WebSocket('ws://localhost:6009/serial.connect');
@@ -250,7 +249,7 @@ function serial_console() {
             term.open(document.getElementById("serial_console"));
         }
         connection.onClose = function() {
-            term.destroy();
+          //  term.destroy();
         };
 
         $('#console-dialog').on('hidden.bs.modal', function() {
@@ -273,7 +272,8 @@ function serial_console() {
     $('#console-dialog').modal('show');
 }
 
-$(document).ready(function() {
+check_com_ports = function() {
+    var selected_port = $("#comPort").val();
     $.get("http://localhost:6009/ports.json", function(data) {
         $("#comPort").empty();
         data.forEach(function(port) {
@@ -281,8 +281,10 @@ $(document).ready(function() {
                 text: port
             }));
         });
-        online = true;
+        select_com_port(selected_port);
+        client_available = true;
     }).fail(function() {
+        $("#comPort").empty();
         $("#comPort").append($('<option>', {
             text: 'COM1'
         }));
@@ -292,9 +294,24 @@ $(document).ready(function() {
         $("#comPort").append($('<option>', {
             text: 'COM4'
         }));
-        online = false;
+        select_com_port(selected_port);
+        client_available = false;
     });
 
+};
+
+select_com_port = function(com_port) {
+    if (com_port !== null) {
+        $("#comPort").val(com_port);
+    }
+    if ($("#comPort").val() === null && $('#comPort option').size() > 0) {
+        $("#comPort").val($('#comPort option:first').text());
+    }
+};
+
+$(document).ready(function() {
+    check_com_ports();
+    
 });
 
 getComPort = function() {

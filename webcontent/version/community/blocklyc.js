@@ -39,7 +39,7 @@ var term = null;
  */
 function tabClick(id) {
     // If the XML tab was open, save and render the content.
-    if (document.getElementById('tab_xml').className == 'tabon') {
+    if (document.getElementById('tab_xml').className == 'active') {
         var xmlTextarea = document.getElementById('textarea_xml');
         var xmlText = xmlTextarea.value;
         var xmlDom = null;
@@ -67,7 +67,7 @@ function tabClick(id) {
 
     // Select the active tab.
     selected = id.replace('tab_', '');
-    document.getElementById(id).className = 'tabon';
+    document.getElementById(id).className = 'active';
     // Show the selected pane.
     var content = document.getElementById('content_' + selected);
     content.style.display = 'block';
@@ -137,10 +137,10 @@ function compile() {
     $("#compile-dialog-title").text('Compile');
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
-    if (online) {
+    if (client_available) {
         var propcCode = Blockly.Generator.workspaceToCode('propc');
 
-        $.post('http://localhost:6009/compile.action', {action: "COMPILE", language: "prop-c", code: propcCode}, function(data) {
+        $.post(client_url + 'compile.action', {action: "COMPILE", language: "prop-c", code: propcCode}, function(data) {
             $("#compile-console").val(data.message);
             console.log(data);
         });
@@ -157,10 +157,10 @@ function loadIntoRam() {
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
-    if (online) {
+    if (client_available) {
         var propcCode = Blockly.Generator.workspaceToCode('propc');
 
-        $.post('http://localhost:6009/compile.action', {action: "RAM", language: "prop-c", code: propcCode, "comport": getComPort()}, function(data) {
+        $.post(client_url + 'compile.action', {action: "RAM", language: "prop-c", code: propcCode, "comport": getComPort()}, function(data) {
             $("#compile-console").val(data.message);
             console.log(data);
         });
@@ -177,10 +177,10 @@ function loadIntoEeprom() {
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
-    if (online) {
+    if (client_available) {
         var propcCode = Blockly.Generator.workspaceToCode('propc');
 
-        $.post('http://localhost:6009/compile.action', {action: "EEPROM", language: "prop-c", code: propcCode, "comport": getComPort()}, function(data) {
+        $.post(client_url + 'compile.action', {action: "EEPROM", language: "prop-c", code: propcCode, "comport": getComPort()}, function(data) {
             $("#compile-console").val(data.message);
             console.log(data);
         });
@@ -202,10 +202,10 @@ function serial_console() {
         newTerminal = true;
     }
 
-    if (online) {
-        //  var url = document.location.protocol + document.location.host + '/webapp/websockets/serial.connect';
-        //  url = url.replace('http', 'ws');
-        var connection = new WebSocket('ws://localhost:6009/serial.connect');
+    if (client_available) {
+        var url = client_url + 'serial.connect';
+        url = url.replace('http', 'ws');
+        var connection = new WebSocket(url);
 
         // When the connection is open, open com port
         connection.onopen = function() {
@@ -233,7 +233,7 @@ function serial_console() {
             term.open(document.getElementById("serial_console"));
         }
         connection.onClose = function() {
-            term.destroy();
+          //  term.destroy();
         };
 
         $('#console-dialog').on('hidden.bs.modal', function() {
@@ -256,16 +256,19 @@ function serial_console() {
     $('#console-dialog').modal('show');
 }
 
-$(document).ready(function() {
-    $.get("http://localhost:6009/ports.json", function(data) {
+check_com_ports = function() {
+    var selected_port = $("#comPort").val();
+    $.get(client_url + "ports.json", function(data) {
         $("#comPort").empty();
         data.forEach(function(port) {
             $("#comPort").append($('<option>', {
                 text: port
             }));
         });
-        online = true;
+        select_com_port(selected_port);
+        client_available = true;
     }).fail(function() {
+        $("#comPort").empty();
         $("#comPort").append($('<option>', {
             text: 'COM1'
         }));
@@ -275,8 +278,24 @@ $(document).ready(function() {
         $("#comPort").append($('<option>', {
             text: 'COM4'
         }));
-        online = false;
+        select_com_port(selected_port);
+        client_available = false;
     });
+
+};
+
+select_com_port = function(com_port) {
+    if (com_port !== null) {
+        $("#comPort").val(com_port);
+    }
+    if ($("#comPort").val() === null && $('#comPort option').size() > 0) {
+        $("#comPort").val($('#comPort option:first').text());
+    }
+};
+
+$(document).ready(function() {
+    check_com_ports();
+    
 });
 
 getComPort = function() {
