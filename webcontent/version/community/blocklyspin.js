@@ -144,7 +144,7 @@ function compile() {
        $("#compile-console").val('');
        $('#compile-dialog').modal('show');
 
-       $.post('http://localhost:6009/compile.action', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
+       $.post(client_url + 'compile.action', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
            $("#compile-console").val(data.message);
            console.log(data);
        });
@@ -168,7 +168,7 @@ function loadIntoRam() {
         $("#compile-console").val('');
         $('#compile-dialog').modal('show');
 
-        $.post('http://localhost:6009/compile.action', {action: "RAM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
+        $.post(client_url + 'compile.action', {action: "RAM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
             $("#compile-console").val(data.message);
             console.log(data);
         });
@@ -192,7 +192,7 @@ function loadIntoEeprom() {
         $("#compile-console").val('');
         $('#compile-dialog').modal('show');
 
-        $.post('http://localhost:6009/compile.action', {action: "EEPROM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
+        $.post(client_url + 'compile.action', {action: "EEPROM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
             $("#compile-console").val(data.message);
             console.log(data);
         });
@@ -219,9 +219,9 @@ function serial_console() {
     }
 
     if (client_available) {
-        //  var url = document.location.protocol + document.location.host + '/webapp/websockets/serial.connect';
-        //  url = url.replace('http', 'ws');
-        var connection = new WebSocket('ws://localhost:6009/serial.connect');
+        var url = client_url + 'serial.connect';
+        url = url.replace('http', 'ws');
+        var connection = new WebSocket(url);
 
         // When the connection is open, open com port
         connection.onopen = function() {
@@ -274,7 +274,7 @@ function serial_console() {
 
 check_com_ports = function() {
     var selected_port = $("#comPort").val();
-    $.get("http://localhost:6009/ports.json", function(data) {
+    $.get(client_url + "ports.json", function(data) {
         $("#comPort").empty();
         data.forEach(function(port) {
             $("#comPort").append($('<option>', {
