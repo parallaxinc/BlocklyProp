@@ -26,6 +26,14 @@ class AuthController extends AppController {
     public function singin() {
         $email = $this->request->data('email');
         $password = $this->request->data('password');
+
+        $user = $this->User->get_user($email, $password);
+        if ($user) {
+            $this->set('user', $user);
+            $this->render('user');
+        } else {
+            $this->render('login_error');
+        }
     }
 
     public function register() {
@@ -44,7 +52,7 @@ class AuthController extends AppController {
                 $this->render('register_error');
                 return;
             }
-            
+
             if ($this->User->save($this->request->data)) {
                 $id = $this->User->id;
                 $user = $this->User->findById($id);
@@ -52,6 +60,7 @@ class AuthController extends AppController {
                     throw new NotFoundException(__('Invalid user'));
                 }
                 $this->set('user', $user);
+                $this->render('user');
             } else {
                 $errors = $this->User->validationErrors;
                 $this->set('errors', $errors);

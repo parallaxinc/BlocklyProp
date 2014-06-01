@@ -10,13 +10,24 @@ $(document).ready(function() {
     $("#login-register").removeClass("hidden");
 
     $("#signin").on("click", function() {
+        var email = $("#loginEmail").val();
+        var password = $("#loginPassword").val();
+        
+        $.post('/php/auth/singin', {email: email, password: password}, function(data) {
+            console.log(data);
+            if (data.success) {
 
+            } else {
+                
+            }
+        });
     });
 
     $("#register").on("click", function() {
         var email = $("#registerEmail").val();
         var password = $("#registerPassword").val();
         var passwordConfirm = $("#registerPasswordConfirum").val();
+        
         $.post('/php/auth/register', {email: email, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
             $(".icon").addClass("hidden");

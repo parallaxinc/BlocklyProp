@@ -14,9 +14,8 @@ App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
  * @author Michel
  */
 class User extends AppModel {
-    
+
     public $useTable = 'users';
-    
     public $validate = array(
         'email' => array(
             'email' => array(
@@ -28,7 +27,7 @@ class User extends AppModel {
                 'message' => 'Your email is required'
             ),
             'unique' => array(
-                'rule'    => array('unique'),
+                'rule' => array('unique'),
                 'message' => 'Your email needs to be unique'
             )
         ),
@@ -53,13 +52,26 @@ class User extends AppModel {
         }
         return true;
     }
-    
+
     public function unique($check) {
         // $check will have value: array('email' => 'YOUR_EMAIL')
         $emailCount = $this->find('count', array(
             'conditions' => $check
         ));
         return $emailCount === 0;
+    }
+
+    public function get_user($login, $password) {
+        $query_result = $this->find('first', array('conditions' => array('email' => $login)));
+
+        $user = $query_result[$this->alias];
+        if ($user) {
+            $passwordHasher = new SimplePasswordHasher();
+            if ($passwordHasher->check($password, $user['password'])) {
+                return $user;
+            }
+        }
+        return null;
     }
 
 }
