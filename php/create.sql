@@ -1,6 +1,16 @@
 DROP TABLE IF EXISTS projects_tags;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS users;
+
+create table users (
+    id int unsigned auto_increment primary key,
+    email varchar(255) not null,
+    password varchar(255) not null,
+    blocked tinyint(1) default 0,
+    created DATETIME DEFAULT NULL,
+    modified DATETIME DEFAULT NULL
+);
 
 create table projects (
     id int unsigned auto_increment primary key,

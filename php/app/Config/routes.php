@@ -29,6 +29,8 @@ Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home
 
 Router::connect('/project/:action', array('controller' => 'project', 'index'));
 Router::connect('/tag/:action', array('controller' => 'tag', 'index'));
+Router::connect('/auth/:action', array('controller' => 'auth', 'index'));
+
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
