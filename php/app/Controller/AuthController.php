@@ -23,7 +23,7 @@ class AuthController extends AppController {
         $this->layout = 'json/default';
     }
 
-    public function singin() {
+    public function signin() {
         $email = $this->request->data('email');
         $password = $this->request->data('password');
 

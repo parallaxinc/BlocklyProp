@@ -13,7 +13,7 @@ $(document).ready(function() {
         var email = $("#loginEmail").val();
         var password = $("#loginPassword").val();
         
-        $.post('/php/auth/singin', {email: email, password: password}, function(data) {
+        $.post('/php/auth/signin', {email: email, password: password}, function(data) {
             console.log(data);
             if (data.success) {
 
