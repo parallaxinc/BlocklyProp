@@ -26,6 +26,7 @@
         <link href="lib/css/bootstrap-tagsinput.css" rel="stylesheet">
         <link href="site.css" rel="stylesheet">
         <script type="text/javascript" src="lib/js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="lib/js/jquery.cookie.js"></script>
         <script src="myprojects.js"></script>
     </head>
     <body>
@@ -110,9 +111,10 @@
             </div>
         </div>
 
-        <div class="container collapse in hidden" id="project-list">
+        <div class="container collapse hidden" id="project-list">
             <div class="row">
                 <div class="col-md-12">
+                    <h2 id="projects-header">Your projects</h2>
                     <div class="table-responsive" id="table-project">
                     </div>
                 </div>

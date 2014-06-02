@@ -13,6 +13,7 @@ $(document).ready(function() {
         title: 'Projects',
         showPagination: true,
         toggleColumns: false,
+        sectionHeader: '#projects-header',
         columns: [
             {
                 title: "",

@@ -6,17 +6,28 @@
 
 
 $(document).ready(function() {
+    $.cookie.json = true;
     // TODO check if logged in
-    $("#login-register").removeClass("hidden");
+    
+    if ($.cookie('user') && $.cookie('user')['id']) {
+        showTable();
+        $('#project-list').addClass('in').removeClass('hidden');
+    } else {
+        $("#login-register").removeClass("hidden");
+    }
 
     $("#signin").on("click", function() {
         var email = $("#loginEmail").val();
         var password = $("#loginPassword").val();
         
         $.post('/php/auth/signin', {email: email, password: password}, function(data) {
-            console.log(data);
+           // console.log(data);
             if (data.success) {
-
+                $.cookie('user', data.user);
+                showTable();
+                $('#project-list').removeClass('hidden');
+                $('#login-register').collapse('show');
+                $('#project-list').collapse('hide');
             } else {
                 
             }
@@ -33,7 +44,11 @@ $(document).ready(function() {
             $(".icon").addClass("hidden");
             $(".message").remove();
             if (data.success) {
-
+                $.cookie('user', data.user);
+                showTable();
+                $('#project-list').removeClass('hidden');
+                $('#login-register').collapse('show');
+                $('#project-list').collapse('hide');
             } else {
                 Object.keys(data['errors']).forEach(function(error_group) {
                     $("#register-group-" + error_group).addClass("has-error");
@@ -49,3 +64,56 @@ $(document).ready(function() {
         });
     });
 });
+
+showTable = function() {
+    $("#table-project").datatable({
+        perPage: 10,
+        url: 'php/index.php/project/index',
+        title: 'Projects',
+        showPagination: true,
+        toggleColumns: false,
+        sectionHeader: '#projects-header',
+        columns: [
+            {
+                title: "",
+                sortable: true,
+                field: "id",
+                callback: function(data) {
+                    return $('<button/>', {
+                        text: 'View',
+                        class: 'btn btn-xs btn-primary',
+                        click: function() {
+//                            alert(data.id);
+                            showProject(data);
+                        }
+                    });
+                },
+                css: {
+                    width: '58px'
+                }
+            },
+            {
+                title: "Type",
+                sortable: true,
+                field: "type",
+                filter: true,
+                css: {
+                    width: '100px'
+                }
+            },
+            {
+                title: "Board",
+                sortable: true,
+                field: "board",
+                css: {
+                    width: '200px'
+                }
+            },
+            {
+                title: "Name",
+                sortable: true,
+                field: "name"
+            }
+        ]
+    });
+};
