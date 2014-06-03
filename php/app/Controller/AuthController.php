@@ -29,6 +29,7 @@ class AuthController extends AppController {
 
         $user = $this->User->get_user($email, $password);
         if ($user) {
+            $this->Session->write('User', $user);
             $this->set('user', $user);
             $this->render('user');
         } else {
@@ -59,6 +60,7 @@ class AuthController extends AppController {
                 if (!$user) {
                     throw new NotFoundException(__('Invalid user'));
                 }
+                $this->Session->write('User', $user);
                 $this->set('user', $user);
                 $this->render('user');
             } else {

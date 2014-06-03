@@ -68,7 +68,7 @@ $(document).ready(function() {
 showTable = function() {
     $("#table-project").datatable({
         perPage: 10,
-        url: 'php/index.php/project/index',
+        url: 'php/index.php/project/mine',
         title: 'Projects',
         showPagination: true,
         toggleColumns: false,

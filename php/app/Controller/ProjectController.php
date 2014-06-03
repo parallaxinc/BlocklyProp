@@ -61,22 +61,82 @@ class ProjectController extends AppController {
     }
 
     public function foruser($id) {
-        if (!$id) {
-            throw new NotFoundException(__('Invalid user'));
-        }
+        $perPage = $this->request->data('perPage') ? : 10;
+        $page = $this->request->data('currentPage') ? : 1;
+        $sort = $this->request->data('sort') ? : array(array("id", "asc"));
+        $filter = $this->request->data('filter') ? : array("column_0" => "foo");
         $type = $this->request->data('type');
         $board = $this->request->data('board');
-        $conditions = array('Project.id_user' => $id);
+        $conditions = array();
+        $conditions['Project.id_user'] = 0;
         if ($type != null) {
             $conditions['Project.type'] = $type;
         }
         if ($board != null) {
             $conditions['Project.board'] = $board;
         }
+        if (count($sort[0]) == 2) {
+            $order = array("Project." . $sort[0][0] => $sort[0][1]);
+        }
+
         $projects = $this->Project->find('all', array(
+            'conditions' => $conditions,
+            'order' => $order,
+            'limit' => $perPage, 'page' => $page
+        ));
+        $projectCount = $this->Project->find('count', array(
             'conditions' => $conditions
         ));
+        $result = array(
+            "totalRows" => $projectCount,
+            "perPage" => $perPage,
+            "sort" => $sort,
+            "currentPage" => $page,
+            "filter" => $filter,
+            "data" => array()
+        );
         $this->set('projects', $projects);
+        $this->set('result', $result);
+        $this->render('list');
+    }
+    
+    public function mine() {
+        $perPage = $this->request->data('perPage') ? : 10;
+        $page = $this->request->data('currentPage') ? : 1;
+        $sort = $this->request->data('sort') ? : array(array("id", "asc"));
+        $filter = $this->request->data('filter') ? : array("column_0" => "foo");
+        $type = $this->request->data('type');
+        $board = $this->request->data('board');
+        $conditions = array();
+        $conditions['Project.id_user'] = $this->Session->read('User.id');
+        if ($type != null) {
+            $conditions['Project.type'] = $type;
+        }
+        if ($board != null) {
+            $conditions['Project.board'] = $board;
+        }
+        if (count($sort[0]) == 2) {
+            $order = array("Project." . $sort[0][0] => $sort[0][1]);
+        }
+
+        $projects = $this->Project->find('all', array(
+            'conditions' => $conditions,
+            'order' => $order,
+            'limit' => $perPage, 'page' => $page
+        ));
+        $projectCount = $this->Project->find('count', array(
+            'conditions' => $conditions
+        ));
+        $result = array(
+            "totalRows" => $projectCount,
+            "perPage" => $perPage,
+            "sort" => $sort,
+            "currentPage" => $page,
+            "filter" => $filter,
+            "data" => array()
+        );
+        $this->set('projects', $projects);
+        $this->set('result', $result);
         $this->render('list');
     }
 
