@@ -9,12 +9,16 @@ $(document).ready(function() {
     $.cookie.json = true;
     // TODO check if logged in
     
-    if ($.cookie('user') && $.cookie('user')['id']) {
-        showTable();
+    $.get('/php/auth/user', function(data) {
+        if (data.success) {
+            $.cookie('user', data.user);
+            showTable();
         $('#project-list').addClass('in').removeClass('hidden');
-    } else {
-        $("#login-register").removeClass("hidden");
-    }
+        } else {
+            $.removeCookie('user');
+            $("#login-register").removeClass("hidden");
+        }
+    });
 
     $("#signin").on("click", function() {
         var email = $("#loginEmail").val();

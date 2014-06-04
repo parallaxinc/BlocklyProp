@@ -73,5 +73,17 @@ class AuthController extends AppController {
 //                __('The user could not be saved. Please, try again.')
 //            );
     }
+    
+    public function user() {
+        if ($this->Session->read('User.id') != null) {
+            $user = $this->User->findById($this->Session->read('User.id'));
+            if (!$user) {
+                throw new NotFoundException(__('Invalid user'));
+            }
+            $this->set('user', $user);
+            $this->render('user');
+        }
+        $this->render('login_error');       
+    }
 
 }
