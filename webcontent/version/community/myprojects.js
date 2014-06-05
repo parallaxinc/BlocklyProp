@@ -13,7 +13,7 @@ $(document).ready(function() {
         if (data.success) {
             $.cookie('user', data.user);
             showTable();
-        $('#project-list').addClass('in').removeClass('hidden');
+            $('#project-list').addClass('in').removeClass('hidden');
         } else {
             $.removeCookie('user');
             $("#login-register").removeClass("hidden");

@@ -75,15 +75,17 @@ class AuthController extends AppController {
     }
     
     public function user() {
-        if ($this->Session->read('User.id') != null) {
+        if ($this->Session->check('User') && $this->Session->read('User.id') != null) {
             $user = $this->User->findById($this->Session->read('User.id'));
+           // echo $user;
             if (!$user) {
                 throw new NotFoundException(__('Invalid user'));
             }
             $this->set('user', $user);
             $this->render('user');
+        } else {
+            $this->render('login_error');       
         }
-        $this->render('login_error');       
     }
 
 }
