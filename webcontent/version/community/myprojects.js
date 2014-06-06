@@ -77,6 +77,28 @@ $(document).ready(function() {
         };
         window.location.href = types[selectedProject['type']] + '?project=' + selectedProject['id'];
     });
+    
+    $('#delete-project').on('click', function() {
+        bootbox.dialog({
+            title: "Confirm delete",
+            message: "Deleted projects can not be restored.<br/>Are you sure?",
+            buttons: {
+                cancel: {
+                    label: "Cancel",
+                    className: "btn-default"
+                },
+                confirm: {
+                    lable: "Confirm",
+                    className: "btn-primary",
+                    callback: function() {
+                        console.log("Delete project: " + selectedProject['id']);
+                        // TODO delete project
+                
+                    }
+                }
+            }
+        });
+    });
 
     $('#back-to-list').on('click', function() {
         $('#project-list').collapse('show');
