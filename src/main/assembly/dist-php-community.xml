@@ -22,6 +22,7 @@
                 <include>blocklyprophelp.js</include>
                 <include>blocklyscribbler.js</include>
                 <include>scribblersimulator.js</include>
+                <include>utils.js</include>
                 <include>lib/*/*.*</include>
                 <include>images/*.*</include>
             </includes>

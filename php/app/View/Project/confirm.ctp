@@ -1,7 +1,7 @@
 <?php
 
 
-$response = array('success' => false);
+$response = array('success' => true);
 
 if (isset($message)) {
     $response['message'] = $message;

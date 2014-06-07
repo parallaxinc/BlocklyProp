@@ -87,5 +87,9 @@ class AuthController extends AppController {
             $this->render('login_error');       
         }
     }
+    
+    public function logout() {
+        $this->Session->destroy();
+    }
 
 }

@@ -190,5 +190,31 @@ class ProjectController extends AppController {
             $this->render('view');
         }
     }
+    
+    public function delete($id) {
+        if (!$id) {
+            throw new NotFoundException(__('Invalid project'));
+        }
+        $project = $this->Project->findById($id);
+        if (!$project) {
+            throw new NotFoundException(__('Invalid project'));
+        }
+        
+        if (!$this->Session->check('User.id')) {
+            $this->set('message', 'Not logged in');
+            $this->render('error');
+            return;
+        }
+        
+        if ($this->Session->read('User.id') != $project['Project']['id_user']) {
+            $this->set('message', 'Not your project');
+            $this->render('error');
+        } else {
+            $this->Project->delete($id);
+            $this->render('confirm');
+        }
+        
+        
+    }
 
 }
