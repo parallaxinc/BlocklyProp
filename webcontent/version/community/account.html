@@ -28,7 +28,7 @@
         <link href="site.css" rel="stylesheet">
         <script type="text/javascript" src="lib/js/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="lib/js/jquery.cookie.js"></script>
-        <script src="myprojects.js"></script>
+        <script src="account.js"></script>
     </head>
     <body>
         <a class="sr-only" href="#content">Skip to main content</a>
@@ -126,65 +126,46 @@
             </div>
         </div>
 
-        <div class="container collapse hidden" id="project-list">
+        <div class="container collapse hidden" id="account-data">
             <div class="row">
-                <div class="col-md-12">
-                    <h2>Your projects</h2>
-                    <div class="table-responsive" id="table-project">
-                        <table class="table table-striped" id="table-project-table" width="100%">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Type</th>
-                                    <th>Board</th>
-                                    <th>Name</th>
-                                </tr>
-                            </thead>
-                        </table>
+                <div class="col-md-6">
+                    <h2>Your account</h2>
+                    <p>Change your basic account data. For safety, its always required to fill in your old password and enter a new one.</p>
+                </div>
+                <div class="col-md-6">
+                    <h2>&nbsp;</h2>
+                    <div>
+                        <form  role="form" id="account-data-form">
+                        <div id="change-group-email" class="form-group has-feedback">
+                            <label class="control-label" for="changeEmail">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" name="email" placeholder="Email">
+                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                        </div>
+                        <div id="change-group-old-password" class="form-group has-feedback">
+                            <label class="control-label" for="changeOldPassword">Old password</label>
+                            <input type="password" class="form-control" id="changeOldPassword" name="oldPassword" placeholder="Old password">
+                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                        </div>
+                        <div id="change-group-password" class="form-group has-feedback">
+                            <label class="control-label" for="changePassword">Password</label>
+                            <input type="password" class="form-control" id="changePassword" name="password" placeholder="Password">
+                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                        </div>
+                        <div id="change-group-passwordConfirm" class="form-group has-feedback">
+                            <label class="control-label" for="changePasswordConfirm">Confirm password</label>
+                            <input type="password" class="form-control" id="changePasswordConfirum" name="passwordConfirm" placeholder="Confirm password">
+                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                        </div>
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-default" id="change-account">Change</button>
+                        </div>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="container collapse" id="project-detail">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2><button id="back-to-list" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>Project: <span id="name"></span></h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="type">Type</label>
-                        <label class="form-control" id="type"></label>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="board">Board</label>
-                        <label class="form-control" id="board"></label>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="form-group" >
-                        <label for="tags">Tags</label>
-                        <select multiple="multiple" id="tag"></select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" readonly="readonly" rows="5"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="btn-group">
-                        <button id="open-project" class="btn btn-success">Open</button>
-                        <button id="delete-project" class="btn btn-danger">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <script src="lib/js/bootstrap.min.js"></script>
         <script src="lib/js/bootstrap3-typeahead.min.js"></script>
         <!--<script src="lib/js/bootstrap-datatable.js"></script>-->

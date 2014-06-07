@@ -29,6 +29,7 @@ class ProjectController extends AppController {
         $type = $this->request->data('type');
         $board = $this->request->data('board');
         $conditions = array();
+        $conditions['Project.shared'] = 1;
         if ($type != null) {
             $conditions['Project.type'] = $type;
         }

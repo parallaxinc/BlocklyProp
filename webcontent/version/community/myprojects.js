@@ -16,14 +16,14 @@ $(document).ready(function() {
             $.cookie('user', data.user);
             showTable();
             $('#project-list').addClass('in').removeClass('hidden');
-            $('#log-off').removeClass('hidden');
+            $('#account-menu').removeClass('hidden');
         } else {
             $.removeCookie('user');
             $("#login-register").removeClass("hidden");
         }
     });
 
-    $("#signin").submit(function(event) {
+    $("#signin-form").submit(function(event) {
         event.preventDefault();
 
         var email = $("#loginEmail").val();
@@ -35,16 +35,17 @@ $(document).ready(function() {
                 $.cookie('user', data.user);
                 showTable();
                 $('#project-list').removeClass('hidden');
-                $('#log-off').removeClass('hidden');
-                $('#login-register').collapse('show');
-                $('#project-list').collapse('hide');
+                $('#login-register').collapse('hide');
+                $('#account-menu').removeClass('hidden');
+                //$('#login-register').collapse('show');
+                $('#project-list').collapse('show');
             } else {
 
             }
         });
     });
 
-    $("#register").submit(function(event) {
+    $("#register-form").submit(function(event) {
         event.preventDefault();
 
         var email = $("#registerEmail").val();
@@ -61,7 +62,7 @@ $(document).ready(function() {
                 $('#project-list').removeClass('hidden');
                 $('#login-register').collapse('show');
                 $('#project-list').collapse('hide');
-                $('#log-off').removeClass('hidden');
+                $('#account-menu').removeClass('hidden');
             } else {
                 Object.keys(data['errors']).forEach(function(error_group) {
                     $("#register-group-" + error_group).addClass("has-error");
@@ -141,43 +142,72 @@ $(document).ready(function() {
         },
         readonly: true
     });
+
+    $('#log-off').on('click', function() {
+        $.get('php/index.php/auth/logout', function(result) {
+            if (result.success) {
+                $.removeCookie('user');
+                $('#account-menu').addClass('hidden');
+
+                $('#login-register').collapse('show');
+                if ($('#project-list').hasClass('in')) {
+                    $('#project-list').collapse('hide');
+                }
+                if ($('#project-detail').hasClass('in')) {
+                    $('#project-detail').collapse('hide');
+                }
+            }
+        });
+    });
 });
 
 showTable = function() {
-    projectTable = $("#table-project-table").dataTable({
-        "ajax": 'php/index.php/project/mine',
-        "columns": [
-            {"data": "id"},
-            {"data": "type"},
-            {"data": "board"},
-            {"data": "name"}
-        ],
-        "columnDefs": [
-            {
-                // The `data` parameter refers to the data for the cell (defined by the
-                // `data` option, which defaults to the column being worked with, in
-                // this case `data: 0`.
-                "render": function(data, type, row) {
-                    //    return data +' ('+ row['name']+')';
-                    var div = $('<div/>');
-                    $('<button/>', {
-                        text: 'View',
-                        class: 'btn btn-xs btn-primary',
-                        id: "btn-view-project-" + data
-                    }).appendTo(div);
-                    return div.html();
+    if (!projectTable) {
+        projectTable = $("#table-project-table").dataTable({
+            "ajax": 'php/index.php/project/mine',
+            "columns": [
+                {
+                    "data": "id",
+                    "width": "58px"
                 },
-                "targets": 0
-            }
-            // { "visible": false,  "targets": [ 3 ] }
-        ],
-        "createdRow": function(row, data, index) {
-            $("#btn-view-project-" + data['id'], row).on('click', function() {
+                {
+                    "data": "type",
+                    "width": "100px"
+                },
+                {
+                    "data": "board",
+                    "width": "200px"
+                },
+                {
+                    "data": "name"
+                }
+            ],
+            "columnDefs": [
+                {
+                    // The `data` parameter refers to the data for the cell (defined by the
+                    // `data` option, which defaults to the column being worked with, in
+                    // this case `data: 0`.
+                    "render": function(data, type, row) {
+                        //    return data +' ('+ row['name']+')';
+                        var div = $('<div/>');
+                        $('<button/>', {
+                            text: 'View',
+                            class: 'btn btn-xs btn-primary',
+                            id: "btn-view-project-" + data
+                        }).appendTo(div);
+                        return div.html();
+                    },
+                    "targets": 0
+                }
+                // { "visible": false,  "targets": [ 3 ] }
+            ],
+            "createdRow": function(row, data, index) {
+                $("#btn-view-project-" + data['id'], row).on('click', function() {
 //                 alert(data.id);
-                showProject(data);
-            });
-        }
-    });
+                    showProject(data);
+                });
+            }
+        });
 //    $("#table-project").datatable({
 //        perPage: 10,
 //        url: 'php/index.php/project/mine',
@@ -228,6 +258,9 @@ showTable = function() {
 //            }
 //        ]
 //    });
+    } else {
+        projectTable.api().ajax.reload();
+    }
 };
 
 showProject = function(data) {
