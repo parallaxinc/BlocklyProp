@@ -97,6 +97,15 @@ $(document).ready(function() {
         },
         readonly: true
     });
+    
+    $('#log-off').on('click', function() {
+        $.get('php/index.php/auth/logout', function(result) {
+            if (result.success) {
+                $.removeCookie('user');
+                $('#account-menu').addClass('hidden');
+            }
+        });
+    });
 });
 
 showTable = function() {

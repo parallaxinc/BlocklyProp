@@ -16,5 +16,12 @@ $(document).ready(function() {
         }
     });
     
+    $('#log-off').on('click', function() {
+        $.get('php/index.php/auth/logout', function(result) {
+            if (result.success) {
+                $('#account-menu').addClass('hidden');
+            }
+        });
+    });
 });
 
