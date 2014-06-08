@@ -40,6 +40,12 @@ class User extends AppModel {
                 'rule' => array('minLength', 8),
                 'message' => 'The password needs to be at least 8 characters'
             )
+        ),
+        'screenname' => array(
+            'required' => array(
+                'rule' => array('notEmpty'),
+                'message' => 'A screenname is required'
+            )
         )
     );
 

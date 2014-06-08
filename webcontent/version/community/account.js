@@ -13,6 +13,9 @@ $(document).ready(function() {
             $.cookie('user', data.user);
             $('#account-data').addClass('in').removeClass('hidden');
             $('#account-menu').removeClass('hidden');
+            
+            $("#changeEmail").val($.cookie('user')['email']);
+            $("#changeScreenname").val($.cookie('user')['screenname']);
         } else {
             $.removeCookie('user');
             $("#login-register").addClass('in').removeClass("hidden");
@@ -44,10 +47,11 @@ $(document).ready(function() {
         event.preventDefault();
 
         var email = $("#registerEmail").val();
+        var screenname = $("#registerScreenname").val();
         var password = $("#registerPassword").val();
         var passwordConfirm = $("#registerPasswordConfirum").val();
 
-        $.post('/php/auth/register', {email: email, password: password, passwordConfirm: passwordConfirm}, function(data) {
+        $.post('/php/auth/register', {email: email, screenname: screenname, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
             $(".icon").addClass("hidden");
             $(".message").remove();
@@ -91,11 +95,12 @@ $(document).ready(function() {
         event.preventDefault();
 
         var email = $("#changeEmail").val();
+        var screenname = $("#changeScreenname").val();
         var oldPassword = $("#changeOldPassword").val();
         var password = $("#changePassword").val();
         var passwordConfirm = $("#changePasswordConfirum").val();
 
-        $.post('/php/auth/change', {email: email, oldPassword: oldPassword, password: password, passwordConfirm: passwordConfirm}, function(data) {
+        $.post('/php/auth/change', {email: email, screenname: screenname, oldPassword: oldPassword, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
             $(".icon").addClass("hidden");
             $(".message").remove();

@@ -49,10 +49,11 @@ $(document).ready(function() {
         event.preventDefault();
 
         var email = $("#registerEmail").val();
+        var screenname = $("#registerScreenname").val();
         var password = $("#registerPassword").val();
         var passwordConfirm = $("#registerPasswordConfirum").val();
 
-        $.post('/php/auth/register', {email: email, password: password, passwordConfirm: passwordConfirm}, function(data) {
+        $.post('/php/auth/register', {email: email, screenname: screenname, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
             $(".icon").addClass("hidden");
             $(".message").remove();

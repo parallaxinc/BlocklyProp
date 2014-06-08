@@ -108,7 +108,7 @@ class AuthController extends AppController {
             
             $user = $this->User->get_user_by_id($this->Session->read('User.id'), $oldPassword);
             if ($user == null) {
-                $this->User->invalidate('oldPassword', "Old password doesn't");
+                $this->User->invalidate('oldPassword', "Old password incorrect");
             }
             if (!$this->User->validates()) {
                 $errors = $this->User->validationErrors;
@@ -116,7 +116,6 @@ class AuthController extends AppController {
                 $this->render('form_error');
                 return;
             }
-            
             
             $password = $this->request->data('password');
             $passwordConfirm = $this->request->data('passwordConfirm');

@@ -24,6 +24,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="lib/css/bootstrap.css" rel="stylesheet">
         <link href="lib/css/bootstrap-tagsinput.css" rel="stylesheet">
+        <link href="lib/css/dataTables.bootstrap.css" rel="stylesheet">
         <link href="site.css" rel="stylesheet">
         <script type="text/javascript" src="lib/js/jquery-2.1.0.min.js"></script>
         <script src="community.js"></script>
@@ -73,6 +74,16 @@
                 <div class="col-md-12">
                     <h2 id="projects-header">Projects</h2>
                     <div class="table-responsive" id="table-project">
+                        <table class="table table-striped" id="table-project-table" width="100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Type</th>
+                                    <th>Board</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -116,7 +127,11 @@
         </div>
         <script src="lib/js/bootstrap.min.js"></script>
         <script src="lib/js/bootstrap3-typeahead.min.js"></script>
-        <script src="lib/js/bootstrap-datatable.js"></script>
+        <!--<script src="lib/js/bootstrap-datatable.js"></script>-->
+        <script src="lib/js/jquery.dataTables.js"></script>
+        <script src="lib/js/dataTables.bootstrap.js"></script>
         <script src="lib/js/bootstrap-tagsinput.js"></script>
+        <script src="lib/js/bootbox.min.js"></script>
+        <script src="utils.js"></script>
     </body>
 </html>

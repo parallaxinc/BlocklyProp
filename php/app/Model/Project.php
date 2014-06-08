@@ -13,6 +13,13 @@ App::uses('AppModel', 'Model');
  * @author Michel
  */
 class Project extends AppModel {
+    
+    public $belongsTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'id_user'
+        )
+    );
 
     public $hasAndBelongsToMany = array(
         'Tag' =>

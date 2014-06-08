@@ -6,57 +6,60 @@
 
 var selectedProject = 0;
 
+var projectTable;
+
 $(document).ready(function() {
-    $("#table-project").datatable({
-        perPage: 10,
-        url: 'php/index.php/project/index',
-        title: 'Projects',
-        showPagination: true,
-        toggleColumns: false,
-        sectionHeader: '#projects-header',
-        columns: [
-            {
-                title: "",
-                sortable: true,
-                field: "id",
-                callback: function(data) {
-                    return $('<button/>', {
-                        text: 'View',
-                        class: 'btn btn-xs btn-primary',
-                        click: function() {
-//                            alert(data.id);
-                            showProject(data);
-                        }
-                    });
-                },
-                css: {
-                    width: '58px'
-                }
-            },
-            {
-                title: "Type",
-                sortable: true,
-                field: "type",
-                filter: true,
-                css: {
-                    width: '100px'
-                }
-            },
-            {
-                title: "Board",
-                sortable: true,
-                field: "board",
-                css: {
-                    width: '200px'
-                }
-            },
-            {
-                title: "Name",
-                sortable: true,
-                field: "name"
-            }
-        ]
-    });
+//    $("#table-project").datatable({
+//        perPage: 10,
+//        url: 'php/index.php/project/index',
+//        title: 'Projects',
+//        showPagination: true,
+//        toggleColumns: false,
+//        sectionHeader: '#projects-header',
+//        columns: [
+//            {
+//                title: "",
+//                sortable: true,
+//                field: "id",
+//                callback: function(data) {
+//                    return $('<button/>', {
+//                        text: 'View',
+//                        class: 'btn btn-xs btn-primary',
+//                        click: function() {
+////                            alert(data.id);
+//                            showProject(data);
+//                        }
+//                    });
+//                },
+//                css: {
+//                    width: '58px'
+//                }
+//            },
+//            {
+//                title: "Type",
+//                sortable: true,
+//                field: "type",
+//                filter: true,
+//                css: {
+//                    width: '100px'
+//                }
+//            },
+//            {
+//                title: "Board",
+//                sortable: true,
+//                field: "board",
+//                css: {
+//                    width: '200px'
+//                }
+//            },
+//            {
+//                title: "Name",
+//                sortable: true,
+//                field: "name"
+//            }
+//        ]
+//    });
+    showTable();
 
     $('#open-project').on('click', function() {
 //        alert('open project ' + selectedProject);
@@ -82,6 +85,108 @@ $(document).ready(function() {
         readonly: true
     });
 });
+
+showTable = function() {
+    if (!projectTable) {
+        projectTable = $("#table-project-table").dataTable({
+            "ajax": 'php/index.php/project',
+            "columns": [
+                {
+                    "data": "id",
+                    "width": "58px"
+                },
+                {
+                    "data": "type",
+                    "width": "100px"
+                },
+                {
+                    "data": "board",
+                    "width": "200px"
+                },
+                {
+                    "data": "name"
+                }
+            ],
+            "columnDefs": [
+                {
+                    // The `data` parameter refers to the data for the cell (defined by the
+                    // `data` option, which defaults to the column being worked with, in
+                    // this case `data: 0`.
+                    "render": function(data, type, row) {
+                        //    return data +' ('+ row['name']+')';
+                        var div = $('<div/>');
+                        $('<button/>', {
+                            text: 'View',
+                            class: 'btn btn-xs btn-primary',
+                            id: "btn-view-project-" + data
+                        }).appendTo(div);
+                        return div.html();
+                    },
+                    "targets": 0
+                }
+                // { "visible": false,  "targets": [ 3 ] }
+            ],
+            "createdRow": function(row, data, index) {
+                $("#btn-view-project-" + data['id'], row).on('click', function() {
+//                 alert(data.id);
+                    showProject(data);
+                });
+            }
+        });
+//    $("#table-project").datatable({
+//        perPage: 10,
+//        url: 'php/index.php/project/mine',
+//        title: 'Projects',
+//        showPagination: true,
+//        toggleColumns: false,
+//        sectionHeader: '#projects-header',
+//        columns: [
+//            {
+//                title: "",
+//                sortable: true,
+//                field: "id",
+//                callback: function(data) {
+//                    return $('<button/>', {
+//                        text: 'View',
+//                        class: 'btn btn-xs btn-primary',
+//                        click: function() {
+////                            alert(data.id);
+//                            showProject(data);
+//                        }
+//                    });
+//                },
+//                css: {
+//                    width: '58px'
+//                }
+//            },
+//            {
+//                title: "Type",
+//                sortable: true,
+//                field: "type",
+//                filter: true,
+//                css: {
+//                    width: '100px'
+//                }
+//            },
+//            {
+//                title: "Board",
+//                sortable: true,
+//                field: "board",
+//                css: {
+//                    width: '200px'
+//                }
+//            },
+//            {
+//                title: "Name",
+//                sortable: true,
+//                field: "name"
+//            }
+//        ]
+//    });
+    } else {
+        projectTable.api().ajax.reload();
+    }
+};
 
 function showProject(data) {
 //    $('#project-dialog').modal('show');
