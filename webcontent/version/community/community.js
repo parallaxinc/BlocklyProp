@@ -9,6 +9,19 @@ var selectedProject = 0;
 var projectTable;
 
 $(document).ready(function() {
+    $.cookie.json = true;
+    // TODO check if logged in
+
+    $.get('/php/auth/user', function(data) {
+        if (data.success) {
+            $.cookie('user', data.user);
+            $('#account-menu').removeClass('hidden');
+        } else {
+            $.removeCookie('user');
+            $("#login-register").removeClass("hidden");
+        }
+    });
+    
 //    $("#table-project").datatable({
 //        perPage: 10,
 //        url: 'php/index.php/project/index',
@@ -93,7 +106,11 @@ showTable = function() {
             "columns": [
                 {
                     "data": "id",
-                    "width": "58px"
+                    "width": "40px"
+                },
+                {
+                    "data": "by",
+                    "width": "100px"
                 },
                 {
                     "data": "type",
@@ -101,7 +118,7 @@ showTable = function() {
                 },
                 {
                     "data": "board",
-                    "width": "200px"
+                    "width": "150px"
                 },
                 {
                     "data": "name"

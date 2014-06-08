@@ -131,10 +131,15 @@ class AuthController extends AppController {
             }
             
             $email = $this->request->data('email');
+            $screenname = $this->request->data('screenname');
+            
+            if ($user['email'] == $email) {
+                unset($this->User->validate['email']['unique']); 
+            }
+            
             $user['password'] = $password;
             $user['email'] = $email;
-            
-            unset($this->User->validate['email']['unique']); 
+            $user['screenname'] = $screenname;
             
             if ($this->User->save($user)) {
                 $id = $this->User->id;

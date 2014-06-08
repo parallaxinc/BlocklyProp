@@ -169,7 +169,7 @@ showTable = function() {
             "columns": [
                 {
                     "data": "id",
-                    "width": "58px"
+                    "width": "40px"
                 },
                 {
                     "data": "type",

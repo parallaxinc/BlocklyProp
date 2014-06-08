@@ -27,6 +27,7 @@
         <link href="lib/css/dataTables.bootstrap.css" rel="stylesheet">
         <link href="site.css" rel="stylesheet">
         <script type="text/javascript" src="lib/js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="lib/js/jquery.cookie.js"></script>
         <script src="community.js"></script>
     </head>
     <body>
@@ -49,6 +50,14 @@
                             <a href="help/spinreference.html">Spin reference</a>
                         </li>
                     </ul>
+                    <ul id="account-menu" class="nav navbar-nav pull-right hidden">
+                        <li>
+                            <a href="account.html">My account</a>
+                        </li>
+                        <li>
+                            <a href="#" id="log-off">Log off</a>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </header>
@@ -63,7 +72,6 @@
                 <div class="col-md-12" role="main">
                     <h1>BlocklyProp Community</h1>
                     <p>BlocklyProp community allows you to save your projects and share them with the community.</p>
-                    <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community is in active development so a lot of functionality is still missing. Currently all projects are shared and everyone can edit all projects.</div>
                     <div class="alert alert-warning"><strong>Warning!</strong> BlocklyProp and BlocklyProp Community are in active development and there is no guarantee that your projects won't be erased or even that they keep working.</div>
                 </div>
             </div>
@@ -78,6 +86,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th>By</th>
                                     <th>Type</th>
                                     <th>Board</th>
                                     <th>Name</th>
