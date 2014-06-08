@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-var projectTable;
-
 
 $(document).ready(function() {
     $.cookie.json = true;
@@ -17,7 +15,7 @@ $(document).ready(function() {
             $('#account-menu').removeClass('hidden');
         } else {
             $.removeCookie('user');
-            $("#login-register").removeClass("hidden");
+            $("#login-register").addClass('in').removeClass("hidden");
         }
     });
 
@@ -31,7 +29,6 @@ $(document).ready(function() {
             // console.log(data);
             if (data.success) {
                 $.cookie('user', data.user);
-                showTable();
                 $('#account-data').removeClass('hidden');
                 $('#login-register').collapse('hide');
                 $('#account-menu').removeClass('hidden');
@@ -80,11 +77,43 @@ $(document).ready(function() {
             if (result.success) {
                 $.removeCookie('user');
                 $('#account-menu').addClass('hidden');
+                $("#login-register").removeClass("hidden");
 
                 $('#login-register').collapse('show');
                 if ($('#account-data').hasClass('in')) {
                     $('#account-data').collapse('hide');
                 }
+            }
+        });
+    });
+    
+    $("#account-data-form").submit(function(event) {
+        event.preventDefault();
+
+        var email = $("#changeEmail").val();
+        var oldPassword = $("#changeOldPassword").val();
+        var password = $("#changePassword").val();
+        var passwordConfirm = $("#changePasswordConfirum").val();
+
+        $.post('/php/auth/change', {email: email, oldPassword: oldPassword, password: password, passwordConfirm: passwordConfirm}, function(data) {
+            $(".form-group").removeClass("has-error");
+            $(".icon").addClass("hidden");
+            $(".message").remove();
+            if (data.success) {
+                $.cookie('user', data.user);
+                $('#account-data-form').collapse('hide');
+                $('#account-change-confirm').collapse('show');
+            } else {
+                Object.keys(data['errors']).forEach(function(error_group) {
+                    $("#change-group-" + error_group).addClass("has-error");
+                    $("#change-group-" + error_group + " .icon").removeClass("hidden");
+                    data['errors'][error_group].forEach(function(message) {
+                        $("<span/>", {
+                            class: "help-block message",
+                            text: message
+                        }).appendTo($("#change-group-" + error_group));
+                    });
+                });
             }
         });
     });

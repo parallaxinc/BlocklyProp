@@ -33,7 +33,7 @@ class AuthController extends AppController {
             $this->set('user', $user);
             $this->render('user');
         } else {
-            $this->render('login_error');
+            $this->render('error');
         }
     }
 
@@ -50,7 +50,7 @@ class AuthController extends AppController {
             if (!$this->User->validates()) {
                 $errors = $this->User->validationErrors;
                 $this->set('errors', $errors);
-                $this->render('register_error');
+                $this->render('form_error');
                 return;
             }
 
@@ -66,7 +66,7 @@ class AuthController extends AppController {
             } else {
                 $errors = $this->User->validationErrors;
                 $this->set('errors', $errors);
-                $this->render('register_error');
+                $this->render('form_error');
             }
         }
 //            $this->Session->setFlash(
@@ -75,21 +75,83 @@ class AuthController extends AppController {
     }
     
     public function user() {
-        if ($this->Session->check('User') && $this->Session->read('User.id') != null) {
+        if ($this->Session->check('User')) {
+            if (!$this->Session->read('User.id')) {
+                $this->set('message', $this->Session->read('User'));
+                $this->render('error'); 
+                return;
+            }
             $user = $this->User->findById($this->Session->read('User.id'));
            // echo $user;
             if (!$user) {
                 throw new NotFoundException(__('Invalid user'));
             }
-            $this->set('user', $user);
+            $this->set('user', $user['User']);
             $this->render('user');
         } else {
-            $this->render('login_error');       
+            $this->render('error');       
         }
     }
     
     public function logout() {
         $this->Session->destroy();
+    }
+    
+    public function change() {
+        if (!$this->Session->check('User.id')) {
+            $this->set('message', 'Not logged in');
+            $this->render('error');
+            return;
+        }
+        if ($this->request->is('post')) {
+            $oldPassword = $this->request->data('oldPassword');
+            
+            $user = $this->User->get_user_by_id($this->Session->read('User.id'), $oldPassword);
+            if ($user == null) {
+                $this->User->invalidate('oldPassword', "Old password doesn't");
+            }
+            if (!$this->User->validates()) {
+                $errors = $this->User->validationErrors;
+                $this->set('errors', $errors);
+                $this->render('form_error');
+                return;
+            }
+            
+            
+            $password = $this->request->data('password');
+            $passwordConfirm = $this->request->data('passwordConfirm');
+            
+            if ($password != $passwordConfirm) {
+                $this->User->invalidate('passwordConfirm', "The passwords don't match.");
+            }
+            if (!$this->User->validates()) {
+                $errors = $this->User->validationErrors;
+                $this->set('errors', $errors);
+                $this->render('form_error');
+                return;
+            }
+            
+            $email = $this->request->data('email');
+            $user['password'] = $password;
+            $user['email'] = $email;
+            
+            unset($this->User->validate['email']['unique']); 
+            
+            if ($this->User->save($user)) {
+                $id = $this->User->id;
+                $user = $this->User->findById($id);
+                if (!$user) {
+                    throw new NotFoundException(__('Invalid user'));
+                }
+                $this->Session->write('User', $user['User']);
+                $this->set('user', $user['User']);
+                $this->render('user');
+            } else {
+                $errors = $this->User->validationErrors;
+                $this->set('errors', $errors);
+                $this->render('form_error');
+            }
+        }
     }
 
 }

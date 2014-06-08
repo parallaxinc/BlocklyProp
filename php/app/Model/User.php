@@ -73,5 +73,18 @@ class User extends AppModel {
         }
         return null;
     }
+    
+    public function get_user_by_id($id, $password) {
+        $query_result = $this->find('first', array('conditions' => array('id' => $id)));
+
+        $user = $query_result[$this->alias];
+        if ($user) {
+            $passwordHasher = new SimplePasswordHasher();
+            if ($passwordHasher->check($password, $user['password'])) {
+                return $user;
+            }
+        }
+        return null;
+    }
 
 }

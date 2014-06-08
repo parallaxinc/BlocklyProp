@@ -72,13 +72,11 @@
                 <div class="col-md-12" role="main">
                     <h1>BlocklyProp Community</h1>
                     <p>BlocklyProp community allows you to save your projects and share them with the community.</p>
-                    <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community is in active development so a lot of functionality is still missing. Currently all projects are shared and everyone can edit all projects.</div>
-                    <div class="alert alert-warning"><strong>Warning!</strong> BlocklyProp and BlocklyProp Community are in active development and there is no guarantee that your projects won't be erased or even that they keep working.</div>
                 </div>
             </div>
         </div>
 
-        <div class="container collapse in hidden" id="login-register">
+        <div class="container collapse hidden" id="login-register">
             <div class="row">
                 <div class="col-md-4">
                     <h2>Community</h2>
@@ -126,46 +124,69 @@
             </div>
         </div>
 
+
         <div class="container collapse hidden" id="account-data">
             <div class="row">
-                <div class="col-md-6">
-                    <h2>Your account</h2>
-                    <p>Change your basic account data. For safety, its always required to fill in your old password and enter a new one.</p>
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#account" data-toggle="tab">Your account</a></li>
+                        <li><a href="#friends" data-toggle="tab">Friends</a></li>
+                    </ul>
                 </div>
-                <div class="col-md-6">
-                    <h2>&nbsp;</h2>
-                    <div>
-                        <form  role="form" id="account-data-form">
-                        <div id="change-group-email" class="form-group has-feedback">
-                            <label class="control-label" for="changeEmail">Email</label>
-                            <input type="email" class="form-control" id="registerEmail" name="email" placeholder="Email">
-                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+            </div>
+            <div class="row">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="account">
+                        <div class="col-md-6">
+                            <h2>Your account</h2>
+                            <p>Change your basic account data. For safety, its always required to fill in your old password and enter a new one.</p>
                         </div>
-                        <div id="change-group-old-password" class="form-group has-feedback">
-                            <label class="control-label" for="changeOldPassword">Old password</label>
-                            <input type="password" class="form-control" id="changeOldPassword" name="oldPassword" placeholder="Old password">
-                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                        <div class="col-md-6">
+                            <h2>&nbsp;</h2>
+                            <div>
+                                <form role="form" class="collapse in" id="account-data-form">
+                                    <div id="change-group-email" class="form-group has-feedback">
+                                        <label class="control-label" for="changeEmail">Email</label>
+                                        <input type="email" class="form-control" id="changeEmail" name="email" placeholder="Email">
+                                        <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                    </div>
+                                    <div id="change-group-old-password" class="form-group has-feedback">
+                                        <label class="control-label" for="changeOldPassword">Old password</label>
+                                        <input type="password" class="form-control" id="changeOldPassword" name="oldPassword" placeholder="Old password">
+                                        <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                    </div>
+                                    <div id="change-group-password" class="form-group has-feedback">
+                                        <label class="control-label" for="changePassword">Password</label>
+                                        <input type="password" class="form-control" id="changePassword" name="password" placeholder="Password">
+                                        <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                    </div>
+                                    <div id="change-group-passwordConfirm" class="form-group has-feedback">
+                                        <label class="control-label" for="changePasswordConfirm">Confirm password</label>
+                                        <input type="password" class="form-control" id="changePasswordConfirum" name="passwordConfirm" placeholder="Confirm password">
+                                        <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                    </div>
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-default" id="change-account">Change</button>
+                                    </div>
+                                </form>
+                                <div id="account-change-confirm" class="collapse">
+                                    <p class="text-success">Your account data has been changed.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div id="change-group-password" class="form-group has-feedback">
-                            <label class="control-label" for="changePassword">Password</label>
-                            <input type="password" class="form-control" id="changePassword" name="password" placeholder="Password">
-                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                    </div>
+                    <div class="tab-pane" id="friends">
+                        <div class="col-md-12">
+                            <h2>Your friends</h2>
+                            <p>Your projects that are not marked as private will be visible to your friends.</p>
+                            <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community friends is still under development.</div>
                         </div>
-                        <div id="change-group-passwordConfirm" class="form-group has-feedback">
-                            <label class="control-label" for="changePasswordConfirm">Confirm password</label>
-                            <input type="password" class="form-control" id="changePasswordConfirum" name="passwordConfirm" placeholder="Confirm password">
-                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
-                        </div>
-                        <div class="pull-right">
-                            <button type="submit" class="btn btn-default" id="change-account">Change</button>
-                        </div>
-                    </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        
+
         <script src="lib/js/bootstrap.min.js"></script>
         <script src="lib/js/bootstrap3-typeahead.min.js"></script>
         <!--<script src="lib/js/bootstrap-datatable.js"></script>-->
