@@ -153,36 +153,70 @@
         <div class="container collapse" id="project-detail">
             <div class="row">
                 <div class="col-md-12">
-                    <h2><button id="back-to-list" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>Project: <span id="name"></span></h2>
+                    <h2 class="form-inline"><button id="back-to-list" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>Project: <a href="#" data-toggle="tooltip" title="Click to edit" id="name" ></a><input id="name-input" class="form-control hidden" type="text"/></h2>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="type">Type</label>
-                        <label class="form-control" id="type"></label>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="board">Board</label>
-                        <label class="form-control" id="board"></label>
-                    </div>
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#project-base" data-toggle="tab">Base data</a></li>
+                        <li><a href="#project-share" data-toggle="tab">Share</a></li>
+                    </ul>
                 </div>
-                <div class="col-md-8">
-                    <div class="form-group" >
-                        <label for="tags">Tags</label>
-                        <select multiple="multiple" id="tag"></select>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="project-base">
+                        <div class="tab-content-top-margin">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="type">Type</label>
+                                    <label class="form-control" id="type"></label>
+                                </div>
 
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" readonly="readonly" rows="5"></textarea>
+                                <div class="form-group">
+                                    <label for="board">Board</label>
+                                    <label class="form-control" id="board"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group" >
+                                    <label for="tags">Tags</label>
+                                    <select multiple="multiple" id="tag"></select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" id="description" rows="5"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="project-share">
+                        <div class="tab-content-top-margin">
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="private-project"> Private project
+                                    </label>
+                                    <p class="help-block">A private project can not be seen by your anyone, if not, at least your friends can see it.</p>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="shared-project"> Shared project
+                                    </label>
+                                    <p class="help-block">A shared project can be viewed by everyone.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="btn-group">
+                        <button id="save-project" class="btn btn-success">Save</button>
                         <a href="#" id="open-project" class="btn btn-success">Open</a>
                         <button id="delete-project" class="btn btn-danger">Delete</button>
                     </div>

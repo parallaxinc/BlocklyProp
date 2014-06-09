@@ -102,3 +102,7 @@ and open the template in the editor.
 #back-to-list {
     margin-right: 20px;
 }
+
+.tab-content-top-margin {
+    margin-top: 20px;
+}

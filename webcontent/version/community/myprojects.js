@@ -140,8 +140,8 @@ $(document).ready(function() {
             'source': function(query) {
                 return $.post('php/index.php/tag/index/', {query: query});
             }
-        },
-        readonly: true
+        }
+//        readonly: true
     });
 
     $('#log-off').on('click', function() {
@@ -159,6 +159,18 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+    
+    $('#name').on('click', function() {
+        var projectName = $('#name').text();
+        $('#name').text('');
+        $('#name-input').val(projectName).removeClass('hidden').focus();
+    }).tooltip();
+    
+    $('#name-input').keypress(function(e) {
+        if (e.which === 13) {
+            $('#name').text($('#name-input').addClass('hidden').val());
+        }
     });
 });
 
