@@ -35,8 +35,63 @@ $(document).ready(function() {
     $('#save-project').on('click', function() {
         getProjectData();
         projectData['code'] = window.frames["content_blocks"].getXml();
-        $.post('php/index.php/project/save', projectData, function() {
-            $('#project-dialog').modal('hide');
+        $.post('php/index.php/project/save', projectData, function(data) {
+            if (data.success === false) {
+                if (data.code === 2) {
+//                    $('#signin-register').height($('#register-form').height());
+                    $('#login-dialog').modal('show');
+                }
+            } else {
+                $('#project-dialog').modal('hide');
+            }
+        });
+    });
+    
+    $("#signin-form").submit(function(event) {
+        event.preventDefault();
+
+        var email = $("#loginEmail").val();
+        var password = $("#loginPassword").val();
+
+        $.post('/php/auth/signin', {email: email, password: password}, function(data) {
+            // console.log(data);
+            if (data.success) {
+//                $.cookie('user', data.user);
+                $('#login-dialog').modal('hide');
+            } else {
+
+            }
+        });
+    });
+
+    $("#register-form").submit(function(event) {
+        event.preventDefault();
+
+        var email = $("#registerEmail").val();
+        var screenname = $("#registerScreenname").val();
+        var password = $("#registerPassword").val();
+        var passwordConfirm = $("#registerPasswordConfirum").val();
+
+        $.post('/php/auth/register', {email: email, screenname: screenname, password: password, passwordConfirm: passwordConfirm}, function(data) {
+            $(".form-group").removeClass("has-error");
+            $(".icon").addClass("hidden");
+            $(".message").remove();
+            if (data.success) {
+//                $.cookie('user', data.user);
+                $('#login-dialog').modal('hide');
+            } else {
+                Object.keys(data['errors']).forEach(function(error_group) {
+                    $("#register-group-" + error_group).addClass("has-error");
+                    $("#register-group-" + error_group + " .icon").removeClass("hidden");
+                    data['errors'][error_group].forEach(function(message) {
+                        $("<span/>", {
+                            class: "help-block message",
+                            text: message
+                        }).appendTo($("#register-group-" + error_group));
+                    });
+                });
+                $('#signin-register').height($('#register-form').height());
+            }
         });
     });
 

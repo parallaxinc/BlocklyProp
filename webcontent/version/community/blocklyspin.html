@@ -204,6 +204,72 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div class="modal fade" id="login-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="compile-dialog-title">Sign in / Register</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="signin-register" style="height: 380px;">
+                            <div class="col-md-6">
+                                <form role="form" id="signin-form">
+                                    <fieldset>
+                                        <legend>Sign in</legend>
+                                        <div class="form-group">
+                                            <label for="loginEmail">Email</label>
+                                            <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="loginPassword">Password</label>
+                                            <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password">
+                                        </div>
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-default" id="signin">Sign in</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <form  role="form" id="register-form">
+                                    <fieldset>
+                                        <legend>Register</legend>
+                                        <div id="register-group-email" class="form-group has-feedback">
+                                            <label class="control-label" for="registerEmail">Email</label>
+                                            <input type="email" class="form-control" id="registerEmail" name="email" placeholder="Email">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div id="register-group-screenname" class="form-group has-feedback">
+                                            <label class="control-label" for="registerScreenname">Screenname</label>
+                                            <input type="text" class="form-control" id="registerScreenname" name="screenname" placeholder="Screenname">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div id="register-group-password" class="form-group has-feedback">
+                                            <label class="control-label" for="registerPassword">Password</label>
+                                            <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Password">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div id="register-group-passwordConfirm" class="form-group has-feedback">
+                                            <label class="control-label" for="registerPasswordConfirm">Confirm password</label>
+                                            <input type="password" class="form-control" id="registerPasswordConfirum" name="passwordConfirm" placeholder="Confirm password">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-default" id="register">Register</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <script src="lib/js/bootstrap.min.js"></script>
         <script src="lib/js/bootbox.min.js"></script>
         <script>

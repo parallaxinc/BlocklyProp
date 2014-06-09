@@ -149,23 +149,28 @@ class ProjectController extends AppController {
         if (!$project) {
             throw new NotFoundException(__('Invalid project'));
         }
-        if (!$this->Session->check('User.id')) {
-            unset($project['Project']['id']);
-        } else if ($this->Session->read('User.id') != $project['Project']['id_user']) {
-            unset($project['Project']['id']);
-        }
+//        if (!$this->Session->check('User.id')) {
+//            unset($project['Project']['id']);
+//        } else if ($this->Session->read('User.id') != $project['Project']['id_user']) {
+//            unset($project['Project']['id']);
+//        }
         $this->set('project', $project);
     }
 
     public function save() {
-        if ($this->Session->read('User.id') == null) {
+        if (!$this->Session->check('User.id')) {
+            $this->set('code', 2);
             $this->render('user_error');
             return;
         }
         if ($this->request->is('post')) {
+            if ($this->request->data['id_user'] != $this->Session->read('User.id')) {
+                unset($this->request->data['id']);
+            }
             if ($this->request->data('id')) {
                 $this->Project->id = $this->request->data('id');
                 unset($this->request->data['modified']);
+                
                 if ($this->Project->save($this->request->data)) {
                     $id = $this->Project->id;
                 } else {
