@@ -19,6 +19,7 @@ $(document).ready(function() {
         } else {
             $.removeCookie('user');
             $("#login-register").removeClass("hidden");
+            $("#signin-menu").removeClass("hidden");
         }
     });
     
@@ -103,6 +104,7 @@ $(document).ready(function() {
             if (result.success) {
                 $.removeCookie('user');
                 $('#account-menu').addClass('hidden');
+                $("#signin-menu").removeClass("hidden");
             }
         });
     });
@@ -235,6 +237,13 @@ function showProject(data) {
 
     $('#project-list').collapse('hide');
     $('#project-detail').collapse('show');
+    
+    var types = {
+        'spin': 'blocklyspin.html',
+        'prop-c': 'blocklyc.html',
+        'scribbler': 'blocklyscribbler.html'
+    };
+    $('#open-project').attr('href', types[selectedProject['type']] + '?project=' + selectedProject['id']);
 }
 
 

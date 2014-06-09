@@ -79,15 +79,15 @@ $(document).ready(function() {
         });
     });
 
-    $('#open-project').on('click', function() {
-//        alert('open project ' + selectedProject);
-        var types = {
-            'spin': 'blocklyspin.html',
-            'prop-c': 'blocklyc.html',
-            'scribbler': 'blocklyscribbler.html'
-        };
-        window.location.href = types[selectedProject['type']] + '?project=' + selectedProject['id'];
-    });
+//    $('#open-project').on('click', function() {
+////        alert('open project ' + selectedProject);
+//        var types = {
+//            'spin': 'blocklyspin.html',
+//            'prop-c': 'blocklyc.html',
+//            'scribbler': 'blocklyscribbler.html'
+//        };
+//        window.location.href = types[selectedProject['type']] + '?project=' + selectedProject['id'];
+//    });
 
     $('#delete-project').on('click', function() {
         utils.confirm("Confirm delete", "Deleted projects can not be restored.<br/>Are you sure?", function(result) {
@@ -285,4 +285,11 @@ showProject = function(data) {
 
     $('#project-list').collapse('hide');
     $('#project-detail').collapse('show');
+    
+    var types = {
+        'spin': 'blocklyspin.html',
+        'prop-c': 'blocklyc.html',
+        'scribbler': 'blocklyscribbler.html'
+    };
+    $('#open-project').attr('href', types[selectedProject['type']] + '?project=' + selectedProject['id']);
 };

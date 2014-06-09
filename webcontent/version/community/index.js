@@ -12,7 +12,7 @@ $(document).ready(function() {
         if (data.success) {
             $('#account-menu').removeClass('hidden');
         } else {
-            $("#login-register").removeClass("hidden");
+            $("#signin-menu").removeClass("hidden");
         }
     });
     
@@ -20,6 +20,7 @@ $(document).ready(function() {
         $.get('php/index.php/auth/logout', function(result) {
             if (result.success) {
                 $('#account-menu').addClass('hidden');
+                $("#signin-menu").removeClass("hidden");
             }
         });
     });
