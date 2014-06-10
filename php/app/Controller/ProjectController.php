@@ -100,7 +100,7 @@ class ProjectController extends AppController {
         $this->set('result', $result);
         $this->render('list');
     }
-    
+
     public function mine() {
 //        $perPage = $this->request->data('perPage') ? : 10;
 //        $page = $this->request->data('currentPage') ? : 1;
@@ -170,20 +170,20 @@ class ProjectController extends AppController {
             if ($this->request->data('id')) {
                 $this->Project->id = $this->request->data('id');
                 unset($this->request->data['modified']);
-                
+
                 if ($this->Project->save($this->request->data)) {
                     $id = $this->Project->id;
                 } else {
-
+                    
                 }
             } else {
-         //       $this->request->data('id_user') = $this->Session->read('User.id');
+                //       $this->request->data('id_user') = $this->Session->read('User.id');
                 $this->Project->create();
                 //$this->Project['id_user'] = $this->Session->read('User.id');
                 if ($this->Project->save($this->request->data)) {
                     $id = $this->Project->id;
                 } else {
-
+                    
                 }
             }
             $project = $this->Project->findById($id);
@@ -196,7 +196,37 @@ class ProjectController extends AppController {
             $this->render('view');
         }
     }
-    
+
+    public function saveBaseData() {
+        if (!$this->Session->check('User.id')) {
+            $this->set('code', 2);
+            $this->render('user_error');
+            return;
+        }
+        if ($this->request->is('post')) {
+            $project = $this->Project->findById($this->request->data['id']);
+            if (!$project) {
+                throw new NotFoundException(__('Invalid project'));
+            }
+
+            if ($project['Project']['id_user'] != $this->Session->read('User.id')) {
+                $this->set('code', 2);
+                $this->set('message', 'Not your project');
+                $this->render('user_error');
+                return;
+            }
+            
+            $project['Project']['name'] = $this->request->data['name'];
+            $project['Project']['description'] = $this->request->data['description'];
+            $project['Project']['private'] = $this->request->data['private'] == "true" ? 1 : 0;
+            $project['Project']['shared'] = $this->request->data['shared'] = "true" ? 1 : 0;
+
+            if ($this->Project->save($project['Project'])) {
+                $this->render('confirm');
+            }
+        }
+    }
+
     public function delete($id) {
         if (!$id) {
             throw new NotFoundException(__('Invalid project'));
@@ -205,13 +235,13 @@ class ProjectController extends AppController {
         if (!$project) {
             throw new NotFoundException(__('Invalid project'));
         }
-        
+
         if (!$this->Session->check('User.id')) {
             $this->set('message', 'Not logged in');
             $this->render('error');
             return;
         }
-        
+
         if ($this->Session->read('User.id') != $project['Project']['id_user']) {
             $this->set('message', 'Not your project');
             $this->render('error');
@@ -219,8 +249,6 @@ class ProjectController extends AppController {
             $this->Project->delete($id);
             $this->render('confirm');
         }
-        
-        
     }
 
 }

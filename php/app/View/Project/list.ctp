@@ -11,7 +11,9 @@ foreach ($projects as $project) {
         "name" => h($project['Project']['name']),
         "type" => h($project['Project']['type']),
         "board" => h($project['Project']['board']),
-        "description" => h($project['Project']['description'])
+        "description" => h($project['Project']['description']),
+        "private" => $project['Project']['private'],
+        "shared" => $project['Project']['shared']
     );
 
     foreach ($project['Tag'] as $tag) {

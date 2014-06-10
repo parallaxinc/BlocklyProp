@@ -5,6 +5,7 @@
  */
 
 var projectTable;
+var saved = false;
 
 
 $(document).ready(function() {
@@ -79,16 +80,6 @@ $(document).ready(function() {
         });
     });
 
-//    $('#open-project').on('click', function() {
-////        alert('open project ' + selectedProject);
-//        var types = {
-//            'spin': 'blocklyspin.html',
-//            'prop-c': 'blocklyc.html',
-//            'scribbler': 'blocklyscribbler.html'
-//        };
-//        window.location.href = types[selectedProject['type']] + '?project=' + selectedProject['id'];
-//    });
-
     $('#delete-project').on('click', function() {
         utils.confirm("Confirm delete", "Deleted projects can not be restored.<br/>Are you sure?", function(result) {
             if (result) {
@@ -104,35 +95,15 @@ $(document).ready(function() {
                 });
             }
         });
-//        bootbox.dialog({
-//            title: "Confirm delete",
-//            message: "Deleted projects can not be restored.<br/>Are you sure?",
-//            buttons: {
-//                cancel: {
-//                    label: "Cancel",
-//                    className: "btn-default"
-//                },
-//                confirm: {
-//                    lable: "Confirm",
-//                    className: "btn-primary",
-//                    callback: function() {
-//                        $.get('/php/project/delete/' + selectedProject['id'], function(data) {
-//                            if (data.success) {
-//                                
-//                            } else {
-//                                
-//                            }
-//                        });
-//                        // console.log("Delete project: " + selectedProject['id']);
-//                    }
-//                }
-//            }
-//        });
     });
 
     $('#back-to-list').on('click', function() {
         $('#project-list').collapse('show');
         $('#project-detail').collapse('hide');
+        if (saved) {
+            saved = false;
+            projectTable.api().ajax.reload();
+        }
     });
 
     $('#tag').tagsinput({
@@ -160,17 +131,38 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     $('#name').on('click', function() {
         var projectName = $('#name').text();
         $('#name').text('');
         $('#name-input').val(projectName).removeClass('hidden').focus();
     }).tooltip();
-    
+
     $('#name-input').keypress(function(e) {
         if (e.which === 13) {
             $('#name').text($('#name-input').addClass('hidden').val());
         }
+    });
+
+    $('#save-project').on('click', function() {
+        selectedProject['name'] = $('#name').text();
+        selectedProject['description'] = $('#description').val();
+
+        selectedProject['tags'] = $('#tag').tagsinput('items');
+        selectedProject['private'] = $('#private-project').is(':checked');
+        selectedProject['shared'] = $('#shared-project').is(':checked');
+
+        $.post('/php/project/saveBaseData', selectedProject, function(data) {
+            if (data.success) {
+                utils.showMessage("Project saved", "Your project has been saved");
+//                $('#project-list').collapse('show');
+//                $('#project-detail').collapse('hide');
+                saved = true;
+//                projectTable.api().ajax.reload();
+            } else {
+                utils.showMessage("Project not saved", "Your project was not saved, reason:<br/>" + data.message);
+            }
+        });
     });
 });
 
@@ -282,6 +274,7 @@ showProject = function(data) {
     $('#type').text(data['type']);
     $('#board').text(data['board']);
     $('#name').text(data['name']);
+
     $('#description').text(data['description']);
 //    var tags = [];
     $('#tag').tagsinput('removeAll');
@@ -291,17 +284,31 @@ showProject = function(data) {
             $('#tag').tagsinput('add', data['tags'][tag]['name']);
         }
     }
-//    console.log(tags);
-//    $('#tag').val(tags);
 
+    if (data['private']) {
+        $('#private-project').attr('checked', 'checked');
+    } else {
+        $('#private-project').removeAttr('checked');
+    }
+
+    if (data['shared']) {
+        $('#shared-project').attr('checked', 'checked');
+    } else {
+        $('#shared-project').removeAttr('checked');
+    }
 
     $('#project-list').collapse('hide');
     $('#project-detail').collapse('show');
-    
+
     var types = {
         'spin': 'blocklyspin.html',
         'prop-c': 'blocklyc.html',
         'scribbler': 'blocklyscribbler.html'
     };
     $('#open-project').attr('href', types[selectedProject['type']] + '?project=' + selectedProject['id']);
+
+    var projectName = $('#name').text();
+    if (projectName.length === 0) {
+        $('#name-input').val(projectName).removeClass('hidden').focus();
+    }
 };
