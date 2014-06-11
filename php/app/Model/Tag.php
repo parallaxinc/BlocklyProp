@@ -32,5 +32,22 @@ class Tag extends AppModel {
             'with' => 'ProjectTag'
         )
     );
+    
+    public $validate = array(
+        'name' => array(
+            'unique' => array(
+                'rule' => array('unique'),
+                'message' => 'Tags need to be unique'
+            )
+        )
+    );
+    
+    public function unique($check) {
+        // $check will have value: array('email' => 'YOUR_EMAIL')
+        $count = $this->find('count', array(
+            'conditions' => $check
+        ));
+        return $count === 0;
+    }
 
 }

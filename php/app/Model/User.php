@@ -61,10 +61,10 @@ class User extends AppModel {
 
     public function unique($check) {
         // $check will have value: array('email' => 'YOUR_EMAIL')
-        $emailCount = $this->find('count', array(
+        $count = $this->find('count', array(
             'conditions' => $check
         ));
-        return $emailCount === 0;
+        return $count === 0;
     }
 
     public function get_user($login, $password) {

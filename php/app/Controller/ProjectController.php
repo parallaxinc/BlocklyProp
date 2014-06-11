@@ -14,6 +14,8 @@ App::uses('AppController', 'Controller');
  */
 class ProjectController extends AppController {
 
+    public $uses = array('Project', 'Tag', 'ProjectTag');
+
     public function beforeRender() {
         parent::beforeRender();
 //        $this->RequestHandler->setContent('json');
@@ -215,11 +217,52 @@ class ProjectController extends AppController {
                 $this->render('user_error');
                 return;
             }
-            
+
             $project['Project']['name'] = $this->request->data['name'];
             $project['Project']['description'] = $this->request->data['description'];
             $project['Project']['private'] = $this->request->data['private'] == "true" ? 1 : 0;
             $project['Project']['shared'] = $this->request->data['shared'] = "true" ? 1 : 0;
+
+            $this->ProjectTag->deleteAll(array('id_project' => $project['Project']['id']), false);
+
+            if (isset($this->request->data['tags']) && $this->request->data['tags'] != null) {
+//            print_r($this->request->data['tags']);
+                foreach ($this->request->data['tags'] as $tag) {
+
+                    $tagObject = $this->Tag->find('first', array(
+                        'conditions' => array('Tag.name' => $tag)
+                    ));
+                    if ($tagObject == null) {
+                        $tagObject = array(
+                            'Tag' => array(
+                                'name' => $tag
+                            )
+                        );
+                        $this->Tag->create($tagObject);
+                        if ($this->Tag->save($tagObject)) {
+                            $id = $this->Tag->id;
+                        } else {
+                            // error
+                        }
+                    } else {
+                        $id = $tagObject['Tag']['id'];
+                    }
+
+                    $projectTagObject = array(
+                        'ProjectTag' => array(
+                            'id_project' => $project['Project']['id'],
+                            'id_tag' => $id
+                        )
+                    );
+                    // print_r($projectTagObject);
+                    $this->ProjectTag->create($projectTagObject);
+                    if ($this->ProjectTag->save($projectTagObject)) {
+                        //  $id = $this->Tag->id;
+                    } else {
+                        // error
+                    }
+                }
+            }
 
             if ($this->Project->save($project['Project'])) {
                 $this->render('confirm');
