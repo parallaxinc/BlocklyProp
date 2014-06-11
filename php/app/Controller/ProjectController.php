@@ -226,7 +226,6 @@ class ProjectController extends AppController {
             $this->ProjectTag->deleteAll(array('id_project' => $project['Project']['id']), false);
 
             if (isset($this->request->data['tags']) && $this->request->data['tags'] != null) {
-//            print_r($this->request->data['tags']);
                 foreach ($this->request->data['tags'] as $tag) {
 
                     $tagObject = $this->Tag->find('first', array(
@@ -254,7 +253,6 @@ class ProjectController extends AppController {
                             'id_tag' => $id
                         )
                     );
-                    // print_r($projectTagObject);
                     $this->ProjectTag->create($projectTagObject);
                     if ($this->ProjectTag->save($projectTagObject)) {
                         //  $id = $this->Tag->id;
