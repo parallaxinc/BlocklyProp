@@ -11,7 +11,7 @@ var client_url = 'http://localhost:6009/';
 var client_domain_name = "localhost";
 var client_domain_port = 6009;
 
-var client_min_version = 0.1;
+var client_min_version = 0.2;
 
 $(document).ready(function() {
     check_client();

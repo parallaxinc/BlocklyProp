@@ -24,6 +24,7 @@
         <script type="text/javascript" src="generators/propc/variables.js"></script>
         <script type="text/javascript" src="generators/propc/procedures.js"></script>
         <script type="text/javascript" src="generators/propc/logic.js"></script>
+        <script type="text/javascript" src="generators/propc/abdrive.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/grove.js"></script>-->
         <!-- custom block -->
         <!--<script type="text/javascript" src="generators/arduino/custom.js"></script>-->
@@ -92,6 +93,8 @@
 //                    'procedures_ifreturn',
                             //custom
                             //'custom_read','custom_write',
+                    // ActivityBot drive
+                    'ab_drive_goto', 'ab_drive_speed'
                 ];
                 for (var x = 0; x < keepers.length; x++) {
                     newLanguage[keepers[x]] = Blockly.Language[keepers[x]];
