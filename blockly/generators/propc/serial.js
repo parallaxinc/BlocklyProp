@@ -98,8 +98,9 @@ Blockly.propc.serial_open = function() {
     var dropdown_tx_pin = this.getTitleValue('TXPIN');
     var baud = this.getTitleValue('BAUD');
 
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial fdser;';
-    Blockly.propc.setups_['setup_fdserial'] = '*fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
+    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
+    Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
 
     return '';
 };
@@ -107,9 +108,10 @@ Blockly.propc.serial_open = function() {
 Blockly.propc.serial_tx_byte = function() {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
     
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial fdser;';
+    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        Blockly.propc.setups_['setup_fdserial'] = '*fdser = fdserial_open(0, 1, 0, 9600);';
+        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(0, 1, 0, 9600);';
     }
 
     return 'fdserial_txChar(fdser, ' + value + ');\n';
@@ -118,9 +120,10 @@ Blockly.propc.serial_tx_byte = function() {
 Blockly.propc.serial_send_text = function() {
     var text = this.getTitleValue('TEXT');
 
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial fdser;';
+    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        Blockly.propc.setups_['setup_fdserial'] = '*fdser = fdserial_open(0, 1, 0, 9600);';
+        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(0, 1, 0, 9600);';
     }
 
     return 'writeLine(fdser, "' + text + '");\n';
@@ -128,9 +131,10 @@ Blockly.propc.serial_send_text = function() {
 
 Blockly.propc.serial_rx_byte = function() {
     
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial fdser;';
+    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        Blockly.propc.setups_['setup_fdserial'] = '*fdser = fdserial_open(0, 1, 0, 9600);';
+        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(0, 1, 0, 9600);';
     }
     
 //    var order = code < 0 ?
