@@ -131,7 +131,7 @@ Blockly.Spin.debug_lcd_clear = function() {
 };
 
 Blockly.Spin.debug_lcd_print = function() {
-    var text = this.getTitleValue('TEXT')
+    var text = this.getTitleValue('TEXT');
 
     Blockly.Spin.definitions_['define_debug_lcd'] = 'OBJDEBUGLCD : "debug_lcd"';
     if (Blockly.Spin.setups_['setup_debug_lcd'] == undefined) {
@@ -153,7 +153,7 @@ Blockly.Spin.debug_lcd_number = function() {
 };
 
 Blockly.Spin.debug_lcd_action = function() {
-    var action = this.getTitleValue('ACTION')
+    var action = this.getTitleValue('ACTION');
 
     Blockly.Spin.definitions_['define_debug_lcd'] = 'OBJDEBUGLCD : "debug_lcd"';
     if (Blockly.Spin.setups_['setup_debug_lcd'] == undefined) {
