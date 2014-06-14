@@ -166,7 +166,7 @@ class ProjectController extends AppController {
             return;
         }
         if ($this->request->is('post')) {
-            if ($this->request->data['id_user'] != $this->Session->read('User.id')) {
+            if (isset($this->request->data['id_user']) && $this->request->data['id_user'] != $this->Session->read('User.id')) {
                 unset($this->request->data['id']);
             }
             if ($this->request->data('id')) {

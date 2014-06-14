@@ -42,7 +42,9 @@ $(document).ready(function() {
                     $('#login-dialog').modal('show');
                 }
             } else {
+                projectData = data;
                 $('#project-dialog').modal('hide');
+                utils.showMessage("Project saved", "The project has been saved");
             }
         });
     });
