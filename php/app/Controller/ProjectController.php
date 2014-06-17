@@ -170,10 +170,22 @@ class ProjectController extends AppController {
                 unset($this->request->data['id']);
             }
             if ($this->request->data('id')) {
+                $project = $this->Project->findById($this->request->data['id']);
+                if ($project['Project']['id_user'] != $this->Session->read('User.id')) {
+                    $this->set('code', 2);
+                    $this->set('message', 'Not your project');
+                    $this->render('user_error');
+                    return;
+                }
+
+                $project['Project']['name'] = $this->request->data['name'];
+                $project['Project']['description'] = $this->request->data['description'];
+                $project['Project']['code'] = $this->request->data['code'];
+
                 $this->Project->id = $this->request->data('id');
                 unset($this->request->data['modified']);
 
-                if ($this->Project->save($this->request->data)) {
+                if ($this->Project->save($project['Project'])) {
                     $id = $this->Project->id;
                 } else {
                     
