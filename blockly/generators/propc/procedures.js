@@ -46,7 +46,7 @@ Blockly.propc.procedures_defreturn = function() {
 //        console.log("argument", this.arguments_[x]);
         var varName = Blockly.propc.variableDB_.getName(this.arguments_[x],
                 Blockly.Variables.NAME_TYPE);
-        args.push(varName);
+        args.push('int ' + varName);
         if (Blockly.propc.vartype_[varName] === undefined) {
             Blockly.propc.vartype_[varName] = 'LOCAL';
         }
