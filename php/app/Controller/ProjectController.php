@@ -14,7 +14,7 @@ App::uses('AppController', 'Controller');
  */
 class ProjectController extends AppController {
 
-    public $uses = array('Project', 'Tag', 'ProjectTag');
+    public $uses = array('Project', 'Tag', 'ProjectTag', 'Log');
 
     public function beforeRender() {
         parent::beforeRender();
@@ -190,6 +190,15 @@ class ProjectController extends AppController {
                 } else {
                     
                 }
+
+                $this->Log->create();
+                $logEntry = array(
+                    'id_user' => $this->Session->read('User.id'),
+                    'code' => 213,
+                    'message' => 'Save project data',
+                    'id_object' => $id
+                );
+                $this->Log->save($logEntry);
             } else {
                 //       $this->request->data('id_user') = $this->Session->read('User.id');
                 $this->Project->create();
@@ -199,6 +208,15 @@ class ProjectController extends AppController {
                 } else {
                     
                 }
+
+                $this->Log->create();
+                $logEntry = array(
+                    'id_user' => $this->Session->read('User.id'),
+                    'code' => 210,
+                    'message' => 'Create new project',
+                    'id_object' => $id
+                );
+                $this->Log->save($logEntry);
             }
             $project = $this->Project->findById($id);
             $project['Project']['id_user'] = $this->Session->read('User.id');
@@ -255,6 +273,15 @@ class ProjectController extends AppController {
                         } else {
                             // error
                         }
+
+                        $this->Log->create();
+                        $logEntry = array(
+                            'id_user' => $this->Session->read('User.id'),
+                            'code' => 220,
+                            'message' => 'Tag created: ' . $tag,
+                            'id_object' => $id
+                        );
+                        $this->Log->save($logEntry);
                     } else {
                         $id = $tagObject['Tag']['id'];
                     }
@@ -273,6 +300,15 @@ class ProjectController extends AppController {
                     }
                 }
             }
+
+            $this->Log->create();
+            $logEntry = array(
+                'id_user' => $this->Session->read('User.id'),
+                'code' => 212,
+                'message' => 'Save basic project data',
+                'id_object' => $project['Project']['id']
+            );
+            $this->Log->save($logEntry);
 
             if ($this->Project->save($project['Project'])) {
                 $this->render('confirm');
@@ -294,6 +330,15 @@ class ProjectController extends AppController {
             $this->render('error');
             return;
         }
+
+        $this->Log->create();
+        $logEntry = array(
+            'id_user' => $this->Session->read('User.id'),
+            'code' => 211,
+            'message' => 'Project deleted',
+            'id_object' => $id
+        );
+        $this->Log->save($logEntry);
 
         if ($this->Session->read('User.id') != $project['Project']['id_user']) {
             $this->set('message', 'Not your project');

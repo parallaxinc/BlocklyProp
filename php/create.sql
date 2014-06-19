@@ -1,7 +1,10 @@
+DROP TABLE IF EXISTS logs;
+DROP TABLE IF EXISTS projectDependencies;
 DROP TABLE IF EXISTS projects_tags;
 DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS users;
+
 
 create table users (
     id int unsigned auto_increment primary key,
@@ -35,4 +38,19 @@ create table projects_tags (
     id int unsigned auto_increment primary key,
     id_project int unsigned not null,
     id_tag int unsigned not null
+);
+
+create table projectDependencies (
+    id int unsigned auto_increment primary key,
+    id_project int unsigned not null,
+    code varchar(255) not null
+);
+
+create table logs (
+    id int unsigned auto_increment primary key,
+    id_user int unsigned,
+    code int unsigned,
+    message varchar(255),
+    id_object int unsigned,
+    created DATETIME DEFAULT NULL
 );

@@ -14,7 +14,7 @@ App::uses('AppController', 'Controller');
  */
 class AuthController extends AppController {
 
-    public $uses = array('User');
+    public $uses = array('User', 'Log');
 
     public function beforeRender() {
         parent::beforeRender();
@@ -29,10 +29,27 @@ class AuthController extends AppController {
 
         $user = $this->User->get_user($email, $password);
         if ($user) {
+            $this->Log->create();
+            $logEntry = array(
+                'id_user' => $user['id'],
+                'code' => 200,
+                'message' => 'Signin success',
+                'id_object' => $user['id']
+            );
+            $this->Log->save($logEntry);
+
             $this->Session->write('User', $user);
             $this->set('user', $user);
             $this->render('user');
         } else {
+            $this->Log->create();
+            $logEntry = array(
+                'id_user' => null,
+                'code' => 400,
+                'message' => 'Signin failure: ' . $email,
+                'id_object' => null
+            );
+            $this->Log->save($logEntry);
             $this->render('error');
         }
     }
@@ -60,6 +77,16 @@ class AuthController extends AppController {
                 if (!$user) {
                     throw new NotFoundException(__('Invalid user'));
                 }
+
+                $this->Log->create();
+                $logEntry = array(
+                    'id_user' => $user['id'],
+                    'code' => 201,
+                    'message' => 'Register success',
+                    'id_object' => $user['id']
+                );
+                $this->Log->save($logEntry);
+
                 $this->Session->write('User', $user);
                 $this->set('user', $user);
                 $this->render('user');
@@ -73,30 +100,30 @@ class AuthController extends AppController {
 //                __('The user could not be saved. Please, try again.')
 //            );
     }
-    
+
     public function user() {
         if ($this->Session->check('User')) {
             if (!$this->Session->read('User.id')) {
                 $this->set('message', $this->Session->read('User'));
-                $this->render('error'); 
+                $this->render('error');
                 return;
             }
             $user = $this->User->findById($this->Session->read('User.id'));
-           // echo $user;
+            // echo $user;
             if (!$user) {
                 throw new NotFoundException(__('Invalid user'));
             }
             $this->set('user', $user['User']);
             $this->render('user');
         } else {
-            $this->render('error');       
+            $this->render('error');
         }
     }
-    
+
     public function logout() {
         $this->Session->destroy();
     }
-    
+
     public function change() {
         if (!$this->Session->check('User.id')) {
             $this->set('message', 'Not logged in');
@@ -105,7 +132,7 @@ class AuthController extends AppController {
         }
         if ($this->request->is('post')) {
             $oldPassword = $this->request->data('oldPassword');
-            
+
             $user = $this->User->get_user_by_id($this->Session->read('User.id'), $oldPassword);
             if ($user == null) {
                 $this->User->invalidate('oldPassword', "Old password incorrect");
@@ -116,10 +143,10 @@ class AuthController extends AppController {
                 $this->render('form_error');
                 return;
             }
-            
+
             $password = $this->request->data('password');
             $passwordConfirm = $this->request->data('passwordConfirm');
-            
+
             if ($password != $passwordConfirm) {
                 $this->User->invalidate('passwordConfirm', "The passwords don't match.");
             }
@@ -129,24 +156,34 @@ class AuthController extends AppController {
                 $this->render('form_error');
                 return;
             }
-            
+
             $email = $this->request->data('email');
             $screenname = $this->request->data('screenname');
-            
+
             if ($user['email'] == $email) {
-                unset($this->User->validate['email']['unique']); 
+                unset($this->User->validate['email']['unique']);
             }
-            
+
             $user['password'] = $password;
             $user['email'] = $email;
             $user['screenname'] = $screenname;
-            
+
             if ($this->User->save($user)) {
                 $id = $this->User->id;
                 $user = $this->User->findById($id);
                 if (!$user) {
                     throw new NotFoundException(__('Invalid user'));
                 }
+                
+                $this->Log->create();
+                $logEntry = array(
+                    'id_user' => $user['id'],
+                    'code' => 202,
+                    'message' => 'Change user details',
+                    'id_object' => $user['id']
+                );
+                $this->Log->save($logEntry);
+                
                 $this->Session->write('User', $user['User']);
                 $this->set('user', $user['User']);
                 $this->render('user');
