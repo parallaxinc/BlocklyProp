@@ -28,6 +28,9 @@ $(document).ready(function() {
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init();
+                
+//                var projectWizard = $('#project-manager').wizard({});
+//                projectWizard.show();
             }
         });
     }
@@ -48,7 +51,7 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     $("#signin-form").submit(function(event) {
         event.preventDefault();
 
