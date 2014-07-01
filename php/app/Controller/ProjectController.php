@@ -251,7 +251,9 @@ class ProjectController extends AppController {
             $project['Project']['name'] = $this->request->data['name'];
             $project['Project']['description'] = $this->request->data['description'];
             $project['Project']['private'] = $this->request->data['private'] == "true" ? 1 : 0;
-            $project['Project']['shared'] = $this->request->data['shared'] = "true" ? 1 : 0;
+            $project['Project']['shared'] = $this->request->data['shared'] == "true" ? 1 : 0;
+            
+//            $this->set('message', 'Not your project');
 
             $this->ProjectTag->deleteAll(array('id_project' => $project['Project']['id']), false);
 

@@ -7,6 +7,8 @@
 var projectTable;
 var saved = false;
 
+var selectedProject = null;
+
 
 $(document).ready(function() {
     $.cookie.json = true;
