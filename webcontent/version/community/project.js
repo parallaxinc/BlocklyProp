@@ -9,18 +9,36 @@ var ready = false;
 $(document).ready(function() {
     var idProject = getUrlParameters('project', '', false);
     if (!idProject) {
-        $('#setup-dialog').modal('show');
-        $('#setup-dialog').on('hidden.bs.modal', function() {
-            projectData = {
-                name: '',
-                description: '',
-                type: window.type,
-                board: $('#board-type').val(),
-                code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
-            };
+        var options = {};
+        var projectManager = $("#project-manager").wizard(options);
+
+        projectData = {
+            name: '',
+            description: '',
+            type: window.type,
+            //       board: $('#board-type').val(),
+            code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
+        };
+        projectManager.on("submit", function() {
+            projectManager.close();
+            projectData['board'] = $('#board-type').val();
             window.frames["content_blocks"].setProfile($('#board-type').val());
             window.frames["content_blocks"].init();
+            alert("init");
         });
+        projectManager.show();
+
+//        $('#setup-dialog').modal('show');
+//        $('#setup-dialog').on('hidden.bs.modal', function() {
+//            projectData = {
+//                name: '',
+//                description: '',
+//                type: window.type,
+//                board: $('#board-type').val(),
+//                code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
+//            };
+//           
+//        });
     } else {
         $.get('php/index.php/project/view/' + idProject, function(data) {
             console.log(data);
@@ -28,7 +46,7 @@ $(document).ready(function() {
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init();
-                
+
 //                var projectWizard = $('#project-manager').wizard({});
 //                projectWizard.show();
             }
