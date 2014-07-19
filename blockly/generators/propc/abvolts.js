@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Generating Spin for sensor blocks
+ * @fileoverview Generating C for ActivityBoard ADC
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 'use strict';
@@ -41,6 +41,52 @@ Blockly.Language.ab_volt_in = {
     }
 };
 
+Blockly.Language.ab_volt_v_in = {
+    category: 'ADC/DAC',
+    helpUrl: '',
+    init: function() {
+        this.setColour(314);
+        this.appendDummyInput("")
+                .appendTitle("ADC in V channel")
+                .appendTitle(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+        this.setOutput(true, Number);
+    }
+};
+
+Blockly.Language.ab_volt_out = {
+    category: 'ADC/DAC',
+    helpUrl: '',
+    init: function() {
+        this.setColour(314);
+        this.appendDummyInput("")
+                .appendTitle("DAC channel")
+                .appendTitle(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+        this.appendValueInput("VALUE", Number)
+                .setCheck(Number)
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendTitle("Value");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Language.ab_volt_v_out = {
+    category: 'ADC/DAC',
+    helpUrl: '',
+    init: function() {
+        this.setColour(314);
+        this.appendDummyInput("")
+                .appendTitle("DAC in V channel")
+                .appendTitle(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+        this.appendValueInput("VALUE", Number)
+                .setCheck(Number)
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendTitle("Value");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
 
@@ -56,3 +102,40 @@ Blockly.propc.ab_volt_in = function() {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
+Blockly.propc.ab_volt_v_in = function() {
+    var dropdown_channel = this.getTitleValue('CHANNEL');
+
+    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
+    if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
+        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+    }
+
+    var code = 'ad_volts(' + dropdown_channel + ')';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+Blockly.propc.ab_volt_out = function() {
+    var dropdown_channel = this.getTitleValue('CHANNEL');
+    var value = this.getTitleValue('VALUE') || '0';
+
+    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
+    if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {
+        Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
+    }
+
+    var code = 'da_out(' + dropdown_channel + ', ' + value + ');\n';
+    return code;
+};
+
+Blockly.propc.ab_volt_v_out = function() {
+    var dropdown_channel = this.getTitleValue('CHANNEL');
+    var value = this.getTitleValue('VALUE') || '0';
+
+    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
+    if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {
+        Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
+    }
+
+    var code = 'da_volts(' + dropdown_channel + ', ' + value + ');\n';
+    return code;
+};
