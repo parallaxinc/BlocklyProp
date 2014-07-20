@@ -6,12 +6,20 @@
 
 var projectData = null;
 var ready = false;
+
+var project_options = {
+    'keyboard': false,
+    'backdrop': false,
+    'contentHeight': 500,
+    'contentWidth': 700
+};
+        
 $(document).ready(function() {
     var idProject = getUrlParameters('project', '', false);
     if (!idProject) {
-        var options = {};
-        var projectManager = $("#project-manager").wizard(options);
-
+        
+        project_options['showClose'] = false;
+        var projectManager = $("#project-manager").wizard(project_options);
         projectData = {
             name: '',
             description: '',
