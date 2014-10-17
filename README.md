@@ -86,10 +86,10 @@ You may obtain a copy of the License at
 To Do list
 -----------------
 
-Below is the current to do list. It is organized byPlease edit this as the features of BlocklyProp changes.
+Below is the current to do list. It is organized by priority. Please edit this as the features of BlocklyProp changes.
 
 Thanks for the help and best of luck.
 
-1. Spin Reference
+1. Multi Core
 2. Manual
-3. Multi Core
+3. Spin Reference
