@@ -90,6 +90,7 @@ Below is the current to do list. It is organized by priority. Please edit this a
 
 Thanks for the help and best of luck.
 
-1. Multi Core
-2. Manual
-3. Spin Reference
+1. Multi Core ( Propeller C first, then Spin )
+2. Tutorials
+3. Manual
+4. Spin Reference
