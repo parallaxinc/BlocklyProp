@@ -88,12 +88,9 @@ To Do list
 
 Below is the current to do list. It is organized by priority. Please edit this as the features of BlocklyProp changes.
 
-Thanks for the help and best of luck.
+Thanks for the help and best of luck!
 
 1. Blocks ( more products just keep coming from Parallax! )
-  A. Sensors
-  B. LCD
 1. Multi Core ( Propeller C first, then Spin )
 2. Tutorials
 3. Manual
-4. Spin Reference
