@@ -1,6 +1,8 @@
-Below is the current To-Do list.
+Below is the current to do list. It is organized by priority. Please edit this as the features of BlocklyProp changes.
 
-Please edit it as the software evolves. Thanks.
+Thanks for the help and best of luck!
 
-To-Do:
-  -Be able to load to RAM and EEPROM
+1. Blocks ( more products just keep coming from Parallax! )
+2. Multi Core ( Propeller C first, then Spin )
+3. Tutorials on usage of software
+4. Manual
