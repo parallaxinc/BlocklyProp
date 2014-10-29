@@ -83,3 +83,14 @@ You may obtain a copy of the License at
 
   http://www.apache.org/licenses/LICENSE-2.0
 ```
+To Do list
+-----------------
+
+Below is the current to do list. It is organized by priority. Please edit this as the features of BlocklyProp changes.
+
+Thanks for the help and best of luck!
+
+1. Blocks ( more products just keep coming from Parallax! )
+1. Multi Core ( Propeller C first, then Spin )
+2. Tutorials
+3. Manual
