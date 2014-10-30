@@ -10,12 +10,13 @@ Blockly.Language.PIR_Sensor = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
+    this.setColour( 314 );
     this.appendDummyInput( "" )
-    .appendTitle( "PIR Sensor" )
-    .appendTitle( "Pin" )
-    .appendDropdownField( Blockly.DropdownField( profile.default.digital ), "PIN" );
-  this.setNextStatement( false, null );
-  this.setPreviousStatement( false, null ); 
+      .appendTitle( "PIR Sensor" )
+      .appendTitle( "Pin" )
+      .appendDropdownField( Blockly.DropdownField( profile.default.digital ), "PIN" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null ); 
   }
 };
 
