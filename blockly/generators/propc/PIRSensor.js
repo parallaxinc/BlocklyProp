@@ -21,6 +21,6 @@ Blockly.Language.PIR_Sensor = {
 //Get generators
 Blockly.propc = Blockly.Generators.get( "propc" );
 
-Blockly.propc.PIR_Sensor = {
+Blockly.propc.PIR_Sensor = function() {
   return '';
 }
