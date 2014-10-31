@@ -23,4 +23,4 @@ Blockly.propc = Blockly.Generators.get( "propc" );
 
 Blockly.propc.PIR_Sensor = function() {
   return '';
-}
+};
