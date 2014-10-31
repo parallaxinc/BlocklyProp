@@ -25,5 +25,5 @@ Blockly.propc.PIR_Sensor = function() {
   var pin = this.getTitleValue( 'PIN' );
   
   var code = 'input( ' + pin + ' )';
-  return code;
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
