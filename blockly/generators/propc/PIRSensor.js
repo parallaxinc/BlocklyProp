@@ -15,6 +15,7 @@ Blockly.Language.PIR_Sensor = {
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
+    this.setOutput( Number, true );
   }
 };
 
