@@ -12,15 +12,15 @@ if ( !Blockly.Language )
 Blockly.Language.cog_new = {
   category: 'Control',
   helpUrl: '',
-  init: function () {
+  init: function() {
     this.setColour( 120 );
-    this.appendDummyInput()
+    this.appendDummyInput( "" )
       .appendTitle( "cognew" );
-    this.appendValueInput( 'STACK_SIZE', Number )
+    this.appendValueInput( "STACK_SIZE", Number )
       .appendTitle( "Stacksize" )
       .setCheck( Number );
     this.appendStatementInput( "METHOD" )
-      .appendTitleValue( "Method" );
+      .appendTitle( "Method" );
     this.setPreviousStatement( true );
     this.setNextStatement( true );
   }
