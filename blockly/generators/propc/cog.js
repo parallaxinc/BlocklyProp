@@ -10,11 +10,20 @@ if ( !Blockly.Language )
   
   
 Blockly.Language.cog_new = {
-  //Add cog block here
-}
+  category: 'Control',
+  helpUrul: '',
+  init: function () {
+    this.setColour( 120 );
+    this.appendDummyInput("")
+      .appendTitle( "cognew" );
+    this.appendValueInput( 'STACK_SIZE', Number )
+      .appendTitle( "Stacksize: " )
+      .setCheck( Number );
+  }
+};
 
 //get generators
-Blockly.propc = Blockly.generators.get( 'propc' );
+Blockly.propc = Blockly.Generator.get( 'propc' );
 
 Blockly.propc.cog_new = function() {
   //Add cog compilation here
