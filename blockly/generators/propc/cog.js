@@ -11,7 +11,7 @@ if ( !Blockly.Language )
   
 Blockly.Language.cog_new = {
   category: 'Control',
-  helpUrul: '',
+  helpUrl: '',
   init: function () {
     this.setColour( 120 );
     this.appendDummyInput()
@@ -36,4 +36,4 @@ Blockly.propc.cog_new = function() {
   
   var code = 'cognew( ' + method + ', ' + stacksize + ' );';
   return code;
-}
+};
