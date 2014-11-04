@@ -1,6 +1,6 @@
 /*
 
-This file will contain support for multi cog use in Propeller C
+This file contains support for multi cog use in Propeller C
 
 */
 'use strict';
