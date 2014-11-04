@@ -30,5 +30,10 @@ Blockly.Language.cog_new = {
 Blockly.propc = Blockly.Generator.get( 'propc' );
 
 Blockly.propc.cog_new = function() {
-  //Add cog compilation here
+  var method = Blockly.propc.statementToCode( this, 'METHOD' );
+  method = method.replace( "  ", "" ).replace( "\n", "" );
+  var stackSize = this.getTitleValue( 'STACK_SIZE' );
+  
+  var code = 'cognew( ' + method + ', ' + stacksize + ' );';
+  return code;
 }
