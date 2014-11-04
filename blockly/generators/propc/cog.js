@@ -14,7 +14,7 @@ Blockly.Language.cog_new = {
   helpUrul: '',
   init: function () {
     this.setColour( 120 );
-    this.appendDummyInput("")
+    this.appendDummyInput()
       .appendTitle( "cognew" );
     this.appendValueInput( 'STACK_SIZE', Number )
       .appendTitle( "Stacksize" )
