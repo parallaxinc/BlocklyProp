@@ -17,8 +17,12 @@ Blockly.Language.cog_new = {
     this.appendDummyInput("")
       .appendTitle( "cognew" );
     this.appendValueInput( 'STACK_SIZE', Number )
-      .appendTitle( "Stacksize: " )
+      .appendTitle( "Stacksize" )
       .setCheck( Number );
+    this.appendStatementInput( "METHOD" )
+      .appendTitleValue( "Method" );
+    this.setPreviousStatement( true );
+    this.setNextStatement( true );
   }
 };
 
