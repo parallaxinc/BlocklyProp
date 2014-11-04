@@ -21,8 +21,8 @@ Blockly.Language.cog_new = {
       .setCheck( Number );
     this.appendStatementInput( "METHOD" )
       .appendTitle( "Method" );
-    this.setPreviousStatement( true );
-    this.setNextStatement( true );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
   }
 };
 
