@@ -31,7 +31,7 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 
 Blockly.propc.cog_new = function() {
   var method = Blockly.propc.statementToCode( this, 'METHOD' );
-  method = method.replace( "  ", "" ).replace( "\n", "" );
+  method = method.replace( "  ", "" ).replace( "\n", "" ).replace( "()", "" );
   var stackSize = Blockly.propc.valueToCode( this, 'STACK_SIZE', Blockly.propc.ORDER_ATOMIC ) || '10';
   
   var code = 'cog_run( &' + method + ', ' + stackSize + ' );';
