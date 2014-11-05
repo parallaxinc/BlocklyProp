@@ -34,7 +34,8 @@ Blockly.propc.cog_new = function() {
   method = method.replace( "  ", "" ).replace( "\n", "" ).replace( "()", "" ).replace( ";", "" );
   var stackSize = Blockly.propc.valueToCode( this, 'STACK_SIZE', Blockly.propc.ORDER_ATOMIC ) || '10';
   
-  Blockly.propc.stacks_.push('long ' + "stackName" + '[' + stackSize + ']');
+  //var stackName = 'Stack' + Blockly.propc.stacks_.length;
+  //Blockly.propc.stacks_.push('long ' + stackName + '[' + stackSize + ']');
   
   var code = 'cog_run( &' + method + ', ' + stackSize + ' );';
   return code;
