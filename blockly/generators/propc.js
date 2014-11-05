@@ -145,6 +145,7 @@ Blockly.propc.init = function() {
     Blockly.propc.stacks_ = [];
 
     Blockly.propc.vartype_ = {};
+    Blockly.propc.pointerType_ = {};
 
     if (Blockly.Variables) {
         if (!Blockly.propc.variableDB_) {
@@ -163,6 +164,25 @@ Blockly.propc.init = function() {
                     varName + ';\n';
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
+    }
+
+    if (Blockly.Pointers) {
+        if (!Blockly.propc.pointerDB_) {
+            Blockly.propc.pointerDB_ =
+                new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
+        } else {
+            Blockly.propc.pointerDB_.reset();
+        }
+
+        var defvars = [];
+        var pointers = Blockly.Pointers.allPointers();
+        for (var x = 0; x < pointers.length; x++) {
+            var pointerName = Blockly.propc.pointerDB_.getDistinctName(pointers[x],
+                Blockly.Pointers.NAME_TYPE);
+            defvars[x] = '' + '{{$pointer_type_' + pointers[x].name + '}} ' +
+            pointerName + ';\n';
+        }
+        Blockly.propc.definitions_['pointers'] = defvars.join('\n');
     }
 };
 
@@ -199,6 +219,16 @@ Blockly.propc.finish = function(code) {
                     definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}}", Blockly.propc.vartype_[variable]);
                 } else {
                     definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable, "");
+                }
+            }
+            definitions[def] = definitions[def].replace("\n\n", "\n");
+        }
+        for (var pointer in Blockly.propc.pointerType_) {
+            if (definitions[def].indexOf("{{$pointer_type_" + pointer + "}}") > -1) {
+                if (Blockly.propc.pointerType_[pointer] !== 'LOCAL') {
+                    definitions[def] = definitions[def].replace("{{$pointer_type_" + pointer + "}}", Blockly.propc.pointerType_[pointer]);
+                } else {
+                    definitions[def] = definitions[def].replace("{{$pointer_type_" + pointer + "}} " + pointer, "");
                 }
             }
             definitions[def] = definitions[def].replace("\n\n", "\n");
