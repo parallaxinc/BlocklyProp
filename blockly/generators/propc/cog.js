@@ -2,6 +2,7 @@
 
 This file contains support for multi cog use in Propeller C
 
+Author: valetolpegin@gmail.com ( Vale Tolpegin )
 */
 'use strict';
 
