@@ -31,6 +31,8 @@
         <script type="text/javascript" src="generators/propc/abvolts.js"></script>
         <script type="text/javascript" src="generators/propc/servo.js"></script>
         <script type="text/javascript" src="generators/propc/joystick.js"></script>
+
+        <script type="text/javascript" src="generators/propc/file.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/grove.js"></script>-->
         <!-- custom block -->
         <!--<script type="text/javascript" src="generators/arduino/custom.js"></script>-->
@@ -106,7 +108,9 @@
                     // ActivityBot ADC/DAC
                     'ab_volt_in', 'ab_volt_v_in', 'ab_volt_out', 'ab_volt_v_out',
                     // serial
-                    'serial_open', 'serial_tx_byte', 'serial_send_text', 'serial_rx_byte'
+                    'serial_open', 'serial_tx_byte', 'serial_send_text', 'serial_rx_byte',
+                    // file
+                    'file_open'
                 ];
                 for (var x = 0; x < keepers.length; x++) {
                     newLanguage[keepers[x]] = Blockly.Language[keepers[x]];

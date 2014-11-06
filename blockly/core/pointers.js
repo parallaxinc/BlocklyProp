@@ -58,7 +58,7 @@ Blockly.Pointers.allPointers = function(opt_block) {
         // Variable name may be null if the block is only half-built.
         if (varName) {
           variableHash[Blockly.Names.PREFIX_ +
-              varName.toLowerCase()] = {name:varName, type:'Number'};
+              varName.toLowerCase()] = {name:varName, type:'Pointer'};
         }
       }
     }
