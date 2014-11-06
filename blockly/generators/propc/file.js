@@ -42,6 +42,20 @@ Blockly.Language.file_open = {
     }
 };
 
+Blockly.Language.file_close = {
+    category: 'File',
+    helpUrl: '',
+    init: function() {
+        this.setColour(180);
+        this.appendDummyInput("")
+            .appendTitle("CLose file");
+        this.appendValueInput('FILE');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setInputsInline(true);
+    }
+};
+
 
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
@@ -54,4 +68,17 @@ Blockly.propc.file_open = function() {
 
     var code = 'fopen("' + file + '", "' + mode + '")';
     return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+
+Blockly.propc.file_close = function() {
+    var file = Blockly.propc.valueToCode(this, 'FILE', Blockly.propc.ORDER_UNARY_PREFIX);
+
+    //   Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+
+    if (file) {
+        return 'fclose(' + file + ');\n'
+    } else {
+        return '// Missing file pointer';
+    }
 };
