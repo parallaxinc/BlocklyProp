@@ -4,8 +4,8 @@ BlocklyProp
 Introduction
 -----------------
 
-BlocklyProp is based on blockly, the web-based, graphical programming editor. Provide language blocks and code generators for Parallax Propeller programming.
-(I actualy used the BlocklyDuino as a base because it already generates code for a microcontroller and was easier to adapt.)
+BlocklyProp is based on Blockly, the web-based, graphical programming editor. Provide language blocks and code generators for Parallax Propeller programming.
+(It actually started with the BlocklyDuino as a base because it already generates code for a microcontroller and was easier to adapt.)
 
 BlocklyProp generates Spin code, and can compile and load into the Propeller with a single click on the web-page.
 
@@ -21,7 +21,7 @@ You can test this on http://blocklyprop.creatingfuture.eu/index.html
 * BlocklyDuino https://github.com/gasolin/BlocklyDuino
 * Parallax Propeller http://www.parallax.com/microcontrollers/propeller
 * Propeller-load https://sites.google.com/site/propellergcc/documentation/tutorials/load-propgcc-code-images
-* Openspin cross platform Spin/PASM Compiler https://code.google.com/p/open-source-spin-compiler/
+* OpenSpin cross platform Spin/PASM Compiler https://code.google.com/p/open-source-spin-compiler/
 
 The latest version can be downloaded from http://owncloud.creatingfuture.eu/public.php?service=files&t=0eae565db031cd3ca3f1163de91c5984
 (It needs Java 1.7 to run)
@@ -37,7 +37,7 @@ Thanks to input and references to other projects done for the Parallax Propeller
 
 Currently the bat file only starts the java jar: "java -jar BlocklyProp-1.0-SNAPSHOT.jar", but might be extended with more functionality in a later stage.
 
-$ git clone https://github.com/michel-cf/BlocklyProp.git
+$ git clone https://github.com/parallaxinc/BlocklyProp.git
 
 It is created as a maven project wich should make importing and building the project very easy.
 As there are a lot of static files I used the assembly plugin to create a zip file with all the files.
@@ -53,8 +53,8 @@ Usage
 
 1. On Windows run blocklyprop.bat to start the server (This might give some warning from Java, Windows and/or your firewall.
 On Linux run ?? to start the server. (This still needs to be implemented)
-2. Your browser should start, if not please open it manualy. The url will be shown in the console opened by the blocklyprop.bat file. It will be something as "Open url: http://localhost:57328")
-3. Drag and drop Blocks to create your program. If you are ready to test it click on Compile, Load into Ram or Load into Eeprom as wished.
+2. Your browser should start, if not please open it manually. The url will be shown in the console opened by the blocklyprop.bat file. It will be something as "Open url: http://localhost:57328")
+3. Drag and drop Blocks to create your program. If you are ready to test it click on Compile, Load into Ram or Load into EEPROM as wished.
 4. If you wish you can save your project
 5. To stop the server, click Ctrl+c in the console and confirm.
 
@@ -65,10 +65,10 @@ Credit
 The project is inspired by and based on BlocklyDuino https://github.com/gasolin/BlocklyDuino
 Fred Lin is the creator of BlocklyDuino.
 
-Wich in turn is created using Blockly http://code.google.com/p/blockly/
+Which in turn is created using Blockly http://code.google.com/p/blockly/
 
 To compile your code I use Openspin https://code.google.com/p/open-source-spin-compiler/
-And to do the interaction the microcontroller I use Propeller-load from the Propgcc toolchain https://sites.google.com/site/propellergcc/
+And to do the interaction the microcontroller I use Propeller-load from the Propgcc toolchain  https://sites.google.com/site/propellergcc/
 
 Thanks to you all.
 
