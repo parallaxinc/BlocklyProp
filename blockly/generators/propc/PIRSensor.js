@@ -1,3 +1,9 @@
+/*
+
+This file contains support for the PIR sensor
+
+Author: valetolpegin@gmail.com ( Vale Tolpegin )
+*/
 'use strict';
 
 if ( !Blockly.Language )
