@@ -20,6 +20,7 @@
 /**
  * @fileoverview Generating Prop-C for basic blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
+ * @author valetolpegin@gmail.com ( Vale Tolpegin )
  */
 'use strict';
 
@@ -45,6 +46,19 @@ Blockly.Language.console_print = {
     }
 };
 
+Blockly.Language.console_print_variables = {
+    category: 'Console',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendValueInput( 'VALUE' )
+            .appendTitle( "Print" );
+        this.setInputsInline( true );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
@@ -53,4 +67,10 @@ Blockly.propc.console_print = function() {
     var text = this.getTitleValue('TEXT');
 
     return 'print("' + text + '\\r");\n';
+};
+
+Blockly.propc.console_print_variables = function() {
+    var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_ATOMIC ) || '1000';
+    
+    return 'print( ' + value + ' );\n';
 };

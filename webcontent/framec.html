@@ -25,6 +25,8 @@
         <script type="text/javascript" src="generators/propc/variables.js"></script>
         <script type="text/javascript" src="generators/propc/procedures.js"></script>
         <script type="text/javascript" src="generators/propc/logic.js"></script>
+        <script type="text/javascript" src="generators/propc/PIRSensor.js"></script>
+        <script type="text/javascript" src="generators/propc/joystick.js"></script>
         <script type="text/javascript" src="generators/propc/abdrive.js"></script>
         <script type="text/javascript" src="generators/propc/serial.js"></script>
         <script type="text/javascript" src="generators/propc/sensors.js"></script>
@@ -61,12 +63,11 @@
                     //servo
                     'servo_move', // 'servo_read_degrees',
                     //sensors
-                    'sensor_ping', 'PIR_Sensor',
-                    'sensor_ping',
+                    'sensor_ping', 'PIR_Sensor', 'joystick_input_xaxis', 'joystick_input_yaxis',
                     //cog
                     'cog_new',
                     //console
-                    'console_print',
+                    'console_print', 'console_print_variables',
                     // debug lcd
 //                    'debug_lcd_init', 'debug_lcd_clear', 'debug_lcd_print', 'debug_lcd_number', 'debug_lcd_action',
                     //grove analog
@@ -83,8 +84,6 @@
 //                    'grove_motor_shield',
                     //grove bluetooth
                     //'grove_bluetooth_slave',
-                    // Cog actions
-//                    'cog_new',
                     //control
                     'base_delay', 'controls_repeat_forever', 'controls_repeat', 'controls_if', 'controls_if_if', 'controls_if_elseif', 'controls_if_else',
                     //'controls_whileUntil', 'controls_flow_statements',
