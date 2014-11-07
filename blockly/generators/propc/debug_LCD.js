@@ -113,19 +113,16 @@ Blockly.propc.debug_lcd_init = function() {
 
     Blockly.propc.setups_['setup_debug_lcd'] = 'serial *lcd';
     
-    var code = 'lcd = serial_open( ' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ' );'
+    var code = 'lcd = serial_open( ' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ' )'
     return code;
 };
 
 Blockly.propc.debug_lcd_clear = function() {
-
-    //TO DO: HOW TO CLEAR AN LCD
-    Blockly.propc.definitions_['define_debug_lcd'] = '';
     if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
-        Blockly.propc.setups_['setup_debug_lcd'] = '';
+        Blockly.propc.setups_['setup_debug_lcd'] = 'serial *lcd';
     }
 
-    return '\n';
+    return 'writeChar( lcd, 12 )';
 };
 
 Blockly.propc.debug_lcd_print = function() {
