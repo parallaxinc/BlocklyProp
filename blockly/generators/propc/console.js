@@ -64,7 +64,7 @@ Blockly.Language.console_print_variables = {
 Blockly.propc = Blockly.Generator.get('propc');
 
 Blockly.propc.console_print = function() {
-    var text = this.getTitleValue('TEXT')
+    var text = this.getTitleValue('TEXT');
 
     return 'print("' + text + '\\r");\n';
 };

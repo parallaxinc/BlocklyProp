@@ -100,6 +100,27 @@ Blockly.Language.base_delay = {
     }
 };
 
+Blockly.Language.base_freqout = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour(120);
+         this.appendDummyInput("")
+                .appendTitle("Freq PIN#")
+                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendValueInput("DURATION", Number)
+                .appendTitle("Duration (ms)")
+                .setCheck(Number);
+        this.appendValueInput("FREQUENCY", Number)
+                .appendTitle("frequecy (hz)")
+                .setCheck(Number);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('Frequency output');
+    }
+};
+
 
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
@@ -139,7 +160,14 @@ Blockly.propc.inout_digital_read_pin = function() {
 };
 
 Blockly.propc.base_delay = function() {
-    var delay_time = Blockly.propc.valueToCode(this, 'DELAY_TIME', Blockly.propc.ORDER_ATOMIC) || '1000'
+    var delay_time = Blockly.propc.valueToCode(this, 'DELAY_TIME', Blockly.propc.ORDER_ATOMIC) || '1000';
     var code = 'pause(' + delay_time + ');\n';
     return code;
+};
+
+Blockly.propc.base_freqout = function() {
+    var dropdown_pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
+    var duration = this.getTitleValue('DURATION') || 1000;
+    var frequency = this.getTitleValue('FREQUENCY') || 3000;
+    return 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
 };

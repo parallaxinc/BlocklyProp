@@ -33,6 +33,7 @@
         <script type="text/javascript" src="generators/propc/PIRSensor.js"></script>
         <script type="text/javascript" src="generators/propc/abvolts.js"></script>
         <script type="text/javascript" src="generators/propc/servo.js"></script>
+        <script type="text/javascript" src="generators/propc/joystick.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/grove.js"></script>-->
         <!-- custom block -->
         <!--<script type="text/javascript" src="generators/arduino/custom.js"></script>-->
@@ -56,14 +57,18 @@
                 var keepers = [
                     //io
 //                    'inout_highlow',
-                    'inout_digital_write', 'inout_digital_read', 'inout_digital_write_pin', 'inout_digital_read_pin',
+                    'inout_digital_write', 'inout_digital_read', 'inout_digital_write_pin', 'inout_digital_read_pin', 'base_freqout',
 //                    'inout_analog_write', 'inout_analog_read',
 //                    'serial_print', 'inout_buildin_led',
                     //servo
                     'servo_move', // 'servo_read_degrees',
                     //sensors
                     'sensor_ping', 'PIR_Sensor',
+<<<<<<< HEAD
                     'sensor_ping', 'joystick_input_xaxis', 'joystick_input_yaxis',
+=======
+                    'sensor_ping',
+>>>>>>> 25d8787c40828783e53565a2c533a51bc245c00b
                     //cog
                     'cog_new',
                     //console
