@@ -42,9 +42,6 @@ Blockly.Language.debug_lcd_init = {
         this.appendDummyInput( "" )
                 .appendTitle( "Baud" )
                 .appendTitle( new Blockly.FieldDropdown( [["2400", "2400"], ["9600", "9600"], ["19200", "19200"]] ), "BAUD" );
-        this.appendDummyInput( "" )
-                .appendTitle( "Lines" )
-                .appendTitle( new Blockly.FieldDropdown( [["2", "2"], ["4", "4"]] ), "LINES" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -113,13 +110,11 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 Blockly.propc.debug_lcd_init = function() {
     var dropdown_pin = this.getTitleValue('PIN');
     var baud = this.getTitleValue('BAUD');
-    var lines = this.getTitleValue('LINES');
 
-    //TO DO: HOW TO INITIALIZE AN LCD
-    //Blockly.propc.definitions_['define_debug_lcd'] = '';
     Blockly.propc.setups_['setup_debug_lcd'] = 'serial *lcd';
-
-    return '';
+    
+    var code = 'lcd = serial_open( ' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ' );'
+    return code;
 };
 
 Blockly.propc.debug_lcd_clear = function() {
