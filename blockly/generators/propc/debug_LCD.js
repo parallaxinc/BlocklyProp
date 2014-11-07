@@ -136,11 +136,5 @@ Blockly.propc.debug_lcd_number = function() {
 Blockly.propc.debug_lcd_action = function() {
     var action = this.getTitleValue('ACTION');
 
-    //TO DO: ADD C CODE
-    Blockly.propc.definitions_['define_debug_lcd'] = '';
-    if (Blockly.propc.setups_['setup_debug_lcd'] == undefined) {
-        Blockly.propc.setups_['setup_debug_lcd'] = '';
-    }
-
-    return '\n';
+    return 'dprint( debug_lcd, ' + action + ' )';
 };
