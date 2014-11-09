@@ -48,7 +48,7 @@ Blockly.propc.MX2125_acceleration_xaxis = function() {
   }
   
   var code = 'mx_tilt( ' + pin + ' )';
-  return [ code, Blockly.ORDER_ATOMIC ];
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
 Blockly.propc.MX2125_acceleration_xaxis = function() {
@@ -60,5 +60,5 @@ Blockly.propc.MX2125_acceleration_xaxis = function() {
   }
   
   var code = 'mx_tilt( ' + pin + ' )';
-  return [ code, Blockly.ORDER_ATOMIC ];
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
