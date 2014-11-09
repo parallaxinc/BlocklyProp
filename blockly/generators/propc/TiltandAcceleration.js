@@ -4,20 +4,21 @@ This file contains support for the Tilt and Acceleration sensors
 
 Author: valetolpegin@gmail.com
 */
+'use strict';
 
 if ( !Blockly.Language )
   Blockly.Language = {};
   
 //Using the MX2125 Acceleration sensor
+//Creating UI
 Blockly.Language.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
     this.appendDummyInput( "" )
       .appendTitle( "X-axis PIN#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.Digital ), "PINX" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
     this.setOutput( true, Number );
-    this.setInputsInline( true );
   }
 };
 
@@ -27,14 +28,15 @@ Blockly.Language.MX2125_acceleration_yaxis = {
   init: function() {
     this.appendDummyInput( "" )
       .appendTitle( "Y-axis PIN#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.Digital ), "PINY" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
     this.setOutput( true, Number );
-    this.setInputsInline( true );
   }
 };
 
+//Getting genrator
 Blockly.propc = Blockly.Generator.get( 'propc' );
 
+//Adding comiler code
 Blockly.propc.MX2125_acceleration_xaxis = function() {
   var pin = this.getTitleValue( 'PINX' );
   
@@ -43,7 +45,8 @@ Blockly.propc.MX2125_acceleration_xaxis = function() {
     Blockly.propc.definitions_[ "include mx2125" ] = '#include "mx2125.h";';
   }
   
-  return 'mx_tilt( ' + pin + ' );\n';
+  var code = 'mx_tilt( ' + pin + ' );\n';
+  return [ code, Blockly.ORDER_ATOMIC ];
 };
 
 Blockly.propc.MX2125_acceleration_xaxis = function() {
@@ -54,5 +57,6 @@ Blockly.propc.MX2125_acceleration_xaxis = function() {
     Blockly.propc.definitions_[ "include mx2125" ] = '#include "mx2125.h";';
   }
   
-  return 'mx_tilt( ' + pin + ' );\n';
+  var code = 'mx_tilt( ' + pin + ' );\n';
+  return [ code, Blockly.ORDER_ATOMIC ];
 };
