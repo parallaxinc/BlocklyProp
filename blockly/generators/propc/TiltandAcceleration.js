@@ -18,7 +18,7 @@ Blockly.Language.MX2125_acceleration_xaxis = {
     this.setColour( 210 );
     this.appendDummyInput( "" )
       .appendTitle( "MX2125 X-axis PIN#" )
-      .appendTitle( new Blockly.FieldDropdown( [[ "0", "0"], [ "1", "1" ], [ "2", "2" ], [ "3", "3" ], [ "4", "4" ], [ "5", "5" ], [ "6", "6" ], [ "7", "7" ], [ "8", "8" ], [ "9", "9" ], [ "10", "10" ], [ "11", "11" ], [ "12", "12" ], [ "13", "13" ], [ "14", "14" ], [ "15", "15" ]] ), "PINX" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
     this.setOutput( true, Number );
   }
 };
@@ -30,7 +30,7 @@ Blockly.Language.MX2125_acceleration_yaxis = {
     this.setColour( 210 );
     this.appendDummyInput( "" )
       .appendTitle( "MX2125 Y-axis PIN#" )
-      .appendTitle(new Blockly.FieldDropdown( [[ "0", "0"], [ "1", "1" ], [ "2", "2" ], [ "3", "3" ], [ "4", "4" ], [ "5", "5" ], [ "6", "6" ], [ "7", "7" ], [ "8", "8" ], [ "9", "9" ], [ "10", "10" ], [ "11", "11" ], [ "12", "12" ], [ "13", "13" ], [ "14", "14" ], [ "15", "15" ]] ), "PINY" );
+      .appendTitle(new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
     this.setOutput( true, Number );
   }
 };
