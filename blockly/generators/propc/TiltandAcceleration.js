@@ -12,15 +12,14 @@ if ( !Blockly.Language )
   Blockly.Language = {};
  
 //PIR sensor blocks 
-Blockly.Language.PIR_Sensor = {
+Blockly.Language.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "PIR Sensor" )
-      .appendTitle( "Pin" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+      .appendTitle( "X-axis pin#" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
@@ -30,10 +29,12 @@ Blockly.Language.PIR_Sensor = {
 //Get generators
 Blockly.propc = Blockly.Generator.get( 'propc' );
 
-Blockly.propc.PIR_Sensor = function() {
-  var pin = this.getTitleValue( 'PIN' );
+Blockly.propc.MX2125_acceleration_xaxis = function() {
+  var pin = this.getTitleValue( 'PINX' );
   
-  var code = 'input( ' + pin + ' )';
+  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h";';
+  
+  var code = 'mx_tilt( ' + pin + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 */
