@@ -16,7 +16,7 @@ Blockly.Language.MX2125_acceleration_xaxis = {
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "X-axis pin#" )
+      .appendTitle( "MX2125 X-axis pin#" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
@@ -30,7 +30,36 @@ Blockly.Language.MX2125_acceleration_yaxis = {
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "Y-axis pin#" )
+      .appendTitle( "MX2125 Y-axis pin#" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null ); 
+    this.setOutput( true, Number );
+  }
+};
+
+//MMA7455 sensor blocks 
+Blockly.Language.MMA7455_acceleration_xaxis = {
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "MMA7455 X-axis pin#" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null ); 
+    this.setOutput( true, Number );
+  }
+};
+
+Blockly.Language.MMA7455_acceleration_yaxis = {
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "MMA7455 Y-axis pin#" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
