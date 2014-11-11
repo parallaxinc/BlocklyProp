@@ -73,7 +73,7 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 Blockly.propc.MX2125_acceleration_xaxis = function() {
   var pin = this.getTitleValue( 'PINX' );
   
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h";';
+  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
   var code = 'mx_tilt( ' + pin + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
@@ -82,7 +82,7 @@ Blockly.propc.MX2125_acceleration_xaxis = function() {
 Blockly.propc.MX2125_acceleration_yaxis = function() {
   var pin = this.getTitleValue( 'PINY' );
   
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h";';
+  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
   var code = 'mx_tilt( ' + pin + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
