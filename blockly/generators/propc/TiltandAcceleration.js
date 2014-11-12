@@ -10,7 +10,7 @@ if ( !Blockly.Language )
   Blockly.Language = {};
  
 //MX2125 sensor blocks 
-Blockly.Language.MX2125_acceleration_xaxis = {
+Blockly.Language.MX2125_acceleration = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
@@ -24,22 +24,8 @@ Blockly.Language.MX2125_acceleration_xaxis = {
   }
 };
 
-Blockly.Language.MX2125_acceleration_yaxis = {
-  category: 'Sensors',
-  helpUrl: '',
-  init: function() {
-    this.setColour( 300 );
-    this.appendDummyInput( "" )
-      .appendTitle( "MX2125 Y-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
-    this.setNextStatement( false, null );
-    this.setPreviousStatement( false, null ); 
-    this.setOutput( true, Number );
-  }
-};
-
 //MMA7455 sensor blocks 
-Blockly.Language.MMA7455_acceleration_xaxis = {
+Blockly.Language.MMA7455_acceleration = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
