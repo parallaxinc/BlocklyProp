@@ -46,38 +46,22 @@ Blockly.Language.MMA7455_acceleration = {
     this.setColour( 300 );
     this.appendDummyInput( "" )
       .appendTitle( "MMA7455 X-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
-    this.setNextStatement( false, null );
-    this.setPreviousStatement( false, null ); 
-    this.setOutput( true, Number );
-  }
-};
-
-Blockly.Language.MMA7455_acceleration_yaxis = {
-  category: 'Sensors',
-  helpUrl: '',
-  init: function() {
-    this.setColour( 300 );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" )
+      .appendTitle( "Put input value in" )
+      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VARX' );
     this.appendDummyInput( "" )
       .appendTitle( "MMA7455 Y-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
-    this.setNextStatement( false, null );
-    this.setPreviousStatement( false, null ); 
-    this.setOutput( true, Number );
-  }
-};
-
-Blockly.Language.MMA7455_acceleration_zaxis = {
-  category: 'Sensors',
-  helpUrl: '',
-  init: function() {
-    this.setColour( 300 );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" )
+      .appendTitle( "Put input value in" )
+      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VARY' );
     this.appendDummyInput( "" )
       .appendTitle( "MMA7455 Z-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINZ" );
-    this.setNextStatement( false, null );
-    this.setPreviousStatement( false, null ); 
-    this.setOutput( true, Number );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINZ" )
+      .appendTitle( "Put input value in" )
+      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VARZ' );
+    this.setInputsInline( true );
+    this.setNextStatement( true, null );
+    this.setPreviousStatement( true, null ); 
   }
 };
 
@@ -102,13 +86,19 @@ Blockly.propc.MX2125_acceleration_yaxis = function() {
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.propc.MMA7455_acceleration_yaxis = function() {
-  var pin = this.getTitleValue( 'PINY' );
+Blockly.propc.MMA7455_acceleration = function() {
+  var pinx = this.getTitleValue( 'PINX' );
+  var piny = this.getTitleValue( 'PINY' );
+  var pinz = this.getTitleValue( 'PINZ' );
+  
+  var xstorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VARX' ), Blockly.Variables.NAME_TYPE );
+  var ystorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VARY' ), Blockly.Variables.NAME_TYPE );
+  var zstorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VARZ' ), Blockly.Variables.NAME_TYPE );
   
   Blockly.propc.definitions_[ "include_mma7455" ] = '#include "mma7455.h"';
-  Blockly.propc.setups_[ "mma_7455_" + pin ] = 'MMA7455_init( ' + pin + ' );\n';
+  Blockly.propc.setups_[ "mma_7455" ] = 'MMA7455_init( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
   
   //Add variable declaration here
-  var code = 'mx_tilt( ' + pin + ' )';
+  var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
