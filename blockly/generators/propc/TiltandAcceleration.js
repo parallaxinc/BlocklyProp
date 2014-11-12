@@ -10,7 +10,7 @@ if ( !Blockly.Language )
   Blockly.Language = {};
  
 //MX2125 sensor blocks 
-Blockly.Language.MX2125_acceleration = {
+Blockly.Language.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
@@ -18,6 +18,20 @@ Blockly.Language.MX2125_acceleration = {
     this.appendDummyInput( "" )
       .appendTitle( "MX2125 X-axis pin#" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null ); 
+    this.setOutput( true, Number );
+  }
+};
+
+Blockly.Language.MX2125_acceleration_yaxis = {
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "MX2125 Y-axis pin#" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
@@ -88,12 +102,13 @@ Blockly.propc.MX2125_acceleration_yaxis = function() {
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.propc.MX2125_acceleration_yaxis = function() {
+Blockly.propc.MMA7455_acceleration_yaxis = function() {
   var pin = this.getTitleValue( 'PINY' );
   
   Blockly.propc.definitions_[ "include_mma7455" ] = '#include "mma7455.h"';
-  Blockly.propc.setups_[ "mma_7455_" ]
+  Blockly.propc.setups_[ "mma_7455_" + pin ] = 'MMA7455_init( ' + pin + ' );\n';
   
+  //Add variable declaration here
   var code = 'mx_tilt( ' + pin + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
