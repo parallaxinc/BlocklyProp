@@ -98,5 +98,9 @@ Thanks for the help and best of luck!
 4. Community features
 5. Manual
 
-Sensor Compatibility
+Sensor/Hardware Compatibility
 -----------------
+- Propeller C
+-   PIR Sensor ( all Parallax PIR Sensors )
+-   Print to console ( variables and string )
+-   Mutli-Cog ( start )
