@@ -97,3 +97,6 @@ Thanks for the help and best of luck!
 3. Tutorials
 4. Community features
 5. Manual
+
+Sensor Compatibility
+-----------------
