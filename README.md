@@ -101,6 +101,15 @@ Thanks for the help and best of luck!
 Sensor/Hardware Compatibility
 -----------------
 - Propeller C
--   PIR Sensor ( all Parallax PIR Sensors )
--   Print to console ( variables and string )
--   Mutli-Cog ( start )
+  - PIR Sensor ( all Parallax PIR Sensors )
+  - Console ( variables and string )
+  - Mutli-Cog ( start )
+  - Digital and Analog I/O support
+  - Serial connection ( initialize, transmit, recieve )
+  - Frequout command
+  - Joystick
+  - If, while, and for loops
+  - Ping))) sensor
+  - Abdrive
+  - Bit-math ( shift, rotate, operations, not )
+  - Numerous other math blocks ( arithmetic, exponents, absolute, limit, root )
