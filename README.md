@@ -115,5 +115,8 @@ Sensor/Hardware Compatibility
   - Ping))) sensor
   - Digital and Analog I/O support
   - Multi-Cog
-  - Serial connection
+  - Serial connection ( initialize, transmit, recieve )
   - Servo
+  - Abdrive
+  - LCD ( currently, only 1 LCD can be attached )
+  - Frequout command
