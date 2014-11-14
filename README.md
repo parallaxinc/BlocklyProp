@@ -102,7 +102,6 @@ Sensor/Hardware Compatibility
 -----------------
 - Propeller C
   - PIR Sensor ( all Parallax PIR Sensors )
-  - Console ( variables and string )
   - Mutli-Cog ( start )
   - Digital and Analog I/O support
   - Serial connection ( initialize, transmit, recieve )
@@ -111,3 +110,10 @@ Sensor/Hardware Compatibility
   - Ping))) sensor
   - Abdrive
   - LCD ( currently, only 1 LCD can be attached )
+  - Servo
+- Spin
+  - Ping))) sensor
+  - Digital and Analog I/O support
+  - Multi-Cog
+  - Serial connection
+  - Servo
