@@ -93,10 +93,11 @@ Below is the current to do list. It is organized by priority. Please edit this a
 Thanks for the help and best of luck!
 
 1. Blocks ( more products just keep coming from Parallax! )
-2. Multi Core ( Propeller C first, then Spin )
+2. Multi Core
 3. Tutorials
+  1. Blocks
+  2. Developer
 4. Community features
-5. Manual
 
 Sensor/Hardware Compatibility
 -----------------
