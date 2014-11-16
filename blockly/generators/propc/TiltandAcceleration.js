@@ -100,5 +100,5 @@ Blockly.propc.MMA7455_acceleration = function() {
   
   //Add variable declaration here
   var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  return code;
 };
