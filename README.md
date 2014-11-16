@@ -115,7 +115,7 @@ Sensor/Hardware Compatibility
   - MX2125 Acceleration sensor
   - MMA7455 Acceleration sensor
   - SF02 Laser Rangefinder
-  - Etape pressure sensor
+  - Etape liquid sensor
 - Spin
   - Ping))) sensor
   - Digital and Analog I/O support
