@@ -43,6 +43,6 @@ Blockly.propc.etape_rc_time = function() {
   var pin = this.getTitleValue( 'PIN' );
   var inputStorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VAR' ), Blockly.Variables.NAME_TYPE );
   
-  var code = 'high( ' + pin + ' );\npause( 1 );\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 );';
+  var code = 'high( ' + pin + ' );\npause( 1 );\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 );\n';
   return [ code, Blockly.ORDER_ATOMIC ];
 };
