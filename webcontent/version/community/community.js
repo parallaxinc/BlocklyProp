@@ -12,7 +12,7 @@ $(document).ready(function() {
     $.cookie.json = true;
     // TODO check if logged in
 
-    $.get('/php/auth/user', function(data) {
+    $.get('php/auth/user', function(data) {
         if (data.success) {
             $.cookie('user', data.user);
             $('#account-menu').removeClass('hidden');
@@ -93,14 +93,14 @@ $(document).ready(function() {
     $('#tag').tagsinput({
         typeahead: {
             'source': function(query) {
-                return $.post('php/index.php/tag/index/', {query: query});
+                return $.post('php/tag/index/', {query: query});
             }
         },
         readonly: true
     });
     
     $('#log-off').on('click', function() {
-        $.get('php/index.php/auth/logout', function(result) {
+        $.get('php/auth/logout', function(result) {
             if (result.success) {
                 $.removeCookie('user');
                 $('#account-menu').addClass('hidden');
@@ -113,7 +113,7 @@ $(document).ready(function() {
 showTable = function() {
     if (!projectTable) {
         projectTable = $("#table-project-table").dataTable({
-            "ajax": 'php/index.php/project',
+            "ajax": 'php/project',
             "columns": [
                 {
                     "data": "id",

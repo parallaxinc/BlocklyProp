@@ -84,7 +84,7 @@ $(document).ready(function() {
         var email = $("#loginEmail").val();
         var password = $("#loginPassword").val();
 
-        $.post('/php/auth/signin', {email: email, password: password}, function(data) {
+        $.post('php/auth/signin', {email: email, password: password}, function(data) {
             // console.log(data);
             if (data.success) {
 //                $.cookie('user', data.user);
@@ -103,7 +103,7 @@ $(document).ready(function() {
         var password = $("#registerPassword").val();
         var passwordConfirm = $("#registerPasswordConfirum").val();
 
-        $.post('/php/auth/register', {email: email, screenname: screenname, password: password, passwordConfirm: passwordConfirm}, function(data) {
+        $.post('php/auth/register', {email: email, screenname: screenname, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
             $(".icon").addClass("hidden");
             $(".message").remove();

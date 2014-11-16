@@ -8,7 +8,7 @@
 
 $(document).ready(function() {
 
-    $.get('/php/auth/user', function(data) {
+    $.get('php/auth/user', function(data) {
         if (data.success) {
             $('#account-menu').removeClass('hidden');
         } else {
