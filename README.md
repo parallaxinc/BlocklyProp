@@ -95,7 +95,7 @@ Thanks for the help and best of luck!
 1. Blocks ( more products just keep coming from Parallax! )
 2. Multi Core
 3. Tutorials
-  1. Blocks
+  1. Blocks ( User )
   2. Developer
 4. Community features
 
@@ -112,6 +112,10 @@ Sensor/Hardware Compatibility
   - Abdrive
   - LCD ( currently, only 1 LCD can be attached )
   - Servo
+  - MX2125 Acceleration sensor
+  - MMA7455 Acceleration sensor
+  - SF02 Laser Rangefinder
+  - Etape pressure sensor
 - Spin
   - Ping))) sensor
   - Digital and Analog I/O support
