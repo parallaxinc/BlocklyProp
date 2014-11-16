@@ -15,6 +15,7 @@ Blockly.Language.etape_rc_time = {
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
+      .appendTitle( "ETape sensor rc_time input" )
       .appendTitle( "Pin" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
     this.appendDummyInput( "" )
@@ -23,6 +24,14 @@ Blockly.Language.etape_rc_time = {
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null );
     this.setInputsInline( true );
+  },
+  getVars: function() {
+    return [ this.getTitleValue( 'VAR' ) ];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+      this.setTitleValue(newName, 'VAR');
+    }
   }
 };
 
