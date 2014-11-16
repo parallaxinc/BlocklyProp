@@ -47,8 +47,10 @@ Blockly.Language.MMA7455_acceleration = {
     this.appendDummyInput( "" )
       .appendTitle( "MMA7455 X-axis pin#" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" )
-      .appendTitle( "Put input value in" )
-      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VARX' );
+      //.appendTitle( "Put input value in" )
+      //.appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VARX' );
+    this.appendValueInput( 'VARX' )
+        .appendTitle( "Storage for X-axis" );
     this.appendDummyInput( "" )
       .appendTitle( "MMA7455 Y-axis pin#" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" )
@@ -62,6 +64,14 @@ Blockly.Language.MMA7455_acceleration = {
     this.setInputsInline( true );
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null ); 
+  },
+  getVars: function() {
+    return [this.getTitleValue('VAR')];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+      this.setTitleValue(newName, 'VAR');
+    }
   }
 };
 
@@ -91,7 +101,8 @@ Blockly.propc.MMA7455_acceleration = function() {
   var piny = this.getTitleValue( 'PINY' );
   var pinz = this.getTitleValue( 'PINZ' );
   
-  var xstorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VARX' ), Blockly.Variables.NAME_TYPE );
+  var xstorage = Blockly.propc.valueToCode( this, 'VARX', Blockly.propc.ORDER_ATOMIC );
+  //var xstorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VARX' ), Blockly.Variables.NAME_TYPE );
   var ystorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VARY' ), Blockly.Variables.NAME_TYPE );
   var zstorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VARZ' ), Blockly.Variables.NAME_TYPE );
   
@@ -99,6 +110,6 @@ Blockly.propc.MMA7455_acceleration = function() {
   Blockly.propc.setups_[ "mma_7455" ] = 'MMA7455_init( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
   
   //Add variable declaration here
-  var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );';
+  var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
