@@ -34,5 +34,5 @@ Blockly.propc.SF02_Laser_Rangefinder = function() {
   Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
   
   var code = 'ad_volts( ' + pin + ' );';
-  return [ code, Blockly.ORDER_ATOMIC ];
+  return code;
 };
