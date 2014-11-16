@@ -93,7 +93,35 @@ Below is the current to do list. It is organized by priority. Please edit this a
 Thanks for the help and best of luck!
 
 1. Blocks ( more products just keep coming from Parallax! )
-2. Multi Core ( Propeller C first, then Spin )
+2. Multi Core
 3. Tutorials
+  1. Blocks ( User )
+  2. Developer
 4. Community features
-5. Manual
+
+Sensor/Hardware Compatibility
+-----------------
+- Propeller C
+  - PIR Sensor ( all Parallax PIR Sensors )
+  - Mutli-Cog ( start )
+  - Digital and Analog I/O support
+  - Serial connection ( initialize, transmit, recieve )
+  - Frequout command
+  - Joystick
+  - Ping))) sensor
+  - Abdrive
+  - LCD ( currently, only 1 LCD can be attached )
+  - Servo
+  - MX2125 Acceleration sensor
+  - MMA7455 Acceleration sensor
+  - SF02 Laser Rangefinder
+  - Etape liquid sensor
+- Spin
+  - Ping))) sensor
+  - Digital and Analog I/O support
+  - Multi-Cog
+  - Serial connection ( initialize, transmit, recieve )
+  - Servo
+  - Abdrive
+  - LCD ( currently, only 1 LCD can be attached )
+  - Frequout command
