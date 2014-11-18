@@ -6,6 +6,7 @@
 
 var projectData = null;
 var ready = false;
+var projectCreated = false;
 
 var project_options = {
     'keyboard': false,
@@ -28,11 +29,12 @@ $(document).ready(function() {
             code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
         };
         projectManager.on("submit", function() {
+            projectCreated = true;
             projectManager.close();
             projectData['board'] = $('#board-type').val();
             window.frames["content_blocks"].setProfile($('#board-type').val());
             window.frames["content_blocks"].init();
-            alert("init");
+      //      alert("init");
         });
         projectManager.show();
 
@@ -48,6 +50,7 @@ $(document).ready(function() {
 //           
 //        });
     } else {
+        projectCreated = true;
         $.get('php/index.php/project/view/' + idProject, function(data) {
             console.log(data);
             projectData = data;
@@ -129,7 +132,7 @@ $(document).ready(function() {
 });
 
 blocklyReady = function() {
-    if (projectData != null) {
+    if (projectCreated) {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init();
     } else {
