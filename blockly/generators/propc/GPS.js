@@ -12,12 +12,33 @@ if ( !Blockly.Language )
 
 //Create GUI blocks for PAM-7Q GPS module
 Blockly.Language.PAM_7Q_Init = {
-  //Add code here for initialization of the PAM_7Q GPS module
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "PAM7Q GPS Module" );
+    this.appendDummyInput( "" )
+      .appendTitle( "RX pin#" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "RXPIN" );
+    this.appendDummyInput( "" )
+      .appendTitle( "TX pin#" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "TXPIN" );
+    this.appendDummyInput( "" )
+      .appendTitle( "Baud" )
+      .appendTitle( new Blockly.FieldDropdown( [[ "2400", "2400" ], [ "9600", "9600" ], [ "19200", "19200" ]] ), "BAUD" );
+    this.setNextStatement( true, null );
+    this.setPreviousStatement( true, null ); 
+  }
 };
 
 //Create code for blocks
 Blockly.propc = Blockly.Generator.get( 'propc' );
 
 Blockly.propc.PAM_7Q_Init = function() {
-  //Add code here for initialization of the PAM_7Q GPS module
+  var rx_pin = this.getTitleValue( 'RXPIN' );
+  var tx_pin = this.getTtileValue( 'TXPIN' );
+  var baud = this.getTitleValue( 'BAUD' );
+  
+  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
 };
