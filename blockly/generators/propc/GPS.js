@@ -32,6 +32,32 @@ Blockly.Language.PAM_7Q_Init = {
   }
 };
 
+Blockly.Language.PAM_7Q_Latitude = {
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Get latitude" );
+    this.setOutput( true, Number );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+  }
+};
+
+Blockly.Language.PAM_7Q_Longitude = {
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Get longitude" );
+    this.setOutput( true, Number );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+  }
+};
+
 //Create code for blocks
 Blockly.propc = Blockly.Generator.get( 'propc' );
 
@@ -41,4 +67,21 @@ Blockly.propc.PAM_7Q_Init = function() {
   var baud = this.getTitleValue( 'BAUD' );
   
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  
+  var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );';
+  return code;
+};
+
+Blockly.propc.PAM_7Q_Latitude = function() {
+  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  
+  var code = 'gps_latitude();';
+  return code;
+};
+
+Blockly.propc.PAM_7Q_Longitude = function() {
+  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  
+  var code = 'gps_longitude();';
+  return code;
 };
