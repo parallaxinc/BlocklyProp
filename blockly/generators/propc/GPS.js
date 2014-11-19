@@ -160,7 +160,7 @@ Blockly.propc.PAM_7Q_SatsTracked = function() {
   return code;
 };
 
-Blockly.propc.PAM_7Q_Init = function() {
+Blockly.propc.PAM_7Q_Velocity = function() {
   var velocity_units = this.getTitleValue( 'VELOCITYUNITS' );
   
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
