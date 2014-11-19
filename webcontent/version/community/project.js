@@ -14,13 +14,14 @@ var project_options = {
     'contentHeight': 500,
     'contentWidth': 700
 };
-        
+var projectManager = null;
+
 $(document).ready(function() {
     var idProject = getUrlParameters('project', '', false);
     if (!idProject) {
         
         project_options['showClose'] = false;
-        var projectManager = $("#project-manager").wizard(project_options);
+        projectManager = $("#project-manager").wizard(project_options);
         projectData = {
             name: '',
             description: '',
@@ -31,7 +32,9 @@ $(document).ready(function() {
         projectManager.on("submit", function() {
             projectCreated = true;
             projectManager.close();
+            projectData['name'] = $('#project-name').val();
             projectData['board'] = $('#board-type').val();
+            projectData['description'] = $('#project-description').val();
             window.frames["content_blocks"].setProfile($('#board-type').val());
             window.frames["content_blocks"].init();
       //      alert("init");
@@ -50,10 +53,10 @@ $(document).ready(function() {
 //           
 //        });
     } else {
-        projectCreated = true;
         $.get('php/index.php/project/view/' + idProject, function(data) {
             console.log(data);
             projectData = data;
+            projectCreated = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init();
@@ -140,6 +143,7 @@ blocklyReady = function() {
     }
 };
 
+
 loadProject = function() {
     if (projectData != null) {
 //        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, projectData['code']);
@@ -147,14 +151,22 @@ loadProject = function() {
     }
 };
 
+
 project = function() {
-    $('#name').val(projectData['name']);
+    if (projectManager == null) {
+        project_options['showClose'] = true;
+        projectManager = $("#project-manager").wizard(project_options);
+        projectManager.updateProgressBar(100);
+    }
+
+ /*   $('#name').val(projectData['name']);
     $('#description').text(projectData['description']);
     $('#board').val(projectData['board']);
     $('#project-dialog').modal('show');
     $('#setup-dialog').on('hidden.bs.modal', function() {
         getProjectData();
-    });
+    }); */
+    projectManager.show();
 };
 
 getProjectData = function() {
