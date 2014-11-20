@@ -117,52 +117,59 @@ Blockly.Spin.PAM_7Q_Init = function() {
   var tx_pin = this.getTtileValue( 'TXPIN' );
   var baud = this.getTitleValue( 'BAUD' );
   
-  Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 );';
-  return code;
+  //var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 );';
+  return ''; //code;
 };
 
 Blockly.Spin.PAM_7Q_Latitude = function() {
-  Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_latitude();';
-  return code;
+  //var code = 'gps_latitude();';
+  return ''; //code;
 };
 
 Blockly.Spin.PAM_7Q_Longitude = function() {
-  Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_longitude();';
-  return code;
+  //var code = 'gps_longitude();';
+  return ''; //code;
 };
 
 Blockly.Spin.PAM_7Q_Heading = function() {
-  Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = '(int)gps_heading();';
-  return code;
+  //var code = '(int)gps_heading();';
+  return ''; //code;
 };
 
 Blockly.Spin.PAM_7Q_Altitude = function() {
-  Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_altitude();';
-  return code;
+  //var code = 'gps_altitude();';
+  return ''; //code;
 };
 
 Blockly.Spin.PAM_7Q_SatsTracked = function() {
-  Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_satsTracked();';
-  return code;
+  //var code = 'gps_satsTracked();';
+  return ''; //code;
 };
 
 Blockly.Spin.PAM_7Q_Velocity = function() {
   var velocity_units = this.getTitleValue( 'VELOCITYUNITS' );
   
-  Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_velocity( ' + velocity_units + ' );';
-  return code;
+  //var code = 'gps_velocity( ' + velocity_units + ' );';
+  return ''; //code;
 };
