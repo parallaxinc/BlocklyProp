@@ -3,3 +3,34 @@
   
   Author: Vale Tolpegin ( valetolpegin@gmail.com )
 */
+'use strict';
+
+if ( !Blockly.Language )
+  Blockly.Language = {};
+
+//Create GUI blocks for SF02 Laser Rangefinder
+Blockly.Language.SF02_Laser_Rangefinder = {
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "SF02 Laser Rangefinder Pin" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+    this.setOutput( true, Number );
+  }
+};
+
+//Get generator
+Blockly.propc = Blockly.Generator.get( 'propc' );
+
+//Create code for blocks
+Blockly.propc.SF02_Laser_Rangefinder = function() {
+  var pin = this.getTitleValue( 'PIN' );
+  
+  Blockly.propc.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
+  Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+  
+  var code = 'ad_volts( ' + pin + ' )';
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
+};
