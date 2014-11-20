@@ -1,6 +1,6 @@
 /*
 
-This file contains support for the PIR sensor
+This file contains support for all Parallax compatible PIR sensors
 
 Author: valetolpegin@gmail.com ( Vale Tolpegin )
 */
