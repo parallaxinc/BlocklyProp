@@ -22,15 +22,16 @@ Blockly.Language.SF02_Laser_Rangefinder = {
 };
 
 //Get generator
-Blockly.propc = Blockly.Generator.get( 'propc' );
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
 //Create code for blocks
-Blockly.propc.SF02_Laser_Rangefinder = function() {
+Blockly.Spin.SF02_Laser_Rangefinder = function() {
   var pin = this.getTitleValue( 'PIN' );
   
-  Blockly.propc.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
-  Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
+  //Blockly.Spin.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
   
-  var code = 'ad_volts( ' + pin + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'ad_volts( ' + pin + ' )';
+  return ''; //[ code, Blockly.Spin.ORDER_ATOMIC ];
 };
