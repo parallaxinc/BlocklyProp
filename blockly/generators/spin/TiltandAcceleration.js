@@ -65,39 +65,41 @@ Blockly.Language.MMA7455_acceleration = {
 };
 
 //Get generators
-Blockly.propc = Blockly.Generator.get( 'propc' );
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
-Blockly.propc.MX2125_acceleration_xaxis = function() {
+Blockly.Spin.MX2125_acceleration_xaxis = function() {
   var pin = this.getTitleValue( 'PINX' );
   
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
-  var code = 'mx_tilt( ' + pin + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'mx_tilt( ' + pin + ' )';
+  return ''; //[ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.propc.MX2125_acceleration_yaxis = function() {
+Blockly.Spin.MX2125_acceleration_yaxis = function() {
   var pin = this.getTitleValue( 'PINY' );
   
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
+  //ADD SPIN CODE HERE
+  //Blockly.Spin.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
-  var code = 'mx_tilt( ' + pin + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'mx_tilt( ' + pin + ' )';
+  return ''; //[ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.propc.MMA7455_acceleration = function() {
+Blockly.Spin.MMA7455_acceleration = function() {
   var pinx = this.getTitleValue( 'PINX' );
   var piny = this.getTitleValue( 'PINY' );
   var pinz = this.getTitleValue( 'PINZ' );
   
-  var xstorage = Blockly.propc.valueToCode( this, 'VARX' );
-  var ystorage = Blockly.propc.valueToCode( this, 'VARY' );
-  var zstorage = Blockly.propc.valueToCode( this, 'VARZ' );
+  var xstorage = Blockly.Spin.valueToCode( this, 'VARX' );
+  var ystorage = Blockly.Spin.valueToCode( this, 'VARY' );
+  var zstorage = Blockly.Spin.valueToCode( this, 'VARZ' );
   
-  Blockly.propc.definitions_[ "include_mma7455" ] = '#include "mma7455.h"';
-  Blockly.propc.setups_[ "mma_7455" ] = 'MMA7455_init( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
+  //ADD SPIN CODE HERE
+  //Blockly.Spin.definitions_[ "include_mma7455" ] = '#include "mma7455.h"';
+  //Blockly.Spin.setups_[ "mma_7455" ] = 'MMA7455_init( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
   
-  //Add variable declaration here
-  var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
-  return code;
+  //var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
+  return ''; //code;
 };
