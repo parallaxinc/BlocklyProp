@@ -111,7 +111,7 @@ Blockly.propc.serial_tx_byte = function() {
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
     Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(0, 1, 0, 9600);';
+        return '';
     }
 
     return 'fdserial_txChar(fdser, ' + value + ');\n';
@@ -123,7 +123,7 @@ Blockly.propc.serial_send_text = function() {
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
     Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(0, 1, 0, 9600);';
+        return '';
     }
 
     return 'writeLine(fdser, "' + text + '");\n';
@@ -134,7 +134,7 @@ Blockly.propc.serial_rx_byte = function() {
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
     Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(0, 1, 0, 9600);';
+        return '';
     }
     
 //    var order = code < 0 ?
