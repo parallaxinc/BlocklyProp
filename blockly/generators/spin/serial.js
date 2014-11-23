@@ -7,7 +7,7 @@
 /*
  * Visual Blocks Language
  *
- * Copyright 2014 Michel Lampo.
+ * Copyright 2014 Vale Tolpegin.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,53 +92,53 @@ Blockly.Language.serial_rx_byte = {
 };
 
 // define generators
-Blockly.propc = Blockly.Generator.get('propc');
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
-Blockly.propc.serial_open = function() {
+Blockly.Spin.serial_open = function() {
     var dropdown_rx_pin = this.getTitleValue('RXPIN');
     var dropdown_tx_pin = this.getTitleValue('TXPIN');
     var baud = this.getTitleValue('BAUD');
 
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
-    Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
+    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
+    Blockly.Spin.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
 
     return '';
 };
 
-Blockly.propc.serial_tx_byte = function() {
-    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
+Blockly.Spin.serial_tx_byte = function() {
+    var value = Blockly.Spin.valueToCode(this, 'VALUE', Blockly.Spin.ORDER_UNARY_PREFIX) || '0';
     
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
-    if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
+    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
+    if (Blockly.Spin.setups_['setup_fdserial'] === undefined) {
         return '';
     }
 
     return 'fdserial_txChar(fdser, ' + value + ');\n';
 };
 
-Blockly.propc.serial_send_text = function() {
+Blockly.Spin.serial_send_text = function() {
     var text = this.getTitleValue('TEXT');
 
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
-    if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
+    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
+    if (Blockly.Spin.setups_['setup_fdserial'] === undefined) {
         return '';
     }
 
     return 'writeLine(fdser, "' + text + '");\n';
 };
 
-Blockly.propc.serial_rx_byte = function() {
+Blockly.Spin.serial_rx_byte = function() {
     
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
-    if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
+    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
+    if (Blockly.Spin.setups_['setup_fdserial'] === undefined) {
         return '';
     }
     
 //    var order = code < 0 ?
 //            Blockly.Spin.ORDER_UNARY_PREFIX : Blockly.Spin.ORDER_ATOMIC;
-    return ['fdserial_rxCheck(fdser)', Blockly.propc.ORDER_ATOMIC];
+    return ['fdserial_rxCheck(fdser)', Blockly.Spin.ORDER_ATOMIC];
 };
