@@ -99,10 +99,8 @@ Blockly.Spin.serial_open = function() {
     var dropdown_tx_pin = this.getTitleValue('TXPIN');
     var baud = this.getTitleValue('BAUD');
 
-    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
-    Blockly.Spin.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
-
+    Blockly.Spin.definitions_["include_terminal_plus"] = 'pst    : "Parallax Serial Terminal Plus"';
+    
     return '';
 };
 
