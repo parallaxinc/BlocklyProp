@@ -99,44 +99,42 @@ Blockly.Spin.serial_open = function() {
     var dropdown_tx_pin = this.getTitleValue('TXPIN');
     var baud = this.getTitleValue('BAUD');
 
-    Blockly.Spin.definitions_["include_terminal_plus"] = 'pst    : "Parallax Serial Terminal Plus"';
+    Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Simple_Serial.Spin"';
+    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.init( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', ' + baud + ' );';
+    }
     
     return '';
 };
 
 Blockly.Spin.serial_tx_byte = function() {
-    var value = Blockly.Spin.valueToCode(this, 'VALUE', Blockly.Spin.ORDER_UNARY_PREFIX) || '0';
+    var value = Blockly.Spin.valueToCode( this, 'VALUE', Blockly.Spin.ORDER_UNARY_PREFIX ) || '0';
     
-    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
-    if (Blockly.Spin.setups_['setup_fdserial'] === undefined) {
+    Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Simple_Serial.Spin"';
+    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         return '';
     }
 
-    return 'fdserial_txChar(fdser, ' + value + ');\n';
+    return 'serial.tx( ' + value + ' );\n';
 };
 
 Blockly.Spin.serial_send_text = function() {
     var text = this.getTitleValue('TEXT');
 
-    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
-    if (Blockly.Spin.setups_['setup_fdserial'] === undefined) {
+    Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Simple_Serial.Spin"';
+    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         return '';
     }
 
-    return 'writeLine(fdser, "' + text + '");\n';
+    return 'serial.str( "' + text + '" );\n';
 };
 
 Blockly.Spin.serial_rx_byte = function() {
     
-    Blockly.Spin.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.Spin.definitions_["var fdserial"] = 'fdserial *fdser;';
-    if (Blockly.Spin.setups_['setup_fdserial'] === undefined) {
+    Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Simple_Serial.Spin"';
+    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         return '';
     }
-    
-//    var order = code < 0 ?
-//            Blockly.Spin.ORDER_UNARY_PREFIX : Blockly.Spin.ORDER_ATOMIC;
-    return ['fdserial_rxCheck(fdser)', Blockly.Spin.ORDER_ATOMIC];
+
+    return [ 'serial.rx()', Blockly.Spin.ORDER_ATOMIC ];
 };
