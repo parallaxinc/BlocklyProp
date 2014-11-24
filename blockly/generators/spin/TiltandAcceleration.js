@@ -8,7 +8,8 @@
 if ( !Blockly.Language )
   Blockly.Language = {};
  
-//MX2125 sensor blocks 
+//MX2125 sensor blocks
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Language.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
@@ -23,6 +24,7 @@ Blockly.Language.MX2125_acceleration_xaxis = {
   }
 };
 
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Language.MX2125_acceleration_yaxis = {
   category: 'Sensors',
   helpUrl: '',
@@ -67,6 +69,7 @@ Blockly.Language.MMA7455_acceleration = {
 //Get generators
 Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Spin.MX2125_acceleration_xaxis = function() {
   var pin = this.getTitleValue( 'PINX' );
   
@@ -77,6 +80,7 @@ Blockly.Spin.MX2125_acceleration_xaxis = function() {
   return ''; //[ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Spin.MX2125_acceleration_yaxis = function() {
   var pin = this.getTitleValue( 'PINY' );
   
