@@ -56,17 +56,17 @@ Blockly.Spin = Blockly.Generator.get( 'Spin' );
 //Create code for blocks
 Blockly.Spin.etape_rc_time = function() {
   var pin = this.getTitleValue( 'PIN' );
-  var inputStorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VAR' ), Blockly.Variables.NAME_TYPE );
+  var inputStorage = Blockly.Spin.variableDB_.getName( this.getTitleValue( 'VAR' ), Blockly.Variables.NAME_TYPE );
   
-  var code = 'high( ' + pin + ' );\npause( 1 );\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 );\n';
+  var code = 'high( ' + pin + ' )\npause( 1 )\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 )\n';
   return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
 
 Blockly.Spin.etape_voltage_input = function() {
   var pin = this.getTitleValue( 'PIN' );
   
-  Blockly.Spin.setups_[ "include abvolt" ] = 'ad_init( 21, 20, 19, 18 );\n';
+  Blockly.Spin.definitions[ "abvolts" ] = 'adc : "PropBOE ADC"';
   
-  var code = 'ad_volts( ' + pin + ' );\n';
+  var code = 'adc.In( ' + pin + ' )\n';
   return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
