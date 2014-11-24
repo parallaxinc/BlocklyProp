@@ -21,7 +21,7 @@
         <!--<script type="text/javascript" src="generators/arduino/lists.js"></script>-->
         <script type="text/javascript" src="generators/spin/variables.js"></script>
         <script type="text/javascript" src="generators/spin/procedures.js"></script>
-
+        <script type="text/javascript" src="generators/spin/serial.js"></script>
         <script type="text/javascript" src="language/common/control.js"></script>
         <script type="text/javascript" src="language/common/logic.js"></script>
         <script type="text/javascript" src="language/common/math.js"></script>
@@ -99,6 +99,8 @@
 //                    'procedures_ifreturn',
                             //custom
                             //'custom_read','custom_write',
+                    //serial
+                    'serial_open', 'serial_send_text', 'serial_rx_byte',
                 ];
                 for (var x = 0; x < keepers.length; x++) {
                     newLanguage[keepers[x]] = Blockly.Language[keepers[x]];
