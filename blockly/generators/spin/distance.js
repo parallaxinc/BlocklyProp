@@ -35,7 +35,6 @@ Blockly.Spin.SF02_Laser_Rangefinder = function() {
     Blockly.Spin.setups_[ "Laser_Rangefinder" ] = 'serial.StartRxTx( ' + pin + ', ' + pin + ', %1100, 9200 );';
   };
   
-  //Add code; new method is probably going to have to be created
-  //var code = 'ad_volts( ' + pin + ' )';
-  return ''; //[ code, Blockly.Spin.ORDER_ATOMIC ];
+  var code = 'serial.CharIn( ' + pin + ' )';
+  return code;
 };
