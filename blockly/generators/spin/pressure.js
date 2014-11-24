@@ -58,14 +58,17 @@ Blockly.Spin.etape_rc_time = function() {
   var pin = this.getTitleValue( 'PIN' );
   var inputStorage = Blockly.Spin.variableDB_.getName( this.getTitleValue( 'VAR' ), Blockly.Variables.NAME_TYPE );
   
-  var code = 'high( ' + pin + ' )\npause( 1 )\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 )\n';
+  Blockly.Spin.definitions_[ "include_rctime" ] = 'rc : "RC Time"';
+  Blockly.Spin.setups_[ "rctime" ] = 'rc.ChargeTime(clkfreq/1000)\nrc.TimeOut(clkfreq/50)\n'
+  
+  var code = 'rc.Time( ' + pin + ', 1, @' + inputStorage + ' )\n';
   return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
 
 Blockly.Spin.etape_voltage_input = function() {
   var pin = this.getTitleValue( 'PIN' );
   
-  Blockly.Spin.definitions[ "abvolts" ] = 'adc : "PropBOE ADC"';
+  Blockly.Spin.definitions_[ "abvolts" ] = 'adc : "PropBOE ADC"';
   
   var code = 'adc.In( ' + pin + ' )\n';
   return [ code, Blockly.Spin.ORDER_ATOMIC ];
