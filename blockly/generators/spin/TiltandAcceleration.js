@@ -99,7 +99,8 @@ Blockly.Spin.MMA7455_acceleration = function() {
   //ADD SPIN CODE HERE
   //Blockly.Spin.definitions_[ "include_mma7455" ] = '#include "mma7455.h"';
   //Blockly.Spin.setups_[ "mma_7455" ] = 'MMA7455_init( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
+  Blockly.Spin.definitions_[ "SPI_MMA7455L_SPI_v2" ] = "SPI        : MMA7455L_SPI_v2";
   
-  //var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
+  var code = '';
   return ''; //code;
 };
