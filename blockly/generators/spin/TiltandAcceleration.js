@@ -8,7 +8,8 @@
 if ( !Blockly.Language )
   Blockly.Language = {};
  
-//MX2125 sensor blocks 
+//MX2125 sensor blocks
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Language.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
@@ -23,6 +24,7 @@ Blockly.Language.MX2125_acceleration_xaxis = {
   }
 };
 
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Language.MX2125_acceleration_yaxis = {
   category: 'Sensors',
   helpUrl: '',
@@ -67,6 +69,7 @@ Blockly.Language.MMA7455_acceleration = {
 //Get generators
 Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Spin.MX2125_acceleration_xaxis = function() {
   var pin = this.getTitleValue( 'PINX' );
   
@@ -77,6 +80,7 @@ Blockly.Spin.MX2125_acceleration_xaxis = function() {
   return ''; //[ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Spin.MX2125_acceleration_yaxis = function() {
   var pin = this.getTitleValue( 'PINY' );
   
@@ -95,11 +99,10 @@ Blockly.Spin.MMA7455_acceleration = function() {
   var xstorage = Blockly.Spin.valueToCode( this, 'VARX' );
   var ystorage = Blockly.Spin.valueToCode( this, 'VARY' );
   var zstorage = Blockly.Spin.valueToCode( this, 'VARZ' );
+
+  Blockly.Spin.definitions_[ "SPI_MMA7455L_SPI_v2" ] = "SPI        : MMA7455L_SPI_v2";
+  Blockly.Spin.setups_[ "SPI" ] = 'SPI.Start( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
   
-  //ADD SPIN CODE HERE
-  //Blockly.Spin.definitions_[ "include_mma7455" ] = '#include "mma7455.h"';
-  //Blockly.Spin.setups_[ "mma_7455" ] = 'MMA7455_init( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
-  
-  //var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
-  return ''; //code;
+  var code = 'SPI.write(SPI#MCTL, (%0110 << 4)|(SPI#G_RANGE_8g << 2)|SPI#G_MODE)\n' + xstorage + ' := SPI.read(SPI#XOUT8)\n' + ystorage + ' := SPI.read(SPI#YOUT8\n' + zstorage + ' := SPI.read(SPI#ZOUT8)\n';
+  return code;
 };

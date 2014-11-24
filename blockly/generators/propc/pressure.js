@@ -59,7 +59,7 @@ Blockly.propc.etape_rc_time = function() {
   var inputStorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VAR' ), Blockly.Variables.NAME_TYPE );
   
   var code = 'high( ' + pin + ' );\npause( 1 );\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 );\n';
-  return [ code, Blockly.ORDER_ATOMIC ];
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
 Blockly.propc.etape_voltage_input = function() {
@@ -68,5 +68,5 @@ Blockly.propc.etape_voltage_input = function() {
   Blockly.propc.setups_[ "include abvolt" ] = 'ad_init( 21, 20, 19, 18 );\n';
   
   var code = 'ad_volts( ' + pin + ' );\n';
-  return [ code, Blockly.ORDER_ATOMIC ];
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
