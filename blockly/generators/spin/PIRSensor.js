@@ -30,6 +30,6 @@ Blockly.Spin = Blockly.Generator.get( 'Spin' );
 Blockly.Spin.PIR_Sensor = function() {
   var pin = this.getTitleValue( 'PIN' );
   
-  var code = 'ina[ ' + pin + ' ];';
+  var code = 'ina[ ' + pin + ' ]';
   return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
