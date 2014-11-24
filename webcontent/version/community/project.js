@@ -155,8 +155,10 @@ loadProject = function() {
 project = function() {
     if (projectManager == null) {
         project_options['showClose'] = true;
+        project_options['showCancel'] = true;
         projectManager = $("#project-manager").wizard(project_options);
         projectManager.updateProgressBar(100);
+        $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
     }
 
  /*   $('#name').val(projectData['name']);
