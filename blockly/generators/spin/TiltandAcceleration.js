@@ -103,6 +103,6 @@ Blockly.Spin.MMA7455_acceleration = function() {
   Blockly.Spin.definitions_[ "SPI_MMA7455L_SPI_v2" ] = "SPI        : MMA7455L_SPI_v2";
   Blockly.Spin.setups_[ "SPI" ] = 'SPI.Start( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
   
-  var code = 'SPI.write(SPI#MCTL, (%0110 << 4)|(G_RANGE << 2)|SPI#G_MODE)\n' + xstorage + ' := SPI.read(SPI#XOUT8)\n' + ystorage + ' := SPI.read(SPI#YOUT8\n' + zstorage + ' := SPI.read(SPI#ZOUT8)\n';
+  var code = 'SPI.write(SPI#MCTL, (%0110 << 4)|(SPI#G_RANGE_8g << 2)|SPI#G_MODE)\n' + xstorage + ' := SPI.read(SPI#XOUT8)\n' + ystorage + ' := SPI.read(SPI#YOUT8\n' + zstorage + ' := SPI.read(SPI#ZOUT8)\n';
   return code;
 };
