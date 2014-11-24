@@ -29,9 +29,13 @@ Blockly.Spin.SF02_Laser_Rangefinder = function() {
   var pin = this.getTitleValue( 'PIN' );
   
   //ADD SPIN CODE
-  //Blockly.Spin.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
-  //Blockly.Spin.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+  Blockly.Spin.definitions_[ "include_serial" ] = 'serial : "Parallax Serial Terminal"';
+  if ( Blockly.Spin.setups_[ "Laser_Rangefinder" ] === undefined )
+  {
+    Blockly.Spin.setups_[ "Laser_Rangefinder" ] = 'serial.StartRxTx( ' + pin + ', ' + pin + ', %1100, 9200 );';
+  };
   
+  //Add code; new method is probably going to have to be created
   //var code = 'ad_volts( ' + pin + ' )';
   return ''; //[ code, Blockly.Spin.ORDER_ATOMIC ];
 };
