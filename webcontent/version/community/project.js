@@ -22,6 +22,7 @@ $(document).ready(function() {
         
         project_options['showClose'] = false;
         projectManager = $("#project-manager").wizard(project_options);
+        addProjectManagerHandler();
         projectData = {
             name: '',
             description: '',
@@ -68,20 +69,7 @@ $(document).ready(function() {
     }
 
     $('#save-project').on('click', function() {
-        getProjectData();
-        projectData['code'] = window.frames["content_blocks"].getXml();
-        $.post('php/index.php/project/save', projectData, function(data) {
-            if (data.success === false) {
-                if (data.code === 2) {
-//                    $('#signin-register').height($('#register-form').height());
-                    $('#login-dialog').modal('show');
-                }
-            } else {
-                projectData = data;
-                $('#project-dialog').modal('hide');
-                utils.showMessage("Project saved", "The project has been saved");
-            }
-        });
+        saveProject();
     });
 
     $("#signin-form").submit(function(event) {
@@ -134,6 +122,43 @@ $(document).ready(function() {
 
 });
 
+addProjectManagerHandler = function () {
+    projectManager.on("submit", function(wizard) {
+        saveProject();
+    });
+};
+
+saveProject = function() {
+    getProjectData();
+    projectData['code'] = window.frames["content_blocks"].getXml();
+    $.post('php/index.php/project/save', projectData, function(data) {
+        if (data.success === false) {
+            if (data.code === 2) {
+//                    $('#signin-register').height($('#register-form').height());
+                $('#login-dialog').modal('show');
+                projectManager.submitError();
+            }
+        } else {
+            projectData = data;
+            //$('#project-dialog').modal('hide');
+            projectManager.submitSuccess();
+            projectManager.hide();
+            projectManager.reset();
+            projectManager.enableNextButton();
+          //  projectManager.updateProgressBar(0);
+
+            for (var cardName in projectManager.cards) {
+                projectManager.cards[cardName].deselect();
+            }
+            var firstCard = projectManager.cards["project-manager-base"];
+            firstCard.select();
+            projectManager.showButtons();
+
+            utils.showMessage("Project saved", "The project has been saved");
+        }
+    });
+};
+
 blocklyReady = function() {
     if (projectCreated) {
         window.frames["content_blocks"].setProfile(projectData['board']);
@@ -157,7 +182,12 @@ project = function() {
         project_options['showClose'] = true;
         project_options['showCancel'] = true;
         projectManager = $("#project-manager").wizard(project_options);
-        projectManager.updateProgressBar(100);
+        addProjectManagerHandler();
+        projectManager.updateProgressBar(0);
+        $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
+    } else {
+      //  projectManager.reset();
+        projectManager.updateProgressBar(0);
         $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
     }
 
@@ -172,8 +202,8 @@ project = function() {
 };
 
 getProjectData = function() {
-    projectData['name'] = $('#name').val();
-    projectData['description'] = $('#description').val();
+    projectData['name'] = $('#project-name').val();
+    projectData['description'] = $('#project-description').val();
 //    console.log(projectData['description']);
 };
 
