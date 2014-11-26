@@ -170,7 +170,7 @@ Blockly.propc.base_freqout = function() {
     var duration = this.getTitleValue('DURATION') || 1000;
     var frequency = this.getTitleValue('FREQUENCY') || 3000;
     
-    var code = 'freqout(  );\n';
+    var code = 'freqout( ' + dropdown_pin + ' );\n';
     
     return code;
 };
