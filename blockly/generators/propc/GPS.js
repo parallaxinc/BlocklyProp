@@ -128,35 +128,35 @@ Blockly.propc.PAM_7Q_Init = function() {
 Blockly.propc.PAM_7Q_Latitude = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_latitude();';
+  var code = 'gps_latitude()';
   return code;
 };
 
 Blockly.propc.PAM_7Q_Longitude = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_longitude();';
+  var code = 'gps_longitude()';
   return code;
 };
 
 Blockly.propc.PAM_7Q_Heading = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = '(int)gps_heading();';
+  var code = '(int)gps_heading()';
   return code;
 };
 
 Blockly.propc.PAM_7Q_Altitude = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_altitude();';
+  var code = 'gps_altitude()';
   return code;
 };
 
 Blockly.propc.PAM_7Q_SatsTracked = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_satsTracked();';
+  var code = 'gps_satsTracked()';
   return code;
 };
 
@@ -165,6 +165,6 @@ Blockly.propc.PAM_7Q_Velocity = function() {
   
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_velocity( ' + velocity_units + ' );';
+  var code = 'gps_velocity( ' + velocity_units + ' )';
   return code;
 };
