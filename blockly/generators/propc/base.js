@@ -169,5 +169,7 @@ Blockly.propc.base_freqout = function() {
     var dropdown_pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
     var duration = this.getTitleValue('DURATION') || 1000;
     var frequency = this.getTitleValue('FREQUENCY') || 3000;
-    return 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
+    //return 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
+    
+    return '';
 };
