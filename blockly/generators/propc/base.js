@@ -166,8 +166,11 @@ Blockly.propc.base_delay = function() {
 };
 
 Blockly.propc.base_freqout = function() {
-    var dropdown_pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
-    var duration = this.getTitleValue('DURATION') || 1000;
-    var frequency = this.getTitleValue('FREQUENCY') || 3000;
-    return 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    var duration = Blockly.propc.valueToCode(this, 'DURATION', Blockly.propc.ORDER_ATOMIC) || 1000;
+    var frequency = Blockly.propc.valueToCode(this, 'FREQUENCY', Blockly.propc.ORDER_ATOMIC) || 3000;
+    
+    var code = 'freqout( ' + dropdown_pin + ', ' + duration + ', ' + frequency + ' );\n';
+    
+    return code;
 };
