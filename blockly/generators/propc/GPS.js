@@ -116,12 +116,12 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 
 Blockly.propc.PAM_7Q_Init = function() {
   var rx_pin = this.getTitleValue( 'RXPIN' );
-  var tx_pin = this.getTtileValue( 'TXPIN' );
+  var tx_pin = this.getTitleValue( 'TXPIN' );
   var baud = this.getTitleValue( 'BAUD' );
   
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 );';
+  var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 )';
   return code;
 };
 
