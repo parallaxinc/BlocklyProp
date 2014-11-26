@@ -18,12 +18,12 @@ Blockly.Language.etape_rc_time = {
       .appendTitle( "ETape sensor rc_time input" )
       .appendTitle( "Pin" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-    this.appendDummyInput( "" )
+    /*this.appendDummyInput( "" )
       .appendTitle( "Put input value in" )
-      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VAR' );
+      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VAR' );*/
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null );
-  },
+  }/*,
   getVars: function() {
     return [this.getTitleValue('VAR')];
   },
@@ -31,7 +31,7 @@ Blockly.Language.etape_rc_time = {
     if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
       this.setTitleValue(newName, 'VAR');
     }
-  }
+  }*/
 };
 
 Blockly.Language.etape_voltage_input = {
@@ -55,10 +55,11 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 //Create code for blocks
 Blockly.propc.etape_rc_time = function() {
   var pin = this.getTitleValue( 'PIN' );
-  var inputStorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VAR' ), Blockly.Variables.NAME_TYPE );
+  //var inputStorage = Blockly.propc.variableDB_.getName( this.getTitleValue( 'VAR' ), Blockly.Variables.NAME_TYPE );
   
-  var code = 'high( ' + pin + ' );\npause( 1 );\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 );\n';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'high( ' + pin + ' );\npause( 1 );\n' + inputStorage + ' = ' + 'rc_time( ' + pin + ', 1 );\n';
+  //return [ code, Blockly.propc.ORDER_ATOMIC ];
+  return '';
 };
 
 Blockly.propc.etape_voltage_input = function() {
