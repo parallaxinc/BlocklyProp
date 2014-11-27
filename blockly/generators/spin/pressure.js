@@ -43,7 +43,7 @@ Blockly.Language.etape_voltage_input = {
     this.appendDummyInput( "" )
       .appendTitle( "ETape sensor voltage input" )
       .appendTitle( "Pin" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]] ), "PIN" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
