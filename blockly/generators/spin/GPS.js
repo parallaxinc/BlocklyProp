@@ -1,10 +1,8 @@
 /*
-  This file support GPS modules
+  This file contains support for GPS modules
   
   Author: Vale Tolpegin ( valetolpegin@gmail.com )
-  
 */
-
 'use strict';
 
 if ( !Blockly.Language )
@@ -112,59 +110,66 @@ Blockly.Language.PAM_7Q_Velocity = {
 };
 
 //Create code for blocks
-Blockly.propc = Blockly.Generator.get( 'propc' );
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
-Blockly.propc.PAM_7Q_Init = function() {
+Blockly.Spin.PAM_7Q_Init = function() {
   var rx_pin = this.getTitleValue( 'RXPIN' );
-  var tx_pin = this.getTitleValue( 'TXPIN' );
+  var tx_pin = this.getTtileValue( 'TXPIN' );
   var baud = this.getTitleValue( 'BAUD' );
   
-  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 )';
-  return code;
+  //var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 );';
+  return ''; //code;
 };
 
-Blockly.propc.PAM_7Q_Latitude = function() {
-  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+Blockly.Spin.PAM_7Q_Latitude = function() {
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_latitude()';
-  return code;
+  //var code = 'gps_latitude();';
+  return ''; //code;
 };
 
-Blockly.propc.PAM_7Q_Longitude = function() {
-  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+Blockly.Spin.PAM_7Q_Longitude = function() {
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_longitude()';
-  return code;
+  //var code = 'gps_longitude();';
+  return ''; //code;
 };
 
-Blockly.propc.PAM_7Q_Heading = function() {
-  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+Blockly.Spin.PAM_7Q_Heading = function() {
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = '(int)gps_heading()';
-  return code;
+  //var code = '(int)gps_heading();';
+  return ''; //code;
 };
 
-Blockly.propc.PAM_7Q_Altitude = function() {
-  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+Blockly.Spin.PAM_7Q_Altitude = function() {
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_altitude()';
-  return code;
+  //var code = 'gps_altitude();';
+  return ''; //code;
 };
 
-Blockly.propc.PAM_7Q_SatsTracked = function() {
-  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+Blockly.Spin.PAM_7Q_SatsTracked = function() {
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_satsTracked()';
-  return code;
+  //var code = 'gps_satsTracked();';
+  return ''; //code;
 };
 
-Blockly.propc.PAM_7Q_Velocity = function() {
+Blockly.Spin.PAM_7Q_Velocity = function() {
   var velocity_units = this.getTitleValue( 'VELOCITYUNITS' );
   
-  Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
   
-  var code = 'gps_velocity( ' + velocity_units + ' )';
-  return code;
+  //var code = 'gps_velocity( ' + velocity_units + ' );';
+  return ''; //code;
 };
