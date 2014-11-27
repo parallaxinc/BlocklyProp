@@ -66,6 +66,6 @@ Blockly.propc.etape_voltage_input = function() {
   
   Blockly.propc.setups_[ "include abvolt" ] = 'ad_init( 21, 20, 19, 18 );\n';
   
-  var code = 'ad_volts( ' + pin + ' );\n';
+  var code = 'ad_volts( ' + pin + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
