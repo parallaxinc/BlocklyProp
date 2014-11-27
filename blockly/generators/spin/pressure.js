@@ -44,9 +44,9 @@ Blockly.Language.etape_voltage_input = {
       .appendTitle( "ETape sensor voltage input" )
       .appendTitle( "Pin" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-    this.setNextStatement( true, null );
-    this.setPreviousStatement( true, null );
-    this.setOutput( true );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null ); 
+    this.setOutput( true, Number );
   }
 };
 
@@ -61,7 +61,7 @@ Blockly.Spin.etape_rc_time = function() {
   Blockly.Spin.definitions_[ "include_rctime" ] = 'rc : "RC Time"';
   Blockly.Spin.setups_[ "rctime" ] = 'rc.ChargeTime(clkfreq/1000)\nrc.TimeOut(clkfreq/50)\n'
   
-  var code = 'rc.Time( ' + pin + ', 1, @' + inputStorage + ' )\n';
+  var code = 'rc.Time( ' + pin + ', 1, @' + inputStorage + ' )';
   return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
 
@@ -70,6 +70,6 @@ Blockly.Spin.etape_voltage_input = function() {
   
   Blockly.Spin.definitions_[ "abvolts" ] = 'adc : "PropBOE ADC"';
   
-  var code = 'adc.In( ' + pin + ' )\n';
+  var code = 'adc.In( ' + pin + ' )';
   return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
