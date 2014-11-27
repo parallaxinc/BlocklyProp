@@ -34,7 +34,7 @@ Blockly.Language.etape_rc_time = {
   }
 };
 
-/*Blockly.Language.etape_voltage_input = {
+Blockly.Language.etape_voltage_input = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
@@ -43,11 +43,11 @@ Blockly.Language.etape_rc_time = {
       .appendTitle( "ETape sensor voltage input" )
       .appendTitle( "Pin" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-    this.setNextStatement( true, null );
-    this.setPreviousStatement( true, null );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
   }
-};*/
+};
 
 //Get generator
 Blockly.propc = Blockly.Generator.get( 'propc' );
@@ -61,11 +61,11 @@ Blockly.propc.etape_rc_time = function() {
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-/*Blockly.propc.etape_voltage_input = function() {
+Blockly.propc.etape_voltage_input = function() {
   var pin = this.getTitleValue( 'PIN' );
   
   Blockly.propc.setups_[ "include abvolt" ] = 'ad_init( 21, 20, 19, 18 );\n';
   
   var code = 'ad_volts( ' + pin + ' );\n';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
-};*/
+};
