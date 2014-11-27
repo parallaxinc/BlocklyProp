@@ -20,7 +20,7 @@ Blockly.Language.etape_rc_time = {
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
     this.appendDummyInput( "" )
       .appendTitle( "Put input value in" )
-      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VAR' );*/
+      .appendTitle( new Blockly.FieldVariable( Blockly.LANG_VARIABLES_GET_ITEM ), 'VAR' );
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null );
   },
