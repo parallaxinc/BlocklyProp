@@ -43,7 +43,7 @@ Currently the bat file only starts the java jar: "java -jar BlocklyProp-1.0-SNAP
 
 $ git clone https://github.com/parallaxinc/BlocklyProp.git
 
-It is created as a maven project wich should make importing and building the project very easy.
+It is created as a maven project which should make importing and building the project very easy.
 As there are a lot of static files I used the assembly plugin to create a zip file with all the files.
 (The application with dependencies, the bat file to start it, the compiler and all static files for the Blockly editor)
 
@@ -70,7 +70,7 @@ Fred Lin is the creator of BlocklyDuino.
 Which in turn is created using Blockly http://code.google.com/p/blockly/
 
 To compile your code I use Openspin https://code.google.com/p/open-source-spin-compiler/
-And to do the interaction the microcontroller I use Propeller-load from the Propgcc toolchain  https://sites.google.com/site/propellergcc/
+And to do the interaction the microcontroller I use Propeller-load from the Prop-gcc toolchain  https://sites.google.com/site/propellergcc/
 
 Thanks to you all.
 
@@ -105,8 +105,8 @@ Sensor/Hardware Compatibility
   - PIR Sensor ( all Parallax PIR Sensors )
   - Mutli-Cog ( start )
   - Digital and Analog I/O support
-  - Serial connection ( initialize, transmit, recieve )
-  - Frequout command
+  - Serial connection ( initialize, transmit, receive )
+  - Freqout command
   - Joystick
   - Ping))) sensor
   - Abdrive
@@ -120,7 +120,8 @@ Sensor/Hardware Compatibility
   - Ping))) sensor
   - Digital and Analog I/O support
   - Multi-Cog
+  - Serial connection ( initialize, transmit, receive )
+  - Freqout command
+  - LCD ( currently, only 1 LCD can be attached )
   - Servo
   - Abdrive
-  - LCD ( currently, only 1 LCD can be attached )
-  - Frequout command
