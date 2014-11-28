@@ -1,5 +1,5 @@
 /*
-  This file adds support for distance sensors
+  This file contains support for distance sensors
   
   Author: Vale Tolpegin ( valetolpegin@gmail.com )
   
@@ -38,15 +38,19 @@ Blockly.Language.SF02_Laser_Rangefinder = {
 };
 
 //Get generator
-Blockly.propc = Blockly.Generator.get( 'propc' );
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
 //Create code for blocks
-Blockly.propc.SF02_Laser_Rangefinder = function() {
+Blockly.Spin.SF02_Laser_Rangefinder = function() {
   var pin = this.getTitleValue( 'PIN' );
   
-  Blockly.propc.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
-  Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+  //ADD SPIN CODE
+  Blockly.Spin.definitions_[ "include_serial" ] = 'serial : "Parallax Serial Terminal"';
+  if ( Blockly.Spin.setups_[ "Laser_Rangefinder" ] === undefined )
+  {
+    Blockly.Spin.setups_[ "Laser_Rangefinder" ] = 'serial.StartRxTx( ' + pin + ', ' + pin + ', %1100, 9200 );';
+  };
   
-  var code = 'ad_volts( ' + pin + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  var code = 'serial.CharIn( ' + pin + ' )';
+  return code;
 };

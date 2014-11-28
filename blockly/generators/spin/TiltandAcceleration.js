@@ -1,9 +1,8 @@
 /*
-
-This file contains support for the Tilt and Acceleration sensors
-
-Author: valetolpegin@gmail.com
-
+  This file contains support for tilt and acceleration sensors
+  
+  Author: Vale Tolpegin ( valetolpegin@gmail.com )
+  
  *Copyright 2014 Vale Tolpegin.
  *
  *
@@ -25,7 +24,8 @@ Author: valetolpegin@gmail.com
 if ( !Blockly.Language )
   Blockly.Language = {};
  
-//MX2125 sensor blocks 
+//MX2125 sensor blocks
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Language.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
@@ -40,6 +40,7 @@ Blockly.Language.MX2125_acceleration_xaxis = {
   }
 };
 
+//CURRENTLY NOT SPIN SUPPORTED
 Blockly.Language.MX2125_acceleration_yaxis = {
   category: 'Sensors',
   helpUrl: '',
@@ -82,39 +83,42 @@ Blockly.Language.MMA7455_acceleration = {
 };
 
 //Get generators
-Blockly.propc = Blockly.Generator.get( 'propc' );
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
-Blockly.propc.MX2125_acceleration_xaxis = function() {
+//CURRENTLY NOT SPIN SUPPORTED
+Blockly.Spin.MX2125_acceleration_xaxis = function() {
   var pin = this.getTitleValue( 'PINX' );
   
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
+  //ADD SPIN CODE
+  //Blockly.Spin.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
-  var code = 'mx_tilt( ' + pin + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'mx_tilt( ' + pin + ' )';
+  return ''; //[ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.propc.MX2125_acceleration_yaxis = function() {
+//CURRENTLY NOT SPIN SUPPORTED
+Blockly.Spin.MX2125_acceleration_yaxis = function() {
   var pin = this.getTitleValue( 'PINY' );
   
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
+  //ADD SPIN CODE HERE
+  //Blockly.Spin.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
-  var code = 'mx_tilt( ' + pin + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'mx_tilt( ' + pin + ' )';
+  return ''; //[ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.propc.MMA7455_acceleration = function() {
+Blockly.Spin.MMA7455_acceleration = function() {
   var pinx = this.getTitleValue( 'PINX' );
   var piny = this.getTitleValue( 'PINY' );
   var pinz = this.getTitleValue( 'PINZ' );
   
-  var xstorage = Blockly.propc.valueToCode( this, 'VARX' );
-  var ystorage = Blockly.propc.valueToCode( this, 'VARY' );
-  var zstorage = Blockly.propc.valueToCode( this, 'VARZ' );
+  var xstorage = Blockly.Spin.valueToCode( this, 'VARX' );
+  var ystorage = Blockly.Spin.valueToCode( this, 'VARY' );
+  var zstorage = Blockly.Spin.valueToCode( this, 'VARZ' );
+
+  Blockly.Spin.definitions_[ "SPI_MMA7455L_SPI_v2" ] = 'SPI        : "MMA7455L_SPI_v2"';
+  Blockly.Spin.setups_[ "SPI" ] = 'SPI.Start( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
   
-  Blockly.propc.definitions_[ "include_mma7455" ] = '#include "mma7455.h"';
-  Blockly.propc.setups_[ "mma_7455" ] = 'MMA7455_init( ' + pinx + ', ' + piny + ', ' + pinz + ' );\n';
-  
-  //Add variable declaration here
-  var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
+  var code = 'SPI.write(SPI#MCTL, (%0110 << 4)|(SPI#G_RANGE_8g << 2)|SPI#G_MODE)\n' + xstorage + ' := SPI.read(SPI#XOUT8)\n' + ystorage + ' := SPI.read(SPI#YOUT8\n' + zstorage + ' := SPI.read(SPI#ZOUT8)\n';
   return code;
 };

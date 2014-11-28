@@ -1,5 +1,5 @@
 /*
-  This file adds support for distance sensors
+  This file contains support for all Parallax compatible PIR Sensors
   
   Author: Vale Tolpegin ( valetolpegin@gmail.com )
   
@@ -23,30 +23,29 @@
 
 if ( !Blockly.Language )
   Blockly.Language = {};
-
-//Create GUI blocks for SF02 Laser Rangefinder
-Blockly.Language.SF02_Laser_Rangefinder = {
+ 
+//PIR sensor blocks 
+Blockly.Language.PIR_Sensor = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "SF02 Laser Rangefinder Pin" )
+      .appendTitle( "PIR Sensor" )
+      .appendTitle( "Pin" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
   }
 };
 
-//Get generator
-Blockly.propc = Blockly.Generator.get( 'propc' );
+//Get generators
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
-//Create code for blocks
-Blockly.propc.SF02_Laser_Rangefinder = function() {
+Blockly.Spin.PIR_Sensor = function() {
   var pin = this.getTitleValue( 'PIN' );
   
-  Blockly.propc.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
-  Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
-  
-  var code = 'ad_volts( ' + pin + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  var code = 'ina[ ' + pin + ' ]';
+  return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
