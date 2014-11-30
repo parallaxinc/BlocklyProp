@@ -121,6 +121,10 @@ Sensor/Hardware Compatibility
   - Digital and Analog I/O support
   - Multi-Cog
   - Serial connection ( initialize, transmit, receive )
+  - SF02 Laser Rangefinder
+  - MMA7455 Acceleration sensor
+  - Etape liquid sensor
+  - PIR Sensor
   - Freqout command
   - LCD ( currently, only 1 LCD can be attached )
   - Servo
