@@ -57,28 +57,32 @@ Blockly.Language.joystick_input_xaxis = {
 };
 
 //Define generators
-Blockly.propc = Blockly.Generator.get( 'propc' );
+Blockly.Spin = Blockly.Generator.get( 'Spin' );
 
-Blockly.propc.joystick_input_yaxis = function() {
+Blockly.Spin.joystick_input_yaxis = function() {
   var pin_number_yaxis = this.getTitleValue( 'PINY' );
   
-  Blockly.propc.definitions_[ "include abvolts" ] = '#include "abvolts.h"';
-  if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-      Blockly.propc.setups_['setup_abvolt'] = 'ad_init( 21, 20, 19, 18 );\n';
-  }
+  //Add spin code here
+  //Blockly.Spin.definitions_[ "include abvolts" ] = '#include "abvolts.h"';
+  //if (Blockly.Spin.setups_['setup_abvolt'] === undefined) {
+  //    Blockly.Spin.setups_['setup_abvolt'] = 'ad_init( 21, 20, 19, 18 );\n';
+  //}
   
-  var code = 'ad_volts( ' + pin_number_yaxis + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'ad_volts( ' + pin_number_yaxis + ' )';
+  var code = '';
+  return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
 
-Blockly.propc.joystick_input_xaxis = function() {
+Blockly.Spin.joystick_input_xaxis = function() {
   var pin_number_xaxis = this.getTitleValue( 'PINX' );
   
-  Blockly.propc.definitions_[ "include abvolts" ] = '#include "abvolts.h"';
-  if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-      Blockly.propc.setups_['setup_abvolt'] = 'ad_init( 21, 20, 19, 18 );\n';
-  }
+  //Add spin code here
+  //Blockly.Spin.definitions_[ "include abvolts" ] = '#include "abvolts.h"';
+  //if (Blockly.Spin.setups_['setup_abvolt'] === undefined) {
+  //    Blockly.Spin.setups_['setup_abvolt'] = 'ad_init( 21, 20, 19, 18 );\n';
+  //}
   
-  var code = 'ad_volts( ' + pin_number_xaxis + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+  //var code = 'ad_volts( ' + pin_number_xaxis + ' )';
+  var code = '';
+  return [ code, Blockly.Spin.ORDER_ATOMIC ];
 };
