@@ -51,6 +51,9 @@ public class BlocklyProp {
                 propellerCommunicator = new LinuxPropellerLoad();
                 cCompiler = new LinuxGccCompiler();
                 break;
+            case MacOS:
+                logger.warning( "MacOS cannot compile and donwload programs" );
+                break;
             default:
                 logger.warning("This OS is currently not supported: " + os);
                 System.exit(1);
