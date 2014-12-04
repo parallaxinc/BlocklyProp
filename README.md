@@ -122,6 +122,7 @@ Sensor/Hardware Compatibility
   - Multi-Cog
   - Serial connection ( initialize, transmit, receive )
   - SF02 Laser Rangefinder
+  - Joystick
   - MMA7455 Acceleration sensor
   - Etape liquid sensor
   - PIR Sensor
