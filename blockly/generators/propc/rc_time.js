@@ -35,7 +35,7 @@ Blockly.Language.rc_charge = {
       .appendTitle( "rc charge" )
       .appendTitle( "Pin" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-    this.appendValueInput( "", "TIME" )
+    this.appendValueInput( 'TIME' )
       .appendTitle( "Time" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null );
@@ -52,7 +52,7 @@ Blockly.Language.rc_discharge = {
       .appendTitle( "rc discharge" )
       .appendTitle( "Pin" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-    this.appendValueInput( "", "TIME" )
+    this.appendValueInput( 'TIME' )
       .appendTitle( "Time" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null );
@@ -66,11 +66,16 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 //Create code for blocks
 Blockly.propc.rc_charge = function() {
   var pin = this.getTitleValue( 'PIN' );
+  var time = Blockly.propc.valueToCode( this, 'TIME', Blockly.propc.ORDER_NONE ) || '0';
   
-  var code = 'rc_time( ' + pin + ', 1 );\n';
+  var code = 'rc_time( ' + pin + ', ' + time + ' );\n';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
 Blockly.propc.rc_discharge = function() {
-  //Add code here
+  var pin = this.getTitleValue( 'PIN' );
+  var time = Blockly.propc.valueToCode( this, 'TIME', Blockly.propc.ORDER_NONE ) || '1';
+  
+  var code = 'rc_time( ' + pin + ', ' + time + ' );\n';
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
