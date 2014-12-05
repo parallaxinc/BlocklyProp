@@ -49,7 +49,7 @@ Blockly.Language.inout_digital_read = {
     init: function() {
         this.setColour(230);
         this.appendDummyInput("")
-                .appendTitle("DigitalRead PIN#")
+                .appendTitle("Input PIN#")
                 .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.setOutput(true, Boolean);
         this.setTooltip('');
@@ -91,7 +91,7 @@ Blockly.Language.base_delay = {
     init: function() {
         this.setColour(120);
         this.appendValueInput("DELAY_TIME", Number)
-                .appendTitle("Delay (ms)")
+                .appendTitle("Pause (ms)")
                 .setCheck(Number);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
