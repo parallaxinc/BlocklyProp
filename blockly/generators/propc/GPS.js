@@ -135,13 +135,17 @@ Blockly.propc.PAM_7Q_Init = function() {
   var baud = this.getTitleValue( 'BAUD' );
   
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 )';
   
-  var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 )';
-  return code;
+  return '';
 };
 
 Blockly.propc.PAM_7Q_Latitude = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  if ( Blockly.propc.setups_[ "PAM7QInit" ] === undefined )
+  {
+    Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( 0, 1, 9600 );\n\npause( 100 )';
+  }
   
   var code = 'gps_latitude()';
   return code;
@@ -149,6 +153,10 @@ Blockly.propc.PAM_7Q_Latitude = function() {
 
 Blockly.propc.PAM_7Q_Longitude = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  if ( Blockly.propc.setups_[ "PAM7QInit" ] === undefined )
+  {
+    Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( 0, 1, 9600 );\n\npause( 100 )';
+  }
   
   var code = 'gps_longitude()';
   return code;
@@ -156,6 +164,10 @@ Blockly.propc.PAM_7Q_Longitude = function() {
 
 Blockly.propc.PAM_7Q_Heading = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  if ( Blockly.propc.setups_[ "PAM7QInit" ] === undefined )
+  {
+    Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( 0, 1, 9600 );\n\npause( 100 )';
+  }
   
   var code = '(int)gps_heading()';
   return code;
@@ -163,13 +175,21 @@ Blockly.propc.PAM_7Q_Heading = function() {
 
 Blockly.propc.PAM_7Q_Altitude = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
-  
+  if ( Blockly.propc.setups_[ "PAM7QInit" ] === undefined )
+  {
+    Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( 0, 1, 9600 );\n\npause( 100 )';
+  }
+
   var code = 'gps_altitude()';
   return code;
 };
 
 Blockly.propc.PAM_7Q_SatsTracked = function() {
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  if ( Blockly.propc.setups_[ "PAM7QInit" ] === undefined )
+  {
+    Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( 0, 1, 9600 );\n\npause( 100 )';
+  }
   
   var code = 'gps_satsTracked()';
   return code;
@@ -179,6 +199,10 @@ Blockly.propc.PAM_7Q_Velocity = function() {
   var velocity_units = this.getTitleValue( 'VELOCITYUNITS' );
   
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
+  if ( Blockly.propc.setups_[ "PAM7QInit" ] === undefined )
+  {
+    Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( 0, 1, 9600 );\n\npause( 100 )';
+  }
   
   var code = 'gps_velocity( ' + velocity_units + ' )';
   return code;
