@@ -36,7 +36,7 @@ Blockly.Language.servo_move = {
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Servo")
+                .appendTitle("Servo Angle")
                 .appendTitle("PIN#")
                 .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN")
         this.appendValueInput("DEGREES", Number)
