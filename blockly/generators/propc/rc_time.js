@@ -43,6 +43,23 @@ Blockly.Language.rc_charge = {
   }
 };
 
+Blockly.Language.rc_discharge = {
+  category: 'Sensors', //SWITCH TO A BETTER FITTING CATEGORY?
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "rc discharge" )
+      .appendTitle( "Pin" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+    this.appendValueInput( "", "TIME" )
+      .appendTitle( "Time" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null );
+    this.setOutput( true, Number );
+  }
+};
+
 //Get generator
 Blockly.propc = Blockly.Generator.get( 'propc' );
 
@@ -52,4 +69,8 @@ Blockly.propc.rc_charge = function() {
   
   var code = 'rc_time( ' + pin + ', 1 );\n';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
+};
+
+Blockly.propc.rc_discharge = function() {
+  //Add code here
 };
