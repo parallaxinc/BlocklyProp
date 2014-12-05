@@ -55,6 +55,6 @@ Blockly.propc.cog_new = function () {
 //  var stackName = 'Stack' + Blockly.propc.stacks_.length;
 //  Blockly.propc.stacks_.push('long ' + stackName + '[' + stackSize + '];');
 
-    var code = 'cog_run(' + method + ', ' + stackSize + ');';
+    var code = 'cog_run( &' + method + ', ' + stackSize + ');';
     return code;
 };
