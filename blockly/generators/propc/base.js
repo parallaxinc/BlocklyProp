@@ -20,6 +20,7 @@
 /**
  * @fileoverview Generating Prop-C for basic blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
+ * @author valetolpegin@gmail.com   ( Vale Tolpegin )
  */
 'use strict';
 
@@ -121,6 +122,31 @@ Blockly.Language.base_freqout = {
     }
 };
 
+Blockly.Language.pin_high = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set PIN# to high" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.pin_low = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set PIN# to low" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
 
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
@@ -174,3 +200,17 @@ Blockly.propc.base_freqout = function() {
     
     return code;
 };
+
+Blockly.propc.pin_high = function() {
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = 'high( ' + dropdown_pin + ' )';
+    return code;
+};
+
+Blockly.propc.pin_low = function() {
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = 'low( ' + dropdown_pin + ' )';
+    return code;
+}
