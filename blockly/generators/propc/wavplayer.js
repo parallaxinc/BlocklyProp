@@ -20,3 +20,83 @@
  * limitations under the License.
  
 */
+'use strict';
+
+if ( Blockly.Language != Null )
+  Blockly.Language = {};
+  
+//Creating GUI blocks
+Blockly.Language.wav_play = {
+  category: 'WAVPlayer',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Play" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.wav_status = {
+  category: 'WAVPlayer',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Status" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+  }
+};
+
+Blockly.Language.wav_volume = {
+  category: 'WAVPlayer',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Volume" )
+    this.appendValueInput( "VOLUME" )
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.wav_stop = {
+  category: 'WAVPlayer',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Stop" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+//Getting propc generator
+Blockly.propc = Blockly.Generator.get( 'propc' );
+
+//Generating code going to compiler
+Blockly.propc.wav_play = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.wav_status = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.wav_volume = function() {
+  var volume = this.valueToCode( this, 'VOLUME', Blockly.ORDER_NONE ) || '0';
+  
+  var code = '';
+  return code;
+};
+
+Blockly.propc.wav_stop = function() {
+  var code = '';
+  return code;
+}
