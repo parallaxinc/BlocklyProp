@@ -148,6 +148,32 @@ Blockly.Language.pin_low = {
     }
 };
 
+Blockly.Language.pulse_in = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Pulse in" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.pulse_out = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Pulse out" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
 
@@ -213,4 +239,18 @@ Blockly.propc.pin_low = function() {
     
     var code = 'low( ' + dropdown_pin + ' )';
     return code;
-}
+};
+
+Blockly.propc.pulse_in = function() {
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = '';
+    return code;
+};
+
+Blockly.propc.pulse_out = function() {
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = '';
+    return code;
+};
