@@ -24,3 +24,76 @@
 
 if ( !Blockly.Language )
   Blockly.Language = {};
+
+//Create GUI blocks for RFID hardware
+Blockly.Language.RFID_get = {
+  category: 'RFID',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 180 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Get RFID" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.RFID_disable = {
+  category: 'RFID',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 180 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Disable RFID" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.RFID_enable = {
+  category: 'RFID',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 180 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Enable RFID" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.RFID_close = {
+  category: 'RFID',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 180 );
+    this.appendDummyInput( "" )
+      .appendTitle( "Close RFID" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+//Create propc generator
+Blockly.propc = Blockly.Generator.get( 'propc' );
+
+//Generate code that is delivered to compiler
+Blockly.propc.RFID_get = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.RFID_disable = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.RFID_enable = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.RFID_cose = function() {
+  var code = '';
+  return code;
+}
