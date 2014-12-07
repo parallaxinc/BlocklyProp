@@ -22,7 +22,7 @@
 */
 'use strict';
 
-if ( Blockly.Language != Null )
+if ( !Blockly.Language )
   Blockly.Language = {};
   
 //Creating GUI blocks
