@@ -20,3 +20,7 @@
  * limitations under the License.
   
 */
+'use strict';
+
+if ( !Blockly.Language )
+  Blockly.Language = {};
