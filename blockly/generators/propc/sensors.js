@@ -19,6 +19,7 @@
 /**
  * @fileoverview Generating Spin for sensor blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
+ * @author valetolpegin@gmail.com ( Vale Tolpegin )
  */
 'use strict';
 
@@ -43,6 +44,30 @@ Blockly.Language.sensor_ping = {
     }
 };
 
+Blockly.Language.colorpal_get_rgb = {
+    category: 'Sensors',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 314 );
+        this.appendDummyInput( "" )
+            .appendTitle( "get rgb" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.colorpal_close = {
+    category: 'Sensors',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 314 );
+        this.appendDummyInput( "" )
+            .appendTitle( "close" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
 
@@ -61,4 +86,14 @@ Blockly.propc.sensor_ping.UNITS = {
     INCHES: '_inches',
     CM: '_cm',
     TICKS: ''
+};
+
+Blockly.propc.colorpal_get_rgb = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.colorpal_close = function() {
+    var code = '';
+    return code;
 };
