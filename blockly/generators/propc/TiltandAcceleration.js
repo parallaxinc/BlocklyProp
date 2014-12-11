@@ -54,6 +54,30 @@ Blockly.Language.MX2125_acceleration_yaxis = {
   }
 };
 
+Blockly.Language.MX2125_rotation = {
+ category: 'Sensors',
+ helpUrl: '',
+ init: function() {
+  this.setColour( 300 );
+  this.appendDummyInput( "" )
+   .appendTitle( "MX2125 rotation input" );
+  this.setPreviousStatement( true, null );
+  this.setNextStatement( true, null );
+ }
+};
+
+Blockly.Language.MX2125_tilt = {
+ category: 'Sensors',
+ helpUrl: '',
+ init: function() {
+  this.setColour( 300 );
+  this.appendDummyInput( "" )
+   .appendTitle( "MX2125 tilt input" );
+  this.setPreviousStatement( true, null );
+  this.setNextStatement( true, null );
+ }
+};
+
 //MMA7455 sensor block
 Blockly.Language.MMA7455_acceleration = {
   category: 'Sensors',
@@ -118,3 +142,13 @@ Blockly.propc.MMA7455_acceleration = function() {
   var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
   return code;
 };
+
+Blockly.propc.MX2125_rotation = function() {
+ var code = '';
+ return code;
+};
+
+Blockly.propc.MX2125_tilt = function() {
+ var code = '';
+ return code;
+}
