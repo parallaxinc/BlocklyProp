@@ -254,3 +254,48 @@ Blockly.propc.pulse_out = function() {
     var code = '';
     return code;
 };
+
+Blockly.propc.simpletools_library_toggle_pin = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_reverse_pin = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_get_pin_state = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_get_pin_output = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_set_pin_direction = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_set_pin_output = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_get_pin_group_states = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_get_pin_group_directions = {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_get_pin_group_outputs = {
+    var code = '';
+    return code;
+};
