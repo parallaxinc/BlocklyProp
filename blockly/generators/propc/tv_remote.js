@@ -20,3 +20,29 @@
  * limitations under the License.
  
 */
+'use strict';
+
+if ( !Blockly.Language )
+  Blockly.Language = {};
+
+//Create GUI for sirc library/tv remote
+Blockly.Language.sirc_library = {
+  category: 'Sensors',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 300 );
+    this.appendDummyInput( "" )
+      .appendTitle( "TV remote" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+//Create generator
+Blockly.propc = Blockly.Generator.get( 'propc' );
+
+//Generate code for compiler
+Blockly.propc.sirc_library = function() {
+  var code = '';
+  return code;
+};
