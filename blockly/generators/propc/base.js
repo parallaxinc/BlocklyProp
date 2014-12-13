@@ -255,47 +255,47 @@ Blockly.propc.pulse_out = function() {
     return code;
 };
 
-Blockly.propc.simpletools_library_toggle_pin = {
+Blockly.propc.simpletools_library_toggle_pin = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_reverse_pin = {
+Blockly.propc.simpletools_library_reverse_pin = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_get_pin_state = {
+Blockly.propc.simpletools_library_get_pin_state = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_get_pin_output = {
+Blockly.propc.simpletools_library_get_pin_output = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_set_pin_direction = {
+Blockly.propc.simpletools_library_set_pin_direction = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_set_pin_output = {
+Blockly.propc.simpletools_library_set_pin_output = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_get_pin_group_states = {
+Blockly.propc.simpletools_library_get_pin_group_states = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_get_pin_group_directions = {
+Blockly.propc.simpletools_library_get_pin_group_directions = function() {
     var code = '';
     return code;
 };
 
-Blockly.propc.simpletools_library_get_pin_group_outputs = {
+Blockly.propc.simpletools_library_get_pin_group_outputs = function() {
     var code = '';
     return code;
 };
