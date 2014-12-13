@@ -27,6 +27,77 @@ if ( !Blockly.Language )
 
 
 //Create GUIs for EEEPROM blocks
+Blockly.Language.eeprom_int_to = {
+  category: 'EEPROM',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "EEPROM int to" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.eeprom_int_from = {
+  category: 'EEPROM',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "EEPROM int from" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.eeprom_float_to = {
+  category: 'EEPROM',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "EEPROM float to" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.eeprom_float_from = {
+  category: 'EEPROM',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "EEPROM float from" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.eeprom_text_to = {
+  category: 'EEPROM',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "EEPROM text to" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.eeprom_text_from = {
+  category: 'EEPROM',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "EEPROM text from" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
 
 //Create propc generator
 Blockly.propc = Blockly.Generator.get( 'propc' );
