@@ -282,9 +282,34 @@ Blockly.Language.simpletools_library_get_pin_group_outputs = {
     }
 };
 
+Blockly.Language.simpletools_library_set_pin_group_directions = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set pin group directions" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_set_pin_group_outputs = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set pin group outputs" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
 
+//generate code for the compiler
 Blockly.propc.inout_digital_write = function() {
     var dropdown_pin = this.getTitleValue('PIN');
     var dropdown_stat = this.getTitleValue('STAT');
@@ -404,6 +429,16 @@ Blockly.propc.simpletools_library_get_pin_group_directions = function() {
 };
 
 Blockly.propc.simpletools_library_get_pin_group_outputs = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_set_pin_group_Directions = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.simpletools_library_set_pin_group_outputs = function() {
     var code = '';
     return code;
 };
