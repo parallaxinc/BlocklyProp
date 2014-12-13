@@ -20,3 +20,44 @@
  * limitations under the License.
   
 */
+'use strict';
+
+if ( !Blockly.Language )
+  Blockly.Language = {};
+
+
+//Create GUIs for EEEPROM blocks
+
+//Create propc generator
+Blockly.propc = Blockly.Generator.get( 'propc' );
+
+//Generate code for compiler
+Blockly.propc.eeprom_int_to = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.eeprom_int_from = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.eeprom_float_to = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.eeprom_float_from = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.eeprom_text_to = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.eeprom_text_from = function() {
+  var code = '';
+  return code;
+};
