@@ -20,3 +20,63 @@
  * limitations under the License.
  
 */
+'use strict';
+
+if ( !Blockly.Language )
+  Blockly.Language = {};
+
+//Generating GUIs for IrC blocks
+Blockly.Language.i2c_new_bus = {
+  category: 'I2C',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "I2C new bus" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.i2c_in = {
+  category: 'I2C',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "I2C in" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.Language.i2c_out = {
+  category: 'I2C',
+  helpUrl: '',
+  init: function() {
+    this.setColour( 120 );
+    this.appendDummyInput( "" )
+      .appendTitle( "I2C out" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+//Creating generator
+Blockly.propc = Blockly.Generator.get( 'propc' );
+
+//Generating code for compiler
+Blockly.propc.i2c_new_bus = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.i2c_in = function() {
+  var code = '';
+  return code;
+};
+
+Blockly.propc.i2c_out = function() {
+  var code = '';
+  return code''
+};
