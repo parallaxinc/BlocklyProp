@@ -174,6 +174,114 @@ Blockly.Language.pulse_out = {
     }
 };
 
+Blockly.Language.simpletools_library_toggle_pin = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Toggle Pin" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_reverse_pin = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Reverse pin" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_get_pin_state = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get pin state" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_get_pin_output = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get pin output" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_set_pin_direction = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set pin direction" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_set_pin_output = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set pin output" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_get_pin_group_states = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get pin group states" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_get_pin_group_directions = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get pin group directions" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.simpletools_library_get_pin_group_outputs = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get pin group outputs" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
 
