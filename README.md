@@ -93,11 +93,29 @@ Below is the current to do list. It is organized by priority. Please edit this a
 Thanks for the help and best of luck!
 
 1. Blocks ( more products just keep coming from Parallax! )
-2. Multi Core
-3. Tutorials
+2. Fix download ( centralize everything in one place )
+  1. Download python libraries
+  2. Install python libraries when downloaded
+  3. Document download instructions
+3. Add sub-categories
+4. Tutorials/General Documentation
   1. Blocks ( User )
   2. Developer
-4. Community features
+5. Community features
+  1. Fix project sharing ( is it broken? )
+  2. Circuit picture capabilities associated with programs
+6. Example projects
+  1. Alarm System for your room ( ping and wavplayer )
+  2. Zombie detector with PIR
+  3. RF message decoder XBee
+  4. Joystick controlled servo
+  5. Ping distance note player
+  6. Mood display
+  7. LED candle
+  8. ColorPal LED display
+  9. Musical Instrument control of something
+  10. RF tilt video game controller ( mx2125 )
+  11. Light sensor
 
 Sensor/Hardware Compatibility
 -----------------
