@@ -48,6 +48,66 @@ Blockly.Language.servo_move = {
     }
 };
 
+Blockly.Language.servodiffdrive_library_drive_pins = {
+    category: 'Servo',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Drive pins" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.servodiffdrive_library_drive_speeds = {
+    category: 'Servo',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Drive speeds" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.servodiffdrive_library_drive_setRamp = {
+    category: 'Servo',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Drive setRamp" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.servodiffdrive_library_drive_sleep = {
+    category: 'Servo',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Drive sleep" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.servodiffdrive_library_drive_stop = {
+    category: 'Servo',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Drive stop" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
 
@@ -59,5 +119,30 @@ Blockly.propc.servo_move = function() {
 //    Blockly.propc.setups_['setup_servo'] = 'SERVO.Start';
 
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
+    return code;
+};
+
+Blockly.propc.servodiffdrive_library_drive_pins = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.servodiffdrive_library_drive_speeds = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.servodiffdrive_library_drive_setRamp = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.servodiffdrive_library_drive_sleep = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.servodiffdrive_library_drive_stop = function() {
+    var code = '';
     return code;
 };
