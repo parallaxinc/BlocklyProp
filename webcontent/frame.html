@@ -13,14 +13,19 @@
         <script type="text/javascript" src="generators/spin/control.js"></script>
         <script type="text/javascript" src="generators/spin/logic.js"></script>
         <script type="text/javascript" src="generators/spin/math.js"></script>
+        <script type="text/javascript" src="generators/spin/PIRSensor.js"></script>
         <script type="text/javascript" src="generators/spin/bit_math.js"></script>
+        <script type="text/javascript" src="generators/spin/distance.js"></script>
+        <script type="text/javascript" src="generators/spin/pressure.js"></script>
+        <script type="text/javascript" src="generators/spin/TiltandAcceleration.js"></script>
         <!--<script type="text/javascript" src="generators/arduino/text.js"></script>-->
         <!--<script type="text/javascript" src="generators/arduino/lists.js"></script>-->
         <script type="text/javascript" src="generators/spin/variables.js"></script>
         <script type="text/javascript" src="generators/spin/procedures.js"></script>
-
+        <script type="text/javascript" src="generators/spin/serial.js"></script>
         <script type="text/javascript" src="language/common/control.js"></script>
         <script type="text/javascript" src="language/common/logic.js"></script>
+        <script type="text/javascript" src="generators/spin/joystick.js"></script>
         <script type="text/javascript" src="language/common/math.js"></script>
         <script type="text/javascript" src="language/common/text.js"></script>
         <script type="text/javascript" src="language/common/lists.js"></script>
@@ -57,7 +62,8 @@
                     //servo
                     'servo_move', // 'servo_read_degrees',
                     //sensors
-                    'sensor_ping',
+                    'sensor_ping', 'PIR_Sensor', 'MMA7455_acceleration', 'SF02_Laser_Rangefinder', 'etape_rc_time',
+                    'etape_voltage_input', 'joystick_input_xaxis', 'joystick_input_yaxis',
                     // debug lcd
                     'debug_lcd_init', 'debug_lcd_clear', 'debug_lcd_print', 'debug_lcd_number', 'debug_lcd_action',
                     //grove analog
@@ -96,6 +102,8 @@
 //                    'procedures_ifreturn',
                             //custom
                             //'custom_read','custom_write',
+                    //serial
+                    'serial_open', 'serial_send_text', 'serial_rx_byte',
                 ];
                 for (var x = 0; x < keepers.length; x++) {
                     newLanguage[keepers[x]] = Blockly.Language[keepers[x]];

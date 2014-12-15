@@ -17,6 +17,8 @@ $(document).ready(function() {
     check_client();
 });
 
+var check_com_ports_interval = null;
+
 check_client = function() {
     $.get(client_url, function(data) {
         if (!client_available) {
@@ -31,10 +33,12 @@ check_client = function() {
             $("#client_status").text("BlocklyPropClient available").removeClass("not_available").addClass("available");
             if (check_com_ports && typeof(check_com_ports) === "function") {
                 check_com_ports();
+                check_com_ports_interval = setInterval(check_com_ports, 5000);
             }
         }
         setTimeout(check_client, 20000);
     }).fail(function() {
+        clearInterval(check_com_ports_interval);
         client_available = false;
         $("#client_status").text("BlocklyPropClient not available").removeClass("available").addClass("not_available");
         setTimeout(check_client, 2000);

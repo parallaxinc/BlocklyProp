@@ -8,7 +8,7 @@
 $(document).ready(function() {
     $.cookie.json = true;
 
-    $.get('/php/auth/user', function(data) {
+    $.get('php/auth/user', function(data) {
         if (data.success) {
             $.cookie('user', data.user);
             $('#account-data').addClass('in').removeClass('hidden');
@@ -28,7 +28,7 @@ $(document).ready(function() {
         var email = $("#loginEmail").val();
         var password = $("#loginPassword").val();
 
-        $.post('/php/auth/signin', {email: email, password: password}, function(data) {
+        $.post('php/auth/signin', {email: email, password: password}, function(data) {
             // console.log(data);
             if (data.success) {
                 $.cookie('user', data.user);
@@ -100,7 +100,7 @@ $(document).ready(function() {
         var password = $("#changePassword").val();
         var passwordConfirm = $("#changePasswordConfirum").val();
 
-        $.post('/php/auth/change', {email: email, screenname: screenname, oldPassword: oldPassword, password: password, passwordConfirm: passwordConfirm}, function(data) {
+        $.post('php/auth/change', {email: email, screenname: screenname, oldPassword: oldPassword, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
             $(".icon").addClass("hidden");
             $(".message").remove();
