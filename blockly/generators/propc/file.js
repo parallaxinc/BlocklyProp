@@ -48,7 +48,7 @@ Blockly.Language.file_close = {
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-            .appendTitle("CLose file");
+            .appendTitle("Close file");
         this.appendValueInput('FILE');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
