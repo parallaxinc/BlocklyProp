@@ -196,6 +196,11 @@ Blockly.Toolbox.redraw = function() {
     options.push({text: Blockly.MSG_VARIABLE_CATEGORY,
                   cat: Blockly.MSG_VARIABLE_CATEGORY});
   }
+  if (Blockly.Language.pointers_get || Blockly.Language.pointers_set) {
+    // Variables have a special category that is dynamic.
+    options.push({text: Blockly.MSG_POINTER_CATEGORY,
+      cat: Blockly.MSG_POINTER_CATEGORY});
+  }
   if (Blockly.Language.procedures_defnoreturn ||
       Blockly.Language.procedures_defreturn) {
     // Procedures have a special category that is dynamic.
