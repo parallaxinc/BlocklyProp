@@ -49,9 +49,16 @@ Blockly.MSG_NEW_VARIABLE_TITLE = 'New variable name:';
 Blockly.MSG_RENAME_VARIABLE = 'Rename variable...';
 Blockly.MSG_RENAME_VARIABLE_TITLE = 'Rename all "%1" variables to:';
 
+// Pointer renaming.
+Blockly.MSG_NEW_POINTER = 'New pointer...';
+Blockly.MSG_NEW_POINTER_TITLE = 'New pointer name:';
+Blockly.MSG_RENAME_POINTER = 'Rename pointer...';
+Blockly.MSG_RENAME_POINTER_TITLE = 'Rename all "%1" pointers to:';
+
 // Toolbox.
 Blockly.MSG_VARIABLE_CATEGORY = 'Variables';
 Blockly.MSG_PROCEDURE_CATEGORY = 'Methods';
+Blockly.MSG_POINTER_CATEGORY = 'Pointers';
 
 // Colour Blocks.
 Blockly.LANG_CATEGORY_COLOUR = 'Colour';

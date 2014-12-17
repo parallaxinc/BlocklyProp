@@ -46,6 +46,7 @@ filenames = [
     'field_label.js',
     'field_textinput.js',
     'field_variable.js',
+    'field_pointer.js',
     'flyout.js',
     'generator.js',
     'inject.js',
@@ -59,6 +60,7 @@ filenames = [
     'trashcan.js',
     'utils.js',
     'variables.js',
+    'pointers.js',
     'warning.js',
     'workspace.js',
     'xml.js']

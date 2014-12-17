@@ -259,6 +259,10 @@ Blockly.Flyout.prototype.show = function(names) {
     // Special category for variables.
     Blockly.Variables.flyoutCategory(blocks, gaps, margin,
         /** @type {!Blockly.Workspace} */ (this.workspace_));
+  } else if (names == Blockly.MSG_POINTER_CATEGORY) {
+    // Special category for pointers.
+    Blockly.Pointers.flyoutCategory(blocks, gaps, margin,
+        /** @type {!Blockly.Workspace} */ (this.workspace_));
   } else if (names == Blockly.MSG_PROCEDURE_CATEGORY) {
     // Special category for procedures.
     Blockly.Procedures.flyoutCategory(blocks, gaps, margin,
