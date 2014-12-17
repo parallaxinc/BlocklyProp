@@ -180,7 +180,8 @@ Blockly.Language.simpletools_library_toggle_pin = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Toggle Pin" );
+            .appendTitle( "Toggle Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -192,7 +193,8 @@ Blockly.Language.simpletools_library_reverse_pin = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Reverse pin" );
+            .appendTitle( "Reverse pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -204,7 +206,8 @@ Blockly.Language.simpletools_library_get_pin_state = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Get pin state" );
+            .appendTitle( "Get pin state" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -216,7 +219,8 @@ Blockly.Language.simpletools_library_get_pin_output = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Get pin output" );
+            .appendTitle( "Get pin output" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -228,7 +232,12 @@ Blockly.Language.simpletools_library_set_pin_direction = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Set pin direction" );
+            .appendTitle( "Set pin direction" )
+            .appendTitle( "Pin number" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "Direction" )
+            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "DIRECTION" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -240,43 +249,69 @@ Blockly.Language.simpletools_library_set_pin_output = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Set pin output" );
+            .appendTitle( "Set pin output" )
+            .appendTitle( "Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "State" )
+            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "STATE" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
 };
 
 Blockly.Language.simpletools_library_get_pin_group_states = {
+    //TO DO: Add the correct code for this
+    //need to figure out how to get results, do I store them into variables?
     category: 'Control',
     helpUrl: '',
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Get pin group states" );
+            .appendTitle( "Get pin group states" )
+            .appendTitle( "Start Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "START_PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "End Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
 };
 
 Blockly.Language.simpletools_library_get_pin_group_directions = {
+    //TO DO: Add the correct code for this
+    //need to figure out how to get results, do I store them into variables?
     category: 'Control',
     helpUrl: '',
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Get pin group directions" );
+            .appendTitle( "Get pin group directions" )
+            .appendTitle( "Start Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "START_PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "End pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
 };
 
 Blockly.Language.simpletools_library_get_pin_group_outputs = {
+    //TO DO: Add the correct code for this
+    //need to figure out how to get results, do I store them into variables?
     category: 'Control',
     helpUrl: '',
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Get pin group outputs" );
+            .appendTitle( "Get pin group outputs" )
+            .appendTitle( "Start pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "START_PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "End Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -288,7 +323,15 @@ Blockly.Language.simpletools_library_set_pin_group_directions = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Set pin group directions" );
+            .appendTitle( "Set pin group directions" )
+            .appendTitle( "Start Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "START_PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "End Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "Patter/Direction" )
+            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "PATTERN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -300,7 +343,15 @@ Blockly.Language.simpletools_library_set_pin_group_outputs = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Set pin group outputs" );
+            .appendTitle( "Set pin group outputs" )
+            .appendTitle( "Start Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "START_PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "End Pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "Output/Pattern" )
+            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "PATTERN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -389,56 +440,87 @@ Blockly.propc.pulse_out = function() {
 };
 
 Blockly.propc.simpletools_library_toggle_pin = function() {
-    var code = '';
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = 'toggle( ' + dropdown_pin + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_reverse_pin = function() {
-    var code = '';
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = 'reverse( ' + dropdown_pin + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_get_pin_state = function() {
-    var code = '';
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = 'get_state( ' + dropdown_pin + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_get_pin_output = function() {
-    var code = '';
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    
+    var code = 'get_output( ' + dropdown_pin + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_set_pin_direction = function() {
-    var code = '';
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    var direction = this.getTitleValue( 'DIRECTION' );
+    
+    var code = 'set_direction( ' + dropdown_pin + ', ' + direction + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_set_pin_output = function() {
-    var code = '';
+    var dropdown_pin = this.getTitleValue( 'PIN' );
+    var state = this.getTitleValue( 'STATE' );
+    
+    var code = 'set_output( ' + dropdown_pin + ', ' + state + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_get_pin_group_states = function() {
-    var code = '';
+    var start_pin = this.getTitleValue( 'START_PIN' );
+    var end_pin = this.getTitleValue( 'END_PIN' );
+    
+    var code = 'get_states( ' + start_pin + ', ' + end_pin + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_get_pin_group_directions = function() {
-    var code = '';
+    var start_pin = this.getTitleValue( 'START_PIN' );
+    var end_pin = this.getTitleValue( 'END_PIN' );
+    
+    var code = 'get_directions( ' + start_pin + ', ' + end_pin + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_get_pin_group_outputs = function() {
-    var code = '';
+    var start_pin = this.getTitleValue( 'START_PIN' );
+    var end_pin = this.getTitleValue( 'END_PIN' );
+    
+    var code = 'get_outputs( ' + start_pin + ', ' + end_pin + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_set_pin_group_Directions = function() {
-    var code = '';
+    var start_pin = this.getTitleValue( 'START_PIN' );
+    var end_pin = this.getTitleValue( 'END_PIN' );
+    var direction = this.getTitleValue( 'PATTERN' );
+    
+    var code = 'set_directions( ' + start_pin + ', ' + end_pin + ', ' + direction + ' )';
     return code;
 };
 
 Blockly.propc.simpletools_library_set_pin_group_outputs = function() {
-    var code = '';
+    var start_pin = this.getTitleValue( 'START_PIN' );
+    var end_pin = this.getTitleValue( 'END_PIN' );
+    var direction = this.getTitleValue( 'PATTERN' );
+    
+    var code = 'set_outputs( ' + start_pin + ', ' + end_pin + ', ' + direction + ' )';
     return code;
 };
