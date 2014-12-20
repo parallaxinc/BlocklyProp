@@ -156,8 +156,9 @@ Blockly.Language.pulse_in = {
         this.appendDummyInput( "" )
             .appendTitle( "Pulse in" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-        this.setPreviousStatement( true, null );
-        this.setNextStatement( true, null );
+        this.setPreviousStatement( false, null );
+        this.setNextStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
@@ -208,8 +209,9 @@ Blockly.Language.simpletools_library_get_pin_state = {
         this.appendDummyInput( "" )
             .appendTitle( "Get pin state" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-        this.setPreviousStatement( true, null );
-        this.setNextStatement( true, null );
+        this.setPreviousStatement( false, null );
+        this.setNextStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
@@ -221,12 +223,14 @@ Blockly.Language.simpletools_library_get_pin_output = {
         this.appendDummyInput( "" )
             .appendTitle( "Get pin output" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
-        this.setPreviousStatement( true, null );
-        this.setNextStatement( true, null );
+        this.setPreviousStatement( false, null );
+        this.setNextStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
 Blockly.Language.simpletools_library_set_pin_direction = {
+    //TO DO: is the direction input correct?
     category: 'Control',
     helpUrl: '',
     init: function() {
@@ -244,6 +248,7 @@ Blockly.Language.simpletools_library_set_pin_direction = {
 };
 
 Blockly.Language.simpletools_library_set_pin_output = {
+    //TO DO: is the direction input correct?
     category: 'Control',
     helpUrl: '',
     init: function() {
@@ -263,6 +268,7 @@ Blockly.Language.simpletools_library_set_pin_output = {
 Blockly.Language.simpletools_library_get_pin_group_states = {
     //TO DO: Add the correct code for this
     //need to figure out how to get results, do I store them into variables?
+    //TO DO: does this return an single int? what should the output be?
     category: 'Control',
     helpUrl: '',
     init: function() {
@@ -282,6 +288,7 @@ Blockly.Language.simpletools_library_get_pin_group_states = {
 Blockly.Language.simpletools_library_get_pin_group_directions = {
     //TO DO: Add the correct code for this
     //need to figure out how to get results, do I store them into variables?
+    //TO DO: does this return an single int? what should the output be?
     category: 'Control',
     helpUrl: '',
     init: function() {
@@ -301,6 +308,7 @@ Blockly.Language.simpletools_library_get_pin_group_directions = {
 Blockly.Language.simpletools_library_get_pin_group_outputs = {
     //TO DO: Add the correct code for this
     //need to figure out how to get results, do I store them into variables?
+    //TO DO: does this return an single int? what should the output be?
     category: 'Control',
     helpUrl: '',
     init: function() {

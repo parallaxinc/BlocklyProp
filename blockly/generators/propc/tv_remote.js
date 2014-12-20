@@ -32,9 +32,12 @@ Blockly.Language.sirc_library = {
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "TV remote" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
+      .appendTitle( "get button pressed on remote" )
+      .appendTitle( "pin" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Number );
   }
 };
 
@@ -43,6 +46,17 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 
 //Generate code for compiler
 Blockly.propc.sirc_library = function() {
-  var code = '';
+  var pin = this.getTitleValue( 'PIN' );
+    
+  if ( Blockly.propc.definitions_[ "sirc" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "sirc" ] = '#include "sirc.h"';
+  }
+  if ( Blockly.propc.setups_[ "sirc" ] === undefined )
+  {
+      Blockly.propc.setups_[ "sirc" ] = "sirc_setTimeout( 50 )";
+  }
+
+  var code = 'sirc_button( ' + pin + ' )';
   return code;
 };

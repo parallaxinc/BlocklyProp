@@ -28,12 +28,19 @@ if ( !Blockly.Language )
 
 //Create GUIs for EEEPROM blocks
 Blockly.Language.eeprom_int_to = {
+  //TO DO: switch value input from dropdown to value input
+  //TO DO: Update address input to correct input type ( new block with address type? )
   category: 'EEPROM',
   helpUrl: '',
   init: function() {
     this.setColour( 120 );
     this.appendDummyInput( "" )
-      .appendTitle( "EEPROM int to" );
+      .appendTitle( "EEPROM int to" )
+      .appendTitle( "value" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "VALUE" );
+    this.appendDummyInput( "" )
+      .appendTitle( "address" )
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
@@ -45,57 +52,95 @@ Blockly.Language.eeprom_int_from = {
   init: function() {
     this.setColour( 120 );
     this.appendDummyInput( "" )
-      .appendTitle( "EEPROM int from" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
+      .appendTitle( "EEPROM int from" )
+      .appendTitle( "address" )
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Number );
   }
 };
 
 Blockly.Language.eeprom_float_to = {
+  //TO DO: add correct input method
+  //float value input block?
+  //TO DO: correct address input?
+  //address block?
   category: 'EEPROM',
   helpUrl: '',
   init: function() {
     this.setColour( 120 );
     this.appendDummyInput( "" )
-      .appendTitle( "EEPROM float to" );
+      .appendTitle( "EEPROM float to" )
+      .appendTitle( "value" )
+      .appendTitle( new Blockly.FieldDropdown( [["0.1", "0.1"], ["0.2", "0.2"]] ), "VALUE" );
+    this.appendDummyInput( "" )
+      .appendTitle( "address" )
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
 };
 
 Blockly.Language.eeprom_float_from = {
+  //TO DO: correct address input
+  //address block OR add address to profile.default --> profile.default.eeprom_address
   category: 'EEPROM',
   helpUrl: '',
   init: function() {
     this.setColour( 120 );
     this.appendDummyInput( "" )
-      .appendTitle( "EEPROM float from" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
+      .appendTitle( "EEPROM float from" )
+      .appendTitle( "address" )
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Number );
   }
 };
 
 Blockly.Language.eeprom_text_to = {
+  //TO DO: correct address input
   category: 'EEPROM',
   helpUrl: '',
   init: function() {
     this.setColour( 120 );
     this.appendDummyInput( "" )
-      .appendTitle( "EEPROM text to" );
+      .appendTitle( "EEPROM text to" )
+      .appendTitle( "text" )
+      .appendTitle( /*ADD VALUE INPUT HERE*/ );
+    this.appendDummyInput( "" )
+      //TO DO: what does "int n" mean? input/no input?
+      .appendTitle( "n" )
+      .appendTitle( /*ADD VALUE INPUT HERE*/ );
+    this.appendDummyInput( "" )
+      .appendTitle( "address" )
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
 };
 
 Blockly.Language.eeprom_text_from = {
+  //TO DO: correct address input
   category: 'EEPROM',
   helpUrl: '',
   init: function() {
     this.setColour( 120 );
-    this.appendDummyInput( "" )
-      .appendTitle( "EEPROM text from" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
+      this.appendDummyInput( "" )
+      .appendTitle( "EEPROM text from" )
+      .appendTitle( "text" )
+      .appendTitle( /*ADD VALUE OUTPUT HERE*/ );
+      this.appendDummyInput( "" )
+      //TO DO: what does "int n" mean? input/no input?
+      .appendTitle( "n" )
+      .appendTitle( /*ADD VALUE OUTPUT HERE*/ );
+      this.appendDummyInput( "" )
+      .appendTitle( "address" )
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Number );
   }
 };
 
@@ -104,31 +149,46 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 
 //Generate code for compiler
 Blockly.propc.eeprom_int_to = function() {
-  var code = '';
+  var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_NONE ) || '0';
+  var address = this.getTitleValue( 'ADDRESS' );
+
+  var code = 'ee_putInt( ' + value + ', ' + address + ' )';
   return code;
 };
 
 Blockly.propc.eeprom_int_from = function() {
-  var code = '';
+  var address = this.getTitleValue( 'ADDRESS' );
+    
+  var code = 'ee_getInt( ' + address + ' )';
   return code;
 };
 
 Blockly.propc.eeprom_float_to = function() {
-  var code = '';
+  var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_NONE ) || '0';
+  var address = this.getTitleValue( 'ADDRESS' );
+    
+  var code = 'ee_putFloat32( ' + value + ', ' + address + ' )';
   return code;
 };
 
 Blockly.propc.eeprom_float_from = function() {
-  var code = '';
+  var address = this.getTitleValue( 'ADDRESS' );
+    
+  var code = 'ee_getFloat32( ' + address + ' )';
   return code;
 };
 
 Blockly.propc.eeprom_text_to = function() {
-  var code = '';
+  var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_NONE ) || '0';
+  var address = this.getTitleValue( 'ADDRESS' );
+    
+  var code = 'ee_putStr( ' + value + ', ' + address + ' )';
   return code;
 };
 
 Blockly.propc.eeprom_text_from = function() {
-  var code = '';
+  var address = this.getTitleValue( 'ADDRESS' );
+    
+  var code = 'ee_getStr( ' + address + ' )';
   return code;
 };

@@ -32,7 +32,9 @@ Blockly.Language.sound_impact_run = {
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "run" );
+      .appendTitle( "sound impact run" )
+      .appendTitle( "In cog" )
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"] ), "COG" );
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null );
   }
@@ -44,9 +46,10 @@ Blockly.Language.sound_impact_get_count = {
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "get count" );
-    this.setNextStatement( true, null );
-    this.setPreviousStatement( true, null );
+      .appendTitle( "sound impact get count" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null );
+    this.setOutput( true, Number );
   }
 };
 
@@ -56,7 +59,7 @@ Blockly.Language.sound_impact_end = {
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "end" );
+      .appendTitle( "sound impact end" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
@@ -67,16 +70,42 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 
 //Creating code yo send to compiler
 Blockly.propc.sound_impact_run = function() {
-  var code = '';
-  return code;
+  var cog = this.getTitleValue( 'COG' );
+                                                
+  if ( Blockly.propc.definitions_[ "sound_impact" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "sound_impact" ] = '#include "soundimpact.h"';
+  }
+  
+  Blockly.propc.setups_[ "sound_impact" ] = 'int *soundimpactcog = soundImpact_run( ' + cog + ' )';
+                                                
+  return '';
 };
 
 Blockly.propc.sound_impact_get_count = function() {
-  var code = '';
+  if ( Blockly.propc.definitions_[ "sound_impact" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "sound_impact" ] = '#include "soundimpact.h"';
+  }
+  if ( Blockly.propc.setups_[ "sound_impact" ] === undefined )
+  {
+      return '';
+  }
+
+  var code = 'soundImpact_getCount()';
   return code;
 };
 
 Blockly.propc.sound_impact_end = function() {
-  var code = '';
+  if ( Blockly.propc.definitions_[ "sound_impact" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "sound_impact" ] = '#include "soundimpact.h"';
+  }
+  if ( Blockly.propc.setups_[ "sound_impact" ] === undefined )
+  {
+      return '';
+  }
+
+  var code = 'soundImpact_end( soundimpactcog )';
   return code;
 };

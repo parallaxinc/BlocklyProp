@@ -44,6 +44,20 @@ Blockly.Language.sensor_ping = {
     }
 };
 
+Blockly.Language.colorpal_open = {
+category: 'Sensors',
+helpUrl: '',
+init: function() {
+    this.setColour( 314 );
+    this.appendDummyInput( "" )
+        .appendTitle( "open ColorPAL sensor" )
+        .appendTitle( "pin" )
+        .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+}
+};
+
 Blockly.Language.colorpal_get_rgb = {
     category: 'Sensors',
     helpUrl: '',
@@ -51,8 +65,15 @@ Blockly.Language.colorpal_get_rgb = {
         this.setColour( 314 );
         this.appendDummyInput( "" )
             .appendTitle( "get rgb" );
-        this.setPreviousStatement( true, null );
-        this.setNextStatement( true, null );
+        this.appendValueInput( 'R_STORAGE' )
+            .appendTitle( "red storage variable" );
+        this.appendValueInput( 'G_STORAGE' )
+            .appendTitle( "green storage variable" );
+        this.appendValueInput( 'B_STORAGE' )
+            .appendTitle( "blue storage variable" );
+        this.setPreviousStatement( false, null );
+        this.setNextStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
@@ -88,12 +109,49 @@ Blockly.propc.sensor_ping.UNITS = {
     TICKS: ''
 };
 
+Blockly.propc.colorpal_open = function() {
+    var pin = this.getTitleValue( 'PIN' );
+    
+    if ( Blockly.propc.definitions_[ "colorpal" ] === undefined )
+    {
+        Blockly.propc.definitions_[ "colorpal" ] = '#include "colorpal.h"';
+    }
+    if ( Blockly.propc.setups_[ "colorpal" ] === undefined )
+    {
+        Blockly.propc.setups_[ "colorpal" ] = "colorPal *cpal = colorPal_open( " + pin + " )";
+    }
+    
+    return '';
+};
+
 Blockly.propc.colorpal_get_rgb = function() {
-    var code = '';
+    var r_storage = Blockly.propc.valueToCode( this, 'R_STORAGE' );
+    var g_storage = Blockly.propc.valueToCode( this, 'G_STORAGE' );
+    var b_storage = Blockly.propc.valueToCode( this, 'B_STORAGE' );
+    
+    if ( Blockly.propc.definitions_[ "colorpal" ] === undefined )
+    {
+        Blockly.propc.definitions_[ "colorpal" ] = '#include "colorpal.h"';
+    }
+    if ( Blockly.propc.setups_[ "colorpal" ] === undefined )
+    {
+        return '';
+    }
+    
+    var code = 'colorPal_getRGB( cpal, ' + ', &' + r_storage + ', &' + g_storage + ', &' + b_storage + ' )';
     return code;
 };
 
 Blockly.propc.colorpal_close = function() {
-    var code = '';
+    if ( Blockly.propc.definitions_[ "colorpal" ] === undefined )
+    {
+        Blockly.propc.definitions_[ "colorpal" ] = '#include "colorpal.h"';
+    }
+    if ( Blockly.propc.setups_[ "colorpal" ] === undefined )
+    {
+        return '';
+    }
+    
+    var code = 'colorPal_close( cpal )';
     return code;
 };

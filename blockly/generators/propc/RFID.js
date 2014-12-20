@@ -33,8 +33,9 @@ Blockly.Language.RFID_get = {
     this.setColour( 180 );
     this.appendDummyInput( "" )
       .appendTitle( "Get RFID" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Number );
   }
 };
 
@@ -56,7 +57,12 @@ Blockly.Language.RFID_enable = {
   init: function() {
     this.setColour( 180 );
     this.appendDummyInput( "" )
-      .appendTitle( "Enable RFID" );
+      .appendTitle( "Enable RFID" )
+      .appendTitle( "In pin" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN_IN" );
+    this.appendDummyInput( "" )
+      .appendTitle( "Out pun" )
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN_OUT" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
@@ -79,21 +85,51 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 
 //Generate code that is delivered to compiler
 Blockly.propc.RFID_get = function() {
-  var code = '';
+
+  if ( Blockly.propc.definitions_[ "rfidser" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "rfidser" ] = '#include "rfidser.h"';
+  }
+
+  var code = 'rfid_get(rfid, 1000);';
   return code;
 };
 
 Blockly.propc.RFID_disable = function() {
-  var code = '';
+
+  if ( Blockly.propc.definitions_[ "rfidser" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "rfidser" ] = '#include "rfidser.h"';
+  }
+    
+  var code = 'rfid_disable';
   return code;
 };
 
 Blockly.propc.RFID_enable = function() {
-  var code = '';
+  var pin_in = this.getTitleValue( 'PIN_IN' );
+  var pin_out = this.getTitleValue( 'PIN_OUT' );
+    
+  if ( Blockly.propc.definitions_[ "rfidser" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "rfidser" ] = '#include "rfidser.h"';
+  }
+  if ( Blockly.propc.setups_[ "rfidser" + pin_in ] === undefined && Blockly.propc.setups_[ "rfidser" + pin_out ] === undefined )
+  {
+      Blockly.propc.setups_[ "rfidser" + pin_in ] = "rfidser *rfid = rfid_open( " + pin_out + ", " + pin_in + " )"
+  }
+
+  var code = 'rfid_enable';
   return code;
 };
 
-Blockly.propc.RFID_cose = function() {
-  var code = '';
+Blockly.propc.RFID_close = function() {
+
+  if ( Blockly.propc.definitions_[ "rfidser" ] === undefined )
+  {
+      Blockly.propc.definitions_[ "rfidser" ] = '#include "rfidser.h"';
+  }
+
+  var code = 'rfid_close';
   return code;
 }
