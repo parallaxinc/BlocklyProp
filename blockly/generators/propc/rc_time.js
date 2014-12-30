@@ -68,7 +68,7 @@ Blockly.propc.rc_charge = function() {
   var pin = this.getTitleValue( 'PIN' );
   var time = Blockly.propc.valueToCode( this, 'TIME', Blockly.propc.ORDER_NONE ) || '0';
   
-  var code = 'rc_time( ' + pin + ', ' + time + ' );\n';
+  var code = 'rc_time( ' + pin + ', ' + time + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
@@ -76,6 +76,6 @@ Blockly.propc.rc_discharge = function() {
   var pin = this.getTitleValue( 'PIN' );
   var time = Blockly.propc.valueToCode( this, 'TIME', Blockly.propc.ORDER_NONE ) || '1';
   
-  var code = 'rc_time( ' + pin + ', ' + time + ' );\n';
+  var code = 'rc_time( ' + pin + ', ' + time + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };

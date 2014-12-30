@@ -22,7 +22,8 @@
 */
 'use strict';
 
-if ( !Blockly.Language )
+//define blocks
+if (!Blockly.Language )
   Blockly.Language = {};
 
 //Generating GUIs for IrC blocks
@@ -41,7 +42,7 @@ Blockly.Language.i2c_new_bus = {
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "SDA_PIN" );
     this.appendDummyInput( "" )
       .appendTitle( "sclDrive" )
-      .appendDummyInput( new Blockly.FieldDropdown( profile.default.digital ), "SCL_DRIVE" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "SCL_DRIVE" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
@@ -62,7 +63,7 @@ Blockly.Language.i2c_in = {
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "I2CADDR" );
     this.appendDummyInput( "" )
       .appendTitle( "memory address" )
-      .appenDTitle( new Blockly.FieldDropdown( profile.default.digital ), "MEMORYADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "MEMORYADDRESS" );
     this.appendDummyInput( "" )
       .appendTitle( "memory address count" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "MEMORYADDRESSCOUNT" );
@@ -93,7 +94,7 @@ Blockly.Language.i2c_out = {
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "I2CADDR" );
     this.appendDummyInput( "" )
       .appendTitle( "memory address" )
-      .appenDTitle( new Blockly.FieldDropdown( profile.default.digital ), "MEMORYADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "MEMORYADDRESS" );
     this.appendDummyInput( "" )
       .appendTitle( "memory address count" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "MEMORYADDRESSCOUNT" );
@@ -116,22 +117,24 @@ Blockly.propc.i2c_new_bus = function() {
   var scl_pin = this.getTitleValue( 'SCL_PIN' );
   var sda_pin = this.getTitleValue( 'SDA_PIN' );
   //TO DO: correct input for SCL_DRIVE
-  var sdl_drive = this.getTitleValue( 'SCL_DRIVE' );
+  var scl_drive = this.getTitleValue( 'SCL_DRIVE' );
     
-  var code = 'i2c_newbus( ' + scl_pin + ', ' + sda_pin + ', ' + scl_drive + ' )';
+  var code = 'i2c_newbus( ' + scl_pin + ', ' + sda_pin + ', ' + scl_drive + ' );\n';
   return code;
 };
 
 Blockly.propc.i2c_in = function() {
   //TO DO: add correct var assignments for inputs
     
-  var code = 'i2c_in( ' + busID + ', ' + I2CAddress + ', ' + memoryAddress + ', ' + memoryAddressCount + ', ' + data + ', ' + dataCount + ' )';
-  return code;
+  //var code = 'i2c_in( ' + busID + ', ' + I2CAddress + ', ' + memoryAddress + ', ' + memoryAddressCount + ', ' + data + ', ' + dataCount + ' )';
+  var code = '';
+  return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.i2c_out = function() {
   //TO DO: add correct var assignments for inputs
     
-  var code = 'i2c_out( ' + busID + ', ' + I2CAddress + ', ' + memoryAddress + ', ' + memoryAddressCount + ', ' + data + ', ' + dataCount + ' )';
-  return code''
+  //var code = 'i2c_out( ' + busID + ', ' + I2CAddress + ', ' + memoryAddress + ', ' + memoryAddressCount + ', ' + data + ', ' + dataCount + ' );\n';
+  var code = '';
+  return [code, Blockly.propc.ORDER_NONE];
 };

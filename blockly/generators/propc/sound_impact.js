@@ -34,7 +34,7 @@ Blockly.Language.sound_impact_run = {
     this.appendDummyInput( "" )
       .appendTitle( "sound impact run" )
       .appendTitle( "In cog" )
-      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"] ), "COG" );
+      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]] ), "COG" );
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null );
   }
@@ -77,7 +77,7 @@ Blockly.propc.sound_impact_run = function() {
       Blockly.propc.definitions_[ "sound_impact" ] = '#include "soundimpact.h"';
   }
   
-  Blockly.propc.setups_[ "sound_impact" ] = 'int *soundimpactcog = soundImpact_run( ' + cog + ' )';
+  Blockly.propc.setups_[ "sound_impact" ] = 'int *soundimpactcog = soundImpact_run( ' + cog + ' );\n';
                                                 
   return '';
 };
@@ -106,6 +106,6 @@ Blockly.propc.sound_impact_end = function() {
       return '';
   }
 
-  var code = 'soundImpact_end( soundimpactcog )';
+  var code = 'soundImpact_end( soundimpactcog );\n';
   return code;
 };

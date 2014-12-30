@@ -54,7 +54,7 @@ Blockly.propc.sirc_library = function() {
   }
   if ( Blockly.propc.setups_[ "sirc" ] === undefined )
   {
-      Blockly.propc.setups_[ "sirc" ] = "sirc_setTimeout( 50 )";
+      Blockly.propc.setups_[ "sirc" ] = "sirc_setTimeout( 70 );\n";
   }
 
   var code = 'sirc_button( ' + pin + ' )';

@@ -149,10 +149,11 @@ Blockly.propc = Blockly.Generator.get( 'propc' );
 
 //Generate code for compiler
 Blockly.propc.eeprom_int_to = function() {
-  var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_NONE ) || '0';
+  var value = this.getTitleValue( 'VALUE' );
+  //var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_NONE ) || '0';
   var address = this.getTitleValue( 'ADDRESS' );
 
-  var code = 'ee_putInt( ' + value + ', ' + address + ' )';
+  var code = 'ee_putInt( ' + value + ', ' + address + ' );\n';
   return code;
 };
 
@@ -164,7 +165,8 @@ Blockly.propc.eeprom_int_from = function() {
 };
 
 Blockly.propc.eeprom_float_to = function() {
-  var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_NONE ) || '0';
+  var value = this.getTitleValue( 'VALUE' );
+  //var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.ORDER_NONE ) || '0';
   var address = this.getTitleValue( 'ADDRESS' );
     
   var code = 'ee_putFloat32( ' + value + ', ' + address + ' )';
@@ -179,7 +181,8 @@ Blockly.propc.eeprom_float_from = function() {
 };
 
 Blockly.propc.eeprom_text_to = function() {
-  var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_NONE ) || '0';
+  var value = this.getTitleValue( 'VALUE' );
+  //var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.ORDER_NONE ) || '0';
   var address = this.getTitleValue( 'ADDRESS' );
     
   var code = 'ee_putStr( ' + value + ', ' + address + ' )';
