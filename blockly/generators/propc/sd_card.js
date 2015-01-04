@@ -1,6 +1,6 @@
 /*
  
- This file contains support for the wavplayer built into C
+ This file contains support for the sd_card functions built into C
  
  Author: Vale Tolpegin ( valetolpegin@gmail.com )
  
@@ -30,6 +30,7 @@ Blockly.Language.sd_card_mount = {
     category: 'SD_CARD',
     helpUrl: '',
     init: function() {
+        this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "Mount SD_CARD" );
         this.appendDummyInput( "" )
@@ -44,6 +45,79 @@ Blockly.Language.sd_card_mount = {
         this.appendDummyInput( "" )
             .appendTitle( "CS pin" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'CS_PIN' );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.sd_card_int_to = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "SD_CARD int to" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.sd_card_int_from = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function () {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "SD_CARD int from" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+
+Blockly.Language.sd_card_float_to = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "SD_CARD float to" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.sd_card_float_from = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "SD_CARD float from" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.sd_card_text_to = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+        .appendTitle( "SD_CARD text to" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.sd_card_text_from = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+        .appendTitle( "SD_CARD text from" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
     }
@@ -65,4 +139,34 @@ Blockly.propc.sd_card_mount = function() {
     }
     
     return '';
+};
+
+Blockly.propc.sd_card_int_to = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.sd_card_int_from = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.sd_card_float_to = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.sd_card_float_from = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.sd_card_text_to = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.sd_card_text_from = function() {
+    var code = '';
+    return code;
 };

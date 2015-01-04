@@ -48,6 +48,30 @@ Blockly.Language.servo_move = {
     }
 };
 
+Blockly.Language.servo_speed = {
+    category: 'Servo',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Servo speed" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.servo_set_ramp = {
+    category: 'Servo',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Servo set ramp" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 Blockly.Language.servodiffdrive_library_drive_pins = {
     category: 'Servo',
     helpUrl: '',
@@ -119,6 +143,16 @@ Blockly.propc.servo_move = function() {
 //    Blockly.propc.setups_['setup_servo'] = 'SERVO.Start';
 
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
+    return code;
+};
+
+Blockly.propc.servo_speed = function() {
+    var code = '';
+    return code;
+};
+
+Blockly.propc.servo_set_ramp = function() {
+    var code = '';
     return code;
 };
 

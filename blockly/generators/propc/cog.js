@@ -32,7 +32,7 @@ Blockly.Language.cog_new = {
     init: function () {
         this.setColour(120);
         this.appendDummyInput()
-            .appendTitle("cognew");
+            .appendTitle("run");
         this.appendValueInput("STACK_SIZE", Number)
             .appendTitle("Stacksize")
             .setCheck(Number);
