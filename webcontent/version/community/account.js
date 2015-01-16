@@ -12,8 +12,10 @@ $(document).ready(function() {
         if (data.success) {
             $.cookie('user', data.user);
             $('#account-data').addClass('in').removeClass('hidden');
+            $('#friends-list').addClass('in').removeClass('hidden');
             $('#account-menu').removeClass('hidden');
-            
+            $('#friends-list').collapse('hide');
+          
             $("#changeEmail").val($.cookie('user')['email']);
             $("#changeScreenname").val($.cookie('user')['screenname']);
         } else {
@@ -90,6 +92,12 @@ $(document).ready(function() {
             }
         });
     });
+                  
+    $('#friends').on('click', function() {
+        //Add code for on-click here
+        
+        $('friends').collapse('show');
+    }
     
     $("#account-data-form").submit(function(event) {
         event.preventDefault();

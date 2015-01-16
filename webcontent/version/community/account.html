@@ -60,6 +60,9 @@
                     </ul>
                     <ul id="account-menu" class="nav navbar-nav pull-right hidden">
                         <li>
+                            <a href="#friends">Friends</a>
+                        </li>
+                        <li>
                             <a href="account.html">My account</a>
                         </li>
                         <li>
@@ -144,6 +147,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#account" data-toggle="tab">Your account</a></li>
                         <li><a href="#friends" data-toggle="tab">Friends</a></li>
+                        <li><a href="#friend-requests" data-toggle="tab">Friend Requests</a></li>
                     </ul>
                 </div>
             </div>
@@ -198,6 +202,48 @@
                             <h2>Your friends</h2>
                             <p>Your projects that are not marked as private will be visible to your friends.</p>
                             <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community friends is still under development.</div>
+                        </div>
+                        <div class="container collapse hidden" id="friends-list">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive" id="table-friends">
+                                        <table class="table table-striped" id="table-friends-table" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Friends Since</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="friend-requests">
+                        <div class="col-md-12">
+                            <h2>Open Requests</h2>
+                            <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community friends is still under development.</div>
+                        </div>
+                        <div class="container collapse hidden" id="requests-list">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive" id="table-requests">
+                                        <table class="table table-striped" id="table-requests-table" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Request Since</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
