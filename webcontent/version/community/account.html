@@ -60,6 +60,7 @@
                     </ul>
                     <ul id="account-menu" class="nav navbar-nav pull-right hidden">
                         <li>
+                            <!--TO DO: FIX THE LINK SO THAT IT CORRECTLY NAVIGATES THE USER TO THE Friends TAB OF THE PAGE!-->
                             <a href="#friends">Friends</a>
                         </li>
                         <li>
@@ -212,8 +213,8 @@
                                                 <tr>
                                                     <th></th>
                                                     <th>Name</th>
+                                                    <th>Board</th>
                                                     <th>Friends Since</th>
-                                                    <th></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -225,12 +226,13 @@
                     <div class="tab-pane" id="friend-requests">
                         <div class="col-md-12">
                             <h2>Open Requests</h2>
+                            <p>Here you can view all open requests, be it your requests to others or others' requests to you.</p>
                             <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community friends is still under development.</div>
                         </div>
                         <div class="container collapse hidden" id="requests-list">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="table-responsive" id="table-requests">
+                                    <div class="table-responsive" id="table-requests-list">
                                         <table class="table table-striped" id="table-requests-table" width="100%">
                                             <thead>
                                                 <tr>

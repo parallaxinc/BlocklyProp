@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+var friendsTable;
+var requestsTable
 
 $(document).ready(function() {
     $.cookie.json = true;
@@ -13,8 +15,10 @@ $(document).ready(function() {
             $.cookie('user', data.user);
             $('#account-data').addClass('in').removeClass('hidden');
             $('#friends-list').addClass('in').removeClass('hidden');
+            $('#requests-list').addClass('in').removeClass('hidden');
             $('#account-menu').removeClass('hidden');
-            $('#friends-list').collapse('hide');
+            showFriendsTable();
+            showRequestsTable();
           
             $("#changeEmail").val($.cookie('user')['email']);
             $("#changeScreenname").val($.cookie('user')['screenname']);
@@ -77,6 +81,16 @@ $(document).ready(function() {
             }
         });
     });
+                  
+    $('#friends').on('click', function() {
+        $('#friends-list').collapse('show');
+        friendsTable.api().ajax.reload();
+    });
+                  
+    $('#friend-requests').on('click', function() {
+        $('#requests-list').collapse('show');
+        requestsTable.api().ajax.reload();
+    });
 
     $('#log-off').on('click', function() {
         $.get('php/index.php/auth/logout', function(result) {
@@ -92,12 +106,6 @@ $(document).ready(function() {
             }
         });
     });
-                  
-    $('#friends').on('click', function() {
-        //Add code for on-click here
-        
-        $('friends').collapse('show');
-    }
     
     $("#account-data-form").submit(function(event) {
         event.preventDefault();
@@ -132,3 +140,117 @@ $(document).ready(function() {
     });
 });
 
+showFriendsTable = function() {
+    if (!friendsTable) {
+        friendsTable = $("#table-friends-table").dataTable({
+           "ajax": 'php/index.php/project/mine',
+           "columns": [
+                       {
+                            "data": "id",
+                            "width": "40px"
+                       },
+                       {
+                            "data": "type",
+                            "width": "100px"
+                       },
+                       {
+                            "data": "board",
+                            "width": "200px"
+                       },
+                       {
+                            "data": "name"
+                       }
+           ],
+           "columnDefs": [
+                          {
+                            // The `data` parameter refers to the data for the cell (defined by the
+                            // `data` option, which defaults to the column being worked with, in
+                            // this case `data: 0`.
+                            "render": function(data, type, row) {
+                                //    return data +' ('+ row['name']+')';
+                                var div = $('<div/>');
+                                $('<button/>', {
+                                  text: 'View',
+                                  class: 'btn btn-xs btn-primary',
+                                  id: "btn-view-friend-" + data
+                                }).appendTo(div);
+                                return div.html();
+                            },
+                            "targets": 0
+                          }
+                          // { "visible": false,  "targets": [ 3 ] }
+           ],
+           "createdRow": function(row, data, index) {
+                $("#btn-view-friend-" + data['id'], row).on('click', function() {
+                    //                 alert(data.id);
+                    //showProject(data);
+                    showFriend( data );
+                });
+           }
+        });
+    } else {
+        friendsTable.api().ajax.reload();
+    }
+};
+
+showRequestsTable = function() {
+    if (!requestsTable) {
+        requestsTable = $("#table-requests-table").dataTable({
+           "ajax": 'php/index.php/project/mine',
+           "columns": [
+                       {
+                            "data": "id",
+                            "width": "40px"
+                       },
+                       {
+                            "data": "type",
+                            "width": "100px"
+                       },
+                       {
+                            "data": "board",
+                            "width": "200px"
+                       },
+                       {
+                            "data": "name"
+                       }
+           ],
+           "columnDefs": [
+                          {
+                          // The `data` parameter refers to the data for the cell (defined by the
+                          // `data` option, which defaults to the column being worked with, in
+                          // this case `data: 0`.
+                            "render": function(data, type, row) {
+                          //    return data +' ('+ row['name']+')';
+                                var div = $('<div/>');
+                                $('<button/>', {
+                                    text: 'View',
+                                    class: 'btn btn-xs btn-primary',
+                                    id: "btn-view-request-" + data
+                                }).appendTo(div);
+                                return div.html();
+                            },
+                            "targets": 0
+                          }
+                          // { "visible": false,  "targets": [ 3 ] }
+           ],
+           "createdRow": function(row, data, index) {
+                $("#btn-view-request-" + data['id'], row).on('click', function() {
+                    //                 alert(data.id);
+                    //showProject(data);
+                    showRequest( data );
+                });
+           }
+        });
+    } else {
+        requestsTable.api().ajax.reload();
+    }
+};
+
+
+showFriend = function( data ) {
+    //This part of the file will show the friend's shared page that the user can see
+};
+
+showRequest = function( data ) {
+    //This part of the file will show the friend's current open requests
+};
