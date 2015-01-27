@@ -5,7 +5,8 @@
  */
 
 var friendsTable;
-var requestsTable
+var requestsTable;
+var selectedProject;
 
 $(document).ready(function() {
     $.cookie.json = true;
@@ -15,7 +16,7 @@ $(document).ready(function() {
             $.cookie('user', data.user);
             $('#account-data').addClass('in').removeClass('hidden');
             $('#friends-list').addClass('in').removeClass('hidden');
-            $('#requests-list').addClass('in').removeClass('hidden');
+            $('#request-list').addClass('in').removeClass('hidden');
             $('#account-menu').removeClass('hidden');
             showFriendsTable();
             showRequestsTable();
@@ -81,15 +82,15 @@ $(document).ready(function() {
             }
         });
     });
-                  
-    $('#friends').on('click', function() {
+
+    $('#back-to-friends-list').on('click', function() {
         $('#friends-list').collapse('show');
-        friendsTable.api().ajax.reload();
+        $('#friends-detail').collapse('hide');
     });
                   
-    $('#friend-requests').on('click', function() {
-        $('#requests-list').collapse('show');
-        requestsTable.api().ajax.reload();
+    $('#back-to-request-list').on('click', function() {
+        $('#request-list').collapse('show');
+        $('#request-detail').collapse('hide');
     });
 
     $('#log-off').on('click', function() {
@@ -183,7 +184,6 @@ showFriendsTable = function() {
            "createdRow": function(row, data, index) {
                 $("#btn-view-friend-" + data['id'], row).on('click', function() {
                     //                 alert(data.id);
-                    //showProject(data);
                     showFriend( data );
                 });
            }
@@ -236,7 +236,6 @@ showRequestsTable = function() {
            "createdRow": function(row, data, index) {
                 $("#btn-view-request-" + data['id'], row).on('click', function() {
                     //                 alert(data.id);
-                    //showProject(data);
                     showRequest( data );
                 });
            }
@@ -246,11 +245,92 @@ showRequestsTable = function() {
     }
 };
 
-
-showFriend = function( data ) {
-    //This part of the file will show the friend's shared page that the user can see
+showFriend = function(data) {
+    //    $('#project-dialog').modal('show');
+    selectedProject = data;
+    $('#type').text(data['type']);
+    $('#board').text(data['board']);
+    $('#name').text(data['name']);
+    
+    $('#description').text(data['description']);
+    //    var tags = [];
+    $('#tag').tagsinput('removeAll');
+    if (data['tags'] !== undefined) {
+        for (var tag in data['tags']) {
+            //            tags.push(data['tags'][tag]['name']);
+            $('#tag').tagsinput('add', data['tags'][tag]['name']);
+        }
+    }
+    
+    if (data['private']) {
+        $('#private-project').attr('checked', 'checked');
+    } else {
+        $('#private-project').removeAttr('checked');
+    }
+    
+    if (data['shared']) {
+        $('#shared-project').attr('checked', 'checked');
+    } else {
+        $('#shared-project').removeAttr('checked');
+    }
+    
+    $('#friends-list').collapse('hide');
+    $('#friends-detail').collapse('show');
+    
+    var types = {
+        'spin': 'blocklyspin.html',
+        'prop-c': 'blocklyc.html',
+        'scribbler': 'blocklyscribbler.html'
+    };
+    $('#open-project').attr('href', types[selectedProject['type']] + '?project=' + selectedProject['id']);
+    
+    var projectName = $('#name').text();
+    if (projectName.length === 0) {
+        $('#name-input').val(projectName).removeClass('hidden').focus();
+    }
 };
 
-showRequest = function( data ) {
-    //This part of the file will show the friend's current open requests
+showRequest = function(data) {
+    //    $('#project-dialog').modal('show');
+    selectedProject = data;
+    $('#type').text(data['type']);
+    $('#board').text(data['board']);
+    $('#name').text(data['name']);
+    
+    $('#description').text(data['description']);
+    //    var tags = [];
+    $('#tag').tagsinput('removeAll');
+    if (data['tags'] !== undefined) {
+        for (var tag in data['tags']) {
+            //            tags.push(data['tags'][tag]['name']);
+            $('#tag').tagsinput('add', data['tags'][tag]['name']);
+        }
+    }
+    
+    if (data['private']) {
+        $('#private-project').attr('checked', 'checked');
+    } else {
+        $('#private-project').removeAttr('checked');
+    }
+    
+    if (data['shared']) {
+        $('#shared-project').attr('checked', 'checked');
+    } else {
+        $('#shared-project').removeAttr('checked');
+    }
+    
+    $('#request-list').collapse('hide');
+    $('#request-detail').collapse('show');
+    
+    var types = {
+        'spin': 'blocklyspin.html',
+        'prop-c': 'blocklyc.html',
+        'scribbler': 'blocklyscribbler.html'
+    };
+    $('#open-project').attr('href', types[selectedProject['type']] + '?project=' + selectedProject['id']);
+    
+    var projectName = $('#name').text();
+    if (projectName.length === 0) {
+        $('#name-input').val(projectName).removeClass('hidden').focus();
+    }
 };

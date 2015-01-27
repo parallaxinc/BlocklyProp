@@ -17,8 +17,8 @@ create table users (
 
 create table friends (
     id int unsigned auto_increment primary key,
-    friend1 varchar(255) not null,
-    friend2 varchar(255) not null,
+    requester varchar(255) not null,
+    requestee varchar(255) not null,
     friend_request tinyint(1) default 0,
     friends_since DATETIME DEFAULT NULL,
     modified DATETIME DEFAULT NULL
