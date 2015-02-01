@@ -40,7 +40,7 @@ Blockly.Language.eeprom_int_to = {
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "VALUE" );
     this.appendDummyInput( "" )
       .appendTitle( "address" )
-      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
@@ -54,7 +54,7 @@ Blockly.Language.eeprom_int_from = {
     this.appendDummyInput( "" )
       .appendTitle( "EEPROM int from" )
       .appendTitle( "address" )
-      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
     this.setOutput( true, Number );
@@ -76,7 +76,7 @@ Blockly.Language.eeprom_float_to = {
       .appendTitle( new Blockly.FieldDropdown( [["0.1", "0.1"], ["0.2", "0.2"]] ), "VALUE" );
     this.appendDummyInput( "" )
       .appendTitle( "address" )
-      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
@@ -92,7 +92,7 @@ Blockly.Language.eeprom_float_from = {
     this.appendDummyInput( "" )
       .appendTitle( "EEPROM float from" )
       .appendTitle( "address" )
-      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
     this.setOutput( true, Number );
@@ -115,7 +115,7 @@ Blockly.Language.eeprom_text_to = {
       .appendTitle( /*ADD VALUE INPUT HERE*/ );
     this.appendDummyInput( "" )
       .appendTitle( "address" )
-      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
     this.setPreviousStatement( true, null );
     this.setNextStatement( true, null );
   }
@@ -137,7 +137,7 @@ Blockly.Language.eeprom_text_from = {
       .appendTitle( /*ADD VALUE OUTPUT HERE*/ );
       this.appendDummyInput( "" )
       .appendTitle( "address" )
-      .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), "ADDRESS" );
+      .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
     this.setOutput( true, Number );
