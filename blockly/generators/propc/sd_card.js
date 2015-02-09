@@ -197,9 +197,6 @@ Blockly.propc.sd_card_int_to = function() {
         //return [ code, Blockly.propc.ORDER_ATOMIC ];
         return code;
     }
-    
-    //var code = '';
-    //return code;
 };
 
 Blockly.propc.sd_card_int_from = function() {
@@ -213,9 +210,6 @@ Blockly.propc.sd_card_int_from = function() {
         var code = '';
         return code;
     }
-    
-    //var code = '';
-    //return code;
 };
 
 Blockly.propc.sd_card_float_to = function() {
@@ -229,9 +223,6 @@ Blockly.propc.sd_card_float_to = function() {
         var code = '';
         return code;
     }
-
-    //var code = '';
-    //return code;
 };
 
 Blockly.propc.sd_card_float_from = function() {
@@ -245,9 +236,6 @@ Blockly.propc.sd_card_float_from = function() {
         var code = '';
         return code;
     }
-    
-    //var code = '';
-    //return code;
 };
 
 Blockly.propc.sd_card_text_to = function() {
@@ -261,9 +249,6 @@ Blockly.propc.sd_card_text_to = function() {
         var code = '';
         return code;
     }
-    
-    //var code = '';
-    //return code;
 };
 
 Blockly.propc.sd_card_text_from = function() {
@@ -277,7 +262,4 @@ Blockly.propc.sd_card_text_from = function() {
         var code = '';
         return code;
     }
-    
-    //var code = '';
-    //return code;
 };
