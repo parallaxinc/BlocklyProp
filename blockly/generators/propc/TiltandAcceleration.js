@@ -60,9 +60,15 @@ Blockly.Language.MX2125_rotation = {
  init: function() {
   this.setColour( 300 );
   this.appendDummyInput( "" )
-   .appendTitle( "MX2125 rotation input" );
-  this.setPreviousStatement( true, null );
-  this.setNextStatement( true, null );
+     .appendTitle( "MX2125 rotation input" );
+  this.appendDummyInput( "" )
+     .appendTitle( "X-axis pin" )
+     .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'X_PIN' );
+  this.appendDummyInput( "" )
+     .appendTitle( "Y-axis pin" )
+     .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'Y_PIN' );
+  this.setPreviousStatement( false, null );
+  this.setNextStatement( false, null );
  }
 };
 
@@ -72,9 +78,12 @@ Blockly.Language.MX2125_tilt = {
  init: function() {
   this.setColour( 300 );
   this.appendDummyInput( "" )
-   .appendTitle( "MX2125 tilt input" );
-  this.setPreviousStatement( true, null );
-  this.setNextStatement( true, null );
+     .appendTitle( "MX2125 tilt input" );
+  this.appendDummyInput( "" )
+     .appendTitle( "Axis pin" )
+     .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'AXIS_PIN' );
+  this.setPreviousStatement( false, null );
+  this.setNextStatement( false, null );
  }
 };
 
@@ -144,11 +153,16 @@ Blockly.propc.MMA7455_acceleration = function() {
 };
 
 Blockly.propc.MX2125_rotation = function() {
- var code = '';
- return code;
+  var x_pin = this.getTitleValue( 'X_PIN' );
+  var y_pin = this.getTitleValue( 'Y_PIN' );
+    
+  var code = 'mx_rotate( ' + x_pin + ', ' + y_pin + ' )';
+  return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.MX2125_tilt = function() {
- var code = '';
- return code;
-}
+  var axis_pin = this.getTitleValue( 'AXIS_PIN' );
+    
+  var code = 'mx_tilt( ' + axis_pin + ' )';
+  return [code, Blockly.propc.ORDER_ATOMIC];
+};
