@@ -59,10 +59,17 @@ Blockly.Language.sd_card_int_to = {
             .appendTitle( "SD_CARD int to" );
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
-            .appendTitle( /* ADD TEXT INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Value: " )
-            .appendValueInput( /* ADD VALUE INPUT HERE */ );
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote0.png', 12, 12))
+            .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote1.png', 12, 12));
+        this.appendValueInput( 'VALUE' )
+            .appendTitle( "Value: " );
+        this.appendValueInput( 'STARTING_POINT_VALUE' )
+            .appendTitle( "Starting point read:" );
+        this.appendValueInput( 'ENDING_POINT_VALUE' )
+            .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
     }
@@ -71,21 +78,35 @@ Blockly.Language.sd_card_int_to = {
 Blockly.Language.sd_card_int_from = {
     category: 'SD_CARD',
     helpUrl: '',
-    init: function () {
+    init: function() {
         this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "SD_CARD int from" );
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
-            .appendTitle( /* ADD TEXT INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Starting point read:" )
-            .appendTitle( /* ADD VALUE INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Ending point read:" )
-            .appendTitle( /* ADD VALUE INPUT HERE */ );
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote0.png', 12, 12))
+            .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote1.png', 12, 12));
+        this.appendValueInput( 'STARTING_POINT_VALUE' )
+            .appendTitle( "Starting point read:" );
+        this.appendValueInput( 'ENDING_POINT_VALUE' )
+            .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.get_sd_card_read_int = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get the inputed int" );
+        this.setNextStatement( false, null );
+        this.setPreviousStatement( false, null );
     }
 };
 
@@ -98,10 +119,17 @@ Blockly.Language.sd_card_float_to = {
             .appendTitle( "SD_CARD float to" );
         this.appendDummyInput( "" )
             .appendTitle( "Filename: " )
-            .appendTitle( /* ADD TEXT INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Value:" )
-            .appendTitle( /* ADD VALUE INPUT HERE */ );
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote0.png', 12, 12))
+            .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote1.png', 12, 12));
+        this.appendValueInput( 'VALUE' )
+            .appendTitle( "Value: " );
+        this.appendValueInput( 'STARTING_POINT_VALUE' )
+            .appendTitle( "Starting point read:" );
+        this.appendValueInput( 'ENDING_POINT_VALUE' )
+            .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
     }
@@ -116,15 +144,29 @@ Blockly.Language.sd_card_float_from = {
             .appendTitle( "SD_CARD float from" );
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
-            .appendTitle( /* ADD TEXT INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Starting point read:" )
-            .appendTitle( /* ADD VALUE INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Ending point read:" )
-            .appendTitle( /* ADD VALUE INPUT HERE */ );
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote0.png', 12, 12))
+            .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote1.png', 12, 12));
+        this.appendValueInput( 'STARTING_POINT_VALUE' )
+            .appendTitle( "Starting point read:" );
+        this.appendValueInput( 'ENDING_POINT_VALUE' )
+            .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.get_sd_card_read_float = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get the inputed float" );
+        this.setNextStatement( false, null );
+        this.setPreviousStatement( false, null );
     }
 };
 
@@ -137,10 +179,24 @@ Blockly.Language.sd_card_text_to = {
             .appendTitle( "SD_CARD text to" );
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
-            .appendTitle( /* ADD TEXT INPUT HERE */ );
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote0.png', 12, 12))
+            .appendTitle(new Blockly.FieldTextInput(''), 'TEXT_FILENAME')
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote1.png', 12, 12));
         this.appendDummyInput( "" )
             .appendTitle( "Text:" )
-            .appendTitle( /* ADD TEXT INPUT HERE */ );
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote0.png', 12, 12))
+            .appendTitle(new Blockly.FieldTextInput(''), 'TEXT_INPUT')
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote1.png', 12, 12));
+        this.appendValueInput( 'VALUE' )
+            .appendTitle( "Value: " );
+        this.appendValueInput( 'STARTING_POINT_VALUE' )
+            .appendTitle( "Starting point read:" );
+        this.appendValueInput( 'ENDING_POINT_VALUE' )
+            .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
     }
@@ -155,16 +211,30 @@ Blockly.Language.sd_card_text_from = {
             .appendTitle( "SD_CARD text from" );
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
-            .appendTitle( /* ADD TEXT INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Starting read point:" )
-            .appendTitle( /* ADD VALUE INPUT HERE */ );
-        this.appendDummyInput( "" )
-            .appendTitle( "Ending point read:" )
-            .appendTitle( /* ADD VALUE INPUT HERE */ );
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote0.png', 12, 12))
+            .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
+            .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                                            'media/quote1.png', 12, 12));
+        this.appendValueInput( 'STARTING_POINT_VALUE' )
+            .appendTitle( "Starting read point:" );
+        this.appendValueInput( 'ENDING_POINT_VALUE' )
+            .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
     }
+};
+
+Blockly.Language.get_sd_card_read_text = {
+category: 'SD_CARD',
+helpUrl: '',
+init: function() {
+    this.setColour( 230 );
+    this.appendDummyInput( "" )
+    .appendTitle( "Get the inputed text" );
+    this.setNextStatement( false, null );
+    this.setPreviousStatement( false, null );
+}
 };
 
 //Getting the propc generator
@@ -186,80 +256,110 @@ Blockly.propc.sd_card_mount = function() {
 };
 
 Blockly.propc.sd_card_int_to = function() {
-    var file = this.getTitleValue( 'FILE' );
+    var filename = this.getTitleValue( 'TEXT' );
+    var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
+    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
+    var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
-    if ( Blockly.propc.setups_[ "file" + file ] === undefined )
+    if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + file;
-    } else
-    {
-        var code = '';
-        //return [ code, Blockly.propc.ORDER_ATOMIC ];
-        return code;
+        return '// Missing file declaration for: ' + filename;
     }
+    
+    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    return code;
 };
 
 Blockly.propc.sd_card_int_from = function() {
-    var file = this.getTitleValue( 'FILE' );
+    var filename = this.getTitleValue( 'TEXT' );
+    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
+    var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
-    if ( Blockly.propc.setups_[ "file" + file ] === undefined )
+    if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + file;
-    } else
-    {
-        var code = '';
-        return code;
+        return '// Missing file declaration for: ' + filename;
     }
+    
+    Blockly.propc.setups_[ "int_array_reading"] = 'int file_reading_array_int[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
+    
+    var code = 'fread( file_reading_array_int, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    return code;
+};
+
+Blockly.propc.get_sd_card_read_int = function() {
+    var code = 'file_reading_array_int';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.sd_card_float_to = function() {
-    var file = this.getTitleValue( 'FILE' );
+    var filename = this.getTitleValue( 'TEXT' );
+    var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
+    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
+    var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
     if ( Blockly.propc.setups_[ "file" + file ] === undefined )
     {
         return '// Missing file declaration for: ' + file;
-    } else
-    {
-        var code = '';
-        return code;
     }
+
+    var code = 'fwrite( "' + value + ', ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    return code;
 };
 
 Blockly.propc.sd_card_float_from = function() {
-    var file = this.getTitleValue( 'FILE' );
+    var filename = this.getTitleValue( 'TEXT' );
+    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
+    var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
-    if ( Blockly.propc.setups_[ "file" + file ] === undefined )
+    if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + file;
-    } else
-    {
-        var code = '';
-        return code;
+        return '// Missing file declaration for: ' + filename;
     }
+    
+    Blockly.propc.setups_[ "float_array_reading"] = 'float file_reading_array_float[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
+    
+    var code = 'fread( file_reading_array_float, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    return code;
+};
+
+Blockly.propc.get_sd_card_read_float = function() {
+    var code = 'file_reading_array_float';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.sd_card_text_to = function() {
-    var file = this.getTitleValue( 'FILE' );
+    var filename = this.getTitleValue( 'TEXT' );
+    var value = this.getTitileValue( 'TEXT_INPUT' );
+    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
+    var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
-    if ( Blockly.propc.setups_[ "file" + file ] === undefined )
+    if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + file;
-    } else
-    {
-        var code = '';
-        return code;
+        return '// Missing file declaration for: ' + filename;
     }
+    
+    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    return code;
 };
 
 Blockly.propc.sd_card_text_from = function() {
-    var file = this.getTitleValue( 'FILE' );
+    var filename = this.getTitleValue( 'TEXT' );
+    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
+    var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
-    if ( Blockly.propc.setups_[ "file" + file ] === undefined )
+    if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + file;
-    } else
-    {
-        var code = '';
-        return code;
+        return '// Missing file declaration for: ' + filename;
     }
+    
+    Blockly.propc.setups_[ "text_array_reading"] = 'char file_reading_array_text[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
+
+    
+    var code = 'fread( file_reading_array_text, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    return code;
+};
+
+Blockly.propc.get_sd_card_read_text = function() {
+    var code = 'file_reading_array_text';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };

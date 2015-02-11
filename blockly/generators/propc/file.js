@@ -64,20 +64,14 @@ Blockly.propc.file_open = function() {
     var file = this.getTitleValue('FILE');
     var mode = this.getTitleValue('MODE');
 
- //   Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+    Blockly.propc.setups_[ "file" + file ] = 'FILE* fp_' + file + ' = fopen("' + file + '", "' + mode + '");\n';
 
-    Blockly.propc.setups_[ "file" + file ] = 'fopen("' + file + '", "' + mode + '");\n';
-
-    //var code = 'fopen("' + file + '", "' + mode + '")';
-    //return [code, Blockly.propc.ORDER_ATOMIC];
     return '';
 };
 
 
 Blockly.propc.file_close = function() {
     var file = Blockly.propc.valueToCode(this, 'FILE', Blockly.propc.ORDER_UNARY_PREFIX);
-
-    //   Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
     
     if ( Blockly.propc.setups_[ "file" + file ] === undefined )
     {
@@ -86,10 +80,4 @@ Blockly.propc.file_close = function() {
     {
         return 'fclose(' + file + ');\n';
     }
-
-    //if (file) {
-    //    return 'fclose(' + file + ');\n';
-    //} else {
-    //    return '// Missing file pointer';
-    //}
 };
