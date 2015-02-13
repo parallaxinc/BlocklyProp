@@ -29,7 +29,9 @@
         <script type="text/javascript" src="generators/propc/PIRSensor.js"></script>
         <script type="text/javascript" src="generators/propc/pressure.js"></script>
         <script type="text/javascript" src="generators/propc/TiltandAcceleration.js"></script>
+        <script type="text/javascript" src="generators/propc/activitybot_library.js"></script>
         <script type="text/javascript" src="generators/propc/GPS.js"></script>
+        <script type="text/javascript" src="generators/propc/wavplayer.js"></script>
         <script type="text/javascript" src="generators/propc/I2C.js"></script>
         <script type="text/javascript" src="generators/propc/RFID.js"></script>
         <script type="text/javascript" src="generators/propc/rc_time.js"></script>
@@ -70,24 +72,26 @@
                 // Whitelist of blocks to keep.
                 var newLanguage = {}
                 var keepers = [
+                    //activitybot library
+                    'activitybot_set_ramp_step', 'activitybot_ramp_step_toward', 'activitybot_calibrate', 'activitybot_display_calibration',
                     //EEPROM
                     'eeprom_int_to', 'eeprom_int_from', 'eeprom_float_to', 'eeprom_float_from', 'eeprom_text_to', 'eeprom_text_from',
                     //I2C
                     'i2c_new_bus', 'i2c_in', 'i2c_out',
                     //sd_card
-                    'sd_card_mount',
+                    'sd_card_mount', 'sd_card_int_to', 'sd_card_int_from', 'sd_card_float_to', 'sd_card_float_from', 'sd_card_text_to', 'sd_card_text_from', 'sd_card_read_int', 'sd_card_read_float', 'sd_card_read_text',
                     //io
 //                    'inout_highlow',
                     'inout_digital_write', 'inout_digital_read', 'inout_digital_write_pin', 'inout_digital_read_pin', 'base_freqout', 'pin_high', 'pin_low', 'simpletools_library_toggle_pin', 'simpletools_library_reverse_pin', 'simpletools_library_get_pin_state', 'simpletools_library_get_pin_output', 'simpletools_library_set_pin_direction', 'simpletools_library_set_pin_output', 'simpletools_library_get_pin_group_states', 'simpletools_library_get_pin_group_directions', 'simpletools_library_get_pin_group_outputs', 'simpletools_library_set_pin_group_directions', 'simpletools_library_set_pin_group_outputs', 'rc_charge', 'rc_discharge',
 //                    'inout_analog_write', 'inout_analog_read',
 //                    'serial_print', 'inout_buildin_led',
                     //servo
-                    'servo_move', // 'servo_read_degrees',
+                    'servo_move', 'servo_speed', 'servo_set_ramp', 'servodiffdrive_library_drive_pins', 'servodiffdrive_library_drive_speed', 'servodiffdrive_library_drive_setRamp', 'servodiffdrive_library_drive_sleep', 'servodiffdrive_library_drive_stop', // 'servo_read_degrees',
                     //sensors
                     'sensor_ping', 'PIR_Sensor', 'joystick_input_xaxis', 'joystick_input_yaxis', 'MX2125_acceleration_xaxis',
                     'MX2125_acceleration_yaxis', 'MMA7455_acceleration', 'SF02_Laser_Rangefinder', 'etape_rc_time',
                     'PAM_7Q_Init', 'PAM_7Q_Latitude', 'PAM_7Q_Longitude', 'PAM_7Q_Velocity', 'PAM_7Q_Heading', 'PAM_7Q_Altitude',
-                    'PAM_7Q_SatsTracked', 'etape_voltage_input', 'RFID_get', 'RFID_enable', 'RFID_disable', 'RFID_close', 'sound_impact_run', 'sound_impact_get_count', 'sound_impact_end', 'sirc_library',
+                    'PAM_7Q_SatsTracked', 'etape_voltage_input', 'RFID_get', 'RFID_enable', 'RFID_disable', 'RFID_close', 'sound_impact_run', 'sound_impact_get_count', 'sound_impact_end', 'sirc_library', 'MX2125_rotation', 'MX2125_tilt', 'wav_play', 'wav_status', 'wav_volume', 'wav_stop',
                     //cog
                     'cog_new',
                     //console

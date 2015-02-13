@@ -279,6 +279,7 @@ Blockly.Language.simpletools_library_get_pin_group_states = {
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
         this.setPreviousStatement( false, null );
         this.setNextStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
@@ -296,6 +297,7 @@ Blockly.Language.simpletools_library_get_pin_group_directions = {
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
         this.setPreviousStatement( false, null );
         this.setNextStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
@@ -313,6 +315,7 @@ Blockly.Language.simpletools_library_get_pin_group_outputs = {
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "END_PIN" );
         this.setPreviousStatement( false, null );
         this.setNextStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 

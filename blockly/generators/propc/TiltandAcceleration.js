@@ -69,6 +69,7 @@ Blockly.Language.MX2125_rotation = {
      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'Y_PIN' );
   this.setPreviousStatement( false, null );
   this.setNextStatement( false, null );
+  this.setOutput( true, Number );
  }
 };
 
@@ -84,6 +85,7 @@ Blockly.Language.MX2125_tilt = {
      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'AXIS_PIN' );
   this.setPreviousStatement( false, null );
   this.setNextStatement( false, null );
+  this.setOutput( true, Number );
  }
 };
 

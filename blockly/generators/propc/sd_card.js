@@ -98,7 +98,7 @@ Blockly.Language.sd_card_int_from = {
     }
 };
 
-Blockly.Language.get_sd_card_read_int = {
+Blockly.Language.sd_card_read_int = {
     category: 'SD_CARD',
     helpUrl: '',
     init: function() {
@@ -107,6 +107,7 @@ Blockly.Language.get_sd_card_read_int = {
             .appendTitle( "Get the inputed int" );
         this.setNextStatement( false, null );
         this.setPreviousStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
@@ -158,7 +159,7 @@ Blockly.Language.sd_card_float_from = {
     }
 };
 
-Blockly.Language.get_sd_card_read_float = {
+Blockly.Language.sd_card_read_float = {
     category: 'SD_CARD',
     helpUrl: '',
     init: function() {
@@ -167,6 +168,7 @@ Blockly.Language.get_sd_card_read_float = {
             .appendTitle( "Get the inputed float" );
         this.setNextStatement( false, null );
         this.setPreviousStatement( false, null );
+        this.setOutput( true, Number );
     }
 };
 
@@ -225,16 +227,17 @@ Blockly.Language.sd_card_text_from = {
     }
 };
 
-Blockly.Language.get_sd_card_read_text = {
-category: 'SD_CARD',
-helpUrl: '',
-init: function() {
-    this.setColour( 230 );
-    this.appendDummyInput( "" )
-    .appendTitle( "Get the inputed text" );
-    this.setNextStatement( false, null );
-    this.setPreviousStatement( false, null );
-}
+Blockly.Language.sd_card_read_text = {
+    category: 'SD_CARD',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Get the inputed text" );
+        this.setNextStatement( false, null );
+        this.setPreviousStatement( false, null );
+        this.setOutput( true, Number );
+    }
 };
 
 //Getting the propc generator
@@ -266,7 +269,7 @@ Blockly.propc.sd_card_int_to = function() {
         return '// Missing file declaration for: ' + filename;
     }
     
-    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
@@ -282,11 +285,11 @@ Blockly.propc.sd_card_int_from = function() {
     
     Blockly.propc.setups_[ "int_array_reading"] = 'int file_reading_array_int[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
     
-    var code = 'fread( file_reading_array_int, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    var code = 'fread( file_reading_array_int, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
-Blockly.propc.get_sd_card_read_int = function() {
+Blockly.propc.sd_card_read_int = function() {
     var code = 'file_reading_array_int';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
@@ -297,12 +300,12 @@ Blockly.propc.sd_card_float_to = function() {
     var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
-    if ( Blockly.propc.setups_[ "file" + file ] === undefined )
+    if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + file;
+        return '// Missing file declaration for: ' + filename;
     }
 
-    var code = 'fwrite( "' + value + ', ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
@@ -318,18 +321,18 @@ Blockly.propc.sd_card_float_from = function() {
     
     Blockly.propc.setups_[ "float_array_reading"] = 'float file_reading_array_float[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
     
-    var code = 'fread( file_reading_array_float, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    var code = 'fread( file_reading_array_float, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
-Blockly.propc.get_sd_card_read_float = function() {
+Blockly.propc.sd_card_read_float = function() {
     var code = 'file_reading_array_float';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.sd_card_text_to = function() {
     var filename = this.getTitleValue( 'TEXT' );
-    var value = this.getTitileValue( 'TEXT_INPUT' );
+    var value = this.getTitleValue( 'TEXT_INPUT' );
     var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
@@ -338,7 +341,7 @@ Blockly.propc.sd_card_text_to = function() {
         return '// Missing file declaration for: ' + filename;
     }
     
-    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
@@ -355,11 +358,11 @@ Blockly.propc.sd_card_text_from = function() {
     Blockly.propc.setups_[ "text_array_reading"] = 'char file_reading_array_text[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
 
     
-    var code = 'fread( file_reading_array_text, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' )';
+    var code = 'fread( file_reading_array_text, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
-Blockly.propc.get_sd_card_read_text = function() {
+Blockly.propc.sd_card_read_text = function() {
     var code = 'file_reading_array_text';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };

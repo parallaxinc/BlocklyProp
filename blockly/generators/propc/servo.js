@@ -56,7 +56,7 @@ Blockly.Language.servo_speed = {
         this.appendDummyInput( "" )
             .appendTitle( "Servo speed" );
         this.appendDummyInput( "" )
-            .appendTitle( "Pin" );
+            .appendTitle( "Pin" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'PIN' );
         this.appendDummyInput( "" )
             .appendTitle( "Speed" )
@@ -92,7 +92,7 @@ Blockly.Language.servodiffdrive_library_drive_pins = {
         this.appendDummyInput( "" )
             .appendTitle( "Drive pins" );
         this.appendDummyInput( "" )
-            .appendTitle( "left pin" );
+            .appendTitle( "left pin" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'LEFT_PIN' );
         this.appendDummyInput( "" )
             .appendTitle( "right pin" )
@@ -102,7 +102,7 @@ Blockly.Language.servodiffdrive_library_drive_pins = {
     }
 };
 
-Blockly.Language.servodiffdrive_library_drive_speeds = {
+Blockly.Language.servodiffdrive_library_drive_speed = {
     category: 'Servo',
     helpUrl: '',
     init: function() {
@@ -180,7 +180,7 @@ Blockly.propc.servo_speed = function() {
     var pin = this.getTitleValue( 'PIN' );
     var speed = this.getTitleValue( 'SPEED' );
     
-    var code = 'servo_speed( ' + pin + ', ' + speed + ' )';
+    var code = 'servo_speed( ' + pin + ', ' + speed + ' );\n';
     return code;
 };
 
@@ -188,7 +188,7 @@ Blockly.propc.servo_set_ramp = function() {
     var pin = this.getTitleValue( 'PIN' );
     var ramp_step = this.getTitleValue( 'RAMP_STEP' );
     
-    var code = 'servo_setramp( ' + pin + ', ' + ramp_step + ' )';
+    var code = 'servo_setramp( ' + pin + ', ' + ramp_step + ' );\n';
     return code;
 };
 
@@ -196,15 +196,15 @@ Blockly.propc.servodiffdrive_library_drive_pins = function() {
     var left_pin = this.getTitleValue( 'LEFT_PIN' );
     var right_pin = this.getTitleValue( 'RIGHT_PIN' );
     
-    var code = 'drive_pins( ' + left_pin + ', ' + right_pin + ' )';
+    var code = 'drive_pins( ' + left_pin + ', ' + right_pin + ' );\n';
     return code;
 };
 
-Blockly.propc.servodiffdrive_library_drive_speeds = function() {
+Blockly.propc.servodiffdrive_library_drive_speed = function() {
     var left_speed = this.getTitleValue( 'LEFT_SPEED' );
     var right_speed = this.getTitleValue( 'RIGHT_SPEED' );
     
-    var code = 'drive_speeds( ' + left_speed + ', ' + right_speed + ' )';
+    var code = 'drive_speeds( ' + left_speed + ', ' + right_speed + ' );\n';
     return code;
 };
 
@@ -212,16 +212,16 @@ Blockly.propc.servodiffdrive_library_drive_setRamp = function() {
     var left_ramp = this.getTitleValue( 'LEFT_RAMP' );
     var right_ramp = this.getTitleValue( 'RIGHT_RAMP' );
     
-    var code = 'drive_setramp( ' + left_ramp + ', ' + right_ramp + ' )';
+    var code = 'drive_setramp( ' + left_ramp + ', ' + right_ramp + ' );\n';
     return code;
 };
 
 Blockly.propc.servodiffdrive_library_drive_sleep = function() {
-    var code = 'drive_sleep()';
+    var code = 'drive_sleep();\n';
     return code;
 };
 
 Blockly.propc.servodiffdrive_library_drive_stop = function() {
-    var code = 'drive_stop()';
+    var code = 'drive_stop();\n';
     return code;
 };

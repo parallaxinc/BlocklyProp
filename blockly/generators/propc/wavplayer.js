@@ -41,7 +41,6 @@ Blockly.Language.wav_play = {
 };
 
 Blockly.Language.wav_status = {
-  //TO DO: How do I get the status?
   category: 'WAVPlayer',
   helpUrl: '',
   init: function() {
@@ -51,6 +50,7 @@ Blockly.Language.wav_status = {
       //What do I put here to get the status of the wavplayer?
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
+    this.setOutput( true, Number );
   }
 };
 
@@ -92,7 +92,7 @@ Blockly.propc.wav_play = function() {
       Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
   }
 
-  var code = 'const char file' + filename + '[] = { "' + filename + '" };\nwav_play( ' + file + filename + ' )';
+  var code = 'const char file' + filename + '[] = { "' + filename + '" };\nwav_play( ' + filename + ' );\n';
   return code;
 };
 
@@ -102,24 +102,24 @@ Blockly.propc.wav_status = function() {
       Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
   }
 
-  var code = '';
+  var code = 'wav_playing();\n';
   return code;
 };
 
 Blockly.propc.wav_volume = function() {
-  var volume = this.valueToCode( this, 'VOLUME', Blockly.ORDER_NONE ) || '0';
-  var length = this.valueToCode( this, 'LENGTH', Blockly.ORDER_NONE ) || '0';
+  var volume = Blockly.propc.valueToCode( this, 'VOLUME', Blockly.propc.ORDER_NONE ) || '0';
+  var length = Blockly.propc.valueToCode( this, 'LENGTH', Blockly.propc.ORDER_NONE ) || '0';
     
   if ( Blockly.propc.definitions_[ "wavplayer" ] === undefined )
   {
       Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
   }
 
-  var code = 'wav_volume( ' + volume + ' );\npause( ' + length + ' )';
+  var code = 'wav_volume( ' + volume + ' );\npause( ' + length + ' );\n';
   return code;
 };
 
 Blockly.propc.wav_stop = function() {
-  var code = 'wav_stop()';
+  var code = 'wav_stop();\n';
   return code;
-}
+};
