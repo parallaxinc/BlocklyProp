@@ -1,24 +1,16 @@
 <?php
 
 foreach ($friends as $friend) {
-    
-//    print_r($friend);
 
     $resultItem = array(
-        "requester" => h($friend['']['']),
-        "requestee" => h($friend['']['']),
-        "id" => h($friend['']['']),
-        "friend_request" => h($friend[''][''])
+        "requester" => h($friend['Friend']['requester']),
+        "requestee" => h($friend['Friend']['requestee']),
+        "id" => h($friend['Friend']['id']),
+        "friend_request" => h($friend['Friend']['friend_request']),
+        "friends_since" => h($friend['Friends']['friends_since'])
     );
 
-    foreach ($friend['Tag'] as $tag) {
-        $resultItem['tags'][] = array(
-            "id" => h($tag['id']),
-            "name" => h($tag['name'])
-        );
-    }
-
-    $result['data'][] = $resultItem;
+    $result[] = h($friend);
 }
 unset($friend);
 
