@@ -18,20 +18,11 @@ class Friends extends AppModel {
     
     public function getfriends( $user )
     {
-        $query_result = $this->find( 'all', array( 'conditions' => array( 'requester' => $user )));
+        $query_result = $this->findAllByRequesterOrRequestee($user, $user);
         
-        //$user = $query_result[$this->alias];
         if ( $query_result )
         {
             return $query_result;
-        } else
-        {
-            $query_result = $this->find( 'all', array( 'conditions' => array( 'requestee' => $user )));
-            
-            if ( $query_result )
-            {
-                return $query_result;
-            }
         }
         
         return null;

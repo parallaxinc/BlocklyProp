@@ -10,7 +10,7 @@ foreach ($friends as $friend) {
         "friends_since" => h($friend['Friends']['friends_since'])
     );
 
-    $result[] = h($friend);
+    $result['data'][] = $resultItem;
 }
 unset($friend);
 
