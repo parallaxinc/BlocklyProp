@@ -28,6 +28,100 @@
 if (!Blockly.Language)
     Blockly.Language = {};
 
+Blockly.Language.pwm_start = {
+    category: 'In/Out',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 314 );
+        this.appendDummyInput( "" )
+            .appendTitle( "pwm_start" );
+        this.appendValueInput( 'CYCLE' )
+            .appendTitle( "cycle ( 0 - 1000 )" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.pwm_set = {
+    category: 'In/Out',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 314 );
+        this.appendDummyInput( "" )
+            .appendTitle( "pwm_set" )
+            .appendTitle( "pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'PIN' );
+        this.appendDummyInput( "" )
+            .appendTitle( "channel" )
+            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), 'CHANNEL' );
+        this.appendValueInput( 'TIME_HIGH' )
+            .appendTitle( "tHigh" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.pwm_stop = {
+    category: 'In/Out',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 314 );
+        this.appendDummyInput( "" )
+            .appendTitle( "pwm_stop" );
+        this.setNextStatement( true, null );
+        this.setPreviousStatement( true, null );
+    }
+};
+
+Blockly.Language.shift_in = {
+    category: 'In/Out',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Shift in" );
+        this.appendDummyInput( "" )
+            .appendTitle( "Dat pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'DAT_PIN' );
+        this.appendDummyInput( "" )
+            .appendTitle( "Clk pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'CLK_PIN' );
+        this.appendDummyInput( "" )
+            .appendTitle( "Mode" )
+            .appendTitle( new Blockly.FieldDropdown( [["MSBPRE", "MSBPRE"], ["LSBPRE", "LSBPRE"], ["MSBPOST", "MSBPOST"], ["LSBPOST", "LSBPOST"]] ), 'MODE' );
+        this.appendValueInput( 'BITS' )
+            .appendTitle( "Bits" );
+        this.setOutput( true, Number );
+        this.setPreviousStatement( false, null );
+        this.setNextStatement( false, null );
+    }
+};
+
+Blockly.Language.shift_out = {
+    category: 'In/Out',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 230 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Shift out" );
+        this.appendDummyInput( "" )
+            .appendTitle( "Dat pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'DAT_PIN' );
+        this.appendDummyInput( "" )
+            .appendTitle( "Clk pin" )
+            .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'CLK_PIN' );
+        this.appendDummyInput( "" )
+            .appendTitle( "Mode" )
+            .appendTitle( new Blockly.FieldDropdown( [["MSBPRE", "MSBPRE"], ["LSBPRE", "LSBPRE"], ["MSBPOST", "MSBPOST"], ["LSBPOST", "LSBPOST"]] ), 'MODE' );
+        this.appendValueInput( 'BITS' )
+            .appendTitle( "Bits" );
+        this.appendValueInput( 'VALUE' )
+            .appendTitle( "Value" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
 Blockly.Language.inout_digital_write = {
     category: 'In/Out',
     helpUrl: 'help/block-digitalpin.html#write',
@@ -156,6 +250,9 @@ Blockly.Language.pulse_in = {
         this.appendDummyInput( "" )
             .appendTitle( "Pulse in" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "State" )
+            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), 'STATE' );
         this.setPreviousStatement( false, null );
         this.setNextStatement( false, null );
         this.setOutput( true, Number );
@@ -170,6 +267,9 @@ Blockly.Language.pulse_out = {
         this.appendDummyInput( "" )
             .appendTitle( "Pulse out" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+        this.appendDummyInput( "" )
+            .appendTitle( "State" )
+            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"]] ), 'STATE' );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -374,6 +474,27 @@ Blockly.propc.inout_digital_write = function() {
     }
 };
 
+Blockly.propc.pwm_start = function() {
+    var cycle = Blockly.propc.valueToCode( this, 'CYCLE', Blockly.propc.ORDER_NONE );
+    
+    var code = 'pwm_start( ' + cycle + ' );\n';
+    return code;
+};
+
+Blockly.propc.pwm_stop = function() {
+    var code = 'pwm_stop();\n';
+    return code;
+};
+
+Blockly.propc.pwm_set = function() {
+    var pin = this.getTitleValue( 'PIN' );
+    var channel = this.getTitleValue( 'CHANNEL' );
+    var tHigh = Blockly.propc.valueToCode( this, 'TIME_HIGH', Blockly.propc.ORDER_NONE );
+    
+    var code = 'pwm_set( ' + pin + ', ' + channel + ', ' + tHigh + ' );\n';
+    return code;
+};
+
 Blockly.propc.inout_digital_read = function() {
     var dropdown_pin = this.getTitleValue('PIN');
     //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
@@ -430,15 +551,17 @@ Blockly.propc.pin_low = function() {
 
 Blockly.propc.pulse_in = function() {
     var dropdown_pin = this.getTitleValue( 'PIN' );
+    var state = this.getTitleValue( 'STATE' );
     
-    var code = '';
+    var code = 'pulse_in( ' + dropdown_pin + ', ' + state + ' )';
     return code;
 };
 
 Blockly.propc.pulse_out = function() {
     var dropdown_pin = this.getTitleValue( 'PIN' );
+    var state = this.getTitleValue( 'STATE' );
     
-    var code = '';
+    var code = 'pulse_out( ' + dropdown_pin + ', ' + state + ' );\n';
     return code;
 };
 
@@ -525,5 +648,26 @@ Blockly.propc.simpletools_library_set_pin_group_outputs = function() {
     var direction = this.getTitleValue( 'PATTERN' );
     
     var code = 'set_outputs( ' + start_pin + ', ' + end_pin + ', ' + direction + ' );\n';
+    return code;
+};
+
+Blockly.propc.shift_in = function() {
+    var dat_pin = this.getTitleValue( 'DAT_PIN' );
+    var clk_pin = this.getTitleValue( 'CLK_PIN' );
+    var mode = this.getTitleValue( 'MODE' );
+    var bits = Blockly.propc.valueToCode( this, 'BITS', Blockly.propc.ORDER_NONE );
+    
+    var code = 'shift_in( ' + dat_pin + ', ' + clk_pin + ', ' + mode + ', ' + bits + ' )';
+    return code;
+};
+
+Blockly.propc.shift_out = function() {
+    var dat_pin = this.getTitleValue( 'DAT_PIN' );
+    var clk_pin = this.getTitleValue( 'CLK_PIN' );
+    var mode = this.getTitleValue( 'MODE' );
+    var bits = Blockly.propc.valueToCode( this, 'BITS', Blockly.propc.ORDER_NONE );
+    var value = Blockly.propc.valueToCode( this, 'BITS', Blockly.propc.ORDER_NONE );
+    
+    var code = 'shift_out( ' + dat_pin + ', ' + clk_pin + ', ' + mode + ', ' + bits + ', ' + value + ' );\n';
     return code;
 };
