@@ -157,4 +157,3 @@ Sensor/Hardware Compatibility
   - Freqout command
   - LCD ( currently, only 1 LCD can be attached )
   - Servo
-  - Abdrive
