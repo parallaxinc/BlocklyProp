@@ -32,7 +32,7 @@ Blockly.Language.cog_new = {
     init: function () {
         this.setColour(120);
         this.appendDummyInput()
-            .appendTitle("cognew");
+            .appendTitle("run");
         this.appendValueInput("STACK_SIZE", Number)
             .appendTitle("Stacksize")
             .setCheck(Number);
@@ -41,6 +41,19 @@ Blockly.Language.cog_new = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Language.cog_end = {
+    category: 'Control',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 120 );
+        this.appendDummyInput( "" )
+            .appendTitle( "end cog" );
+            //.appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]] ), 'COG_NUMBER' );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
     }
 };
 
@@ -55,6 +68,11 @@ Blockly.propc.cog_new = function () {
 //  var stackName = 'Stack' + Blockly.propc.stacks_.length;
 //  Blockly.propc.stacks_.push('long ' + stackName + '[' + stackSize + '];');
 
-    var code = 'cog_run(' + method + ', ' + stackSize + ');';
+    var code = 'int * cog_info = cog_run(' + method + ', ' + stackSize + ');\n';
+    return code;
+};
+
+Blockly.propc.cog_end = function() {
+    var code = 'cog_end( cog_info );\n';
     return code;
 };
