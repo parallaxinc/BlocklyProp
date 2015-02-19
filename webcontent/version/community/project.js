@@ -22,7 +22,7 @@ $(document).ready(function() {
         
         project_options['showClose'] = false;
         projectManager = $("#project-manager").wizard(project_options);
-       
+        addProjectManagerHandler();
         projectData = {
             name: '',
             description: '',
@@ -39,13 +39,6 @@ $(document).ready(function() {
             window.frames["content_blocks"].setProfile($('#board-type').val());
             window.frames["content_blocks"].init();
       //      alert("init");
-            projectManager.reset();
-            
-       /*     var firstCard = projectManager.cards["project-manager-base"];
-            firstCard.select();
-            projectManager.showButtons(); */
-            
-            addProjectManagerHandler();
         });
         projectManager.show();
 
@@ -88,16 +81,10 @@ $(document).ready(function() {
         $.post('php/auth/signin', {email: email, password: password}, function(data) {
             // console.log(data);
             if (data.success) {
-                $.cookie('user', data.user);
-                showTable();
-              
-                $("#loginEmail").removeClass("has-error");
-                $("#loginPassword").removeClass("has-error");
-                $('#login-wrong-credentials').addClass('hidden');
+//                $.cookie('user', data.user);
+                $('#login-dialog').modal('hide');
             } else {
-                $("#loginEmail").addClass("has-error");
-                $("#loginPassword").addClass("has-error");
-                $('#login-wrong-credentials').removeClass('hidden');
+
             }
         });
     });
@@ -108,16 +95,15 @@ $(document).ready(function() {
         var email = $("#registerEmail").val();
         var screenname = $("#registerScreenname").val();
         var password = $("#registerPassword").val();
-        var passwordConfirm = $("#registerPasswordConfirm").val();
+        var passwordConfirm = $("#registerPasswordConfirum").val();
 
         $.post('php/auth/register', {email: email, screenname: screenname, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
             $(".icon").addClass("hidden");
             $(".message").remove();
             if (data.success) {
-                $.cookie('user', data.user);
-                showTable();
-                $('#login-register').collapse('show');
+//                $.cookie('user', data.user);
+                $('#login-dialog').modal('hide');
             } else {
                 Object.keys(data['errors']).forEach(function(error_group) {
                     $("#register-group-" + error_group).addClass("has-error");
@@ -129,6 +115,7 @@ $(document).ready(function() {
                         }).appendTo($("#register-group-" + error_group));
                     });
                 });
+                $('#signin-register').height($('#register-form').height());
             }
         });
     });
@@ -154,10 +141,10 @@ saveProject = function() {
         } else {
             projectData = data;
             //$('#project-dialog').modal('hide');
-          //  projectManager.submitSuccess();
+            projectManager.submitSuccess();
             projectManager.hide();
-          //  projectManager.reset();
-          //  projectManager.enableNextButton();
+            projectManager.reset();
+            projectManager.enableNextButton();
           //  projectManager.updateProgressBar(0);
 
             for (var cardName in projectManager.cards) {
@@ -212,7 +199,6 @@ project = function() {
         getProjectData();
     }); */
     projectManager.show();
-    projectManager.reset();
 };
 
 getProjectData = function() {

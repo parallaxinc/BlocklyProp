@@ -42,11 +42,8 @@ $(document).ready(function() {
                 $('#account-menu').removeClass('hidden');
                 //$('#login-register').collapse('show');
                 $('#project-list').collapse('show');
-                $('#login-wrong-credentials').addClass('hidden');
             } else {
-                $("#loginEmail").addClass("has-error");
-                $("#loginPassword").addClass("has-error");
-                $('#login-wrong-credentials').removeClass('hidden');
+
             }
         });
     });
@@ -57,7 +54,7 @@ $(document).ready(function() {
         var email = $("#registerEmail").val();
         var screenname = $("#registerScreenname").val();
         var password = $("#registerPassword").val();
-        var passwordConfirm = $("#registerPasswordConfirm").val();
+        var passwordConfirm = $("#registerPasswordConfirum").val();
 
         $.post('php/auth/register', {email: email, screenname: screenname, password: password, passwordConfirm: passwordConfirm}, function(data) {
             $(".form-group").removeClass("has-error");
