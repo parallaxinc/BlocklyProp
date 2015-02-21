@@ -1,0 +1,5 @@
+h1. Cognew
+
+h2(#cognew). Start a method in a new cog
+
+Start a given method in a free cog. You'll also have to specify the stacksize that can be used.
