@@ -32,7 +32,7 @@ if (!Blockly.Language)
 //servo block
 Blockly.Language.servo_move = {
     category: 'Servo',
-    helpUrl: '',
+    helpUrl: 'help/servo.html#servo_pulse',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
