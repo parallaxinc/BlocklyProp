@@ -57,7 +57,7 @@ Blockly.MSG_RENAME_POINTER_TITLE = 'Rename all "%1" pointers to:';
 
 // Toolbox.
 Blockly.MSG_VARIABLE_CATEGORY = 'Variables';
-Blockly.MSG_PROCEDURE_CATEGORY = 'Methods';
+Blockly.MSG_PROCEDURE_CATEGORY = 'Functions';
 Blockly.MSG_POINTER_CATEGORY = 'Pointers';
 
 // Colour Blocks.

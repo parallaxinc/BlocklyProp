@@ -70,11 +70,13 @@ class User extends AppModel {
     public function get_user($login, $password) {
         $query_result = $this->find('first', array('conditions' => array('email' => $login)));
 
-        $user = $query_result[$this->alias];
-        if ($user) {
-            $passwordHasher = new SimplePasswordHasher();
-            if ($passwordHasher->check($password, $user['password'])) {
-                return $user;
+        if ($query_result) {
+            $user = $query_result[$this->alias];
+            if ($user) {
+                $passwordHasher = new SimplePasswordHasher();
+                if ($passwordHasher->check($password, $user['password'])) {
+                    return $user;
+                }
             }
         }
         return null;

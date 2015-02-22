@@ -6,7 +6,7 @@
         <script type="text/javascript" src="Blob.js"></script>
         <script type="text/javascript" src="lib/js/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="lib/js/term.js"></script>
-        <script type="text/javascript" src="lib/js/bootstrap-wizard.min.js"></script>
+        <script type="text/javascript" src="lib/js/bootstrap-wizard.js"></script>
         <script type="text/javascript" src="FileSaver.min.js"></script>
         <script type="text/javascript" src="blockly_helper.js"></script>
         <script type="text/javascript" src="blocklypropclient.js"></script>
@@ -139,7 +139,10 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <div class="projectcreator" data-keyboard="false" data-backdrop="static" id="project-manager" data-title="Project setup">
+        <div class="wizard" data-keyboard="false" data-backdrop="static" id="project-manager" data-title="Project setup">
+            
+            <h1>Project setup</h1>
+            
             <div class="wizard-card" data-cardname="project-manager-base">
                 <h3>Basic project info</h3>
                 <div class="form-group">
@@ -177,6 +180,18 @@
                     </select>
                 </div>
             </div>
+            
+            <div class="wizard-success">
+                submission succeeded!
+            </div>
+
+            <div class="wizard-error">
+                submission had an error
+            </div>
+
+            <div class="wizard-failure">
+                submission failed
+            </div>
         </div>
 
         <div class="modal fade" id="login-dialog">
@@ -200,6 +215,7 @@
                                             <label for="loginPassword">Password</label>
                                             <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password">
                                         </div>
+                                        <div id="login-wrong-credentials" class="alert alert-danger hidden">Wrong credentials</div>
                                         <div class="pull-right">
                                             <button type="submit" class="btn btn-default" id="signin">Sign in</button>
                                         </div>

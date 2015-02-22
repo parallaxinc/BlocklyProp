@@ -20,6 +20,7 @@
 /**
  * @fileoverview Generating Prop-C for basic blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
+ * @author valetolpegin@gmail.com ( Vale Tolpegin )
  */
 'use strict';
 
@@ -64,6 +65,43 @@ Blockly.Language.ab_drive_speed = {
     }
 };
 
+Blockly.Language.set_ramp_step = {
+    category: 'Drive',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set ramp step" )
+            .appendTitle(new Blockly.FieldTextInput( '64', Blockly.Language.math_number.validator ), 'SPEED' );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.ramp_step_toward = {
+    category: 'Drive',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Set ramp step" )
+            .appendTitle(new Blockly.FieldTextInput( '64', Blockly.Language.math_number.validator ), 'SPEED' );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
+
+Blockly.Language.calibrate = {
+    category: 'Drive',
+    helpUrl: '',
+    init: function() {
+        this.setColour( 180 );
+        this.appendDummyInput( "" )
+            .appendTitle( "Calibrate" );
+        this.setPreviousStatement( true, null );
+        this.setNextStatement( true, null );
+    }
+};
 
 // define generators
 Blockly.propc = Blockly.Generator.get('propc');
@@ -84,4 +122,23 @@ Blockly.propc.ab_drive_speed = function() {
     Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
 
     return 'drive_speed(' + left + ', ' + right + ');\n';
+};
+
+Blockly.propc.set_ramp_step = function() {
+    var speed = this.getTitleValue( 'SPEED' );
+    
+    var code = '';
+    return code;
+};
+
+Blockly.propc.set_ramp_step_toward = function() {
+    var speed = this.getTitleValue( 'SPEED' );
+    
+    var code = '';
+    return code;
+};
+
+Blockly.propc.calibrate = function() {
+    var code = '';
+    return code;
 };
