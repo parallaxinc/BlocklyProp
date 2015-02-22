@@ -266,7 +266,7 @@ Blockly.propc.sd_card_int_to = function() {
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + filename;
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
     }
     
     var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
@@ -280,7 +280,7 @@ Blockly.propc.sd_card_int_from = function() {
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + filename;
+        rBlockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
     }
     
     Blockly.propc.setups_[ "int_array_reading"] = 'int file_reading_array_int[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
@@ -302,7 +302,7 @@ Blockly.propc.sd_card_float_to = function() {
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + filename;
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
     }
 
     var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
@@ -316,7 +316,7 @@ Blockly.propc.sd_card_float_from = function() {
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + filename;
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
     }
     
     Blockly.propc.setups_[ "float_array_reading"] = 'float file_reading_array_float[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
@@ -338,7 +338,7 @@ Blockly.propc.sd_card_text_to = function() {
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + filename;
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
     }
     
     var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
@@ -352,7 +352,7 @@ Blockly.propc.sd_card_text_from = function() {
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        return '// Missing file declaration for: ' + filename;
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
     }
     
     Blockly.propc.setups_[ "text_array_reading"] = 'char file_reading_array_text[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
