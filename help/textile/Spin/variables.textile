@@ -1,16 +1,41 @@
-h1. Wait
+h1. Variables
 
-Make the cog wait for a time until a given condition.
+In Blockly, variables can be used to set/get values and to get and store inputs. Below is a list of all of the functions supported for variables and how to use each one.
 
-* Until the system counter has a given value: "waitcnt":#waitcnt
-* Until I/O pin(s) match designated state(s): "waitpeq":#waitpeq
-* Until I/O pin(s) do not match designated state(s): "waitpne":#waitpne
-* Until the video generator is ready to receive data: "waitvid":#waitvid
+* Declare a variable: "here":#declare
+* Get a variable's value: "here":#get_value
+* Set a variable's value: "here":#set_value
 
-h2(#waitcnt). waitcnt
+!images/variables.png!
 
-h2(#waitpeq). waitpeq
+Good luck and we hope this helps!
 
-h2(#waitpne). waitpne
+h2(#declare). Declare a variable
 
-h2(#waitvid). waitvid
+In Blockly, to declare a variable, you drag the following block into the interface:
+
+!images/variables_declare_block.png!
+
+After that, you can name the variable whatever you want, declare ( no pun intended ) it of any type, and set its value. The final product should be something like this:
+
+!images/variables_declare_final_product.png!
+
+h2(#get_value). Get a variable's value
+
+To get a variable's value in Blockly, you just use the following block:
+
+!images/variables_getvalue.png!
+
+This value can then be put into any value input, just like in the following example. This will return the variables value into the statement of your code that you have attached the variable to.
+
+!images/variables_getvalue_usage.png!
+
+h2(#set_value). Set a variable's value
+
+In addition to just getting a variable's value, you can set it. Below is the block you need to use to set a variable's value. After you place the block in the interface, you can add a value block to set the value.
+
+!images/variables_setvalue.png!
+
+The final picture will look something like this:
+
+!images/variables_setvalue_final_product.png!

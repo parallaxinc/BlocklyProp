@@ -2,7 +2,7 @@ h1. Servo Blocks
 
 h2(#servo). Servos
 
-Servos can be used using BlocklyProp's Spin compiler. Below are all of the available servo blocks that you have access to. Hope this helps!
+Below are all of the servo functions that are currently supported in Blockly.
 
 h2(#servo_pulse). Send pulses to a servo
 

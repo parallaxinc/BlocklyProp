@@ -1,5 +1,32 @@
-h1. Cognew
+h1. Serial
 
-h2(#cognew). Start a method in a new cog
+In Blockly, there is support for a number of serial functions. Below are the help pages for all of the Serial blocks available to Blockly users.
 
-Start a given method in a free cog. You'll also have to specify the stacksize that can be used.
+!images/serial.png!
+
+h2(#serial_transmit). Serial Transmit
+
+The Serial Transmit block allows you to transmit a series of characters ( basically a string ) to some serial interface that you setup using the "Serial init.":#serial_init
+Below is what the block looks like:
+
+!images/serial_transmit.png!
+
+h2(#serial_read_byte). Serial Read Byte
+
+In addition to transmitting data, Blockly allows the user to read in data. The Serial Read Byte allows you to do just that; read in a byte!
+
+!images/serial_readbyte.png!
+
+To use the block, you just add it to another block like in the following example. This will allow the other block to get access to the incoming "message"
+
+!images/serial_readbyte_usage.png!
+
+h2(#serial_init). Serial init
+
+While reading in values and send text is great, that cannot happen without first having the connection initialized. Below is the block that can be used to initialize a serial connection.
+
+!images/serial_init.png!
+
+The Serial Init block can be used just like any other block. An example of how the Serial Init block is used can be found below.
+
+!images/serial_init_usage.png!
