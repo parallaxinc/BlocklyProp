@@ -19,7 +19,7 @@ $(document).ready(function() {
             $('#request-list').addClass('in').removeClass('hidden');
             $('#account-menu').removeClass('hidden');
             showFriendsTable();
-            showRequestsTable();
+            showRequestsTable2();
           
             $("#changeEmail").val($.cookie('user')['email']);
             $("#changeScreenname").val($.cookie('user')['screenname']);
@@ -184,7 +184,7 @@ showFriendsTable = function() {
            "createdRow": function(row, data, index) {
                 $("#btn-view-friend-" + data['id'], row).on('click', function() {
                     //                 alert(data.id);
-                    showFriend( data );
+                    //showFriend( data );
                 });
            }
         });
@@ -193,52 +193,45 @@ showFriendsTable = function() {
     }
 };
 
-showRequestsTable = function() {
+showRequestsTable2 = function() {
     if (!requestsTable) {
         requestsTable = $("#table-requests-table").dataTable({
-           "ajax": 'php/index.php/project/mine',
-           "columns": [
-                       {
-                            "data": "id",
-                            "width": "40px"
-                       },
-                       {
-                            "data": "type",
-                            "width": "100px"
-                       },
-                       {
-                            "data": "board",
-                            "width": "200px"
-                       },
-                       {
-                            "data": "name"
-                       }
-           ],
-           "columnDefs": [
-                          {
-                          // The `data` parameter refers to the data for the cell (defined by the
-                          // `data` option, which defaults to the column being worked with, in
-                          // this case `data: 0`.
-                            "render": function(data, type, row) {
-                          //    return data +' ('+ row['name']+')';
-                                var div = $('<div/>');
-                                $('<button/>', {
-                                    text: 'View',
-                                    class: 'btn btn-xs btn-primary',
-                                    id: "btn-view-request-" + data
-                                }).appendTo(div);
-                                return div.html();
-                            },
-                            "targets": 0
-                          }
-                          // { "visible": false,  "targets": [ 3 ] }
-           ],
-           "createdRow": function(row, data, index) {
+            "ajax": 'php/index.php/friend/myFriends',
+            "columns": [
+                {
+                    "data": "your_friend",
+                    "width": "200px"
+                },
+                {
+                    "data": "friends_since",
+                    "width": "100px"
+                }
+            ],
+            "columnDefs": [
+                {
+                    // The `data` parameter refers to the data for the cell (defined by the
+                    // `data` option, which defaults to the column being worked with, in
+                    // this case `data: 0`.
+                    "render": function(data, type, row) {
+                        //    return data +' ('+ row['name']+')';
+                        var div = $('<div/>');
+                        $('<button/>', {
+                            text: 'View',
+                            class: 'btn btn-xs btn-primary',
+                            id: "btn-view-request-" + data
+                        }).appendTo(div);
+                        return div.html();
+                    },
+                    "targets": 0
+                }
+                // { "visible": false,  "targets": [ 3 ] }
+            ],
+            "createdRow": function(row, data, index) {
                 $("#btn-view-request-" + data['id'], row).on('click', function() {
                     //                 alert(data.id);
-                    showRequest( data );
+                    //showRequest( data );
                 });
-           }
+            }
         });
     } else {
         requestsTable.api().ajax.reload();
