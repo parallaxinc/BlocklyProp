@@ -36,12 +36,23 @@ Blockly.Language.cog_new = {
         this.appendValueInput("STACK_SIZE", Number)
             .appendTitle("Stacksize")
             .setCheck(Number);
+        this.appendDummyInput("")
+            .appendTitle( "variable" )
+            .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
         this.appendStatementInput("METHOD")
             .appendTitle("Method");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getPointers: function() {
+        return [this.getTitleValue('VAR')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
     }
+}
 };
 
 Blockly.Language.cog_end = {
@@ -49,9 +60,8 @@ Blockly.Language.cog_end = {
     helpUrl: '',
     init: function() {
         this.setColour( 120 );
-        this.appendDummyInput( "" )
-            .appendTitle( "end cog" );
-            //.appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]] ), 'COG_NUMBER' );
+        this.appendValueInput( 'COG' )
+            .appendTitle( "End cog" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -61,18 +71,18 @@ Blockly.Language.cog_end = {
 Blockly.propc = Blockly.Generator.get('propc');
 
 Blockly.propc.cog_new = function () {
+    var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
     var method = Blockly.propc.statementToCode(this, 'METHOD');
     method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
     var stackSize = Blockly.propc.valueToCode(this, 'STACK_SIZE', Blockly.propc.ORDER_NONE) || '10';
 
-//  var stackName = 'Stack' + Blockly.propc.stacks_.length;
-//  Blockly.propc.stacks_.push('long ' + stackName + '[' + stackSize + '];');
-
-    var code = 'int * cog_info = cog_run(' + method + ', ' + stackSize + ');\n';
+    var code = varName + ' = int * cog_run(' + method + ', ' + stackSize + ');\n';
     return code;
 };
 
 Blockly.propc.cog_end = function() {
-    var code = 'cog_end( cog_info );\n';
+    var cog = Blockly.propc.valueToCode(this, 'COG', Blockly.propc.ORDER_NONE);
+    
+    var code = 'cog_end( ' + cog + ' );\n';
     return code;
 };
