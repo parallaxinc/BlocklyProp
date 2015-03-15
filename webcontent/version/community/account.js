@@ -7,6 +7,7 @@
 var friendsTable;
 var requestsTable;
 var selectedProject;
+var usersTable;
 
 $(document).ready(function() {
     $.cookie.json = true;
@@ -17,9 +18,11 @@ $(document).ready(function() {
             $('#account-data').addClass('in').removeClass('hidden');
             $('#friends-list').addClass('in').removeClass('hidden');
             $('#request-list').addClass('in').removeClass('hidden');
+            $('#user-list').addClass('in').removeClass('hidden');
             $('#account-menu').removeClass('hidden');
             showFriendsTable();
             showRequestsTable2();
+            showUsers();
           
             $("#changeEmail").val($.cookie('user')['email']);
             $("#changeScreenname").val($.cookie('user')['screenname']);
@@ -86,10 +89,12 @@ $(document).ready(function() {
     $('#back-to-friends-list').on('click', function() {
         $('#friends-list').collapse('show');
         $('#friends-detail').collapse('hide');
+        $('#user-list').collapse('hide');
     });
                   
     $('#back-to-request-list').on('click', function() {
         $('#request-list').collapse('show');
+        $('#user-list').collapse('show');
         $('#request-detail').collapse('hide');
     });
 
@@ -238,6 +243,51 @@ showRequestsTable2 = function() {
     }
 };
 
+showUsers = function() {
+    if (!usersTable) {
+        usersTable = $("#table-user-table").dataTable({
+            "ajax": 'php/index.php/friend/myFriends',
+            "columns": [
+                {
+                    "data": "your_friend",
+                    "width": "200px"
+                },
+                {
+                    "data": "friends_since",
+                    "width": "100px"
+                }
+            ],
+            "columnDefs": [
+                {
+                    // The `data` parameter refers to the data for the cell (defined by the
+                    // `data` option, which defaults to the column being worked with, in
+                    // this case `data: 0`.
+                    "render": function(data, type, row) {
+                        //    return data +' ('+ row['name']+')';
+                        var div = $('<div/>');
+                        $('<button/>', {
+                            text: 'Send Request',
+                            class: 'btn btn-xs btn-primary',
+                            id: "btn-send-request-" + data
+                        }).appendTo(div);
+                        return div.html();
+                    },
+                    "targets": 0
+                }
+                // { "visible": false,  "targets": [ 3 ] }
+            ],
+            "createdRow": function(row, data, index) {
+                $("#btn-send-request-" + data['id'], row).on('click', function() {
+                    //                 alert(data.id);
+                    //showUser( data );
+                });
+            }
+        });
+    } else {
+        usersTable.api().ajax.reload();
+    }
+};
+
 showFriend = function(data) {
     //    $('#project-dialog').modal('show');
     selectedProject = data;
@@ -327,3 +377,8 @@ showRequest = function(data) {
         $('#name-input').val(projectName).removeClass('hidden').focus();
     }
 };
+
+showUser = function( data )
+{
+    //Add show user code here
+}
