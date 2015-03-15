@@ -222,7 +222,7 @@ Blockly.Language.pin_high = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Set PIN# to high" )
+            .appendTitle( "high" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
@@ -235,7 +235,7 @@ Blockly.Language.pin_low = {
     init: function() {
         this.setColour( 120 );
         this.appendDummyInput( "" )
-            .appendTitle( "Set PIN# to low" )
+            .appendTitle( "low" )
             .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
