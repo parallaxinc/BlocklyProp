@@ -110,7 +110,7 @@ Blockly.Language.servodiffdrive_library_drive_speed = {
             .appendTitle( "Drive speeds" );
         this.appendValueInput( 'LEFT_SPEED' )
             .appendTitle( "Left Speed ( -100 to 100 )" );
-        this.appendValueInptu( 'RIGHT_SPEED' )
+        this.appendValueInput( 'RIGHT_SPEED' )
             .appendTitle( "Right Speed ( -100 to 100 )" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
