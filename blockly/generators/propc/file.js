@@ -62,9 +62,10 @@ Blockly.propc = Blockly.Generator.get('propc');
 
 Blockly.propc.file_open = function() {
     var file = this.getTitleValue('FILE');
+    var declared_file = file.replace( ".txt", "" );
     var mode = this.getTitleValue('MODE');
 
-    Blockly.propc.setups_[ "file" + file ] = 'FILE* fp_' + file + ' = fopen("' + file + '", "' + mode + '");\n';
+    Blockly.propc.setups_[ "file" + declared_file ] = 'FILE* fp_' + declared_file + ' = fopen("' + file + '", "' + mode + '");\n';
 
     return '';
 };

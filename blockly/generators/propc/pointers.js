@@ -60,7 +60,7 @@ Blockly.Language.pointers_declare = {
                 .appendTitle(new Blockly.FieldPointer(
                         Blockly.LANG_VARIABLES_SET_ITEM), 'VAR')
                 .appendTitle("as")
-                .appendTitle(new Blockly.FieldDropdown([["file", "FILE*"]]), "TYPE")
+                .appendTitle(new Blockly.FieldDropdown([["file", "FILE*"], ["int", "int*"]]), "TYPE")
                 .appendTitle("value");
         this.setPreviousStatement(true);
         this.setNextStatement(true);

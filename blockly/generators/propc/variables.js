@@ -62,6 +62,12 @@ Blockly.Language.variables_declare = {
                 .appendTitle("as")
                 .appendTitle(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["char", "char"], ["unsigned int", "unsigned int"], ["signed char", "signed char"]]), "TYPE")
                 .appendTitle("value");
+        this.appendDummyInput( "" )
+            .appendTitle( "Volatile" )
+            .appendTitle( new Blockly.FieldDropdown( [["shared", "volatile "], ["not shared", ""]] ), 'VOLATILE' );
+        this.appendDummyInput( "" )
+            .appendTitle( "Static" )
+            .appendTitle( new Blockly.FieldDropdown( [["static", "static "], ["not static", ""]] ), 'STATIC' );
         this.setPreviousStatement(true);
         this.setNextStatement(true);
 //        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
@@ -116,6 +122,10 @@ Blockly.propc.variables_get = function() {
 };
 
 Blockly.propc.variables_declare = function() {
+    //Volatile
+    var volatile = this.getTitleValue( 'VOLATILE' );
+    //Static
+    var staticVar = this.getTitleValue( 'STATIC' );
     // Variable setter.
     var dropdown_type = this.getTitleValue('TYPE');
     //TODO: settype to variable
@@ -124,7 +134,7 @@ Blockly.propc.variables_declare = function() {
     var varName = Blockly.propc.variableDB_.getName(this.getTitleValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     Blockly.propc.setups_['setup_var' + varName] = varName + ' = ' + argument0 + ';\n';
-    Blockly.propc.vartype_[varName] = dropdown_type;
+    Blockly.propc.vartype_[varName] = volatile + staticVar + dropdown_type;
     return '';
 };
 
