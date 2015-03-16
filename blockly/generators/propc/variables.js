@@ -125,7 +125,7 @@ Blockly.propc.variables_declare = function() {
     //Volatile
     var volatile = this.getTitleValue( 'VOLATILE' );
     //Static
-    var static = this.getTitleValue( 'STATIC' );
+    var staticVar = this.getTitleValue( 'STATIC' );
     // Variable setter.
     var dropdown_type = this.getTitleValue('TYPE');
     //TODO: settype to variable
@@ -134,7 +134,7 @@ Blockly.propc.variables_declare = function() {
     var varName = Blockly.propc.variableDB_.getName(this.getTitleValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     Blockly.propc.setups_['setup_var' + varName] = varName + ' = ' + argument0 + ';\n';
-    Blockly.propc.vartype_[varName] = volatile + static + dropdown_type;
+    Blockly.propc.vartype_[varName] = volatile + staticVar + dropdown_type;
     return '';
 };
 
