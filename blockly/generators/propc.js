@@ -213,6 +213,9 @@ Blockly.propc.init = function() {
 
     // Create a list of stacks
     Blockly.propc.stacks_ = [];
+    
+    //Create a list of method names
+    Blockly.propc.method_names_ = [];
 
     Blockly.propc.vartype_ = {};
     Blockly.propc.pointerType_ = {};
@@ -273,7 +276,7 @@ Blockly.propc.finish = function(code) {
         var def = Blockly.propc.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
-        } else if (def.match(/^PUB/)) {
+        } else if (def.match(/^void/) || def.match(/^int/)) {
             methods.push(def);
         } else if (def.match(/^OBJ/)) {
             objects.push('' + def.substring(3));
@@ -315,10 +318,16 @@ Blockly.propc.finish = function(code) {
         setups.push('  ' + Blockly.propc.setups_[name]);
     }
 //    setups.push('Start');
+    
+    //Joinging method names into a single list
+    var method_names = [];
+    for ( var name in Blockly.propc.method_names_ ) {
+        method_names.push( Blockly.propc.method_names_[name] );
+    }
 
     var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
 
-    var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
+    var allDefs = imports.join('\n') + '\n\n' + method_names.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
     //   var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
 
