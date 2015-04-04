@@ -119,7 +119,7 @@ Blockly.propc.activitybot_calibrate = function() {
         'cal_servoPins( 12, 13 );\n' +
         'cal_encoderPins( 14, 15 );\n\n' +
         'high( 26 );\n' +
-        'hight ( 27 );\n' +
+        'high( 27 );\n' +
         'cal_activityBot();\n' +
         'low( 26 );\n' +
         'low( 27 );\n';

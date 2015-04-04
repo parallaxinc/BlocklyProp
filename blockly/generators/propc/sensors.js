@@ -153,7 +153,7 @@ Blockly.propc.compass3d_init = function() {
         Blockly.propc.setups_[ "i2c_compass3d" ] = 'i2c compass3d = i2c_init( ' + sclPin + ', ' + sdaPin + ' );\n';
     }
     
-    Blockly.propc.definitions_[ "compass3d" ] = '#include "'
+    Blockly.propc.definitions_[ "compass3d" ] = '#include "compass3d.h"';
     
     var code = 'compass_init( i2c_compass3d );\n';
     return code;
@@ -163,6 +163,8 @@ Blockly.propc.compass3d_read = function() {
     var x_storage = Blockly.propc.valueToCode( this, 'X_STORAGE' );
     var y_storage = Blockly.propc.valueToCode( this, 'Y_STORAGE' );
     var z_storage = Blockly.propc.valueToCode( this, 'Z_STORAGE' );
+    
+    Blockly.propc.definitions_[ "compass3d" ] = '#include "compass3d.h"';
     
     var code = 'compass_read( compass3d, &' + x_storage + ', &' + y_storage + ', &' + z_storage + ' );\n';
     return code;

@@ -135,7 +135,7 @@ Blockly.propc.PAM_7Q_Init = function() {
   var baud = this.getTitleValue( 'BAUD' );
   
   Blockly.propc.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
-  Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 )';
+  Blockly.propc.setups_[ "PAM7QInit" ] = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\n\tpause( 100 );\n';
   
   return '';
 };

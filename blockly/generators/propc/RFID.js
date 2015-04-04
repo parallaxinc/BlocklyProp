@@ -102,7 +102,7 @@ Blockly.propc.RFID_disable = function() {
       Blockly.propc.definitions_[ "rfidser" ] = '#include "rfidser.h"';
   }
     
-  var code = 'rfid_disable();\n';
+  var code = 'rfid_disable( rfid );\n';
   return code;
 };
 
@@ -119,7 +119,7 @@ Blockly.propc.RFID_enable = function() {
       Blockly.propc.setups_[ "rfidser" + pin_in ] = "rfidser *rfid = rfid_open( " + pin_out + ", " + pin_in + " );"
   }
 
-  var code = 'rfid_enable();\n';
+  var code = 'rfid_enable( rfid );\n';
   return code;
 };
 
@@ -130,6 +130,6 @@ Blockly.propc.RFID_close = function() {
       Blockly.propc.definitions_[ "rfidser" ] = '#include "rfidser.h"';
   }
 
-  var code = 'rfid_close();\n';
+  var code = 'rfidser_close( rfid );\n';
   return code;
 }

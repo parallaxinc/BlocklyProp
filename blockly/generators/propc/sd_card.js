@@ -57,6 +57,9 @@ Blockly.Language.sd_card_int_to = {
         this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "SD_CARD int to" );
+        this.appendDummyInput("")
+            .appendTitle( "Variable" )
+            .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
             .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
@@ -66,12 +69,18 @@ Blockly.Language.sd_card_int_to = {
                                             'media/quote1.png', 12, 12));
         this.appendValueInput( 'VALUE' )
             .appendTitle( "Value: " );
-        this.appendValueInput( 'STARTING_POINT_VALUE' )
-            .appendTitle( "Starting point read:" );
         this.appendValueInput( 'ENDING_POINT_VALUE' )
             .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
+    },
+    getPointer: function() {
+        return [this.getTitleValue('VAR')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
+        }
     }
 };
 
@@ -82,6 +91,9 @@ Blockly.Language.sd_card_int_from = {
         this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "SD_CARD int from" );
+        this.appendDummyInput("")
+            .appendTitle( "Variable" )
+            .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
             .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
@@ -95,19 +107,14 @@ Blockly.Language.sd_card_int_from = {
             .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
-    }
-};
-
-Blockly.Language.sd_card_read_int = {
-    category: 'SD_CARD',
-    helpUrl: '',
-    init: function() {
-        this.setColour( 230 );
-        this.appendDummyInput( "" )
-            .appendTitle( "Get the inputed int" );
-        this.setNextStatement( false, null );
-        this.setPreviousStatement( false, null );
-        this.setOutput( true, Number );
+    },
+    getPointer: function() {
+        return [this.getTitleValue('VAR')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
+        }
     }
 };
 
@@ -118,6 +125,9 @@ Blockly.Language.sd_card_float_to = {
         this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "SD_CARD float to" );
+        this.appendDummyInput("")
+            .appendTitle( "Variable" )
+            .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
         this.appendDummyInput( "" )
             .appendTitle( "Filename: " )
             .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
@@ -127,12 +137,18 @@ Blockly.Language.sd_card_float_to = {
                                             'media/quote1.png', 12, 12));
         this.appendValueInput( 'VALUE' )
             .appendTitle( "Value: " );
-        this.appendValueInput( 'STARTING_POINT_VALUE' )
-            .appendTitle( "Starting point read:" );
         this.appendValueInput( 'ENDING_POINT_VALUE' )
             .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
+    },
+    getPointer: function() {
+        return [this.getTitleValue('VAR')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
+        }
     }
 };
 
@@ -143,6 +159,9 @@ Blockly.Language.sd_card_float_from = {
         this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "SD_CARD float from" );
+        this.appendDummyInput("")
+            .appendTitle( "Variable" )
+            .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
             .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
@@ -156,19 +175,14 @@ Blockly.Language.sd_card_float_from = {
             .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
-    }
-};
-
-Blockly.Language.sd_card_read_float = {
-    category: 'SD_CARD',
-    helpUrl: '',
-    init: function() {
-        this.setColour( 230 );
-        this.appendDummyInput( "" )
-            .appendTitle( "Get the inputed float" );
-        this.setNextStatement( false, null );
-        this.setPreviousStatement( false, null );
-        this.setOutput( true, Number );
+    },
+    getPointer: function() {
+        return [this.getTitleValue('VAR')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
+        }
     }
 };
 
@@ -179,6 +193,9 @@ Blockly.Language.sd_card_text_to = {
         this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "SD_CARD text to" );
+        this.appendDummyInput("")
+            .appendTitle( "Variable" )
+            .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
             .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
@@ -195,12 +212,18 @@ Blockly.Language.sd_card_text_to = {
                                             'media/quote1.png', 12, 12));
         this.appendValueInput( 'VALUE' )
             .appendTitle( "Value: " );
-        this.appendValueInput( 'STARTING_POINT_VALUE' )
-            .appendTitle( "Starting point read:" );
         this.appendValueInput( 'ENDING_POINT_VALUE' )
             .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
+    },
+    getPointer: function() {
+        return [this.getTitleValue('VAR')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
+        }
     }
 };
 
@@ -211,6 +234,9 @@ Blockly.Language.sd_card_text_from = {
         this.setColour( 230 );
         this.appendDummyInput( "" )
             .appendTitle( "SD_CARD text from" );
+        this.appendDummyInput("")
+            .appendTitle( "Variable" )
+            .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
         this.appendDummyInput( "" )
             .appendTitle( "Filename:" )
             .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
@@ -224,19 +250,14 @@ Blockly.Language.sd_card_text_from = {
             .appendTitle( "Ending point read:" );
         this.setNextStatement( true, null );
         this.setPreviousStatement( true, null );
-    }
-};
-
-Blockly.Language.sd_card_read_text = {
-    category: 'SD_CARD',
-    helpUrl: '',
-    init: function() {
-        this.setColour( 230 );
-        this.appendDummyInput( "" )
-            .appendTitle( "Get the inputed text" );
-        this.setNextStatement( false, null );
-        this.setPreviousStatement( false, null );
-        this.setOutput( true, Number );
+    },
+    getPointer: function() {
+        return [this.getTitleValue('VAR')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
+        }
     }
 };
 
@@ -259,110 +280,92 @@ Blockly.propc.sd_card_mount = function() {
 };
 
 Blockly.propc.sd_card_int_to = function() {
+    var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
     var filename = this.getTitleValue( 'TEXT' );
     var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
-    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "w");\n';
     }
     
-    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
+    var code = 'fwrite( &' + varName + ', sizeof( ' + varName + ' ), ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
 Blockly.propc.sd_card_int_from = function() {
+    var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
     var filename = this.getTitleValue( 'TEXT' );
     var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        rBlockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
+        rBlockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "w");\n';
     }
     
-    Blockly.propc.setups_[ "int_array_reading"] = 'int file_reading_array_int[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
-    
-    var code = 'fread( file_reading_array_int, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
+    var code = 'fread( &' + varName + ', ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
-Blockly.propc.sd_card_read_int = function() {
-    var code = 'file_reading_array_int';
-    return [code, Blockly.propc.ORDER_ATOMIC];
-};
-
 Blockly.propc.sd_card_float_to = function() {
+    var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
     var filename = this.getTitleValue( 'TEXT' );
     var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
-    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "w");\n';
     }
 
-    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
+    var code = 'fwrite( &' + varName + ', sizeof( ' + varName + ' ), ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
 Blockly.propc.sd_card_float_from = function() {
+    var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
     var filename = this.getTitleValue( 'TEXT' );
     var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "w");\n';
     }
     
-    Blockly.propc.setups_[ "float_array_reading"] = 'float file_reading_array_float[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
-    
-    var code = 'fread( file_reading_array_float, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
+    var code = 'fread( &' + varName + ', ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
-Blockly.propc.sd_card_read_float = function() {
-    var code = 'file_reading_array_float';
-    return [code, Blockly.propc.ORDER_ATOMIC];
-};
-
 Blockly.propc.sd_card_text_to = function() {
+    var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
     var filename = this.getTitleValue( 'TEXT' );
     var value = this.getTitleValue( 'TEXT_INPUT' );
-    var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "w");\n';
     }
     
-    var code = 'fwrite( "' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
+    var code = 'fwrite( &' + varName + ', sizeof( ' + varName + ' ), ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
 };
 
 Blockly.propc.sd_card_text_from = function() {
+    var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
     var filename = this.getTitleValue( 'TEXT' );
     var starting_value = Blockly.propc.valueToCode( this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     var ending_value = Blockly.propc.valueToCode( this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC ) || '1';
     
     if ( Blockly.propc.setups_[ "file" + filename ] === undefined )
     {
-        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "' + mode + '");\n';
+        Blockly.propc.setups_[ "file" + filename ] = 'FILE* fp_' + filename + ' = fopen("' + filename + '.txt", "w");\n';
     }
-    
-    Blockly.propc.setups_[ "text_array_reading"] = 'char file_reading_array_text[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\n';
 
     
-    var code = 'fread( file_reading_array_text, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
+    var code = 'fread( &' + varName + ', ' + starting_value + ', ' + ending_value + ', fp_' + filename + ' );\n';
     return code;
-};
-
-Blockly.propc.sd_card_read_text = function() {
-    var code = 'file_reading_array_text';
-    return [code, Blockly.propc.ORDER_ATOMIC];
 };

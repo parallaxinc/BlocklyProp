@@ -92,7 +92,7 @@ Blockly.propc.wav_play = function() {
       Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
   }
 
-  var code = 'const char file' + filename + '[] = { "' + filename + '" };\nwav_play( ' + filename + ' );\n';
+  var code = 'const char ' + filename + '[] = { "' + filename + '.wav" };\nwav_play( ' + filename + ' );\n';
   return code;
 };
 
@@ -102,7 +102,7 @@ Blockly.propc.wav_status = function() {
       Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
   }
 
-  var code = 'wav_playing();\n';
+  var code = 'wav_playing()';
   return code;
 };
 

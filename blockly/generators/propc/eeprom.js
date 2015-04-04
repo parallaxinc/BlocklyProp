@@ -105,7 +105,7 @@ Blockly.Language.eeprom_text_to = {
       .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
                                           'media/quote1.png', 12, 12));
     this.appendValueInput( 'VALUE' )
-      .appendTitle( "n" );
+      .appendTitle( "Number of bytes" );
     this.appendDummyInput( "" )
       .appendTitle( "address" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
@@ -122,13 +122,24 @@ Blockly.Language.eeprom_text_from = {
     this.appendDummyInput( "" )
       .appendTitle( "EEPROM text from" )
     this.appendValueInput( 'VALUE' )
-      .appendTitle( "n" );
+      .appendTitle( "Number of bytes" );
     this.appendDummyInput( "" )
       .appendTitle( "address" )
       .appendTitle( new Blockly.FieldDropdown( profile.default.eeprom ), "ADDRESS" );
+    this.appendDummyInput("")
+      .appendTitle( "Variable" )
+      .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
     this.setOutput( true, Number );
+  },
+  getPointers: function() {
+    return [this.getTitleValue('VAR')];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+      this.setTitleValue(newName, 'VAR');
+    }
   }
 };
 
@@ -155,7 +166,7 @@ Blockly.propc.eeprom_float_to = function() {
   var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.ORDER_NONE ) || '0';
   var address = this.getTitleValue( 'ADDRESS' );
     
-  var code = 'ee_putFloat32( ' + value + ', ' + address + ' )';
+  var code = 'ee_putFloat32( ' + value + ', ' + address + ' );';
   return code;
 };
 
@@ -171,13 +182,15 @@ Blockly.propc.eeprom_text_to = function() {
   var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.ORDER_NONE ) || '0';
   var address = this.getTitleValue( 'ADDRESS' );
     
-  var code = 'ee_putStr( ' + value + ', ' + address + ' )';
+  var code = 'ee_putStr( ' + text + ', ' + value + ', ' + address + ' );\n';
   return code;
 };
 
 Blockly.propc.eeprom_text_from = function() {
+  var varName = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
+  var value = Blockly.propc.valueToCode( this, 'VALUE', Blockly.ORDER_NONE ) || '0';
   var address = this.getTitleValue( 'ADDRESS' );
     
-  var code = 'ee_getStr( ' + address + ' )';
+  var code = 'ee_getStr( ' + varName + ', ' + value + ', ' + address + ' )';
   return code;
 };

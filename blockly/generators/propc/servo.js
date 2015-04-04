@@ -166,8 +166,7 @@ Blockly.propc.servo_move = function() {
     var dropdown_pin = this.getTitleValue('PIN');
     var degrees = Blockly.propc.valueToCode(this, 'DEGREES', Blockly.propc.ORDER_NONE);
 
-    Blockly.propc.definitions_['define_servo'] = '#include "servo.h"';
-//    Blockly.propc.setups_['setup_servo'] = 'SERVO.Start';
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
 
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
     return code;
@@ -175,7 +174,9 @@ Blockly.propc.servo_move = function() {
 
 Blockly.propc.servo_speed = function() {
     var pin = this.getTitleValue( 'PIN' );
-    var speed = this.getTitleValue( 'SPEED' );
+    var speed = Blockly.propc.valueToCode( this, 'SPEED', Blockly.propc.ORDER_NONE );
+    
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
     
     var code = 'servo_speed( ' + pin + ', ' + speed + ' );\n';
     return code;
@@ -185,6 +186,8 @@ Blockly.propc.servo_set_ramp = function() {
     var pin = this.getTitleValue( 'PIN' );
     var ramp_step = this.getTitleValue( 'RAMP_STEP' );
     
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
+    
     var code = 'servo_setramp( ' + pin + ', ' + ramp_step + ' );\n';
     return code;
 };
@@ -193,32 +196,42 @@ Blockly.propc.servodiffdrive_library_drive_pins = function() {
     var left_pin = this.getTitleValue( 'LEFT_PIN' );
     var right_pin = this.getTitleValue( 'RIGHT_PIN' );
     
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
+    
     var code = 'drive_pins( ' + left_pin + ', ' + right_pin + ' );\n';
     return code;
 };
 
 Blockly.propc.servodiffdrive_library_drive_speed = function() {
-    var left_speed = this.getTitleValue( 'LEFT_SPEED' );
-    var right_speed = this.getTitleValue( 'RIGHT_SPEED' );
+    var left_speed = Blockly.propc.valueToCode( this, 'LEFT_SPEED', Blockly.propc.ORDER_NONE );
+    var right_speed = Blockly.propc.valueToCode( this, 'RIGHT_SPEED', Blockly.propc.ORDER_NONE );
+    
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
     
     var code = 'drive_speeds( ' + left_speed + ', ' + right_speed + ' );\n';
     return code;
 };
 
 Blockly.propc.servodiffdrive_library_drive_setRamp = function() {
-    var left_ramp = this.getTitleValue( 'LEFT_RAMP' );
-    var right_ramp = this.getTitleValue( 'RIGHT_RAMP' );
+    var right_ramp = Blockly.propc.valueToCode( this, 'RIGHT_RAMP', Blockly.propc.ORDER_NONE );
+    var left_ramp = Blockly.propc.valueToCode( this, 'LEFT_RAMP', Blockly.propc.ORDER_NONE );
+    
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
     
     var code = 'drive_setramp( ' + left_ramp + ', ' + right_ramp + ' );\n';
     return code;
 };
 
 Blockly.propc.servodiffdrive_library_drive_sleep = function() {
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
+    
     var code = 'drive_sleep();\n';
     return code;
 };
 
 Blockly.propc.servodiffdrive_library_drive_stop = function() {
+    Blockly.propc.definitions_['define_servo'] = '#include "servodiffdrive.h"';
+    
     var code = 'drive_stop();\n';
     return code;
 };
