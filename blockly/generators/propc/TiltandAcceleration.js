@@ -158,12 +158,16 @@ Blockly.propc.MX2125_rotation = function() {
   var x_pin = this.getTitleValue( 'X_PIN' );
   var y_pin = this.getTitleValue( 'Y_PIN' );
     
+  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
+    
   var code = 'mx_rotate( ' + x_pin + ', ' + y_pin + ' )';
   return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.MX2125_tilt = function() {
   var axis_pin = this.getTitleValue( 'AXIS_PIN' );
+    
+  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
     
   var code = 'mx_tilt( ' + axis_pin + ' )';
   return [code, Blockly.propc.ORDER_ATOMIC];

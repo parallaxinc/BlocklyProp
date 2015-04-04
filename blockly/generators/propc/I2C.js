@@ -26,9 +26,8 @@
 if (!Blockly.Language )
   Blockly.Language = {};
 
-//Generating GUIs for IrC blocks
+//Generating GUIs for I2C blocks
 Blockly.Language.i2c_new_bus = {
-  //TO DO: correct SCL_DRIVE input
   category: 'I2C',
   helpUrl: '',
   init: function() {
@@ -49,7 +48,6 @@ Blockly.Language.i2c_new_bus = {
 };
 
 Blockly.Language.i2c_in = {
-  //TO DO: correct inputs
   category: 'I2C',
   helpUrl: '',
   init: function() {
@@ -61,11 +59,18 @@ Blockly.Language.i2c_in = {
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
     this.setOutput( true, Number );
+  },
+  getPointers: function() {
+    return [this.getTitleValue('VAR')];
+  },
+  renameVar: function(oldName, newName) {
+    if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+        this.setTitleValue(newName, 'VAR');
+    }
   }
 };
 
 Blockly.Language.i2c_out = {
-  //TO DO: correct inputs
   category: 'I2C',
   helpUrl: '',
   init: function() {
@@ -80,6 +85,9 @@ Blockly.Language.i2c_out = {
       .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
       .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
                                           'media/quote1.png', 12, 12));
+    this.appendDummyInput("")
+      .appendTitle( "Variable" )
+      .appendTitle(new Blockly.FieldPointer(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
     this.appendValueInput( 'VALUE' )
       .appendTitle( "data count" );
     this.setPreviousStatement( true, null );
@@ -98,7 +106,7 @@ Blockly.propc.i2c_new_bus = function() {
 
   if ( Blockly.propc.setups_[ "i2c_newbus" ] === undefined )
   {
-      Blockly.propc.setups_[ "12c_newbus" ] = 'i2cBusUD = i2c_newbus( ' + scl_pin + ', ' + sda_pin + ', ' + scl_drive + ' );\n';
+      Blockly.propc.setups_[ "12c_newbus" ] = 'i2c *i2cBusUD = i2c_newbus( ' + scl_pin + ', ' + sda_pin + ', ' + scl_drive + ' );\n';
   }
 
   return '';
@@ -108,28 +116,14 @@ Blockly.propc.i2c_out = function() {
   var data = this.getTitleValue( 'TEXT' ) || '';
   var dataCount = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
     
-  if ( Blockly.propc.setups_[ "i2c_newbus" ] === undefined )
-  {
-      return '// Missing i2c new bus declaration\n';
-  }
-    
-  var code = 'i2c_out( i2cBusUD, 0b1010000, 32768, 2, ' + data + ', ' + dataCount + ' )';
+  var code = 'i2c_out( i2cBusUD, 0b1010000, 32768, 2, "' + data + '", ' + dataCount + ' )';
   return code;
 };
 
 Blockly.propc.i2c_in = function() {
+  var dataVar = Blockly.propc.pointerDB_.getName(this.getTitleValue('VAR'), Blockly.Pointers.NAME_TYPE);
   var dataCount = Blockly.propc.valueToCode( this, 'VALUE', Blockly.propc.ORDER_ATOMIC ) || '0';
-    
-  if ( Blockly.propc.setups_[ "i2c_newbus" ] === undefined )
-  {
-      return '// Missing i2c new bus declaration\n';
-  }
-    
-  if ( Blockly.propc.setups_[ "i2c_input_array" ] === undefined )
-  {
-      Blockly.propc.setups_[ "i2c_input_array" ] = 'char i2cInputArray[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
-  }
 
-  var code = 'i2c_in( i2cBusUD, 0b1010000, 32768, 2, i2cInputArray, ' + dataCount + ' )';
+  var code = 'i2c_in( i2cBusUD, 0b1010000, 32768, 2, ' + dataVar + ', ' + dataCount + ' )';
   return [code, Blockly.propc.ORDER_NONE];
 };

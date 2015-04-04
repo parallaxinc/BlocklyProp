@@ -80,6 +80,7 @@ Blockly.propc.etape_rc_time = function() {
 Blockly.propc.etape_voltage_input = function() {
   var pin = this.getTitleValue( 'PIN' );
   
+  Blockly.propc.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
   Blockly.propc.setups_[ "include abvolt" ] = 'ad_init( 21, 20, 19, 18 );\n';
   
   var code = 'ad_volts( ' + pin + ' )';

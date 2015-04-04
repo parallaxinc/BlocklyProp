@@ -613,7 +613,7 @@ Blockly.propc.simpletools_library_get_pin_group_states = function() {
     var start_pin = this.getTitleValue( 'START_PIN' );
     var end_pin = this.getTitleValue( 'END_PIN' );
 
-    var code = 'get_states( ' + start_pin + ', ' + end_pin + ' );\n';
+    var code = 'get_states( ' + start_pin + ', ' + end_pin + ' )';
     return code;
 };
 
@@ -621,7 +621,7 @@ Blockly.propc.simpletools_library_get_pin_group_directions = function() {
     var start_pin = this.getTitleValue( 'START_PIN' );
     var end_pin = this.getTitleValue( 'END_PIN' );
     
-    var code = 'get_directions( ' + start_pin + ', ' + end_pin + ' );\n';
+    var code = 'get_directions( ' + start_pin + ', ' + end_pin + ' )';
     return code;
 };
 
@@ -629,7 +629,7 @@ Blockly.propc.simpletools_library_get_pin_group_outputs = function() {
     var start_pin = this.getTitleValue( 'START_PIN' );
     var end_pin = this.getTitleValue( 'END_PIN' );
     
-    var code = 'get_outputs( ' + start_pin + ', ' + end_pin + ' );\n';
+    var code = 'get_outputs( ' + start_pin + ', ' + end_pin + ' )';
     return code;
 };
 
