@@ -1,0 +1,15 @@
+h1. Procedures
+
+BlocklyProp gives you the functionality to add multiple methods to your programs in Spin. To add procedures to your program, simply follow the below tutorial. Good luck!
+
+First off, the procedures blocks are located under the Functions category.
+
+!images/procedures_introduction.png!
+
+Now that you know where the blocks are located, you can start using them. First, you need to drage one of the two blocks into the main workspace.
+
+!images/procedures_how_to_drag.png!
+
+Once you drage the block into the workspace, you can use that method. To do this, simply drag the new block that was created in the Functions tab into your code, just like below.
+
+!images/procedures_how_to_final.png!
