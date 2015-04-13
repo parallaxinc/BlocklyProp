@@ -1,5 +1,27 @@
-h1. Cognew
+h1. Control
 
-h2(#cognew). Start a method in a new cog
+BlocklyProp supports many advanced features of programming, some of which include the use of delay blocks, repeat blocks, and if blocks.
 
-Start a given method in a free cog. You'll also have to specify the stacksize that can be used.
+* Using delay blocks: "here":#control_delay
+* Using repeat blocks: "here":#control_repeat
+* Using if blocks: "here":#control_if
+
+!images/spin_control_introduction.png!
+
+h2(#control_delay). Delay the program by an amount of time
+
+If you need to pause your program, or a cog in your program, for a certain amount of time, you can use the delay block. This block allows you to stop a cog for any amount of time without stopping any other cogs. Below is an example of how to use the delay block.
+
+!images/control_delay_example.png!
+
+h2(#control_repeat). Repeating code in BlocklyProp
+
+If you need to repeat blocks of code, this is easily possible using the repeat block. All you do is specify the number of times you would like the code to be repeated, and add the code you would like to repeat inside of the repeate block. Below is a simple example, just showing you how to use the repeat block.
+
+!images/control_repeat_example.png!
+
+h2(#control_if). Implementing if statements in BlocklyProp
+
+While being able to repeat blocks of code is great, you will also probably need to be able to use if statements. BlocklyProp makes this easy. Below is a simple example. All you have to do to get the if block to work is add a statement with a returning value of either true or false, and add the code you would like to execute based on whether the if statement is true or not.
+
+!images/control_if_statement_example.png!

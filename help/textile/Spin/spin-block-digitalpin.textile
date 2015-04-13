@@ -1,6 +1,10 @@
-h1. Digital pin
+h1. Digital pin I/O
+
+!images/digital_pin_introduction.png!
 
 h2(#write). Write to a selected pin
+
+!images/digital_pin_write.png!
 
 You select high or low and the pin you want to set.
 
@@ -9,4 +13,14 @@ If you select high, a value of 3.3V will be set to selected pin. Low will pul th
 In the list of pins, not all pins might be available. This list depends on the profile you have selected.
 For example, on the demo board you get pins 0..7 and 16..23.
 
-h2(#write-pin). Write to a pin set using a variable pin
+!images/digital_pin_write_example.png!
+
+h2(#read-pin). Read from a selected pin
+
+As well as being able to write to selected pins, you are able to read from selected pins. This can be done using one of the two blocks seen below.
+
+!images/digital_pin_read.png!
+
+Simply attach these blocks to numerical input accepting value inputs, and you're done! You have now read data from that pin! Below is an example.
+
+!images/digital_pin_read_example.png!
