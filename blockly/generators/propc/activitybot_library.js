@@ -27,12 +27,12 @@ if ( !Blockly.Language )
 
 //Generating GUIs for Activitybot library blocks
 Blockly.Language.activitybot_set_ramp_step = {
-    category: 'Activitybot Library',
+    category: 'Activitybot',
     helpUrl: '',
     init: function() {
         this.setColour( 220 );
         this.appendDummyInput( "" )
-            .appendTitle( "Activitybot library set ramp step" );
+            .appendTitle( "Set Ramp Step" );
         this.appendDummyInput( "" )
             .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"]] ), 'STEPSIZE' );
         this.setPreviousStatement( true, null );
@@ -41,12 +41,12 @@ Blockly.Language.activitybot_set_ramp_step = {
 };
 
 Blockly.Language.activitybot_ramp_step_toward = {
-    category: 'Activitybot Library',
+    category: 'Activitybot',
     helpUrl: '',
     init: function() {
         this.setColour( 220 );
         this.appendDummyInput( "" )
-            .appendTitle( "Activitybot library ramp step" );
+            .appendTitle( "Ramp Step" );
         this.appendValueInput( 'LEFT_RAMPSTEP' )
             .appendTitle( "left ( -128 to 128 )" );
         this.appendValueInput( 'RIGHT_RAMPSTEP' )
@@ -57,24 +57,24 @@ Blockly.Language.activitybot_ramp_step_toward = {
 };
 
 Blockly.Language.activitybot_calibrate = {
-    category: 'Activitybot Library',
+    category: 'Activitybot',
     helpUrl: '',
     init: function() {
         this.setColour( 220 );
         this.appendDummyInput( "" )
-            .appendTitle( "Activitybot library calibrate" );
+            .appendTitle( "Calibrate" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
 };
 
 Blockly.Language.activitybot_display_calibration = {
-    category: 'Activitybot Library',
+    category: 'Activitybot',
     helpUrl: '',
     init: function() {
         this.setColour( 220 );
         this.appendDummyInput( "" )
-            .appendTitle( "Activitybot library display calibration" );
+            .appendTitle( "Display Calibration" );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
