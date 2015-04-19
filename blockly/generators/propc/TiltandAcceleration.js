@@ -110,7 +110,6 @@ Blockly.Language.MMA7455_acceleration = {
       .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINZ" )
     this.appendValueInput( 'VARZ' )
         .appendTitle( "Storage for Z-axis" );
-    this.setInputsInline( true );
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null ); 
   }
