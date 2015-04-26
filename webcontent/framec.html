@@ -72,8 +72,8 @@
                 // Whitelist of blocks to keep.
                 var newLanguage = {}
                 var keepers = [
-                    //activitybot library
-                    'activitybot_set_ramp_step', 'activitybot_ramp_step_toward', 'activitybot_calibrate', 'activitybot_display_calibration',
+                    // ActivityBot
+                    'ab_drive_speed', 'ab_drive_goto', 'activitybot_ramp_step_toward', 'activitybot_set_ramp_step', 'activitybot_calibrate', 'activitybot_display_calibration',
                     //EEPROM
                     'eeprom_int_to', 'eeprom_int_from', 'eeprom_float_to', 'eeprom_float_from', 'eeprom_text_to', 'eeprom_text_from',
                     //I2C
@@ -133,8 +133,6 @@
 //                    'procedures_ifreturn',
                             //custom
                             //'custom_read','custom_write',
-                    // ActivityBot drive
-                    'ab_drive_goto', 'ab_drive_speed',
                     // ActivityBot ADC/DAC
                     'ab_volt_in', 'ab_volt_v_in', 'ab_volt_out', 'ab_volt_v_out',
                     // serial
