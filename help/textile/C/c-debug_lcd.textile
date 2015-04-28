@@ -1,0 +1,49 @@
+h1. Debug LCD
+
+In Blockly, there is built-in support for LCD displays.
+
+!images/lcd_introduction.png!
+
+* Initialize a display: "here":#LCD_init
+* Clear the display: "here":#LCD_clear
+* Print out some text: "here":#LCD_print
+* Print out numbers: "here":#LCD_print_number
+* Other LCD actions: "here":#LCD_action
+
+We hope this helps!
+
+h2(#LCD_init). LCD init
+
+Before you can use the LCD, you will first have to initialize it. To do this, drag the LCD init block into the workspace and add it to wherever you want in the code. Below is an example.
+
+!images/lcd_init.png!
+
+Once you add it to the workspace, you will need to set it up with the correct parameters. There are three parameters that need to be setup when initializing the LCD. First, you need to set the pin in use. You set this to the pin you have connected the LCD to on your board. Next, you have to set the baud rate. This depends on which LCD you are using. In addition, you will have to set how many lines you are using. Again, this depends on the LCD that you are using. Below is an example of a fully configured LCD display.
+
+!images/lcd_init_configured.png!
+
+h2(#LCD_clear). LCD clear
+
+Once you initialize your LCD display, you will need to clear it. In addition to clearing the LCD once it is initialized, you will probably also need to use this function at some point in your code. To do this in Blockly, use the LCD clear block located right below the LCD init block. To use the LCD clear block, simply drag it into your code like below.
+
+!images/lcd_clear_example.png!
+
+h2(#LCD_print). LCD print
+
+If you want to print string to the LCD display, you can use the LCD print block. It is very simple to use and can be implemented like below.
+
+!images/lcd_print_example.png!
+
+The LCD print block is located right below the LCD clear block.
+
+h2(#LCD_print_number). LCD print number
+
+In addition to being able to print strings to the LCD display, you can print numbers. This is a very simple and easy thing to accomplish. Below is an example.
+
+!images/lcd_print_number_example.png!
+
+h2(#LCD_action). LCD action
+
+While being able to print numbers and strings is great, there are a couple of other things you need to be able to accomplish as well. The LCD action block covers the rest of these functions, allowing you to switch to a new line.
+
+!images/lcd_action_example.png!
