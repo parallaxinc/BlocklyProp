@@ -122,35 +122,6 @@ Blockly.Language.shift_out = {
     }
 };
 
-Blockly.Language.inout_digital_write = {
-    category: 'In/Out',
-    helpUrl: 'help/block-digitalpin.html#write',
-    init: function() {
-        this.setColour(230);
-        this.appendDummyInput("")
-                .appendTitle("DigitalWrite PIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN")
-                .appendTitle("Stat")
-                .appendTitle(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "STAT");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('Write digital value to a specific Port');
-    }
-};
-
-Blockly.Language.inout_digital_read = {
-    category: 'In/Out',
-    helpUrl: 'help/block-digitalpin.html#read',
-    init: function() {
-        this.setColour(230);
-        this.appendDummyInput("")
-                .appendTitle("Input PIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.setOutput(true, Boolean);
-        this.setTooltip('');
-    }
-};
-
 Blockly.Language.inout_digital_write_pin = {
     category: 'In/Out',
     helpUrl: 'help/block-digitalpin.html#write-pin',
@@ -330,7 +301,6 @@ Blockly.Language.simpletools_library_get_pin_output = {
 };
 
 Blockly.Language.simpletools_library_set_pin_direction = {
-    //TO DO: is the direction input correct?
     category: 'Control',
     helpUrl: '',
     init: function() {
@@ -348,7 +318,6 @@ Blockly.Language.simpletools_library_set_pin_direction = {
 };
 
 Blockly.Language.simpletools_library_set_pin_output = {
-    //TO DO: is the direction input correct?
     category: 'Control',
     helpUrl: '',
     init: function() {
@@ -464,16 +433,6 @@ Blockly.Language.simpletools_library_set_pin_group_outputs = {
 Blockly.propc = Blockly.Generator.get('propc');
 
 //generate code for the compiler
-Blockly.propc.inout_digital_write = function() {
-    var dropdown_pin = this.getTitleValue('PIN');
-    var dropdown_stat = this.getTitleValue('STAT');
-    if (dropdown_stat == 1) {
-        return 'high(' + dropdown_pin + ');\n';
-    } else {
-        return 'low(' + dropdown_pin + ');\n';
-    }
-};
-
 Blockly.propc.pwm_start = function() {
     var cycle = Blockly.propc.valueToCode( this, 'CYCLE', Blockly.propc.ORDER_NONE );
     
@@ -493,13 +452,6 @@ Blockly.propc.pwm_set = function() {
     
     var code = 'pwm_set( ' + pin + ', ' + channel + ', ' + tHigh + ' );\n';
     return code;
-};
-
-Blockly.propc.inout_digital_read = function() {
-    var dropdown_pin = this.getTitleValue('PIN');
-    //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
-    var code = 'input(' + dropdown_pin + ')';
-    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.inout_digital_write_pin = function() {
