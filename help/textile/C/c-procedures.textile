@@ -1,6 +1,6 @@
 h1. Procedures
 
-BlocklyProp gives you the functionality to add multiple methods to your programs in Spin. To add procedures to your program, simply follow the below tutorial. Good luck!
+BlocklyProp gives you the functionality to add multiple methods to your programs in C. To add procedures to your program, simply follow the below tutorial. Good luck!
 
 First off, the procedures blocks are located under the Functions category.
 

@@ -6,7 +6,7 @@ BlocklyProp supports many advanced features of programming, some of which includ
 * Using repeat blocks: "here":#control_repeat
 * Using if blocks: "here":#control_if
 
-!images/spin_control_introduction.png!
+!images/control_introduction.png!
 
 h2(#control_delay). Delay the program by an amount of time
 
