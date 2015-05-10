@@ -9,6 +9,10 @@ Make the cog wait for a time until a given condition.
 
 h2(#waitcnt). waitcnt
 
+waitcnt will prevent the cog from executing further code until the moment the System Counter equals the value of the passed variable value ( it needs to be a number ). This is a special command because it runs unique "wait" hardware in the cog and reduces 7/8ths of the cog's power consumption. Below is an example of how to use the waitcnt command. All you need to do is drop the block into your program and add a numerical value.
+
+!images/spin-waitcnt.png!
+
 h2(#waitpeq). waitpeq
 
 h2(#waitpne). waitpne

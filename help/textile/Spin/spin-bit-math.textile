@@ -1,16 +1,34 @@
-h1. Wait
+h1. Bit math functions
 
-Make the cog wait for a time until a given condition.
+Four different bit math operations are supported in BlocklyProp. These four operations have some different operations inside each one that you can choose.
 
-* Until the system counter has a given value: "waitcnt":#waitcnt
-* Until I/O pin(s) match designated state(s): "waitpeq":#waitpeq
-* Until I/O pin(s) do not match designated state(s): "waitpne":#waitpne
-* Until the video generator is ready to receive data: "waitvid":#waitvid
+* Using shift left and shift right: "here":#shifting
+* Using rotate left and rotate right: "here":#rotating
+* Using bit AND, OR, and XOR: "here":#bit_and_or_xor
+* Using bit NOT: "here":#bit_not
 
-h2(#waitcnt). waitcnt
+!images/bit-math_introduction.png!
 
-h2(#waitpeq). waitpeq
+h2(#shifting). Using shifts
 
-h2(#waitpne). waitpne
+Shifts allow you to shift all of the bits left or right. In essence, this allows the change of a value of a variable by che change in a bit. Here is an example of left shifting:
 
-h2(#waitvid). waitvid
+!images/bit-math_shift_example.png!
+
+h2(#rotating). Using rotations
+
+A rotation is also known as a circular shift. This is where either the first or last bit are flipped, and the remaining bits are shifted. Below is an example:
+
+!images/bit-math_rotations_example.png!
+
+h2(#bit_and_or_xor). Using bit AND, OR, and XOR
+
+These three functions are based off of the AND, OR, and XOR gates. The AND gate returns true if both of the conditions are true, and false is only one or none of the conditions is true. The OR gate returns true if either of the conditions are true. The XOR gate returns true if neither of the conditions are true. Below is an example of using the AND gate.
+
+!images/bit-math_gates_and_example.png!
+
+h2(#bit_not). Using bit NOT
+
+Bit NOT takes the opposite state of every bit ( a 1 becomes a 0, a 0 becomes a 1 ). Below is an example:
+
+!images/bit-math_bit_not_example.png!
