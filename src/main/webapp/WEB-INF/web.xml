@@ -5,44 +5,13 @@
          version="3.0">
 
     <servlet>
-        <servlet-name>Propeller C</servlet-name>
-        <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.CPropellerServlet</servlet-class>
+        <servlet-name>Project</servlet-name>
+        <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.ProjectServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Propeller C</servlet-name>
-        <url-pattern>/cpropeller.action</url-pattern>
+        <servlet-name>Project</servlet-name>
+        <url-pattern>/project</url-pattern>
     </servlet-mapping>
-
-    <servlet>
-        <servlet-name>Propeller Spin</servlet-name>
-        <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.PropellerServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Propeller Spin</servlet-name>
-        <url-pattern>/propeller.action</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet>
-        <servlet-name>Serial connection</servlet-name>
-        <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.SerialServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Serial connection</servlet-name>
-        <url-pattern>/websockets/serial.connect</url-pattern>
-    </servlet-mapping>
-
-
-    <filter>
-        <filter-name>cross-origin</filter-name>
-        <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>cross-origin</filter-name>
-        <url-pattern>/websockets/*</url-pattern>
-    </filter-mapping>
 
 </web-app>
