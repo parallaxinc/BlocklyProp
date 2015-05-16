@@ -13,6 +13,8 @@
         <!-- Adapt this to a version found on
            http://central.maven.org/maven2/org/eclipse/jetty/jetty-maven-plugin/
         -->
+        
+        <jooq-version>3.6.1</jooq-version>
     </properties>
 
     <pluginRepositories>
@@ -40,6 +42,62 @@
                     <plugin>
                         <artifactId>maven-war-plugin</artifactId>
                         <version>2.6</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.2</version>
+                        <configuration>
+                            <url>http://localhost:8080/manager/text</url>
+                            <path>/blockly</path>
+                            <username>admin</username>
+                            <password>admin</password>
+                            <update>true</update>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-codegen-maven</artifactId>
+                        <version>${jooq-version}</version>
+                        
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        
+                        <dependencies>
+                            <dependency>
+                                <groupId>mysql</groupId>
+                                <artifactId>mysql-connector-java</artifactId>
+                                <version>5.1.35</version>
+                            </dependency>
+                        </dependencies>
+                        
+                        <configuration>
+                            <jdbc>
+                                <driver>com.mysql.jdbc.Driver</driver>
+                                <url>jdbc:mysql://localhost/blocklyprop</url>
+                                <user>blocklyprop</user>
+                                <password>blocklyprop</password>
+                            </jdbc>
+                            
+                            <generator>
+                                <name>org.jooq.util.DefaultGenerator</name>
+                                <database>
+                                    <name>org.jooq.util.mysql.MySQLDatabase</name>
+                                    <includes>.*</includes>
+                                    <excludes></excludes>
+                                    <inputSchema>blocklyprop</inputSchema>
+                                </database>
+                                <target>
+                                    <packageName>eu.creatingfuture.propeller.blocklyprop</packageName>
+                                    <directory>src/main/java</directory>
+                                </target>
+                            </generator>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -117,12 +175,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.4</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.scream3r</groupId>
             <artifactId>jssc</artifactId>
             <version>2.8.0</version>
@@ -133,6 +185,38 @@
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+            <version>4.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        
+        <!-- JOOQ Dependencies for JOOQ and For auto generated code -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq-version}</version>
+        </dependency>
+ 
+        <!--<dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>${jooq-version}</version>
+        </dependency>-->
+        <!-- END JOOQ Dependencies -->
 
     </dependencies>
 
