@@ -80,9 +80,9 @@
                         <configuration>
                             <jdbc>
                                 <driver>com.mysql.jdbc.Driver</driver>
-                                <url>jdbc:mysql://localhost/blocklyprop</url>
-                                <user>blocklyprop</user>
-                                <password>blocklyprop</password>
+                                <url>jdbc:mysql://localhost:3306/blocklyprop</url>
+                                <user>root</user>
+                                <password>admin</password>
                             </jdbc>
                             
                             <generator>
@@ -94,7 +94,7 @@
                                     <inputSchema>blocklyprop</inputSchema>
                                 </database>
                                 <target>
-                                    <packageName>eu.creatingfuture.propeller.blocklyprop</packageName>
+                                    <packageName>eu.creatingfuture.propeller.blocklyprop.db</packageName>
                                     <directory>src/main/java</directory>
                                 </target>
                             </generator>
