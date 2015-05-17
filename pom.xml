@@ -15,6 +15,7 @@
         -->
         
         <jooq-version>3.6.1</jooq-version>
+        <shiro-version>1.2.3</shiro-version>
     </properties>
 
     <pluginRepositories>
@@ -204,7 +205,7 @@
             <version>2.3.1</version>
         </dependency>
         
-        <!-- JOOQ Dependencies for JOOQ and For auto generated code -->
+        <!-- Dependencies for JOOQ -->
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
@@ -217,6 +218,32 @@
             <version>${jooq-version}</version>
         </dependency>-->
         <!-- END JOOQ Dependencies -->
+        
+        <dependency>
+            <groupId>com.adamlewis</groupId>
+            <artifactId>guice-persist-jooq</artifactId>
+            <version>0.1.2</version>
+        </dependency>
+        
+        <!-- Dependencies for Shiro -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro-version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro-version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-guice</artifactId>
+            <version>${shiro-version}</version>
+        </dependency>
+        <!-- END Shiro Dependencies -->
 
     </dependencies>
 
