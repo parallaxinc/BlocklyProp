@@ -93,10 +93,21 @@
                                     <excludes></excludes>
                                     <inputSchema>blocklyprop</inputSchema>
                                     
+                                    <customTypes>
+                                        <customType>
+                                            <name>GregorianCalendar</name>
+                                            <type>java.util.GregorianCalendar</type>
+                                            <converter>eu.creatingfuture.propeller.generation.CalendarConverter</converter>
+                                        </customType>
+                                    </customTypes>
                                     <forcedTypes>
                                         <forcedType>
                                             <name>BOOLEAN</name>
                                             <expressions>.*\.private|.*\.shared|.*\.blocked</expressions>
+                                        </forcedType>
+                                        <forcedType>
+                                            <name>GregorianCalendar</name>
+                                            <expressions>.*\.created|.*\.modified</expressions>
                                         </forcedType>
                                     </forcedTypes>
                                 </database>

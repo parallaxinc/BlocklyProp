@@ -7,9 +7,10 @@ package eu.creatingfuture.propeller.blocklyprop.db.tables;
 import eu.creatingfuture.propeller.blocklyprop.db.Blocklyprop;
 import eu.creatingfuture.propeller.blocklyprop.db.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.tables.records.ProjectRecord;
+import eu.creatingfuture.propeller.generation.CalendarConverter;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -35,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = -77808187;
+	private static final long serialVersionUID = 921459754;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
@@ -93,12 +94,12 @@ public class Project extends TableImpl<ProjectRecord> {
 	/**
 	 * The column <code>blocklyprop.project.created</code>.
 	 */
-	public final TableField<ProjectRecord, Timestamp> CREATED = createField("created", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "");
+	public final TableField<ProjectRecord, GregorianCalendar> CREATED = createField("created", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "", new CalendarConverter());
 
 	/**
 	 * The column <code>blocklyprop.project.modified</code>.
 	 */
-	public final TableField<ProjectRecord, Timestamp> MODIFIED = createField("modified", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "");
+	public final TableField<ProjectRecord, GregorianCalendar> MODIFIED = createField("modified", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "", new CalendarConverter());
 
 	/**
 	 * Create a <code>blocklyprop.project</code> table reference
