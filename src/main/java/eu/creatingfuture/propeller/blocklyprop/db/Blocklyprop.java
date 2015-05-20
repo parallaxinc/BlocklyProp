@@ -5,6 +5,7 @@ package eu.creatingfuture.propeller.blocklyprop.db;
 
 
 import eu.creatingfuture.propeller.blocklyprop.db.tables.Project;
+import eu.creatingfuture.propeller.blocklyprop.db.tables.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +30,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Blocklyprop extends SchemaImpl {
 
-	private static final long serialVersionUID = 724537223;
+	private static final long serialVersionUID = -1223145924;
 
 	/**
 	 * The reference instance of <code>blocklyprop</code>
@@ -52,6 +53,7 @@ public class Blocklyprop extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
-			Project.PROJECT);
+			Project.PROJECT,
+			User.USER);
 	}
 }

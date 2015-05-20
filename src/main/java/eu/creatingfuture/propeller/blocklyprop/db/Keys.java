@@ -5,10 +5,13 @@ package eu.creatingfuture.propeller.blocklyprop.db;
 
 
 import eu.creatingfuture.propeller.blocklyprop.db.tables.Project;
+import eu.creatingfuture.propeller.blocklyprop.db.tables.User;
 import eu.creatingfuture.propeller.blocklyprop.db.tables.records.ProjectRecord;
+import eu.creatingfuture.propeller.blocklyprop.db.tables.records.UserRecord;
 
 import javax.annotation.Generated;
 
+import org.jooq.ForeignKey;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
 
@@ -37,11 +40,15 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = UniqueKeys0.KEY_PROJECT_PRIMARY;
+	public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
+	public static final UniqueKey<UserRecord> KEY_USER_SCREENNAME_UNIQUE = UniqueKeys0.KEY_USER_SCREENNAME_UNIQUE;
+	public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = UniqueKeys0.KEY_USER_EMAIL_UNIQUE;
 
 	// -------------------------------------------------------------------------
 	// FOREIGN KEY definitions
 	// -------------------------------------------------------------------------
 
+	public static final ForeignKey<ProjectRecord, UserRecord> PROJECT_USER = ForeignKeys0.PROJECT_USER;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -49,5 +56,12 @@ public class Keys {
 
 	private static class UniqueKeys0 extends AbstractKeys {
 		public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = createUniqueKey(Project.PROJECT, Project.PROJECT.ID);
+		public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, User.USER.ID);
+		public static final UniqueKey<UserRecord> KEY_USER_SCREENNAME_UNIQUE = createUniqueKey(User.USER, User.USER.SCREENNAME);
+		public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = createUniqueKey(User.USER, User.USER.EMAIL);
+	}
+
+	private static class ForeignKeys0 extends AbstractKeys {
+		public static final ForeignKey<ProjectRecord, UserRecord> PROJECT_USER = createForeignKey(eu.creatingfuture.propeller.blocklyprop.db.Keys.KEY_USER_PRIMARY, Project.PROJECT, Project.PROJECT.ID_USER);
 	}
 }

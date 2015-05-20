@@ -14,6 +14,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -33,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = -221434927;
+	private static final long serialVersionUID = -1849245544;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
@@ -52,6 +53,11 @@ public class Project extends TableImpl<ProjectRecord> {
 	 * The column <code>blocklyprop.project.id</code>.
 	 */
 	public final TableField<ProjectRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
+	 * The column <code>blocklyprop.project.id_user</code>.
+	 */
+	public final TableField<ProjectRecord, Integer> ID_USER = createField("id_user", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
 	/**
 	 * The column <code>blocklyprop.project.name</code>.
@@ -109,6 +115,14 @@ public class Project extends TableImpl<ProjectRecord> {
 	@Override
 	public List<UniqueKey<ProjectRecord>> getKeys() {
 		return Arrays.<UniqueKey<ProjectRecord>>asList(Keys.KEY_PROJECT_PRIMARY);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<ProjectRecord, ?>> getReferences() {
+		return Arrays.<ForeignKey<ProjectRecord, ?>>asList(Keys.PROJECT_USER);
 	}
 
 	/**

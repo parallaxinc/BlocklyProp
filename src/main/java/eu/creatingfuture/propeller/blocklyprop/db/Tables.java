@@ -5,6 +5,7 @@ package eu.creatingfuture.propeller.blocklyprop.db;
 
 
 import eu.creatingfuture.propeller.blocklyprop.db.tables.Project;
+import eu.creatingfuture.propeller.blocklyprop.db.tables.User;
 
 import javax.annotation.Generated;
 
@@ -26,4 +27,9 @@ public class Tables {
 	 * The table blocklyprop.project
 	 */
 	public static final Project PROJECT = eu.creatingfuture.propeller.blocklyprop.db.tables.Project.PROJECT;
+
+	/**
+	 * The table blocklyprop.user
+	 */
+	public static final User USER = eu.creatingfuture.propeller.blocklyprop.db.tables.User.USER;
 }
