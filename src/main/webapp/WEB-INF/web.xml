@@ -3,7 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
+    
+    <!-- Guice -->
+    <filter>
+        <filter-name>guiceFilter</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
 
+    <filter-mapping>
+        <filter-name>guiceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <listener>
+        <listener-class>eu.creatingfuture.propeller.blocklyprop.config.ServletConfig</listener-class>
+    </listener>
+
+    <!-- Other servlets -->
     <servlet>
         <servlet-name>Project</servlet-name>
         <servlet-class>eu.creatingfuture.propeller.blocklyprop.servlets.ProjectServlet</servlet-class>
@@ -13,5 +29,7 @@
         <servlet-name>Project</servlet-name>
         <url-pattern>/project</url-pattern>
     </servlet-mapping>
+    
+    
 
 </web-app>

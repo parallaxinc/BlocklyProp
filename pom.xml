@@ -16,6 +16,7 @@
         
         <jooq-version>3.6.1</jooq-version>
         <shiro-version>1.2.3</shiro-version>
+        <metrics-version>3.1.0</metrics-version>
     </properties>
 
     <pluginRepositories>
@@ -218,6 +219,12 @@
         </dependency>
         
         <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-persist</artifactId>
+            <version>4.0</version>
+        </dependency>
+        
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.3.1</version>
@@ -241,6 +248,12 @@
             <groupId>com.adamlewis</groupId>
             <artifactId>guice-persist-jooq</artifactId>
             <version>0.1.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${metrics-version}</version>
         </dependency>
         
         <!-- Dependencies for Shiro -->
