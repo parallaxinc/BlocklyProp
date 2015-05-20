@@ -15,6 +15,21 @@ waitcnt will prevent the cog from executing further code until the moment the Sy
 
 h2(#waitpeq). waitpeq
 
+This command will stop a cog until certain I/O pins' states are the same as the passed states. The State variable that needs to be passed ( the first one ) is the state for which the command should wait for. The second value that must be passed is Mask. This is the pin or pins that you would like to monitor. The third value is the Port you would like to monitor. Currently, only Port A is supported ( passing a value of 0 ).
+
+!images/spin-waitpeq.png!
+
 h2(#waitpne). waitpne
 
+This does the exact opposite as the above method. Waitpne will stop a cog's execution until cetain I/O pins' states are the opposite to the passed state. It takes the same arguments. Below is an example.
+
+!images/spin-waitpne.png!
+
 h2(#waitvid). waitvid
+
+waitvid pauses a cog's execution until its video generator is ready to take pixel data. Below is an example of how to use this:
+
+!images/spin-waitvid.png!
+
+
+*** NOTE: THIS HELP PAGE IS NOT COMPLETED FOR DRAFTING...IMAGES STILL HAVE TO BE ADDED ***

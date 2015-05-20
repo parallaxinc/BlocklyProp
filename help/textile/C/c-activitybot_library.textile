@@ -1,0 +1,31 @@
+h1. Activitybot Library
+
+There are a number of built-in blocks that allow you to use a number of handy commands while interacting with your Activitybot. Here is a list of the currently supported functions:
+
+Using set ramp step "here":#set_ramp_step
+Using ramp step "here":#ramp_step
+Using calibrate "here":#calibrate
+Using display calibration "here":#display_calibration
+
+!images/c-activitybot_library_overview.png!
+
+h2(#set_ramp_step). Using Activitybot library's set ramp step function
+
+This function allows you to set the step at which your activitybot will change everytime you adjust the ramp_step. Below is a simple example how to use this function:
+
+!images/c-activitybot_library_set_ramp_step_example.png!
+
+h2(#ramp_step). Using Activitybot library's ramp step
+
+Basically, this function allows you to move your Activitybot's wheels a given number of encoder ticks. The block takes 2 inputs, the left wheel's number of ticks you would like it to move, and the right wheel's number of ticks you would like it to move. Below is an example:
+
+!images/c-activitybot_library_ramp_step.png!
+
+h2(#calibrate). Using Activitybot library's calibrate function
+
+BlocklyProp's calibrate function allows you to calibrate your Activitybot using a single block. Below is an example.
+
+!images/c-activitybot_library_calibrate_example.png!
+
+h2(#display_calibration).
+
