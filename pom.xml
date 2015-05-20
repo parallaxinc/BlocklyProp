@@ -97,7 +97,7 @@
                                         <customType>
                                             <name>GregorianCalendar</name>
                                             <type>java.util.GregorianCalendar</type>
-                                            <converter>eu.creatingfuture.propeller.generation.CalendarConverter</converter>
+                                            <converter>eu.creatingfuture.propeller.blocklyprop.generation.CalendarConverter</converter>
                                         </customType>
                                     </customTypes>
                                     <forcedTypes>

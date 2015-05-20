@@ -7,7 +7,7 @@ package eu.creatingfuture.propeller.blocklyprop.db.tables;
 import eu.creatingfuture.propeller.blocklyprop.db.Blocklyprop;
 import eu.creatingfuture.propeller.blocklyprop.db.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.tables.records.ProjectRecord;
-import eu.creatingfuture.propeller.generation.CalendarConverter;
+import eu.creatingfuture.propeller.blocklyprop.generation.CalendarConverter;
 
 import java.util.Arrays;
 import java.util.GregorianCalendar;
@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = 921459754;
+	private static final long serialVersionUID = 1891571131;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
