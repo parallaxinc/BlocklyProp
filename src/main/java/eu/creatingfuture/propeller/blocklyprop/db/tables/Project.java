@@ -8,6 +8,7 @@ import eu.creatingfuture.propeller.blocklyprop.db.Blocklyprop;
 import eu.creatingfuture.propeller.blocklyprop.db.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.tables.records.ProjectRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = -1849245544;
+	private static final long serialVersionUID = -77808187;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
@@ -78,6 +79,26 @@ public class Project extends TableImpl<ProjectRecord> {
 	 * The column <code>blocklyprop.project.type</code>.
 	 */
 	public final TableField<ProjectRecord, Integer> TYPE = createField("type", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
+	 * The column <code>blocklyprop.project.private</code>.
+	 */
+	public final TableField<ProjectRecord, Boolean> PRIVATE = createField("private", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
+
+	/**
+	 * The column <code>blocklyprop.project.shared</code>.
+	 */
+	public final TableField<ProjectRecord, Boolean> SHARED = createField("shared", org.jooq.impl.SQLDataType.BOOLEAN.defaulted(true), this, "");
+
+	/**
+	 * The column <code>blocklyprop.project.created</code>.
+	 */
+	public final TableField<ProjectRecord, Timestamp> CREATED = createField("created", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "");
+
+	/**
+	 * The column <code>blocklyprop.project.modified</code>.
+	 */
+	public final TableField<ProjectRecord, Timestamp> MODIFIED = createField("modified", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "");
 
 	/**
 	 * Create a <code>blocklyprop.project</code> table reference

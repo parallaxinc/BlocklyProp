@@ -92,6 +92,13 @@
                                     <includes>.*</includes>
                                     <excludes></excludes>
                                     <inputSchema>blocklyprop</inputSchema>
+                                    
+                                    <forcedTypes>
+                                        <forcedType>
+                                            <name>BOOLEAN</name>
+                                            <expressions>.*\.private|.*\.shared|.*\.blocked</expressions>
+                                        </forcedType>
+                                    </forcedTypes>
                                 </database>
                                 <target>
                                     <packageName>eu.creatingfuture.propeller.blocklyprop.db</packageName>

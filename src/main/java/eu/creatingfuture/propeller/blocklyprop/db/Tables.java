@@ -5,6 +5,8 @@ package eu.creatingfuture.propeller.blocklyprop.db;
 
 
 import eu.creatingfuture.propeller.blocklyprop.db.tables.Project;
+import eu.creatingfuture.propeller.blocklyprop.db.tables.ProjectTag;
+import eu.creatingfuture.propeller.blocklyprop.db.tables.Tag;
 import eu.creatingfuture.propeller.blocklyprop.db.tables.User;
 
 import javax.annotation.Generated;
@@ -27,6 +29,16 @@ public class Tables {
 	 * The table blocklyprop.project
 	 */
 	public static final Project PROJECT = eu.creatingfuture.propeller.blocklyprop.db.tables.Project.PROJECT;
+
+	/**
+	 * The table blocklyprop.project_tag
+	 */
+	public static final ProjectTag PROJECT_TAG = eu.creatingfuture.propeller.blocklyprop.db.tables.ProjectTag.PROJECT_TAG;
+
+	/**
+	 * The table blocklyprop.tag
+	 */
+	public static final Tag TAG = eu.creatingfuture.propeller.blocklyprop.db.tables.Tag.TAG;
 
 	/**
 	 * The table blocklyprop.user

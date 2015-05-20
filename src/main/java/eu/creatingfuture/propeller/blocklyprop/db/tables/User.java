@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-	private static final long serialVersionUID = -234415986;
+	private static final long serialVersionUID = -1895127665;
 
 	/**
 	 * The reference instance of <code>blocklyprop.user</code>
@@ -77,7 +77,7 @@ public class User extends TableImpl<UserRecord> {
 	/**
 	 * The column <code>blocklyprop.user.blocked</code>.
 	 */
-	public final TableField<UserRecord, Byte> BLOCKED = createField("blocked", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaulted(true), this, "");
+	public final TableField<UserRecord, Boolean> BLOCKED = createField("blocked", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaulted(true), this, "");
 
 	/**
 	 * The column <code>blocklyprop.user.created</code>.
