@@ -98,7 +98,7 @@
                                         <customType>
                                             <name>GregorianCalendar</name>
                                             <type>java.util.GregorianCalendar</type>
-                                            <converter>eu.creatingfuture.propeller.blocklyprop.generation.CalendarConverter</converter>
+                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.CalendarConverter</converter>
                                         </customType>
                                     </customTypes>
                                     <forcedTypes>
@@ -113,7 +113,7 @@
                                     </forcedTypes>
                                 </database>
                                 <target>
-                                    <packageName>eu.creatingfuture.propeller.blocklyprop.db</packageName>
+                                    <packageName>eu.creatingfuture.propeller.blocklyprop.db.generated</packageName>
                                     <directory>src/main/java</directory>
                                 </target>
                             </generator>
@@ -203,7 +203,8 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <version>3.0-alpha-1</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>
@@ -218,11 +219,13 @@
             <version>4.0</version>
         </dependency>
         
+        <!--
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-persist</artifactId>
             <version>4.0</version>
         </dependency>
+        -->
         
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -275,6 +278,18 @@
             <version>${shiro-version}</version>
         </dependency>
         <!-- END Shiro Dependencies -->
+        
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
 
     </dependencies>
 
