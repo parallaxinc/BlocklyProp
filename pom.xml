@@ -178,6 +178,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>3.0-alpha-1</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- Dependencies for logging -->
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.6</version>
@@ -187,26 +195,15 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.6</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-exec</artifactId>
-            <version>1.2</version>
-        </dependency>
-
+        <!-- END Logging Dependencies -->
+        
         <dependency>
             <groupId>org.scream3r</groupId>
             <artifactId>jssc</artifactId>
             <version>2.8.0</version>
         </dependency>
         
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>3.0-alpha-1</version>
-            <scope>provided</scope>
-        </dependency>
-        
+        <!-- Dependencies for Guice -->
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -226,12 +223,7 @@
             <version>4.0</version>
         </dependency>
         -->
-        
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.3.1</version>
-        </dependency>
+        <!-- END Guice Dependencies -->
         
         <!-- Dependencies for JOOQ -->
         <dependency>
@@ -245,19 +237,13 @@
             <artifactId>jooq-meta</artifactId>
             <version>${jooq-version}</version>
         </dependency>-->
-        <!-- END JOOQ Dependencies -->
         
         <dependency>
             <groupId>com.adamlewis</groupId>
             <artifactId>guice-persist-jooq</artifactId>
             <version>0.1.2</version>
         </dependency>
-        
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-core</artifactId>
-            <version>${metrics-version}</version>
-        </dependency>
+        <!-- END JOOQ Dependencies -->
         
         <!-- Dependencies for Shiro -->
         <dependency>
@@ -279,6 +265,7 @@
         </dependency>
         <!-- END Shiro Dependencies -->
         
+        <!-- Apache commons dependencies -->
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
@@ -289,6 +276,26 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-exec</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- END Apache commons Dependencies -->
+        
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${metrics-version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
         </dependency>
 
     </dependencies>
