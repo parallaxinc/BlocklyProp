@@ -5,17 +5,14 @@ package eu.creatingfuture.propeller.blocklyprop.db.generated;
 
 
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Project;
-import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.ProjectTag;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Tag;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.User;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectRecord;
-import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectTagRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.TagRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 
 import javax.annotation.Generated;
 
-import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
@@ -39,7 +36,9 @@ public class Keys {
 	// IDENTITY definitions
 	// -------------------------------------------------------------------------
 
+	public static final Identity<ProjectRecord, Integer> IDENTITY_PROJECT = Identities0.IDENTITY_PROJECT;
 	public static final Identity<TagRecord, Integer> IDENTITY_TAG = Identities0.IDENTITY_TAG;
+	public static final Identity<UserRecord, Integer> IDENTITY_USER = Identities0.IDENTITY_USER;
 
 	// -------------------------------------------------------------------------
 	// UNIQUE and PRIMARY KEY definitions
@@ -56,16 +55,15 @@ public class Keys {
 	// FOREIGN KEY definitions
 	// -------------------------------------------------------------------------
 
-	public static final ForeignKey<ProjectRecord, UserRecord> PROJECT_USER = ForeignKeys0.PROJECT_USER;
-	public static final ForeignKey<ProjectTagRecord, ProjectRecord> PROJECT_TAG_PROJECT = ForeignKeys0.PROJECT_TAG_PROJECT;
-	public static final ForeignKey<ProjectTagRecord, TagRecord> PROJECT_TAG_TAG = ForeignKeys0.PROJECT_TAG_TAG;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
 	// -------------------------------------------------------------------------
 
 	private static class Identities0 extends AbstractKeys {
+		public static Identity<ProjectRecord, Integer> IDENTITY_PROJECT = createIdentity(Project.PROJECT, Project.PROJECT.ID);
 		public static Identity<TagRecord, Integer> IDENTITY_TAG = createIdentity(Tag.TAG, Tag.TAG.ID);
+		public static Identity<UserRecord, Integer> IDENTITY_USER = createIdentity(User.USER, User.USER.ID);
 	}
 
 	private static class UniqueKeys0 extends AbstractKeys {
@@ -75,11 +73,5 @@ public class Keys {
 		public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, User.USER.ID);
 		public static final UniqueKey<UserRecord> KEY_USER_SCREENNAME_UNIQUE = createUniqueKey(User.USER, User.USER.SCREENNAME);
 		public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = createUniqueKey(User.USER, User.USER.EMAIL);
-	}
-
-	private static class ForeignKeys0 extends AbstractKeys {
-		public static final ForeignKey<ProjectRecord, UserRecord> PROJECT_USER = createForeignKey(eu.creatingfuture.propeller.blocklyprop.db.generated.Keys.KEY_USER_PRIMARY, Project.PROJECT, Project.PROJECT.ID_USER);
-		public static final ForeignKey<ProjectTagRecord, ProjectRecord> PROJECT_TAG_PROJECT = createForeignKey(eu.creatingfuture.propeller.blocklyprop.db.generated.Keys.KEY_PROJECT_PRIMARY, ProjectTag.PROJECT_TAG, ProjectTag.PROJECT_TAG.ID_PROJECT);
-		public static final ForeignKey<ProjectTagRecord, TagRecord> PROJECT_TAG_TAG = createForeignKey(eu.creatingfuture.propeller.blocklyprop.db.generated.Keys.KEY_TAG_PRIMARY, ProjectTag.PROJECT_TAG, ProjectTag.PROJECT_TAG.ID_TAG);
 	}
 }

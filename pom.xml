@@ -13,7 +13,7 @@
         <!-- Adapt this to a version found on
            http://central.maven.org/maven2/org/eclipse/jetty/jetty-maven-plugin/
         -->
-        
+
         <jooq-version>3.6.1</jooq-version>
         <shiro-version>1.2.3</shiro-version>
         <metrics-version>3.1.0</metrics-version>
@@ -61,7 +61,7 @@
                         <groupId>org.jooq</groupId>
                         <artifactId>jooq-codegen-maven</artifactId>
                         <version>${jooq-version}</version>
-                        
+
                         <executions>
                             <execution>
                                 <goals>
@@ -69,7 +69,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                        
+
                         <dependencies>
                             <dependency>
                                 <groupId>mysql</groupId>
@@ -77,7 +77,7 @@
                                 <version>5.1.35</version>
                             </dependency>
                         </dependencies>
-                        
+
                         <configuration>
                             <jdbc>
                                 <driver>com.mysql.jdbc.Driver</driver>
@@ -85,7 +85,7 @@
                                 <user>root</user>
                                 <password>admin</password>
                             </jdbc>
-                            
+
                             <generator>
                                 <name>org.jooq.util.DefaultGenerator</name>
                                 <database>
@@ -93,7 +93,7 @@
                                     <includes>.*</includes>
                                     <excludes></excludes>
                                     <inputSchema>blocklyprop</inputSchema>
-                                    
+
                                     <customTypes>
                                         <customType>
                                             <name>GregorianCalendar</name>
@@ -116,6 +116,9 @@
                                     <packageName>eu.creatingfuture.propeller.blocklyprop.db.generated</packageName>
                                     <directory>src/main/java</directory>
                                 </target>
+                                <generate>
+                                    <relations>true</relations>
+                                </generate>
                             </generator>
                         </configuration>
                     </plugin>
@@ -180,10 +183,10 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>3.0-alpha-1</version>
+            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Dependencies for logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -196,75 +199,75 @@
             <version>1.7.6</version>
         </dependency>
         <!-- END Logging Dependencies -->
-        
+
         <dependency>
             <groupId>org.scream3r</groupId>
             <artifactId>jssc</artifactId>
             <version>2.8.0</version>
         </dependency>
-        
+
         <!-- Dependencies for Guice -->
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>4.0</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-servlet</artifactId>
             <version>4.0</version>
         </dependency>
-        
-        <!--
+
+
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-persist</artifactId>
             <version>4.0</version>
         </dependency>
-        -->
+
         <!-- END Guice Dependencies -->
-        
+
         <!-- Dependencies for JOOQ -->
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
             <version>${jooq-version}</version>
         </dependency>
- 
+
         <!--<dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-meta</artifactId>
             <version>${jooq-version}</version>
         </dependency>-->
-        
+
         <dependency>
             <groupId>com.adamlewis</groupId>
             <artifactId>guice-persist-jooq</artifactId>
             <version>0.1.2</version>
         </dependency>
         <!-- END JOOQ Dependencies -->
-        
+
         <!-- Dependencies for Shiro -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
             <version>${shiro-version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
             <version>${shiro-version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-guice</artifactId>
             <version>${shiro-version}</version>
         </dependency>
         <!-- END Shiro Dependencies -->
-        
+
         <!-- Apache commons dependencies -->
         <dependency>
             <groupId>commons-configuration</groupId>
@@ -277,26 +280,51 @@
             <artifactId>commons-collections</artifactId>
             <version>3.2.1</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-exec</artifactId>
             <version>1.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.3</version>
+        </dependency>
         <!-- END Apache commons Dependencies -->
-        
+
         <!-- Other dependencies -->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
             <version>${metrics-version}</version>
         </dependency>
-        
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.3.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+
 
     </dependencies>
 

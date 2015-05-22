@@ -5,16 +5,11 @@ package eu.creatingfuture.propeller.blocklyprop.db.generated.tables;
 
 
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Blocklyprop;
-import eu.creatingfuture.propeller.blocklyprop.db.generated.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectTagRecord;
-
-import java.util.Arrays;
-import java.util.List;
 
 import javax.annotation.Generated;
 
 import org.jooq.Field;
-import org.jooq.ForeignKey;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.impl.TableImpl;
@@ -33,7 +28,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectTag extends TableImpl<ProjectTagRecord> {
 
-	private static final long serialVersionUID = -1744057919;
+	private static final long serialVersionUID = 1389725480;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project_tag</code>
@@ -78,14 +73,6 @@ public class ProjectTag extends TableImpl<ProjectTagRecord> {
 
 	private ProjectTag(String alias, Table<ProjectTagRecord> aliased, Field<?>[] parameters) {
 		super(alias, Blocklyprop.BLOCKLYPROP, aliased, parameters, "");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<ForeignKey<ProjectTagRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<ProjectTagRecord, ?>>asList(Keys.PROJECT_TAG_PROJECT, Keys.PROJECT_TAG_TAG);
 	}
 
 	/**
