@@ -1,0 +1,48 @@
+h1. EEPROM
+
+BlocklyProp, in addition to supporting basic commands, can support advanced commands like the EEPROM blocks. Below is a list of all of the EEPROM blocks supported in BlocklyProp currently:
+
+Using eeprom int to "here":#int_to
+Using eeprom int from "here":#int_from
+Using eeprom float to "here":#float_to
+Using eeprom float from "here":#float_from
+Using eeprom text to "here":#text_to
+Using eeprom text from "here":#text_from
+
+!images/eeprom_overview.png!
+
+h2(#int_to). Using eeprom int to
+
+This block will allow you to write an integer to a given EEPROM address. By doing this, you can save this value across startup and shutdown. It is pretty straightforward how to use; below is an example.
+
+!images/eeprom_int_to_example.png!
+
+h2(#int_from). Using eeprom int from
+
+This block will allow you to get an integer from an address in the EEPROM. This value can then be used in your program like a standard integer. Below is a simple example for how to use the block.
+
+!images/eeprom_int_from_example.png!
+
+h2(#float_to). Using eeprom float to
+
+This is just like the int to block, except that you write a float, or a number with a decimal in it, instead. Here is a simple use of the block:
+
+!images/eeprom_float_to_example.png!
+
+h2(#float_from). Using eeprom float from
+
+The eeprom float from block will allow you to retrieve a float value from an EEPROM address. Here is an example:
+
+!images/eeprom_float_from_example.png!
+
+h2(#text_to). Using eeprom text to
+
+The text to block, just like the int to block, will allow you to save text into the eeprom. This block is slightly different however, and requires that you enter the length of the text you are saving. For example, if you are saving "Hello World!", you would set n to 12. Below is a simple example using Hello World! submitted as text.
+
+!images/eeprom_text_to_example.png!
+
+h2(#text_from). Using eeprom text from
+
+This block will allow you to retrieve text from a given address in the EEPROM. Again, this requires that you give the length of the text you would like to receive.
+
+!images/eeprom_text_from_example.png!

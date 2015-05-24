@@ -29,3 +29,6 @@ BlocklyProp's calibrate function allows you to calibrate your Activitybot using 
 
 h2(#display_calibration).
 
+The display calibration function will display the above calibration data. Below is an example how to use this block:
+
+!images/c-activitybot_library_display_calibration_example.png!
