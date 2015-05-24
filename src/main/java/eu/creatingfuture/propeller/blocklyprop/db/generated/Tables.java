@@ -6,6 +6,10 @@ package eu.creatingfuture.propeller.blocklyprop.db.generated;
 
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Project;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.ProjectTag;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecPermission;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRole;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRolePermission;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecUserRole;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Tag;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.User;
 
@@ -34,6 +38,26 @@ public class Tables {
 	 * The table blocklyprop.project_tag
 	 */
 	public static final ProjectTag PROJECT_TAG = eu.creatingfuture.propeller.blocklyprop.db.generated.tables.ProjectTag.PROJECT_TAG;
+
+	/**
+	 * The table blocklyprop.sec_permission
+	 */
+	public static final SecPermission SEC_PERMISSION = eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecPermission.SEC_PERMISSION;
+
+	/**
+	 * The table blocklyprop.sec_role
+	 */
+	public static final SecRole SEC_ROLE = eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRole.SEC_ROLE;
+
+	/**
+	 * The table blocklyprop.sec_role_permission
+	 */
+	public static final SecRolePermission SEC_ROLE_PERMISSION = eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRolePermission.SEC_ROLE_PERMISSION;
+
+	/**
+	 * The table blocklyprop.sec_user_role
+	 */
+	public static final SecUserRole SEC_USER_ROLE = eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecUserRole.SEC_USER_ROLE;
 
 	/**
 	 * The table blocklyprop.tag

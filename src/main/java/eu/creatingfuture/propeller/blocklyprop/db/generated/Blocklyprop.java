@@ -6,6 +6,10 @@ package eu.creatingfuture.propeller.blocklyprop.db.generated;
 
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Project;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.ProjectTag;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecPermission;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRole;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRolePermission;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecUserRole;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Tag;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.User;
 
@@ -32,7 +36,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Blocklyprop extends SchemaImpl {
 
-	private static final long serialVersionUID = 383324825;
+	private static final long serialVersionUID = -304898834;
 
 	/**
 	 * The reference instance of <code>blocklyprop</code>
@@ -57,6 +61,10 @@ public class Blocklyprop extends SchemaImpl {
 		return Arrays.<Table<?>>asList(
 			Project.PROJECT,
 			ProjectTag.PROJECT_TAG,
+			SecPermission.SEC_PERMISSION,
+			SecRole.SEC_ROLE,
+			SecRolePermission.SEC_ROLE_PERMISSION,
+			SecUserRole.SEC_USER_ROLE,
 			Tag.TAG,
 			User.USER);
 	}

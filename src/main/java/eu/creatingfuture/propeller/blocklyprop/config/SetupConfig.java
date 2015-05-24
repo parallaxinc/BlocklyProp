@@ -38,6 +38,7 @@ public class SetupConfig extends GuiceServletContextListener {
 
                 install(new PersistenceModule(configuration));
                 install(new DaoModule());
+                install(new ServiceModule());
                 install(new ServletsModule());
             }
 

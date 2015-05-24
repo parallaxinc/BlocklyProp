@@ -7,7 +7,9 @@ package eu.creatingfuture.propeller.blocklyprop.config;
 
 import com.google.inject.AbstractModule;
 import eu.creatingfuture.propeller.blocklyprop.db.dao.ProjectDao;
+import eu.creatingfuture.propeller.blocklyprop.db.dao.UserDao;
 import eu.creatingfuture.propeller.blocklyprop.db.dao.impl.ProjectDaoImpl;
+import eu.creatingfuture.propeller.blocklyprop.db.dao.impl.UserDaoImpl;
 
 /**
  *
@@ -18,6 +20,7 @@ public class DaoModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(ProjectDao.class).to(ProjectDaoImpl.class);//.asEagerSingleton();
+        bind(UserDao.class).to(UserDaoImpl.class);
     }
 
 }

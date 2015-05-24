@@ -7,8 +7,7 @@ package eu.creatingfuture.propeller.blocklyprop.servlets;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import eu.creatingfuture.propeller.blocklyprop.db.dao.ProjectDao;
-import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectRecord;
+import eu.creatingfuture.propeller.blocklyprop.services.ProjectService;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,18 +21,26 @@ import javax.servlet.http.HttpServletResponse;
 @Singleton
 public class ProjectServlet extends HttpServlet {
 
-    private ProjectDao projectDao;
+    private ProjectService projectService;
 
     @Inject
-    public void setProjectDao(ProjectDao projectDao) {
-        this.projectDao = projectDao;
+    public void setProjectService(ProjectService projectService) {
+        this.projectService = projectService;
     }
 
+    /**
+     * Create new project
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProjectRecord project = new ProjectRecord();
-        project.setCode("test");
-        projectDao.create(project);
+//        ProjectRecord project = new ProjectRecord();
+//        project.setCode("test");
+        // projectDao.create(project);
     }
 
     @Override

@@ -7,9 +7,9 @@ package eu.creatingfuture.propeller.blocklyprop.db.dao.impl;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import eu.creatingfuture.propeller.blocklyprop.db.dao.ProjectDao;
+import eu.creatingfuture.propeller.blocklyprop.db.dao.UserDao;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Tables;
-import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectRecord;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 import org.jooq.DSLContext;
 
 /**
@@ -17,7 +17,7 @@ import org.jooq.DSLContext;
  * @author Michel
  */
 @Singleton
-public class ProjectDaoImpl implements ProjectDao {
+public class UserDaoImpl implements UserDao {
 
     private DSLContext create;
 
@@ -27,9 +27,11 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void create(ProjectRecord project) {
+    public UserRecord create(String screenname, String email, String password, byte[] salt) {
         //create.insertInto(Tables.PROJECT).set(project).execute();
-        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.CODE).values("test").returning().fetchOne();
+        UserRecord record = create.insertInto(Tables.USER, Tables.USER.SCREENNAME, Tables.USER.EMAIL, Tables.USER.PASSWORD, Tables.USER.SALT)
+                .values(screenname, email, password, salt).returning().fetchOne();
+        return record;
     }
 
 }

@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-	private static final long serialVersionUID = 1858765199;
+	private static final long serialVersionUID = 1178058515;
 
 	/**
 	 * The reference instance of <code>blocklyprop.user</code>
@@ -54,7 +54,7 @@ public class User extends TableImpl<UserRecord> {
 	/**
 	 * The column <code>blocklyprop.user.id</code>.
 	 */
-	public final TableField<UserRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final TableField<UserRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * The column <code>blocklyprop.user.screenname</code>.
@@ -74,7 +74,7 @@ public class User extends TableImpl<UserRecord> {
 	/**
 	 * The column <code>blocklyprop.user.salt</code>.
 	 */
-	public final TableField<UserRecord, String> SALT = createField("salt", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
+	public final TableField<UserRecord, byte[]> SALT = createField("salt", org.jooq.impl.SQLDataType.BINARY.length(64).nullable(false), this, "");
 
 	/**
 	 * The column <code>blocklyprop.user.blocked</code>.
@@ -117,7 +117,7 @@ public class User extends TableImpl<UserRecord> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Identity<UserRecord, Integer> getIdentity() {
+	public Identity<UserRecord, Long> getIdentity() {
 		return Keys.IDENTITY_USER;
 	}
 

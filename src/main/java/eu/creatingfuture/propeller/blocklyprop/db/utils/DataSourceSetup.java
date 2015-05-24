@@ -5,6 +5,7 @@
  */
 package eu.creatingfuture.propeller.blocklyprop.db.utils;
 
+import javax.sql.DataSource;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.dbcp2.ConnectionFactory;
 import org.apache.commons.dbcp2.DriverManagerConnectionFactory;
@@ -19,6 +20,12 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
  * @author Michel
  */
 public class DataSourceSetup {
+
+    private static DataSource dataSource;
+
+    public static DataSource getDataSource() {
+        return dataSource;
+    }
 
     public static PoolingDataSource connect(Configuration configuration) throws ClassNotFoundException {
         String driver = configuration.getString("database.driver");
