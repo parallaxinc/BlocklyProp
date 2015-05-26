@@ -3,6 +3,12 @@ h1. SD Card
 Many projects need data to be saved for more than one "cycle", or time that the Propeller is on. You can use the EEPROM, but since that has very limited storage, your best option will be to use the SD Card blocks.
 
 Using SD Card mount "here":#mount
+Using SD Card int to "here":#int_to
+Using SD Card int from "here":#int_from
+Using SD Card float to "here":#float_to
+Using SD Card float from "here":#float_from
+Using SD Card text to "here":#text_to
+Using SD Card text from "here":#text_from
 
 !images/sd_card_overview.png!
 
