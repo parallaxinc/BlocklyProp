@@ -13,8 +13,7 @@ import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserR
 import eu.creatingfuture.propeller.blocklyprop.services.SecurityService;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.crypto.hash.SimpleHash;
 
 /**
  *
@@ -39,11 +38,11 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public UserRecord register(String screenname, String email, String password) {
-        ByteSource salt = rng.nextBytes();
+        String salt = rng.nextBytes().toHex();
+        SimpleHash hasher = new SimpleHash("SHA-256", password, salt, 1024);
 
-        String hashedPasswordBase64 = new Sha256Hash(password, salt, 1024).toBase64();
+        UserRecord user = userDao.create(screenname, email, hasher.toHex(), salt);
 
-        UserRecord user = userDao.create(screenname, email, hashedPasswordBase64, salt.getBytes());
         return user;
     }
 

@@ -13,6 +13,6 @@ import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserR
  */
 public interface UserDao {
 
-    UserRecord create(String screenname, String email, String password, byte[] salt);
+    UserRecord create(String screenname, String email, String password, String salt);
 
 }

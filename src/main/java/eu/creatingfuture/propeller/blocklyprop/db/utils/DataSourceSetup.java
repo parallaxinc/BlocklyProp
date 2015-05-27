@@ -5,6 +5,8 @@
  */
 package eu.creatingfuture.propeller.blocklyprop.db.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.sql.DataSource;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.dbcp2.ConnectionFactory;
@@ -23,8 +25,18 @@ public class DataSourceSetup {
 
     private static DataSource dataSource;
 
+    private static List<NeedsDataSource> dataSourceUsers = new ArrayList<NeedsDataSource>();
+
     public static DataSource getDataSource() {
         return dataSource;
+    }
+
+    public static void registerDataSourceUsers(NeedsDataSource dataSourceUser) {
+        if (dataSource != null) {
+            dataSourceUser.setDataSource(dataSource);
+        } else {
+            dataSourceUsers.add(dataSourceUser);
+        }
     }
 
     public static PoolingDataSource connect(Configuration configuration) throws ClassNotFoundException {
@@ -67,10 +79,14 @@ public class DataSourceSetup {
         // Finally, we create the PoolingDriver itself,
         // passing in the object pool we created.
         //
-        PoolingDataSource<PoolableConnection> dataSource
+        PoolingDataSource<PoolableConnection> dataSourceInstance
                 = new PoolingDataSource<>(connectionPool);
 
-        return dataSource;
+        for (NeedsDataSource dataSourceUser : dataSourceUsers) {
+            dataSourceUser.setDataSource(dataSourceInstance);
+        }
+        DataSourceSetup.dataSource = dataSourceInstance;
+        return dataSourceInstance;
     }
 
 }

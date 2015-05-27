@@ -32,12 +32,11 @@ public class PersistenceModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new JooqPersistModule());
-        bind(DataSource.class).to(PoolingDataSource.class);
+        bind(DataSource.class).to(PoolingDataSource.class).asEagerSingleton();
     }
 
     @Provides
     PoolingDataSource dataSource() throws ClassNotFoundException {
-        System.out.println("get datasource");
         PoolingDataSource ds = DataSourceSetup.connect(configuration);
         try {
             ds.getConnection();
@@ -49,7 +48,6 @@ public class PersistenceModule extends AbstractModule {
 
     @Provides
     public SQLDialect dialect() {
-        System.out.println("get dialect");
         return SQLDialect.valueOf(configuration.getString("database.dialect"));
     }
 

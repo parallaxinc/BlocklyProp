@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public UserRecord create(String screenname, String email, String password, byte[] salt) {
+    public UserRecord create(String screenname, String email, String password, String salt) {
         //create.insertInto(Tables.PROJECT).set(project).execute();
         UserRecord record = create.insertInto(Tables.USER, Tables.USER.SCREENNAME, Tables.USER.EMAIL, Tables.USER.PASSWORD, Tables.USER.SALT)
                 .values(screenname, email, password, salt).returning().fetchOne();
