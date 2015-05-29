@@ -1,0 +1,41 @@
+h1. Math
+
+BlocklyProp provides a number of different math functions that will accomplish many of the common operations that might be done on a variable/value.
+
+* Use a value in your program: "here":#math_value
+* Add, Subtract, Divide, and Multiply: "here":#math_arithmetic_operations
+* Square root, absolute value, and negate: "here":#math_miscellaneous_1
+* Limit minimum and maximum: "here":#math_limit
+* Decrement and Increment: "here":#math_increment_and_decrement
+
+!images/math_introduction.png!
+
+h2(#math_value). Values
+
+The most basic of mathematical concepts! There is a very easy way to use math value in Blockly. Simply drag a math block ( the top of the list in the Math category ) to a value field on a block, set the value and voila!
+
+!images/math_value_example.png!
+
+h2(#math_arithmetic_operations). Arithmetic Operations ( +, -, /, * )
+
+Of course, if you have numbers you need to be able to manipulate those numbers. Blockly makes this easy. To accomplish this, you can use the arithmetic operator block ( 2nd to top in the Math category ). Below is an example of how to use the block.
+
+!images/math_arithmetic_operator_example.png!
+
+h2(#math_miscellaneous_1). Square root, absolute value, and negate
+
+To take the square root, absolute value, or negation of a value in Blockly, you need to use a specific math block. Below is an example for how to use the block.
+
+!images/math_miscellaneous_1_example.png!
+
+h2(#math_limit). Maximum and minimum limiting
+
+A more advance feature of blockly is the ability to take the minimum and maximum limit of a value. Below is an example for how to do this.
+
+!images/math_limit_example.png!
+
+h2(#math_increment_and_decrement). Decrement and increment
+
+A major part of for loops in is the incrementing/decrementing of a variable. BlocklyProp allows you to increment and decrement variables just like in any other language, using the increment and decrement block. Below is an example of how to use this simple block.
+
+!images/math_increment_and_decrement.png!

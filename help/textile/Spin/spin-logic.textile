@@ -1,0 +1,32 @@
+h1. Logic
+
+Using basic comparison operators: "here":#logic_comparison_operations
+Using and/or statements: "here":#logic_andor
+Using not: "here":#logic_not
+Using true and false: "here":#logic_truefalse
+
+!images/logic_introduction.png!
+
+h2(#logic_comparison_operations). Comparison use
+
+Using the Comparison block, you can compare two variables or values. The block will then return true if your comparison is true, and false if your comparison is false. For example, if you say 10 ≥ 11, the block will return false. If you said 10 ≤ 11, the block would return true. Below is an example of what I am talking about.
+
+!images/logic_comparison_operators_example.png!
+
+h2(#logic_andor). Using and/or statements
+
+In addition to using basic comparisons in Blockly, you can use and or statements. These statements allow you to compare two boolean values to see if, in the case of the and block, they are both the same ( i.e. both are true ) or in the case of the or block, if either of the statements are true.
+
+!images/logic_andor_example.png!
+
+h2(#logic_not). Using not
+
+There is also support for the negation of values. This allows you to get the opposite of whatever value you input. For example, if you take the not of true, you will get false. Below is an example.
+
+!images/logic_not_example.png!
+
+h2(#logic_truefalse). Using true and false
+
+Many of the blocks in BlocklyProp accept boolean value inputs. This block is the true and false block, allowing you to implement true or false blocks in your program. Below is a simple example of how to use these blocks.
+
+!images/logic_truefalse_example.png!

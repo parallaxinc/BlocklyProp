@@ -1,0 +1,13 @@
+h1. Cognew
+
+h2(#cognew). Start a method in a new cog
+
+Start a given method in a free cog. You'll have to specify the stacksize that can be used and call a method.
+
+This is the block you need to add to the interface. It is located under the Cog category.
+
+!images/spin_cognew_declare.png!
+
+One you upated your stacksize and add a method call, you are all done! Below is an example scenario.
+
+!images/spin_cognew_final_usage.png!

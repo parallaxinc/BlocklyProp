@@ -2,5 +2,5 @@ h1. Block overview
 
 h3. An overview of the blocks
 
-* "Digital pin read/write":block-digitalpin.html
-* "Delay":block-delay.html
+* "Digital pin read/write":Spin/block-digitalpin.html
+* "Delay":Spin/block-delay.html

@@ -1,0 +1,20 @@
+h1. Drive
+
+Numerous drive funtions are supported in BlocklyProp. They include:
+
+Using Drive goto "here":#goto
+Using Drive speed "here":#speed
+
+!images/c-drive_overview.png!
+
+h2(#goto). Using Drive goto
+
+The drive goto block will move the wheels so many encoder ticks.
+
+!images/c-drive_goto_example.png!
+
+h2(#speed). Using Drive speed
+
+The drive speed block will set the speed of each wheel.
+
+!images/c-drivespeed_example.png!

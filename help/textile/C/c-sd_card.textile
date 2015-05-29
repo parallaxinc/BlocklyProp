@@ -1,0 +1,55 @@
+h1. SD Card
+
+Many projects need data to be saved for more than one "cycle", or time that the Propeller is on. You can use the EEPROM, but since that has very limited storage, your best option will be to use the SD Card blocks.
+
+Using SD Card mount "here":#mount
+Using SD Card int to "here":#int_to
+Using SD Card int from "here":#int_from
+Using SD Card float to "here":#float_to
+Using SD Card float from "here":#float_from
+Using SD Card text to "here":#text_to
+Using SD Card text from "here":#text_from
+
+!images/sd_card_overview.png!
+
+h2(#mount). Using SD Card mount
+
+Before you can get access to writing and reading the SD Card, you must mount it first. This requires you to add the SD Card mount block. When adding it to your code, be sure to get the pin values correct. Otherwise, the card will not mount properly and functions will not work
+
+!images/sd_card_mount_example.png!
+
+h2(#int_to). Using int to
+
+Once you have mounted the SD Card, you can begin using it! The int to block will let you, as the programmer, to write an int to a specific file on the sd card. In the below example, the value 10 is being written to a file named hello_world.txt.
+
+!images/sd_card_int_to_example.png!
+
+h2(#int_from). Using int from
+
+In addition to writing integers, you can read them. After all, wouldn't writing data be useless if you couldn't get access to it? In the below example an integer is being read from a file named hello_world.txt.
+
+!images/sd_card_int_from_example.png!
+
+h2(#float_to). Using float to
+
+While writing integers to an sd card is great, you will probably also need to write floats at some point in time. Using the float to block, this can be easily accomplished! Below is a simple example. To implement this block, a filename must be supplied and a starting and ending read point supplied.
+
+!images/sd_card_float_to_example.png!
+
+h2(#float_from). Using float from
+
+Reading floats is also a necessary fuction in many programs. To do this in BlocklyProp, simply add the float from block to the current program and read in a float!
+
+!images/sd_card_float_from_example.png!
+
+h2(#text_to). Using text to
+
+On top of all of the other sd card functions in BlocklyProp, writing text is also able to be implemented. This is done by including the text to block in the main interface code like in the following.
+
+!images/sd_card_text_to_example.png!
+
+h2(#text_from). Using text from
+
+Another function is supported in BlocklyProp allowing the programmer to read in text from the sd card. The text from block is simple to implement and will return the text in that file.
+
+!images/sd_card_text_from_example.png!

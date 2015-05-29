@@ -1,0 +1,34 @@
+h1. RFID
+
+To get the functionality of RFID scanners, the RFID category can be used.
+
+Using RFID enable "here":#enable
+Using RFID disable "here":#disable
+Using RFID get "here":#get
+Using RFID close "here":#close
+
+!images/c-rfid_overview.png!
+
+h2(#enable). Using RFID enable
+
+To enable an RFID scanner, use the enable block. The in and out pin must be specified when the block is added.
+
+!images/c-rfid_enable_example.png!
+
+h2(#disable). Using RFID disable
+
+This block will disable the current RFID scanner until it is re-enabled.
+
+!images/c-rfid_disable_example.png!
+
+h2(#get). Using RFID get
+
+This will return the current value the RFID scanner is receiving.
+
+!images/c-rfid_get_example.png!
+
+h2(#close). Using RFID close
+
+This will close the current RFID scanner.
+
+!images/c-rfid_close_example.png!

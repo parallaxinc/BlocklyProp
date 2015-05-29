@@ -1,0 +1,63 @@
+h1. Servo
+
+Servos have many uses, and are required in many robotics applications. BlocklyProp supports the following commands/blocks:
+
+Using servo angle "here":#angle
+Using servo speed "here":#speed
+Using servo set ramp "here":#set_ramp
+
+Using drive pins "here":#drive_pins
+Using drive speed "here":#drive_speed
+Using drive set ramp "here":#drive_set_ramp
+Using drive sleep "here":#drive_sleep
+Using drive stop "here":#drive_stop
+
+!images/c-servo_overview.png!
+
+h2(#angle). Using servo angle
+
+To adjust the current servo position ( using a standard servo ), use the servo angle block.
+
+!images/c-servo_angle_example.png!
+
+h2(#speed). Using servo speed
+
+To adjust the speed of the servo when it is moving, the servo speed block needs to be used.
+
+!images/c-servo_speed_example.png!
+
+h2(#set_ramp). Using servo set ramp
+
+To adjust the ramp of the servo, use the set ramp block.
+
+!images/c-servo_set_ramp_example.png!
+
+h2(#drive_pins). Using drive pins
+
+To set the pins that are being used for drive, use the drive pins block.
+
+!images/c-drive_pins_example.png!
+
+h2(#drive_speed). Using drive speed
+
+Adjusting the drive speed can be done using the drive speed block.
+
+!images/c-drive_speed_example.png!
+
+h2(#drive_set_ramp). Using drive set ramp
+
+The drive set ramp block allows the change in ramp to be set.
+
+!images/c-drive_set_ramp_example.png!
+
+h2(#drive_sleep). Using drive sleep
+
+Drive sleep will put the drive to sleep temporarily.
+
+!images/c-drive_sleep_example.png!
+
+h2(#drive_stop). Using drive stop
+
+Drive stop stops the current drive pins.
+
+!images/c-drive_stop_example.png!

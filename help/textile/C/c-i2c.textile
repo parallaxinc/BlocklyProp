@@ -1,0 +1,27 @@
+h1. I2C
+
+BlocklyProp, in addition to supporting basic commands, can support advanced commands like the I2C blocks. Below is a list of all of the I2C blocks supported in BlocklyProp currently:
+
+Using I2C new bus "here":#new_bus
+Using I2C in "here":#in
+Using I2C out "here":#out
+
+!images/i2c_overview.png!
+
+h2(#new_bus). Using I2C new bus
+
+The I2C new bus block allows the user to create a new I2C "communication channel". It takes 3 inputs, each of which are pin values. Below is an example where I am connected to I/O pins 1, 2, and 3
+
+!images/i2c_new_bus_example.png!
+
+h2(#in). Using I2C in
+
+The I2C in block allows the programmer to easily grab a set of characters from an I2C data link.
+
+!images/i2c_in_example.png!
+
+h2(#out). Using I2C out
+
+By using the I2C out block, you can send a set of text over a data line without any hassle whatsoever.
+
+!images/i2c_out_example.png!

@@ -1,0 +1,14 @@
+h1. Servo Blocks
+
+h2(#servo). Servos
+
+Below are all of the servo functions that are currently supported in Blockly.
+
+h2(#servo_pulse). Send pulses to a servo
+
+This block, when added will send pulses to a servo. The allowable values for the pulses include anything between 1500 - 2500.
+The block looks as follows:
+!images/servo_pulse.png!
+
+The block can be used just like as follows:
+!images/servo_pulse_usage.png!

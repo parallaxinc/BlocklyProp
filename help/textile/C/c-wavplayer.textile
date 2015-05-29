@@ -1,0 +1,34 @@
+h1. WAVPlayer
+
+To get the functionality of using speakers, the WAVPlayer category can be used.
+
+Using WAVPlayer play "here":#enable
+Using WAVPlayer status "here":#status
+Using WAVPlayer volume "here":#volume
+Using WAVPlayer stop "here":#stop
+
+!images/c-wavplayer_overview.png!
+
+h2(#play). Using WAVPlayer play
+
+To play a .wav audio file, use the play block. This block requires the filename on the sd card to be added.
+
+!images/c-wavplayer_play_example.png!
+
+h2(#status). Using WAVPlayer status
+
+This block will return the status of the WAVPlayer.
+
+!images/c-wavplayer_status_example.png!
+
+h2(#volume). Using WAVPlayer volume
+
+This will set the volume for the given duration in milliseconds.
+
+!images/c-wavplayer_volume_example.png!
+
+h2(#stop). Using WAVPlayer stop
+
+This will stop the current playing file.
+
+!images/c-wavplayer_stop_example.png!
