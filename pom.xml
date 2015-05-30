@@ -101,6 +101,11 @@
                                             <type>java.util.GregorianCalendar</type>
                                             <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.CalendarConverter</converter>
                                         </customType>
+                                        <customType>
+                                            <name>AuthenticationProvider</name>
+                                            <type>eu.creatingfuture.propeller.blocklyprop.db.enums.AuthenticationProvider</type>
+                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.AuthenticationProviderConverter</converter>
+                                        </customType>
                                     </customTypes>
                                     <forcedTypes>
                                         <forcedType>
@@ -114,6 +119,10 @@
                                         <forcedType>
                                             <name>GregorianCalendar</name>
                                             <expressions>.*\.created|.*\.modified</expressions>
+                                        </forcedType>
+                                        <forcedType>
+                                            <name>AuthenticationProvider</name>
+                                            <expressions>.*\.authenticationProvider</expressions>
                                         </forcedType>
                                     </forcedTypes>
                                 </database>

@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import eu.creatingfuture.propeller.blocklyprop.db.dao.UserDao;
+import eu.creatingfuture.propeller.blocklyprop.db.enums.AuthenticationProvider;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 import eu.creatingfuture.propeller.blocklyprop.services.SecurityService;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -41,7 +42,7 @@ public class SecurityServiceImpl implements SecurityService {
         String salt = rng.nextBytes().toHex();
         SimpleHash hasher = new SimpleHash("SHA-256", password, salt, 1024);
 
-        UserRecord user = userDao.create(screenname, email, hasher.toHex(), salt);
+        UserRecord user = userDao.create(screenname, email, hasher.toHex(), salt, AuthenticationProvider.LOCAL);
 
         return user;
     }

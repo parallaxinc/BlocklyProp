@@ -4,9 +4,11 @@
 package eu.creatingfuture.propeller.blocklyprop.db.generated.tables;
 
 
+import eu.creatingfuture.propeller.blocklyprop.db.enums.AuthenticationProvider;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Blocklyprop;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
+import eu.creatingfuture.propeller.blocklyprop.db.utils.AuthenticationProviderConverter;
 import eu.creatingfuture.propeller.blocklyprop.db.utils.CalendarConverter;
 
 import java.util.Arrays;
@@ -36,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-	private static final long serialVersionUID = -1880478356;
+	private static final long serialVersionUID = 1371156598;
 
 	/**
 	 * The reference instance of <code>blocklyprop.user</code>
@@ -90,6 +92,11 @@ public class User extends TableImpl<UserRecord> {
 	 * The column <code>blocklyprop.user.modified</code>.
 	 */
 	public final TableField<UserRecord, GregorianCalendar> MODIFIED = createField("modified", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "", new CalendarConverter());
+
+	/**
+	 * The column <code>blocklyprop.user.authenticationProvider</code>.
+	 */
+	public final TableField<UserRecord, AuthenticationProvider> AUTHENTICATIONPROVIDER = createField("authenticationProvider", org.jooq.impl.SQLDataType.VARCHAR.length(45).nullable(false), this, "", new AuthenticationProviderConverter());
 
 	/**
 	 * Create a <code>blocklyprop.user</code> table reference

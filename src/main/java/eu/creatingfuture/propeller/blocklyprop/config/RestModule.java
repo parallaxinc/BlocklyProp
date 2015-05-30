@@ -20,7 +20,7 @@ public class RestModule extends JerseyServletModule {
 
     @Override
     protected void configureServlets() {
-        bind(RestCompile.class).asEagerSingleton();
+        bind(RestCompile.class);
 
         /* bind jackson converters for JAXB/JSON serialization */
         bind(MessageBodyReader.class).to(JacksonJsonProvider.class);

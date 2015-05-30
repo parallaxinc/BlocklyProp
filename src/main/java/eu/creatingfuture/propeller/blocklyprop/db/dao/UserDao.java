@@ -5,6 +5,7 @@
  */
 package eu.creatingfuture.propeller.blocklyprop.db.dao;
 
+import eu.creatingfuture.propeller.blocklyprop.db.enums.AuthenticationProvider;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 
 /**
@@ -13,6 +14,6 @@ import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserR
  */
 public interface UserDao {
 
-    UserRecord create(String screenname, String email, String password, String salt);
+    UserRecord create(String screenname, String email, String password, String salt, AuthenticationProvider authenticationProvider);
 
 }

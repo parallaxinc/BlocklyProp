@@ -42,7 +42,7 @@
     </listener>
 
     <!-- Rest API Visualizer -->
-    
+
     <!-- Cuubez API Visualizer configurations -->
     <!-- Created alternate implementation because of a bug on windows in coodez API visualizer version 1.0.1 -->
     <!-- https://code.google.com/p/cuubez/issues/detail?id=5  -->
@@ -67,4 +67,9 @@
     </servlet-mapping>
 
     <!-- Other servlets -->
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
 </web-app>
