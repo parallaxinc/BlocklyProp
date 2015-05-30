@@ -41,6 +41,30 @@
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
 
-    <!-- Other servlets -->
+    <!-- Rest API Visualizer -->
+    
+    <!-- Cuubez API Visualizer configurations -->
+    <!-- Created alternate implementation because of a bug on windows in coodez API visualizer version 1.0.1 -->
+    <!-- https://code.google.com/p/cuubez/issues/detail?id=5  -->
+    <!--
+        <listener>
+            <listener-class>com.cuubez.visualizer.servlet.VzBootstrapContextListener</listener-class>
+        </listener>
+    -->
 
+    <listener>
+        <listener-class>eu.creatingfuture.propeller.blocklyprop.config.RestAPIVisualizeBootstrap</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>vapi_servlet</servlet-name>
+        <servlet-class>com.cuubez.visualizer.servlet.VzHttpServletDispatcher</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>vapi_servlet</servlet-name>
+        <url-pattern>/apidoc</url-pattern>
+    </servlet-mapping>
+
+    <!-- Other servlets -->
 </web-app>
