@@ -5,10 +5,11 @@
  */
 package eu.creatingfuture.propeller.blocklyprop.servlets;
 
+import com.google.common.base.Strings;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
 import eu.creatingfuture.propeller.blocklyprop.services.SecurityService;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -37,11 +38,12 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
 
-        String screenname = req.getParameter("screenname");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String screenname = Strings.emptyToNull(req.getParameter("screenname"));
+        String email = Strings.emptyToNull(req.getParameter("email"));
+        String password = Strings.emptyToNull(req.getParameter("password"));
 
-        UserRecord user = securityService.register(screenname, email, password);
+        User user = securityService.register(screenname, email, password);
+
         if (user != null && user.getId() > 0) {
             JsonObject result = new JsonObject();
             result.addProperty("success", true);
@@ -53,6 +55,7 @@ public class RegisterServlet extends HttpServlet {
             result.addProperty("message", "Failed to register");
             resp.getWriter().write(result.toString());
         }
+
     }
 
 }

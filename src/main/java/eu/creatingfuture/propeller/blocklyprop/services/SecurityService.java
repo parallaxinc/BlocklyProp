@@ -5,7 +5,7 @@
  */
 package eu.creatingfuture.propeller.blocklyprop.services;
 
-import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
 
 /**
  *
@@ -13,6 +13,6 @@ import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserR
  */
 public interface SecurityService {
 
-    UserRecord register(String screenname, String email, String password);
+    User register(String screenname, String email, String password);
 
 }

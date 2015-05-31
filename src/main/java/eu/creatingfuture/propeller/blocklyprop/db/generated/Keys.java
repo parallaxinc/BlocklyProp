@@ -8,17 +8,20 @@ import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Project;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecPermission;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRole;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecRolePermission;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.SecUserRole;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.Tag;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.User;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.SecPermissionRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.SecRolePermissionRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.SecRoleRecord;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.SecUserRoleRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.TagRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 
 import javax.annotation.Generated;
 
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.AbstractKeys;
@@ -58,6 +61,7 @@ public class Keys {
 	public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_PRIMARY = UniqueKeys0.KEY_SEC_ROLE_PRIMARY;
 	public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_NAME_UNIQUE = UniqueKeys0.KEY_SEC_ROLE_NAME_UNIQUE;
 	public static final UniqueKey<SecRolePermissionRecord> KEY_SEC_ROLE_PERMISSION_PRIMARY = UniqueKeys0.KEY_SEC_ROLE_PERMISSION_PRIMARY;
+	public static final UniqueKey<SecUserRoleRecord> KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE = UniqueKeys0.KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE;
 	public static final UniqueKey<TagRecord> KEY_TAG_PRIMARY = UniqueKeys0.KEY_TAG_PRIMARY;
 	public static final UniqueKey<TagRecord> KEY_TAG_NAME_UNIQUE = UniqueKeys0.KEY_TAG_NAME_UNIQUE;
 	public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
@@ -68,6 +72,7 @@ public class Keys {
 	// FOREIGN KEY definitions
 	// -------------------------------------------------------------------------
 
+	public static final ForeignKey<SecUserRoleRecord, SecRoleRecord> FK_USER_ROLE_ROLE = ForeignKeys0.FK_USER_ROLE_ROLE;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -88,10 +93,15 @@ public class Keys {
 		public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_PRIMARY = createUniqueKey(SecRole.SEC_ROLE, SecRole.SEC_ROLE.ID);
 		public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_NAME_UNIQUE = createUniqueKey(SecRole.SEC_ROLE, SecRole.SEC_ROLE.NAME);
 		public static final UniqueKey<SecRolePermissionRecord> KEY_SEC_ROLE_PERMISSION_PRIMARY = createUniqueKey(SecRolePermission.SEC_ROLE_PERMISSION, SecRolePermission.SEC_ROLE_PERMISSION.ID_ROLE);
+		public static final UniqueKey<SecUserRoleRecord> KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE = createUniqueKey(SecUserRole.SEC_USER_ROLE, SecUserRole.SEC_USER_ROLE.ID_USER, SecUserRole.SEC_USER_ROLE.ID_ROLE);
 		public static final UniqueKey<TagRecord> KEY_TAG_PRIMARY = createUniqueKey(Tag.TAG, Tag.TAG.ID);
 		public static final UniqueKey<TagRecord> KEY_TAG_NAME_UNIQUE = createUniqueKey(Tag.TAG, Tag.TAG.NAME);
 		public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, User.USER.ID);
 		public static final UniqueKey<UserRecord> KEY_USER_SCREENNAME_UNIQUE = createUniqueKey(User.USER, User.USER.SCREENNAME);
 		public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = createUniqueKey(User.USER, User.USER.EMAIL);
+	}
+
+	private static class ForeignKeys0 extends AbstractKeys {
+		public static final ForeignKey<SecUserRoleRecord, SecRoleRecord> FK_USER_ROLE_ROLE = createForeignKey(eu.creatingfuture.propeller.blocklyprop.db.generated.Keys.KEY_SEC_ROLE_PRIMARY, SecUserRole.SEC_USER_ROLE, SecUserRole.SEC_USER_ROLE.ID_ROLE);
 	}
 }

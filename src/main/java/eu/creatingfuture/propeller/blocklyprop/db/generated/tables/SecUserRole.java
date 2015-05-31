@@ -5,13 +5,19 @@ package eu.creatingfuture.propeller.blocklyprop.db.generated.tables;
 
 
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Blocklyprop;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.SecUserRoleRecord;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Table;
 import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
 
@@ -28,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SecUserRole extends TableImpl<SecUserRoleRecord> {
 
-	private static final long serialVersionUID = 243455495;
+	private static final long serialVersionUID = -915372629;
 
 	/**
 	 * The reference instance of <code>blocklyprop.sec_user_role</code>
@@ -46,12 +52,12 @@ public class SecUserRole extends TableImpl<SecUserRoleRecord> {
 	/**
 	 * The column <code>blocklyprop.sec_user_role.id_user</code>.
 	 */
-	public final TableField<SecUserRoleRecord, Integer> ID_USER = createField("id_user", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final TableField<SecUserRoleRecord, Long> ID_USER = createField("id_user", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * The column <code>blocklyprop.sec_user_role.id_role</code>.
 	 */
-	public final TableField<SecUserRoleRecord, Integer> ID_ROLE = createField("id_role", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final TableField<SecUserRoleRecord, Long> ID_ROLE = createField("id_role", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * Create a <code>blocklyprop.sec_user_role</code> table reference
@@ -73,6 +79,22 @@ public class SecUserRole extends TableImpl<SecUserRoleRecord> {
 
 	private SecUserRole(String alias, Table<SecUserRoleRecord> aliased, Field<?>[] parameters) {
 		super(alias, Blocklyprop.BLOCKLYPROP, aliased, parameters, "");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<UniqueKey<SecUserRoleRecord>> getKeys() {
+		return Arrays.<UniqueKey<SecUserRoleRecord>>asList(Keys.KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<ForeignKey<SecUserRoleRecord, ?>> getReferences() {
+		return Arrays.<ForeignKey<SecUserRoleRecord, ?>>asList(Keys.FK_USER_ROLE_ROLE);
 	}
 
 	/**

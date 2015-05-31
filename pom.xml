@@ -106,23 +106,33 @@
                                             <type>eu.creatingfuture.propeller.blocklyprop.db.enums.AuthenticationProvider</type>
                                             <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.AuthenticationProviderConverter</converter>
                                         </customType>
+                                        <customType>
+                                            <name>SEC-Role</name>
+                                            <type>eu.creatingfuture.propeller.blocklyprop.db.enums.Role</type>
+                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.RoleConverter</converter>
+                                        </customType>
                                     </customTypes>
                                     <forcedTypes>
                                         <forcedType>
                                             <name>BIGINT</name>
-                                            <expressions>.*\.id|.*\.id_*</expressions>
+                                            <!--<expression>.*\.id|.*\.id_user</expression> -->
+                                            <types>INT(15)|int(15)</types>
                                         </forcedType>
                                         <forcedType>
                                             <name>BOOLEAN</name>
-                                            <expressions>.*\.private|.*\.shared|.*\.blocked</expressions>
+                                            <expression>.*\.private|.*\.shared|.*\.blocked</expression>
                                         </forcedType>
                                         <forcedType>
                                             <name>GregorianCalendar</name>
-                                            <expressions>.*\.created|.*\.modified</expressions>
+                                            <expression>.*\.created|.*\.modified</expression>
                                         </forcedType>
                                         <forcedType>
                                             <name>AuthenticationProvider</name>
-                                            <expressions>.*\.authenticationProvider</expressions>
+                                            <expression>.*\.authenticationProvider</expression>
+                                        </forcedType>
+                                        <forcedType>
+                                            <name>SEC-Role</name>
+                                            <expression>.*\.sec_role.name</expression>
                                         </forcedType>
                                     </forcedTypes>
                                 </database>
@@ -133,6 +143,7 @@
                                 <generate>
                                     <relations>true</relations>
                                     <daos>false</daos>
+                                    <pojos>true</pojos>
                                 </generate>
                             </generator>
                         </configuration>

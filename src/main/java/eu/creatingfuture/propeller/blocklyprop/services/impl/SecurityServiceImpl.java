@@ -5,11 +5,13 @@
  */
 package eu.creatingfuture.propeller.blocklyprop.services.impl;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import eu.creatingfuture.propeller.blocklyprop.db.dao.UserDao;
 import eu.creatingfuture.propeller.blocklyprop.db.enums.AuthenticationProvider;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 import eu.creatingfuture.propeller.blocklyprop.services.SecurityService;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -38,11 +40,16 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public UserRecord register(String screenname, String email, String password) {
+    public User register(String screenname, String email, String password) {
+        Preconditions.checkNotNull(screenname, "Screenname cannot be null");
+        Preconditions.checkNotNull(email, "Email cannot be null");
+        Preconditions.checkNotNull(password, "Paasword cannot be null");
+
         String salt = rng.nextBytes().toHex();
         SimpleHash hasher = new SimpleHash("SHA-256", password, salt, 1024);
 
-        UserRecord user = userDao.create(screenname, email, hasher.toHex(), salt, AuthenticationProvider.LOCAL);
+        UserRecord userRecord = userDao.create(screenname, email, hasher.toHex(), salt, AuthenticationProvider.LOCAL);
+        User user = userRecord.into(User.class);
 
         return user;
     }

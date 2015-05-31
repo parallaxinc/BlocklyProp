@@ -28,7 +28,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectTag extends TableImpl<ProjectTagRecord> {
 
-	private static final long serialVersionUID = 1389725480;
+	private static final long serialVersionUID = -1052548618;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project_tag</code>
@@ -46,12 +46,12 @@ public class ProjectTag extends TableImpl<ProjectTagRecord> {
 	/**
 	 * The column <code>blocklyprop.project_tag.id_project</code>.
 	 */
-	public final TableField<ProjectTagRecord, Integer> ID_PROJECT = createField("id_project", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final TableField<ProjectTagRecord, Long> ID_PROJECT = createField("id_project", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * The column <code>blocklyprop.project_tag.id_tag</code>.
 	 */
-	public final TableField<ProjectTagRecord, Integer> ID_TAG = createField("id_tag", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final TableField<ProjectTagRecord, Long> ID_TAG = createField("id_tag", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * Create a <code>blocklyprop.project_tag</code> table reference

@@ -4,9 +4,11 @@
 package eu.creatingfuture.propeller.blocklyprop.db.generated.tables;
 
 
+import eu.creatingfuture.propeller.blocklyprop.db.enums.Role;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Blocklyprop;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.SecRoleRecord;
+import eu.creatingfuture.propeller.blocklyprop.db.utils.RoleConverter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SecRole extends TableImpl<SecRoleRecord> {
 
-	private static final long serialVersionUID = -973912689;
+	private static final long serialVersionUID = -707284842;
 
 	/**
 	 * The reference instance of <code>blocklyprop.sec_role</code>
@@ -57,7 +59,7 @@ public class SecRole extends TableImpl<SecRoleRecord> {
 	/**
 	 * The column <code>blocklyprop.sec_role.name</code>.
 	 */
-	public final TableField<SecRoleRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
+	public final TableField<SecRoleRecord, Role> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "", new RoleConverter());
 
 	/**
 	 * Create a <code>blocklyprop.sec_role</code> table reference
