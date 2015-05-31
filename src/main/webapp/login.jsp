@@ -103,5 +103,7 @@
             </table>
         </form>
 
+        <a href="register.jsp" >Register now!</a>
+
     </body>
 </html>
