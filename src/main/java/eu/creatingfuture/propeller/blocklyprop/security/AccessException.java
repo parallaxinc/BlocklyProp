@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eu.creatingfuture.propeller.blocklyprop.services;
-
-import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
+package eu.creatingfuture.propeller.blocklyprop.security;
 
 /**
  *
  * @author Michel
  */
-public interface UserService {
-
-    User getUser(Long idUser);
+public class AccessException extends Exception {
 
 }

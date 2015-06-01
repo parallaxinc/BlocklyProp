@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import eu.creatingfuture.propeller.blocklyprop.db.dao.UserDao;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
 import eu.creatingfuture.propeller.blocklyprop.services.UserService;
 
 /**
@@ -24,6 +25,11 @@ public class UserServiceImpl implements UserService {
     @Inject
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Override
+    public User getUser(Long idUser) {
+        return userDao.getUser(idUser).into(User.class);
     }
 
 }
