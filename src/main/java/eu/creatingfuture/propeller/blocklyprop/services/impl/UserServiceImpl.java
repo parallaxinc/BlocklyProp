@@ -10,7 +10,9 @@ import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import eu.creatingfuture.propeller.blocklyprop.db.dao.UserDao;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 import eu.creatingfuture.propeller.blocklyprop.services.UserService;
+import java.util.List;
 
 /**
  *
@@ -30,6 +32,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(Long idUser) {
         return userDao.getUser(idUser).into(User.class);
+    }
+
+    @Override
+    public List<UserRecord> getAllUsers() {
+        return userDao.getAll();
     }
 
 }

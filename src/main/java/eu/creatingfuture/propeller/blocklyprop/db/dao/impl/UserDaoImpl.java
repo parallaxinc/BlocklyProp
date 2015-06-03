@@ -62,6 +62,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<UserRecord> getAll() {
+        return create.selectFrom(Tables.USER).fetch();
+    }
+
+    @Override
     public UserRecord getUser(Long idUser) {
         return create.selectFrom(Tables.USER).where(Tables.USER.ID.equal(idUser)).fetchOne();
     }

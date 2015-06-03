@@ -6,6 +6,8 @@
 package eu.creatingfuture.propeller.blocklyprop.services;
 
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
+import java.util.List;
 
 /**
  *
@@ -14,5 +16,7 @@ import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
 public interface UserService {
 
     User getUser(Long idUser);
+
+    List<UserRecord> getAllUsers();
 
 }

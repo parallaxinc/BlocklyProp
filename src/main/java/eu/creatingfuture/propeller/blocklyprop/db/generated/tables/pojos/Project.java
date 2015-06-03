@@ -4,6 +4,8 @@
 package eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos;
 
 
+import eu.creatingfuture.propeller.blocklyprop.db.enums.ProjectType;
+
 import java.io.Serializable;
 import java.util.GregorianCalendar;
 
@@ -23,14 +25,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = -1637109228;
+	private static final long serialVersionUID = -523652833;
 
 	private Long              id;
 	private Long              idUser;
 	private String            name;
 	private String            description;
 	private String            code;
-	private Integer           type;
+	private ProjectType       type;
 	private Boolean           private_;
 	private Boolean           shared;
 	private GregorianCalendar created;
@@ -57,7 +59,7 @@ public class Project implements Serializable {
 		String            name,
 		String            description,
 		String            code,
-		Integer           type,
+		ProjectType       type,
 		Boolean           private_,
 		Boolean           shared,
 		GregorianCalendar created,
@@ -115,11 +117,11 @@ public class Project implements Serializable {
 		this.code = code;
 	}
 
-	public Integer getType() {
+	public ProjectType getType() {
 		return this.type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(ProjectType type) {
 		this.type = type;
 	}
 

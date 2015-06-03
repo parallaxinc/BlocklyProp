@@ -111,6 +111,11 @@
                                             <type>eu.creatingfuture.propeller.blocklyprop.db.enums.Role</type>
                                             <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.RoleConverter</converter>
                                         </customType>
+                                        <customType>
+                                            <name>ProjectType</name>
+                                            <type>eu.creatingfuture.propeller.blocklyprop.db.enums.ProjectType</type>
+                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.ProjectTypeConverter</converter>
+                                        </customType>
                                     </customTypes>
                                     <forcedTypes>
                                         <forcedType>
@@ -133,6 +138,10 @@
                                         <forcedType>
                                             <name>SEC-Role</name>
                                             <expression>.*\.sec_role.name</expression>
+                                        </forcedType>
+                                        <forcedType>
+                                            <name>ProjectType</name>
+                                            <expression>.*\.project.type</expression>
                                         </forcedType>
                                     </forcedTypes>
                                 </database>

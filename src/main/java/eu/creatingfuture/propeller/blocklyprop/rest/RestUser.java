@@ -9,10 +9,14 @@ import com.cuubez.visualizer.annotation.Detail;
 import com.cuubez.visualizer.annotation.Group;
 import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+import eu.creatingfuture.propeller.blocklyprop.converter.UserConverter;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.pojos.User;
+import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.UserRecord;
 import eu.creatingfuture.propeller.blocklyprop.services.UserService;
+import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -36,18 +40,31 @@ public class RestUser {
     }
 
     @GET
+    @Path("/")
+    @Detail("Get all users")
+    @Name("Get all users")
+    @Produces("application/json")
+    public Response get() {
+        List<UserRecord> users = userService.getAllUsers();
+
+        JsonArray result = new JsonArray();
+        for (UserRecord user : users) {
+            result.add(UserConverter.toJson(user));
+        }
+
+        return Response.ok(result.toString()).build();
+    }
+
+    @GET
     @Path("/{id}")
     @Detail("Get user by id")
-    @Name("Get user")
+    @Name("Get user by id")
     @Produces("application/json")
     public Response get(@PathParam("id") Long idUser) {
         User user = userService.getUser(idUser);
 
-        JsonObject result = new JsonObject();
-        result.addProperty("id", user.getId());
-        result.addProperty("screenname", user.getScreenname());
-        result.addProperty("email", user.getEmail());
-        result.addProperty("blocked", user.getBlocked());
+        JsonObject result = UserConverter.toJson(user);
+
         return Response.ok(result.toString()).build();
     }
 }

@@ -4,10 +4,12 @@
 package eu.creatingfuture.propeller.blocklyprop.db.generated.tables;
 
 
+import eu.creatingfuture.propeller.blocklyprop.db.enums.ProjectType;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Blocklyprop;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.Keys;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectRecord;
 import eu.creatingfuture.propeller.blocklyprop.db.utils.CalendarConverter;
+import eu.creatingfuture.propeller.blocklyprop.db.utils.ProjectTypeConverter;
 
 import java.util.Arrays;
 import java.util.GregorianCalendar;
@@ -36,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = -1273034739;
+	private static final long serialVersionUID = -1688044766;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
@@ -79,7 +81,7 @@ public class Project extends TableImpl<ProjectRecord> {
 	/**
 	 * The column <code>blocklyprop.project.type</code>.
 	 */
-	public final TableField<ProjectRecord, Integer> TYPE = createField("type", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final TableField<ProjectRecord, ProjectType> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR.length(45).nullable(false), this, "", new ProjectTypeConverter());
 
 	/**
 	 * The column <code>blocklyprop.project.private</code>.

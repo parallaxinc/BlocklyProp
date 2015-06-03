@@ -21,6 +21,8 @@ public interface UserDao {
 
     UserRecord getUser(Long idUser);
 
+    List<UserRecord> getAll();
+
     void setRoles(Long idUser, Set<Role> roles);
 
     List<Role> getRoles(Long idUser);
