@@ -11,8 +11,10 @@ import com.google.inject.persist.Transactional;
 import eu.creatingfuture.propeller.blocklyprop.db.dao.ProjectDao;
 import eu.creatingfuture.propeller.blocklyprop.db.enums.ProjectType;
 import eu.creatingfuture.propeller.blocklyprop.db.generated.tables.records.ProjectRecord;
+import eu.creatingfuture.propeller.blocklyprop.security.BlocklyPropSecurityUtils;
 import eu.creatingfuture.propeller.blocklyprop.services.ProjectService;
 import java.util.List;
+import org.apache.shiro.authz.UnauthorizedException;
 
 /**
  *
@@ -31,7 +33,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectRecord getProject(Long idProject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ProjectRecord projectRecord = projectDao.getProject(idProject);
+        if (projectRecord != null) {
+            if (BlocklyPropSecurityUtils.getCurrentUserId().equals(projectRecord.getIdUser())) {
+                return projectRecord;
+            } else {
+                throw new UnauthorizedException("Not the current user's project");
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -61,7 +72,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectRecord> getUserProjects(Long idUser) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (BlocklyPropSecurityUtils.getCurrentUserId().equals(idUser)) {
+            return projectDao.getUserProjects(idUser);
+        } else {
+            throw new UnauthorizedException();
+        }
     }
 
 }

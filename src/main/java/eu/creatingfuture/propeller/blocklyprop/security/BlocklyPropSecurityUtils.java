@@ -14,7 +14,7 @@ import org.apache.shiro.SecurityUtils;
 public class BlocklyPropSecurityUtils extends SecurityUtils {
 
     public static Long getCurrentUserId() {
-        return (Long) SecurityUtils.getSubject().getSession().getAttribute("ID");
+        return (Long) SecurityUtils.getSubject().getPrincipal();
     }
 
 }
