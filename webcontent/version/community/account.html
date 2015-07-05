@@ -60,6 +60,10 @@
                     </ul>
                     <ul id="account-menu" class="nav navbar-nav pull-right hidden">
                         <li>
+                            <!--TO DO: FIX THE LINK SO THAT IT CORRECTLY NAVIGATES THE USER TO THE Friends TAB OF THE PAGE!-->
+                            <a href="#friends">Friends</a>
+                        </li>
+                        <li>
                             <a href="account.html">My account</a>
                         </li>
                         <li>
@@ -145,6 +149,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#account" data-toggle="tab">Your account</a></li>
                         <li><a href="#friends" data-toggle="tab">Friends</a></li>
+                        <li><a href="#friend-requests" data-toggle="tab">Friend Requests</a></li>
                     </ul>
                 </div>
             </div>
@@ -194,13 +199,205 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="tab-pane" id="friends">
                         <div class="col-md-12">
                             <h2>Your friends</h2>
                             <p>Your projects that are not marked as private will be visible to your friends.</p>
                             <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community friends is still under development.</div>
                         </div>
+                        
+                        <div class="container collapse hidden" id="friends-list">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive" id="table-friends">
+                                        <table class="table table-striped" id="table-friends-table" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Board</th>
+                                                    <th>Friends Since</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="container collapse" id="friends-detail">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h2 class="form-inline"><button id="back-to-friends-list" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>Friend: <a href="#" data-toggle="tooltip" title="Click to edit" id="name" ></a><input id="name-input" class="form-control hidden" type="text"/></h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="type">Type</label>
+                                        <label class="form-control" id="type"></label>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="board">Board</label>
+                                        <label class="form-control" id="board"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" >
+                                        <label for="tags">Tags</label>
+                                        <select multiple="multiple" id="tag"></select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="description" rows="5"></textarea>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="private-project"> Private project
+                                                </label>
+                                        <p class="help-block">A private project can not be seen by your anyone, if not, at least your friends can see it.</p>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="shared-project"> Shared project for public viewing
+                                                </label>
+                                        <p class="help-block">A shared project can be viewed by everyone.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="btn-group">
+                                        <button id="save-project" class="btn btn-success">Save</button>
+                                        <a href="#" id="open-project" class="btn btn-success">Open</a>
+                                        <button id="delete-project" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div class="tab-pane" id="friend-requests">
+                        <div class="col-md-12">
+                            <h2>Open Requests</h2>
+                            <p>Here you can view all open requests, be it your requests to others or others' requests to you.</p>
+                            <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community friends is still under development.</div>
+                        </div>
+                        
+                        <div class="container collapse hidden" id="request-list">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive" id="table-requests-list">
+                                        <table class="table table-striped" id="table-requests-table" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Request Since</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="container collapse" id="request-detail">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h2 class="form-inline"><button id="back-to-request-list" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>Friend: <a href="#" data-toggle="tooltip" title="Click to edit" id="name" ></a><input id="name-input" class="form-control hidden" type="text"/></h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="type">Type</label>
+                                        <label class="form-control" id="type"></label>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="board">Board</label>
+                                        <label class="form-control" id="board"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" >
+                                        <label for="tags">Tags</label>
+                                        <select multiple="multiple" id="tag"></select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="description" rows="5"></textarea>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="private-project"> Private project
+                                                </label>
+                                        <p class="help-block">A private project can not be seen by your anyone, if not, at least your friends can see it.</p>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="shared-project"> Shared project for public viewing
+                                                </label>
+                                        <p class="help-block">A shared project can be viewed by everyone.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="btn-group">
+                                        <button id="save-project" class="btn btn-success">Save</button>
+                                        <a href="#" id="open-project" class="btn btn-success">Open</a>
+                                        <button id="delete-project" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <br><br/>
+                        <br><br/>
+                        
+                        <div class="col-md-12">
+                            <h2>Add a friend</h2>
+                            <p>Add a friend here by searching for their username, or finding them in the table. Then click the "Send Request" button, and voila! You have sent a request!</p>
+                            <div class="alert alert-info"><strong>Info!</strong> BlocklyProp Community friends is still under development.</div>
+                        </div>
+                        
+                        <div class="container collapse hidden" id="user-list">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive" id="table-user-list">
+                                        <table class="table table-striped" id="table-user-table" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Name</th>
+                                                    <th>Request Since</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>

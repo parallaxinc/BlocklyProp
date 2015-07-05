@@ -15,6 +15,15 @@ create table users (
     modified DATETIME DEFAULT NULL
 );
 
+create table friends (
+    id int unsigned auto_increment primary key,
+    requester varchar(255) not null,
+    requestee varchar(255) not null,
+    friend_request tinyint(1) default 0,
+    friends_since DATETIME DEFAULT NULL,
+    modified DATETIME DEFAULT NULL
+);
+
 create table projects (
     id int unsigned auto_increment primary key,
     id_user int unsigned,
