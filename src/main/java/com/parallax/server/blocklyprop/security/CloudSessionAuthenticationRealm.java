@@ -21,15 +21,33 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("AUTHORIZATION");
+        AuthorizationInfo authorizationInfo = new SimpleAccount();
+
+        return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        System.out.println(getCredentialsMatcher().getClass().getName());
         System.out.println("Credentials: " + new String((char[]) token.getCredentials()));
         System.out.println("Principal: " + token.getPrincipal());
 
-        return new SimpleAccount();
+        System.out.println("CREATING AUTHENTICATION DETAILS");
+        try {
+            return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
+//            SimpleAccount simpleAccount = new SimpleAccount();
+//            simpleAccount.setCredentials(token.getCredentials());
+//            System.out.println("credentials set");
+//            PrincipalCollection principalCollection = new SimplePrincipalCollection();
+//            simpleAccount.setPrincipals(principalCollection);
+//            System.out.println("RETURNING AUTHENTICATION DETAILS");
+//            return simpleAccount;
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        System.out.println("credentials set");
+        return null;
     }
 
 }
