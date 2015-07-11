@@ -99,22 +99,22 @@
                                         <customType>
                                             <name>GregorianCalendar</name>
                                             <type>java.util.GregorianCalendar</type>
-                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.CalendarConverter</converter>
+                                            <converter>com.parallax.server.blocklyprop.db.utils.CalendarConverter</converter>
                                         </customType>
                                         <customType>
                                             <name>AuthenticationProvider</name>
-                                            <type>eu.creatingfuture.propeller.blocklyprop.db.enums.AuthenticationProvider</type>
-                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.AuthenticationProviderConverter</converter>
+                                            <type>com.parallax.server.blocklyprop.db.enums.AuthenticationProvider</type>
+                                            <converter>com.parallax.server.blocklyprop.db.utils.AuthenticationProviderConverter</converter>
                                         </customType>
                                         <customType>
                                             <name>SEC-Role</name>
-                                            <type>eu.creatingfuture.propeller.blocklyprop.db.enums.Role</type>
-                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.RoleConverter</converter>
+                                            <type>com.parallax.server.blocklyprop.db.enums.Role</type>
+                                            <converter>com.parallax.server.blocklyprop.db.utils.RoleConverter</converter>
                                         </customType>
                                         <customType>
                                             <name>ProjectType</name>
-                                            <type>eu.creatingfuture.propeller.blocklyprop.db.enums.ProjectType</type>
-                                            <converter>eu.creatingfuture.propeller.blocklyprop.db.utils.ProjectTypeConverter</converter>
+                                            <type>com.parallax.server.blocklyprop.db.enums.ProjectType</type>
+                                            <converter>com.parallax.server.blocklyprop.db.utils.ProjectTypeConverter</converter>
                                         </customType>
                                     </customTypes>
                                     <forcedTypes>
@@ -146,7 +146,7 @@
                                     </forcedTypes>
                                 </database>
                                 <target>
-                                    <packageName>eu.creatingfuture.propeller.blocklyprop.db.generated</packageName>
+                                    <packageName>com.parallax.server.blocklyprop.db.generated</packageName>
                                     <directory>src/main/java</directory>
                                 </target>
                                 <generate>

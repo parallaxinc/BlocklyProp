@@ -33,7 +33,7 @@
     <!-- Listeners -->
     <!-- Guice -->
     <listener>
-        <listener-class>eu.creatingfuture.propeller.blocklyprop.config.SetupConfig</listener-class>
+        <listener-class>com.parallax.server.blocklyprop.config.SetupConfig</listener-class>
     </listener>
 
     <!-- Shiro -->
@@ -53,7 +53,7 @@
     -->
 
     <listener>
-        <listener-class>eu.creatingfuture.propeller.blocklyprop.config.RestAPIVisualizeBootstrap</listener-class>
+        <listener-class>com.parallax.server.blocklyprop.config.RestAPIVisualizeBootstrap</listener-class>
     </listener>
 
     <servlet>
