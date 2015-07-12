@@ -5,6 +5,7 @@
  */
 package com.parallax.server.blocklyprop.security;
 
+import com.parallax.server.blocklyprop.remote.CloudSessionServer;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -32,6 +33,18 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
         System.out.println(getCredentialsMatcher().getClass().getName());
         System.out.println("Credentials: " + new String((char[]) token.getCredentials()));
         System.out.println("Principal: " + token.getPrincipal());
+
+        // Principal = login
+        String principal = (String) token.getPrincipal();
+
+        // Credentials = password
+        String credentials = new String((char[]) token.getCredentials());
+
+        if (CloudSessionServer.authenticateLocalUserStatic(principal, credentials)) {
+
+        } else {
+            return null;
+        }
 
         System.out.println("CREATING AUTHENTICATION DETAILS");
         try {
