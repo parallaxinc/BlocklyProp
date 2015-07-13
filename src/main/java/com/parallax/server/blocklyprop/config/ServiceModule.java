@@ -6,7 +6,6 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.AbstractModule;
-import com.parallax.server.blocklyprop.remote.CloudSessionServer;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import com.parallax.server.blocklyprop.services.UserService;
@@ -22,8 +21,6 @@ public class ServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(CloudSessionServer.class).asEagerSingleton();
-
         bind(ProjectService.class).to(ProjectServiceImpl.class);
         bind(UserService.class).to(UserServiceImpl.class);
         bind(SecurityService.class).to(SecurityServiceImpl.class);

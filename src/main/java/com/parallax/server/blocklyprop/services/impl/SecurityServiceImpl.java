@@ -9,14 +9,11 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+import com.parallax.client.cloudsession.CloudSessionRegisterService;
+import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
+import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
-import com.parallax.server.blocklyprop.db.enums.AuthenticationProvider;
-import com.parallax.server.blocklyprop.db.generated.tables.pojos.User;
-import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
 import com.parallax.server.blocklyprop.services.SecurityService;
-import org.apache.shiro.crypto.RandomNumberGenerator;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.SimpleHash;
 
 /**
  *
@@ -26,12 +23,15 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
 
-    private final RandomNumberGenerator rng;
+    private String SERVER = "blockly";
+    private String BASE_URL = "http://localhost:8080/cloudsession/rest/";
+
+    private CloudSessionRegisterService registerService;
 
     private UserDao userDao;
 
     public SecurityServiceImpl() {
-        rng = new SecureRandomNumberGenerator();
+        registerService = new CloudSessionRegisterService(SERVER, BASE_URL);
     }
 
     @Inject
@@ -40,18 +40,13 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public User register(String screenname, String email, String password) {
+    public Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException {
         Preconditions.checkNotNull(screenname, "Screenname cannot be null");
         Preconditions.checkNotNull(email, "Email cannot be null");
-        Preconditions.checkNotNull(password, "Paasword cannot be null");
+        Preconditions.checkNotNull(password, "Password cannot be null");
+        Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
 
-        String salt = rng.nextBytes().toHex();
-        SimpleHash hasher = new SimpleHash("SHA-256", password, salt, 1024);
-
-        UserRecord userRecord = userDao.create(screenname, email, hasher.toHex(), salt, AuthenticationProvider.LOCAL);
-        User user = userRecord.into(User.class);
-
-        return user;
+        return registerService.registerUser(email, password, passwordConfirm, "en");
     }
 
 }

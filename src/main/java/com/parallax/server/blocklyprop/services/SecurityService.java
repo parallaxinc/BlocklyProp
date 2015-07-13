@@ -5,7 +5,8 @@
  */
 package com.parallax.server.blocklyprop.services;
 
-import com.parallax.server.blocklyprop.db.generated.tables.pojos.User;
+import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
+import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 
 /**
  *
@@ -13,6 +14,6 @@ import com.parallax.server.blocklyprop.db.generated.tables.pojos.User;
  */
 public interface SecurityService {
 
-    User register(String screenname, String email, String password);
+    Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException;
 
 }

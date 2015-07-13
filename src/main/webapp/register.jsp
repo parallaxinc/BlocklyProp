@@ -17,7 +17,7 @@
         <h2>Please regtister</h2>
 
 
-        <form name="registerForm" action="" method="post">
+        <form name="registerForm" action="register" method="post">
             <table align="left" border="0" cellspacing="0" cellpadding="3">
                 <tr>
                     <td>Screenname:</td>
@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td>Confirm password:</td>
-                    <td><input type="confirmpassword" name="confirmpassword" maxlength="30"></td>
+                    <td><input type="password" name="confirmpassword" maxlength="30"></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="right"><input type="submit"
