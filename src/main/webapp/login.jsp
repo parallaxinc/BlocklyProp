@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ include file="include.jsp"%>
+<%@ include file="includes/include.jsp"%>
 
 <html>
     <head>

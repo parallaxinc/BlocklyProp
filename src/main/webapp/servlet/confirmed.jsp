@@ -14,7 +14,7 @@
     </head>
     <body>
 
-        <h2>Please confirm</h2>
+        <h2>Confirmed</h2>
 
 
 

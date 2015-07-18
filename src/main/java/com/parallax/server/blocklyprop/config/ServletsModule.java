@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
+import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
 import com.parallax.server.blocklyprop.servlets.UserServlet;
@@ -21,6 +22,7 @@ public class ServletsModule extends ServletModule {
         serve("/project").with(ProjectServlet.class);
         serve("/user").with(UserServlet.class);
         serve("/register").with(RegisterServlet.class);
+        serve("/confirm").with(ConfirmServlet.class);
     }
 
 }
