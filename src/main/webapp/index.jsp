@@ -5,12 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ include file="includes/include.jsp"%>
+<%@ include file="WEB-INF/includes/include.jsp"%>
 
 <html>
     <head>
         <link type="text/css" rel="stylesheet"
-              href="<c:url value="/style.css"/>" />
+              href="<c:url value="/resources/style.css"/>" />
     </head>
     <body>
 

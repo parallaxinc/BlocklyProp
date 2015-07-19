@@ -5,14 +5,14 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ include file="includes/include.jsp"%>
+<%@ include file="WEB-INF/includes/include.jsp"%>
 
 <html>
     <head>
         <link type="text/css" rel="stylesheet"
               href="<c:url value="/login.css"/>" />
-        <script src="lib/angular.min.js" ></script>
-        <link rel="stylesheet" href="lib/bootstrap/core/css/bootstrap.min.css"/>
+        <script src="resources/angular.min.js" ></script>
+        <link rel="stylesheet" href="resources/bootstrap/core/css/bootstrap.min.css"/>
     </head>
     <body ng-app="login">
 

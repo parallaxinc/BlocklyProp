@@ -34,14 +34,7 @@ public class ConfirmServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String token = req.getParameter("token");
-
-        if (Strings.isNullOrEmpty(token)) {
-            req.getRequestDispatcher("servlet/confirm.jsp").forward(req, resp);
-        } else {
-            req.getRequestDispatcher("servlet/confirmed.jsp").forward(req, resp);
-        }
+        confirmToken(req, resp);
     }
 
     /*
@@ -49,7 +42,27 @@ public class ConfirmServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp); //To change body of generated methods, choose Tools | Templates.
+        confirmToken(req, resp);
+    }
+
+    public void confirmToken(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String token = req.getParameter("token");
+        String email = req.getParameter("email");
+        if (Strings.isNullOrEmpty(token)) {
+            req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
+        } else {
+            if ("abc".equals(token)) {
+                // Wrong token
+                req.setAttribute("invalidToken", "Invalid token");
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
+            } else if ("def".equals(token)) {
+                // Already confirmed
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/already-confirmed.jsp").forward(req, resp);
+            } else {
+                // Correct token
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirmed.jsp").forward(req, resp);
+            }
+        }
     }
 
 }
