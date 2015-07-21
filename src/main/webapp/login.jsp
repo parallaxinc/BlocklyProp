@@ -27,7 +27,8 @@
                         String errorDescription = (String) request.getAttribute("shiroLoginFailure");
                         if (errorDescription != null) {
                     %>
-                    Login attempt was unsuccessful: <%=errorDescription%>
+                    <p>Login attempt was unsuccessful: <%=errorDescription%></p>
+                    <p><a href="resetrequest">Forgot your password?</a></p>
                     <%
                         }
                     %>

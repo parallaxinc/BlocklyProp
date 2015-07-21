@@ -14,6 +14,7 @@ import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
+import org.apache.commons.configuration.Configuration;
 
 /**
  *
@@ -23,20 +24,21 @@ import com.parallax.server.blocklyprop.services.SecurityService;
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
 
-    private String SERVER = "blockly";
-    private String BASE_URL = "http://localhost:8080/cloudsession/rest/";
+    private Configuration configuration;
 
     private CloudSessionRegisterService registerService;
 
     private UserDao userDao;
 
-    public SecurityServiceImpl() {
-        registerService = new CloudSessionRegisterService(SERVER, BASE_URL);
-    }
-
     @Inject
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Inject
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+        registerService = new CloudSessionRegisterService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
     }
 
     @Override

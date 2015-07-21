@@ -19,23 +19,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Please confirm</h2>
+                    <h2>Request reset</h2>
                     <%
-                        String errorDescription = (String) request.getAttribute("invalidToken");
+                        String errorDescription = (String) request.getAttribute("error");
                         if (errorDescription != null) {
                     %>
                     <div>Invalid token</div>
                     <%
                         }
                     %>
-                    <form name="tokenForm" action="" method="post">
+                    <form name="resetRequestForm" action="" method="post">
                         <div class="form-group">
-                            <label for="email" >Email:</label>
+                            <label for="token" >Email:</label>
                             <input class="form-control" type="text" name="email" maxlength="30" required="required"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="token" >Token:</label>
-                            <input class="form-control" type="text" name="token" maxlength="30" required="required"/>
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="Confirm">
                     </form>
