@@ -23,7 +23,7 @@ import org.apache.commons.configuration.Configuration;
  * @author Michel
  */
 @Singleton
-public class PasswordResettServlet extends HttpServlet {
+public class PasswordResetServlet extends HttpServlet {
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
@@ -36,6 +36,10 @@ public class PasswordResettServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String token = req.getParameter("token");
+        String email = req.getParameter("email");
+        req.setAttribute("token", token == null ? "" : token);
+        req.setAttribute("email", email == null ? "" : email);
         req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
     }
 
@@ -43,6 +47,8 @@ public class PasswordResettServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = req.getParameter("token");
         String email = req.getParameter("email");
+        req.setAttribute("token", token == null ? "" : token);
+        req.setAttribute("email", email == null ? "" : email);
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("confirmpassword");
         if (Strings.isNullOrEmpty(token) || Strings.isNullOrEmpty(email) || Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(confirmPassword)) {

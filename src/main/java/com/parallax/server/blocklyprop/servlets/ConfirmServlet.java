@@ -54,6 +54,8 @@ public class ConfirmServlet extends HttpServlet {
     public void confirmToken(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = req.getParameter("token");
         String email = req.getParameter("email");
+        req.setAttribute("token", token == null ? "" : token);
+        req.setAttribute("email", email == null ? "" : email);
         if (Strings.isNullOrEmpty(token) || Strings.isNullOrEmpty(email)) {
             req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
         } else {

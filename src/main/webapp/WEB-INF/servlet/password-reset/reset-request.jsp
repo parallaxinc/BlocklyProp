@@ -21,10 +21,22 @@
                 <div class="col-md-12 col-sm-12">
                     <h2>Request reset</h2>
                     <%
-                        String errorDescription = (String) request.getAttribute("error");
-                        if (errorDescription != null) {
+                        Boolean error = (Boolean) request.getAttribute("error");
+                        if (error != null && error) {
                     %>
-                    <div>Invalid token</div>
+                    <div>A problem occured</div>
+                    <%
+                        }
+                        Boolean unknownEmail = (Boolean) request.getAttribute("unknownEmail");
+                        if (unknownEmail != null && unknownEmail) {
+                    %>
+                    <div>Unknown email</div>
+                    <%
+                        }
+                        Boolean insufficientTokens = (Boolean) request.getAttribute("insufficientTokens");
+                        if (insufficientTokens != null && insufficientTokens) {
+                    %>
+                    <div>Reset requested too often</div>
                     <%
                         }
                     %>
