@@ -79,4 +79,10 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @Override
+    // TODO: add paging
+    public List<ProjectRecord> getSharedProjects() {
+        return projectDao.getSharedProjects();
+    }
+
 }

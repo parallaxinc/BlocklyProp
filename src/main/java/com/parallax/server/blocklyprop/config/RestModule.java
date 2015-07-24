@@ -5,11 +5,12 @@
  */
 package com.parallax.server.blocklyprop.config;
 
-import com.sun.jersey.guice.JerseyServletModule;
-import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import com.parallax.server.blocklyprop.rest.RestCompile;
 import com.parallax.server.blocklyprop.rest.RestProject;
+import com.parallax.server.blocklyprop.rest.RestSharedProject;
 import com.parallax.server.blocklyprop.rest.RestUser;
+import com.sun.jersey.guice.JerseyServletModule;
+import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
@@ -25,6 +26,7 @@ public class RestModule extends JerseyServletModule {
         bind(RestCompile.class);
         bind(RestUser.class);
         bind(RestProject.class);
+        bind(RestSharedProject.class);
 
         /* bind jackson converters for JAXB/JSON serialization */
         bind(MessageBodyReader.class).to(JacksonJsonProvider.class);

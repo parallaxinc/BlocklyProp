@@ -109,4 +109,9 @@ public class ProjectDaoImpl implements ProjectDao {
         return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID_USER.equal(idUser)).fetch();
     }
 
+    @Override
+    public List<ProjectRecord> getSharedProjects() {
+        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.SHARED.eq(Boolean.TRUE)).fetch();
+    }
+
 }

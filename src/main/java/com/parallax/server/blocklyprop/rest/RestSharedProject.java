@@ -17,24 +17,21 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import java.util.List;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import org.apache.shiro.authz.AuthorizationException;
 
 /**
  *
  * @author Michel
  */
-@Path("/project")
-@Group(name = "/project", title = "Project management")
+@Path("/sharedproject")
+@Group(name = "/publicproject", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
-public class RestProject {
+public class RestSharedProject {
 
     private ProjectService projectService;
 
@@ -45,16 +42,21 @@ public class RestProject {
 
     @GET
     @Path("/list")
-    @Detail("Get all projects for the authenticated user")
-    @Name("Get all projects for the authenticated user")
+    @Detail("Get all shared projects")
+    @Name("Get all shared projects")
     @Produces("application/json")
-    public Response get() {
-        List<ProjectRecord> userProjects = projectService.getUserProjects(BlocklyPropSecurityUtils.getCurrentUserId());
+    public Response get(@QueryParam("order") String order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+//        List<ProjectRecord> projects = projectService.getUserProjects(BlocklyPropSecurityUtils.getCurrentUserId());
+        List<ProjectRecord> projects = projectService.getSharedProjects();
 
-        JsonArray result = new JsonArray();
-        for (ProjectRecord project : userProjects) {
-            result.add(ProjectConverter.toJson(project));
+        JsonObject result = new JsonObject();
+        JsonArray jsonProjects = new JsonArray();
+        for (ProjectRecord project : projects) {
+            jsonProjects.add(ProjectConverter.toJson(project));
         }
+
+        result.add("rows", jsonProjects);
+        result.addProperty("total", 800);
 
         return Response.ok(result.toString()).build();
     }
@@ -80,34 +82,4 @@ public class RestProject {
         return Response.ok(result.toString()).build();
     }
 
-    @POST
-    @Path("/code/{id}")
-    @Detail("Save project code")
-    @Name("Save project code")
-    @Consumes("text/plain")
-    @Produces("application/json")
-    public Response saveProjectCode(@PathParam("id") Long idProject, String code) {
-        try {
-            ProjectRecord saveCode = projectService.saveCode(idProject, code);
-        } catch (AuthorizationException ae) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        return Response.ok().build();
-    }
-
-    @POST
-    @Path("/{id}")
-    @Detail("Save project")
-    @Name("Save project")
-    @Produces("application/json")
-    public Response saveProject(@PathParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("private") boolean privateProject, @FormParam("shared") boolean sharedProject) {
-        try {
-            ProjectRecord updatedProject = projectService.updateProject(idProject, name, description, privateProject, sharedProject);
-            JsonObject result = ProjectConverter.toJson(updatedProject);
-
-            return Response.ok(result.toString()).build();
-        } catch (AuthorizationException ae) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-    }
 }

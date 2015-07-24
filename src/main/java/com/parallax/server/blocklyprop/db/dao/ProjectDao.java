@@ -29,4 +29,6 @@ public interface ProjectDao {
 
     List<ProjectRecord> getUserProjects(Long idUser);
 
+    public List<ProjectRecord> getSharedProjects();
+
 }
