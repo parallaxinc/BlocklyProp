@@ -1,0 +1,108 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 29-apr-2014, 21:32:15
+    Author     : Michel
+*/
+
+.header {
+    position: relative;
+    padding: 30px 15px;
+    color: #cdbfe3;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0,0,0,.1);
+    background-color: #5BA6A6;
+    background-image: -webkit-linear-gradient(top, #5B68A6 0%, #5B6DA6 100%);
+    background-image: linear-gradient(to bottom, #5B68A6 0%, #5B6DA6 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#563d7c', endColorstr='#6F5499', GradientType=0);
+}
+
+/*
+ * Main navigation
+ *
+ * Turn the `.navbar` at the top of the docs purple.
+ */
+.site-nav {
+    margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 0;
+}
+.site-nav .navbar-brand,
+.site-nav .navbar-nav > li > a {
+    color: #563d7c;
+    font-weight: 500;
+}
+.site-nav .navbar-nav > li > a:hover,
+.site-nav .navbar-nav > .active > a,
+.site-nav .navbar-nav > .active > a:hover {
+    color: #463265;
+    background-color: #f9f9f9;
+}
+.site-nav .navbar-toggle .icon-bar {
+    background-color: #563d7c;
+}
+.site-nav .navbar-header .navbar-toggle {
+    border-color: #fff;
+}
+.site-nav .navbar-header .navbar-toggle:hover,
+.site-nav .navbar-header .navbar-toggle:focus {
+    background-color: #f9f9f9;
+    border-color: #f9f9f9;
+}
+
+
+/*
+ * Page headers
+ *
+ * Jumbotron-esque headers at the top of every page that's not the homepage.
+ */
+
+/* Page headers */
+.header {
+    margin-bottom: 40px;
+    font-size: 20px;
+}
+.header h1 {
+    margin-top: 0;
+    color: #fff;
+}
+.header p {
+    margin-bottom: 0;
+    font-weight: 300;
+    line-height: 1.4;
+}
+.header .container {
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .header {
+        padding-top: 60px;
+        padding-bottom: 60px;
+        font-size: 24px;
+        text-align: left;
+    }
+    .header h1 {
+        font-size: 60px;
+        line-height: 1;
+    }
+}
+
+@media (min-width: 992px) {
+    .header h1,
+    .header p {
+        margin-right: 380px;
+    }
+}
+
+#back-to-list {
+    margin-right: 20px;
+}
+
+.tab-content-top-margin {
+    margin-top: 20px;
+}

@@ -9,25 +9,45 @@
 
 <html>
     <head>
-        <link type="text/css" rel="stylesheet" href="<c:url value="/resources/style.css"/>" />
-        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/core/css/bootstrap.min.css"/>" />
-        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/plugins/bootstrap-table.min.css"/>" />
-        <script src="<c:url value="/resources/jquery-1.11.3.min.js"/>" ></script>
-        <script src="<c:url value="/resources/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
+        <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />
+        <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
+        <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
+        <script src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
     </head>
     <body>
 
-        <h2>Hello <shiro:principal/></h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
 
-        <table data-toggle="table" data-url="<c:url value="/rest/sharedproject/list"/>" data-side-pagination="server" data-pagination=true" data-search="true">
-            <thead>
-                <tr>
-                    <th data-field="name">Name</th>
-                    <th data-field="description">Description</th>
-                    <th data-field="type">Type</th>
-                </tr>
-            </thead>
-        </table>
+                    <h2>Projects</h2>
+                    <shiro:authenticated><a href="<c:url value="/profile"/>"><shiro:principal></shiro:principal></a></shiro:authenticated>
+                    <shiro:notAuthenticated><a href="<c:url value="/login.jsp"/>">Login/Register</a></shiro:notAuthenticated>
+
+                    <shiro:authenticated><a href="<c:url value="/my/projects.jsp"/>">Your projects</a></shiro:authenticated>
+                    <a href="<c:url value="/projects.jsp"/>">Project list</a>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Latest projects</h2>
+                </div>
+
+                <div class="col-md-4">
+                    <h2>C Project</h2>
+                    <a href="<c:url value="/editor/blocklyc.jsp"/>">New</a>
+                </div>
+
+                <div class="col-md-4">
+                    <h2>Spin project</h2>
+                    <a href="<c:url value="/editor/blocklyspin.jsp"/>">New</a>
+                </div>
+            </div>
+        </div>
 
     </body>
 </html>

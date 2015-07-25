@@ -28,8 +28,8 @@ import javax.ws.rs.core.Response;
  *
  * @author Michel
  */
-@Path("/sharedproject")
-@Group(name = "/publicproject", title = "Project management")
+@Path("/shared/project")
+@Group(name = "/shared/project", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestSharedProject {
 
