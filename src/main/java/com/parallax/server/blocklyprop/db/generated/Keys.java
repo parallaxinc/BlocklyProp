@@ -5,15 +5,11 @@ package com.parallax.server.blocklyprop.db.generated;
 
 
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
-import com.parallax.server.blocklyprop.db.generated.tables.SecPermission;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
-import com.parallax.server.blocklyprop.db.generated.tables.SecRolePermission;
 import com.parallax.server.blocklyprop.db.generated.tables.SecUserRole;
 import com.parallax.server.blocklyprop.db.generated.tables.Tag;
 import com.parallax.server.blocklyprop.db.generated.tables.User;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
-import com.parallax.server.blocklyprop.db.generated.tables.records.SecPermissionRecord;
-import com.parallax.server.blocklyprop.db.generated.tables.records.SecRolePermissionRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.SecRoleRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.SecUserRoleRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.TagRecord;
@@ -46,7 +42,6 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	public static final Identity<ProjectRecord, Long> IDENTITY_PROJECT = Identities0.IDENTITY_PROJECT;
-	public static final Identity<SecPermissionRecord, Long> IDENTITY_SEC_PERMISSION = Identities0.IDENTITY_SEC_PERMISSION;
 	public static final Identity<SecRoleRecord, Long> IDENTITY_SEC_ROLE = Identities0.IDENTITY_SEC_ROLE;
 	public static final Identity<TagRecord, Long> IDENTITY_TAG = Identities0.IDENTITY_TAG;
 	public static final Identity<UserRecord, Long> IDENTITY_USER = Identities0.IDENTITY_USER;
@@ -56,17 +51,12 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = UniqueKeys0.KEY_PROJECT_PRIMARY;
-	public static final UniqueKey<SecPermissionRecord> KEY_SEC_PERMISSION_PRIMARY = UniqueKeys0.KEY_SEC_PERMISSION_PRIMARY;
-	public static final UniqueKey<SecPermissionRecord> KEY_SEC_PERMISSION_NAME_UNIQUE = UniqueKeys0.KEY_SEC_PERMISSION_NAME_UNIQUE;
 	public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_PRIMARY = UniqueKeys0.KEY_SEC_ROLE_PRIMARY;
 	public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_NAME_UNIQUE = UniqueKeys0.KEY_SEC_ROLE_NAME_UNIQUE;
-	public static final UniqueKey<SecRolePermissionRecord> KEY_SEC_ROLE_PERMISSION_PRIMARY = UniqueKeys0.KEY_SEC_ROLE_PERMISSION_PRIMARY;
 	public static final UniqueKey<SecUserRoleRecord> KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE = UniqueKeys0.KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE;
 	public static final UniqueKey<TagRecord> KEY_TAG_PRIMARY = UniqueKeys0.KEY_TAG_PRIMARY;
 	public static final UniqueKey<TagRecord> KEY_TAG_NAME_UNIQUE = UniqueKeys0.KEY_TAG_NAME_UNIQUE;
 	public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
-	public static final UniqueKey<UserRecord> KEY_USER_SCREENNAME_UNIQUE = UniqueKeys0.KEY_USER_SCREENNAME_UNIQUE;
-	public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = UniqueKeys0.KEY_USER_EMAIL_UNIQUE;
 
 	// -------------------------------------------------------------------------
 	// FOREIGN KEY definitions
@@ -80,7 +70,6 @@ public class Keys {
 
 	private static class Identities0 extends AbstractKeys {
 		public static Identity<ProjectRecord, Long> IDENTITY_PROJECT = createIdentity(Project.PROJECT, Project.PROJECT.ID);
-		public static Identity<SecPermissionRecord, Long> IDENTITY_SEC_PERMISSION = createIdentity(SecPermission.SEC_PERMISSION, SecPermission.SEC_PERMISSION.ID);
 		public static Identity<SecRoleRecord, Long> IDENTITY_SEC_ROLE = createIdentity(SecRole.SEC_ROLE, SecRole.SEC_ROLE.ID);
 		public static Identity<TagRecord, Long> IDENTITY_TAG = createIdentity(Tag.TAG, Tag.TAG.ID);
 		public static Identity<UserRecord, Long> IDENTITY_USER = createIdentity(User.USER, User.USER.ID);
@@ -88,17 +77,12 @@ public class Keys {
 
 	private static class UniqueKeys0 extends AbstractKeys {
 		public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = createUniqueKey(Project.PROJECT, Project.PROJECT.ID);
-		public static final UniqueKey<SecPermissionRecord> KEY_SEC_PERMISSION_PRIMARY = createUniqueKey(SecPermission.SEC_PERMISSION, SecPermission.SEC_PERMISSION.ID);
-		public static final UniqueKey<SecPermissionRecord> KEY_SEC_PERMISSION_NAME_UNIQUE = createUniqueKey(SecPermission.SEC_PERMISSION, SecPermission.SEC_PERMISSION.NAME);
 		public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_PRIMARY = createUniqueKey(SecRole.SEC_ROLE, SecRole.SEC_ROLE.ID);
 		public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_NAME_UNIQUE = createUniqueKey(SecRole.SEC_ROLE, SecRole.SEC_ROLE.NAME);
-		public static final UniqueKey<SecRolePermissionRecord> KEY_SEC_ROLE_PERMISSION_PRIMARY = createUniqueKey(SecRolePermission.SEC_ROLE_PERMISSION, SecRolePermission.SEC_ROLE_PERMISSION.ID_ROLE);
 		public static final UniqueKey<SecUserRoleRecord> KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE = createUniqueKey(SecUserRole.SEC_USER_ROLE, SecUserRole.SEC_USER_ROLE.ID_USER, SecUserRole.SEC_USER_ROLE.ID_ROLE);
 		public static final UniqueKey<TagRecord> KEY_TAG_PRIMARY = createUniqueKey(Tag.TAG, Tag.TAG.ID);
 		public static final UniqueKey<TagRecord> KEY_TAG_NAME_UNIQUE = createUniqueKey(Tag.TAG, Tag.TAG.NAME);
 		public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, User.USER.ID);
-		public static final UniqueKey<UserRecord> KEY_USER_SCREENNAME_UNIQUE = createUniqueKey(User.USER, User.USER.SCREENNAME);
-		public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = createUniqueKey(User.USER, User.USER.EMAIL);
 	}
 
 	private static class ForeignKeys0 extends AbstractKeys {

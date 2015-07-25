@@ -6,9 +6,7 @@ package com.parallax.server.blocklyprop.db.generated;
 
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
-import com.parallax.server.blocklyprop.db.generated.tables.SecPermission;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
-import com.parallax.server.blocklyprop.db.generated.tables.SecRolePermission;
 import com.parallax.server.blocklyprop.db.generated.tables.SecUserRole;
 import com.parallax.server.blocklyprop.db.generated.tables.Tag;
 import com.parallax.server.blocklyprop.db.generated.tables.User;
@@ -40,19 +38,9 @@ public class Tables {
 	public static final ProjectTag PROJECT_TAG = com.parallax.server.blocklyprop.db.generated.tables.ProjectTag.PROJECT_TAG;
 
 	/**
-	 * The table blocklyprop.sec_permission
-	 */
-	public static final SecPermission SEC_PERMISSION = com.parallax.server.blocklyprop.db.generated.tables.SecPermission.SEC_PERMISSION;
-
-	/**
 	 * The table blocklyprop.sec_role
 	 */
 	public static final SecRole SEC_ROLE = com.parallax.server.blocklyprop.db.generated.tables.SecRole.SEC_ROLE;
-
-	/**
-	 * The table blocklyprop.sec_role_permission
-	 */
-	public static final SecRolePermission SEC_ROLE_PERMISSION = com.parallax.server.blocklyprop.db.generated.tables.SecRolePermission.SEC_ROLE_PERMISSION;
 
 	/**
 	 * The table blocklyprop.sec_user_role

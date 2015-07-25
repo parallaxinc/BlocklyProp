@@ -4,10 +4,7 @@
 package com.parallax.server.blocklyprop.db.generated.tables.pojos;
 
 
-import com.parallax.server.blocklyprop.db.enums.AuthenticationProvider;
-
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 
 import javax.annotation.Generated;
 
@@ -25,52 +22,24 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 928631782;
+	private static final long serialVersionUID = -1053213160;
 
-	private Long                   id;
-	private String                 screenname;
-	private String                 email;
-	private String                 password;
-	private String                 salt;
-	private Boolean                blocked;
-	private GregorianCalendar      created;
-	private GregorianCalendar      modified;
-	private AuthenticationProvider authenticationprovider;
+	private Long id;
+	private Long idcloudsession;
 
 	public User() {}
 
 	public User(User value) {
 		this.id = value.id;
-		this.screenname = value.screenname;
-		this.email = value.email;
-		this.password = value.password;
-		this.salt = value.salt;
-		this.blocked = value.blocked;
-		this.created = value.created;
-		this.modified = value.modified;
-		this.authenticationprovider = value.authenticationprovider;
+		this.idcloudsession = value.idcloudsession;
 	}
 
 	public User(
-		Long                   id,
-		String                 screenname,
-		String                 email,
-		String                 password,
-		String                 salt,
-		Boolean                blocked,
-		GregorianCalendar      created,
-		GregorianCalendar      modified,
-		AuthenticationProvider authenticationprovider
+		Long id,
+		Long idcloudsession
 	) {
 		this.id = id;
-		this.screenname = screenname;
-		this.email = email;
-		this.password = password;
-		this.salt = salt;
-		this.blocked = blocked;
-		this.created = created;
-		this.modified = modified;
-		this.authenticationprovider = authenticationprovider;
+		this.idcloudsession = idcloudsession;
 	}
 
 	public Long getId() {
@@ -81,67 +50,11 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getScreenname() {
-		return this.screenname;
+	public Long getIdcloudsession() {
+		return this.idcloudsession;
 	}
 
-	public void setScreenname(String screenname) {
-		this.screenname = screenname;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getSalt() {
-		return this.salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
-
-	public Boolean getBlocked() {
-		return this.blocked;
-	}
-
-	public void setBlocked(Boolean blocked) {
-		this.blocked = blocked;
-	}
-
-	public GregorianCalendar getCreated() {
-		return this.created;
-	}
-
-	public void setCreated(GregorianCalendar created) {
-		this.created = created;
-	}
-
-	public GregorianCalendar getModified() {
-		return this.modified;
-	}
-
-	public void setModified(GregorianCalendar modified) {
-		this.modified = modified;
-	}
-
-	public AuthenticationProvider getAuthenticationprovider() {
-		return this.authenticationprovider;
-	}
-
-	public void setAuthenticationprovider(AuthenticationProvider authenticationprovider) {
-		this.authenticationprovider = authenticationprovider;
+	public void setIdcloudsession(Long idcloudsession) {
+		this.idcloudsession = idcloudsession;
 	}
 }

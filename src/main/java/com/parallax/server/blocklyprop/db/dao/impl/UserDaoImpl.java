@@ -8,7 +8,6 @@ package com.parallax.server.blocklyprop.db.dao.impl;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
-import com.parallax.server.blocklyprop.db.enums.AuthenticationProvider;
 import com.parallax.server.blocklyprop.db.enums.Role;
 import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.SecRoleRecord;
@@ -40,10 +39,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public UserRecord create(String screenname, String email, String password, String salt, AuthenticationProvider authenticationProvider) {
+    public UserRecord create(Long idCloudSession) {
         //create.insertInto(Tables.PROJECT).set(project).execute();
-        UserRecord record = create.insertInto(Tables.USER, Tables.USER.SCREENNAME, Tables.USER.EMAIL, Tables.USER.PASSWORD, Tables.USER.SALT, Tables.USER.AUTHENTICATIONPROVIDER)
-                .values(screenname, email, password, salt, authenticationProvider).returning().fetchOne();
+        UserRecord record = create.insertInto(Tables.USER, Tables.USER.IDCLOUDSESSION)
+                .values(idCloudSession).returning().fetchOne();
 
         if (record != null && record.getId() != null && record.getId() > 0) {
             Set<Role> roles = new HashSet<>();

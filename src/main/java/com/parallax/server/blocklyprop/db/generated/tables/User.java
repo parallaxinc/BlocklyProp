@@ -4,15 +4,11 @@
 package com.parallax.server.blocklyprop.db.generated.tables;
 
 
-import com.parallax.server.blocklyprop.db.enums.AuthenticationProvider;
 import com.parallax.server.blocklyprop.db.generated.Blocklyprop;
 import com.parallax.server.blocklyprop.db.generated.Keys;
 import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
-import com.parallax.server.blocklyprop.db.utils.AuthenticationProviderConverter;
-import com.parallax.server.blocklyprop.db.utils.CalendarConverter;
 
 import java.util.Arrays;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -38,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-	private static final long serialVersionUID = 1338799080;
+	private static final long serialVersionUID = 1072037799;
 
 	/**
 	 * The reference instance of <code>blocklyprop.user</code>
@@ -59,44 +55,9 @@ public class User extends TableImpl<UserRecord> {
 	public final TableField<UserRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
-	 * The column <code>blocklyprop.user.screenname</code>.
+	 * The column <code>blocklyprop.user.idCloudSession</code>.
 	 */
-	public final TableField<UserRecord, String> SCREENNAME = createField("screenname", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
-
-	/**
-	 * The column <code>blocklyprop.user.email</code>.
-	 */
-	public final TableField<UserRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
-
-	/**
-	 * The column <code>blocklyprop.user.password</code>.
-	 */
-	public final TableField<UserRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
-
-	/**
-	 * The column <code>blocklyprop.user.salt</code>.
-	 */
-	public final TableField<UserRecord, String> SALT = createField("salt", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
-
-	/**
-	 * The column <code>blocklyprop.user.blocked</code>.
-	 */
-	public final TableField<UserRecord, Boolean> BLOCKED = createField("blocked", org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaulted(true), this, "");
-
-	/**
-	 * The column <code>blocklyprop.user.created</code>.
-	 */
-	public final TableField<UserRecord, GregorianCalendar> CREATED = createField("created", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "", new CalendarConverter());
-
-	/**
-	 * The column <code>blocklyprop.user.modified</code>.
-	 */
-	public final TableField<UserRecord, GregorianCalendar> MODIFIED = createField("modified", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "", new CalendarConverter());
-
-	/**
-	 * The column <code>blocklyprop.user.authenticationProvider</code>.
-	 */
-	public final TableField<UserRecord, AuthenticationProvider> AUTHENTICATIONPROVIDER = createField("authenticationProvider", org.jooq.impl.SQLDataType.VARCHAR.length(45).nullable(false), this, "", new AuthenticationProviderConverter());
+	public final TableField<UserRecord, Long> IDCLOUDSESSION = createField("idCloudSession", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
 	/**
 	 * Create a <code>blocklyprop.user</code> table reference
@@ -141,7 +102,7 @@ public class User extends TableImpl<UserRecord> {
 	 */
 	@Override
 	public List<UniqueKey<UserRecord>> getKeys() {
-		return Arrays.<UniqueKey<UserRecord>>asList(Keys.KEY_USER_PRIMARY, Keys.KEY_USER_SCREENNAME_UNIQUE, Keys.KEY_USER_EMAIL_UNIQUE);
+		return Arrays.<UniqueKey<UserRecord>>asList(Keys.KEY_USER_PRIMARY);
 	}
 
 	/**

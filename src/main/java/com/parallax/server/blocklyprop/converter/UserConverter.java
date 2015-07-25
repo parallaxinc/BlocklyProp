@@ -18,18 +18,12 @@ public class UserConverter {
     public static JsonObject toJson(User user) {
         JsonObject result = new JsonObject();
         result.addProperty("id", user.getId());
-        result.addProperty("screenname", user.getScreenname());
-        result.addProperty("email", user.getEmail());
-        result.addProperty("blocked", user.getBlocked());
         return result;
     }
 
     public static JsonObject toJson(UserRecord user) {
         JsonObject result = new JsonObject();
         result.addProperty("id", user.getId());
-        result.addProperty("screenname", user.getScreenname());
-        result.addProperty("email", user.getEmail());
-        result.addProperty("blocked", user.getBlocked());
         return result;
     }
 

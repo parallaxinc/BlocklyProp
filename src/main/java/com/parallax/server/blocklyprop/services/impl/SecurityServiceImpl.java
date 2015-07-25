@@ -48,7 +48,9 @@ public class SecurityServiceImpl implements SecurityService {
         Preconditions.checkNotNull(password, "Password cannot be null");
         Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
 
-        return registerService.registerUser(email, password, passwordConfirm, "en");
+        Long id = registerService.registerUser(email, password, passwordConfirm, "en", screenname);
+
+        return id;
     }
 
 }
