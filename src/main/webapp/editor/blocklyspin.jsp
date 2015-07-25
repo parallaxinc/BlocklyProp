@@ -7,59 +7,94 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<html>
+<html><!-- manifest=node.manifest> -->
     <head>
         <meta charset="utf-8">
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<c:url value="/cdn/lib/Blob.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/lib/term"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/FileSaver.min.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blocklypropclient.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklyspin.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/project.js"/>"></script>
         <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
-        <link href="<c:url value="/cdn/style.css"/>" rel="stylesheet" />
+        <link href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.css"/>" rel="stylesheet">
+        <link href="<c:url value="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <table height="100%" width="100%">
+        <table id="content_table">
             <tr>
                 <td>
-                    <h1><a href="https://github.com/michel-cf/BlocklyProp">BlocklyProp</a> &gt; web-based visual programming editor for spin</h1>
+                    <nav class="navbar navbar-default" role="navigation">
+                        <div class="containter-fluid">
+                            <div class="navbar-header">
+                                <a class="navbar-brand" href="index.html">BlocklyProp</a>
+                            </div>
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="help/index.html">Manual</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">New project<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="blocklyscribbler.html">Scribbler</a></li>
+                                            <li><a href="blocklyspin.html">Spin</a></li>
+                                            <li><a href="blocklyc.html">Propeller C</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="community.html">Community</a></li>
+                                            <li><a href="myprojects.html">My projects</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li class="active" id="tab_blocks"><a href="#" onclick="tabClick('tab_blocks')">Blocks</a></li>
+                                            <li id="tab_spin"><a href="#" onclick="tabClick('tab_spin')">Spin</a></li>
+                                            <li id="tab_xml"><a href="#" onclick="tabClick('tab_xml')">XML</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li>
+                                        <p class="navbar-text" id="client_status">Checking for BlocklyPropClient</p>
+                                    </li>
+                                    <li>
+                                        <form class="navbar-form">
+                                            <div class="form-group">
+                                                <select class="form-control" id="comPort"></select>
+                                            </div>
+                                        </form>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Run <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" onclick="compile()">Compile</a></li>
+                                            <li><a href="#" onclick="loadIntoRam()">Load RAM</a></li>
+                                            <li><a href="#" onclick="loadIntoEeprom()">Load EEPROM</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#" onclick="serial_console()">Serial terminal</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#" onclick="configure_client()">Configure client</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#" onclick="project()">Project</a></li>
+                                    <li><a href="#" id="save-project">Save</a></li>
+                                </ul>
+                            </div><!-- /.navbar-collapse -->
+                        </div><!-- /.container-fluid -->
+                    </nav>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <table>
-                        <tr id="tabRow" height="1em">
-                            <td id="tab_blocks" class="tabon" onclick="tabClick(this.id)">Blocks</td>
-                            <td class="tabmin">&nbsp;</td>
-                            <!--td id="tab_javascript" class="taboff" onclick="tabClick(this.id)">JavaScript</td>
-                            <td class="tabmin">&nbsp;</td-->
-                            <!--td id="tab_dart" class="taboff" onclick="tabClick(this.id)">Dart</td>
-                            <td class="tabmin">&nbsp;</td>
-                            <td id="tab_python" class="taboff" onclick="tabClick(this.id)">Python</td>
-                            <td class="tabmin">&nbsp;</td-->
-                            <td id="tab_spin" class="taboff" onclick="tabClick(this.id)">Spin</td>
-                            <td class="tabmin">&nbsp;</td>
-                            <td id="tab_xml" class="taboff" onclick="tabClick(this.id)">XML</td>
-                            <td class="tabmax">
-                                <button onclick="compile()">Compile</button>
-                                <button onclick="loadIntoRam()">Load into Ram</button>
-                                <button onclick="loadIntoEeprom()">Load into Eeprom</button>
-                                <button onclick="serial_console()">Serial console</button>
-                                <button onclick="discard()">Discard</button>
-                                <button onclick="save()">Save XML</button>
-                                <button id="fakeload">Load XML</button>
-                                <input type="file" id="load" style="display: none;"/>
-                                <select id="comPort"></select>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td height="99%">
-                    <div id="content_blocks" style='height:99%;'>
+                <td id="content">
+                    <div id="content_blocks">
                         <iframe name="content_blocks" src="frame.html"></iframe>
                     </div>
                     <!--div id="content_blocks" style="height:auto !important;height:400px; min-height:400px;"></div-->
@@ -99,7 +134,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="compile-dialog-title">Console</h4>
+                        <h4 class="modal-title" id="console-dialog-title">Console</h4>
                     </div>
                     <div class="modal-body">
                         <div id="serial_console" class="console"></div>
@@ -111,44 +146,132 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <div class="modal fade" data-keyboard="false" data-backdrop="static" id="setup-dialog">
+        <div class="wizard" data-keyboard="false" data-backdrop="static" id="project-manager" data-title="Project setup">
+
+            <h1>Project setup</h1>
+
+            <div class="wizard-card" data-cardname="project-manager-base">
+                <h3>Basic project info</h3>
+                <div class="form-group">
+                    <label for="project-name">Project name</label>
+                    <input class="form-control" id="project-name"/>
+
+                    <label for="board-type">Board type</label>
+                    <select class="form-control" id="board-type">
+                        <option value="activity-board">Activity board</option>
+                        <option value="board-of-education">Board of Education</option>
+                        <option value="c3">Propeller C3</option>
+                        <option value="demo-board">Demo board</option>
+                        <option value="proto-board">Proto board</option>
+                        <option value="quickstart">Quickstart</option>
+                        <option value="scribbler2">Scribbler 2</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <label for="project-description">Description</label>
+                    <textarea class="form-control" id="project-description" rows="7"></textarea>
+                </div>
+            </div>
+            <div class="wizard-card" data-cardname="project-manager-sharing">
+                <h3>Sharing</h3>
+
+            </div>
+            <div class="wizard-card" data-cardname="project-manager-modules">
+                <h3>Block</h3>
+                <div class="form-group">
+                    <label for="block-types">Block types</label>
+                    <select class="form-control" multiple="multiple" id="block-types">
+                        <option value="serial">Serial</option>
+                        <option value="serial-terminal">Serial terminal</option>
+                        <option value="c3">Debug LCD</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="wizard-success">
+                submission succeeded!
+            </div>
+
+            <div class="wizard-error">
+                submission had an error
+            </div>
+
+            <div class="wizard-failure">
+                submission failed
+            </div>
+        </div>
+
+        <div class="modal fade" id="login-dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="compile-dialog-title">Project setup</h4>
+                        <h4 class="modal-title" id="login-dialog-title">Sign in / Register</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="board-type">Board type</label>
-                            <select class="form-control" id="board-type">
-                                <option value="activity-board">Activity board</option>
-                                <option value="board-of-education">Board of Education</option>
-                                <option value="c3">Propeller C3</option>
-                                <option value="demo-board">Demo board</option>
-                                <option value="proto-board">Proto board</option>
-                                <option value="quickstart">Quickstart</option>
-                                <option value="scribbler2">Scribbler 2</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="block-types">Block types</label>
-                            <select class="form-control" multiple="multiple" id="block-types">
-                                <option value="serial">Serial</option>
-                                <option value="serial-terminal">Serial terminal</option>
-                                <option value="c3">Debug LCD</option>
-                            </select>
+                        <div id="signin-register" style="height: 380px;">
+                            <div class="col-md-6">
+                                <form role="form" id="signin-form">
+                                    <fieldset>
+                                        <legend>Sign in</legend>
+                                        <div class="form-group">
+                                            <label for="loginEmail">Email</label>
+                                            <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="loginPassword">Password</label>
+                                            <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password">
+                                        </div>
+                                        <div id="login-wrong-credentials" class="alert alert-danger hidden">Wrong credentials</div>
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-default" id="signin">Sign in</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <form  role="form" id="register-form">
+                                    <fieldset>
+                                        <legend>Register</legend>
+                                        <div id="register-group-email" class="form-group has-feedback">
+                                            <label class="control-label" for="registerEmail">Email</label>
+                                            <input type="email" class="form-control" id="registerEmail" name="email" placeholder="Email">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div id="register-group-screenname" class="form-group has-feedback">
+                                            <label class="control-label" for="registerScreenname">Screenname</label>
+                                            <input type="text" class="form-control" id="registerScreenname" name="screenname" placeholder="Screenname">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div id="register-group-password" class="form-group has-feedback">
+                                            <label class="control-label" for="registerPassword">Password</label>
+                                            <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Password">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div id="register-group-passwordConfirm" class="form-group has-feedback">
+                                            <label class="control-label" for="registerPasswordConfirm">Confirm password</label>
+                                            <input type="password" class="form-control" id="registerPasswordConfirm" name="passwordConfirm" placeholder="Confirm password">
+                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
+                                        </div>
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-default" id="register">Register</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Start</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
         <script src="lib/js/bootstrap.min.js"></script>
+        <script src="lib/js/bootbox.min.js"></script>
+        <script>
+                                        var type = 'spin';
+        </script>
     </body>
 </html>

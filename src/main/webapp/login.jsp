@@ -9,8 +9,8 @@
 
 <html>
     <head>
-        <script src="/cdn/lib/angular.min.js" ></script>
-        <link rel="stylesheet" href="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>
+        <script src="<c:url value="/cdn/lib/angular.min.js"/>" ></script>
+        <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>"/>
         <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />
     </head>
     <body ng-app="login">

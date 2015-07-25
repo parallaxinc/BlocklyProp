@@ -20,6 +20,7 @@ public class ProjectConverter {
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
         result.addProperty("description", project.getDescription());
+        result.addProperty("type", project.getType().name());
         result.addProperty("private", project.getPrivate());
         result.addProperty("shared", project.getShared());
         return result;

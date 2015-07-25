@@ -8,6 +8,7 @@ package com.parallax.server.blocklyprop.services.impl;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
@@ -71,18 +72,27 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser) {
+    public List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset) {
         if (BlocklyPropSecurityUtils.getCurrentUserId().equals(idUser)) {
-            return projectDao.getUserProjects(idUser);
+            return projectDao.getUserProjects(idUser, order, limit, offset);
         } else {
             throw new UnauthorizedException();
         }
     }
 
     @Override
-    // TODO: add paging
-    public List<ProjectRecord> getSharedProjects() {
-        return projectDao.getSharedProjects();
+    public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset) {
+        return projectDao.getSharedProjects(order, limit, offset);
+    }
+
+    @Override
+    public int countUserProjects(Long idUser) {
+        return projectDao.countUserProjects(idUser);
+    }
+
+    @Override
+    public int countSharedProjects() {
+        return projectDao.countSharedProjects();
     }
 
 }

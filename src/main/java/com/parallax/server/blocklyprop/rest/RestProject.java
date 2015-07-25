@@ -12,6 +12,7 @@ import com.cuubez.visualizer.annotation.Name;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
@@ -24,6 +25,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import org.apache.shiro.authz.AuthorizationException;
 
@@ -48,13 +50,19 @@ public class RestProject {
     @Detail("Get all projects for the authenticated user")
     @Name("Get all projects for the authenticated user")
     @Produces("application/json")
-    public Response get() {
-        List<ProjectRecord> userProjects = projectService.getUserProjects(BlocklyPropSecurityUtils.getCurrentUserId());
+    public Response get(@QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        List<ProjectRecord> userProjects = projectService.getUserProjects(idUser, order, limit, offset);
+        int projectCount = projectService.countUserProjects(idUser);
 
-        JsonArray result = new JsonArray();
+        JsonObject result = new JsonObject();
+        JsonArray jsonProjects = new JsonArray();
         for (ProjectRecord project : userProjects) {
-            result.add(ProjectConverter.toJson(project));
+            jsonProjects.add(ProjectConverter.toJson(project));
         }
+
+        result.add("rows", jsonProjects);
+        result.addProperty("total", projectCount);
 
         return Response.ok(result.toString()).build();
     }

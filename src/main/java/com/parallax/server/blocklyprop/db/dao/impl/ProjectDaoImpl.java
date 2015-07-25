@@ -7,6 +7,7 @@ package com.parallax.server.blocklyprop.db.dao.impl;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.Tables;
@@ -15,6 +16,7 @@ import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import java.util.List;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.jooq.DSLContext;
+import org.jooq.SortField;
 
 /**
  *
@@ -105,13 +107,31 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser) {
-        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID_USER.equal(idUser)).fetch();
+    public List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset) {
+        SortField<String> orderField = Tables.PROJECT.NAME.asc();
+        if (TableOrder.desc == order) {
+            orderField = Tables.PROJECT.NAME.desc();
+        }
+        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID_USER.equal(idUser)).orderBy(orderField).limit(limit).offset(offset).fetch();
     }
 
     @Override
-    public List<ProjectRecord> getSharedProjects() {
-        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.SHARED.eq(Boolean.TRUE)).fetch();
+    public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset) {
+        SortField<String> orderField = Tables.PROJECT.NAME.asc();
+        if (TableOrder.desc == order) {
+            orderField = Tables.PROJECT.NAME.desc();
+        }
+        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.SHARED.eq(Boolean.TRUE)).orderBy(orderField).limit(limit).offset(offset).fetch();
+    }
+
+    @Override
+    public int countUserProjects(Long idUser) {
+        return create.fetchCount(Tables.PROJECT, Tables.PROJECT.ID_USER.equal(idUser));
+    }
+
+    @Override
+    public int countSharedProjects() {
+        return create.fetchCount(Tables.PROJECT, Tables.PROJECT.SHARED.equal(Boolean.TRUE));
     }
 
 }

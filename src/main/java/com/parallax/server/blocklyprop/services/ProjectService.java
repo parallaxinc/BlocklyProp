@@ -5,6 +5,7 @@
  */
 package com.parallax.server.blocklyprop.services;
 
+import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import java.util.List;
@@ -27,8 +28,12 @@ public interface ProjectService {
 
     ProjectRecord saveCode(Long idProject, String code);
 
-    List<ProjectRecord> getUserProjects(Long idUser);
+    List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset);
 
-    public List<ProjectRecord> getSharedProjects();
+    List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset);
+
+    int countUserProjects(Long idUser);
+
+    int countSharedProjects();
 
 }

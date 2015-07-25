@@ -21,22 +21,20 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <h2>Projects</h2>
+                    <h2><a href="<c:url value="/index.jsp"/>">BlocklyProp</a>Projects</h2>
                     <a href="<c:url value="/profile"/>"><shiro:principal></shiro:principal></a>
 
-                        <table data-toggle="table" data-url="<c:url value="/rest/project/list"/>" data-side-pagination="server" data-pagination=true" data-search="true">
-                        <thead>
-                            <tr>
-                                <th data-field="name">Name</th>
-                                <th data-field="description">Description</th>
-                                <th data-field="type">Type</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <jsp:include page="/WEB-INF/includes/pageparts/projecttable.jsp">
+                        <jsp:param name="url" value="/rest/project/list" />
+                    </jsp:include>
 
                 </div>
             </div>
         </div>
+
+        <jsp:include page="/WEB-INF/includes/pageparts/projectform.jsp">
+            <jsp:param name="mine" value="true" />
+        </jsp:include>
 
     </body>
 </html>

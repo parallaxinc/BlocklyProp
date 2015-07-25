@@ -12,6 +12,7 @@ import com.cuubez.visualizer.annotation.Name;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
@@ -45,9 +46,9 @@ public class RestSharedProject {
     @Detail("Get all shared projects")
     @Name("Get all shared projects")
     @Produces("application/json")
-    public Response get(@QueryParam("order") String order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
-//        List<ProjectRecord> projects = projectService.getUserProjects(BlocklyPropSecurityUtils.getCurrentUserId());
-        List<ProjectRecord> projects = projectService.getSharedProjects();
+    public Response get(@QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+        List<ProjectRecord> projects = projectService.getSharedProjects(order, limit, offset);
+        int projectCount = projectService.countSharedProjects();
 
         JsonObject result = new JsonObject();
         JsonArray jsonProjects = new JsonArray();
@@ -56,7 +57,7 @@ public class RestSharedProject {
         }
 
         result.add("rows", jsonProjects);
-        result.addProperty("total", 800);
+        result.addProperty("total", projectCount);
 
         return Response.ok(result.toString()).build();
     }

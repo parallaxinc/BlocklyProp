@@ -9,10 +9,9 @@
 
 <html>
     <head>
-        <link type="text/css" rel="stylesheet"
-              href='<c:url value="/resources/style.css"/>' />
+        <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
+        <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />
         <script src="resources/angular.min.js" ></script>
-        <link rel="stylesheet" href="resources/bootstrap/core/css/bootstrap.min.css"/>
     </head>
     <body>
 
