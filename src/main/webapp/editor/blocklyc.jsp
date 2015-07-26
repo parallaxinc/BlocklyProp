@@ -13,7 +13,7 @@
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<c:url value="/cdn/lib/Blob.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/term"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/FileSaver.min.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script>
@@ -23,7 +23,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/project.js"/>"></script>
         <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.css"/>" rel="stylesheet">
-        <link href="<c:url value="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<c:url value="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <table id="content_table">
@@ -32,24 +32,23 @@
                     <nav class="navbar navbar-default" role="navigation">
                         <div class="containter-fluid">
                             <div class="navbar-header">
-                                <a class="navbar-brand" href="index.html">BlocklyProp</a>
+                                <a class="navbar-brand" href="<c:url value="/index.jsp"/>">BlocklyProp</a>
                             </div>
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="help/index.html">Manual</a></li>
+                                    <!--  <li><a href="help/index.html">Manual</a></li> -->
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">New project<b class="caret"></b></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="blocklyscribbler.html">Scribbler</a></li>
-                                            <li><a href="blocklyspin.html">Spin</a></li>
-                                            <li><a href="blocklyc.html">Propeller C</a></li>
+                                            <li><a href="<c:url value="/editor/blocklyspin.jsp"/>">Spin</a></li>
+                                            <li><a href="<c:url value="/editor/blocklyc.jsp"/>">Propeller C</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="community.html">Community</a></li>
-                                            <li><a href="myprojects.html">My projects</a></li>
+                                            <li><a href="<c:url value="/projects.jsp"/>">Community projects</a></li>
+                                            <li><a href="<c:url value="/my/projects.jsp"/>">My projects</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">
@@ -95,7 +94,7 @@
             <tr>
                 <td id="content">
                     <div id="content_blocks">
-                        <iframe name="content_blocks" src="framec.html"></iframe>
+                        <iframe name="content_blocks" src="<c:url value="/cdn/framec.html"/>"></iframe>
                     </div>
                     <!--div id="content_blocks" style="height:auto !important;height:400px; min-height:400px;"></div-->
                     <!--pre id="content_javascript"></pre>
@@ -201,75 +200,8 @@
             </div>
         </div>
 
-        <div class="modal fade" id="login-dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="login-dialog-title">Sign in / Register</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="signin-register" style="height: 380px;">
-                            <div class="col-md-6">
-                                <form role="form" id="signin-form">
-                                    <fieldset>
-                                        <legend>Sign in</legend>
-                                        <div class="form-group">
-                                            <label for="loginEmail">Email</label>
-                                            <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="loginPassword">Password</label>
-                                            <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password">
-                                        </div>
-                                        <div id="login-wrong-credentials" class="alert alert-danger hidden">Wrong credentials</div>
-                                        <div class="pull-right">
-                                            <button type="submit" class="btn btn-default" id="signin">Sign in</button>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                            <div class="col-md-6">
-                                <form  role="form" id="register-form">
-                                    <fieldset>
-                                        <legend>Register</legend>
-                                        <div id="register-group-email" class="form-group has-feedback">
-                                            <label class="control-label" for="registerEmail">Email</label>
-                                            <input type="email" class="form-control" id="registerEmail" name="email" placeholder="Email">
-                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
-                                        </div>
-                                        <div id="register-group-screenname" class="form-group has-feedback">
-                                            <label class="control-label" for="registerScreenname">Screenname</label>
-                                            <input type="text" class="form-control" id="registerScreenname" name="screenname" placeholder="Screenname">
-                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
-                                        </div>
-                                        <div id="register-group-password" class="form-group has-feedback">
-                                            <label class="control-label" for="registerPassword">Password</label>
-                                            <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Password">
-                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
-                                        </div>
-                                        <div id="register-group-passwordConfirm" class="form-group has-feedback">
-                                            <label class="control-label" for="registerPasswordConfirm">Confirm password</label>
-                                            <input type="password" class="form-control" id="registerPasswordConfirm" name="passwordConfirm" placeholder="Confirm password">
-                                            <span class="glyphicon glyphicon-remove form-control-feedback hidden icon"></span>
-                                        </div>
-                                        <div class="pull-right">
-                                            <button type="submit" class="btn btn-default" id="register">Register</button>
-                                        </div>
-                                    </fieldset>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <script src="lib/js/bootstrap.min.js"></script>
-        <script src="lib/js/bootbox.min.js"></script>
+        <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script>
                                         var type = 'prop-c';
         </script>

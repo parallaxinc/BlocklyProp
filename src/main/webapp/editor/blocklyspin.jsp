@@ -13,7 +13,7 @@
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<c:url value="/cdn/lib/Blob.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/term"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/FileSaver.min.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script>
@@ -23,7 +23,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/project.js"/>"></script>
         <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.css"/>" rel="stylesheet">
-        <link href="<c:url value="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<c:url value="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <table id="content_table">
@@ -32,24 +32,23 @@
                     <nav class="navbar navbar-default" role="navigation">
                         <div class="containter-fluid">
                             <div class="navbar-header">
-                                <a class="navbar-brand" href="index.html">BlocklyProp</a>
+                                <a class="navbar-brand" href="<c:url value="/index.jsp"/>">BlocklyProp</a>
                             </div>
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="help/index.html">Manual</a></li>
+                                    <!--  <li><a href="help/index.html">Manual</a></li> -->
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">New project<b class="caret"></b></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="blocklyscribbler.html">Scribbler</a></li>
-                                            <li><a href="blocklyspin.html">Spin</a></li>
-                                            <li><a href="blocklyc.html">Propeller C</a></li>
+                                            <li><a href="<c:url value="/editor/blocklyspin.jsp"/>">Spin</a></li>
+                                            <li><a href="<c:url value="/editor/blocklyc.jsp"/>">Propeller C</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="community.html">Community</a></li>
-                                            <li><a href="myprojects.html">My projects</a></li>
+                                            <li><a href="<c:url value="/projects.jsp"/>">Community projects</a></li>
+                                            <li><a href="<c:url value="/my/projects.jsp"/>">My projects</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">
@@ -95,7 +94,7 @@
             <tr>
                 <td id="content">
                     <div id="content_blocks">
-                        <iframe name="content_blocks" src="frame.html"></iframe>
+                        <iframe name="content_blocks" src="<c:url value="/cdn/framespin.html"/>"></iframe>
                     </div>
                     <!--div id="content_blocks" style="height:auto !important;height:400px; min-height:400px;"></div-->
                     <!--pre id="content_javascript"></pre>
@@ -268,8 +267,8 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <script src="lib/js/bootstrap.min.js"></script>
-        <script src="lib/js/bootbox.min.js"></script>
+        <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script>
                                         var type = 'spin';
         </script>
