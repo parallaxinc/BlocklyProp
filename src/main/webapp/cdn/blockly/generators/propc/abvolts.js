@@ -24,74 +24,74 @@
 
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
 //servo block
-Blockly.Language.ab_volt_in = {
+Blockly.Blocks.ab_volt_in = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
         this.setColour(314);
         this.appendDummyInput("")
-                .appendTitle("ADC channel")
-                .appendTitle(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+                .appendField("ADC channel")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
         this.setOutput(true, Number);
     }
 };
 
-Blockly.Language.ab_volt_v_in = {
+Blockly.Blocks.ab_volt_v_in = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
         this.setColour(314);
         this.appendDummyInput("")
-                .appendTitle("ADC in V channel")
-                .appendTitle(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+                .appendField("ADC in V channel")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
         this.setOutput(true, Number);
     }
 };
 
-Blockly.Language.ab_volt_out = {
+Blockly.Blocks.ab_volt_out = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
         this.setColour(314);
         this.appendDummyInput("")
-                .appendTitle("DAC channel")
-                .appendTitle(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+                .appendField("DAC channel")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
         this.appendValueInput("VALUE", Number)
                 .setCheck(Number)
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendTitle("Value");
+                .appendField("Value");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.Language.ab_volt_v_out = {
+Blockly.Blocks.ab_volt_v_out = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
         this.setColour(314);
         this.appendDummyInput("")
-                .appendTitle("DAC in V channel")
-                .appendTitle(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+                .appendField("DAC in V channel")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
         this.appendValueInput("VALUE", Number)
                 .setCheck(Number)
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendTitle("Value");
+                .appendField("Value");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 // define generators
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.ab_volt_in = function() {
-    var dropdown_channel = this.getTitleValue('CHANNEL');
+    var dropdown_channel = this.getFieldValue('CHANNEL');
 
     Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
@@ -103,7 +103,7 @@ Blockly.propc.ab_volt_in = function() {
 };
 
 Blockly.propc.ab_volt_v_in = function() {
-    var dropdown_channel = this.getTitleValue('CHANNEL');
+    var dropdown_channel = this.getFieldValue('CHANNEL');
 
     Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
@@ -115,8 +115,8 @@ Blockly.propc.ab_volt_v_in = function() {
 };
 
 Blockly.propc.ab_volt_out = function() {
-    var dropdown_channel = this.getTitleValue('CHANNEL');
-    var value = this.getTitleValue('VALUE') || '0';
+    var dropdown_channel = this.getFieldValue('CHANNEL');
+    var value = this.getFieldValue('VALUE') || '0';
 
     Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {
@@ -128,8 +128,8 @@ Blockly.propc.ab_volt_out = function() {
 };
 
 Blockly.propc.ab_volt_v_out = function() {
-    var dropdown_channel = this.getTitleValue('CHANNEL');
-    var value = this.getTitleValue('VALUE') || '0';
+    var dropdown_channel = this.getFieldValue('CHANNEL');
+    var value = this.getFieldValue('VALUE') || '0';
 
     Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {

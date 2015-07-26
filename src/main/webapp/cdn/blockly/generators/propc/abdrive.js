@@ -20,57 +20,57 @@
 /**
  * @fileoverview Generating Prop-C for basic blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
- * @author valetolpegin@gmail.com ( Vale Tolpegin )
  */
 'use strict';
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
-Blockly.Language.ab_drive_goto = {
-    category: 'Activitybot',
+Blockly.Blocks.ab_drive_goto = {
+    category: 'Drive',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput()
-                .appendTitle('Drive goto')
-                .appendTitle('Left')
-                .appendTitle(new Blockly.FieldTextInput('64',
-                        Blockly.Language.math_number.validator), 'LEFT')
-                .appendTitle('Right')
-                .appendTitle(new Blockly.FieldTextInput('64',
-                        Blockly.Language.math_number.validator), 'RIGHT');
+                .appendField('Drive goto')
+                .appendField('Left')
+                .appendField(new Blockly.FieldTextInput('64',
+                        Blockly.FieldTextInput.numberValidator), 'LEFT')
+                .appendField('Right')
+                .appendField(new Blockly.FieldTextInput('64',
+                        Blockly.FieldTextInput.numberValidator), 'RIGHT');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.Language.ab_drive_speed = {
-    category: 'Activitybot',
+Blockly.Blocks.ab_drive_speed = {
+    category: 'Drive',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput()
-                .appendTitle('Drive speed')
-                .appendTitle('Left')
-                .appendTitle(new Blockly.FieldTextInput('64',
-                        Blockly.Language.math_number.validator), 'LEFT')
-                .appendTitle('Right')
-                .appendTitle(new Blockly.FieldTextInput('64',
-                        Blockly.Language.math_number.validator), 'RIGHT');
+                .appendField('Drive speed')
+                .appendField('Left')
+                .appendField(new Blockly.FieldTextInput('64',
+                        Blockly.FieldTextInput.numberValidator), 'LEFT')
+                .appendField('Right')
+                .appendField(new Blockly.FieldTextInput('64',
+                        Blockly.FieldTextInput.numberValidator), 'RIGHT');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
+
 
 // define generators
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.ab_drive_goto = function() {
-    var left = Number(this.getTitleValue('LEFT'));
-    var right = Number(this.getTitleValue('RIGHT'));
+    var left = Number(this.getFieldValue('LEFT'));
+    var right = Number(this.getFieldValue('RIGHT'));
 
     Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
 
@@ -78,8 +78,8 @@ Blockly.propc.ab_drive_goto = function() {
 };
 
 Blockly.propc.ab_drive_speed = function() {
-    var left = Number(this.getTitleValue('LEFT'));
-    var right = Number(this.getTitleValue('RIGHT'));
+    var left = Number(this.getFieldValue('LEFT'));
+    var right = Number(this.getFieldValue('RIGHT'));
 
     Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
 

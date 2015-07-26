@@ -23,84 +23,78 @@
  */
 'use strict';
 
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
-Blockly.Language.variables_get = {
+Blockly.Blocks.variables_get = {
     // Variable getter.
     category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_GET_HELPURL,
     init: function() {
         this.setColour(330);
         this.appendDummyInput("")
-                .appendTitle(Blockly.LANG_VARIABLES_GET_TITLE_1)
-                .appendTitle(new Blockly.FieldVariable(
+                .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         this.setOutput(true, null);
         //      this.setTooltip(Blockly.LANG_VARIABLES_GET_TOOLTIP_1);
     },
     getVars: function() {
-        return [this.getTitleValue('VAR')];
+        return [this.getFieldValue('VAR')];
     },
     renameVar: function(oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
     }
 };
 
-Blockly.Language.variables_declare = {
+Blockly.Blocks.variables_declare = {
     // Variable setter.
     category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
     init: function() {
         this.setColour(330);
         this.appendValueInput('VALUE', null)
-                .appendTitle('Declare')
-                .appendTitle(new Blockly.FieldVariable(
+                .appendField('Declare')
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_SET_ITEM), 'VAR')
-                .appendTitle("as")
-                .appendTitle(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["char", "char"], ["unsigned int", "unsigned int"], ["signed char", "signed char"]]), "TYPE")
-                .appendTitle("value");
-        this.appendDummyInput( "" )
-            .appendTitle( "Volatile" )
-            .appendTitle( new Blockly.FieldDropdown( [["shared", "volatile "], ["not shared", ""]] ), 'VOLATILE' );
-        this.appendDummyInput( "" )
-            .appendTitle( "Static" )
-            .appendTitle( new Blockly.FieldDropdown( [["static", "static "], ["not static", ""]] ), 'STATIC' );
+                .appendField("as")
+                .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["char", "char"], ["unsigned int", "unsigned int"], ["signed char", "signed char"]]), "TYPE")
+                .appendField("value");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
 //        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
     getVars: function() {
-        return [this.getTitleValue('VAR')];
+        return [this.getFieldValue('VAR')];
     },
     renameVar: function(oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
     }
 };
 
-Blockly.Language.variables_set = {
+Blockly.Blocks.variables_set = {
     // Variable setter.
     category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
     init: function() {
         this.setColour(330);
         this.appendValueInput('VALUE')
-                .appendTitle(Blockly.LANG_VARIABLES_SET_TITLE_1)
-                .appendTitle(new Blockly.FieldVariable(
-                        Blockly.LANG_VARIABLES_SET_ITEM), 'VAR').appendTitle('=');
+                .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
+                .appendField(new Blockly.FieldVariable(
+                        Blockly.LANG_VARIABLES_SET_ITEM), 'VAR').appendField('=');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
 //        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
     getVars: function() {
-        return [this.getTitleValue('VAR')];
+        return [this.getFieldValue('VAR')];
     },
     renameVar: function(oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
     }
@@ -112,29 +106,25 @@ Blockly.Language.variables_set = {
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.variables_get = function() {
     // Variable getter.
-    var code = Blockly.propc.variableDB_.getName(this.getTitleValue('VAR'),
+    var code = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.variables_declare = function() {
-    //Volatile
-    var volatile = this.getTitleValue( 'VOLATILE' );
-    //Static
-    var staticVar = this.getTitleValue( 'STATIC' );
     // Variable setter.
-    var dropdown_type = this.getTitleValue('TYPE');
+    var dropdown_type = this.getFieldValue('TYPE');
     //TODO: settype to variable
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';
-    var varName = Blockly.propc.variableDB_.getName(this.getTitleValue('VAR'),
+    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     Blockly.propc.setups_['setup_var' + varName] = varName + ' = ' + argument0 + ';\n';
-    Blockly.propc.vartype_[varName] = volatile + staticVar + dropdown_type;
+    Blockly.propc.vartype_[varName] = dropdown_type;
     return '';
 };
 
@@ -142,7 +132,7 @@ Blockly.propc.variables_set = function() {
     // Variable setter.
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';
-    var varName = Blockly.propc.variableDB_.getName(this.getTitleValue('VAR'),
+    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
         Blockly.propc.vartype_[varName] = 'int';

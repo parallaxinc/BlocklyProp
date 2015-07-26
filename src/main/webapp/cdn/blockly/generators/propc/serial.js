@@ -24,36 +24,36 @@
 'use strict';
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
-Blockly.Language.serial_open = {
+Blockly.Blocks.serial_open = {
     category: 'Serial',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Serial init")
-                .appendTitle("rxPIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
-                .appendTitle("txPIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
+                .appendField("Serial init")
+                .appendField("rxPIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
+                .appendField("txPIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput("")
-                .appendTitle("Baud")
-                .appendTitle(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
+                .appendField("Baud")
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.Language.serial_tx_byte = {
+Blockly.Blocks.serial_tx_byte = {
     category: 'Serial',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Serial transmit");
+                .appendField("Serial transmit");
         this.appendValueInput('VALUE').setCheck(Number);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -61,42 +61,42 @@ Blockly.Language.serial_tx_byte = {
     }
 };
 
-Blockly.Language.serial_send_text = {
+Blockly.Blocks.serial_send_text = {
     category: 'Serial',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Serial transmit")
-                .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                .appendField("Serial transmit")
+                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
                         'media/quote0.png', 12, 12))
-                .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
                         'media/quote1.png', 12, 12));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.Language.serial_rx_byte = {
+Blockly.Blocks.serial_rx_byte = {
     category: 'Serial',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Serial read byte");
+                .appendField("Serial read byte");
         this.setOutput(true, Number);
 //        this.setInputsInline(true);
     }
 };
 
 // define generators
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.serial_open = function() {
-    var dropdown_rx_pin = this.getTitleValue('RXPIN');
-    var dropdown_tx_pin = this.getTitleValue('TXPIN');
-    var baud = this.getTitleValue('BAUD');
+    var dropdown_rx_pin = this.getFieldValue('RXPIN');
+    var dropdown_tx_pin = this.getFieldValue('TXPIN');
+    var baud = this.getFieldValue('BAUD');
 
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
     Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
@@ -118,7 +118,7 @@ Blockly.propc.serial_tx_byte = function() {
 };
 
 Blockly.propc.serial_send_text = function() {
-    var text = this.getTitleValue('TEXT');
+    var text = this.getFieldValue('TEXT');
 
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
     Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';

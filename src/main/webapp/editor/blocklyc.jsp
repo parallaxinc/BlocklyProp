@@ -21,6 +21,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/project.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/editor.js"/>"></script>
         <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.css"/>" rel="stylesheet">
         <link href="<c:url value="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />

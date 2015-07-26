@@ -23,43 +23,43 @@
 'use strict';
 
 
-if ( !Blockly.Language )
-    Blockly.Language = {};
+if ( !Blockly.Blocks )
+    Blockly.Blocks = {};
 
 
 //Joystick block
-Blockly.Language.joystick_input_yaxis = {
+Blockly.Blocks.joystick_input_yaxis = {
     category: 'Sensors',
     helpUrl: '',
     init: function() {
         this.setColour( 210 );
         this.appendDummyInput( "" )
-            .appendTitle( "Joystick" )
-            .appendTitle( "A/D y-axis PIN#" )
-            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]] ), "PINY" );
+            .appendField( "Joystick" )
+            .appendField( "A/D y-axis PIN#" )
+            .appendField( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]] ), "PINY" );
         this.setOutput( true, Number );
     }
 };
 
 //Joystick block
-Blockly.Language.joystick_input_xaxis = {
+Blockly.Blocks.joystick_input_xaxis = {
     category: 'Sensors',
     helpUrl: '',
     init: function() {
         this.setColour( 210 );
         this.appendDummyInput( "" )
-            .appendTitle( "Joystick" )
-            .appendTitle( "A/D x-axis PIN#" )
-            .appendTitle( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]] ), "PINX");
+            .appendField( "Joystick" )
+            .appendField( "A/D x-axis PIN#" )
+            .appendField( new Blockly.FieldDropdown( [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]] ), "PINX");
         this.setOutput( true, Number );
     }
 };
 
 //Define generators
-Blockly.propc = Blockly.Generator.get( 'propc' );
+//Blockly.propc = new Blockly.Generator( 'propc' );
 
 Blockly.propc.joystick_input_yaxis = function() {
-    var pin_number_yaxis = this.getTitleValue( 'PINY' );
+    var pin_number_yaxis = this.getFieldValue( 'PINY' );
 
     Blockly.propc.definitions_[ "include abvolts" ] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
@@ -71,7 +71,7 @@ Blockly.propc.joystick_input_yaxis = function() {
 };
 
 Blockly.propc.joystick_input_xaxis = function() {
-    var pin_number_xaxis = this.getTitleValue( 'PINX' );
+    var pin_number_xaxis = this.getFieldValue( 'PINX' );
 
     Blockly.propc.definitions_[ "include abvolts" ] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt'] === undefined) {

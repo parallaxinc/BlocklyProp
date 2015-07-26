@@ -23,31 +23,31 @@
  */
 'use strict';
 
-Blockly.Language.text = {
+Blockly.Blocks.text = {
   // Text value.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_TEXT_HELPURL,
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
-        'media/quote0.png', 12, 12))
-        .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
-        .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
-        'media/quote1.png', 12, 12));
+        .appendField(new Blockly.FieldImage(Blockly.pathToMedia +
+        'quote0.png', 12, 12))
+        .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+        .appendField(new Blockly.FieldImage(Blockly.pathToMedia +
+        'quote1.png', 12, 12));
     this.setOutput(true, String);
     this.setTooltip(Blockly.LANG_TEXT_TEXT_TOOLTIP);
   }
 };
 
-Blockly.Language.text_join = {
+Blockly.Blocks.text_join = {
   // Create a string made up of any number of elements of any type.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_JOIN_HELPURL,
   init: function() {
     this.setColour(160);
     this.appendValueInput('ADD0')
-        .appendTitle(Blockly.LANG_TEXT_JOIN_TITLE_CREATEWITH);
+        .appendField(Blockly.LANG_TEXT_JOIN_TITLE_CREATEWITH);
     this.appendValueInput('ADD1');
     this.setOutput(true, String);
     this.setMutator(new Blockly.Mutator(['text_create_join_item']));
@@ -67,14 +67,14 @@ Blockly.Language.text_join = {
     for (var x = 0; x < this.itemCount_; x++) {
       var input = this.appendValueInput('ADD' + x);
       if (x == 0) {
-        input.appendTitle(Blockly.LANG_TEXT_JOIN_TITLE_CREATEWITH);
+        input.appendField(Blockly.LANG_TEXT_JOIN_TITLE_CREATEWITH);
       }
     }
     if (this.itemCount_ == 0) {
       this.appendDummyInput('EMPTY')
-          .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+          .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
           'media/quote0.png', 12, 12))
-          .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+          .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
           'media/quote1.png', 12, 12));
     }
   },
@@ -106,7 +106,7 @@ Blockly.Language.text_join = {
     while (itemBlock) {
       var input = this.appendValueInput('ADD' + this.itemCount_);
       if (this.itemCount_ == 0) {
-        input.appendTitle(Blockly.LANG_TEXT_JOIN_TITLE_CREATEWITH);
+        input.appendField(Blockly.LANG_TEXT_JOIN_TITLE_CREATEWITH);
       }
       // Reconnect any child blocks.
       if (itemBlock.valueConnection_) {
@@ -118,9 +118,9 @@ Blockly.Language.text_join = {
     }
     if (this.itemCount_ == 0) {
       this.appendDummyInput('EMPTY')
-          .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+          .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
           'media/quote0.png', 12, 12))
-          .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+          .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
           'media/quote1.png', 12, 12));
     }
   },
@@ -138,24 +138,24 @@ Blockly.Language.text_join = {
   }
 };
 
-Blockly.Language.text_create_join_container = {
+Blockly.Blocks.text_create_join_container = {
   // Container.
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendTitle(Blockly.LANG_TEXT_CREATE_JOIN_TITLE_JOIN);
+        .appendField(Blockly.LANG_TEXT_CREATE_JOIN_TITLE_JOIN);
     this.appendStatementInput('STACK');
     this.setTooltip(Blockly.LANG_TEXT_CREATE_JOIN_TOOLTIP);
     this.contextMenu = false;
   }
 };
 
-Blockly.Language.text_create_join_item = {
+Blockly.Blocks.text_create_join_item = {
   // Add items.
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendTitle(Blockly.LANG_TEXT_CREATE_JOIN_ITEM_TITLE_ITEM);
+        .appendField(Blockly.LANG_TEXT_CREATE_JOIN_ITEM_TITLE_ITEM);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip(Blockly.LANG_TEXT_CREATE_JOIN_ITEM_TOOLTIP);
@@ -163,37 +163,37 @@ Blockly.Language.text_create_join_item = {
   }
 };
 
-Blockly.Language.text_append = {
+Blockly.Blocks.text_append = {
   // Append to a variable in place.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_APPEND_HELPURL,
   init: function() {
     this.setColour(160);
     this.appendValueInput('TEXT')
-        .appendTitle(Blockly.LANG_TEXT_APPEND_TO)
-        .appendTitle(new Blockly.FieldVariable(
+        .appendField(Blockly.LANG_TEXT_APPEND_TO)
+        .appendField(new Blockly.FieldVariable(
         Blockly.LANG_TEXT_APPEND_VARIABLE), 'VAR')
-        .appendTitle(Blockly.LANG_TEXT_APPEND_APPENDTEXT);
+        .appendField(Blockly.LANG_TEXT_APPEND_APPENDTEXT);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     // Assign 'this' to a variable for use in the tooltip closure below.
     var thisBlock = this;
     this.setTooltip(function() {
       return Blockly.LANG_TEXT_APPEND_TOOLTIP.replace('%1',
-          thisBlock.getTitleValue('VAR'));
+          thisBlock.getFieldValue('VAR'));
     });
   },
   getVars: function() {
-    return [this.getTitleValue('VAR')];
+    return [this.getFieldValue('VAR')];
   },
   renameVar: function(oldName, newName) {
-    if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+    if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
       this.setTitleValue(newName, 'VAR');
     }
   }
 };
 
-Blockly.Language.text_length = {
+Blockly.Blocks.text_length = {
   // String length.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_LENGTH_HELPURL,
@@ -201,13 +201,13 @@ Blockly.Language.text_length = {
     this.setColour(160);
     this.appendValueInput('VALUE')
         .setCheck([String, Array])
-        .appendTitle(Blockly.LANG_TEXT_LENGTH_INPUT_LENGTH);
+        .appendField(Blockly.LANG_TEXT_LENGTH_INPUT_LENGTH);
     this.setOutput(true, Number);
     this.setTooltip(Blockly.LANG_TEXT_LENGTH_TOOLTIP);
   }
 };
 
-Blockly.Language.text_isEmpty = {
+Blockly.Blocks.text_isEmpty = {
   // Is the string null?
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_ISEMPTY_HELPURL,
@@ -215,13 +215,13 @@ Blockly.Language.text_isEmpty = {
     this.setColour(160);
     this.appendValueInput('VALUE')
         .setCheck([String, Array])
-        .appendTitle(Blockly.LANG_TEXT_ISEMPTY_INPUT_ISEMPTY);
+        .appendField(Blockly.LANG_TEXT_ISEMPTY_INPUT_ISEMPTY);
     this.setOutput(true, Boolean);
     this.setTooltip(Blockly.LANG_TEXT_ISEMPTY_TOOLTIP);
   }
 };
 
-Blockly.Language.text_endString = {
+Blockly.Blocks.text_endString = {
   // Return a leading or trailing substring.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_ENDSTRING_HELPURL,
@@ -231,20 +231,20 @@ Blockly.Language.text_endString = {
     var menu = new Blockly.FieldDropdown(this.OPERATORS);
     this.appendValueInput('NUM')
         .setCheck(Number)
-        .appendTitle(menu, 'END');
+        .appendField(menu, 'END');
     this.appendValueInput('TEXT')
         .setCheck(String)
-        .appendTitle(Blockly.LANG_TEXT_ENDSTRING_INPUT);
+        .appendField(Blockly.LANG_TEXT_ENDSTRING_INPUT);
     this.setInputsInline(true);
     this.setTooltip(Blockly.LANG_TEXT_ENDSTRING_TOOLTIP);
   }
 };
 
-Blockly.Language.text_endString.OPERATORS =
+Blockly.Blocks.text_endString.OPERATORS =
     [[Blockly.LANG_TEXT_ENDSTRING_OPERATOR_FIRST, 'FIRST'],
      [Blockly.LANG_TEXT_ENDSTRING_OPERATOR_LAST, 'LAST']];
 
-Blockly.Language.text_indexOf = {
+Blockly.Blocks.text_indexOf = {
   // Find a substring in the text.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_INDEXOF_HELPURL,
@@ -253,22 +253,22 @@ Blockly.Language.text_indexOf = {
     this.setOutput(true, Number);
     this.appendValueInput('FIND')
         .setCheck(String)
-        .appendTitle(Blockly.LANG_TEXT_INDEXOF_TITLE_FIND)
-        .appendTitle(new Blockly.FieldDropdown(this.OPERATORS), 'END')
-        .appendTitle(Blockly.LANG_TEXT_INDEXOF_INPUT_OCCURRENCE);
+        .appendField(Blockly.LANG_TEXT_INDEXOF_TITLE_FIND)
+        .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'END')
+        .appendField(Blockly.LANG_TEXT_INDEXOF_INPUT_OCCURRENCE);
     this.appendValueInput('VALUE')
         .setCheck(String)
-        .appendTitle(Blockly.LANG_TEXT_INDEXOF_INPUT_INTEXT);
+        .appendField(Blockly.LANG_TEXT_INDEXOF_INPUT_INTEXT);
     this.setInputsInline(true);
     this.setTooltip(Blockly.LANG_TEXT_INDEXOF_TOOLTIP);
   }
 };
 
-Blockly.Language.text_indexOf.OPERATORS =
+Blockly.Blocks.text_indexOf.OPERATORS =
     [[Blockly.LANG_TEXT_INDEXOF_OPERATOR_FIRST, 'FIRST'],
      [Blockly.LANG_TEXT_INDEXOF_OPERATOR_LAST, 'LAST']];
 
-Blockly.Language.text_charAt = {
+Blockly.Blocks.text_charAt = {
   // Get a character from the string.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_CHARAT_HELPURL,
@@ -277,16 +277,16 @@ Blockly.Language.text_charAt = {
     this.setOutput(true, String);
     this.appendValueInput('AT')
         .setCheck(Number)
-        .appendTitle(Blockly.LANG_TEXT_CHARAT_INPUT_AT);
+        .appendField(Blockly.LANG_TEXT_CHARAT_INPUT_AT);
     this.appendValueInput('VALUE')
         .setCheck(String)
-        .appendTitle(Blockly.LANG_TEXT_CHARAT_INPUT_INTEXT);
+        .appendField(Blockly.LANG_TEXT_CHARAT_INPUT_INTEXT);
     this.setInputsInline(true);
     this.setTooltip(Blockly.LANG_TEXT_CHARAT_TOOLTIP);
   }
 };
 
-Blockly.Language.text_changeCase = {
+Blockly.Blocks.text_changeCase = {
   // Change capitalization.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_CHANGECASE_HELPURL,
@@ -294,19 +294,19 @@ Blockly.Language.text_changeCase = {
     this.setColour(160);
     this.appendValueInput('TEXT')
         .setCheck(String)
-        .appendTitle(Blockly.LANG_TEXT_CHANGECASE_TITLE_TO)
-        .appendTitle(new Blockly.FieldDropdown(this.OPERATORS), 'CASE');
+        .appendField(Blockly.LANG_TEXT_CHANGECASE_TITLE_TO)
+        .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'CASE');
     this.setOutput(true, String);
     this.setTooltip(Blockly.LANG_TEXT_CHANGECASE_TOOLTIP);
   }
 };
 
-Blockly.Language.text_changeCase.OPERATORS =
+Blockly.Blocks.text_changeCase.OPERATORS =
     [[Blockly.LANG_TEXT_CHANGECASE_OPERATOR_UPPERCASE, 'UPPERCASE'],
      [Blockly.LANG_TEXT_CHANGECASE_OPERATOR_LOWERCASE, 'LOWERCASE'],
      [Blockly.LANG_TEXT_CHANGECASE_OPERATOR_TITLECASE, 'TITLECASE']];
 
-Blockly.Language.text_trim = {
+Blockly.Blocks.text_trim = {
   // Trim spaces.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_TRIM_HELPURL,
@@ -321,16 +321,16 @@ Blockly.Language.text_trim = {
     });
     this.appendValueInput('TEXT')
         .setCheck(String)
-        .appendTitle(Blockly.LANG_TEXT_TRIM_TITLE_SPACE)
-        .appendTitle(menu, 'MODE')
-        .appendTitle(Blockly.LANG_TEXT_TRIM_TITLE_SIDES, 'SIDES');
+        .appendField(Blockly.LANG_TEXT_TRIM_TITLE_SPACE)
+        .appendField(menu, 'MODE')
+        .appendField(Blockly.LANG_TEXT_TRIM_TITLE_SIDES, 'SIDES');
     this.setOutput(true, String);
     this.setTooltip(Blockly.LANG_TEXT_TRIM_TOOLTIP);
   },
   mutationToDom: function() {
     // Save whether the 'sides' title should be plural or singular.
     var container = document.createElement('mutation');
-    var plural = (this.getTitleValue('MODE') == 'BOTH');
+    var plural = (this.getFieldValue('MODE') == 'BOTH');
     container.setAttribute('plural', plural);
     return container;
   },
@@ -342,45 +342,45 @@ Blockly.Language.text_trim = {
   }
 };
 
-Blockly.Language.text_trim.OPERATORS =
+Blockly.Blocks.text_trim.OPERATORS =
     [[Blockly.LANG_TEXT_TRIM_OPERATOR_BOTH, 'BOTH'],
      [Blockly.LANG_TEXT_TRIM_OPERATOR_LEFT, 'LEFT'],
      [Blockly.LANG_TEXT_TRIM_OPERATOR_RIGHT, 'RIGHT']];
 
-Blockly.Language.text_print = {
+Blockly.Blocks.text_print = {
   // Print statement.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_PRINT_HELPURL,
   init: function() {
     this.setColour(160);
     this.appendValueInput('TEXT')
-        .appendTitle(Blockly.LANG_TEXT_PRINT_TITLE_PRINT);
+        .appendField(Blockly.LANG_TEXT_PRINT_TITLE_PRINT);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip(Blockly.LANG_TEXT_PRINT_TOOLTIP);
   }
 };
 
-Blockly.Language.text_prompt = {
+Blockly.Blocks.text_prompt = {
   // Prompt function.
   category: Blockly.LANG_CATEGORY_TEXT,
   helpUrl: Blockly.LANG_TEXT_PROMPT_HELPURL,
   init: function() {
     this.setColour(160);
     this.appendDummyInput()
-        .appendTitle(Blockly.LANG_TEXT_PROMPT_TITLE_PROMPT_FOR)
-        .appendTitle(new Blockly.FieldDropdown(this.TYPES), 'TYPE')
-        .appendTitle(Blockly.LANG_TEXT_PROMPT_TITILE_WITH_MESSAGE)
-        .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+        .appendField(Blockly.LANG_TEXT_PROMPT_TITLE_PROMPT_FOR)
+        .appendField(new Blockly.FieldDropdown(this.TYPES), 'TYPE')
+        .appendField(Blockly.LANG_TEXT_PROMPT_TITILE_WITH_MESSAGE)
+        .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
         'media/quote0.png', 12, 12))
-        .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
-        .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+        .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+        .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
         'media/quote1.png', 12, 12));
     this.setOutput(true, [Number, String]);
     this.setTooltip(Blockly.LANG_TEXT_PROMPT_TOOLTIP);
   }
 };
 
-Blockly.Language.text_prompt.TYPES =
+Blockly.Blocks.text_prompt.TYPES =
     [[Blockly.LANG_TEXT_PROMPT_TYPE_TEXT, 'TEXT'],
      [Blockly.LANG_TEXT_PROMPT_TYPE_NUMBER, 'NUMBER']];

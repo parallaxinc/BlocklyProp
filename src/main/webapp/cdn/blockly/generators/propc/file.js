@@ -24,31 +24,31 @@
 'use strict';
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
-Blockly.Language.file_open = {
+Blockly.Blocks.file_open = {
     category: 'File',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-            .appendTitle("Open file")
-            .appendTitle(new Blockly.FieldTextInput('file.txt'), 'FILE')
-            .appendTitle("mode")
-            .appendTitle(new Blockly.FieldDropdown([["read", "r"], ["write", "w"]]), "MODE");
+            .appendField("Open file")
+            .appendField(new Blockly.FieldTextInput('file.txt'), 'FILE')
+            .appendField("mode")
+            .appendField(new Blockly.FieldDropdown([["read", "r"], ["write", "w"]]), "MODE");
         this.setOutput(true, 'Pointer');
     }
 };
 
-Blockly.Language.file_close = {
+Blockly.Blocks.file_close = {
     category: 'File',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-            .appendTitle("Close file");
+            .appendField("Close file");
         this.appendValueInput('FILE');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -58,27 +58,27 @@ Blockly.Language.file_close = {
 
 
 // define generators
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.file_open = function() {
-    var file = this.getTitleValue('FILE');
-    var declared_file = file.replace( ".txt", "" );
-    var mode = this.getTitleValue('MODE');
+    var file = this.getFieldValue('FILE');
+    var mode = this.getFieldValue('MODE');
 
-    Blockly.propc.setups_[ "file" + declared_file ] = 'FILE* fp_' + declared_file + ' = fopen("' + file + '", "' + mode + '");\n';
+ //   Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
 
-    return '';
+    var code = 'fopen("' + file + '", "' + mode + '")';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 
 Blockly.propc.file_close = function() {
     var file = Blockly.propc.valueToCode(this, 'FILE', Blockly.propc.ORDER_UNARY_PREFIX);
-    
-    if ( Blockly.propc.setups_[ "file" + file ] === undefined )
-    {
-        return '// Missing file declaration';
-    } else
-    {
-        return 'fclose(' + file + ');\n';
+
+    //   Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+
+    if (file) {
+        return 'fclose(' + file + ');\n'
+    } else {
+        return '// Missing file pointer';
     }
 };

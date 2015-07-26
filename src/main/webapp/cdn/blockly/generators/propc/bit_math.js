@@ -26,17 +26,17 @@
 
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
 
 
 // define generators
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 // Shift
-Blockly.Language.bit_math_shift = {
+Blockly.Blocks.bit_math_shift = {
     category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
     init: function() {
@@ -46,19 +46,19 @@ Blockly.Language.bit_math_shift = {
                 .setCheck(Number);
         this.appendValueInput('B')
                 .setCheck(Number)
-                .appendTitle(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("");
     }
 };
 
-Blockly.Language.bit_math_shift.OPERATORS =
+Blockly.Blocks.bit_math_shift.OPERATORS =
         [["Shift left", 'LEFT'],
             ["Shift right", 'RIGHT']];
 
 Blockly.propc.bit_math_shift = function() {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_shift.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];
@@ -78,7 +78,7 @@ Blockly.propc.bit_math_shift.OPERATORS = {
 };
 
 // Rotate
-Blockly.Language.bit_math_rotate = {
+Blockly.Blocks.bit_math_rotate = {
     category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
     init: function() {
@@ -88,19 +88,19 @@ Blockly.Language.bit_math_rotate = {
                 .setCheck(Number);
         this.appendValueInput('B')
                 .setCheck(Number)
-                .appendTitle(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("");
     }
 };
 
-Blockly.Language.bit_math_rotate.OPERATORS =
+Blockly.Blocks.bit_math_rotate.OPERATORS =
         [["Rotate left", 'LEFT'],
             ["Rotate right", 'RIGHT']];
 
 Blockly.propc.bit_math_rotate = function() {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_rotate.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];
@@ -120,7 +120,7 @@ Blockly.propc.bit_math_rotate.OPERATORS = {
 };
 
 // BIT-wise operations
-Blockly.Language.bit_math_operations = {
+Blockly.Blocks.bit_math_operations = {
     category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
     init: function() {
@@ -130,20 +130,20 @@ Blockly.Language.bit_math_operations = {
                 .setCheck(Number);
         this.appendValueInput('B')
                 .setCheck(Number)
-                .appendTitle(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("");
     }
 };
 
-Blockly.Language.bit_math_operations.OPERATORS =
+Blockly.Blocks.bit_math_operations.OPERATORS =
         [["Bit AND", 'AND'],
             ["Bit OR", 'OR'],
             ["Bit XOR", 'XOR']];
 
 Blockly.propc.bit_math_operations = function() {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_operations.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];
@@ -164,7 +164,7 @@ Blockly.propc.bit_math_operations.OPERATORS = {
 };
 
 // NOT
-Blockly.Language.bit_math_not = {
+Blockly.Blocks.bit_math_not = {
     // Rounding functions.
     category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
@@ -174,7 +174,7 @@ Blockly.Language.bit_math_not = {
 
         this.appendValueInput('VAR')
                 .setCheck(Number)
-                .appendTitle('Bit NOT');
+                .appendField('Bit NOT');
         this.setTooltip("");
     }
 };

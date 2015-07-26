@@ -25,34 +25,34 @@
 'use strict';
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
-Blockly.Language.console_print = {
+Blockly.Blocks.console_print = {
     category: 'Console',
     helpUrl: '',
     init: function() {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Print")
-                .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                .appendField("Print")
+                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
                         'media/quote0.png', 12, 12))
-                .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
                         'media/quote1.png', 12, 12));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.Language.console_print_variables = {
+Blockly.Blocks.console_print_variables = {
     category: 'Console',
     helpUrl: '',
     init: function() {
         this.setColour( 180 );
         this.appendValueInput( 'VALUE' )
-            .appendTitle( "Print" );
+            .appendField( "Print" );
         this.setInputsInline( true );
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
@@ -61,10 +61,10 @@ Blockly.Language.console_print_variables = {
 
 
 // define generators
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.console_print = function() {
-    var text = this.getTitleValue('TEXT');
+    var text = this.getFieldValue('TEXT');
 
     return 'print("' + text + '\\r");\n';
 };

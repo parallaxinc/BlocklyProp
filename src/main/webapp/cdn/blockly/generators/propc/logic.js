@@ -23,11 +23,11 @@
  */
 'use strict';
 
-Blockly.propc = Blockly.Generator.get('propc');
+//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.logic_compare = function() {
     // Comparison operator.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var operator = Blockly.propc.logic_compare.OPERATORS[mode];
     var order = (operator == '==' || operator == '!=') ?
             Blockly.propc.ORDER_EQUALITY : Blockly.propc.ORDER_RELATIONAL;
@@ -48,7 +48,7 @@ Blockly.propc.logic_compare.OPERATORS = {
 
 Blockly.propc.logic_operation = function() {
     // Operations 'and', 'or'.
-    var operator = (this.getTitleValue('OP') == 'AND') ? '&&' : '||';
+    var operator = (this.getFieldValue('OP') == 'AND') ? '&&' : '||';
     var order = (operator == '&&') ? Blockly.propc.ORDER_LOGICAL_AND :
             Blockly.propc.ORDER_LOGICAL_OR;
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
@@ -67,6 +67,6 @@ Blockly.propc.logic_negate = function() {
 
 Blockly.propc.logic_boolean = function() {
     // Boolean values true and false.
-    var code = (this.getTitleValue('BOOL') == 'TRUE') ? '1' : '0';
+    var code = (this.getFieldValue('BOOL') == 'TRUE') ? '1' : '0';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };

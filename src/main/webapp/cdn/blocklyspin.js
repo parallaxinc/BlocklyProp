@@ -21,8 +21,6 @@
  }
  Blockly.Language = newLanguage;*/
 
-var BlocklyProp = {};
-
 /**
  * List of tab names.
  * @private
@@ -33,13 +31,14 @@ var selected = 'blocks';
 
 var term = null;
 
+
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} id ID of tab clicked.
  */
 function tabClick(id) {
     // If the XML tab was open, save and render the content.
-    if (document.getElementById('tab_xml').className == 'tabon') {
+    if (document.getElementById('tab_xml').className == 'active') {
         var xmlTextarea = document.getElementById('textarea_xml');
         var xmlText = xmlTextarea.value;
         var xmlDom = null;
@@ -62,12 +61,16 @@ function tabClick(id) {
     // Deselect all tabs and hide all panes.
     for (var x in TABS_) {
         document.getElementById('tab_' + TABS_[x]).className = 'taboff';
-        document.getElementById('content_' + TABS_[x]).style.display = 'none';
+        if (document.getElementById('content_' + TABS_[x])) {
+            document.getElementById('content_' + TABS_[x]).style.display = 'none';
+        } else {
+//            document.getElementByName('content_' + TABS_[x])[0].style.display = 'none';
+        }
     }
 
     // Select the active tab.
     selected = id.replace('tab_', '');
-    document.getElementById(id).className = 'tabon';
+    document.getElementById(id).className = 'active';
     // Show the selected pane.
     var content = document.getElementById('content_' + selected);
     content.style.display = 'block';
@@ -99,6 +102,7 @@ function renderContent() {
     } else if (content.id == 'content_spin') {
         //content.innerHTML = Blockly.Generator.workspaceToCode('Arduino');
         var spinTextarea = document.getElementById('textarea_spin');
+        console.log('workspace to code: Spin');
         spinTextarea.value = Blockly.Generator.workspaceToCode('Spin');
         spinTextarea.focus();
     }
@@ -126,105 +130,79 @@ function init(blockly) {
             // Account for the 19 pixel margin and on each side.
         }, 1);
     }
-
-//    auto_save_and_restore_blocks();
-
-    //load from url parameter (single param)
-    //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
-    var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
-    if (dest) {
-        load_by_url(dest);
-    }
+    loadProject();
 }
 
 /**
  *
  */
 function compile() {
-    var spinCode = Blockly.Generator.workspaceToCode('Spin');
+    if (client_available) {
+        var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
+       $("#compile-dialog-title").text('Compile');
+       $("#compile-console").val('');
+       $('#compile-dialog').modal('show');
+
+       $.post(client_url + 'compile.action', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
+           $("#compile-console").val(data.message);
+           console.log(data);
+       });
+   } else {
     $("#compile-dialog-title").text('Compile');
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
-
-    // Store data in blob.
-    // var builder = new BlobBuilder();
-    // builder.append(data);
-    // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-    //console.log("Compiling");
-
-    $.post('/webapp/propeller.action', {action: "COMPILE", code: spinCode}, function(data) {
-        $("#compile-console").val(data.message);
-        console.log(data);
-    });
-
-//    var blob = new Blob([data], {type: 'text/xml'});
-//    saveAs(blob, 'spin.xml');
+    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+   }
 }
 
 /**
  *
  */
 function loadIntoRam() {
-    var spinCode = Blockly.Generator.workspaceToCode('Spin');
+    if (client_available) {
+        var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
-    $("#compile-dialog-title").text('Load into ram');
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
+        $("#compile-dialog-title").text('Compile');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
 
-    // Store data in blob.
-    // var builder = new BlobBuilder();
-    // builder.append(data);
-    // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-    //console.log("Compiling");
-
-    $.post('/webapp/propeller.action', {action: "LOAD_RAM", code: spinCode, comPort: getComPort()}, function(data) {
-        var combinedMessage = '';
-        data.forEach(function(dataPart) {
-            if (combinedMessage.length > 0) {
-                combinedMessage += '\n\n';
-            }
-            combinedMessage += dataPart.message;
+        $.post(client_url + 'compile.action', {action: "RAM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
         });
-        $("#compile-console").val(combinedMessage);
-        console.log(data);
-    });
+    } else {
+        $("#compile-dialog-title").text('Load into ram');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
 
-//    var blob = new Blob([data], {type: 'text/xml'});
-//    saveAs(blob, 'spin.xml');
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 /**
  *
  */
 function loadIntoEeprom() {
-    var spinCode = Blockly.Generator.workspaceToCode('Spin');
+    if (client_available) {
+        var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
-    $("#compile-dialog-title").text('Load into eeprom');
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
+        $("#compile-dialog-title").text('Compile');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
 
-    // Store data in blob.
-    // var builder = new BlobBuilder();
-    // builder.append(data);
-    // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-    //console.log("Compiling");
-
-    $.post('/webapp/propeller.action', {action: "LOAD_EEPROM", code: spinCode, comPort: getComPort()}, function(data) {
-        var combinedMessage = '';
-        data.forEach(function(dataPart) {
-            if (combinedMessage.length > 0) {
-                combinedMessage += '\n\n';
-            }
-            combinedMessage += dataPart.message;
+        $.post(client_url + 'compile.action', {action: "EEPROM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
         });
-        $("#compile-console").val(combinedMessage);
-        console.log(data);
-    });
+    } else {
+        $("#compile-dialog-title").text('Load into eeprom');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
 
-//    var blob = new Blob([data], {type: 'text/xml'});
-//    saveAs(blob, 'spin.xml');
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 function serial_console() {
@@ -240,59 +218,100 @@ function serial_console() {
         newTerminal = true;
     }
 
-    var url = document.location.protocol + document.location.host + '/webapp/websockets/serial.connect';
-    url = url.replace('http', 'ws');
-    var connection = new WebSocket(url);
+    if (client_available) {
+        var url = client_url + 'serial.connect';
+        url = url.replace('http', 'ws');
+        var connection = new WebSocket(url);
 
-    // When the connection is open, open com port
-    connection.onopen = function() {
-        connection.send('+++ open port ' + getComPort());
-    };
-    // Log errors
-    connection.onerror = function(error) {
-        console.log('WebSocket Error ' + error);
-        console.log(error);
-        term.destroy();
-    };
-    // Log messages from the server
-    connection.onmessage = function(e) {
-        //console.log('Server: ' + e.data);
-        term.write(e.data);
-    };
+        // When the connection is open, open com port
+        connection.onopen = function() {
+            connection.send('+++ open port ' + getComPort());
 
-    term.on('data', function(data) {
-        //console.log(data);
-        connection.send(data);
-    });
+        };
+        // Log errors
+        connection.onerror = function(error) {
+            console.log('WebSocket Error ' + error);
+            console.log(error);
+            term.destroy();
+        };
+        // Log messages from the server
+        connection.onmessage = function(e) {
+            //console.log('Server: ' + e.data);
+            term.write(e.data);
+        };
 
-    if (newTerminal) {
-        term.open(document.getElementById("serial_console"));
+        term.on('data', function(data) {
+            //console.log(data);
+            connection.send(data);
+        });
+
+        if (newTerminal) {
+            term.open(document.getElementById("serial_console"));
+        }
+        connection.onClose = function() {
+          //  term.destroy();
+        };
+
+        $('#console-dialog').on('hidden.bs.modal', function() {
+            connection.close();
+        });
+    } else {
+        term.on('data', function(data) {
+            data = data.replace('\r', '\r\n');
+            term.write(data);
+        });
+
+        if (newTerminal) {
+            term.open(document.getElementById("serial_console"));
+            term.write("Simulated terminal because you are in demo mode\n\r");
+
+            term.write("Connection established with: " + getComPort() + "\n\r");
+        }
     }
-    connection.onClose = function() {
-        term.destroy();
-    };
 
     $('#console-dialog').modal('show');
-    $('#console-dialog').on('hidden.bs.modal', function() {
-        connection.close();
-    });
 }
 
-$(document).ready(function() {
-    $('#setup-dialog').modal('show');
-    $('#setup-dialog').on('hidden.bs.modal', function() {
-        window.frames["content_blocks"].setProfile($('#board-type').val());
-        window.frames["content_blocks"].init();
-    });
-
-    $.get("/webapp/propeller.action", function(data) {
+check_com_ports = function() {
+    var selected_port = $("#comPort").val();
+    $.get(client_url + "ports.json", function(data) {
         $("#comPort").empty();
         data.forEach(function(port) {
             $("#comPort").append($('<option>', {
                 text: port
             }));
         });
+        select_com_port(selected_port);
+        client_available = true;
+    }).fail(function() {
+        $("#comPort").empty();
+        $("#comPort").append($('<option>', {
+            text: 'COM1'
+        }));
+        $("#comPort").append($('<option>', {
+            text: 'COM3'
+        }));
+        $("#comPort").append($('<option>', {
+            text: 'COM4'
+        }));
+        select_com_port(selected_port);
+        client_available = false;
     });
+
+};
+
+select_com_port = function(com_port) {
+    if (com_port !== null) {
+        $("#comPort").val(com_port);
+    }
+    if ($("#comPort").val() === null && $('#comPort option').size() > 0) {
+        $("#comPort").val($('#comPort option:first').text());
+    }
+};
+
+$(document).ready(function() {
+    check_com_ports();
+    
 });
 
 getComPort = function() {

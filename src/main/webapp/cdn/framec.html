@@ -29,16 +29,7 @@
         <script type="text/javascript" src="blockly/generators/propc/PIRSensor.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/pressure.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/TiltandAcceleration.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/activitybot_library.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/GPS.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/wavplayer.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/I2C.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/RFID.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/rc_time.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/sd_card.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/tv_remote.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/sound_impact.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/eeprom.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/distance.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/joystick.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/abdrive.js"></script>
@@ -72,32 +63,24 @@
                 // Whitelist of blocks to keep.
                 var newLanguage = {}
                 var keepers = [
-                    // ActivityBot
-                    'ab_drive_speed', 'ab_drive_goto', 'activitybot_ramp_step_toward', 'activitybot_set_ramp_step', 'activitybot_calibrate', 'activitybot_display_calibration',
-                    //EEPROM
-                    'eeprom_int_to', 'eeprom_int_from', 'eeprom_float_to', 'eeprom_float_from', 'eeprom_text_to', 'eeprom_text_from',
-                    //I2C
-                    'i2c_new_bus', 'i2c_in', 'i2c_out',
-                    //sd_card
-                    'sd_card_mount', 'sd_card_int_to', 'sd_card_int_from', 'sd_card_float_to', 'sd_card_float_from', 'sd_card_text_to', 'sd_card_text_from',
                     //io
 //                    'inout_highlow',
-                    'inout_digital_write', 'inout_digital_read', 'inout_digital_write_pin', 'inout_digital_read_pin', 'base_freqout', 'pin_high', 'pin_low', 'simpletools_library_toggle_pin', 'simpletools_library_reverse_pin', 'simpletools_library_get_pin_state', 'simpletools_library_get_pin_output', 'simpletools_library_set_pin_direction', 'simpletools_library_set_pin_output', 'simpletools_library_get_pin_group_states', 'simpletools_library_get_pin_group_directions', 'simpletools_library_get_pin_group_outputs', 'simpletools_library_set_pin_group_directions', 'simpletools_library_set_pin_group_outputs', 'rc_charge', 'rc_discharge', 'pulse_in', 'pulse_out', 'shift_in', 'shift_out', 'pwm_start', 'pwm_stop', 'pwm_set',
+//                    'inout_digital_write', 'inout_digital_read', 'inout_digital_write_pin', 'inout_digital_read_pin', 'base_freqout',
 //                    'inout_analog_write', 'inout_analog_read',
 //                    'serial_print', 'inout_buildin_led',
                     //servo
-                    'servo_move', 'servo_speed', 'servo_set_ramp', 'servodiffdrive_library_drive_pins', 'servodiffdrive_library_drive_speed', 'servodiffdrive_library_drive_setRamp', 'servodiffdrive_library_drive_sleep', 'servodiffdrive_library_drive_stop', // 'servo_read_degrees',
+//                    'servo_move', // 'servo_read_degrees',
                     //sensors
-                    'sensor_ping', 'PIR_Sensor', 'joystick_input_xaxis', 'joystick_input_yaxis', 'MX2125_acceleration_xaxis',
-                    'MX2125_acceleration_yaxis', 'MMA7455_acceleration', 'SF02_Laser_Rangefinder', 'etape_rc_time',
-                    'PAM_7Q_Init', 'PAM_7Q_Latitude', 'PAM_7Q_Longitude', 'PAM_7Q_Velocity', 'PAM_7Q_Heading', 'PAM_7Q_Altitude',
-                    'PAM_7Q_SatsTracked', 'etape_voltage_input', 'RFID_get', 'RFID_enable', 'RFID_disable', 'RFID_close', 'sound_impact_run', 'sound_impact_get_count', 'sound_impact_end', 'sirc_library', 'MX2125_rotation', 'MX2125_tilt', 'wav_play', 'wav_status', 'wav_volume', 'wav_stop', 'compass3d_init', 'compass3d_read',
+//                    'sensor_ping', 'PIR_Sensor', 'joystick_input_xaxis', 'joystick_input_yaxis', 'MX2125_acceleration_xaxis',
+//                    'MX2125_acceleration_yaxis', 'MMA7455_acceleration', 'SF02_Laser_Rangefinder', 'etape_rc_time',
+//                    'PAM_7Q_Init', 'PAM_7Q_Latitude', 'PAM_7Q_Longitude', 'PAM_7Q_Velocity', 'PAM_7Q_Heading', 'PAM_7Q_Altitude',
+//                    'PAM_7Q_SatsTracked', 'etape_voltage_input',
                     //cog
-                    'cog_new', 'cog_end',
+//                    'cog_new',
                     //console
-                    'console_print', 'console_print_variables',
+//                    'console_print', 'console_print_variables',
                     //debug lcd
-                    'debug_lcd_init', 'debug_lcd_clear', 'debug_lcd_print', 'debug_lcd_number', 'debug_lcd_action',
+//                   'debug_lcd_init', 'debug_lcd_clear', 'debug_lcd_print', 'debug_lcd_number', 'debug_lcd_action',
                     //grove analog
 //                    'grove_rotary_angle', 'grove_temporature_sensor', 'grove_sound_sensor', 'grove_thumb_joystick',
                     //grove
@@ -113,45 +96,47 @@
                     //grove bluetooth
                     //'grove_bluetooth_slave',
                     //control
-                    'base_delay', 'controls_repeat_forever', 'controls_repeat', 'controls_if', 'controls_if_if', 'controls_if_elseif', 'controls_if_else',
+//                    'base_delay', 'controls_repeat_forever', 'controls_repeat', 'controls_if', 'controls_if_if', 'controls_if_elseif', 'controls_if_else',
                     //'controls_whileUntil', 'controls_flow_statements',
                     //math
-                    'math_number', 'math_arithmetic', 'math_single', 'math_limit', 'math_crement',
+                    'math_number', //, 'math_arithmetic', 'math_single', 'math_limit', 'math_crement',
                     //bit math
-                    'bit_math_shift', /* 'bit_math_rotate',*/ 'bit_math_operations', 'bit_math_not',
+//                    'bit_math_shift', /* 'bit_math_rotate',*/ 'bit_math_operations', 'bit_math_not',
 //                    'base_map', 'math_number', 'math_arithmetic', //'math_modulo',
                     //text
-//                    'text', //'text_join','text_create_join_container','text_create_join_item',
-                    //logic
-                    'logic_compare', 'logic_operation', 'logic_negate', 'logic_boolean', //'logic_null',
-                    //variable
-                    'variables_get', 'variables_set', 'variables_declare',
-                    //pointers
-                    'pointers_get', 'pointers_set', 'pointers_declare',
-                    //procedure
-                    'procedures_defnoreturn', 'procedures_defreturn', 'procedures_callnoreturn', 'procedures_callreturn', 'procedures_mutatorcontainer', 'procedures_mutatorarg',
+                    'text' //'text_join','text_create_join_container','text_create_join_item',
+                            //logic
+//                    'logic_compare', 'logic_operation', 'logic_negate', 'logic_boolean', //'logic_null',
+                            //variable
+//                    'variables_get', 'variables_set', 'variables_declare',
+                            //pointers
+//                    'pointers_get', 'pointers_set', 'pointers_declare',
+                            //procedure
+//                    'procedures_defnoreturn', 'procedures_defreturn', 'procedures_callnoreturn', 'procedures_callreturn', 'procedures_mutatorcontainer', 'procedures_mutatorarg',
 //                    'procedures_ifreturn',
-                    //custom
-                    //'custom_read','custom_write',
-                    // ActivityBot ADC/DAC
-                    'ab_volt_in', 'ab_volt_v_in', 'ab_volt_out', 'ab_volt_v_out',
-                    // serial
-                    'serial_open', 'serial_tx_byte', 'serial_send_text', 'serial_rx_byte',
-                    // file
-                    'file_open', 'file_close'
+                            //custom
+                            //'custom_read','custom_write',
+                            // ActivityBot drive
+//                    'ab_drive_goto', 'ab_drive_speed',
+                            // ActivityBot ADC/DAC
+//                    'ab_volt_in', 'ab_volt_v_in', 'ab_volt_out', 'ab_volt_v_out',
+                            // serial
+//                    'serial_open', 'serial_tx_byte', 'serial_send_text', 'serial_rx_byte',
+                            // file
+//                    'file_open', 'file_close'
                 ];
-                for (var x = 0; x < keepers.length; x++) {
-                    newLanguage[keepers[x]] = Blockly.Language[keepers[x]];
-                }
+                //    for (var x = 0; x < keepers.length; x++) {
+                //        newLanguage[keepers[x]] = Blockly.Blocks[keepers[x]];
+                //    }
                 // Fold control category into logic category.
                 /*for (var name in newLanguage) {
                  if (newLanguage[name].category == 'Math') {
                  newLanguage[name].category = 'Logic';
                  }
                  }*/
-                Blockly.Language = newLanguage;
+                //     Blockly.Blocks = newLanguage;
 
-                Blockly.inject(document.body, {path: '/'});
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: 'blockly/media/'}); // path: '/' ,
 
                 if (window.parent.init) {
                     // Let the top-level application know that Blockly is ready.
@@ -189,5 +174,64 @@
         </script>
     </head>
     <body  onload="ready()" >
-    </body>
+    <xml id="toolbox" style="display: none">
+        <category name="Core">
+            <category name="Control">
+                <block type="text"></block>
+                <block type="base_delay"></block>
+                <block type="controls_repeat_forever"></block>
+                <block type="controls_repeat"></block>
+                <block type="controls_if"></block>
+            </category>
+            <category name="Logic">
+                <block type="logic_compare"></block>
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+                <block type="logic_boolean"></block>
+            </category> -->
+            <category name="Math">
+                <block type="math_number"></block>
+                <block type="math_arithmetic"></block>
+                <block type="math_single"></block>
+                <block type="math_limit"></block>
+                <block type="math_crement"></block>
+            </category>
+        </category>
+        <category name="Sensors">
+            <category name="Joystick">
+                <block type="joystick_input_yaxis"></block>
+                <block type="joystick_input_xaxis"></block>
+            </category>
+        </category>
+        <category name="Actuators">
+            <category name="Servo">
+                <block type="servo_move"></block>
+            </category>
+        </category>
+        <category name="Displays">
+            <category name="Debug LCD">
+                <block type="debug_lcd_init"></block>
+                <block type="debug_lcd_clear"></block>
+                <block type="debug_lcd_print"></block>
+                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_action"></block>
+            </category>
+        </category>
+        <category name="Activity Board">
+            <category name="Drive">
+                <block type="ab_drive_goto"></block>
+                <block type="ab_drive_speed"></block>
+            </category>
+            <category name="ADC/DAC">
+                <block type="ab_volt_in"></block>
+                <block type="ab_volt_v_in"></block>
+                <block type="ab_volt_out"></block>
+                <block type="ab_volt_v_out"></block>
+            </category>
+        </category>
+        <sep></sep>
+        <category name="Variables" custom="VARIABLE"></category>
+        <category name="Functions" custom="PROCEDURE"></category>
+    </xml>
+</body>
 </html>

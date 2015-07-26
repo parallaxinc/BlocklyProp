@@ -22,19 +22,19 @@ Author: valetolpegin@gmail.com ( Vale Tolpegin )
 */
 'use strict';
 
-if ( !Blockly.Language )
-  Blockly.Language = {};
+if ( !Blockly.Blocks )
+  Blockly.Blocks = {};
  
 //PIR sensor blocks 
-Blockly.Language.PIR_Sensor = {
+Blockly.Blocks.PIR_Sensor = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "PIR Sensor" )
-      .appendTitle( "Pin" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
+      .appendField( "PIR Sensor" )
+      .appendField( "Pin" )
+      .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PIN" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
@@ -42,10 +42,10 @@ Blockly.Language.PIR_Sensor = {
 };
 
 //Get generators
-Blockly.propc = Blockly.Generator.get( 'propc' );
+//Blockly.propc = new Blockly.Generator( 'propc' );
 
 Blockly.propc.PIR_Sensor = function() {
-  var pin = this.getTitleValue( 'PIN' );
+  var pin = this.getFieldValue( 'PIN' );
   
   var code = 'input( ' + pin + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];

@@ -23,20 +23,20 @@
  */
 'use strict';
 
-Blockly.Language.colour_picker = {
+Blockly.Blocks.colour_picker = {
   // Colour picker.
   category: Blockly.LANG_CATEGORY_COLOUR,
   helpUrl: Blockly.LANG_COLOUR_PICKER_HELPURL,
   init: function() {
     this.setColour(20);
     this.appendDummyInput()
-        .appendTitle(new Blockly.FieldColour('#ff0000'), 'COLOUR');
+        .appendField(new Blockly.FieldColour('#ff0000'), 'COLOUR');
     this.setOutput(true, 'Colour');
     this.setTooltip(Blockly.LANG_COLOUR_PICKER_TOOLTIP);
   }
 };
 
-Blockly.Language.colour_rgb = {
+Blockly.Blocks.colour_rgb = {
   // Compose a colour from RGB components.
   category: Blockly.LANG_CATEGORY_COLOUR,
   helpUrl: Blockly.LANG_COLOUR_RGB_HELPURL,
@@ -45,22 +45,22 @@ Blockly.Language.colour_rgb = {
     this.appendValueInput('RED')
         .setCheck(Number)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle(Blockly.LANG_COLOUR_RGB_TITLE)
-        .appendTitle(Blockly.LANG_COLOUR_RGB_RED);
+        .appendField(Blockly.LANG_COLOUR_RGB_TITLE)
+        .appendField(Blockly.LANG_COLOUR_RGB_RED);
     this.appendValueInput('GREEN')
         .setCheck(Number)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle(Blockly.LANG_COLOUR_RGB_GREEN);
+        .appendField(Blockly.LANG_COLOUR_RGB_GREEN);
     this.appendValueInput('BLUE')
         .setCheck(Number)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle(Blockly.LANG_COLOUR_RGB_BLUE);
+        .appendField(Blockly.LANG_COLOUR_RGB_BLUE);
     this.setOutput(true, 'Colour');
     this.setTooltip(Blockly.LANG_COLOUR_RGB_TOOLTIP);
   }
 };
 
-Blockly.Language.colour_blend = {
+Blockly.Blocks.colour_blend = {
   // Blend two colours together.
   category: Blockly.LANG_CATEGORY_COLOUR,
   helpUrl: 'http://meyerweb.com/eric/tools/color-blend/',
@@ -69,16 +69,16 @@ Blockly.Language.colour_blend = {
     this.appendValueInput('COLOUR1')
         .setCheck('Colour')
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle(Blockly.LANG_COLOUR_BLEND_TITLE)
-        .appendTitle(Blockly.LANG_COLOUR_BLEND_COLOUR1);
+        .appendField(Blockly.LANG_COLOUR_BLEND_TITLE)
+        .appendField(Blockly.LANG_COLOUR_BLEND_COLOUR1);
     this.appendValueInput('COLOUR2')
         .setCheck('Colour')
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle(Blockly.LANG_COLOUR_BLEND_COLOUR2);
+        .appendField(Blockly.LANG_COLOUR_BLEND_COLOUR2);
     this.appendValueInput('RATIO')
         .setCheck(Number)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendTitle(Blockly.LANG_COLOUR_BLEND_RATIO);
+        .appendField(Blockly.LANG_COLOUR_BLEND_RATIO);
     this.setOutput(true, 'Colour');
     this.setTooltip(Blockly.LANG_COLOUR_BLEND_TOOLTIP);
   }

@@ -22,104 +22,70 @@ Author: valetolpegin@gmail.com
 */
 'use strict';
 
-if ( !Blockly.Language )
-  Blockly.Language = {};
+if ( !Blockly.Blocks )
+  Blockly.Blocks = {};
  
 //MX2125 sensor blocks 
-Blockly.Language.MX2125_acceleration_xaxis = {
+Blockly.Blocks.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "MX2125 X-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
+      .appendField( "MX2125 X-axis pin#" )
+      .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
   }
 };
 
-Blockly.Language.MX2125_acceleration_yaxis = {
+Blockly.Blocks.MX2125_acceleration_yaxis = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "MX2125 Y-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
+      .appendField( "MX2125 Y-axis pin#" )
+      .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
     this.setNextStatement( false, null );
     this.setPreviousStatement( false, null ); 
     this.setOutput( true, Number );
   }
-};
-
-Blockly.Language.MX2125_rotation = {
- category: 'Sensors',
- helpUrl: '',
- init: function() {
-  this.setColour( 300 );
-  this.appendDummyInput( "" )
-     .appendTitle( "MX2125 rotation input" );
-  this.appendDummyInput( "" )
-     .appendTitle( "X-axis pin" )
-     .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'X_PIN' );
-  this.appendDummyInput( "" )
-     .appendTitle( "Y-axis pin" )
-     .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'Y_PIN' );
-  this.setPreviousStatement( false, null );
-  this.setNextStatement( false, null );
-  this.setOutput( true, Number );
- }
-};
-
-Blockly.Language.MX2125_tilt = {
- category: 'Sensors',
- helpUrl: '',
- init: function() {
-  this.setColour( 300 );
-  this.appendDummyInput( "" )
-     .appendTitle( "MX2125 tilt input" );
-  this.appendDummyInput( "" )
-     .appendTitle( "Axis pin" )
-     .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), 'AXIS_PIN' );
-  this.setPreviousStatement( false, null );
-  this.setNextStatement( false, null );
-  this.setOutput( true, Number );
- }
 };
 
 //MMA7455 sensor block
-Blockly.Language.MMA7455_acceleration = {
+Blockly.Blocks.MMA7455_acceleration = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
     this.setColour( 300 );
     this.appendDummyInput( "" )
-      .appendTitle( "MMA7455 X-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINX" )
+      .appendField( "MMA7455 X-axis pin#" )
+      .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINX" )
     this.appendValueInput( 'VARX' )
-        .appendTitle( "Storage for X-axis" );
+        .appendField( "Storage for X-axis" );
     this.appendDummyInput( "" )
-      .appendTitle( "MMA7455 Y-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINY" )
+      .appendField( "MMA7455 Y-axis pin#" )
+      .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINY" )
     this.appendValueInput( 'VARY' )
-        .appendTitle( "Storage for Y-axis" );
+        .appendField( "Storage for Y-axis" );
     this.appendDummyInput( "" )
-      .appendTitle( "MMA7455 Z-axis pin#" )
-      .appendTitle( new Blockly.FieldDropdown( profile.default.digital ), "PINZ" )
+      .appendField( "MMA7455 Z-axis pin#" )
+      .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINZ" )
     this.appendValueInput( 'VARZ' )
-        .appendTitle( "Storage for Z-axis" );
+        .appendField( "Storage for Z-axis" );
+    this.setInputsInline( true );
     this.setNextStatement( true, null );
     this.setPreviousStatement( true, null ); 
   }
 };
 
 //Get generators
-Blockly.propc = Blockly.Generator.get( 'propc' );
+//Blockly.propc = new Blockly.Generator( 'propc' );
 
 Blockly.propc.MX2125_acceleration_xaxis = function() {
-  var pin = this.getTitleValue( 'PINX' );
+  var pin = this.getFieldValue( 'PINX' );
   
   Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
@@ -128,7 +94,7 @@ Blockly.propc.MX2125_acceleration_xaxis = function() {
 };
 
 Blockly.propc.MX2125_acceleration_yaxis = function() {
-  var pin = this.getTitleValue( 'PINY' );
+  var pin = this.getFieldValue( 'PINY' );
   
   Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
   
@@ -137,9 +103,9 @@ Blockly.propc.MX2125_acceleration_yaxis = function() {
 };
 
 Blockly.propc.MMA7455_acceleration = function() {
-  var pinx = this.getTitleValue( 'PINX' );
-  var piny = this.getTitleValue( 'PINY' );
-  var pinz = this.getTitleValue( 'PINZ' );
+  var pinx = this.getFieldValue( 'PINX' );
+  var piny = this.getFieldValue( 'PINY' );
+  var pinz = this.getFieldValue( 'PINZ' );
   
   var xstorage = Blockly.propc.valueToCode( this, 'VARX' );
   var ystorage = Blockly.propc.valueToCode( this, 'VARY' );
@@ -151,23 +117,4 @@ Blockly.propc.MMA7455_acceleration = function() {
   //Add variable declaration here
   var code = 'MMA7455_getxyz10( &' + xstorage + ', &' + ystorage + ', &' + zstorage + ' );\n';
   return code;
-};
-
-Blockly.propc.MX2125_rotation = function() {
-  var x_pin = this.getTitleValue( 'X_PIN' );
-  var y_pin = this.getTitleValue( 'Y_PIN' );
-    
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
-    
-  var code = 'mx_rotate( ' + x_pin + ', ' + y_pin + ' )';
-  return [code, Blockly.propc.ORDER_ATOMIC];
-};
-
-Blockly.propc.MX2125_tilt = function() {
-  var axis_pin = this.getTitleValue( 'AXIS_PIN' );
-    
-  Blockly.propc.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
-    
-  var code = 'mx_tilt( ' + axis_pin + ' )';
-  return [code, Blockly.propc.ORDER_ATOMIC];
 };
