@@ -30,19 +30,19 @@
                     <form name="resetRequestForm" action="reset" method="post">
                         <div class="form-group">
                             <label for="email" >Email:</label>
-                            <input class="form-control" type="text" name="email" maxlength="30" required="required" value="<%= request.getAttribute("email")%>"/>
+                            <input class="form-control" type="text" name="email" maxlength="255" required="required" value="<%= request.getAttribute("email")%>"/>
                         </div>
                         <div class="form-group">
                             <label for="token" >Token:</label>
-                            <input class="form-control" type="text" name="token" maxlength="30" required="required" value="<%= request.getAttribute("token")%>"/>
+                            <input class="form-control" type="text" name="token" maxlength="50" required="required" value="<%= request.getAttribute("token")%>"/>
                         </div>
                         <div class="form-group">
                             <label for="password" >Password:</label>
-                            <input class="form-control" type="password" name="password" maxlength="30" required="required"/>
+                            <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" >Confirm password:</label>
-                            <input class="form-control" type="password" name="confirmpassword" maxlength="30" required="required"/>
+                            <input class="form-control" type="password" name="confirmpassword" maxlength="255" required="required"/>
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="Confirm">
                     </form>

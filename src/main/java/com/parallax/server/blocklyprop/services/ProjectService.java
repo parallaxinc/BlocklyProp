@@ -18,16 +18,6 @@ public interface ProjectService {
 
     ProjectRecord getProject(Long idProject);
 
-    ProjectRecord createProject(String name, String description, String code, ProjectType type, boolean privateProject, boolean sharedProject);
-
-    ProjectRecord createProject(String name, String description, ProjectType type, boolean privateProject, boolean sharedProject);
-
-    ProjectRecord updateProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject);
-
-    ProjectRecord updateProject(Long idProject, String name, String description, String code, boolean privateProject, boolean sharedProject);
-
-    ProjectRecord saveCode(Long idProject, String code);
-
     List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset);
 
     List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset);
@@ -35,5 +25,9 @@ public interface ProjectService {
     int countUserProjects(Long idUser);
 
     int countSharedProjects();
+
+    ProjectRecord saveProjectWithCode(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String code);
+
+    ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type);
 
 }

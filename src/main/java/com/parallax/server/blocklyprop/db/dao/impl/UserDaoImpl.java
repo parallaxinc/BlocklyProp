@@ -122,4 +122,15 @@ public class UserDaoImpl implements UserDao {
         return record;
     }
 
+    @Override
+    public Long getUserIdForCloudSessionUserId(Long id) {
+        Long idUser = create.select(Tables.USER.ID).from(Tables.USER).where(Tables.USER.IDCLOUDSESSION.eq(id)).fetchOneInto(Long.class);
+        if (idUser == null) {
+            UserRecord user = create(id);
+            return user.getId();
+        } else {
+            return idUser;
+        }
+    }
+
 }

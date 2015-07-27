@@ -47,31 +47,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectRecord createProject(String name, String description, String code, ProjectType type, boolean privateProject, boolean sharedProject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ProjectRecord createProject(String name, String description, ProjectType type, boolean privateProject, boolean sharedProject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, String code, boolean privateProject, boolean sharedProject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ProjectRecord saveCode(Long idProject, String code) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset) {
         if (BlocklyPropSecurityUtils.getCurrentUserId().equals(idUser)) {
             return projectDao.getUserProjects(idUser, order, limit, offset);
@@ -93,6 +68,27 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int countSharedProjects() {
         return projectDao.countSharedProjects();
+    }
+
+    @Override
+    public ProjectRecord saveProjectWithCode(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String code) {
+        // Check if project is from the current user, if not, unset idProject and create new
+        if (idProject != null) {
+            return projectDao.updateProject(idProject, name, description, code, privateProject, sharedProject);
+        } else {
+            return projectDao.createProject(name, description, code, type, privateProject, sharedProject);
+        }
+
+    }
+
+    @Override
+    public ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type) {
+        // Check if project is from the current user, if not, unset idProject and create new
+        if (idProject != null) {
+            return projectDao.updateProject(idProject, name, description, privateProject, sharedProject);
+        } else {
+            return projectDao.createProject(name, description, type, privateProject, sharedProject);
+        }
     }
 
 }

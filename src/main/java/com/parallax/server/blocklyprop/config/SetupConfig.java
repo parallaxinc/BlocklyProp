@@ -9,6 +9,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
+import com.parallax.server.blocklyprop.SessionData;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -35,6 +36,8 @@ public class SetupConfig extends GuiceServletContextListener {
             @Override
             protected void configure() {
                 bind(Configuration.class).toInstance(configuration);
+
+                bind(SessionData.class);
 
                 install(new PersistenceModule(configuration));
                 install(new DaoModule());

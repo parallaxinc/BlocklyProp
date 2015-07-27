@@ -5,13 +5,11 @@
  */
 package com.parallax.server.blocklyprop.security;
 
-import com.parallax.client.cloudsession.CloudSessionAuthenticateService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.objects.User;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -19,6 +17,8 @@ import org.apache.shiro.authc.SimpleAccount;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -26,11 +26,7 @@ import org.apache.shiro.subject.PrincipalCollection;
  */
 public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
-    private final CloudSessionAuthenticateService authenticateService;
-
-    public CloudSessionAuthenticationRealm() {
-        authenticateService = new CloudSessionAuthenticateService("http://localhost:8080/cloudsession/rest/");
-    }
+    private static Logger log = LoggerFactory.getLogger(CloudSessionAuthenticationRealm.class);
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -49,10 +45,11 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
             // Credentials = password
             String credentials = new String((char[]) token.getCredentials());
 
-            User user = authenticateService.authenticateLocalUser(principal, credentials);
+            User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
             if (user != null) {
-
+                System.out.println("USER = " + user);
             } else {
+                System.out.println("USER = null");
                 return null;
             }
 
@@ -65,11 +62,15 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
             System.out.println("credentials set");
             return null;
         } catch (UnknownUserException ex) {
-            Logger.getLogger(CloudSessionAuthenticationRealm.class.getName()).log(Level.SEVERE, null, ex);
+            log.warn("Unknown user", ex);
         } catch (UserBlockedException ex) {
-            Logger.getLogger(CloudSessionAuthenticationRealm.class.getName()).log(Level.SEVERE, null, ex);
+            log.warn("Blocked user", ex);
         } catch (EmailNotConfirmedException ex) {
-            Logger.getLogger(CloudSessionAuthenticationRealm.class.getName()).log(Level.SEVERE, null, ex);
+            log.warn("Email not confirmed", ex);
+        } catch (NullPointerException npe) {
+            log.warn("NullPointer", npe);
+        } catch (Throwable t) {
+            log.warn("Throwable", t);
         }
         return null;
     }

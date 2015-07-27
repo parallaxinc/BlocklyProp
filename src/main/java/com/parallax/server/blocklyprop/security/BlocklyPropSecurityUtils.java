@@ -5,6 +5,7 @@
  */
 package com.parallax.server.blocklyprop.security;
 
+import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import org.apache.shiro.SecurityUtils;
 
 /**
@@ -14,7 +15,7 @@ import org.apache.shiro.SecurityUtils;
 public class BlocklyPropSecurityUtils extends SecurityUtils {
 
     public static Long getCurrentUserId() {
-        return (Long) SecurityUtils.getSubject().getPrincipal();
+        return SecurityServiceImpl.getSessionData().getIdUser();
     }
 
 }

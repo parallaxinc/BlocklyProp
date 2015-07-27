@@ -23,7 +23,7 @@ public class ServiceModule extends AbstractModule {
     protected void configure() {
         bind(ProjectService.class).to(ProjectServiceImpl.class);
         bind(UserService.class).to(UserServiceImpl.class);
-        bind(SecurityService.class).to(SecurityServiceImpl.class);
+        bind(SecurityService.class).to(SecurityServiceImpl.class).asEagerSingleton();
     }
 
 }

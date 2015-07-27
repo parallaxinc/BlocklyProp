@@ -26,4 +26,6 @@ public interface UserDao {
 
     List<Role> getRoles(Long idUser);
 
+    Long getUserIdForCloudSessionUserId(Long id);
+
 }
