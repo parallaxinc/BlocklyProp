@@ -19,6 +19,7 @@
                 <div class="col-md-12 col-sm-12">
                     <h2>Reset requested</h2>
                     <p>Please check your email</p>
+                    <p><a href="index.jsp">Go to home</a></p>
                 </div>
             </div>
         </div>

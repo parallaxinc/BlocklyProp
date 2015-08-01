@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <a href="register.jsp" >Register now!</a>
+                    <a href="register" >Register now!</a>
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <h2>Please Log in</h2>
@@ -26,19 +26,20 @@
                         String errorDescription = (String) request.getAttribute("shiroLoginFailure");
                         if (errorDescription != null) {
                     %>
-                    <p>Login attempt was unsuccessful: <%=errorDescription%></p>
+                    <p>Login attempt was unsuccessful<%-- : < %=errorDescription%> --%></p>
                     <p><a href="resetrequest">Forgot your password?</a></p>
+                    <p><a href="confirmrequest">Email not yet confirmed?</a></p>
                     <%
                         }
                     %>
                     <form name="loginform" action="" method="post">
                         <div class="form-group">
                             <label for="username" >Username:</label>
-                            <input class="form-control" type="text" name="username" maxlength="30" required="required"/>
+                            <input class="form-control" type="text" name="username" maxlength="255" required="required"/>
                         </div>
                         <div class="form-group">
                             <label for="password">Password:</label>
-                            <input class="form-control" type="password" name="password" maxlength="30" required="required"/>
+                            <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
                         </div>
                         <div class="form-group">
                             <input type="checkbox" name="rememberMe"><label for="rememberMe">Remember Me</label>

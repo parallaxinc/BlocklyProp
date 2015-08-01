@@ -16,10 +16,10 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-sm-12">
-                    <h2>Email already confirmed</h2>
+                <div class="col-md-12 col-sm-12">
+                    <h2>Register successfull</h2>
+                    <p>Please check your email to confirm your email account.</p>
                     <p><a href="index.jsp">Go to home</a></p>
-                    <p><a href="my/projects.jsp">Log in</a></p>
                 </div>
             </div>
         </div>

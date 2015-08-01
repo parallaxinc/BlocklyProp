@@ -38,6 +38,7 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="Confirm">
                     </form>
+                    <p><a href="index.jsp">Go to home</a></p>
                 </div>
             </div>
         </div>

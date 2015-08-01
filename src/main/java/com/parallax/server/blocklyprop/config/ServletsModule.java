@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
+import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
 import com.parallax.server.blocklyprop.servlets.PasswordResetRequestServlet;
 import com.parallax.server.blocklyprop.servlets.PasswordResetServlet;
@@ -24,6 +25,8 @@ public class ServletsModule extends ServletModule {
         serve("/project").with(ProjectServlet.class);
         serve("/user").with(UserServlet.class);
         serve("/register").with(RegisterServlet.class);
+
+        serve("/confirmrequest").with(ConfirmRequestServlet.class);
         serve("/confirm").with(ConfirmServlet.class);
 
         serve("/resetrequest").with(PasswordResetRequestServlet.class);

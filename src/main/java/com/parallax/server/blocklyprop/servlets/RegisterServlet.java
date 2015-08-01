@@ -6,15 +6,12 @@
 package com.parallax.server.blocklyprop.servlets;
 
 import com.google.common.base.Strings;
-import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +31,13 @@ public class RegisterServlet extends HttpServlet {
         this.securityService = securityService;
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("screenname", "");
+        req.setAttribute("email", "");
+        req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
+    }
+
     /*
      * Register
      */
@@ -46,30 +50,25 @@ public class RegisterServlet extends HttpServlet {
         String password = Strings.emptyToNull(req.getParameter("password"));
         String confirmPassword = Strings.emptyToNull(req.getParameter("confirmpassword"));
 
+        req.setAttribute("screenname", screenname == null ? "" : screenname);
+        req.setAttribute("email", email == null ? "" : email);
+
         Long idUser;
         try {
             idUser = securityService.register(screenname, email, password, confirmPassword);
             if (idUser != null && idUser > 0) {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", true);
-                result.addProperty("id", idUser);
-                resp.getWriter().write(result.toString());
+                req.getRequestDispatcher("WEB-INF/servlet/register/registered.jsp").forward(req, resp);
             } else {
-                JsonObject result = new JsonObject();
-                result.addProperty("success", false);
-                result.addProperty("message", "Failed to register");
-                resp.getWriter().write(result.toString());
+                req.setAttribute("error", true);
+                req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
             }
-            return;
         } catch (NonUniqueEmailException ex) {
-            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            req.setAttribute("emailAlreadyUsed", true);
+            req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         } catch (PasswordVerifyException ex) {
-            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            req.setAttribute("passwordsDontMatch", true);
+            req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
-        JsonObject result = new JsonObject();
-        result.addProperty("success", false);
-        result.addProperty("message", "Failed to register");
-        resp.getWriter().write(result.toString());
     }
 
 }

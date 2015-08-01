@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Request reset</h2>
+                    <h2>Email confirm reset</h2>
                     <%
                         Boolean error = (Boolean) request.getAttribute("error");
                         if (error != null && error) {
@@ -35,16 +35,16 @@
                         Boolean insufficientTokens = (Boolean) request.getAttribute("insufficientTokens");
                         if (insufficientTokens != null && insufficientTokens) {
                     %>
-                    <div>Reset requested too often</div>
+                    <div>Confirm requested too often</div>
                     <%
                         }
                     %>
-                    <form name="resetRequestForm" action="" method="post">
+                    <form name="confirmRequestForm" action="" method="post">
                         <div class="form-group">
                             <label for="token" >Email:</label>
                             <input class="form-control" type="text" name="email" maxlength="255" required="required"/>
                         </div>
-                        <input class="btn btn-default" type="submit" name="submit" value="Confirm">
+                        <input class="btn btn-default" type="submit" name="submit" value="Request">
                     </form>
                     <p><a href="index.jsp">Go to home</a></p>
                 </div>
