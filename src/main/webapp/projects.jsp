@@ -42,5 +42,7 @@
             <jsp:param name="shared" value="true" />
         </jsp:include>
 
+        <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
+
     </body>
 </html>

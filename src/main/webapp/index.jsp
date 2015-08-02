@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
         <script src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
     </head>
     <body>
@@ -39,15 +40,17 @@
 
                 <div class="col-md-4">
                     <h2>C Project</h2>
-                    <a href="<c:url value="/editor/blocklyc.jsp"/>">New</a>
+                    <a class="editor-new-link editor-c-link" href="<c:url value="/editor/blocklyc.jsp"/>">New</a>
                 </div>
 
                 <div class="col-md-4">
                     <h2>Spin project</h2>
-                    <a href="<c:url value="/editor/blocklyspin.jsp"/>">New</a>
+                    <a class="editor-new-link editor-spin-link" href="<c:url value="/editor/blocklyspin.jsp"/>">New</a>
                 </div>
             </div>
         </div>
+
+        <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
 
     </body>
 </html>
