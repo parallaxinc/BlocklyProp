@@ -38,12 +38,12 @@
     <script>
         $("a.editor-new-link").click(function(event) {
             event.preventDefault();
-            setEditorLinksAndShow("Try editor");
+            setEditorLinksAndShow.call(this, "Try editor");
         });
 
         $("a.editor-view-link").click(function(event) {
             event.preventDefault();
-            setEditorLinksAndShow("View project");
+            setEditorLinksAndShow.call(this, "View project");
         });
 
         function setEditorLinksAndShow(linkText) {

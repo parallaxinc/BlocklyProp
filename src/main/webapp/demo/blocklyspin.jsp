@@ -59,30 +59,11 @@
                                     </li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li>
-                                        <p class="navbar-text" id="client_status">Checking for BlocklyPropClient</p>
-                                    </li>
-                                    <li>
-                                        <form class="navbar-form">
-                                            <div class="form-group">
-                                                <select class="form-control" id="comPort"></select>
-                                            </div>
-                                        </form>
-                                    </li>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Run <b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" onclick="compile()">Compile</a></li>
-                                            <li><a href="#" onclick="loadIntoRam()">Load RAM</a></li>
-                                            <li><a href="#" onclick="loadIntoEeprom()">Load EEPROM</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#" onclick="serial_console()">Serial terminal</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#" onclick="configure_client()">Configure client</a></li>
-                                        </ul>
+                                        <a href="#" class="dropdown-toggle demo-function" >Run <b class="caret"></b></a>
                                     </li>
-                                    <li><a href="#" onclick="project()">Project</a></li>
-                                    <li><a href="#" id="save-project">Save</a></li>
+                                    <li><a href="#" class="demo-function">Project</a></li>
+                                    <li><a href="#" class="demo-function">Save</a></li>
                                 </ul>
                             </div><!-- /.navbar-collapse -->
                         </div><!-- /.container-fluid -->
@@ -268,7 +249,9 @@
         <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script>
-                                        var type = 'SPIN';
+                                                var type = 'SPIN';
         </script>
+
+        <%@ include file="/WEB-INF/includes/pageparts/demo-editor.jsp"%>
     </body>
 </html>
