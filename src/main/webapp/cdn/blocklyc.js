@@ -234,31 +234,32 @@ function serial_console() {
 }
 
 check_com_ports = function() {
-    var selected_port = $("#comPort").val();
-    $.get(client_url + "ports.json", function(data) {
-        $("#comPort").empty();
-        data.forEach(function(port) {
+    if (client_url !== undefined) {
+        var selected_port = $("#comPort").val();
+        $.get(client_url + "ports.json", function(data) {
+            $("#comPort").empty();
+            data.forEach(function(port) {
+                $("#comPort").append($('<option>', {
+                    text: port
+                }));
+            });
+            select_com_port(selected_port);
+            client_available = true;
+        }).fail(function() {
+            $("#comPort").empty();
             $("#comPort").append($('<option>', {
-                text: port
+                text: 'COM1'
             }));
+            $("#comPort").append($('<option>', {
+                text: 'COM3'
+            }));
+            $("#comPort").append($('<option>', {
+                text: 'COM4'
+            }));
+            select_com_port(selected_port);
+            client_available = false;
         });
-        select_com_port(selected_port);
-        client_available = true;
-    }).fail(function() {
-        $("#comPort").empty();
-        $("#comPort").append($('<option>', {
-            text: 'COM1'
-        }));
-        $("#comPort").append($('<option>', {
-            text: 'COM3'
-        }));
-        $("#comPort").append($('<option>', {
-            text: 'COM4'
-        }));
-        select_com_port(selected_port);
-        client_available = false;
-    });
-
+    }
 };
 
 select_com_port = function(com_port) {

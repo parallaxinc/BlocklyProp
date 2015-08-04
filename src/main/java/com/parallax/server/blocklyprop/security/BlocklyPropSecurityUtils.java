@@ -18,4 +18,8 @@ public class BlocklyPropSecurityUtils extends SecurityUtils {
         return SecurityServiceImpl.getSessionData().getIdUser();
     }
 
+    public static Long getCurrentSessionUserId() {
+        return SecurityServiceImpl.getSessionData().getUser().getId();
+    }
+
 }

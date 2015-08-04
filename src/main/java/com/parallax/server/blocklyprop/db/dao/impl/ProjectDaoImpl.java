@@ -41,7 +41,7 @@ public class ProjectDaoImpl implements ProjectDao {
         ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
         if (record != null) {
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-            if (record.getIdUser().equals(idUser)) {
+            if (!toEdit || record.getIdUser().equals(idUser)) {
                 return record;
             } else {
                 throw new UnauthorizedException();
@@ -55,8 +55,9 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public ProjectRecord createProject(String name, String description, String code, ProjectType type, boolean privateProject, boolean sharedProject) {
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED)
-                .values(idUser, name, description, code, type, privateProject, sharedProject).returning().fetchOne();
+        Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
+        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED)
+                .values(idUser, idCloudUser, name, description, code, type, privateProject, sharedProject).returning().fetchOne();
 
         return record;
     }

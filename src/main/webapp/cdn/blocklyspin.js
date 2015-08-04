@@ -140,21 +140,21 @@ function compile() {
     if (client_available) {
         var spinCode = Blockly.Generator.workspaceToCode('Spin');
 
-       $("#compile-dialog-title").text('Compile');
-       $("#compile-console").val('');
-       $('#compile-dialog').modal('show');
+        $("#compile-dialog-title").text('Compile');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
 
-       $.post(client_url + 'compile.action', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
-           $("#compile-console").val(data.message);
-           console.log(data);
-       });
-   } else {
-    $("#compile-dialog-title").text('Compile');
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
+        $.post(client_url + 'compile.action', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
+            $("#compile-console").val(data.message);
+            console.log(data);
+        });
+    } else {
+        $("#compile-dialog-title").text('Compile');
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
 
-    $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
-   }
+        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+    }
 }
 
 /**
@@ -249,7 +249,7 @@ function serial_console() {
             term.open(document.getElementById("serial_console"));
         }
         connection.onClose = function() {
-          //  term.destroy();
+            //  term.destroy();
         };
 
         $('#console-dialog').on('hidden.bs.modal', function() {
@@ -273,31 +273,32 @@ function serial_console() {
 }
 
 check_com_ports = function() {
-    var selected_port = $("#comPort").val();
-    $.get(client_url + "ports.json", function(data) {
-        $("#comPort").empty();
-        data.forEach(function(port) {
+    if (client_url !== undefined) {
+        var selected_port = $("#comPort").val();
+        $.get(client_url + "ports.json", function(data) {
+            $("#comPort").empty();
+            data.forEach(function(port) {
+                $("#comPort").append($('<option>', {
+                    text: port
+                }));
+            });
+            select_com_port(selected_port);
+            client_available = true;
+        }).fail(function() {
+            $("#comPort").empty();
             $("#comPort").append($('<option>', {
-                text: port
+                text: 'COM1'
             }));
+            $("#comPort").append($('<option>', {
+                text: 'COM3'
+            }));
+            $("#comPort").append($('<option>', {
+                text: 'COM4'
+            }));
+            select_com_port(selected_port);
+            client_available = false;
         });
-        select_com_port(selected_port);
-        client_available = true;
-    }).fail(function() {
-        $("#comPort").empty();
-        $("#comPort").append($('<option>', {
-            text: 'COM1'
-        }));
-        $("#comPort").append($('<option>', {
-            text: 'COM3'
-        }));
-        $("#comPort").append($('<option>', {
-            text: 'COM4'
-        }));
-        select_com_port(selected_port);
-        client_available = false;
-    });
-
+    }
 };
 
 select_com_port = function(com_port) {
@@ -311,7 +312,7 @@ select_com_port = function(com_port) {
 
 $(document).ready(function() {
     check_com_ports();
-    
+
 });
 
 getComPort = function() {

@@ -11,18 +11,11 @@
     <head>
         <meta charset="utf-8">
         <title>BlocklyProp</title>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/Blob.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/FileSaver.min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blocklypropclient.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/editor.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/demoeditor.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
         <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
-        <link href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.css"/>" rel="stylesheet">
         <link href="<c:url value="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>

@@ -25,10 +25,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = -1446329541;
+	private static final long serialVersionUID = 1647108702;
 
 	private Long              id;
 	private Long              idUser;
+	private Long              idClouduser;
 	private String            name;
 	private String            description;
 	private String            code;
@@ -43,6 +44,7 @@ public class Project implements Serializable {
 	public Project(Project value) {
 		this.id = value.id;
 		this.idUser = value.idUser;
+		this.idClouduser = value.idClouduser;
 		this.name = value.name;
 		this.description = value.description;
 		this.code = value.code;
@@ -56,6 +58,7 @@ public class Project implements Serializable {
 	public Project(
 		Long              id,
 		Long              idUser,
+		Long              idClouduser,
 		String            name,
 		String            description,
 		String            code,
@@ -67,6 +70,7 @@ public class Project implements Serializable {
 	) {
 		this.id = id;
 		this.idUser = idUser;
+		this.idClouduser = idClouduser;
 		this.name = name;
 		this.description = description;
 		this.code = code;
@@ -91,6 +95,14 @@ public class Project implements Serializable {
 
 	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
+	}
+
+	public Long getIdClouduser() {
+		return this.idClouduser;
+	}
+
+	public void setIdClouduser(Long idClouduser) {
+		this.idClouduser = idClouduser;
 	}
 
 	public String getName() {

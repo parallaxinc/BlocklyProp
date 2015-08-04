@@ -1,7 +1,7 @@
 $(document).ready(function() {
     if (window.location.hash && window.location.hash !== "#") {
         loadProject(window.location.hash.substr(1));
-        $("#project-form-container").addClasss('in');
+        $("#project-form-container").addClass('in');
     } else {
         $("#project-table-container").addClass('in');
     }

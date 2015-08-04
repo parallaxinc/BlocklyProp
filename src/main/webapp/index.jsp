@@ -36,6 +36,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <h2>Latest projects</h2>
+                    <ul class="latest-projects"></ul>
                 </div>
 
                 <div class="col-md-4">
@@ -51,6 +52,6 @@
         </div>
 
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
-
+        <script src="<c:url value="/cdn/latest.js"/>" ></script>
     </body>
 </html>

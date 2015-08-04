@@ -36,12 +36,12 @@
 
 
     <script>
-        $("a.editor-new-link").click(function(event) {
+        $("body").on("click", "a.editor-new-link", function(event) {
             event.preventDefault();
             setEditorLinksAndShow.call(this, "Try editor");
         });
 
-        $("a.editor-view-link").click(function(event) {
+        $("body").on("click", "a.editor-view-link", function(event) {
             event.preventDefault();
             setEditorLinksAndShow.call(this, "View project");
         });
