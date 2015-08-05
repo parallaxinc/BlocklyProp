@@ -22,8 +22,6 @@ import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.SecurityUtils;
 
@@ -102,10 +100,12 @@ public class SecurityServiceImpl implements SecurityService {
         if (sessionData.getIdUser() == null) {
             try {
                 User user = instance.userService.getUser((String) SecurityUtils.getSubject().getPrincipal());
-                sessionData.setUser(user);
-                sessionData.setIdUser(instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
+                if (user != null) {
+                    sessionData.setUser(user);
+                    sessionData.setIdUser(instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
+                }
             } catch (UnknownUserException ex) {
-                Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                //       Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return sessionData;

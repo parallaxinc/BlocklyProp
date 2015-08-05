@@ -14,11 +14,14 @@
             <form>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" name="name" required="required"/>
+                    <input type="text" class="form-control" name="name" id="project-form-name" required="required"/>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" name="description" required="required"></textarea>
+                    <textarea class="form-control" name="description" id="project-form-description" rows="8" required="required"></textarea>
+                </div>
+                <div>
+                    <a class="open-project-link editor-view-link" href="#" >Open project</a>
                 </div>
             </form>
         </div>

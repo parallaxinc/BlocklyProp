@@ -18,9 +18,9 @@ public interface ProjectDao {
 
     ProjectRecord getProject(Long idProject);
 
-    ProjectRecord createProject(String name, String description, String code, ProjectType type, boolean privateProject, boolean sharedProject);
+    ProjectRecord createProject(String name, String description, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject);
 
-    ProjectRecord createProject(String name, String description, ProjectType type, boolean privateProject, boolean sharedProject);
+    ProjectRecord createProject(String name, String description, ProjectType type, String board, boolean privateProject, boolean sharedProject);
 
     ProjectRecord updateProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject);
 

@@ -10,6 +10,7 @@
 <html><!-- manifest=node.manifest> -->
     <head>
         <meta charset="utf-8">
+        <meta name="base" content="<c:url value="/"/>">
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<c:url value="/cdn/lib/Blob.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>

@@ -25,7 +25,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = 1647108702;
+	private static final long serialVersionUID = -1500781;
 
 	private Long              id;
 	private Long              idUser;
@@ -34,6 +34,7 @@ public class Project implements Serializable {
 	private String            description;
 	private String            code;
 	private ProjectType       type;
+	private String            board;
 	private Boolean           private_;
 	private Boolean           shared;
 	private GregorianCalendar created;
@@ -49,6 +50,7 @@ public class Project implements Serializable {
 		this.description = value.description;
 		this.code = value.code;
 		this.type = value.type;
+		this.board = value.board;
 		this.private_ = value.private_;
 		this.shared = value.shared;
 		this.created = value.created;
@@ -63,6 +65,7 @@ public class Project implements Serializable {
 		String            description,
 		String            code,
 		ProjectType       type,
+		String            board,
 		Boolean           private_,
 		Boolean           shared,
 		GregorianCalendar created,
@@ -75,6 +78,7 @@ public class Project implements Serializable {
 		this.description = description;
 		this.code = code;
 		this.type = type;
+		this.board = board;
 		this.private_ = private_;
 		this.shared = shared;
 		this.created = created;
@@ -135,6 +139,14 @@ public class Project implements Serializable {
 
 	public void setType(ProjectType type) {
 		this.type = type;
+	}
+
+	public String getBoard() {
+		return this.board;
+	}
+
+	public void setBoard(String board) {
+		this.board = board;
 	}
 
 	public Boolean getPrivate() {

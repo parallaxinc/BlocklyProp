@@ -21,6 +21,7 @@ public class ProjectConverter {
         result.addProperty("name", project.getName());
         result.addProperty("description", project.getDescription());
         result.addProperty("type", project.getType().name());
+        result.addProperty("board", project.getBoard());
         result.addProperty("private", project.getPrivate());
         result.addProperty("shared", project.getShared());
         return result;
@@ -32,6 +33,7 @@ public class ProjectConverter {
         result.addProperty("name", project.getName());
         result.addProperty("description", project.getDescription());
         result.addProperty("type", project.getType().name());
+        result.addProperty("board", project.getBoard());
         result.addProperty("private", project.getPrivate());
         result.addProperty("shared", project.getShared());
         return result;

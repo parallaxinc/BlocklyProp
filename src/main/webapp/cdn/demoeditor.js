@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+var baseUrl = $("meta[name=base]").attr("content");
 
 
 var projectData = {
@@ -22,7 +23,7 @@ $(document).ready(function() {
             window.frames["content_blocks"].init();
         }
     } else {
-        $.get('php/index.php/project/view/' + idProject, function(data) {
+        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function(data) {
             console.log(data);
             projectData = data;
             projectCreated = true;

@@ -83,4 +83,26 @@ public class RestSharedProject {
         return Response.ok(result.toString()).build();
     }
 
+    @GET
+    @Path("/editor/{id}")
+    @Detail("Get project by id for editor")
+    @Name("Get project by id for editor")
+    @Produces("application/json")
+    public Response getEditor(@PathParam("id") Long idProject) {
+        ProjectRecord project = projectService.getProject(idProject);
+
+        if (project != null) {
+            if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+                Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        JsonObject result = ProjectConverter.toJson(project);
+        result.addProperty("code", project.getCode());
+
+        return Response.ok(result.toString()).build();
+    }
+
 }

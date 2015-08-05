@@ -9,6 +9,7 @@
 
 <html>
     <head>
+        <meta name="base" content="<c:url value="/"/>">
         <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />

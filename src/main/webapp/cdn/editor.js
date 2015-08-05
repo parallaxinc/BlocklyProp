@@ -16,6 +16,8 @@
  * and open the template in the editor.
  */
 
+var baseUrl = $("meta[name=base]").attr("content");
+
 var projectData = null;
 var ready = false;
 var projectCreated = false;
@@ -68,7 +70,7 @@ $(document).ready(function() {
 //
 //        });
     } else {
-        $.get('php/index.php/project/view/' + idProject, function(data) {
+        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function(data) {
             console.log(data);
             projectData = data;
             projectCreated = true;
@@ -97,7 +99,7 @@ addProjectManagerHandler = function() {
 saveProject = function() {
     getProjectData();
     projectData['code'] = window.frames["content_blocks"].getXml();
-    $.post('../rest/project/code', projectData, function(data) {
+    $.post(baseUrl + 'rest/project/code', projectData, function(data) {
         if (data.success === false) {
             if (data.code === 2) {
 //                    $('#signin-register').height($('#register-form').height());

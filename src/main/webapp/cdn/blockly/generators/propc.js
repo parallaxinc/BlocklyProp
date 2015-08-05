@@ -169,7 +169,7 @@ Blockly.propc.init = function(workspace) {
     if (Blockly.Pointers) {
         if (!Blockly.propc.pointerDB_) {
             Blockly.propc.pointerDB_ =
-                new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
+                    new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
         } else {
             Blockly.propc.pointerDB_.reset();
         }
@@ -178,9 +178,9 @@ Blockly.propc.init = function(workspace) {
         var pointers = Blockly.Pointers.allPointers();
         for (var x = 0; x < pointers.length; x++) {
             var pointerName = Blockly.propc.pointerDB_.getDistinctName(pointers[x],
-                Blockly.Pointers.NAME_TYPE);
+                    Blockly.Pointers.NAME_TYPE);
             defvars[x] = '' + '{{$pointer_type_' + pointers[x].name + '}} ' +
-            pointerName + ';\n';
+                    pointerName + ';\n';
         }
         Blockly.propc.definitions_['pointers'] = defvars.join('\n');
     }
@@ -192,7 +192,7 @@ Blockly.propc.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.propc.finish = function(code) {
-alert(code);
+//alert(code);
 
     // Convert the definitions dictionary into a list.
     var imports = [];

@@ -35,20 +35,25 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectRecord getProject(Long idProject) {
         ProjectRecord projectRecord = projectDao.getProject(idProject);
-        if (projectRecord != null) {
-            if (BlocklyPropSecurityUtils.getCurrentUserId().equals(projectRecord.getIdUser())) {
-                return projectRecord;
-            } else {
-                throw new UnauthorizedException("Not the current user's project");
-            }
-        } else {
-            return null;
-        }
+        return projectRecord;
+//        if (projectRecord != null) {
+//            if (projectRecord.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+//                return projectRecord;
+//            } else {
+//                throw new UnauthorizedException("Not the current user's project");
+//            }
+//        } else {
+//            return null;
+//        }
     }
 
     @Override
     public List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset) {
-        if (BlocklyPropSecurityUtils.getCurrentUserId().equals(idUser)) {
+        Long idCurrentUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (idCurrentUser == null) {
+            throw new UnauthorizedException();
+        }
+        if (idCurrentUser.equals(idUser)) {
             return projectDao.getUserProjects(idUser, order, limit, offset);
         } else {
             throw new UnauthorizedException();
@@ -71,23 +76,23 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectRecord saveProjectWithCode(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String code) {
+    public ProjectRecord saveProjectWithCode(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board, String code) {
         // Check if project is from the current user, if not, unset idProject and create new
         if (idProject != null) {
             return projectDao.updateProject(idProject, name, description, code, privateProject, sharedProject);
         } else {
-            return projectDao.createProject(name, description, code, type, privateProject, sharedProject);
+            return projectDao.createProject(name, description, code, type, board, privateProject, sharedProject);
         }
 
     }
 
     @Override
-    public ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type) {
+    public ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
         // Check if project is from the current user, if not, unset idProject and create new
         if (idProject != null) {
             return projectDao.updateProject(idProject, name, description, privateProject, sharedProject);
         } else {
-            return projectDao.createProject(name, description, type, privateProject, sharedProject);
+            return projectDao.createProject(name, description, type, board, privateProject, sharedProject);
         }
     }
 
