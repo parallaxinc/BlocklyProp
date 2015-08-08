@@ -75,8 +75,9 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setDescription(description);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
-            ProjectRecord returningRecord = create.update(Tables.PROJECT).set(record).returning().fetchOne();
-            return returningRecord;
+            record.update();
+            // ProjectRecord returningRecord = create.update(Tables.PROJECT).set(record).returning().fetchOne();
+            return record;
         }
         return null;
     }
@@ -90,8 +91,9 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setCode(code);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
-            ProjectRecord returningRecord = create.update(Tables.PROJECT).set(record).returning().fetchOne();
-            return returningRecord;
+            record.update();
+            //ProjectRecord returningRecord = create.update(Tables.PROJECT).set(record).returning().fetchOne();
+            return record;
         }
         return null;
     }

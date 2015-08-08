@@ -5,17 +5,6 @@
  */
 
 
-//blocklyReady = function() {
-//    window.frames["content_blocks"].setProfile('demo-board');
-//    window.frames["content_blocks"].init();
-//};
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 var baseUrl = $("meta[name=base]").attr("content");
 
 var projectData = null;
@@ -97,33 +86,11 @@ addProjectManagerHandler = function() {
 };
 
 saveProject = function() {
-    getProjectData();
+//    getProjectData();
     projectData['code'] = window.frames["content_blocks"].getXml();
     $.post(baseUrl + 'rest/project/code', projectData, function(data) {
-        if (data.success === false) {
-            if (data.code === 2) {
-//                    $('#signin-register').height($('#register-form').height());
-                $('#login-dialog').modal('show');
-                projectManager.submitError();
-            }
-        } else {
-            projectData = data;
-            //$('#project-dialog').modal('hide');
-            projectManager.submitSuccess();
-            projectManager.hide();
-            projectManager.reset();
-            projectManager.enableNextButton();
-            //  projectManager.updateProgressBar(0);
-
-            for (var cardName in projectManager.cards) {
-                projectManager.cards[cardName].deselect();
-            }
-            var firstCard = projectManager.cards["project-manager-base"];
-            firstCard.select();
-            projectManager.showButtons();
-
-            utils.showMessage("Project saved", "The project has been saved");
-        }
+        projectData = data;
+        utils.showMessage("Project saved", "The project has been saved");
     });
 };
 
