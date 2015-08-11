@@ -9,3 +9,15 @@ body {
 .fixed-table-body {
     height: auto;
 }
+
+.editor-c-link.editor-icon {
+    background-image: url('images/lang-icons/c.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+}
+
+.editor-spin-link.editor-icon {
+    background-image: url('images/lang-icons/spin.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+}

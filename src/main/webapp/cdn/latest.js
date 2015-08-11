@@ -15,7 +15,7 @@ $.get("rest/shared/project/list?order=desc&limit=5&offset=0", function(data) {
             "class": "project"
         });
         $("<a/>", {
-            "class": "editor-view-link " + projectTypes[project['type']]['class'],
+            "class": "editor-view-link editor-icon " + projectTypes[project['type']]['class'],
             "href": "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id'],
             "text": project['name']
         }).appendTo(projectItem);
