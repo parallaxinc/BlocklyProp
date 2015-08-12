@@ -6,8 +6,13 @@
 package com.parallax.server.blocklyprop.converter;
 
 import com.google.gson.JsonObject;
+import com.google.inject.Inject;
 import com.parallax.server.blocklyprop.db.generated.tables.pojos.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
+import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
+import com.parallax.server.blocklyprop.services.ProjectService;
+import com.parallax.server.blocklyprop.services.UserService;
+import com.parallax.server.blocklyprop.utils.DateConversion;
 
 /**
  *
@@ -15,7 +20,20 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord
  */
 public class ProjectConverter {
 
-    public static JsonObject toJson(ProjectRecord project) {
+    private UserService userService;
+    private ProjectService projectService;
+
+    @Inject
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Inject
+    public void setProjectService(ProjectService projectService) {
+        this.projectService = projectService;
+    }
+
+    public JsonObject toListJson(ProjectRecord project) {
         JsonObject result = new JsonObject();
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
@@ -24,10 +42,18 @@ public class ProjectConverter {
         result.addProperty("board", project.getBoard());
         result.addProperty("private", project.getPrivate());
         result.addProperty("shared", project.getShared());
+        result.addProperty("created", DateConversion.toDateTimeString(project.getCreated().getTime()));
+        result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
+        boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+        result.addProperty("yours", isYours);
+        if (!isYours) {
+            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+        }
+
         return result;
     }
 
-    public static JsonObject toJson(Project project) {
+    public JsonObject toJson(ProjectRecord project) {
         JsonObject result = new JsonObject();
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
@@ -36,6 +62,58 @@ public class ProjectConverter {
         result.addProperty("board", project.getBoard());
         result.addProperty("private", project.getPrivate());
         result.addProperty("shared", project.getShared());
+        result.addProperty("created", DateConversion.toDateTimeString(project.getCreated().getTime()));
+        result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
+        boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+        result.addProperty("yours", isYours);
+        if (!isYours) {
+            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+        }
+
+        if (project.getBasedOn() != null) {
+            JsonObject basedOn = new JsonObject();
+            ProjectRecord basedOnProject = projectService.getProject(project.getBasedOn());
+            basedOn.addProperty("id", basedOnProject.getId());
+            basedOn.addProperty("name", basedOnProject.getName());
+            boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+            basedOn.addProperty("yours", basedOnProjectisYours);
+            if (!isYours) {
+                basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+            }
+            result.add("basedOn", basedOn);
+        }
+
+        return result;
+    }
+
+    public JsonObject toJson(Project project) {
+        JsonObject result = new JsonObject();
+        result.addProperty("id", project.getId());
+        result.addProperty("name", project.getName());
+        result.addProperty("description", project.getDescription());
+        result.addProperty("type", project.getType().name());
+        result.addProperty("board", project.getBoard());
+        result.addProperty("private", project.getPrivate());
+        result.addProperty("shared", project.getShared());
+        result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
+        boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+        result.addProperty("yours", isYours);
+        if (!isYours) {
+            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+        }
+
+        if (project.getBasedOn() != null) {
+            JsonObject basedOn = new JsonObject();
+            ProjectRecord basedOnProject = projectService.getProject(project.getBasedOn());
+            basedOn.addProperty("id", basedOnProject.getId());
+            basedOn.addProperty("name", basedOnProject.getName());
+            boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+            basedOn.addProperty("yours", basedOnProjectisYours);
+            if (!isYours) {
+                basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+            }
+            result.add("basedOn", basedOn);
+        }
         return result;
     }
 

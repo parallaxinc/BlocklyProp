@@ -25,7 +25,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = -1500781;
+	private static final long serialVersionUID = 1497914616;
 
 	private Long              id;
 	private Long              idUser;
@@ -39,6 +39,7 @@ public class Project implements Serializable {
 	private Boolean           shared;
 	private GregorianCalendar created;
 	private GregorianCalendar modified;
+	private Long              basedOn;
 
 	public Project() {}
 
@@ -55,6 +56,7 @@ public class Project implements Serializable {
 		this.shared = value.shared;
 		this.created = value.created;
 		this.modified = value.modified;
+		this.basedOn = value.basedOn;
 	}
 
 	public Project(
@@ -69,7 +71,8 @@ public class Project implements Serializable {
 		Boolean           private_,
 		Boolean           shared,
 		GregorianCalendar created,
-		GregorianCalendar modified
+		GregorianCalendar modified,
+		Long              basedOn
 	) {
 		this.id = id;
 		this.idUser = idUser;
@@ -83,6 +86,7 @@ public class Project implements Serializable {
 		this.shared = shared;
 		this.created = created;
 		this.modified = modified;
+		this.basedOn = basedOn;
 	}
 
 	public Long getId() {
@@ -179,5 +183,13 @@ public class Project implements Serializable {
 
 	public void setModified(GregorianCalendar modified) {
 		this.modified = modified;
+	}
+
+	public Long getBasedOn() {
+		return this.basedOn;
+	}
+
+	public void setBasedOn(Long basedOn) {
+		this.basedOn = basedOn;
 	}
 }

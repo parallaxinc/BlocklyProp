@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
         return userDao.getAll();
     }
 
+    @Override
+    public String getUserScreenName(Long idUser) {
+        return userDao.getUser(idUser).getScreenname();
+    }
+
 }

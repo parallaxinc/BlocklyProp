@@ -22,24 +22,28 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-	private static final long serialVersionUID = -1053213160;
+	private static final long serialVersionUID = 989039615;
 
-	private Long id;
-	private Long idcloudsession;
+	private Long   id;
+	private Long   idcloudsession;
+	private String screenname;
 
 	public User() {}
 
 	public User(User value) {
 		this.id = value.id;
 		this.idcloudsession = value.idcloudsession;
+		this.screenname = value.screenname;
 	}
 
 	public User(
-		Long id,
-		Long idcloudsession
+		Long   id,
+		Long   idcloudsession,
+		String screenname
 	) {
 		this.id = id;
 		this.idcloudsession = idcloudsession;
+		this.screenname = screenname;
 	}
 
 	public Long getId() {
@@ -56,5 +60,13 @@ public class User implements Serializable {
 
 	public void setIdcloudsession(Long idcloudsession) {
 		this.idcloudsession = idcloudsession;
+	}
+
+	public String getScreenname() {
+		return this.screenname;
+	}
+
+	public void setScreenname(String screenname) {
+		this.screenname = screenname;
 	}
 }

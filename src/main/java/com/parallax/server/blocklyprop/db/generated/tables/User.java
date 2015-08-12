@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-	private static final long serialVersionUID = 1072037799;
+	private static final long serialVersionUID = 1563960964;
 
 	/**
 	 * The reference instance of <code>blocklyprop.user</code>
@@ -58,6 +58,11 @@ public class User extends TableImpl<UserRecord> {
 	 * The column <code>blocklyprop.user.idCloudSession</code>.
 	 */
 	public final TableField<UserRecord, Long> IDCLOUDSESSION = createField("idCloudSession", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+	/**
+	 * The column <code>blocklyprop.user.screenname</code>.
+	 */
+	public final TableField<UserRecord, String> SCREENNAME = createField("screenname", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
 
 	/**
 	 * Create a <code>blocklyprop.user</code> table reference

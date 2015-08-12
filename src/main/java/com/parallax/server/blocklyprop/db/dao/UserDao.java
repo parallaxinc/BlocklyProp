@@ -28,4 +28,6 @@ public interface UserDao {
 
     Long getUserIdForCloudSessionUserId(Long id);
 
+    public void updateScreenname(Long idUser, String screenname);
+
 }

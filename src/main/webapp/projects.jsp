@@ -32,6 +32,7 @@
 
                     <jsp:include page="/WEB-INF/includes/pageparts/projecttable.jsp">
                         <jsp:param name="url" value="/rest/shared/project/list" />
+                        <jsp:param name="showuser" value="true" />
                     </jsp:include>
 
                 </div>

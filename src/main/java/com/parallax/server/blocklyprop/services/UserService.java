@@ -19,4 +19,6 @@ public interface UserService {
 
     List<UserRecord> getAllUsers();
 
+    public String getUserScreenName(Long idUser);
+
 }

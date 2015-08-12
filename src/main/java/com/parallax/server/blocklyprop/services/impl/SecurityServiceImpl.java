@@ -98,14 +98,17 @@ public class SecurityServiceImpl implements SecurityService {
     public static SessionData getSessionData() {
         SessionData sessionData = instance.sessionData.get();
         if (sessionData.getIdUser() == null) {
-            try {
-                User user = instance.userService.getUser((String) SecurityUtils.getSubject().getPrincipal());
-                if (user != null) {
-                    sessionData.setUser(user);
-                    sessionData.setIdUser(instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
+            if (SecurityUtils.getSubject().isAuthenticated()) {
+                try {
+                    User user = instance.userService.getUser((String) SecurityUtils.getSubject().getPrincipal());
+                    if (user != null) {
+                        sessionData.setUser(user);
+                        sessionData.setIdUser(instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
+                        instance.userDao.updateScreenname(sessionData.getIdUser(), user.getScreenname());
+                    }
+                } catch (UnknownUserException ex) {
+                    //       Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (UnknownUserException ex) {
-                //       Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return sessionData;

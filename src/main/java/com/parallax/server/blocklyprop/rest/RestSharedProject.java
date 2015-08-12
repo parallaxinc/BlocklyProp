@@ -15,7 +15,6 @@ import com.google.inject.Inject;
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
-import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -36,9 +35,16 @@ public class RestSharedProject {
 
     private ProjectService projectService;
 
+    private ProjectConverter projectConverter;
+
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @Inject
+    public void setProjectConverter(ProjectConverter projectConverter) {
+        this.projectConverter = projectConverter;
     }
 
     @GET
@@ -53,7 +59,7 @@ public class RestSharedProject {
         JsonObject result = new JsonObject();
         JsonArray jsonProjects = new JsonArray();
         for (ProjectRecord project : projects) {
-            jsonProjects.add(ProjectConverter.toJson(project));
+            jsonProjects.add(projectConverter.toListJson(project));
         }
 
         result.add("rows", jsonProjects);
@@ -70,15 +76,11 @@ public class RestSharedProject {
     public Response get(@PathParam("id") Long idProject) {
         ProjectRecord project = projectService.getProject(idProject);
 
-        if (project != null) {
-            if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
-                Response.status(Response.Status.UNAUTHORIZED).build();
-            }
-        } else {
+        if (project == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        JsonObject result = ProjectConverter.toJson(project);
+        JsonObject result = projectConverter.toJson(project);
 
         return Response.ok(result.toString()).build();
     }
@@ -91,15 +93,11 @@ public class RestSharedProject {
     public Response getEditor(@PathParam("id") Long idProject) {
         ProjectRecord project = projectService.getProject(idProject);
 
-        if (project != null) {
-            if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
-                Response.status(Response.Status.UNAUTHORIZED).build();
-            }
-        } else {
+        if (project == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        JsonObject result = ProjectConverter.toJson(project);
+        JsonObject result = projectConverter.toJson(project);
         result.addProperty("code", project.getCode());
 
         return Response.ok(result.toString()).build();

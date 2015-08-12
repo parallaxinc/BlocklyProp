@@ -133,4 +133,13 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public void updateScreenname(Long idUser, String screenname) {
+        UserRecord user = create.selectFrom(Tables.USER).where(Tables.USER.ID.eq(idUser)).fetchOne();
+        if (user != null) {
+            user.setScreenname(screenname);
+            user.update();
+        }
+    }
+
 }

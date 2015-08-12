@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = 204611935;
+	private static final long serialVersionUID = -726140586;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
@@ -112,6 +112,11 @@ public class Project extends TableImpl<ProjectRecord> {
 	 * The column <code>blocklyprop.project.modified</code>.
 	 */
 	public final TableField<ProjectRecord, GregorianCalendar> MODIFIED = createField("modified", org.jooq.impl.SQLDataType.TIMESTAMP.defaulted(true), this, "", new CalendarConverter());
+
+	/**
+	 * The column <code>blocklyprop.project.based_on</code>.
+	 */
+	public final TableField<ProjectRecord, Long> BASED_ON = createField("based_on", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
 	/**
 	 * Create a <code>blocklyprop.project</code> table reference

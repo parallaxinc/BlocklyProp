@@ -39,10 +39,16 @@ import org.apache.shiro.authz.AuthorizationException;
 public class RestProject {
 
     private ProjectService projectService;
+    private ProjectConverter projectConverter;
 
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @Inject
+    public void setProjectConverter(ProjectConverter projectConverter) {
+        this.projectConverter = projectConverter;
     }
 
     @GET
@@ -58,7 +64,7 @@ public class RestProject {
         JsonObject result = new JsonObject();
         JsonArray jsonProjects = new JsonArray();
         for (ProjectRecord project : userProjects) {
-            jsonProjects.add(ProjectConverter.toJson(project));
+            jsonProjects.add(projectConverter.toListJson(project));
         }
 
         result.add("rows", jsonProjects);
@@ -77,13 +83,13 @@ public class RestProject {
 
         if (project != null) {
             if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
-                Response.status(Response.Status.UNAUTHORIZED).build();
+                return Response.status(Response.Status.UNAUTHORIZED).build();
             }
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        JsonObject result = ProjectConverter.toJson(project);
+        JsonObject result = projectConverter.toJson(project);
 
         return Response.ok(result.toString()).build();
     }
@@ -96,7 +102,7 @@ public class RestProject {
     public Response saveProjectCode(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("private") Boolean privateProject, @FormParam("shared") Boolean sharedProject, @FormParam("type") ProjectType type, @FormParam("board") String board, @FormParam("code") String code) {
         try {
             ProjectRecord savedProject = projectService.saveProjectWithCode(idProject, name, description, privateProject, sharedProject, type, board, code);
-            JsonObject result = ProjectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject);
 
             result.addProperty("success", true);
 
@@ -114,7 +120,7 @@ public class RestProject {
     public Response saveProject(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("private") boolean privateProject, @FormParam("shared") boolean sharedProject, @FormParam("type") ProjectType type, @FormParam("board") String board) {
         try {
             ProjectRecord savedProject = projectService.saveProject(idProject, name, description, privateProject, sharedProject, type, board);
-            JsonObject result = ProjectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject);
 
             result.addProperty("success", true);
 
