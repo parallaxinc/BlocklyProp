@@ -20,10 +20,16 @@
                     <a href="<c:url value="/logout"/>">Logout</a>
                     <h2>Profile</h2>
                     <%
-                        String errorDescription = (String) request.getAttribute("error");
-                        if (errorDescription != null) {
+                        String baseSuccessDescription = (String) request.getAttribute("base-success");
+                        if (baseSuccessDescription != null) {
                     %>
-                    <div class="bg-danger"><p><%= errorDescription%></p></div>
+                    <div class="bg-success"><p><%= baseSuccessDescription%></p></div>
+                            <%
+                                }
+                                String baseErrorDescription = (String) request.getAttribute("base-error");
+                                if (baseErrorDescription != null) {
+                            %>
+                    <div class="bg-danger"><p><%= baseErrorDescription%></p></div>
                             <%
                                 }
                             %>

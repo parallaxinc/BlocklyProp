@@ -9,10 +9,13 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
+import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.objects.User;
+import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
+import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,12 +31,21 @@ import org.apache.commons.configuration.Configuration;
 public class ProfileServlet extends HttpServlet {
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
+    private CloudSessionUserService cloudSessionUserService;
     private Configuration configuration;
+
+    private UserDao userDao;
 
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         cloudSessionLocalUserService = new CloudSessionLocalUserService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
+        cloudSessionUserService = new CloudSessionUserService(configuration.getString("cloudsession.baseurl"));
+    }
+
+    @Inject
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
@@ -81,7 +93,31 @@ public class ProfileServlet extends HttpServlet {
     }
 
     private void saveBase(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Save base");
+        User user = BlocklyPropSecurityUtils.getUserInfo();
+        req.setAttribute("email", user.getEmail());
+        req.setAttribute("screenname", user.getScreenname());
+        String screenname = req.getParameter("screenname");
+        if (Strings.isNullOrEmpty(screenname)) {
+            req.setAttribute("base-error", "Missing fields");
+            req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+        } else {
+            try {
+                user = cloudSessionUserService.changeUserInfo(BlocklyPropSecurityUtils.getCurrentSessionUserId(), screenname);
+                if (user != null) {
+                    SecurityServiceImpl.getSessionData().setUser(user);
+                    userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+                    req.setAttribute("base-success", "Info changed");
+                    req.setAttribute("screenname", user.getScreenname());
+                    req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+                } else {
+                    req.setAttribute("base-error", "User info could not be changed");
+                    req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+                }
+            } catch (UnknownUserIdException uuie) {
+                req.setAttribute("base-error", "Unknown user");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            }
+        }
     }
 
     private void savePassword(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
