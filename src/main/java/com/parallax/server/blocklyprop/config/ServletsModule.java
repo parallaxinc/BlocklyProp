@@ -10,6 +10,7 @@ import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
 import com.parallax.server.blocklyprop.servlets.PasswordResetRequestServlet;
 import com.parallax.server.blocklyprop.servlets.PasswordResetServlet;
+import com.parallax.server.blocklyprop.servlets.ProfileServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
 import com.parallax.server.blocklyprop.servlets.UserServlet;
@@ -25,6 +26,7 @@ public class ServletsModule extends ServletModule {
         serve("/project").with(ProjectServlet.class);
         serve("/user").with(UserServlet.class);
         serve("/register").with(RegisterServlet.class);
+        serve("/profile").with(ProfileServlet.class);
 
         serve("/confirmrequest").with(ConfirmRequestServlet.class);
         serve("/confirm").with(ConfirmServlet.class);

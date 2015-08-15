@@ -26,7 +26,10 @@
                     <shiro:authenticated><a href="<c:url value="/profile"/>"><shiro:principal></shiro:principal></a></shiro:authenticated>
                     <shiro:notAuthenticated><a href="<c:url value="/login.jsp"/>">Login/Register</a></shiro:notAuthenticated>
 
-                    <shiro:authenticated><a href="<c:url value="/my/projects.jsp"/>">Your projects</a></shiro:authenticated>
+                    <shiro:authenticated>
+                        <a href="<c:url value="/my/projects.jsp"/>">Your projects</a>
+                        <a href="<c:url value="/logout"/>">Logout</a>
+                    </shiro:authenticated>
                     <a href="<c:url value="/projects.jsp"/>">Project list</a>
 
 

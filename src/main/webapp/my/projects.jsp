@@ -26,6 +26,7 @@
 
                     <h2><a href="<c:url value="/index.jsp"/>">BlocklyProp</a>: Projects</h2>
                     <a href="<c:url value="/profile"/>"><shiro:principal></shiro:principal></a>
+                    <a href="<c:url value="/logout"/>">Logout</a>
 
                     <jsp:include page="/WEB-INF/includes/pageparts/projecttable.jsp">
                         <jsp:param name="url" value="/rest/project/list" />

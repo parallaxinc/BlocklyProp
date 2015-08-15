@@ -5,6 +5,7 @@
  */
 package com.parallax.server.blocklyprop.security;
 
+import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import org.apache.shiro.SecurityUtils;
@@ -27,6 +28,14 @@ public class BlocklyPropSecurityUtils extends SecurityUtils {
         SessionData sessionData = SecurityServiceImpl.getSessionData();
         if (sessionData != null && sessionData.getUser() != null) {
             return sessionData.getUser().getId();
+        }
+        return null;
+    }
+
+    public static User getUserInfo() {
+        SessionData sessionData = SecurityServiceImpl.getSessionData();
+        if (sessionData != null && sessionData.getUser() != null) {
+            return sessionData.getUser();
         }
         return null;
     }
