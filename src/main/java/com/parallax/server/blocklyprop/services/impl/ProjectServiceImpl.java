@@ -96,4 +96,9 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @Override
+    public ProjectRecord cloneProject(Long idProject) {
+        return projectDao.cloneProject(idProject);
+    }
+
 }

@@ -137,4 +137,23 @@ public class ProjectDaoImpl implements ProjectDao {
         return create.fetchCount(Tables.PROJECT, Tables.PROJECT.SHARED.equal(Boolean.TRUE));
     }
 
+    @Override
+    public ProjectRecord cloneProject(Long idProject) {
+        ProjectRecord original = getProject(idProject);
+        if (original == null) {
+            throw new NullPointerException("Project doesn't exist");
+        }
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (original.getIdUser().equals(idUser) || original.getShared()) {
+            return doProjectClone(original);
+        }
+        return null;
+    }
+
+    private ProjectRecord doProjectClone(ProjectRecord original) {
+        ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
+        cloned.setBasedOn(original.getId());
+        return cloned;
+    }
+
 }

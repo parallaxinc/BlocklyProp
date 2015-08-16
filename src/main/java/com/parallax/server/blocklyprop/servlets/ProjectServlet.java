@@ -5,8 +5,10 @@
  */
 package com.parallax.server.blocklyprop.servlets;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -28,24 +30,25 @@ public class ProjectServlet extends HttpServlet {
         this.projectService = projectService;
     }
 
-    /**
-     * Create new project
-     *
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
-     */
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        ProjectRecord project = new ProjectRecord();
-//        project.setCode("test");
-        // projectDao.create(project);
-    }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().write("Project");
+        String clone = req.getParameter("clone");
+        if (!Strings.isNullOrEmpty(clone)) {
+            clone(Long.parseLong(clone), req, resp);
+        }
+    }
+
+    private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            ProjectRecord clonedProject = projectService.cloneProject(idProject);
+            if (clonedProject == null) {
+                req.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(req, resp);
+            } else {
+                resp.sendRedirect("my/projects.jsp#" + clonedProject.getId());
+            }
+        } catch (NullPointerException npe) {
+            req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+        }
     }
 
 }

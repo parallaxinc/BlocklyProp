@@ -21,22 +21,21 @@
                     <textarea class="form-control" name="description" id="project-form-description" rows="8" required="required"></textarea>
                 </div>
                 <div>
-                    <div class="btn-group">
-                        <c:if test="${param.shared}">
-                            <shiro:notAuthenticated>
-                                <a class="btn btn-default open-project-link editor-view-link" href="#" >Open project</a>
-                            </shiro:notAuthenticated>
-                            <shiro:authenticated>
-                                <a class="btn btn-default open-project-link editor-view-link" href="#" >Edit</a>
-                                <a class="btn btn-danger" href="<c:url value="/rest/project/delete/"/>" >Delete</a>
-                            </shiro:authenticated>
-                        </c:if>
-                        <c:if test="${param.mine}">
+                    <shiro:notAuthenticated>
+                        <a class="btn btn-default open-project-link editor-view-link" href="#" >Open project</a>
+                    </shiro:notAuthenticated>
+
+                    <shiro:authenticated>
+                        <a class="btn btn-default open-project-link editor-view-link" href="#" >Open project</a>
+                        <div class="btn-group not-your-project hidden">
+                            <a class="btn btn-default clone-project" href="<c:url value="/project?clone="/>" >Clone</a>
+                        </div>
+                        <div class="btn-group your-project hidden">
                             <button class="btn btn-primary" >Save</button>
-                            <a class="btn btn-default open-project-link editor-view-link" href="#" >Edit</a>
                             <a class="btn btn-danger" href="<c:url value="/rest/project/delete/"/>" >Delete</a>
-                        </c:if>
-                    </div>
+                            <a class="btn btn-default clone-project" href="<c:url value="/project?clone="/>" >Clone</a>
+                        </div>
+                    </shiro:authenticated>
                 </div>
             </form>
         </div>

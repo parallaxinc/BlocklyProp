@@ -36,4 +36,6 @@ public interface ProjectDao {
 
     int countSharedProjects();
 
+    public ProjectRecord cloneProject(Long idProject);
+
 }
