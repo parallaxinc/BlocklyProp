@@ -8,6 +8,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
 import com.parallax.server.blocklyprop.db.generated.tables.SecUserRole;
+import com.parallax.server.blocklyprop.db.generated.tables.Session;
 import com.parallax.server.blocklyprop.db.generated.tables.Tag;
 import com.parallax.server.blocklyprop.db.generated.tables.User;
 
@@ -46,6 +47,11 @@ public class Tables {
 	 * The table blocklyprop.sec_user_role
 	 */
 	public static final SecUserRole SEC_USER_ROLE = com.parallax.server.blocklyprop.db.generated.tables.SecUserRole.SEC_USER_ROLE;
+
+	/**
+	 * The table blocklyprop.session
+	 */
+	public static final Session SESSION = com.parallax.server.blocklyprop.db.generated.tables.Session.SESSION;
 
 	/**
 	 * The table blocklyprop.tag

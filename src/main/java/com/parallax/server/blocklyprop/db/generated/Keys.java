@@ -7,11 +7,13 @@ package com.parallax.server.blocklyprop.db.generated;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
 import com.parallax.server.blocklyprop.db.generated.tables.SecUserRole;
+import com.parallax.server.blocklyprop.db.generated.tables.Session;
 import com.parallax.server.blocklyprop.db.generated.tables.Tag;
 import com.parallax.server.blocklyprop.db.generated.tables.User;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.SecRoleRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.SecUserRoleRecord;
+import com.parallax.server.blocklyprop.db.generated.tables.records.SessionRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.TagRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
 
@@ -54,6 +56,7 @@ public class Keys {
 	public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_PRIMARY = UniqueKeys0.KEY_SEC_ROLE_PRIMARY;
 	public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_NAME_UNIQUE = UniqueKeys0.KEY_SEC_ROLE_NAME_UNIQUE;
 	public static final UniqueKey<SecUserRoleRecord> KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE = UniqueKeys0.KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE;
+	public static final UniqueKey<SessionRecord> KEY_SESSION_PRIMARY = UniqueKeys0.KEY_SESSION_PRIMARY;
 	public static final UniqueKey<TagRecord> KEY_TAG_PRIMARY = UniqueKeys0.KEY_TAG_PRIMARY;
 	public static final UniqueKey<TagRecord> KEY_TAG_NAME_UNIQUE = UniqueKeys0.KEY_TAG_NAME_UNIQUE;
 	public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
@@ -80,6 +83,7 @@ public class Keys {
 		public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_PRIMARY = createUniqueKey(SecRole.SEC_ROLE, SecRole.SEC_ROLE.ID);
 		public static final UniqueKey<SecRoleRecord> KEY_SEC_ROLE_NAME_UNIQUE = createUniqueKey(SecRole.SEC_ROLE, SecRole.SEC_ROLE.NAME);
 		public static final UniqueKey<SecUserRoleRecord> KEY_SEC_USER_ROLE_UNIQUE_USER_ROLE = createUniqueKey(SecUserRole.SEC_USER_ROLE, SecUserRole.SEC_USER_ROLE.ID_USER, SecUserRole.SEC_USER_ROLE.ID_ROLE);
+		public static final UniqueKey<SessionRecord> KEY_SESSION_PRIMARY = createUniqueKey(Session.SESSION, Session.SESSION.IDSESSION);
 		public static final UniqueKey<TagRecord> KEY_TAG_PRIMARY = createUniqueKey(Tag.TAG, Tag.TAG.ID);
 		public static final UniqueKey<TagRecord> KEY_TAG_NAME_UNIQUE = createUniqueKey(Tag.TAG, Tag.TAG.NAME);
 		public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, User.USER.ID);
