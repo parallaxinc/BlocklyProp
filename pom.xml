@@ -20,13 +20,13 @@
         <jersey.version>1.19</jersey.version>
     </properties>
 
-    <pluginRepositories>
+    <!--    <pluginRepositories>
         <pluginRepository>
             <id>Creating Future</id>
             <name>plugins-releases</name>
             <url>http://maven.creatingfuture.eu/browse/libs-release-local</url>
         </pluginRepository>
-    </pluginRepositories>
+    </pluginRepositories>-->
 
     <profiles>
         <profile>
@@ -34,6 +34,25 @@
 
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>properties-maven-plugin</artifactId>
+                        <version>1.0-alpha-2</version>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>read-project-properties</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <files>
+                                <file>build.properties</file>
+                            </files>
+                        </configuration>
+                    </plugin>
+
                     <plugin>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.3</version>
@@ -51,10 +70,10 @@
                         <artifactId>tomcat7-maven-plugin</artifactId>
                         <version>2.2</version>
                         <configuration>
-                            <url>http://localhost:8080/manager/text</url>
+                            <url>${tomcat.url}</url>
                             <path>/blockly</path>
-                            <username>admin</username>
-                            <password>admin</password>
+                            <username>${tomcat.username}</username>
+                            <password>${tomcat.password}</password>
                             <update>true</update>
                         </configuration>
                     </plugin>
@@ -83,8 +102,8 @@
                             <jdbc>
                                 <driver>com.mysql.jdbc.Driver</driver>
                                 <url>jdbc:mysql://localhost:3306/blocklyprop</url>
-                                <user>root</user>
-                                <password>admin</password>
+                                <user>${mysql.username}</user>
+                                <password>${mysql.password}</password>
                             </jdbc>
 
                             <generator>
@@ -449,26 +468,26 @@
                     </archive>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>eu.creatingfuture.plugins</groupId>
-                <artifactId>textile-page-generator-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <inputDirectory>${project.basedir}/help/textile/</inputDirectory>
-                    <headerHtmlFile>${project.basedir}/help/header.html</headerHtmlFile>
-                    <footerHtmlFile>${project.basedir}/help/footer.html</footerHtmlFile>
-                </configuration>
-            </plugin>
-
+            <!--
+                        <plugin>
+                            <groupId>eu.creatingfuture.plugins</groupId>
+                            <artifactId>textile-page-generator-plugin</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                            <executions>
+                                <execution>
+                                    <phase>process-sources</phase>
+                                    <goals>
+                                        <goal>generate</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                <inputDirectory>${project.basedir}/help/textile/</inputDirectory>
+                                <headerHtmlFile>${project.basedir}/help/header.html</headerHtmlFile>
+                                <footerHtmlFile>${project.basedir}/help/footer.html</footerHtmlFile>
+                            </configuration>
+                        </plugin>
+            -->
             <!--            <plugin>
                 <groupId>com.ruleoftech</groupId>
                 <artifactId>markdown-page-generator-plugin</artifactId>

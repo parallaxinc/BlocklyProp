@@ -1,3 +1,5 @@
+build.properties
+
 #################
 ## NetBeans
 #################
@@ -7,6 +9,7 @@ nbactions.xml
 target/
 *.log*
 .idea/
+BlocklyProp.iml
 
 
 #################
