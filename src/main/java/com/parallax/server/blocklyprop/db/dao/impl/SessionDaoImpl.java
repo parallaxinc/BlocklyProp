@@ -5,10 +5,14 @@
  */
 package com.parallax.server.blocklyprop.db.dao.impl;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.db.dao.SessionDao;
-import com.parallax.server.blocklyprop.db.generated.tables.Session;
+import com.parallax.server.blocklyprop.db.generated.Tables;
+import com.parallax.server.blocklyprop.db.generated.tables.records.SessionRecord;
+import java.util.Arrays;
 import java.util.Collection;
+import org.jooq.DSLContext;
 
 /**
  *
@@ -17,29 +21,46 @@ import java.util.Collection;
 @Singleton
 public class SessionDaoImpl implements SessionDao {
 
-    @Override
-    public void create(Session session) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private DSLContext create;
+
+    @Inject
+    public void setDSLContext(DSLContext dsl) {
+        this.create = dsl;
     }
 
     @Override
-    public Session readSession(String idSession) throws NullPointerException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void create(SessionRecord session) {
+        create.insertInto(Tables.SESSION).columns(Tables.SESSION.IDSESSION, Tables.SESSION.STARTTIMESTAMP, Tables.SESSION.LASTACCESSTIME, Tables.SESSION.TIMEOUT, Tables.SESSION.HOST, Tables.SESSION.ATTRIBUTES)
+                .values(session.getIdsession(), session.getStarttimestamp(), session.getLastaccesstime(), session.getTimeout(), session.getHost(), session.getAttributes()).execute();
     }
 
     @Override
-    public void updateSession(Session session) throws NullPointerException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SessionRecord readSession(String idSession) throws NullPointerException {
+        return create.selectFrom(Tables.SESSION).where(Tables.SESSION.IDSESSION.eq(idSession)).fetchOne();
+    }
+
+    @Override
+    public void updateSession(SessionRecord session) throws NullPointerException {
+        SessionRecord dbRecord = readSession(session.getIdsession());
+        if (dbRecord == null) {
+            throw new NullPointerException();
+        }
+        dbRecord.setStarttimestamp(session.getStarttimestamp());
+        dbRecord.setLastaccesstime(session.getLastaccesstime());
+        dbRecord.setTimeout(session.getTimeout());
+        dbRecord.setHost(session.getHost());
+        dbRecord.setAttributes(session.getAttributes());
+        dbRecord.update();
     }
 
     @Override
     public void deleteSession(String idSession) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        create.deleteFrom(Tables.SESSION).where(Tables.SESSION.IDSESSION.eq(idSession)).execute();
     }
 
     @Override
-    public Collection<Session> getActiveSessions() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<SessionRecord> getActiveSessions() {
+        return Arrays.asList(create.selectFrom(Tables.SESSION).fetchArray());
     }
 
 }

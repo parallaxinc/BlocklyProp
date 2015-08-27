@@ -5,12 +5,16 @@
  */
 package com.parallax.server.blocklyprop.security;
 
+import com.parallax.server.blocklyprop.db.generated.tables.records.SessionRecord;
+import com.parallax.server.blocklyprop.services.impl.SessionServiceImpl;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
+import org.apache.commons.lang.SerializationUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.SimpleSession;
@@ -22,44 +26,98 @@ import org.apache.shiro.session.mgt.eis.SessionDAO;
  */
 public class BlocklyPropSessionDao implements SessionDAO {
 
-    private Map<String, Session> sessions = new HashMap<>();
-
+//    private Map<String, Session> sessions = new HashMap<>();
     @Override
     public Serializable create(Session session) {
-        System.out.println("Session: " + session);
-        System.out.println("Session id: " + session.getId());
-
         SimpleSession simpleSession = (SimpleSession) session;
 
         String uuid = UUID.randomUUID().toString();
         simpleSession.setId(uuid);
 
-        sessions.put(uuid, session);
+        System.out.println("Create session: " + session.getId());
+
+        SessionServiceImpl.getSessionService().create(convert(simpleSession));
+//        sessions.put(uuid, session);
 
         return uuid;
     }
 
     @Override
     public Session readSession(Serializable sessionId) throws UnknownSessionException {
-        System.out.println("Read session: " + sessionId);
-        return sessions.get(sessionId.toString());
+//        System.out.println("Read session: " + sessionId);
+
+//        return sessions.get(sessionId.toString());
+        try {
+            SessionRecord sessionRecord = SessionServiceImpl.getSessionService().readSession(sessionId.toString());
+            if (sessionRecord != null) {
+                return convert(sessionRecord);
+            }
+            throw new UnknownSessionException();
+        } catch (NullPointerException npe) {
+            throw new UnknownSessionException();
+        }
     }
 
     @Override
     public void update(Session session) throws UnknownSessionException {
         System.out.println("Update session: " + session.getId());
-        sessions.put(session.getId().toString(), session);
+
+        SessionServiceImpl.getSessionService().updateSession(convert(session));
+//        sessions.put(session.getId().toString(), session);
     }
 
     @Override
     public void delete(Session session) {
-        System.out.println("Delete session: " + session.getId());
-        sessions.remove(session.getId().toString());
+//        System.out.println("Delete session: " + session.getId());
+//        sessions.remove(session.getId().toString());
+        SessionServiceImpl.getSessionService().deleteSession(session.getId().toString());
     }
 
     @Override
     public Collection<Session> getActiveSessions() {
-        return sessions.values();
+        Collection<SessionRecord> sessionRecords = SessionServiceImpl.getSessionService().getActiveSessions();
+        List<Session> sessions = new ArrayList<>();
+        for (SessionRecord sessionRecord : sessionRecords) {
+            sessions.add(convert(sessionRecord));
+        }
+        return sessions;
+//        return sessions.values();
+    }
+
+    protected SessionRecord convert(Session session) {
+        SimpleSession ssession = (SimpleSession) session;
+        SessionRecord sessionRecord = new SessionRecord();
+        sessionRecord.setIdsession(session.getId().toString());
+        sessionRecord.setStarttimestamp(new Timestamp(session.getStartTimestamp().getTime()));
+        sessionRecord.setLastaccesstime(new Timestamp(session.getLastAccessTime().getTime()));
+        sessionRecord.setTimeout(session.getTimeout());
+        sessionRecord.setHost(session.getHost());
+        if (ssession.getAttributes() != null) {
+            HashMap<Object, Object> attributes = (HashMap<Object, Object>) ssession.getAttributes();
+//            for (Object key : session.getAttributeKeys()) {
+//                System.out.println("key: " + key.getClass() + " value: " + attributes.get(key).getClass());
+//            }
+            sessionRecord.setAttributes(SerializationUtils.serialize(attributes));
+//            try {
+//                System.out.println("SESSION ATTRIBUTE CLASS: " + ssession.getAttributes().getClass());
+//            } catch (NullPointerException npe) {
+//            }
+        }
+        return sessionRecord;
+    }
+
+    protected Session convert(SessionRecord sessionRecord) {
+        SimpleSession ssession = new SimpleSession();
+        ssession.setId(sessionRecord.getIdsession());
+        ssession.setStartTimestamp(sessionRecord.getStarttimestamp());
+        ssession.setLastAccessTime(sessionRecord.getLastaccesstime());
+        ssession.setTimeout(sessionRecord.getTimeout());
+        ssession.setHost(sessionRecord.getHost());
+        if (sessionRecord.getAttributes() != null) {
+            HashMap<Object, Object> attributes = (HashMap<Object, Object>) SerializationUtils.deserialize(sessionRecord.getAttributes());
+            ssession.setAttributes(attributes);
+        }
+        return ssession;
     }
 
 }

@@ -7,13 +7,14 @@ package com.parallax.server.blocklyprop;
 
 import com.google.inject.servlet.SessionScoped;
 import com.parallax.client.cloudsession.objects.User;
+import java.io.Serializable;
 
 /**
  *
  * @author Michel
  */
 @SessionScoped
-public class SessionData {
+public class SessionData implements Serializable {
 
     private User user;
     private Long idUser;

@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Session extends TableImpl<SessionRecord> {
 
-	private static final long serialVersionUID = 2126734164;
+	private static final long serialVersionUID = -1673368420;
 
 	/**
 	 * The reference instance of <code>blocklyprop.session</code>
@@ -77,7 +77,7 @@ public class Session extends TableImpl<SessionRecord> {
 	/**
 	 * The column <code>blocklyprop.session.attributes</code>.
 	 */
-	public final TableField<SessionRecord, String> ATTRIBUTES = createField("attributes", org.jooq.impl.SQLDataType.CLOB, this, "");
+	public final TableField<SessionRecord, byte[]> ATTRIBUTES = createField("attributes", org.jooq.impl.SQLDataType.BLOB, this, "");
 
 	/**
 	 * Create a <code>blocklyprop.session</code> table reference

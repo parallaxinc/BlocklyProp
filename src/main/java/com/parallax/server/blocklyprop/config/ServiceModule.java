@@ -29,7 +29,7 @@ public class ServiceModule extends AbstractModule {
         bind(ProjectService.class).to(ProjectServiceImpl.class);
         bind(UserService.class).to(UserServiceImpl.class);
         bind(SecurityService.class).to(SecurityServiceImpl.class).asEagerSingleton();
-        bind(SessionService.class).to(SessionServiceImpl.class);
+        bind(SessionService.class).to(SessionServiceImpl.class).asEagerSingleton();
     }
 
 }

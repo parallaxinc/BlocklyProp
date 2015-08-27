@@ -5,7 +5,7 @@
  */
 package com.parallax.server.blocklyprop.services;
 
-import com.parallax.server.blocklyprop.db.generated.tables.Session;
+import com.parallax.server.blocklyprop.db.generated.tables.records.SessionRecord;
 import java.util.Collection;
 
 /**
@@ -14,14 +14,14 @@ import java.util.Collection;
  */
 public interface SessionService {
 
-    void create(Session session);
+    void create(SessionRecord session);
 
-    Session readSession(String idSession) throws NullPointerException;
+    SessionRecord readSession(String idSession) throws NullPointerException;
 
-    void updateSession(Session session) throws NullPointerException;
+    void updateSession(SessionRecord session) throws NullPointerException;
 
     void deleteSession(String idSession);
 
-    Collection<Session> getActiveSessions();
+    Collection<SessionRecord> getActiveSessions();
 
 }

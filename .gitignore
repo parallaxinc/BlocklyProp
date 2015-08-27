@@ -8,8 +8,13 @@ nb-configuration.xml
 nbactions.xml
 target/
 *.log*
-.idea/
 BlocklyProp.iml
+
+#################
+## IntelliJ
+#################
+
+.idea
 
 
 #################

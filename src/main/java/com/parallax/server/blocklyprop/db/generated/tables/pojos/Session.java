@@ -23,14 +23,14 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Session implements Serializable {
 
-	private static final long serialVersionUID = 424808907;
+	private static final long serialVersionUID = -2135220067;
 
 	private String    idsession;
 	private Timestamp starttimestamp;
 	private Timestamp lastaccesstime;
 	private Long      timeout;
 	private String    host;
-	private String    attributes;
+	private byte[]    attributes;
 
 	public Session() {}
 
@@ -49,7 +49,7 @@ public class Session implements Serializable {
 		Timestamp lastaccesstime,
 		Long      timeout,
 		String    host,
-		String    attributes
+		byte[]    attributes
 	) {
 		this.idsession = idsession;
 		this.starttimestamp = starttimestamp;
@@ -99,11 +99,11 @@ public class Session implements Serializable {
 		this.host = host;
 	}
 
-	public String getAttributes() {
+	public byte[] getAttributes() {
 		return this.attributes;
 	}
 
-	public void setAttributes(String attributes) {
+	public void setAttributes(byte[] attributes) {
 		this.attributes = attributes;
 	}
 }

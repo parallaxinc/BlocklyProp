@@ -438,7 +438,7 @@
 
         <dependency>
             <groupId>com.parallax.client</groupId>
-            <artifactId>Cloud-Session</artifactId>
+            <artifactId>Cloud-Session-java-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
