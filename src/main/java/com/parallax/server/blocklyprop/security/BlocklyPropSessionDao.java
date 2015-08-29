@@ -26,7 +26,6 @@ import org.apache.shiro.session.mgt.eis.SessionDAO;
  */
 public class BlocklyPropSessionDao implements SessionDAO {
 
-//    private Map<String, Session> sessions = new HashMap<>();
     @Override
     public Serializable create(Session session) {
         SimpleSession simpleSession = (SimpleSession) session;
@@ -34,10 +33,8 @@ public class BlocklyPropSessionDao implements SessionDAO {
         String uuid = UUID.randomUUID().toString();
         simpleSession.setId(uuid);
 
-        System.out.println("Create session: " + session.getId());
-
+//        System.out.println("Create session: " + session.getId());
         SessionServiceImpl.getSessionService().create(convert(simpleSession));
-//        sessions.put(uuid, session);
 
         return uuid;
     }
@@ -45,8 +42,6 @@ public class BlocklyPropSessionDao implements SessionDAO {
     @Override
     public Session readSession(Serializable sessionId) throws UnknownSessionException {
 //        System.out.println("Read session: " + sessionId);
-
-//        return sessions.get(sessionId.toString());
         try {
             SessionRecord sessionRecord = SessionServiceImpl.getSessionService().readSession(sessionId.toString());
             if (sessionRecord != null) {
@@ -60,16 +55,14 @@ public class BlocklyPropSessionDao implements SessionDAO {
 
     @Override
     public void update(Session session) throws UnknownSessionException {
-        System.out.println("Update session: " + session.getId());
+//        System.out.println("Update session: " + session.getId());
 
         SessionServiceImpl.getSessionService().updateSession(convert(session));
-//        sessions.put(session.getId().toString(), session);
     }
 
     @Override
     public void delete(Session session) {
 //        System.out.println("Delete session: " + session.getId());
-//        sessions.remove(session.getId().toString());
         SessionServiceImpl.getSessionService().deleteSession(session.getId().toString());
     }
 
@@ -81,7 +74,6 @@ public class BlocklyPropSessionDao implements SessionDAO {
             sessions.add(convert(sessionRecord));
         }
         return sessions;
-//        return sessions.values();
     }
 
     protected SessionRecord convert(Session session) {
@@ -94,14 +86,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
         sessionRecord.setHost(session.getHost());
         if (ssession.getAttributes() != null) {
             HashMap<Object, Object> attributes = (HashMap<Object, Object>) ssession.getAttributes();
-//            for (Object key : session.getAttributeKeys()) {
-//                System.out.println("key: " + key.getClass() + " value: " + attributes.get(key).getClass());
-//            }
             sessionRecord.setAttributes(SerializationUtils.serialize(attributes));
-//            try {
-//                System.out.println("SESSION ATTRIBUTE CLASS: " + ssession.getAttributes().getClass());
-//            } catch (NullPointerException npe) {
-//            }
         }
         return sessionRecord;
     }
