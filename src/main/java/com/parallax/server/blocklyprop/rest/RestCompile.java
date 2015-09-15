@@ -9,7 +9,9 @@ import com.cuubez.visualizer.annotation.Detail;
 import com.cuubez.visualizer.annotation.Group;
 import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -30,5 +32,23 @@ public class RestCompile {
     @Produces("text/plain")
     public Response get(@QueryParam("test") String testString) {
         return Response.ok("Hello " + testString).build();
+    }
+
+    @POST
+    @Path("/spin")
+    @Detail("Spin compile")
+    @Name("Spin")
+    @Produces("text/json")
+    public Response compileSpin(@QueryParam("id") Long idProject, @FormParam("code") String code) {
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/c")
+    @Detail("C compile")
+    @Name("C")
+    @Produces("text/json")
+    public Response compileC(@QueryParam("id") Long idProject, @FormParam("code") String code) {
+        return Response.ok().build();
     }
 }
