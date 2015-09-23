@@ -9,6 +9,7 @@ import com.cuubez.visualizer.annotation.Detail;
 import com.cuubez.visualizer.annotation.Group;
 import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
+import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.client.cloudcompiler.CCloudCompileService;
 import com.parallax.client.cloudcompiler.SpinCloudCompileService;
@@ -22,7 +23,7 @@ import com.parallax.client.cloudsession.exceptions.UnknownBucketTypeException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -44,7 +45,7 @@ import org.slf4j.LoggerFactory;
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestCompile {
 
-    private Logger LOG = LoggerFactory.getLogger(RestCompile.class);
+    private final Logger LOG = LoggerFactory.getLogger(RestCompile.class);
 
     private CloudSessionBucketService bucketService;
     private CCloudCompileService cCloudCompileService;
@@ -56,8 +57,8 @@ public class RestCompile {
         this.configuration = configuration;
         bucketService = new CloudSessionBucketService(configuration.getString("cloudsession.baseurl"));
 
-        cCloudCompileService = new CCloudCompileService(configuration.getString("cloudcompile.baseurl"));
-        spinCloudCompileService = new SpinCloudCompileService(configuration.getString("cloudcompile.baseurl"));
+        cCloudCompileService = new CCloudCompileService(configuration.getString("cloudcompiler.baseurl"));
+        spinCloudCompileService = new SpinCloudCompileService(configuration.getString("cloudcompiler.baseurl"));
     }
 
     @GET
@@ -72,20 +73,19 @@ public class RestCompile {
     @Path("/spin/{action}")
     @Detail("Spin compile")
     @Name("Spin")
-    @Produces("text/json")
-    public Response compileSpin(@PathParam("action") CompileAction action, @QueryParam("id") Long idProject, @FormParam("code") String code) {
+    @Consumes("text/plain")
+    @Produces("application/json")
+    public Response compileSpin(@PathParam("action") CompileAction action, @QueryParam("id") Long idProject, String code) {
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;
         }
 
         try {
-            CompilationResult compilationResult = spinCloudCompileService.compileSingleSpin(action, code);
-
-            return Response.ok().build();
+            return handleCompilationResult(action, spinCloudCompileService.compileSingleSpin(action, code));
         } catch (CompilationException ex) {
-            LOG.warn("Compile {} {}", idProject, action, ex);
-            return Response.ok().build();
+            LOG.warn("Compile spin {} {}", idProject, action, ex);
+            return handleCompilationException(ex);
         }
     }
 
@@ -94,20 +94,38 @@ public class RestCompile {
     @Detail("C compile")
     @Name("C")
     @Produces("text/json")
-    public Response compileC(@PathParam("action") CompileAction action, @QueryParam("id") Long idProject, @FormParam("code") String code) {
+    public Response compileC(@PathParam("action") CompileAction action, @QueryParam("id") Long idProject, String code) {
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;
         }
 
         try {
-            CompilationResult compilationResult = cCloudCompileService.compileSingleC(action, code);
-
-            return Response.ok().build();
+            return handleCompilationResult(action, cCloudCompileService.compileSingleC(action, code));
         } catch (CompilationException ex) {
-            LOG.warn("Compile {} {}", idProject, action, ex);
-            return Response.ok().build();
+            LOG.warn("Compile c {} {}", idProject, action, ex);
+            return handleCompilationException(ex);
         }
+    }
+
+    protected Response handleCompilationResult(CompileAction action, CompilationResult compilationResult) {
+        JsonObject json = new JsonObject();
+        json.addProperty("error", false);
+        json.addProperty("success", compilationResult.isSuccess());
+        json.addProperty("compiler-output", compilationResult.getCompilerOutput());
+        json.addProperty("compiler-error", compilationResult.getCompilerError());
+        if (compilationResult.isSuccess() && action != CompileAction.COMPILE) {
+            json.addProperty("binary", compilationResult.getBinary());
+            json.addProperty("extension", compilationResult.getExtension());
+        }
+        return Response.ok(json.toString()).build();
+    }
+
+    protected Response handleCompilationException(CompilationException compilationException) {
+        JsonObject json = new JsonObject();
+        json.addProperty("error", true);
+        json.addProperty("message", compilationException.getMessage());
+        return Response.ok(json.toString()).build();
     }
 
     protected Response checkLimiterBucket() {
