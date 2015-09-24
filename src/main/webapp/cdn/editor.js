@@ -19,8 +19,10 @@ var project_options = {
 };
 var projectManager = null;
 
-$(document).ready(function() {
-    var idProject = getUrlParameters('project', '', false);
+var idProject = 0;
+
+$(document).ready(function () {
+    idProject = getUrlParameters('project', '', false);
     if (!idProject) {
 
         project_options['showClose'] = false;
@@ -33,7 +35,7 @@ $(document).ready(function() {
             //       board: $('#board-type').val(),
             code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
         };
-        projectManager.on("submit", function() {
+        projectManager.on("submit", function () {
             projectCreated = true;
             projectManager.close();
             projectData['name'] = $('#project-name').val();
@@ -59,7 +61,7 @@ $(document).ready(function() {
 //
 //        });
     } else {
-        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function(data) {
+        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
             console.log(data);
             projectData = data;
             projectCreated = true;
@@ -73,28 +75,28 @@ $(document).ready(function() {
         });
     }
 
-    $('#save-project').on('click', function() {
+    $('#save-project').on('click', function () {
         saveProject();
     });
 
 });
 
-addProjectManagerHandler = function() {
-    projectManager.on("submit", function(wizard) {
+addProjectManagerHandler = function () {
+    projectManager.on("submit", function (wizard) {
         saveProject();
     });
 };
 
-saveProject = function() {
+saveProject = function () {
 //    getProjectData();
     projectData['code'] = window.frames["content_blocks"].getXml();
-    $.post(baseUrl + 'rest/project/code', projectData, function(data) {
+    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
         projectData = data;
         utils.showMessage("Project saved", "The project has been saved");
     });
 };
 
-blocklyReady = function() {
+blocklyReady = function () {
     if (projectCreated) {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init();
@@ -104,7 +106,7 @@ blocklyReady = function() {
 };
 
 
-loadProject = function() {
+loadProject = function () {
     if (projectData !== null) {
 //        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, projectData['code']);
         window.frames["content_blocks"].load(projectData['code']);
@@ -112,7 +114,7 @@ loadProject = function() {
 };
 
 
-project = function() {
+project = function () {
     if (projectManager === null) {
         project_options['showClose'] = true;
         project_options['showCancel'] = true;
@@ -136,19 +138,19 @@ project = function() {
     projectManager.show();
 };
 
-getProjectData = function() {
+getProjectData = function () {
     projectData['name'] = $('#project-name').val();
     projectData['description'] = $('#project-description').val();
 //    console.log(projectData['description']);
 };
 
-window.onbeforeunload = function() {
+window.onbeforeunload = function () {
     if (checkLeave()) {
         return "The project has been changed since the last save.";
     }
 };
 
-checkLeave = function() {
+checkLeave = function () {
     var currentXml = window.frames["content_blocks"].getXml();
 //    console.log(currentXml);
     if (projectData === null) {
