@@ -107,18 +107,15 @@ function init(blockly) {
     loadProject();
 }
 
-/**
- *
- */
-function compile() {
-    $("#compile-dialog-title").text('Compile');
+function cloudCompile(text, action, successHandler) {
+    $("#compile-dialog-title").text(text);
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
     var propcCode = Blockly.propc.workspaceToCode();
     $.ajax({
         'method': 'POST',
-        'url': baseUrl + 'rest/compile/c/COMPILE?id=' + idProject,
+        'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
         'data': propcCode
     }).done(function (data) {
         if (data.error) {
@@ -126,6 +123,7 @@ function compile() {
         } else {
             if (data.success) {
                 $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                successHandler(data);
             } else {
                 $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
             }
@@ -133,36 +131,30 @@ function compile() {
     }).fail(function (data) {
         alert(data);
     });
+}
 
-//    if (client_available) {
-//        var propcCode = Blockly.Generator.workspaceToCode('propc');
-//
-//        $.post(client_url + 'compile.action', {action: "COMPILE", language: "prop-c", code: propcCode}, function (data) {
-//            $("#compile-console").val(data.message);
-//            console.log(data);
-//        });
-//    } else {
-//        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
-//    }
+/**
+ *
+ */
+function compile() {
+    cloudCompile('Compile', 'compile', function (data) {
+
+    });
 }
 
 /**
  *
  */
 function loadIntoRam() {
-    $("#compile-dialog-title").text('Load into ram');
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
-
     if (client_available) {
-        var propcCode = Blockly.Generator.workspaceToCode('propc');
-
-        $.post(client_url + 'compile.action', {action: "RAM", language: "prop-c", code: propcCode, "comport": getComPort()}, function (data) {
-            $("#compile-console").val(data.message);
-            console.log(data);
+        cloudCompile('Load into ram', 'bin', function (data) {
+            $.post(client_url + 'load.action', {action: "RAM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                console.log(loaddata);
+            });
         });
     } else {
-        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller");
     }
 }
 
@@ -170,19 +162,15 @@ function loadIntoRam() {
  *
  */
 function loadIntoEeprom() {
-    $("#compile-dialog-title").text('Load into eeprom');
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
-
     if (client_available) {
-        var propcCode = Blockly.Generator.workspaceToCode('propc');
-
-        $.post(client_url + 'compile.action', {action: "EEPROM", language: "prop-c", code: propcCode, "comport": getComPort()}, function (data) {
-            $("#compile-console").val(data.message);
-            console.log(data);
+        cloudCompile('Load into eeprom', 'eeprom', function (data) {
+            $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                console.log(loaddata);
+            });
         });
     } else {
-        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller");
     }
 }
 

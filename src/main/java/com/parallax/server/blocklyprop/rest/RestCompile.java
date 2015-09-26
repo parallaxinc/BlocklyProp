@@ -22,6 +22,7 @@ import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensExcep
 import com.parallax.client.cloudsession.exceptions.UnknownBucketTypeException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
+import com.parallax.server.blocklyprop.rest.typewrappers.CompileActionTypeWrapper;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -75,16 +76,16 @@ public class RestCompile {
     @Name("Spin")
     @Consumes("text/plain")
     @Produces("application/json")
-    public Response compileSpin(@PathParam("action") CompileAction action, @QueryParam("id") Long idProject, String code) {
+    public Response compileSpin(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, String code) {
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;
         }
 
         try {
-            return handleCompilationResult(action, spinCloudCompileService.compileSingleSpin(action, code));
+            return handleCompilationResult(actionWrapper.getAction(), spinCloudCompileService.compileSingleSpin(actionWrapper.getAction(), code));
         } catch (CompilationException ex) {
-            LOG.warn("Compile spin {} {}", idProject, action, ex);
+            LOG.warn("Compile spin {} {}", idProject, actionWrapper.getAction(), ex);
             return handleCompilationException(ex);
         }
     }
@@ -94,16 +95,16 @@ public class RestCompile {
     @Detail("C compile")
     @Name("C")
     @Produces("text/json")
-    public Response compileC(@PathParam("action") CompileAction action, @QueryParam("id") Long idProject, String code) {
+    public Response compileC(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, String code) {
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;
         }
 
         try {
-            return handleCompilationResult(action, cCloudCompileService.compileSingleC(action, code));
+            return handleCompilationResult(actionWrapper.getAction(), cCloudCompileService.compileSingleC(actionWrapper.getAction(), code));
         } catch (CompilationException ex) {
-            LOG.warn("Compile c {} {}", idProject, action, ex);
+            LOG.warn("Compile c {} {}", idProject, actionWrapper.getAction());
             return handleCompilationException(ex);
         }
     }
@@ -134,19 +135,19 @@ public class RestCompile {
             bucketService.consumeOne("compile", idUser);
             return null;
         } catch (UnknownUserIdException ex) {
-            LOG.warn("Unknown user: {}", idUser, ex);
+            LOG.warn("Unknown user: {}", idUser);
             return Response.status(Status.FORBIDDEN).build();
         } catch (UnknownBucketTypeException ex) {
-            LOG.warn("Unknown bucket type: {}", "compile", ex);
+            LOG.warn("Unknown bucket type: {}", "compile");
             return Response.status(Status.SERVICE_UNAVAILABLE).build();
         } catch (InsufficientBucketTokensException ex) {
-            LOG.warn("Insufficient bucket tokens: {}", ex.getNextTime(), ex);
+            LOG.warn("Insufficient bucket tokens: {}", ex.getNextTime());
             return Response.status(Status.FORBIDDEN).build();
         } catch (EmailNotConfirmedException ex) {
-            LOG.warn("Email not confirmed: {}", idUser, ex);
+            LOG.warn("Email not confirmed: {}", idUser);
             return Response.status(Status.FORBIDDEN).build();
         } catch (UserBlockedException ex) {
-            LOG.warn("User blocked: {}", idUser, ex);
+            LOG.warn("User blocked: {}", idUser);
             return Response.status(Status.FORBIDDEN).build();
         }
     }
