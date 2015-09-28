@@ -11,7 +11,6 @@
     <head>
         <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />
-        <script src="resources/angular.min.js" ></script>
     </head>
     <body>
 

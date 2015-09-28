@@ -9,7 +9,6 @@
 
 <html>
     <head>
-        <script src="<c:url value="/cdn/lib/angular.min.js"/>" ></script>
         <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>"/>
         <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />
     </head>
