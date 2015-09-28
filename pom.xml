@@ -411,6 +411,19 @@
 
         <!-- END Rest API -->
 
+        <!-- Raven / Sentry API -->
+        <dependency>
+            <groupId>net.kencochrane.raven</groupId>
+            <artifactId>raven</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.kencochrane.raven</groupId>
+            <artifactId>raven-log4j</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+
         <!-- Other dependencies -->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>

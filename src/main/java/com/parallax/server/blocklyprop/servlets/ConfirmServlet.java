@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
+import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import java.io.IOException;
@@ -68,6 +69,9 @@ public class ConfirmServlet extends HttpServlet {
                 }
             } catch (UnknownUserException ex) {
                 req.setAttribute("invalidToken", "Unknown email");
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
+            } catch (ServerException se) {
+                req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
             }
         }

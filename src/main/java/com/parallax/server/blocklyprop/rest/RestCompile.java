@@ -19,6 +19,7 @@ import com.parallax.client.cloudcompiler.objects.CompileAction;
 import com.parallax.client.cloudsession.CloudSessionBucketService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
+import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownBucketTypeException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
@@ -87,6 +88,8 @@ public class RestCompile {
         } catch (CompilationException ex) {
             LOG.warn("Compile spin {} {}", idProject, actionWrapper.getAction(), ex);
             return handleCompilationException(ex);
+        } catch (com.parallax.client.cloudcompiler.exceptions.ServerException se) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -106,6 +109,8 @@ public class RestCompile {
         } catch (CompilationException ex) {
             LOG.warn("Compile c {} {}", idProject, actionWrapper.getAction());
             return handleCompilationException(ex);
+        } catch (com.parallax.client.cloudcompiler.exceptions.ServerException se) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -149,6 +154,9 @@ public class RestCompile {
         } catch (UserBlockedException ex) {
             LOG.warn("User blocked: {}", idUser);
             return Response.status(Status.FORBIDDEN).build();
+        } catch (ServerException se) {
+            LOG.warn("Server error: {}", idUser);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

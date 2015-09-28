@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
+import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
@@ -116,6 +117,9 @@ public class ProfileServlet extends HttpServlet {
             } catch (UnknownUserIdException uuie) {
                 req.setAttribute("base-error", "Unknown user");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            } catch (ServerException se) {
+                req.setAttribute("base-error", "Server error");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             }
         }
     }
@@ -147,6 +151,9 @@ public class ProfileServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             } catch (PasswordVerifyException pve) {
                 req.setAttribute("password-error", "Passwords did not match");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            } catch (ServerException se) {
+                req.setAttribute("base-error", "Server error");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             }
         }

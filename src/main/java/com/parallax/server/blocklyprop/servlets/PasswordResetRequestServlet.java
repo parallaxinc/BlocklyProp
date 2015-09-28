@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
+import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -57,6 +58,9 @@ public class PasswordResetRequestServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
             } catch (InsufficientBucketTokensException ex) {
                 req.setAttribute("insufficientTokens", true);
+                req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+            } catch (ServerException se) {
+                req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
             }
         }

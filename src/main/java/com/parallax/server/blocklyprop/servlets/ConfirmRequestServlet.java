@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.exceptions.EmailAlreadyConfirmedException;
 import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
+import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -61,6 +62,9 @@ public class ConfirmRequestServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
             } catch (EmailAlreadyConfirmedException ex) {
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/already-confirmed.jsp").forward(req, resp);
+            } catch (ServerException se) {
+                req.setAttribute("server-exception", "Server exception");
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
             }
         }
     }

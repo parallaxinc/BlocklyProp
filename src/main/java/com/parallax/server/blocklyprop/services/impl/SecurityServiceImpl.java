@@ -16,6 +16,7 @@ import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
+import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.objects.User;
@@ -74,9 +75,13 @@ public class SecurityServiceImpl implements SecurityService {
         Preconditions.checkNotNull(password, "Password cannot be null");
         Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
 
-        Long id = registerService.registerUser(email, password, passwordConfirm, "en", screenname);
-        userDao.create(id);
-        return id;
+        try {
+            Long id = registerService.registerUser(email, password, passwordConfirm, "en", screenname);
+            userDao.create(id);
+            return id;
+        } catch (ServerException se) {
+            return null;
+        }
     }
 
     public static User authenticateLocalUserStatic(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException {
@@ -92,6 +97,8 @@ public class SecurityServiceImpl implements SecurityService {
         } catch (NullPointerException npe) {
             npe.printStackTrace();
             throw npe;
+        } catch (ServerException se) {
+            return null;
         }
     }
 
@@ -108,6 +115,8 @@ public class SecurityServiceImpl implements SecurityService {
                     }
                 } catch (UnknownUserException ex) {
                     //       Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ServerException se) {
+
                 }
             }
         }

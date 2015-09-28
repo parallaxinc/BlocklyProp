@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
+import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -66,6 +67,9 @@ public class PasswordResetServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             } catch (PasswordVerifyException ex) {
                 req.setAttribute("error", "Passwords do not match");
+                req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
+            } catch (ServerException se) {
+                req.setAttribute("error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             }
         }
