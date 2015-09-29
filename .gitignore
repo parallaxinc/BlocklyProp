@@ -1,4 +1,5 @@
 build.properties
+src/main/config/production/*.*
 
 #################
 ## NetBeans
