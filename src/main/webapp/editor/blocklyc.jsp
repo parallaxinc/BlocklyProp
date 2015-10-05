@@ -54,7 +54,7 @@
                                         <div class="tab-pane" id="project-manager-base">
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <h4 class="info-text"> Basic project info</h4>
+                                                    <h4 class="info-text">Basic project info</h4>
                                                 </div>
                                                 <div class="col-sm-5 col-sm-offset-1">
                                                     <div class="form-group">
@@ -85,50 +85,30 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="project-manager-sharing">
-                                            <h4 class="info-text">Do you include a captain? </h4>
+                                            <h4 class="info-text">Project sharing</h4>
                                             <div class="row">
-                                                <div class="col-sm-10 col-sm-offset-1">
-                                                    <div class="col-sm-4 col-sm-offset-2">
-                                                        <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="Renters you approve will be able to take this boat">
-                                                            <input type="radio" name="job" value="Design">
-                                                            <div class="icon">
-                                                                <i class="fa fa-life-ring"></i>
-                                                            </div>
-                                                            <h6>No Captain</h6>
+
+                                            </div>
+                                        </div>
+                                        <!--    <div class="tab-pane" id="description">
+                                                <div class="row">
+                                                    <h4 class="info-text"> Drop us a small description </h4>
+                                                    <div class="col-sm-6 col-sm-offset-1">
+                                                        <div class="form-group">
+                                                            <label>Boat description</label>
+                                                            <textarea class="form-control" placeholder="" rows="9">
+
+                                                            </textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
-                                                        <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="Select this option if you or a certified captain will be included.">
-                                                            <input type="radio" name="job" value="Code">
-                                                            <div class="icon">
-                                                                <i class="fa fa-male"></i>
-                                                            </div>
-                                                            <h6>Includes Captain</h6>
+                                                        <div class="form-group">
+                                                            <label>Example</label>
+                                                            <p class="description">"The boat really nice name is recognized as being a really awesome boat. We use it every sunday when we go fishing and we catch a lot. It has some kind of magic shield around it."</p>
                                                         </div>
-
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane" id="description">
-                                            <div class="row">
-                                                <h4 class="info-text"> Drop us a small description </h4>
-                                                <div class="col-sm-6 col-sm-offset-1">
-                                                    <div class="form-group">
-                                                        <label>Boat description</label>
-                                                        <textarea class="form-control" placeholder="" rows="9">
-
-                                                        </textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label>Example</label>
-                                                        <p class="description">"The boat really nice name is recognized as being a really awesome boat. We use it every sunday when we go fishing and we catch a lot. It has some kind of magic shield around it."</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </div>-->
                                     </div>
                                     <div class="wizard-footer">
                                         <div class="pull-right">
@@ -315,7 +295,8 @@
         <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
-        <script src="<c:url value="/cdn/lib/bootstrap/plugins/wizard.js"/>"></script>
+        <script src="<c:url value="/cdn/lib/jquery.validate.min.js"/>"></script>
+        <script src = "<c:url value="/cdn/lib/bootstrap/plugins/wizard.js"/>" ></script>
         <script>
                                             var type = 'PROPC';
         </script>

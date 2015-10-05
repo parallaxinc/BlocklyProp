@@ -26,7 +26,7 @@ $(document).ready(function () {
     if (!idProject) {
 
         project_options['showClose'] = false;
-        projectManager = $("#project-manager").wizard(project_options);
+        //    projectManager = $("#project-manager").wizard(project_options);
         addProjectManagerHandler();
         projectData = {
             name: '',
@@ -35,20 +35,20 @@ $(document).ready(function () {
             //       board: $('#board-type').val(),
             code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
         };
-        projectManager.on("submit", function () {
-            projectCreated = true;
-            projectManager.close();
-            projectData['name'] = $('#project-name').val();
-            projectData['board'] = $('#board-type').val();
-            projectData['shared'] = true;
-            projectData['private'] = false;
-            projectData['description'] = $('#project-description').val();
-            window.frames["content_blocks"].setProfile($('#board-type').val());
-            window.frames["content_blocks"].init();
-            //      alert("init");
-        });
-        projectManager.show();
-
+        /*    projectManager.on("submit", function () {
+         projectCreated = true;
+         projectManager.close();
+         projectData['name'] = $('#project-name').val();
+         projectData['board'] = $('#board-type').val();
+         projectData['shared'] = true;
+         projectData['private'] = false;
+         projectData['description'] = $('#project-description').val();
+         window.frames["content_blocks"].setProfile($('#board-type').val());
+         window.frames["content_blocks"].init();
+         //      alert("init");
+         });
+         projectManager.show();
+         */
 //        $('#setup-dialog').modal('show');
 //        $('#setup-dialog').on('hidden.bs.modal', function() {
 //            projectData = {
@@ -82,9 +82,9 @@ $(document).ready(function () {
 });
 
 addProjectManagerHandler = function () {
-    projectManager.on("submit", function (wizard) {
-        saveProject();
-    });
+    /*   projectManager.on("submit", function (wizard) {
+     saveProject();
+     });*/
 };
 
 saveProject = function () {
@@ -115,27 +115,21 @@ loadProject = function () {
 
 
 project = function () {
-    if (projectManager === null) {
-        project_options['showClose'] = true;
-        project_options['showCancel'] = true;
-        projectManager = $("#project-manager").wizard(project_options);
-        addProjectManagerHandler();
-        projectManager.updateProgressBar(0);
-        $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
-    } else {
-        //  projectManager.reset();
-        projectManager.updateProgressBar(0);
-        $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
-    }
+    /*    if (projectManager === null) {
+     project_options['showClose'] = true;
+     project_options['showCancel'] = true;
+     projectManager = $("#project-manager").wizard(project_options);
+     addProjectManagerHandler();
+     projectManager.updateProgressBar(0);
+     $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
+     } else {
+     //  projectManager.reset();
+     projectManager.updateProgressBar(0);
+     $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
+     }
+     */
 
-    /*   $('#name').val(projectData['name']);
-     $('#description').text(projectData['description']);
-     $('#board').val(projectData['board']);
-     $('#project-dialog').modal('show');
-     $('#setup-dialog').on('hidden.bs.modal', function() {
-     getProjectData();
-     }); */
-    projectManager.show();
+    //  projectManager.show();
 };
 
 getProjectData = function () {
