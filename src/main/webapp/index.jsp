@@ -44,12 +44,12 @@
 
                 <div class="col-md-4">
                     <h2>C Project</h2>
-                    <a class="editor-new-link editor-c-link editor-icon" href="<c:url value="/editor/blocklyc.jsp"/>">New</a>
+                    <a class="editor-new-link editor-c-link editor-icon" href="<c:url value="/projectcreate.jsp?lang=PROPC"/>">New</a>
                 </div>
 
                 <div class="col-md-4">
                     <h2>Spin project</h2>
-                    <a class="editor-new-link editor-spin-link editor-icon" href="<c:url value="/editor/blocklyspin.jsp"/>">New</a>
+                    <a class="editor-new-link editor-spin-link editor-icon" href="<c:url value="/projectcreate.jsp?lang=SPIN"/>">New</a>
                 </div>
             </div>
         </div>
