@@ -51,13 +51,13 @@
                                                 <div class="col-sm-5 col-sm-offset-1">
                                                     <div class="form-group">
                                                         <label for="project-name">Project name</label>
-                                                        <input type="text" class="form-control" id="project-name"/>
+                                                        <input type="text" class="form-control" id="project-name" name="project-name"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-5">
                                                     <div class="form-group">
                                                         <label>Board Type</label>
-                                                        <select class="form-control" id="board-type">
+                                                        <select class="form-control" id="board-type" name="board-type">
                                                             <option disabled="" selected="">- board type -</option>
                                                             <option value="activity-board">Activity board</option>
                                                             <option value="board-of-education">Board of Education</option>
@@ -72,7 +72,7 @@
                                                 </div>
                                                 <div class="col-sm-10 col-sm-offset-1">
                                                     <label for="project-description">Description</label>
-                                                    <textarea class="form-control" id="project-description" rows="7"></textarea>
+                                                    <textarea class="form-control" id="project-description" rows="7" name="project-description"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -82,25 +82,6 @@
 
                                             </div>
                                         </div>
-                                        <!--    <div class="tab-pane" id="description">
-                                                <div class="row">
-                                                    <h4 class="info-text"> Drop us a small description </h4>
-                                                    <div class="col-sm-6 col-sm-offset-1">
-                                                        <div class="form-group">
-                                                            <label>Boat description</label>
-                                                            <textarea class="form-control" placeholder="" rows="9">
-
-                                                            </textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Example</label>
-                                                            <p class="description">"The boat really nice name is recognized as being a really awesome boat. We use it every sunday when we go fishing and we catch a lot. It has some kind of magic shield around it."</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>-->
                                     </div>
                                     <div class="wizard-footer">
                                         <div class="pull-right">
@@ -125,6 +106,7 @@
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
         <script src="<c:url value="/cdn/lib/jquery.validate.min.js"/>"></script>
-        <script src = "<c:url value="/cdn/projectcreation.js"/>" ></script>
+        <script src="<c:url value="/cdn/utils.js"/>"></script>
+        <script src="<c:url value="/cdn/projectcreation.js"/>"></script>
     </body>
 </html>

@@ -2,14 +2,8 @@
 //transparent = true;
 
 var projectTypes = {
-    "PROPC": {
-        "editor": "blocklyc.jsp",
-        "class": "editor-c-link"
-    },
-    "SPIN": {
-        "editor": "blocklyspin.jsp",
-        "class": "editor-spin-link"
-    }
+    "PROPC": "editor/blocklyc.jsp",
+    "SPIN": "editor/blocklyspin.jsp"
 };
 
 $(document).ready(function () {
@@ -21,7 +15,6 @@ $(document).ready(function () {
         'nextSelector': '.btn-next',
         'previousSelector': '.btn-previous',
         onInit: function (tab, navigation, index) {
-
             //check number of tabs and fill the entire row
             var $total = navigation.find('li').length;
             $width = 100 / $total;
@@ -36,14 +29,11 @@ $(document).ready(function () {
 
         },
         onNext: function (tab, navigation, index) {
-            if (index == 1) {
+            if (index === 1) {
                 return validateFirstStep();
-            } else if (index == 2) {
+            } else if (index === 2) {
                 return validateSecondStep();
-            } else if (index == 3) {
-                return validateThirdStep();
-            } //etc.
-
+            }
         },
         onTabClick: function (tab, navigation, index) {
             // Disable the posibility to click on tabs
@@ -63,10 +53,6 @@ $(document).ready(function () {
                 $(wizard).find('.btn-next').show();
                 $(wizard).find('.btn-finish').hide();
             }
-        },
-        onLast: function () {
-            alert('last');
-            return true;
         }
     });
 
@@ -99,58 +85,11 @@ function validateFirstStep() {
     $(".wizard-card form").validate({
         rules: {
             'project-name': "required",
-            'board-type': "required",
-            email: {
-                required: true,
-                email: true
-            }
-
-            /*  other possible input validations
-             ,username: {
-             required: true,
-             minlength: 2
-             },
-             password: {
-             required: true,
-             minlength: 5
-             },
-             confirm_password: {
-             required: true,
-             minlength: 5,
-             equalTo: "#password"
-             },
-
-             topic: {
-             required: "#newsletter:checked",
-             minlength: 2
-             },
-             agree: "required"
-             */
-
+            'board-type': "required"
         },
         messages: {
-            firstname: "Please enter your First Name",
-            lastname: "Please enter your Last Name",
-            email: "Please enter a valid email address",
-            /*   other posible validation messages
-             username: {
-             required: "Please enter a username",
-             minlength: "Your username must consist of at least 2 characters"
-             },
-             password: {
-             required: "Please provide a password",
-             minlength: "Your password must be at least 5 characters long"
-             },
-             confirm_password: {
-             required: "Please provide a password",
-             minlength: "Your password must be at least 5 characters long",
-             equalTo: "Please enter the same password as above"
-             },
-             email: "Please enter a valid email address",
-             agree: "Please accept our policy",
-             topic: "Please select at least 2 topics"
-             */
-
+            'project-name': "Please enter a project name",
+            'board-type': "Please select a board type"
         }
     });
 
@@ -181,15 +120,11 @@ function validateSecondStep() {
 
 }
 
-function validateThirdStep() {
-    //code here for third step
-
-
-}
-
 $('.btn-finish').on('click', function () {
     if (validateSecondStep()) {
-        alert('goto editor');
+        $.post('createproject', $(".wizard-card form").serialize(), function (data) {
+
+        });
     }
 });
 
