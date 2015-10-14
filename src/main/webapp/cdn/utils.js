@@ -41,7 +41,7 @@ var utils = {
          Author: Tirumal
          URL: www.code-tricks.com
          */
-        var currLocation = (staticURL.length) ? staticURL : window.location.search;
+        var currLocation = staticURL ? staticURL : window.location.search;
 
         var parArr = [];
         if (currLocation !== undefined && currLocation.split("?")[1] !== undefined) {

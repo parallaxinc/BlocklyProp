@@ -2,13 +2,15 @@
 //transparent = true;
 
 var projectTypes = {
-    "PROPC": "editor/blocklyc.jsp",
-    "SPIN": "editor/blocklyspin.jsp"
+    "PROPC": "blocklyc.jsp",
+    "SPIN": "blocklyspin.jsp"
 };
 
 $(document).ready(function () {
     /*  Activate the tooltips      */
     $('[rel="tooltip"]').tooltip();
+
+    $('#project-type').val(utils.getUrlParameters('lang'));
 
     $('.wizard-card').bootstrapWizard({
         'tabClass': 'nav nav-pills',
@@ -123,7 +125,11 @@ function validateSecondStep() {
 $('.btn-finish').on('click', function () {
     if (validateSecondStep()) {
         $.post('createproject', $(".wizard-card form").serialize(), function (data) {
-
+            if (data['success']) {
+                window.location = $('#finish').data('editor') + projectTypes[utils.getUrlParameters('lang')] + "?project=" + data['id'];
+            } else {
+                alert(data['message']);
+            }
         });
     }
 });

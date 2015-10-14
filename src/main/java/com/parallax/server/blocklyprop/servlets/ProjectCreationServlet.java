@@ -44,8 +44,16 @@ public class ProjectCreationServlet extends HttpServlet {
         String projectDescription = req.getParameter("project-description");
         String projectTypeString = req.getParameter("project-type");
 
-        ProjectType projectType = ProjectType.valueOf(projectTypeString);
-        if (projectType == null) {
+        ProjectType projectType = null;
+        try {
+            projectType = ProjectType.valueOf(projectTypeString);
+            if (projectType == null) {
+                result.addProperty("success", false);
+                result.addProperty("message", "Invalid projecttype");
+                resp.getWriter().write(result.toString());
+                return;
+            }
+        } catch (IllegalArgumentException iae) {
             result.addProperty("success", false);
             result.addProperty("message", "Invalid projecttype");
             resp.getWriter().write(result.toString());
