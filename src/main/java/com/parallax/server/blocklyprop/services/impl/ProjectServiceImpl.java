@@ -101,4 +101,9 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.cloneProject(idProject);
     }
 
+    @Override
+    public ProjectRecord createProject(String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
+        return saveProject(null, name, description, privateProject, sharedProject, type, board);
+    }
+
 }

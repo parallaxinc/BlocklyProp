@@ -36,12 +36,12 @@
 
 
     <script>
-        $("body").on("click", "a.editor-new-link", function(event) {
+        $("body").on("click", "a.editor-new-link", function (event) {
             event.preventDefault();
             setEditorLinksAndShow.call(this, "Try editor");
         });
 
-        $("body").on("click", "a.editor-view-link", function(event) {
+        $("body").on("click", "a.editor-view-link", function (event) {
             event.preventDefault();
             setEditorLinksAndShow.call(this, "View project");
         });
@@ -49,7 +49,11 @@
         function setEditorLinksAndShow(linkText) {
             $(".try-view-editor").text(linkText);
             $("a.editor-continue-link").attr("href", $(this).attr("href"));
-            $("a.editor-demo-link").attr("href", $(this).attr("href").replace('editor', 'demo'));
+            if ($(this).data("href")) {
+                $("a.editor-demo-link").attr("href", $(this).data("href").replace('editor', 'demo'));
+            } else {
+                $("a.editor-demo-link").attr("href", $(this).attr("href").replace('editor', 'demo'));
+            }
             $("#project-loggedin-dialog").modal('show');
         }
     </script>

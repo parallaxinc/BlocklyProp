@@ -77,7 +77,7 @@ $(document).ready(function () {
     $height = $(document).height();
     $('.set-full-height').css('height', $height);
 
-
+    $('#project-type').val(utils.getUrlParameters("lang"));
 });
 
 function validateFirstStep() {

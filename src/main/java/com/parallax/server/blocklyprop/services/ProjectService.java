@@ -30,6 +30,8 @@ public interface ProjectService {
 
     ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
-    public ProjectRecord cloneProject(Long idProject);
+    ProjectRecord cloneProject(Long idProject);
+
+    ProjectRecord createProject(String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
 }

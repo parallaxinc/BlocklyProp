@@ -74,6 +74,7 @@
                                                     <label for="project-description">Description</label>
                                                     <textarea class="form-control" id="project-description" rows="7" name="project-description"></textarea>
                                                 </div>
+                                                <input type="hidden" id="project-type" name="project-type"/>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="project-manager-sharing">
