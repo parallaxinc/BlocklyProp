@@ -62,6 +62,8 @@ public class DataSourceSetup {
         // the classes that implement the pooling functionality.
         //
         PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
+        poolableConnectionFactory.setValidationQuery("SELECT 1");
+        poolableConnectionFactory.setMaxConnLifetimeMillis(5000);
 
         //
         // Now we'll need a ObjectPool that serves as the
