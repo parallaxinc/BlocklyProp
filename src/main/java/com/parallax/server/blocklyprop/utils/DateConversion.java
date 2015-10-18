@@ -15,8 +15,8 @@ import java.util.Date;
  */
 public class DateConversion {
 
-    private static final DateFormat DF = new SimpleDateFormat("YYYY/MM/DD");
-    private static final DateFormat DTF = new SimpleDateFormat("YYYY/MM/DD HH:mm");
+    private static final DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
+    private static final DateFormat DTF = new SimpleDateFormat("yyyy/MM/dd HH:mm");
     private static final DateFormat TF = new SimpleDateFormat("HH:mm");
 
     public static String toDateString(Date date) {

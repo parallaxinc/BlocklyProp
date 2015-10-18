@@ -30,6 +30,10 @@ $(document).ready(function () {
             showTable();
         }
     });
+
+    $('#project-form').ajaxForm(function () {
+        alert("Thank you for your comment!");
+    });
 });
 
 function showTable() {
@@ -56,8 +60,11 @@ function loadProject(idProject) {
         } else {
             $('.not-your-project').removeClass('hidden');
         }
+        $("#project-form-id").val(project['id']);
         $("#project-form-name").val(project['name']);
         $("#project-form-description").val(project['description']);
+        $("#project-form-private").prop('checked', project['private']);
+        $("#project-form-shared").prop('checked', project['shared']);
         var openProjectLink = $("a.open-project-link");
         openProjectLink.removeClass("editor-c-link editor-spin-link");
         openProjectLink.attr("href", baseUrl + "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id']);

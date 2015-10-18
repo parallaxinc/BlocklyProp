@@ -11,7 +11,8 @@
     <div class="row">
         <div class="col-md-12">
             <h2><a href="#" class="btn btn-default">Back</a> <a href="<c:url value="/index.jsp"/>">BlocklyProp</a>: Project</h2>
-            <form action="<c:url value="/rest/project"/>" method="post">
+            <form id="project-form" action="<c:url value="/rest/project"/>" method="post">
+                <input type="hidden" name="id" id="project-form-id"/>
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" id="project-form-name" required="required"/>
@@ -19,6 +20,12 @@
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea class="form-control" name="description" id="project-form-description" rows="8" required="required"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="private" value="true" id="project-form-private"/><label for="name">Private</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="shared" value="true" id="project-form-shared"/><label for="description">Shared</label>
                 </div>
                 <div>
                     <shiro:notAuthenticated>

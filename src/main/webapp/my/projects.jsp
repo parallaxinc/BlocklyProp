@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />
         <script src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<c:url value="/cdn/lib/jquery.form.min.js"/>" ></script>
         <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>" ></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<c:url value="/cdn/project.js"/>" ></script>
