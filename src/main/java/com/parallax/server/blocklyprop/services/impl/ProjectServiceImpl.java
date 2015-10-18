@@ -106,4 +106,9 @@ public class ProjectServiceImpl implements ProjectService {
         return saveProject(null, name, description, privateProject, sharedProject, type, board);
     }
 
+    @Override
+    public boolean deleteProject(Long idProject) {
+        return projectDao.deleteProject(idProject);
+    }
+
 }

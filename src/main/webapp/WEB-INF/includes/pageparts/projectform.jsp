@@ -32,7 +32,7 @@
                         </div>
                         <div class="btn-group your-project hidden">
                             <button class="btn btn-primary" >Save</button>
-                            <a class="btn btn-danger" href="<c:url value="/rest/project/delete/"/>" >Delete</a>
+                            <a class="btn btn-danger delete-project" href="<c:url value="/project?delete="/>" >Delete</a>
                             <a class="btn btn-default clone-project" href="<c:url value="/project?clone="/>" >Clone</a>
                         </div>
                     </shiro:authenticated>

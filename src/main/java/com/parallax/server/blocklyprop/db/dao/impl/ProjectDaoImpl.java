@@ -156,4 +156,11 @@ public class ProjectDaoImpl implements ProjectDao {
         return cloned;
     }
 
+    @Override
+    public boolean deleteProject(Long idProject) {
+        ProjectRecord project = getProject(idProject);
+        project.delete();
+        return true;
+    }
+
 }

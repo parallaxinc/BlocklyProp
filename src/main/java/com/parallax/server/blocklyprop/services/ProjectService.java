@@ -34,4 +34,6 @@ public interface ProjectService {
 
     ProjectRecord createProject(String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
+    boolean deleteProject(Long idProject);
+
 }

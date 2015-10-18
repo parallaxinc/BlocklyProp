@@ -1,5 +1,6 @@
 var baseUrl = $("meta[name=base]").attr("content");
 var cloneUrl = '';
+var deleteUrl = '';
 
 var projectTypes = {
     "PROPC": {
@@ -12,8 +13,9 @@ var projectTypes = {
     }
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
     cloneUrl = $('.clone-project').attr('href');
+    deleteUrl = $('.delete-project').attr('href');
     if (window.location.hash && window.location.hash !== "#") {
         loadProject(window.location.hash.substr(1));
         $("#project-form-container").addClass('in');
@@ -21,7 +23,7 @@ $(document).ready(function() {
         $("#project-table-container").addClass('in');
     }
 
-    $(window).on('hashchange', function() {
+    $(window).on('hashchange', function () {
         if (window.location.hash && window.location.hash !== "#") {
             showProject(window.location.hash.substr(1));
         } else {
@@ -48,7 +50,7 @@ function showProject(idProject) {
 
 function loadProject(idProject) {
     // Get details
-    $.get(baseUrl + "rest/shared/project/get/" + idProject, function(project) {
+    $.get(baseUrl + "rest/shared/project/get/" + idProject, function (project) {
         if (project['yours']) {
             $('.your-project').removeClass('hidden');
         } else {
@@ -60,6 +62,7 @@ function loadProject(idProject) {
         openProjectLink.removeClass("editor-c-link editor-spin-link");
         openProjectLink.attr("href", baseUrl + "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id']);
         $('.clone-project').attr('href', cloneUrl + project['id']);
+        $('.delete-project').attr('href', deleteUrl + project['id']);
         openProjectLink.addClass(projectTypes[project['type']]['class']);
     });
 }
