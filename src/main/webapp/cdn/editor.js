@@ -25,41 +25,6 @@ $(document).ready(function () {
     idProject = getUrlParameters('project', '', false);
     if (!idProject) {
 
-        project_options['showClose'] = false;
-        //    projectManager = $("#project-manager").wizard(project_options);
-        addProjectManagerHandler();
-        projectData = {
-            name: '',
-            description: '',
-            type: window.type,
-            //       board: $('#board-type').val(),
-            code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
-        };
-        /*    projectManager.on("submit", function () {
-         projectCreated = true;
-         projectManager.close();
-         projectData['name'] = $('#project-name').val();
-         projectData['board'] = $('#board-type').val();
-         projectData['shared'] = true;
-         projectData['private'] = false;
-         projectData['description'] = $('#project-description').val();
-         window.frames["content_blocks"].setProfile($('#board-type').val());
-         window.frames["content_blocks"].init();
-         //      alert("init");
-         });
-         projectManager.show();
-         */
-//        $('#setup-dialog').modal('show');
-//        $('#setup-dialog').on('hidden.bs.modal', function() {
-//            projectData = {
-//                name: '',
-//                description: '',
-//                type: window.type,
-//                board: $('#board-type').val(),
-//                code: '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>'
-//            };
-//
-//        });
     } else {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
             console.log(data);
@@ -68,9 +33,6 @@ $(document).ready(function () {
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init();
-
-//                var projectWizard = $('#project-manager').wizard({});
-//                projectWizard.show();
             }
         });
     }
@@ -80,12 +42,6 @@ $(document).ready(function () {
     });
 
 });
-
-addProjectManagerHandler = function () {
-    /*   projectManager.on("submit", function (wizard) {
-     saveProject();
-     });*/
-};
 
 saveProject = function () {
 //    getProjectData();
@@ -111,25 +67,6 @@ loadProject = function () {
 //        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, projectData['code']);
         window.frames["content_blocks"].load(projectData['code']);
     }
-};
-
-
-project = function () {
-    /*    if (projectManager === null) {
-     project_options['showClose'] = true;
-     project_options['showCancel'] = true;
-     projectManager = $("#project-manager").wizard(project_options);
-     addProjectManagerHandler();
-     projectManager.updateProgressBar(0);
-     $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
-     } else {
-     //  projectManager.reset();
-     projectManager.updateProgressBar(0);
-     $(".wizard-nav-container li.wizard-nav-item").addClass('already-visited');
-     }
-     */
-
-    //  projectManager.show();
 };
 
 getProjectData = function () {
