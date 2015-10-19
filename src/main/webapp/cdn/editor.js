@@ -72,7 +72,6 @@ loadProject = function () {
 getProjectData = function () {
     projectData['name'] = $('#project-name').val();
     projectData['description'] = $('#project-description').val();
-//    console.log(projectData['description']);
 };
 
 window.onbeforeunload = function () {
