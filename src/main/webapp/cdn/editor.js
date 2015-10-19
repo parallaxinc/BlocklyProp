@@ -191,3 +191,7 @@ function getUrlParameters(parameter, staticURL, decode) {
     if (!returnBool)
         return false;
 }
+
+setInterval(function () {
+    $.get('ping');
+}, 60000);
