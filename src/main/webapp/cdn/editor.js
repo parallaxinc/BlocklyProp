@@ -61,7 +61,6 @@ blocklyReady = function () {
     }
 };
 
-
 loadProject = function () {
     if (projectData !== null) {
 //        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, projectData['code']);
