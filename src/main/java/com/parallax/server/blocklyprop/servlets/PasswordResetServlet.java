@@ -59,17 +59,17 @@ public class PasswordResetServlet extends HttpServlet {
                 if (cloudSessionLocalUserService.doPasswordReset(token, email, password, confirmPassword)) {
                     req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-done.jsp").forward(req, resp);
                 } else {
-                    req.setAttribute("error", "Invalid token");
+                    req.setAttribute("invalidToken", "Invalid token");
                     req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
                 }
             } catch (UnknownUserException ex) {
-                req.setAttribute("error", "Unknown email");
+                req.setAttribute("invalidToken", "Unknown email");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             } catch (PasswordVerifyException ex) {
-                req.setAttribute("error", "Passwords do not match");
+                req.setAttribute("passwordsDontMatch", "Passwords do not match");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             } catch (ServerException se) {
-                req.setAttribute("error", "Server exception");
+                req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             }
         }

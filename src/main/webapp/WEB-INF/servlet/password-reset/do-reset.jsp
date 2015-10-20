@@ -19,10 +19,22 @@
                 <div class="col-md-12 col-sm-12">
                     <h2>Do password reset</h2>
                     <%
-                        String errorDescription = (String) request.getAttribute("error");
+                        String serverError = (String) request.getAttribute("server-error");
+                        if (serverError != null) {
+                    %>
+                    <div>An error occured</div>
+                    <%
+                        }
+                        String errorDescription = (String) request.getAttribute("invalidToken");
                         if (errorDescription != null) {
                     %>
                     <div>Invalid token/email combination</div>
+                    <%
+                        }
+                        String passwordsDontMatch = (String) request.getAttribute("passwordsDontMatch");
+                        if (passwordsDontMatch != null) {
+                    %>
+                    <div>Passwords don't match</div>
                     <%
                         }
                     %>

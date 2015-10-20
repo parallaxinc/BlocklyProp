@@ -19,6 +19,12 @@
                 <div class="col-md-12 col-sm-12">
                     <h2>Please confirm</h2>
                     <%
+                        String serverError = (String) request.getAttribute("server-error");
+                        if (serverError != null) {
+                    %>
+                    <div>An error occured</div>
+                    <%
+                        }
                         String errorDescription = (String) request.getAttribute("invalidToken");
                         if (errorDescription != null) {
                     %>
