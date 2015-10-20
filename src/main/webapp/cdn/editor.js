@@ -9,27 +9,19 @@ var baseUrl = $("meta[name=base]").attr("content");
 
 var projectData = null;
 var ready = false;
-var projectCreated = false;
-
-var project_options = {
-    'keyboard': false,
-    'backdrop': false,
-    'contentHeight': 500,
-    'contentWidth': 700
-};
-var projectManager = null;
+var projectLoaded = false;
 
 var idProject = 0;
 
 $(document).ready(function () {
     idProject = getUrlParameters('project', '', false);
     if (!idProject) {
-
+        window.location = baseUrl;
     } else {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
             console.log(data);
             projectData = data;
-            projectCreated = true;
+            projectLoaded = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init();
@@ -53,7 +45,7 @@ saveProject = function () {
 };
 
 blocklyReady = function () {
-    if (projectCreated) {
+    if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init();
     } else {
@@ -63,14 +55,8 @@ blocklyReady = function () {
 
 loadProject = function () {
     if (projectData !== null) {
-//        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, projectData['code']);
         window.frames["content_blocks"].load(projectData['code']);
     }
-};
-
-getProjectData = function () {
-    projectData['name'] = $('#project-name').val();
-    projectData['description'] = $('#project-description').val();
 };
 
 window.onbeforeunload = function () {
