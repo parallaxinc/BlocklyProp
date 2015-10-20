@@ -11,22 +11,22 @@ var projectData = {
     'board': 'activity-board'
 };
 var ready = false;
-var projectCreated = false;
+var projectLoaded = false;
 var client_url = undefined;
 
-$(document).ready(function() {
+$(document).ready(function () {
     var idProject = getUrlParameters('project', '', false);
     if (!idProject) {
-        projectCreated = true;
+        projectLoaded = true;
         if (ready) {
             window.frames["content_blocks"].setProfile('activity-board');
             window.frames["content_blocks"].init();
         }
     } else {
-        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function(data) {
+        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
             console.log(data);
             projectData = data;
-            projectCreated = true;
+            projectLoaded = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init();
@@ -35,8 +35,8 @@ $(document).ready(function() {
     }
 });
 
-blocklyReady = function() {
-    if (projectCreated) {
+blocklyReady = function () {
+    if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init();
     } else {
@@ -45,14 +45,13 @@ blocklyReady = function() {
 };
 
 
-loadProject = function() {
+loadProject = function () {
     if (projectData['code']) {
-//        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, projectData['code']);
         window.frames["content_blocks"].load(projectData['code']);
     }
 };
 
-window.onbeforeunload = function() {
+window.onbeforeunload = function () {
     var currentXml = window.frames["content_blocks"].getXml();
     if (currentXml !== '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>') {
         // TODO Save in localstorage
