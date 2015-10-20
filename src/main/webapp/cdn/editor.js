@@ -36,7 +36,6 @@ $(document).ready(function () {
 });
 
 saveProject = function () {
-//    getProjectData();
     projectData['code'] = window.frames["content_blocks"].getXml();
     $.post(baseUrl + 'rest/project/code', projectData, function (data) {
         projectData = data;

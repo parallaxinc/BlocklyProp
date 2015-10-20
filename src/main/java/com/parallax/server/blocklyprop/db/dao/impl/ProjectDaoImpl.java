@@ -161,4 +161,27 @@ public class ProjectDaoImpl implements ProjectDao {
         return true;
     }
 
+    @Override
+    public ProjectRecord updateProjectCode(Long idProject, String code) {
+        ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
+        if (record != null) {
+            Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+            if (record.getIdUser().equals(idUser)) {
+                record.setCode(code);
+                record.update();
+                return record;
+            } else {
+                if (record.getShared()) {
+                    ProjectRecord cloned = doProjectClone(record);
+                    cloned.setCode(code);
+                    cloned.update();
+                    return cloned;
+                }
+                throw new UnauthorizedException();
+            }
+        } else {
+            return null;
+        }
+    }
+
 }

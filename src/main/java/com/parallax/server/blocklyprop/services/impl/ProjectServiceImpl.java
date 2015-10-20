@@ -35,16 +35,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectRecord getProject(Long idProject) {
         ProjectRecord projectRecord = projectDao.getProject(idProject);
-        return projectRecord;
-//        if (projectRecord != null) {
-//            if (projectRecord.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
-//                return projectRecord;
-//            } else {
-//                throw new UnauthorizedException("Not the current user's project");
-//            }
-//        } else {
-//            return null;
-//        }
+        if (projectRecord != null) {
+            if (projectRecord.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId()) || projectRecord.getShared()) {
+                return projectRecord;
+            } else {
+                throw new UnauthorizedException("Not the current user's project");
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -76,17 +75,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectRecord saveProjectWithCode(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board, String code) {
-        // Check if project is from the current user, if not, unset idProject and create new
-        if (idProject != null) {
-            return projectDao.updateProject(idProject, name, description, code, privateProject, sharedProject);
-        } else {
-            return projectDao.createProject(name, description, code, type, board, privateProject, sharedProject);
-        }
-
-    }
-
-    @Override
     public ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
         // Check if project is from the current user, if not, unset idProject and create new
         if (idProject != null) {
@@ -109,6 +97,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public boolean deleteProject(Long idProject) {
         return projectDao.deleteProject(idProject);
+    }
+
+    @Override
+    public ProjectRecord saveProjectCode(Long idProject, String code) {
+        return projectDao.updateProjectCode(idProject, code);
     }
 
 }

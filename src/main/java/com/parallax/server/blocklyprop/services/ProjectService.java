@@ -26,8 +26,6 @@ public interface ProjectService {
 
     int countSharedProjects();
 
-    ProjectRecord saveProjectWithCode(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board, String code);
-
     ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
     ProjectRecord cloneProject(Long idProject);
@@ -35,5 +33,7 @@ public interface ProjectService {
     ProjectRecord createProject(String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
     boolean deleteProject(Long idProject);
+
+    ProjectRecord saveProjectCode(Long idProject, String code);
 
 }

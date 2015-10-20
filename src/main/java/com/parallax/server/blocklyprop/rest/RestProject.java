@@ -99,9 +99,9 @@ public class RestProject {
     @Detail("Save project code")
     @Name("Save project code")
     @Produces("application/json")
-    public Response saveProjectCode(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("private") Boolean privateProject, @FormParam("shared") Boolean sharedProject, @FormParam("type") ProjectType type, @FormParam("board") String board, @FormParam("code") String code) {
+    public Response saveProjectCode(@FormParam("id") Long idProject, @FormParam("code") String code) {
         try {
-            ProjectRecord savedProject = projectService.saveProjectWithCode(idProject, name, description, privateProject, sharedProject, type, board, code);
+            ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
             JsonObject result = projectConverter.toJson(savedProject);
 
             result.addProperty("success", true);
