@@ -40,4 +40,6 @@ public interface ProjectDao {
 
     boolean deleteProject(Long idProject);
 
+    ProjectRecord updateProjectCode(Long idProject, String code);
+
 }
