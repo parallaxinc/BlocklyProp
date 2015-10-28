@@ -33,7 +33,7 @@
                     %>
                     <form name="loginform" action="" method="post">
                         <div class="form-group">
-                            <label for="username" >Username:</label>
+                            <label for="username" >Email:</label>
                             <input class="form-control" type="text" name="username" maxlength="255" required="required"/>
                         </div>
                         <div class="form-group">
