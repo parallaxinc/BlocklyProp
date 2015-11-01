@@ -24,13 +24,13 @@
 
                     <h2>Projects</h2>
                     <shiro:authenticated><a href="<c:url value="/profile"/>"><shiro:principal></shiro:principal></a></shiro:authenticated>
-                    <shiro:notAuthenticated><a href="<c:url value="/login.jsp"/>">Login/Register</a></shiro:notAuthenticated>
+                    <shiro:notAuthenticated><a href="<c:url value="/login.jsp"/>"><fmt:message key="menu_login_and_register" /></a></shiro:notAuthenticated>
 
                     <shiro:authenticated>
-                        <a href="<c:url value="/my/projects.jsp"/>">Your projects</a>
-                        <a href="<c:url value="/logout"/>">Logout</a>
+                        <a href="<c:url value="/my/projects.jsp"/>"><fmt:message key="menu_your_projects" /></a>
+                        <a href="<c:url value="/logout"/>"><fmt:message key="logout" /></a>
                     </shiro:authenticated>
-                    <a href="<c:url value="/projects.jsp"/>">Project list</a>
+                    <a href="<c:url value="/projects.jsp"/>"><fmt:message key="menu_project_list" /></a>
 
 
                 </div>
@@ -38,18 +38,18 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <h2>Latest projects</h2>
+                    <h2><fmt:message key="latest_projects_title" /></h2>
                     <ul class="latest-projects"></ul>
                 </div>
 
                 <div class="col-md-4">
-                    <h2>C Project</h2>
-                    <a class="editor-new-link editor-c-link editor-icon" href="<c:url value="/projectcreate.jsp?lang=PROPC"/>" data-href="<c:url value="/editor/blocklyc.jsp"/>">New</a>
+                    <h2><fmt:message key="c_project_title" /></h2>
+                    <a class="editor-new-link editor-c-link editor-icon" href="<c:url value="/projectcreate.jsp?lang=PROPC"/>" data-href="<c:url value="/editor/blocklyc.jsp"/>"><fmt:message key="c_project_new" /></a>
                 </div>
 
                 <div class="col-md-4">
-                    <h2>Spin project</h2>
-                    <a class="editor-new-link editor-spin-link editor-icon" href="<c:url value="/projectcreate.jsp?lang=SPIN"/>" data-href="<c:url value="/editor/blocklyspin.jsp"/>">New</a>
+                    <h2><fmt:message key="spin_project_title" /></h2>
+                    <a class="editor-new-link editor-spin-link editor-icon" href="<c:url value="/projectcreate.jsp?lang=SPIN"/>" data-href="<c:url value="/editor/blocklyspin.jsp"/>"><fmt:message key="spin_project_new" /></a>
                 </div>
             </div>
         </div>
