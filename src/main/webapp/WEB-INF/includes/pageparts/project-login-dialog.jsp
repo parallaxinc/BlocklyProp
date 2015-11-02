@@ -13,22 +13,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">You are not logged in</h4>
+                    <h4 class="modal-title"><fmt:message key="not_loggedin.title" /></h4>
                 </div>
                 <div class="modal-body"  style="height: 200px;">
                     <div class="col-md-6">
-                        <h2>Try</h2>
-                        <p>Compiling and saving will be disabled</p>
-                        <a class="editor-demo-link try-view-editor" href="/">Try editor</a>
+                        <h2><fmt:message key="not_loggedin.try.title" /></h2>
+                        <p><fmt:message key="not_loggedin.try" /></p>
+                        <a class="editor-demo-link try-view-editor" href="/"><fmt:message key="not_loggedin.try.trylink" /></a>
                     </div>
                     <div class="col-md-6">
-                        <h2>Log in</h2>
-                        <a class="editor-continue-link" href="<c:url value="/login.jsp"/>">Login</a>
-                        <a href="<c:url value="register"/>" >Register</a>
+                        <h2><fmt:message key="not_loggedin.login.title" /></h2>
+                        <a class="editor-continue-link" href="<c:url value="/login.jsp"/>"><fmt:message key="not_loggedin.login.loginlink" /></a>
+                        <a href="<c:url value="register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="cancel" /></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -38,12 +38,12 @@
     <script>
         $("body").on("click", "a.editor-new-link", function (event) {
             event.preventDefault();
-            setEditorLinksAndShow.call(this, "Try editor");
+            setEditorLinksAndShow.call(this, "<fmt:message key="not_loggedin.try.trylink" />");
         });
 
         $("body").on("click", "a.editor-view-link", function (event) {
             event.preventDefault();
-            setEditorLinksAndShow.call(this, "View project");
+            setEditorLinksAndShow.call(this, "<fmt:message key="not_loggedin.try.viewprojectlink" />");
         });
 
         function setEditorLinksAndShow(linkText) {

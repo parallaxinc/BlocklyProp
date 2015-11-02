@@ -11,10 +11,10 @@
     <thead>
         <tr>
             <th data-field="type" data-formatter="formatType" data-width="30px" data-align="center"></th>
-            <th data-field="name" data-formatter="formatProject">Name</th>
-            <th data-field="description">Description</th>
+            <th data-field="name" data-formatter="formatProject"><fmt:message key="project.table.name" /></th>
+            <th data-field="description"><fmt:message key="project.table.description" /></th>
                 <c:if test="${param.showuser}">
-                <th data-field="user" data-formatter="formatUser">User</th>
+                <th data-field="user" data-formatter="formatUser"><fmt:message key="project.table.user" /></th>
                 </c:if>
         </tr>
     </thead>
@@ -42,7 +42,7 @@
 
     function formatUser(value, row) {
         if (row['yours']) {
-            return 'yours';
+            return '<fmt:message key="project.yours" />yours';
         }
         return value;
     }

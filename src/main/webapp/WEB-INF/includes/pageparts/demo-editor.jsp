@@ -14,7 +14,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">You are not logged in</h4>
+                    <h4 class="modal-title"><fmt:message key="not_logged_in_title" /></h4>
                 </div>
                 <div class="modal-body"  style="height: 200px;">
                     <div class="col-md-6">
@@ -36,7 +36,7 @@
     </div><!-- /.modal -->
 
     <script>
-        $("a.demo-function").click(function(event) {
+        $("a.demo-function").click(function (event) {
             event.preventDefault();
             $("a.full-editor-link").attr("href", window.location.href.replace("demo", "editor"));
             $("#project-demo-function-dialog").modal('show');
@@ -65,7 +65,7 @@
     </div><!-- /.modal -->
 
     <script>
-        $("a.demo-function").click(function(event) {
+        $("a.demo-function").click(function (event) {
             event.preventDefault();
             $("a.full-editor-link").attr("href", window.location.href.replace("demo", "editor"));
             $("#project-demo-function-dialog").modal('show');
