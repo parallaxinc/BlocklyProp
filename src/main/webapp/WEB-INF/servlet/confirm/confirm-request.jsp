@@ -17,33 +17,33 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Email confirm request</h2>
+                    <h2><fmt:message key="confirm.request.title" /></h2>
                     <%
                         Boolean error = (Boolean) request.getAttribute("error");
                         if (error != null && error) {
                     %>
-                    <div>A problem occured</div>
+                    <div><fmt:message key="error.generic" /></div>
                     <%
                         }
                         Boolean unknownEmail = (Boolean) request.getAttribute("unknownEmail");
                         if (unknownEmail != null && unknownEmail) {
                     %>
-                    <div>Unknown email</div>
+                    <div><fmt:message key="error.unknownemail" /></div>
                     <%
                         }
                         Boolean insufficientTokens = (Boolean) request.getAttribute("insufficientTokens");
                         if (insufficientTokens != null && insufficientTokens) {
                     %>
-                    <div>Confirm requested too often</div>
+                    <div><fmt:message key="confirm.error.requested_too_often" /></div>
                     <%
                         }
                     %>
                     <form name="confirmRequestForm" action="" method="post">
                         <div class="form-group">
-                            <label for="token" >Email:</label>
+                            <label for="token" ><fmt:message key="confirm.request.email" /></label>
                             <input class="form-control" type="text" name="email" maxlength="255" required="required"/>
                         </div>
-                        <input class="btn btn-default" type="submit" name="submit" value="Request">
+                        <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="confirm.request.submit" />">
                     </form>
                     <p><a href="index.jsp">Go to home</a></p>
                 </div>

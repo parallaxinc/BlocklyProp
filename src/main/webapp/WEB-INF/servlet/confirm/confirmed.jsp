@@ -17,7 +17,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Email confirmed</h2>
+                    <h2><fmt:message key="confirm.confirmed.title" />Email confirmed</h2>
                     <p><a href="index.jsp">Go to home</a></p>
                     <p><a href="my/projects.jsp">Log in</a></p>
                 </div>

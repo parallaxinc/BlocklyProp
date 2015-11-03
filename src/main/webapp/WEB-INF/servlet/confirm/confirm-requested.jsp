@@ -17,8 +17,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Email confirm requested</h2>
-                    <p>Please check your email</p>
+                    <h2><fmt:message key="confirm.requested.title" /></h2>
+                    <p><fmt:message key="confirm.requested" /></p>
                     <p><a href="index.jsp">Go to home</a></p>
                 </div>
             </div>

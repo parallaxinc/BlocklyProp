@@ -17,31 +17,31 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Please confirm</h2>
+                    <h2><fmt:message key="confirm.do.title" /></h2>
                     <%
                         String serverError = (String) request.getAttribute("server-error");
                         if (serverError != null) {
                     %>
-                    <div>An error occured</div>
+                    <div><fmt:message key="error.generic" /></div>
                     <%
                         }
                         String errorDescription = (String) request.getAttribute("invalidToken");
                         if (errorDescription != null) {
                     %>
-                    <div>Invalid token/email combination</div>
+                    <div><fmt:message key="confirm.do.error.invalid_combination" /></div>
                     <%
                         }
                     %>
                     <form name="tokenForm" action="confirm" method="post">
                         <div class="form-group">
-                            <label for="email" >Email:</label>
+                            <label for="email" ><fmt:message key="confirm.do.email" /></label>
                             <input class="form-control" type="text" name="email" maxlength="255" required="required" value="<%= request.getAttribute("email")%>"/>
                         </div>
                         <div class="form-group">
-                            <label for="token" >Token:</label>
+                            <label for="token" ><fmt:message key="confirm.do.token" /></label>
                             <input class="form-control" type="text" name="token" maxlength="50" required="required" value="<%= request.getAttribute("token")%>"/>
                         </div>
-                        <input class="btn btn-default" type="submit" name="submit" value="Confirm">
+                        <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="confirm.do.submit" />">
                     </form>
                     <p><a href="index.jsp">Go to home</a></p>
                 </div>
