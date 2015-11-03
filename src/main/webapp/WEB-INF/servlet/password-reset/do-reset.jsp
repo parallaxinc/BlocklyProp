@@ -17,45 +17,45 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Do password reset</h2>
+                    <h2><fmt:message key="password_reset.do.title" /></h2>
                     <%
                         String serverError = (String) request.getAttribute("server-error");
                         if (serverError != null) {
                     %>
-                    <div>An error occured</div>
+                    <div><fmt:message key="error.generic" /></div>
                     <%
                         }
                         String errorDescription = (String) request.getAttribute("invalidToken");
                         if (errorDescription != null) {
                     %>
-                    <div>Invalid token/email combination</div>
+                    <div><fmt:message key="password_reset.do.error.invalid_combination" /></div>
                     <%
                         }
                         String passwordsDontMatch = (String) request.getAttribute("passwordsDontMatch");
                         if (passwordsDontMatch != null) {
                     %>
-                    <div>Passwords don't match</div>
+                    <div><fmt:message key="password_reset.do.error.passwords_dont_match" /></div>
                     <%
                         }
                     %>
                     <form name="resetRequestForm" action="reset" method="post">
                         <div class="form-group">
-                            <label for="email" >Email:</label>
+                            <label for="email" ><fmt:message key="password_reset.do.email" /></label>
                             <input class="form-control" type="text" name="email" maxlength="255" required="required" value="<%= request.getAttribute("email")%>"/>
                         </div>
                         <div class="form-group">
-                            <label for="token" >Token:</label>
+                            <label for="token" ><fmt:message key="password_reset.do.token" /></label>
                             <input class="form-control" type="text" name="token" maxlength="50" required="required" value="<%= request.getAttribute("token")%>"/>
                         </div>
                         <div class="form-group">
-                            <label for="password" >Password:</label>
+                            <label for="password" ><fmt:message key="password_reset.do.password" /></label>
                             <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
                         </div>
                         <div class="form-group">
-                            <label for="confirmpassword" >Confirm password:</label>
+                            <label for="confirmpassword" ><fmt:message key="password_reset.do.confirm_password" /></label>
                             <input class="form-control" type="password" name="confirmpassword" maxlength="255" required="required"/>
                         </div>
-                        <input class="btn btn-default" type="submit" name="submit" value="Confirm">
+                        <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="password_reset.do.submit" />">
                     </form>
                     <p><a href="index.jsp">Go to home</a></p>
                 </div>
