@@ -18,6 +18,7 @@
         <link href="<c:url value="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>
+
         <div id="project">
             <!--   Big container   -->
             <div class="container">

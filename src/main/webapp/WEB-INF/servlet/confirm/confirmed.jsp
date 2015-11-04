@@ -11,8 +11,12 @@
     <head>
         <link rel="stylesheet" href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link type="text/css" rel="stylesheet" href="<c:url value="/cdn/style.css"/>" />
+        <script src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
     </head>
     <body>
+
+        <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
             <div class="row">

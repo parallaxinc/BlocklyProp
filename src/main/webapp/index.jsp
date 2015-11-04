@@ -18,23 +18,13 @@
     </head>
     <body>
 
+        <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
+
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
 
                     <h2>Projects</h2>
-
-                    <%@ include file="/WEB-INF/includes/pageparts/language-switcher.jsp"%>
-
-                    <shiro:authenticated><a href="<c:url value="/profile"/>"><shiro:principal></shiro:principal></a></shiro:authenticated>
-                    <shiro:notAuthenticated><a href="<c:url value="/login.jsp"/>"><fmt:message key="menu.login_and_register" /></a></shiro:notAuthenticated>
-
-                    <shiro:authenticated>
-                        <a href="<c:url value="/my/projects.jsp"/>"><fmt:message key="menu.your_projects" /></a>
-                        <a href="<c:url value="/logout"/>"><fmt:message key="logout" /></a>
-                    </shiro:authenticated>
-                    <a href="<c:url value="/projects.jsp"/>"><fmt:message key="menu.project_list" /></a>
-
 
                 </div>
             </div>

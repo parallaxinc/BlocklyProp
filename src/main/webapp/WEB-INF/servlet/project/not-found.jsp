@@ -17,6 +17,8 @@
     </head>
     <body>
 
+        <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
+
         <div class="row">
             <div class="col-md-12">
 
