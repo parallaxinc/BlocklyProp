@@ -25,53 +25,48 @@
                 </div>
                 <div class="col-md-6 col-sm-12">
 
-                    <h2>Please regtister</h2>
+                    <h2><fmt:message key="register.do.title" /></h2>
 
                     <%
                         Boolean error = (Boolean) request.getAttribute("error");
                         if (error != null && error) {
                     %>
-                    <div>A problem occured</div>
+                    <div><fmt:message key="error.generic" /></div>
                     <%
                         }
                         Boolean emailAlreadyUsed = (Boolean) request.getAttribute("emailAlreadyUsed");
                         if (emailAlreadyUsed != null && emailAlreadyUsed) {
                     %>
-                    <div>Email already used</div>
+                    <div><fmt:message key="register.error.email_already_used" /></div>
                     <%
                         }
                         Boolean passwordsDontMatch = (Boolean) request.getAttribute("passwordsDontMatch");
                         if (passwordsDontMatch != null && passwordsDontMatch) {
                     %>
-                    <div>Passwords don't match</div>
+                    <div><fmt:message key="register.error.passwords_dont_match" /></div>
                     <%
                         }
                     %>
 
                     <form name="registerForm" action="" method="post">
-                        <table align="left" border="0" cellspacing="0" cellpadding="3">
-                            <tr>
-                                <td>Screenname:</td>
-                                <td><input type="text" name="screenname" maxlength="255" value="<%= request.getAttribute("screenname")%>"></td>
-                            </tr>
-                            <tr>
-                                <td>Email:</td>
-                                <td><input type="text" name="email" maxlength="255" value="<%= request.getAttribute("email")%>"></td>
-                            </tr>
-                            <tr>
-                                <td>Password:</td>
-                                <td><input type="password" name="password" maxlength="255"></td>
-                            </tr>
-                            <tr>
-                                <td>Confirm password:</td>
-                                <td><input type="password" name="confirmpassword" maxlength="255"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" align="right"><input type="submit" name="submit" value="Register"></td>
-                            </tr>
-                        </table>
+                        <div class="form-group">
+                            <label for="screenname" ><fmt:message key="register.do.screenname" /></label>
+                            <input class="form-control" type="text" name="screenname" maxlength="255" value="<%= request.getAttribute("screenname")%>">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" ><fmt:message key="register.do.email" /></label>
+                            <input class="form-control" type="text" name="email" maxlength="255" value="<%= request.getAttribute("email")%>">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" ><fmt:message key="register.do.password" /></label>
+                            <input class="form-control" type="password" name="password" maxlength="255">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmpassword" ><fmt:message key="register.do.confirm_password" /></label>
+                            <input class="form-control" type="password" name="confirmpassword" maxlength="255">
+                        </div>
+                        <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="register.do.submit" />">
                     </form>
-
                 </div>
             </div>
         </div>

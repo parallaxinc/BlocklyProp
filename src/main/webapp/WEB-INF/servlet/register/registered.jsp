@@ -21,9 +21,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2>Register successfull</h2>
-                    <p>Please check your email to confirm your email account.</p>
-                    <p><a href="index.jsp">Go to home</a></p>
+                    <h2><fmt:message key="register.done.title" /></h2>
+                    <p><fmt:message key="register.done.text" /></p>
                 </div>
             </div>
         </div>

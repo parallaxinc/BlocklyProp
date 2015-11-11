@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <h2>Projects</h2>
+                    <h2><fmt:message key="home.title" /></h2>
 
                 </div>
             </div>
