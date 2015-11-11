@@ -21,12 +21,9 @@
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-
-                    <h2><fmt:message key="home.title" /></h2>
-
-                </div>
+            <div class="jumbotron logo">
+                <h1><fmt:message key="home.title" /></h1>
+                <p><fmt:message key="home.text" /></p>
             </div>
 
             <div class="row">

@@ -30,3 +30,15 @@ body {
     padding-left: 50px;
     margin-left: 0;
 }
+
+.container .jumbotron.logo {
+    background-image: url('images/logo_small.png');
+    background-repeat: no-repeat;
+    background-size: 80px 80px;
+    background-position: 30px 40px;
+    padding-left: 130px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #215C8A;
+    border-radius: 0;
+}
