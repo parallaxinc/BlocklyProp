@@ -21,3 +21,12 @@ body {
     background-repeat: no-repeat;
     padding-left: 30px;
 }
+
+.navbar-brand#nav-logo {
+    background-image: url('images/logo_small.png');
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    background-position-y: 5px;
+    padding-left: 50px;
+    margin-left: 0;
+}
