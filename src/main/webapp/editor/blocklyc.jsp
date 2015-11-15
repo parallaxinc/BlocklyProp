@@ -38,25 +38,25 @@
                                     <ul class="nav navbar-nav">
                                         <!--  <li><a href="help/index.html">Manual</a></li> -->
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">New project<b class="caret"></b></a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.newproject.title" /><b class="caret"></b></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="<c:url value="/editor/blocklyspin.jsp"/>">Spin</a></li>
-                                                <li><a href="<c:url value="/editor/blocklyc.jsp"/>">Propeller C</a></li>
+                                                <li><a href="<c:url value="/editor/blocklyspin.jsp"/>"><fmt:message key="editor.newproject.spin" /></a></li>
+                                                <li><a href="<c:url value="/editor/blocklyc.jsp"/>"><fmt:message key="editor.newproject.c" /></a></li>
                                             </ul>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.projects.title" /> <b class="caret"></b></a>
                                             <ul class="dropdown-menu" role="menu">
-                                                <li><a href="<c:url value="/projects.jsp"/>">Community projects</a></li>
-                                                <li><a href="<c:url value="/my/projects.jsp"/>">My projects</a></li>
+                                                <li><a href="<c:url value="/projects.jsp"/>"><fmt:message key="editor.projects.community" /></a></li>
+                                                <li><a href="<c:url value="/my/projects.jsp"/>"><fmt:message key="editor.projects.mine" /></a></li>
                                             </ul>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.view.title" /> <b class="caret"></b></a>
                                             <ul class="dropdown-menu">
-                                                <li class="active" id="tab_blocks"><a href="#" onclick="tabClick('tab_blocks')">Blocks</a></li>
-                                                <li id="tab_propc"><a href="#" onclick="tabClick('tab_propc')">Propeller C</a></li>
-                                                <li id="tab_xml"><a href="#" onclick="tabClick('tab_xml')">XML</a></li>
+                                                <li class="active" id="tab_blocks"><a href="#" onclick="tabClick('tab_blocks')"><fmt:message key="editor.view.blocks" /></a></li>
+                                                <li id="tab_propc"><a href="#" onclick="tabClick('tab_propc')"><fmt:message key="editor.view.c" /></a></li>
+                                                <li id="tab_xml"><a href="#" onclick="tabClick('tab_xml')"><fmt:message key="editor.view.xml" /></a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -72,19 +72,19 @@
                                             </form>
                                         </li>
                                         <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Run <b class="caret"></b></a>
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.run.title" /> <b class="caret"></b></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#" onclick="compile()">Compile</a></li>
-                                                <li><a href="#" onclick="loadIntoRam()">Load RAM</a></li>
-                                                <li><a href="#" onclick="loadIntoEeprom()">Load EEPROM</a></li>
+                                                <li><a href="#" onclick="compile()"><fmt:message key="editor.run.compile" /></a></li>
+                                                <li><a href="#" onclick="loadIntoRam()"><fmt:message key="editor.run.ram" /></a></li>
+                                                <li><a href="#" onclick="loadIntoEeprom()"><fmt:message key="editor.run.eeprom" /></a></li>
                                                 <li class="divider"></li>
-                                                <li><a href="#" onclick="serial_console()">Serial terminal</a></li>
+                                                <li><a href="#" onclick="serial_console()"><fmt:message key="editor.run.terminal" /></a></li>
                                                 <li class="divider"></li>
-                                                <li><a href="#" onclick="configure_client()">Configure client</a></li>
+                                                <li><a href="#" onclick="configure_client()"><fmt:message key="editor.run.configure" /></a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="#" onclick="project()">Project</a></li>
-                                        <li><a href="#" id="save-project">Save</a></li>
+                                        <li><a href="#" onclick="project()"><fmt:message key="editor.project" /></a></li>
+                                        <li><a href="#" id="save-project"><fmt:message key="editor.save" /></a></li>
                                     </ul>
                                 </div><!-- /.navbar-collapse -->
                             </div><!-- /.container-fluid -->

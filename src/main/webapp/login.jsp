@@ -21,33 +21,33 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <a href="register" >Register now!</a>
+                    <a href="register" ><fmt:message key="login.registerlink" /></a>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <h2>Please Log in</h2>
+                    <h2><fmt:message key="login.title" /></h2>
                     <%
                         String errorDescription = (String) request.getAttribute("shiroLoginFailure");
                         if (errorDescription != null) {
                     %>
-                    <p>Login attempt was unsuccessful<%-- : < %=errorDescription%> --%></p>
-                    <p><a href="resetrequest">Forgot your password?</a></p>
-                    <p><a href="confirmrequest">Email not yet confirmed?</a></p>
+                    <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
+                    <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
+                    <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
                     <%
                         }
                     %>
                     <form name="loginform" action="" method="post">
                         <div class="form-group">
-                            <label for="username" >Email:</label>
+                            <label for="username" ><fmt:message key="login.email" /></label>
                             <input class="form-control" type="text" name="username" maxlength="255" required="required"/>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password:</label>
+                            <label for="password"><fmt:message key="login.password" /></label>
                             <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
                         </div>
-                        <div class="form-group">
-                            <input type="checkbox" name="rememberMe"><label for="rememberMe">Remember Me</label>
-                        </div>
-                        <input class="btn btn-default" type="submit" name="submit" value="Login">
+                        <%--     <div class="form-group">
+                        <input type="checkbox" name="rememberMe"><label for="rememberMe"><fmt:message key="login.remember" /></label>
+</div>--%>
+                        <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="login.submit" />">
                     </form>
                 </div>
             </div>
