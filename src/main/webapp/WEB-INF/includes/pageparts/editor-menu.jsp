@@ -9,11 +9,9 @@
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="containter-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="<c:url value="/index.jsp"/>">BlocklyProp</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
+        <a id="nav-logo" href="<c:url value="/index.jsp"/>">BlocklyProp</a>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav" id="navbar-left">
                 <!--  <li><a href="help/index.html">Manual</a></li> -->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.newproject.title" /><b class="caret"></b></a>

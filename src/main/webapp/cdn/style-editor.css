@@ -139,3 +139,35 @@ button:hover {
 .space_right {
     margin-right: 10px;
 }
+
+#nav-logo {
+    background-image: url('images/logo_small.png');
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    padding-left: 60px;
+    margin-left: 0;
+    color: #BCD0E4;
+    height: 50px;
+    font-size: 25px;
+    position: absolute;
+}
+
+#nav-logo:hover {
+    text-decoration: none;
+}
+
+#navbar-left {
+    padding-left: 46px;
+}
+
+nav .nav > li > a {
+    padding: 27px 15px 3px 15px;
+}
+
+nav .nav > li > a:first-child {
+    padding-left: 0;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover, .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background-color: transparent;
+}
