@@ -152,7 +152,7 @@ button:hover {
     position: absolute;
 }
 
-#nav-logo:hover {
+a#nav-logo:hover, a#nav-logo:active {
     text-decoration: none;
 }
 
