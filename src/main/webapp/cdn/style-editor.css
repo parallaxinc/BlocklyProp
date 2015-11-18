@@ -171,3 +171,23 @@ nav .nav > li > a:first-child {
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover, .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
     background-color: transparent;
 }
+
+.clients .client {
+    display: none;
+}
+
+body.all-clients .clients .client, body.unknown-client .clients .client {
+    display: block;
+}
+
+body.Windows .clients .Windows {
+    display: block;
+}
+
+body.MacOS .clients .MacOS {
+    display: block;
+}
+
+body.Linux .clients .Linux {
+    display: block;
+}

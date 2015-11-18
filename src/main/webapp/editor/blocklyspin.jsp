@@ -16,6 +16,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.js"/>"></script>
         <!-- <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script> -->
+        <script type="text/javascript" src="<c:url value="/cdn/detect.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklypropclient.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklyspin.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>

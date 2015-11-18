@@ -16,6 +16,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/FileSaver.min.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/detect.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklypropclient.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
@@ -91,6 +92,8 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+
+        <%@ include file="/WEB-INF/includes/pageparts/clientdownload.jsp"%>
 
         <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>

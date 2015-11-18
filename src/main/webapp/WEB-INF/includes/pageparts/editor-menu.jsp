@@ -44,7 +44,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${!param.demo}">
                     <li>
-                        <p class="navbar-text" id="client_status">Checking for BlocklyPropClient</p>
+                        <p class="navbar-text"><a data-toggle="modal" data-target="#client-download-modal" href="#"><span id="client_status">Checking for BlocklyPropClient</span></a></p>
                     </li>
                     <li>
                         <form class="navbar-form">
