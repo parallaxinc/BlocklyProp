@@ -103,7 +103,7 @@ function renderContent() {
         //content.innerHTML = Blockly.Generator.workspaceToCode('Arduino');
         var spinTextarea = document.getElementById('textarea_spin');
         console.log('workspace to code: Spin');
-        spinTextarea.value = Blockly.Generator.workspaceToCode('Spin');
+        spinTextarea.value = Blockly.Spin.workspaceToCode();
         spinTextarea.focus();
     }
 }
@@ -124,7 +124,7 @@ function init(blockly) {
 
     // Make the 'Blocks' tab line up with the toolbox.
     if (Blockly.Toolbox) {
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             document.getElementById('tab_blocks').style.minWidth =
                     (Blockly.Toolbox.width - 38) + 'px';
             // Account for the 19 pixel margin and on each side.
@@ -133,28 +133,39 @@ function init(blockly) {
     loadProject();
 }
 
+function cloudCompile(text, action, successHandler) {
+    $("#compile-dialog-title").text(text);
+    $("#compile-console").val('');
+    $('#compile-dialog').modal('show');
+
+    var propcCode = Blockly.propc.workspaceToCode();
+    $.ajax({
+        'method': 'POST',
+        'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
+        'data': propcCode
+    }).done(function (data) {
+        if (data.error) {
+            alert(data['message']);
+        } else {
+            if (data.success) {
+                $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                successHandler(data);
+            } else {
+                $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+            }
+        }
+    }).fail(function (data) {
+        alert(data);
+    });
+}
+
 /**
  *
  */
 function compile() {
-    if (client_available) {
-        var spinCode = Blockly.Generator.workspaceToCode('Spin');
+    cloudCompile('Compile', 'compile', function (data) {
 
-        $("#compile-dialog-title").text('Compile');
-        $("#compile-console").val('');
-        $('#compile-dialog').modal('show');
-
-        $.post(client_url + 'compile.action', {action: "COMPILE", language: "spin", code: spinCode}, function(data) {
-            $("#compile-console").val(data.message);
-            console.log(data);
-        });
-    } else {
-        $("#compile-dialog-title").text('Compile');
-        $("#compile-console").val('');
-        $('#compile-dialog').modal('show');
-
-        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
-    }
+    });
 }
 
 /**
@@ -162,22 +173,14 @@ function compile() {
  */
 function loadIntoRam() {
     if (client_available) {
-        var spinCode = Blockly.Generator.workspaceToCode('Spin');
-
-        $("#compile-dialog-title").text('Compile');
-        $("#compile-console").val('');
-        $('#compile-dialog').modal('show');
-
-        $.post(client_url + 'compile.action', {action: "RAM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
-            $("#compile-console").val(data.message);
-            console.log(data);
+        cloudCompile('Load into ram', 'bin', function (data) {
+            $.post(client_url + 'load.action', {action: "RAM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                console.log(loaddata);
+            });
         });
     } else {
-        $("#compile-dialog-title").text('Load into ram');
-        $("#compile-console").val('');
-        $('#compile-dialog').modal('show');
-
-        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller");
     }
 }
 
@@ -186,22 +189,14 @@ function loadIntoRam() {
  */
 function loadIntoEeprom() {
     if (client_available) {
-        var spinCode = Blockly.Generator.workspaceToCode('Spin');
-
-        $("#compile-dialog-title").text('Compile');
-        $("#compile-console").val('');
-        $('#compile-dialog').modal('show');
-
-        $.post(client_url + 'compile.action', {action: "EEPROM", language: "spin", code: spinCode, "comport": getComPort()}, function(data) {
-            $("#compile-console").val(data.message);
-            console.log(data);
+        cloudCompile('Load into eeprom', 'eeprom', function (data) {
+            $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                console.log(loaddata);
+            });
         });
     } else {
-        $("#compile-dialog-title").text('Load into eeprom');
-        $("#compile-console").val('');
-        $('#compile-dialog').modal('show');
-
-        $("#compile-console").val("In demo mode you cannot compile or communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller");
     }
 }
 
@@ -224,23 +219,23 @@ function serial_console() {
         var connection = new WebSocket(url);
 
         // When the connection is open, open com port
-        connection.onopen = function() {
+        connection.onopen = function () {
             connection.send('+++ open port ' + getComPort());
 
         };
         // Log errors
-        connection.onerror = function(error) {
+        connection.onerror = function (error) {
             console.log('WebSocket Error ' + error);
             console.log(error);
             term.destroy();
         };
         // Log messages from the server
-        connection.onmessage = function(e) {
+        connection.onmessage = function (e) {
             //console.log('Server: ' + e.data);
             term.write(e.data);
         };
 
-        term.on('data', function(data) {
+        term.on('data', function (data) {
             //console.log(data);
             connection.send(data);
         });
@@ -248,15 +243,15 @@ function serial_console() {
         if (newTerminal) {
             term.open(document.getElementById("serial_console"));
         }
-        connection.onClose = function() {
+        connection.onClose = function () {
             //  term.destroy();
         };
 
-        $('#console-dialog').on('hidden.bs.modal', function() {
+        $('#console-dialog').on('hidden.bs.modal', function () {
             connection.close();
         });
     } else {
-        term.on('data', function(data) {
+        term.on('data', function (data) {
             data = data.replace('\r', '\r\n');
             term.write(data);
         });
@@ -272,19 +267,19 @@ function serial_console() {
     $('#console-dialog').modal('show');
 }
 
-check_com_ports = function() {
+check_com_ports = function () {
     if (client_url !== undefined) {
         var selected_port = $("#comPort").val();
-        $.get(client_url + "ports.json", function(data) {
+        $.get(client_url + "ports.json", function (data) {
             $("#comPort").empty();
-            data.forEach(function(port) {
+            data.forEach(function (port) {
                 $("#comPort").append($('<option>', {
                     text: port
                 }));
             });
             select_com_port(selected_port);
             client_available = true;
-        }).fail(function() {
+        }).fail(function () {
             $("#comPort").empty();
             $("#comPort").append($('<option>', {
                 text: 'COM1'
@@ -301,7 +296,7 @@ check_com_ports = function() {
     }
 };
 
-select_com_port = function(com_port) {
+select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);
     }
@@ -310,11 +305,11 @@ select_com_port = function(com_port) {
     }
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
     check_com_ports();
 
 });
 
-getComPort = function() {
+getComPort = function () {
     return $('#comPort').find(":selected").text();
 };

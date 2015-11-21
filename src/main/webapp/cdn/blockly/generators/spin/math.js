@@ -26,16 +26,10 @@
 //To support syntax defined in http://arduino.cc/en/Reference/HomePage
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
-
-
-
-// define generators
-Blockly.Spin = Blockly.Generator.get('Spin');
-
-Blockly.Spin.math_number = function() {
+Blockly.Spin.math_number = function () {
     // Numeric value.
     var code = window.parseFloat(this.getTitleValue('NUM'));
     // -4.abs() returns -4 in Dart due to strange order of operation choices.
@@ -46,7 +40,7 @@ Blockly.Spin.math_number = function() {
 };
 
 
-Blockly.Spin.math_arithmetic = function() {
+Blockly.Spin.math_arithmetic = function () {
     // Basic arithmetic operators, and power.
     var mode = this.getTitleValue('OP');
     var tuple = Blockly.Spin.math_arithmetic.OPERATORS[mode];
@@ -74,7 +68,7 @@ Blockly.Spin.math_arithmetic.OPERATORS = {
 
 
 
-Blockly.Spin.math_single = function() {
+Blockly.Spin.math_single = function () {
     // Math operators with single operand.
     var operator = this.getTitleValue('OP');
     var code;
@@ -118,28 +112,27 @@ Blockly.Spin.math_single = function() {
 
 // Limit
 
-Blockly.Language.math_limit = {
+Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
-    category: Blockly.LANG_CATEGORY_MATH,
     helpUrl: "",
-    init: function() {
+    init: function () {
         this.setColour(230);
         this.setOutput(true, Number);
         this.appendValueInput('A')
                 .setCheck(Number);
         this.appendValueInput('B')
                 .setCheck(Number)
-                .appendTitle(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("Limit");
     }
 };
 
-Blockly.Language.math_limit.OPERATORS =
+Blockly.Blocks.math_limit.OPERATORS =
         [["Limit min", 'LIMIT_MIN'],
             ["Limit max", 'LIMIT_MAX']];
 
-Blockly.Spin.math_limit = function() {
+Blockly.Spin.math_limit = function () {
     // Basic arithmetic operators, and power.
     var mode = this.getTitleValue('OP');
     var tuple = Blockly.Spin.math_limit.OPERATORS[mode];
@@ -162,11 +155,10 @@ Blockly.Spin.math_limit.OPERATORS = {
 };
 
 // Increment/decrement
-Blockly.Language.math_crement = {
+Blockly.Blocks.math_crement = {
     // Rounding functions.
-    category: Blockly.LANG_CATEGORY_MATH,
     helpUrl: "",
-    init: function() {
+    init: function () {
         this.setColour(230);
         // this.setOutput(true, Number);
         this.setPreviousStatement(true);
@@ -174,16 +166,16 @@ Blockly.Language.math_crement = {
 
         this.appendValueInput('VAR')
                 .setCheck(Number)
-                .appendTitle(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setTooltip("");
     }
 };
 
-Blockly.Language.math_crement.OPERATORS =
+Blockly.Blocks.math_crement.OPERATORS =
         [["Decrement", 'DEC'],
             ["Increment", 'INC']];
 
-Blockly.Spin.math_crement = function() {
+Blockly.Spin.math_crement = function () {
     // Basic arithmetic operators, and power.
     var mode = this.getTitleValue('OP');
     var tuple = Blockly.Spin.math_crement.OPERATORS[mode];

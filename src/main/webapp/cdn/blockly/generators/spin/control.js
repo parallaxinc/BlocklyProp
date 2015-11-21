@@ -23,28 +23,26 @@
  */
 'use strict';
 
-if (!Blockly.Language)
-    Blockly.Language = {};
+//define blocks
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
-Blockly.Language.controls_repeat_forever = {
+Blockly.Blocks.controls_repeat_forever = {
     // Repeat forever.
-    category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendDummyInput()
-                .appendTitle(Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT);
+                .appendField(Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT);
         this.appendStatementInput('DO')
-                .appendTitle(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
+                .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
     }
 };
 
-Blockly.Spin = Blockly.Generator.get('Spin');
-
-Blockly.Spin.controls_if = function() {
+Blockly.Spin.controls_if = function () {
     // If/elseif/else condition.
     var n = 0;
     var argument = Blockly.Spin.valueToCode(this, 'IF' + n,
@@ -64,7 +62,7 @@ Blockly.Spin.controls_if = function() {
     return code + '\n';
 };
 
-Blockly.Spin.controls_repeat = function() {
+Blockly.Spin.controls_repeat = function () {
     // Repeat n times.
     var repeats = Number(this.getTitleValue('TIMES'));
     var branch = Blockly.Spin.statementToCode(this, 'DO');
@@ -77,7 +75,7 @@ Blockly.Spin.controls_repeat = function() {
     return code;
 };
 
-Blockly.Spin.controls_repeat_forever = function() {
+Blockly.Spin.controls_repeat_forever = function () {
     // Repeat forever
     var branch = Blockly.Spin.statementToCode(this, 'DO');
     if (Blockly.Spin.INFINITE_LOOP_TRAP) {

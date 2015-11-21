@@ -24,29 +24,26 @@
 
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
 //servo block
-Blockly.Language.sensor_ping = {
+Blockly.Blocks.sensor_ping = {
     category: 'Sensors',
     helpUrl: '',
-    init: function() {
+    init: function () {
         this.setColour(314);
         this.appendDummyInput("")
-                .appendTitle("Ping)))")
-                .appendTitle(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"], ["mm", "MM"]]), "UNIT")
-                .appendTitle("PIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+                .appendField("Ping)))")
+                .appendField(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"], ["mm", "MM"]]), "UNIT")
+                .appendField("PIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.setOutput(true, Number);
     }
 };
 
-// define generators
-Blockly.Spin = Blockly.Generator.get('Spin');
-
-Blockly.Spin.sensor_ping = function() {
+Blockly.Spin.sensor_ping = function () {
     var dropdown_pin = this.getTitleValue('PIN');
     var unit = this.getTitleValue('UNIT');
     var methodForUnit = Blockly.Spin.sensor_ping.UNITS[unit];

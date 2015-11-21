@@ -23,9 +23,7 @@
  */
 'use strict';
 
-Blockly.Spin = Blockly.Generator.get('Spin');
-
-Blockly.Spin.procedures_defreturn = function() {
+Blockly.Spin.procedures_defreturn = function () {
     // Define a procedure with a return value.
     var funcName = Blockly.Spin.variableDB_.getName(this.getTitleValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
@@ -61,7 +59,7 @@ Blockly.Spin.procedures_defreturn = function() {
 // a procedure with a return value.
 Blockly.Spin.procedures_defnoreturn = Blockly.Spin.procedures_defreturn;
 
-Blockly.Spin.procedures_callreturn = function() {
+Blockly.Spin.procedures_callreturn = function () {
     // Call a procedure with a return value.
     var funcName = Blockly.Spin.variableDB_.getName(this.getTitleValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
@@ -74,7 +72,7 @@ Blockly.Spin.procedures_callreturn = function() {
     return [code, Blockly.Spin.ORDER_UNARY_POSTFIX];
 };
 
-Blockly.Spin.procedures_callnoreturn = function() {
+Blockly.Spin.procedures_callnoreturn = function () {
     // Call a procedure with no return value.
     var funcName = Blockly.Spin.variableDB_.getName(this.getTitleValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
@@ -87,7 +85,7 @@ Blockly.Spin.procedures_callnoreturn = function() {
     return code;
 };
 
-Blockly.Spin.procedures_ifreturn = function() {
+Blockly.Spin.procedures_ifreturn = function () {
     // Conditionally return value from a procedure.
     var condition = Blockly.Spin.valueToCode(this, 'CONDITION',
             Blockly.Spin.ORDER_NONE) || 'false';

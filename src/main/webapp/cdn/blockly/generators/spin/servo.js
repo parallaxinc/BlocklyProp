@@ -25,33 +25,30 @@
 
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
 //servo block
-Blockly.Language.servo_move = {
+Blockly.Blocks.servo_move = {
     category: 'Servo',
     helpUrl: '',
-    init: function() {
+    init: function () {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Servo")
-                .appendTitle("PIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField("Servo")
+                .appendField("PIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
         this.appendValueInput("PULSE", Number)
                 .setCheck(Number)
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendTitle("Pulse (1500~2500)");
+                .appendField("Pulse (1500~2500)");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-// define generators
-Blockly.Spin = Blockly.Generator.get('Spin');
-
-Blockly.Spin.servo_move = function() {
+Blockly.Spin.servo_move = function () {
     var dropdown_pin = this.getTitleValue('PIN');
     var pulse_time = Blockly.Spin.valueToCode(this, 'PULSE', Blockly.Spin.ORDER_NONE);
 

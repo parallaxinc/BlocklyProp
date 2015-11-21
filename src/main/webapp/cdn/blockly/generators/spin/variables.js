@@ -23,99 +23,92 @@
  */
 'use strict';
 
-if (!Blockly.Language)
-    Blockly.Language = {};
+//define blocks
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
-Blockly.Language.variables_get = {
+Blockly.Blocks.variables_get = {
     // Variable getter.
     category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_GET_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(330);
         this.appendDummyInput("")
-                .appendTitle(Blockly.LANG_VARIABLES_GET_TITLE_1)
-                .appendTitle(new Blockly.FieldVariable(
+                .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         this.setOutput(true, null);
         //      this.setTooltip(Blockly.LANG_VARIABLES_GET_TOOLTIP_1);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getTitleValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
     }
 };
 
-Blockly.Language.variables_declare = {
+Blockly.Blocks.variables_declare = {
     // Variable setter.
     category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(330);
         this.appendValueInput('VALUE', null)
-                .appendTitle('Declare')
-                .appendTitle(new Blockly.FieldVariable(
+                .appendField('Declare')
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_SET_ITEM), 'VAR')
-                .appendTitle("as")
-                .appendTitle(new Blockly.FieldDropdown([["Long", "long"], ["Word", "word"], ["Byte", "byte"]]), "TYPE")
-                .appendTitle("value");
+                .appendField("as")
+                .appendField(new Blockly.FieldDropdown([["Long", "long"], ["Word", "word"], ["Byte", "byte"]]), "TYPE")
+                .appendField("value");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
 //        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getTitleValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
     }
 };
 
-Blockly.Language.variables_set = {
+Blockly.Blocks.variables_set = {
     // Variable setter.
     category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(330);
         this.appendValueInput('VALUE')
-                .appendTitle(Blockly.LANG_VARIABLES_SET_TITLE_1)
-                .appendTitle(new Blockly.FieldVariable(
+                .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_SET_ITEM), 'VAR').appendTitle('=');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
 //        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getTitleValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
     }
 };
 
-
-/**
- * @fileoverview Generating Spin for control blocks.
- * @author michel@creatingfuture.eu  (Michel Lampo)
- */
-
-Blockly.Spin = Blockly.Generator.get('Spin');
-
-Blockly.Spin.variables_get = function() {
+Blockly.Spin.variables_get = function () {
     // Variable getter.
     var code = Blockly.Spin.variableDB_.getName(this.getTitleValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
-Blockly.Spin.variables_declare = function() {
+Blockly.Spin.variables_declare = function () {
     // Variable setter.
     var dropdown_type = this.getTitleValue('TYPE');
     //TODO: settype to variable
@@ -128,7 +121,7 @@ Blockly.Spin.variables_declare = function() {
     return '';
 };
 
-Blockly.Spin.variables_set = function() {
+Blockly.Spin.variables_set = function () {
     // Variable setter.
     var argument0 = Blockly.Spin.valueToCode(this, 'VALUE',
             Blockly.Spin.ORDER_ASSIGNMENT) || '0';

@@ -24,47 +24,44 @@
 'use strict';
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
-Blockly.Language.inout_digital_write = {
-    category: 'In/Out',
+Blockly.Blocks.inout_digital_write = {
     helpUrl: 'help/block-digitalpin.html#write',
-    init: function() {
+    init: function () {
         this.setColour(230);
         this.appendDummyInput("")
-                .appendTitle("DigitalWrite PIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN")
-                .appendTitle("Stat")
-                .appendTitle(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "STAT");
+                .appendField("DigitalWrite PIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField("Stat")
+                .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "STAT");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip('Write digital value to a specific Port');
     }
 };
 
-Blockly.Language.inout_digital_read = {
-    category: 'In/Out',
+Blockly.Blocks.inout_digital_read = {
     helpUrl: 'help/block-digitalpin.html#read',
-    init: function() {
+    init: function () {
         this.setColour(230);
         this.appendDummyInput("")
-                .appendTitle("DigitalRead PIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+                .appendField("DigitalRead PIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.setOutput(true, Boolean);
         this.setTooltip('');
     }
 };
 
-Blockly.Language.inout_digital_write_pin = {
-    category: 'In/Out',
+Blockly.Blocks.inout_digital_write_pin = {
     helpUrl: 'help/block-digitalpin.html#write-pin',
-    init: function() {
+    init: function () {
         this.setColour(230);
         this.appendDummyInput("").appendTitle("DigitalWrite PIN#");
-        this.appendValueInput('PIN').setCheck(Number);
+        this.appendValueInput('PIN').setCheck('Number');
         this.appendDummyInput("").appendTitle("Stat")
-                .appendTitle(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "STAT");
+                .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "STAT");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip('Write digital value to a specific Port');
@@ -72,27 +69,25 @@ Blockly.Language.inout_digital_write_pin = {
     }
 };
 
-Blockly.Language.inout_digital_read_pin = {
-    category: 'In/Out',
+Blockly.Blocks.inout_digital_read_pin = {
     helpUrl: 'help/block-digitalpin.html#read-pin',
-    init: function() {
+    init: function () {
         this.setColour(230);
-        this.appendDummyInput("").appendTitle("DigitalRead PIN#");
-        this.appendValueInput('PIN').setCheck(Number);
+        this.appendDummyInput("").appendField("DigitalRead PIN#");
+        this.appendValueInput('PIN').setCheck('Number');
         this.setOutput(true, Boolean);
         this.setTooltip('');
         this.setInputsInline(true);
     }
 };
 
-Blockly.Language.base_delay = {
-    category: 'Control',
+Blockly.Blocks.base_delay = {
     helpUrl: 'help/block-delay.html',
-    init: function() {
+    init: function () {
         this.setColour(120);
-        this.appendValueInput("DELAY_TIME", Number)
-                .appendTitle("Delay (ms)")
-                .setCheck(Number);
+        this.appendValueInput("DELAY_TIME", 'Number')
+                .appendField("Delay (ms)")
+                .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -100,11 +95,27 @@ Blockly.Language.base_delay = {
     }
 };
 
+// Cog actions
+Blockly.Blocks.cog_new = {
+    helpUrl: 'help/block-cognew.html',
+    init: function () {
+        this.setColour(120);
+        this.appendDummyInput()
+                .appendTitle('Cognew ');
 
-// define generators
-Blockly.Spin = Blockly.Generator.get('Spin');
+        this.appendDummyInput()
+                .appendField('Stacksize ')
+                .appendField(new Blockly.FieldTextInput("48", Blockly.Language.math_number.validator), "STACK_SIZE");
 
-Blockly.Spin.inout_digital_write = function() {
+        this.appendStatementInput("METHOD")
+                .appendTitle("Method");
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.Spin.inout_digital_write = function () {
     var dropdown_pin = this.getTitleValue('PIN');
     var dropdown_stat = this.getTitleValue('STAT');
 //    Blockly.Spin.setups_['setup_output_' + dropdown_pin] = 'dira[' + dropdown_pin + ']~~';
@@ -113,14 +124,14 @@ Blockly.Spin.inout_digital_write = function() {
     return code;
 };
 
-Blockly.Spin.inout_digital_read = function() {
+Blockly.Spin.inout_digital_read = function () {
     var dropdown_pin = this.getTitleValue('PIN');
     //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
     var code = 'ina[' + dropdown_pin + ']';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
-Blockly.Spin.inout_digital_write_pin = function() {
+Blockly.Spin.inout_digital_write_pin = function () {
     var dropdown_pin = Blockly.Spin.valueToCode(this, 'PIN', Blockly.Spin.ORDER_UNARY_PREFIX) || '0';
     var dropdown_stat = this.getTitleValue('STAT');
 //    Blockly.Spin.setups_['setup_output_' + dropdown_pin] = 'dira[' + dropdown_pin + ']~~';
@@ -128,41 +139,20 @@ Blockly.Spin.inout_digital_write_pin = function() {
     return code;
 };
 
-Blockly.Spin.inout_digital_read_pin = function() {
+Blockly.Spin.inout_digital_read_pin = function () {
     var dropdown_pin = Blockly.Spin.valueToCode(this, 'PIN', Blockly.Spin.ORDER_UNARY_PREFIX) || '0';
     //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
     var code = 'ina[' + dropdown_pin + ']';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
-Blockly.Spin.base_delay = function() {
+Blockly.Spin.base_delay = function () {
     var delay_time = Blockly.Spin.valueToCode(this, 'DELAY_TIME', Blockly.Spin.ORDER_ATOMIC) || '1000'
     var code = 'waitcnt(clkfreq / 1000 * ' + delay_time + ' + cnt)\n';
     return code;
 };
 
-// Cog actions
-Blockly.Language.cog_new = {
-    // Repeat forever.
-    category: Blockly.LANG_CATEGORY_COG,
-    helpUrl: 'help/block-cognew.html',
-    init: function() {
-        this.setColour(120);
-        this.appendDummyInput()
-                .appendTitle('Cognew ');
-
-        this.appendDummyInput().appendTitle('Stacksize ').appendTitle(new Blockly.FieldTextInput("48", Blockly.Language.math_number.validator), "STACK_SIZE");
-
-        this.appendStatementInput("METHOD")
-                .appendTitle("Method");
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setInputsInline(true);
-        // this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
-    }
-};
-
-Blockly.Spin.cog_new = function() {
+Blockly.Spin.cog_new = function () {
     var method = Blockly.Spin.statementToCode(this, 'METHOD');
     method = method.replace("  ", "").replace("\n", "");
     var stackSize = this.getTitleValue('STACK_SIZE');

@@ -1,8 +1,8 @@
 /*
-  This file contains support for serial connections in Spin
-  
-  Author: Vale Tolpegin ( valetolpegin@gmail.com )
-*/
+ This file contains support for serial connections in Spin
+
+ Author: Vale Tolpegin ( valetolpegin@gmail.com )
+ */
 
 /*
  * Visual Blocks Language
@@ -25,62 +25,56 @@
 'use strict';
 
 //define blocks
-if (!Blockly.Language)
-    Blockly.Language = {};
+if (!Blockly.Blocks)
+    Blockly.Blocks = {};
 
 
-Blockly.Language.serial_open = {
-    category: 'Serial',
+Blockly.Blocks.serial_open = {
     helpUrl: '',
-    init: function() {
+    init: function () {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Serial init")
-                .appendTitle("rxPIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
-                .appendTitle("txPIN#")
-                .appendTitle(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
+                .appendField("Serial init")
+                .appendField("rxPIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
+                .appendField("txPIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput("")
-                .appendTitle("Baud")
-                .appendTitle(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
+                .appendField("Baud")
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.Language.serial_send_text = {
-    category: 'Serial',
+Blockly.Blocks.serial_send_text = {
     helpUrl: '',
-    init: function() {
+    init: function () {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Serial transmit")
-                .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                .appendField("Serial transmit")
+                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
                         'media/quote0.png', 12, 12))
-                .appendTitle(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendTitle(new Blockly.FieldImage(Blockly.pathToBlockly +
+                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
                         'media/quote1.png', 12, 12));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.Language.serial_rx_byte = {
-    category: 'Serial',
+Blockly.Blocks.serial_rx_byte = {
     helpUrl: '',
-    init: function() {
+    init: function () {
         this.setColour(180);
         this.appendDummyInput("")
-                .appendTitle("Serial read byte");
+                .appendField("Serial read byte");
         this.setOutput(true, Number);
 //        this.setInputsInline(true);
     }
 };
 
-// define generators
-Blockly.Spin = Blockly.Generator.get( 'Spin' );
-
-Blockly.Spin.serial_open = function() {
+Blockly.Spin.serial_open = function () {
     var dropdown_rx_pin = this.getTitleValue('RXPIN');
     var dropdown_tx_pin = this.getTitleValue('TXPIN');
     var baud = this.getTitleValue('BAUD');
@@ -89,11 +83,11 @@ Blockly.Spin.serial_open = function() {
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.StartRxTx( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', %1100, ' + baud + ' );';
     }
-    
+
     return '';
 };
 
-Blockly.Spin.serial_send_text = function() {
+Blockly.Spin.serial_send_text = function () {
     var text = this.getTitleValue('TEXT');
 
     Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
@@ -104,12 +98,12 @@ Blockly.Spin.serial_send_text = function() {
     return 'serial.Str( ' + text + ' );\n';
 };
 
-Blockly.Spin.serial_rx_byte = function() {
-    
+Blockly.Spin.serial_rx_byte = function () {
+
     Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         return '';
     }
 
-    return [ 'serial.CharIn', Blockly.Spin.ORDER_ATOMIC ];
+    return ['serial.CharIn', Blockly.Spin.ORDER_ATOMIC];
 };

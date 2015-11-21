@@ -1,0 +1,23 @@
+{
+    "elements": {
+        "xml": {
+            "attributes": {
+                "style": {},
+                "id": {}
+            }
+        },
+        "block": {
+            "attributes": {
+                "type": {}
+            }
+        },
+        "category": {
+            "attributes": {
+                "custom": {},
+                "name": {}
+            }
+        },
+        "sep": {}
+    },
+    "attributes": {}
+}

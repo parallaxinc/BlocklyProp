@@ -23,9 +23,7 @@
  */
 'use strict';
 
-Blockly.Spin = Blockly.Generator.get('Spin');
-
-Blockly.Spin.logic_compare = function() {
+Blockly.Spin.logic_compare = function () {
     // Comparison operator.
     var mode = this.getTitleValue('OP');
     var operator = Blockly.Spin.logic_compare.OPERATORS[mode];
@@ -46,7 +44,7 @@ Blockly.Spin.logic_compare.OPERATORS = {
     GTE: '>='
 };
 
-Blockly.Spin.logic_operation = function() {
+Blockly.Spin.logic_operation = function () {
     // Operations 'and', 'or'.
     var operator = (this.getTitleValue('OP') == 'AND') ? 'AND' : 'OR';
     var order = (operator == '&&') ? Blockly.Spin.ORDER_LOGICAL_AND :
@@ -57,7 +55,7 @@ Blockly.Spin.logic_operation = function() {
     return [code, order];
 };
 
-Blockly.Spin.logic_negate = function() {
+Blockly.Spin.logic_negate = function () {
     // Negation.
     var order = Blockly.Spin.ORDER_UNARY_PREFIX;
     var argument0 = Blockly.Spin.valueToCode(this, 'BOOL', order) || 'FALSE';
@@ -65,7 +63,7 @@ Blockly.Spin.logic_negate = function() {
     return [code, order];
 };
 
-Blockly.Spin.logic_boolean = function() {
+Blockly.Spin.logic_boolean = function () {
     // Boolean values true and false.
     var code = (this.getTitleValue('BOOL') == 'TRUE') ? 'TRUE' : 'FALSE';
     return [code, Blockly.Spin.ORDER_ATOMIC];
