@@ -34,7 +34,6 @@
         <script type="text/javascript" src="blockly/generators/propc/debug_LCD.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/serial.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/sensors.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/PIRSensor.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/abvolts.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/servo.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/joystick.js"></script>
@@ -124,12 +123,15 @@
                 <block type="math_single"></block>
                 <block type="math_limit"></block>
                 <block type="math_crement"></block>
+                <block type="math_crement"></block>
+                <block type="bit_math_shift"></block>
+                <!--<block type="bit_math_rotate"></block>-->
                 <!-- Repeat from Conditions -->
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>
             </category>
             <category name="Multicore">
-
+                <block type="cog_new"></block>
             </category>
         </category>
         <category name="Input/Output">
@@ -167,6 +169,9 @@
             </category>
         </category>
         <category name="Sensor/Input">
+            <category name="ETape liquid level">
+                <block type="etape_rc_time"></block>
+            </category>
             <category name="HMC5883">
 
             </category>

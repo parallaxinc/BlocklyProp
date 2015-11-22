@@ -37,9 +37,8 @@ if (!Blockly.Blocks)
 
 // Shift
 Blockly.Blocks.bit_math_shift = {
-    category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
-    init: function() {
+    init: function () {
         this.setColour(200);
         this.setOutput(true, Number);
         this.appendValueInput('A')
@@ -56,7 +55,7 @@ Blockly.Blocks.bit_math_shift.OPERATORS =
         [["Shift left", 'LEFT'],
             ["Shift right", 'RIGHT']];
 
-Blockly.propc.bit_math_shift = function() {
+Blockly.propc.bit_math_shift = function () {
     // Basic arithmetic operators, and power.
     var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_shift.OPERATORS[mode];
@@ -79,9 +78,8 @@ Blockly.propc.bit_math_shift.OPERATORS = {
 
 // Rotate
 Blockly.Blocks.bit_math_rotate = {
-    category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
-    init: function() {
+    init: function () {
         this.setColour(200);
         this.setOutput(true, Number);
         this.appendValueInput('A')
@@ -98,7 +96,7 @@ Blockly.Blocks.bit_math_rotate.OPERATORS =
         [["Rotate left", 'LEFT'],
             ["Rotate right", 'RIGHT']];
 
-Blockly.propc.bit_math_rotate = function() {
+Blockly.propc.bit_math_rotate = function () {
     // Basic arithmetic operators, and power.
     var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_rotate.OPERATORS[mode];
@@ -121,9 +119,8 @@ Blockly.propc.bit_math_rotate.OPERATORS = {
 
 // BIT-wise operations
 Blockly.Blocks.bit_math_operations = {
-    category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
-    init: function() {
+    init: function () {
         this.setColour(200);
         this.setOutput(true, Number);
         this.appendValueInput('A')
@@ -141,7 +138,7 @@ Blockly.Blocks.bit_math_operations.OPERATORS =
             ["Bit OR", 'OR'],
             ["Bit XOR", 'XOR']];
 
-Blockly.propc.bit_math_operations = function() {
+Blockly.propc.bit_math_operations = function () {
     // Basic arithmetic operators, and power.
     var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_operations.OPERATORS[mode];
@@ -165,10 +162,8 @@ Blockly.propc.bit_math_operations.OPERATORS = {
 
 // NOT
 Blockly.Blocks.bit_math_not = {
-    // Rounding functions.
-    category: Blockly.LANG_CATEGORY_BIT_MATH,
     helpUrl: "",
-    init: function() {
+    init: function () {
         this.setColour(200);
         this.setOutput(true, Number);
 
@@ -179,7 +174,7 @@ Blockly.Blocks.bit_math_not = {
     }
 };
 
-Blockly.propc.bit_math_not = function() {
+Blockly.propc.bit_math_not = function () {
     var variable = Blockly.propc.valueToCode(this, 'VAR', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
 //    if (!operator) {
 //        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';

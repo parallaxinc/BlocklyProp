@@ -3,7 +3,7 @@
  This file contains support for multi cog use in Propeller C
 
  Author: valetolpegin@gmail.com ( Vale Tolpegin )
- 
+
  *Copyright 2014 Vale Tolpegin.
  *
  *
@@ -18,7 +18,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- 
+
  */
 'use strict';
 
@@ -27,17 +27,16 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.cog_new = {
-    category: 'Control',
     helpUrl: '',
     init: function () {
         this.setColour(120);
         this.appendDummyInput()
-            .appendField("cognew");
+                .appendField("cognew");
         this.appendValueInput("STACK_SIZE", Number)
-            .appendField("Stacksize")
-            .setCheck(Number);
+                .appendField("Stacksize")
+                .setCheck(Number);
         this.appendStatementInput("METHOD")
-            .appendField("Method");
+                .appendField("Method");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
