@@ -27,7 +27,6 @@ if (!Blockly.Blocks)
 
 //Create GUI blocks for PAM-7Q GPS module
 Blockly.Blocks.PAM_7Q_Init = {
-    category: 'Sensors',
     helpUrl: '',
     init: function () {
         this.setColour(300);
@@ -48,7 +47,6 @@ Blockly.Blocks.PAM_7Q_Init = {
 };
 
 Blockly.Blocks.PAM_7Q_Latitude = {
-    category: 'Sensors',
     helpUrl: '',
     init: function () {
         this.setColour(300);
@@ -61,7 +59,6 @@ Blockly.Blocks.PAM_7Q_Latitude = {
 };
 
 Blockly.Blocks.PAM_7Q_Longitude = {
-    category: 'Sensors',
     helpUrl: '',
     init: function () {
         this.setColour(300);
@@ -74,7 +71,6 @@ Blockly.Blocks.PAM_7Q_Longitude = {
 };
 
 Blockly.Blocks.PAM_7Q_Heading = {
-    category: 'Sensors',
     helpUrl: '',
     init: function () {
         this.setColour(300);
@@ -87,7 +83,6 @@ Blockly.Blocks.PAM_7Q_Heading = {
 };
 
 Blockly.Blocks.PAM_7Q_Altitude = {
-    category: 'Sensors',
     helpUrl: '',
     init: function () {
         this.setColour(300);
@@ -100,7 +95,6 @@ Blockly.Blocks.PAM_7Q_Altitude = {
 };
 
 Blockly.Blocks.PAM_7Q_SatsTracked = {
-    category: 'Sensors',
     helpUrl: '',
     init: function () {
         this.setColour(300);
@@ -113,7 +107,6 @@ Blockly.Blocks.PAM_7Q_SatsTracked = {
 };
 
 Blockly.Blocks.PAM_7Q_Velocity = {
-    category: 'Sensors',
     helpUrl: '',
     init: function () {
         this.setColour(300);

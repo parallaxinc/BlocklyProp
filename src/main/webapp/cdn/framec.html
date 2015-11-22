@@ -23,14 +23,12 @@
         <script type="text/javascript" src="blockly/generators/propc/control.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/cog.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/variables.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/pointers.js"></script>
+        <!--<script type="text/javascript" src="blockly/generators/propc/pointers.js"></script>-->
         <script type="text/javascript" src="blockly/generators/propc/procedures.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/logic.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/PIRSensor.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/pressure.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/TiltandAcceleration.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/GPS.js"></script>
-        <script type="text/javascript" src="blockly/generators/propc/distance.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/joystick.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/abdrive.js"></script>
         <script type="text/javascript" src="blockly/generators/propc/debug_LCD.js"></script>
@@ -100,42 +98,124 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="Core">
+        <category name="Programming">
             <category name="Control">
-                <block type="text"></block>
-                <block type="base_delay"></block>
-                <block type="controls_repeat_forever"></block>
-                <block type="controls_repeat"></block>
                 <block type="controls_if"></block>
-                <block type="inout_digital_write"></block>
+                <block type="controls_repeat"></block>
+                <block type="controls_repeat_forever"></block><!-- to be merged with the repeat block -->
+                <block type="base_delay">
+                    <value name="DELAY_TIME">
+                        <block type="math_number">
+                            <field name="NUM">1000</field>
+                        </block>
+                    </value>
+                </block>
+                <!--<block type="text"></block>-->
             </category>
-            <category name="Logic">
+            <category name="Conditions">
                 <block type="logic_compare"></block>
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>
                 <block type="logic_boolean"></block>
-            </category> -->
+            </category>
             <category name="Math">
                 <block type="math_number"></block>
                 <block type="math_arithmetic"></block>
                 <block type="math_single"></block>
                 <block type="math_limit"></block>
                 <block type="math_crement"></block>
+                <!-- Repeat from Conditions -->
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+            </category>
+            <category name="Multicore">
+
             </category>
         </category>
-        <category name="Sensors">
-            <category name="Joystick">
-                <block type="joystick_input_yaxis"></block>
+        <category name="Input/Output">
+            <category name="Pin States">
+                <block type="inout_digital_write"></block>
+            </category>
+            <category name="Timing">
+
+            </category>
+        </category>
+        <category name="Communicate">
+            <category name="Serial terminal">
+                <block type="console_print"></block>
+                <block type="console_print_variables"></block>
+            </category>
+            <category name="Protocols">
+                <block type="serial_open"></block>
+                <block type="serial_tx_byte"></block>
+                <block type="serial_send_text"></block>
+                <block type="serial_rx_byte"></block>
+            </category>
+        </category>
+        <category name="Activity Board">
+            <category name="Voltage">
+                <block type="ab_volt_v_in"></block>
+                <block type="ab_volt_v_out"></block>
+                <block type="ab_volt_in"></block>
+                <block type="ab_volt_out"></block>
+            </category>
+            <category name="Memory">
+
+            </category>
+            <category name="Audio">
+
+            </category>
+        </category>
+        <category name="Sensor/Input">
+            <category name="HMC5883">
+
+            </category>
+            <category name="2-axis Joystick">
                 <block type="joystick_input_xaxis"></block>
+                <block type="joystick_input_yaxis"></block>
+            </category>
+            <category name="Memsic 2-axis">
+
+            </category>
+            <category name="MMA7455">
+
+            </category>
+            <category name="GPS PAM7Q">
+                <block type="PAM_7Q_Init"></block>
+                <block type="PAM_7Q_Latitude"></block>
+                <block type="PAM_7Q_Longitude"></block>
+                <block type="PAM_7Q_Velocity"></block>
+                <block type="PAM_7Q_Heading"></block>
+                <block type="PAM_7Q_Altitude"></block>
+                <block type="PAM_7Q_SatsTracked"></block>
+            </category>
+            <category name="Distance: PING)))">
+                <block type="sensor_ping"></block>
+            </category>
+            <category name="PIR Motion">
+                <block type="PIR_Sensor"></block>
+            </category>
+            <category name="RFID">
+
+            </category>
+            <category name="SF02 Laser">
+                <block type="SF02_Laser_Rangefinder"></block>
+            </category>
+            <category name="Sony Remote">
+
+            </category>
+            <category name="Sound Impact Sensor">
+
             </category>
         </category>
-        <category name="Actuators">
-            <category name="Servo">
+        <category name="Actuator/Output">
+            <category name="Standard Servo">
                 <block type="servo_move"></block>
             </category>
-        </category>
-        <category name="Displays">
-            <category name="Debug LCD">
+            <category name="CR Servo">
+
+            </category>
+            <category name="Serial LCD">
                 <block type="debug_lcd_init"></block>
                 <block type="debug_lcd_clear"></block>
                 <block type="debug_lcd_print"></block>
@@ -143,21 +223,18 @@
                 <block type="debug_lcd_action"></block>
             </category>
         </category>
-        <category name="Activity Board">
-            <category name="Drive">
-                <block type="ab_drive_goto"></block>
+        <category name="Robot">
+            <category name="ActivityBot">
                 <block type="ab_drive_speed"></block>
+                <block type="ab_drive_goto"></block>
             </category>
-            <category name="ADC/DAC">
-                <block type="ab_volt_in"></block>
-                <block type="ab_volt_v_in"></block>
-                <block type="ab_volt_out"></block>
-                <block type="ab_volt_v_out"></block>
+            <category name="Servo Differential Drive">
+
             </category>
         </category>
         <sep></sep>
-        <category name="Variables" custom="VARIABLE"></category>
         <category name="Functions" custom="PROCEDURE"></category>
+        <category name="Variables" custom="VARIABLE"></category>
     </xml>
 </body>
 </html>

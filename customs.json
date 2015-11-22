@@ -1,5 +1,10 @@
 {
     "elements": {
+        "field": {
+            "attributes": {
+                "name": {}
+            }
+        },
         "xml": {
             "attributes": {
                 "style": {},
@@ -8,12 +13,18 @@
         },
         "block": {
             "attributes": {
+                "id": {},
                 "type": {}
             }
         },
         "category": {
             "attributes": {
                 "custom": {},
+                "name": {}
+            }
+        },
+        "value": {
+            "attributes": {
                 "name": {}
             }
         },

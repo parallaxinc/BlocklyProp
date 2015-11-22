@@ -31,9 +31,8 @@ if (!Blockly.Blocks)
 
 //servo block
 Blockly.Blocks.servo_move = {
-    category: 'Servo',
     helpUrl: '',
-    init: function() {
+    init: function () {
         this.setColour(180);
         this.appendDummyInput("")
                 .appendField("Servo")
@@ -51,7 +50,7 @@ Blockly.Blocks.servo_move = {
 // define generators
 //Blockly.propc = new Blockly.Generator('propc');
 
-Blockly.propc.servo_move = function() {
+Blockly.propc.servo_move = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var degrees = Blockly.propc.valueToCode(this, 'DEGREES', Blockly.propc.ORDER_NONE);
 

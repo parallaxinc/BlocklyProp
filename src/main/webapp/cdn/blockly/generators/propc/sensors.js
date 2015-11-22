@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Generating Spin for sensor blocks
+ * @fileoverview Generating C for sensor blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 'use strict';
@@ -30,9 +30,8 @@ if (!Blockly.Blocks)
 
 //servo block
 Blockly.Blocks.sensor_ping = {
-    category: 'Sensors',
     helpUrl: '',
-    init: function() {
+    init: function () {
         this.setColour(314);
         this.appendDummyInput("")
                 .appendField("Ping)))")
@@ -43,10 +42,8 @@ Blockly.Blocks.sensor_ping = {
     }
 };
 
-// define generators
-//Blockly.propc = new Blockly.Generator('propc');
 
-Blockly.propc.sensor_ping = function() {
+Blockly.propc.sensor_ping = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var unit = this.getFieldValue('UNIT');
     var methodForUnit = Blockly.propc.sensor_ping.UNITS[unit];
@@ -61,4 +58,48 @@ Blockly.propc.sensor_ping.UNITS = {
     INCHES: '_inches',
     CM: '_cm',
     TICKS: ''
+};
+
+//PIR sensor blocks
+Blockly.Blocks.PIR_Sensor = {
+    helpUrl: '',
+    init: function () {
+        this.setColour(300);
+        this.appendDummyInput("")
+                .appendField("PIR Sensor")
+                .appendField("Pin")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.setOutput(true, Number);
+    }
+};
+
+Blockly.propc.PIR_Sensor = function () {
+    var pin = this.getFieldValue('PIN');
+
+    var code = 'input( ' + pin + ' )';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+// SF02 Laser Rangefinder
+Blockly.Blocks.SF02_Laser_Rangefinder = {
+    helpUrl: '',
+    init: function () {
+        this.setColour(300);
+        this.appendDummyInput("")
+                .appendField("SF02 Laser Rangefinder Pin")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.setOutput(true, Number);
+    }
+};
+
+Blockly.propc.SF02_Laser_Rangefinder = function () {
+    var pin = this.getFieldValue('PIN');
+
+    Blockly.propc.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
+    Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+
+    var code = 'ad_volts( ' + pin + ' )';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
