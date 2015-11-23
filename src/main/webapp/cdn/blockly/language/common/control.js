@@ -27,7 +27,7 @@ Blockly.Blocks.controls_if = {
     // If/elseif/else condition.
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_IF_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendValueInput('IF0')
                 .setCheck(Boolean)
@@ -40,7 +40,7 @@ Blockly.Blocks.controls_if = {
             'controls_if_else']));
         // Assign 'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
-        this.setTooltip(function() {
+        this.setTooltip(function () {
             if (!thisBlock.elseifCount_ && !thisBlock.elseCount_) {
                 return Blockly.LANG_CONTROLS_IF_TOOLTIP_1;
             } else if (!thisBlock.elseifCount_ && thisBlock.elseCount_) {
@@ -55,7 +55,7 @@ Blockly.Blocks.controls_if = {
         this.elseifCount_ = 0;
         this.elseCount_ = 0;
     },
-    mutationToDom: function() {
+    mutationToDom: function () {
         if (!this.elseifCount_ && !this.elseCount_) {
             return null;
         }
@@ -68,7 +68,7 @@ Blockly.Blocks.controls_if = {
         }
         return container;
     },
-    domToMutation: function(xmlElement) {
+    domToMutation: function (xmlElement) {
         this.elseifCount_ = window.parseInt(xmlElement.getAttribute('elseif'), 10);
         this.elseCount_ = window.parseInt(xmlElement.getAttribute('else'), 10);
         for (var x = 1; x <= this.elseifCount_; x++) {
@@ -83,7 +83,7 @@ Blockly.Blocks.controls_if = {
                     .appendField(Blockly.LANG_CONTROLS_IF_MSG_ELSE);
         }
     },
-    decompose: function(workspace) {
+    decompose: function (workspace) {
         var containerBlock = Blockly.Block.obtain(workspace, 'controls_if_if');
         containerBlock.initSvg();
         var connection = containerBlock.getInput('STACK').connection;
@@ -100,7 +100,7 @@ Blockly.Blocks.controls_if = {
         }
         return containerBlock;
     },
-    compose: function(containerBlock) {
+    compose: function (containerBlock) {
         // Disconnect the else input blocks and remove the inputs.
         if (this.elseCount_) {
             this.removeInput('ELSE');
@@ -147,7 +147,7 @@ Blockly.Blocks.controls_if = {
                     clauseBlock.nextConnection.targetBlock();
         }
     },
-    saveConnections: function(containerBlock) {
+    saveConnections: function (containerBlock) {
         // Store a pointer to any connected child blocks.
         var clauseBlock = containerBlock.getInputTargetBlock('STACK');
         var x = 1;
@@ -178,7 +178,7 @@ Blockly.Blocks.controls_if = {
 
 Blockly.Blocks.controls_if_if = {
     // If condition.
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_IF_TITLE_IF);
@@ -190,7 +190,7 @@ Blockly.Blocks.controls_if_if = {
 
 Blockly.Blocks.controls_if_elseif = {
     // Else-If condition.
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_ELSEIF_TITLE_ELSEIF);
@@ -203,7 +203,7 @@ Blockly.Blocks.controls_if_elseif = {
 
 Blockly.Blocks.controls_if_else = {
     // Else condition.
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_ELSE_TITLE_ELSE);
@@ -213,30 +213,13 @@ Blockly.Blocks.controls_if_else = {
     }
 };
 
-Blockly.Blocks.controls_repeat = {
-    // Repeat n times.
-    category: Blockly.LANG_CATEGORY_CONTROLS,
-    helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
-    init: function() {
-        this.setColour(120);
-        this.appendDummyInput()
-                .appendField(Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT)
-                .appendField(new Blockly.FieldTextInput('10',
-                        Blockly.FieldTextInput.numberValidator), 'TIMES')
-                .appendField(Blockly.LANG_CONTROLS_REPEAT_TITLE_TIMES);
-        this.appendStatementInput('DO')
-                .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
-    }
-};
+
 
 Blockly.Blocks.controls_whileUntil = {
     // Do while/until loop.
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_WHILEUNTIL_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendValueInput('BOOL')
                 .setCheck(Boolean)
@@ -248,7 +231,7 @@ Blockly.Blocks.controls_whileUntil = {
         this.setNextStatement(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
-        this.setTooltip(function() {
+        this.setTooltip(function () {
             var op = thisBlock.getFieldValue('MODE');
             return Blockly.Language.controls_whileUntil.TOOLTIPS[op];
         });
@@ -268,7 +251,7 @@ Blockly.Blocks.controls_for = {
     // For loop.
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_FOR_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_FOR_INPUT_WITH)
@@ -288,15 +271,15 @@ Blockly.Blocks.controls_for = {
         this.setInputsInline(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
-        this.setTooltip(function() {
+        this.setTooltip(function () {
             return Blockly.LANG_CONTROLS_FOR_TOOLTIP.replace('%1',
                     thisBlock.getFieldValue('VAR'));
         });
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -307,7 +290,7 @@ Blockly.Blocks.controls_forEach = {
     // For each loop.
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_FOREACH_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(120);
         this.appendValueInput('LIST')
                 .setCheck(Array)
@@ -320,15 +303,15 @@ Blockly.Blocks.controls_forEach = {
         this.setNextStatement(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
-        this.setTooltip(function() {
+        this.setTooltip(function () {
             return Blockly.LANG_CONTROLS_FOREACH_TOOLTIP.replace('%1',
                     thisBlock.getFieldValue('VAR'));
         });
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -339,7 +322,7 @@ Blockly.Blocks.controls_flow_statements = {
     // Flow statements: continue, break.
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_FLOW_STATEMENTS_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(120);
         var dropdown = new Blockly.FieldDropdown(this.OPERATORS);
         this.appendDummyInput()
@@ -348,12 +331,12 @@ Blockly.Blocks.controls_flow_statements = {
         this.setPreviousStatement(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
-        this.setTooltip(function() {
+        this.setTooltip(function () {
             var op = thisBlock.getFieldValue('FLOW');
             return Blockly.Language.controls_flow_statements.TOOLTIPS[op];
         });
     },
-    onchange: function() {
+    onchange: function () {
         if (!this.workspace) {
             // Block has been deleted.
             return;

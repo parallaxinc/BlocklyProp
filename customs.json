@@ -1,5 +1,10 @@
 {
     "elements": {
+        "mutation": {
+            "attributes": {
+                "TYPE": {}
+            }
+        },
         "field": {
             "attributes": {
                 "name": {}

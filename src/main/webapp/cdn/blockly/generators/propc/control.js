@@ -26,25 +26,64 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-Blockly.Blocks.controls_repeat_forever = {
-    // Repeat forever.
-    category: Blockly.LANG_CATEGORY_CONTROLS,
+Blockly.Blocks.controls_repeat = {
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(120);
-        this.appendDummyInput()
-                .appendField(Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT);
+        var fieldDropdown = new Blockly.FieldDropdown([["forever", "FOREVER"], ["x times", "TIMES"], ["with", "WITH"], ["until", "UNTIL"], ["while", "WHILE"]], function (type) {
+            this.sourceBlock_.updateShape_(type);
+        });
+        var fieldTimes = new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator);
+        fieldTimes.setVisible(false);
+        this.appendDummyInput("REPEAT")
+                .appendField("repeat")
+                .appendField(fieldTimes, 'TIMES')
+                .appendField(fieldDropdown, "TYPE");
         this.appendStatementInput('DO')
                 .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var type = this.getFieldValue('TYPE');
+        container.setAttribute('TYPE', type);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var type = xmlElement.getAttribute('TYPE');
+        this.updateShape_(type);
+    },
+    updateShape_: function (type) {
+        // Add or remove a Value Input.
+        var inputRepeat = this.getInput('REPEAT');
+        var fieldTimes = this.getField_('TIMES');
+        if (type === 'TIMES') {
+            if (fieldTimes) {
+                fieldTimes.setVisible(true);
+            }
+        } else if (fieldTimes) {
+            fieldTimes.setVisible(false);
+            //this.removeInput('TIMES');
+        }
     }
 };
 
-//Blockly.propc = new Blockly.Generator('propc');
+Blockly.propc.controls_repeat = function () {
+    // Repeat n times.
+    var repeats = Number(this.getFieldValue('TIMES'));
+    var branch = Blockly.propc.statementToCode(this, 'DO');
+    if (Blockly.propc.INFINITE_LOOP_TRAP) {
+        branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
+                '\'' + this.id + '\'') + branch;
+    }
+    var code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
+            branch + '}\n';
+    return code;
+};
 
-Blockly.propc.controls_if = function() {
+Blockly.propc.controls_if = function () {
     // If/elseif/else condition.
     var n = 0;
     var argument = Blockly.propc.valueToCode(this, 'IF' + n,
@@ -62,30 +101,5 @@ Blockly.propc.controls_if = function() {
         code += 'else {\n' + branch + '}\n';
     }
     return code + '\n';
-};
-
-Blockly.propc.controls_repeat = function() {
-    // Repeat n times.
-    var repeats = Number(this.getFieldValue('TIMES'));
-    var branch = Blockly.propc.statementToCode(this, 'DO');
-    if (Blockly.propc.INFINITE_LOOP_TRAP) {
-        branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
-                '\'' + this.id + '\'') + branch;
-    }
-    var code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
-            branch + '}\n';
-    return code;
-};
-
-Blockly.propc.controls_repeat_forever = function() {
-    // Repeat forever
-    var branch = Blockly.propc.statementToCode(this, 'DO');
-    if (Blockly.propc.INFINITE_LOOP_TRAP) {
-        branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
-                '\'' + this.id + '\'') + branch;
-    }
-    var code = 'while(1) {\n' +
-            branch + '}\n';
-    return code;
 };
 

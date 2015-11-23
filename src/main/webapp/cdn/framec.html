@@ -100,8 +100,9 @@
         <category name="Programming">
             <category name="Control">
                 <block type="controls_if"></block>
-                <block type="controls_repeat"></block>
-                <block type="controls_repeat_forever"></block><!-- to be merged with the repeat block -->
+                <block type="controls_repeat">
+                    <mutation TYPE="FOREVER"></mutation>
+                </block>
                 <block type="base_delay">
                     <value name="DELAY_TIME">
                         <block type="math_number">

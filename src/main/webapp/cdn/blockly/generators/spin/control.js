@@ -27,6 +27,23 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
+Blockly.Blocks.controls_repeat = {
+    helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
+    init: function () {
+        this.setColour(120);
+        this.appendDummyInput()
+                .appendField(Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT)
+                .appendField(new Blockly.FieldTextInput('10',
+                        Blockly.FieldTextInput.numberValidator), 'TIMES')
+                .appendField(Blockly.LANG_CONTROLS_REPEAT_TITLE_TIMES);
+        this.appendStatementInput('DO')
+                .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
+    }
+};
+
 Blockly.Blocks.controls_repeat_forever = {
     // Repeat forever.
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
