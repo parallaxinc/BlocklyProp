@@ -44,6 +44,7 @@ Blockly.Blocks.controls_repeat = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
+        this.setInputsInline(true);
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -57,15 +58,25 @@ Blockly.Blocks.controls_repeat = {
     },
     updateShape_: function (type) {
         // Add or remove a Value Input.
-        var inputRepeat = this.getInput('REPEAT');
         var fieldTimes = this.getField_('TIMES');
         if (type === 'TIMES') {
             if (fieldTimes) {
                 fieldTimes.setVisible(true);
             }
-        } else if (fieldTimes) {
+        } else {
             fieldTimes.setVisible(false);
-            //this.removeInput('TIMES');
+        }
+        var inputCondition = this.getInput('REPEAT_CONDITION');
+        if (type === 'WHILE' || type === 'UNTIL') {
+            if (!inputCondition) {
+                this.appendValueInput('REPEAT_CONDITION')
+                        .setCheck('Number');
+                this.moveInputBefore('REPEAT_CONDITION', 'DO');
+            }
+        } else {
+            if (inputCondition) {
+                this.removeInput('REPEAT_CONDITION');
+            }
         }
     }
 };
