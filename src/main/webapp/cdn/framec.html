@@ -1,0 +1,252 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Blockly Demo: Code</title>
+        <script type="text/javascript" src="blockly/apps/blockly_compressed.js"></script>
+
+        <script type="text/javascript" src="blockly/language/en/_messages.js"></script>
+
+        <script type="text/javascript" src="blockly/generators/propc.js"></script>
+
+        <script type="text/javascript" src="blockly/language/common/control.js"></script>
+        <script type="text/javascript" src="blockly/language/common/logic.js"></script>
+        <script type="text/javascript" src="blockly/language/common/math.js"></script>
+        <script type="text/javascript" src="blockly/language/common/text.js"></script>
+        <script type="text/javascript" src="blockly/language/common/lists.js"></script>
+        <!--script type="text/javascript" src="../../language/common/variables.js"></script-->
+        <script type="text/javascript" src="blockly/language/common/procedures.js"></script>
+        <!-- define blocks -->
+        <script type="text/javascript" src="blockly/generators/propc/bit_math.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/math.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/base.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/console.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/control.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/cog.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/variables.js"></script>
+        <!--<script type="text/javascript" src="blockly/generators/propc/pointers.js"></script>-->
+        <script type="text/javascript" src="blockly/generators/propc/procedures.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/logic.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/pressure.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/TiltandAcceleration.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/GPS.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/joystick.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/abdrive.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/debug_LCD.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/serial.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/sensors.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/abvolts.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/servo.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/joystick.js"></script>
+        <script type="text/javascript" src="blockly/generators/propc/hackable_electronic_badge.js"></script>
+
+        <script type="text/javascript" src="blockly/generators/propc/file.js"></script>
+        <!--<script type="text/javascript" src="generators/arduino/grove.js"></script>-->
+        <!-- custom block -->
+        <!--<script type="text/javascript" src="generators/arduino/custom.js"></script>-->
+
+        <style>
+            html, body {
+                background-color: #fff;
+                margin: 0;
+                padding:0;
+                overflow: hidden;
+            }
+            .blocklySvg {
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+        <script>
+            function init() {
+
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: 'blockly/media/'}); // path: '/' ,
+
+                if (window.parent.init) {
+                    // Let the top-level application know that Blockly is ready.
+                    window.parent.init(Blockly);
+                } else {
+                    // Attempt to diagnose the problem.
+                    var msg = 'Error: Unable to communicate between frames.\n\n';
+                    if (window.parent == window) {
+                        msg += 'Try loading index.html instead of frame.html';
+                    } else if (window.location.protocol == 'file:') {
+                        msg += 'This may be due to a security restriction preventing\n' +
+                                'access when using the file:// protocol.\n' +
+                                'http://code.google.com/p/chromium/issues/detail?id=47416';
+                    }
+                    alert(msg);
+                }
+            }
+
+            function load(xmlText) {
+                var xmlDom = Blockly.Xml.textToDom(xmlText)
+                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+            }
+
+            function ready() {
+                if (window.parent.blocklyReady) {
+                    // Let the top-level application know that the frame is ready.
+                    window.parent.blocklyReady();
+                }
+            }
+
+            function getXml() {
+                var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+                return Blockly.Xml.domToText(xml);
+            }
+        </script>
+    </head>
+    <body  onload="ready()" >
+    <xml id="toolbox" style="display: none">
+        <category name="Programming">
+            <category name="Control">
+                <block type="controls_if"></block>
+                <block type="controls_repeat">
+                    <mutation TYPE="FOREVER"></mutation>
+                </block>
+                <block type="base_delay">
+                    <value name="DELAY_TIME">
+                        <block type="math_number">
+                            <field name="NUM">1000</field>
+                        </block>
+                    </value>
+                </block>
+                <!--<block type="text"></block>-->
+            </category>
+            <category name="Conditions">
+                <block type="logic_compare"></block>
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+                <block type="logic_boolean"></block>
+            </category>
+            <category name="Math">
+                <block type="math_number"></block>
+                <block type="math_arithmetic"></block>
+                <block type="math_single"></block>
+                <block type="math_limit"></block>
+                <block type="math_crement"></block>
+                <block type="math_crement"></block>
+                <block type="bit_math_shift"></block>
+                <!--<block type="bit_math_rotate"></block>-->
+                <!-- Repeat from Conditions -->
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+            </category>
+            <category name="Multicore">
+                <block type="cog_new"></block>
+            </category>
+        </category>
+        <category name="Input/Output">
+            <category name="Pin States">
+                <block type="inout_digital_write"></block>
+            </category>
+            <category name="Timing">
+
+            </category>
+        </category>
+        <category name="Communicate">
+            <category name="Serial terminal">
+                <block type="console_print"></block>
+                <block type="console_print_variables"></block>
+            </category>
+            <category name="Protocols">
+                <block type="serial_open"></block>
+                <block type="serial_tx_byte"></block>
+                <block type="serial_send_text"></block>
+                <block type="serial_rx_byte"></block>
+            </category>
+        </category>
+        <category name="Activity Board">
+            <category name="Voltage">
+                <block type="ab_volt_v_in"></block>
+                <block type="ab_volt_v_out"></block>
+                <block type="ab_volt_in"></block>
+                <block type="ab_volt_out"></block>
+            </category>
+            <category name="Memory">
+
+            </category>
+            <category name="Audio">
+
+            </category>
+        </category>
+        <category name="Sensor/Input">
+            <category name="ETape liquid level">
+                <block type="etape_rc_time"></block>
+            </category>
+            <category name="HMC5883">
+
+            </category>
+            <category name="2-axis Joystick">
+                <block type="joystick_input_xaxis"></block>
+                <block type="joystick_input_yaxis"></block>
+            </category>
+            <category name="Memsic 2-axis">
+
+            </category>
+            <category name="MMA7455">
+
+            </category>
+            <category name="GPS PAM7Q">
+                <block type="PAM_7Q_Init"></block>
+                <block type="PAM_7Q_Latitude"></block>
+                <block type="PAM_7Q_Longitude"></block>
+                <block type="PAM_7Q_Velocity"></block>
+                <block type="PAM_7Q_Heading"></block>
+                <block type="PAM_7Q_Altitude"></block>
+                <block type="PAM_7Q_SatsTracked"></block>
+            </category>
+            <category name="Distance: PING)))">
+                <block type="sensor_ping"></block>
+            </category>
+            <category name="PIR Motion">
+                <block type="PIR_Sensor"></block>
+            </category>
+            <category name="RFID">
+
+            </category>
+            <category name="SF02 Laser">
+                <block type="SF02_Laser_Rangefinder"></block>
+            </category>
+            <category name="Sony Remote">
+
+            </category>
+            <category name="Sound Impact Sensor">
+
+            </category>
+        </category>
+        <category name="Actuator/Output">
+            <category name="Standard Servo">
+                <block type="servfo_move"></block>
+            </category>
+            <category name="CR Servo">
+
+            </category>
+            <category name="Serial LCD">
+                <block type="debug_lcd_init"></block>
+                <block type="debug_lcd_clear"></block>
+                <block type="debug_lcd_print"></block>
+                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_action"></block>
+            </category>
+        </category>
+        <category name="Robot">
+            <category name="ActivityBot">
+                <block type="ab_drive_speed"></block>
+                <block type="ab_drive_goto"></block>
+            </category>
+            <category name="Servo Differential Drive">
+
+            </category>
+        </category>
+        <category name="Hackable Electronic Badge">
+          <category name="LED Control">
+            <block type="toggle_led"></block>
+          </category>
+        </category>
+        <sep></sep>
+        <category name="Functions" custom="PROCEDURE"></category>
+        <category name="Variables" custom="VARIABLE"></category>
+    </xml>
+</body>
+</html>
