@@ -30,7 +30,7 @@ if (!Blockly.Blocks)
 // @TODO : Change "toggle_led" to something more appropriate maybe?
 Blockly.Blocks.toggle_led = {
   category : 'Hackable Electronic Badge',
-  helpUrl: '',
+  helpUrl : '',
   init : function() {
     // @TODO : Set proper color scheme
     this.setColour( 250 );
@@ -55,4 +55,33 @@ Blockly.propc.toggle_led = function() {
 
   var code = 'led( ' + led_number + ', ' + led_state + ' );';
   return code;
-}
+};
+
+Blockly.Blocks.set_led_rgb = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( 'Set LED' + "'" + 's RGB' )
+      .appendField( 'LED side' )
+      .appendField( new Blockly.FieldDropdown([["L", "L"], ["R", "R"]]), "SIDE" )
+      .appendField( 'RGB value' )
+      .appendField( new Blockly.FieldDropdown([["BLUE", "BLUE"], ["GREEN", "GREEN"], ["CYAN", "CYAN"], ["RED", "RED"], ["MAGENTA", "MAGENTA"], ["YELLOW", "YELLOW"], ["WHITE", "WHITE"]]), "RGB" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.set_led_rgb = function() {
+  var led_side = this.getFieldValue( "SIDE" );
+  var led_rgb = this.getFieldValue( "RGB" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'rgb( ' + led_side + ', ' + led_rgb + ' );';
+  return code;
+};
