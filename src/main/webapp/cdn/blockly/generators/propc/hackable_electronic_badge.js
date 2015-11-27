@@ -208,3 +208,28 @@ Blockly.propc.rotate = function() {
   var code = 'rotate180();';
   return code;
 };
+
+Blockly.Blocks.send_signal = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( 'Send a message' )
+      .appendField( new Blockly.FieldTextInput( '' ), "MESSAGE" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.send_signal = function() {
+  var message = this.getFieldValue( "MESSAGE" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'send( ' + message + ' );';
+  return code;
+};
