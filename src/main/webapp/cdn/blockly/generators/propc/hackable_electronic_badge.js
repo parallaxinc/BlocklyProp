@@ -134,4 +134,33 @@ Blockly.propc.text_size = function() {
 
   var code = 'text_size( ' + text_size + ' );';
   return code;
-}
+};
+
+Blockly.Blocks.cursor_position = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( 'Set cursor position' )
+      .appendField( 'Columns' )
+      .appendField( new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COLS" )
+      .appendField( 'Rows' )
+      .appendField( new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "ROWS" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.cursor_position = function() {
+  var columns = this.getFieldValue( "COLS" );
+  var rows = this.getFieldValue( "ROWS" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'cursor( ' + columns + ', ' + rows + ' );';
+  return code;
+};
