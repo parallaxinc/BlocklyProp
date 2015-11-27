@@ -110,3 +110,28 @@ Blockly.propc.print_string = function() {
   var code = 'oledprint( "' + string_to_print + '" );';
   return code;
 };
+
+Blockly.Blocks.text_size = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( 'Set text size' )
+      .appendField( new Blockly.FieldDropdown([["SMALL", "SMALL"], ["LARGE", "LARGE"]]), "TEXT_SIZE" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.text_size = function() {
+  var text_size = this.getFieldValue( "TEXT_SIZE" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'text_size( ' + text_size + ' );';
+  return code;
+}
