@@ -260,3 +260,26 @@ Blockly.propc.read_signal = function() {
   var code = 'receive( ' + buffer + ' )';
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
+
+Blockly.Blocks.clear_ir_buffer = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      // @TODO : Should the title be something else? This might be confusing for beginners...
+      .appendField( "Clear IR buffer" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.clear_ir_buffer = function() {
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'irclear();';
+  return code;
+};
