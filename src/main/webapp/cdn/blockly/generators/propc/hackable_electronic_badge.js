@@ -233,3 +233,30 @@ Blockly.propc.send_signal = function() {
   var code = 'send( ' + message + ' );';
   return code;
 };
+
+Blockly.Blocks.read_signal = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( 'Retrieve a message' );
+    this.appendValueInput( "BUFFER" )
+      .appendField( 'Variable' );
+    this.setOutput( true, Number );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+  }
+};
+
+Blockly.propc.read_signal = function() {
+  var buffer = Blockly.propc.valueToCode( this, "BUFFER", Blockly.propc.ORDER_NONE );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'receive( ' + buffer + ' )';
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
+};
