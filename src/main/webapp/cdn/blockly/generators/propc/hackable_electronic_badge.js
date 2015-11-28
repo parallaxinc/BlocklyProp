@@ -305,6 +305,63 @@ Blockly.propc.badge_eeprom_store = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'store( "' + contact + '" );';
+  var code = 'store( new char[]{"' + contact + '"} );';
+  return code;
+};
+
+Blockly.Blocks.badge_eeprom_is_stored = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( "Already stored?" )
+      .appendField( "Info:" )
+      .appendField( new Blockly.FieldTextInput( '' ), "CONTACT" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Number );
+  }
+};
+
+Blockly.propc.badge_eeprom_is_stored = function() {
+  var contact = this.getFieldValue( "CONTACT" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'stored( new char[]{"' + contact + '"} )';
+  return [ code, Blockly.propc.ORDER_ATOMIC ];
+};
+
+Blockly.Blocks.badge_eeprom_retrieve = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( "Retrieve an EEPROM value" )
+      .appendField( "EEPROM Index" )
+      // @TODO : Get proper EEPROM index values ( THESE ARE  FOR TESTING PURPOSES ONLY )
+      .appendField( new Blockly.FieldDropdown( [["1", "0"], ["2", "1"], ["3", "2"]] ), "INDEX" );
+    this.appendValueInput( "BUFFER" )
+      .appendField( 'Variable' );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.badge_eeprom_retrieve = function() {
+  var buffer = Blockly.propc.valueToCode( this, "BUFFER", Blockly.propc.ORDER_NONE );
+  var index = this.getFieldValue( "INDEX" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'retrieve( ' + buffer + ', ' + index + ' );';
   return code;
 };
