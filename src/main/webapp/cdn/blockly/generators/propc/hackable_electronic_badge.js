@@ -283,3 +283,28 @@ Blockly.propc.clear_ir_buffer = function() {
   var code = 'irclear();';
   return code;
 };
+
+Blockly.Blocks.badge_eeprom_store = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( "Store a contact" )
+      .appendField( new Blockly.FieldTextInput( '' ), "CONTACT" );
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.badge_eeprom_store = function() {
+  var contact = this.getFieldValue( "CONTACT" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'store( "' + contact + '" );';
+  return code;
+};
