@@ -99,7 +99,7 @@ Blockly.propc.controls_repeat = function () {
             code = 'while(1) {\n' + branch + '}\n';
             break;
         case "TIMES":
-            var repeats = Number(this.getFieldValue('TIMES'));
+            var repeats = Blockly.propc.valueToCode(this, 'TIMES', order) || '0';
             code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
                     branch + '}\n';
             break;

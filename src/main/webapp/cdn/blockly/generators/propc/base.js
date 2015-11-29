@@ -27,6 +27,68 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
+Blockly.Blocks.make_pin = {
+    init: function () {
+        this.setHelpUrl('help/block-digitalpin.html#write');
+        this.setColour(230);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.appendDummyInput("")
+                .appendField("Make PIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toogle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
+    }
+};
+
+Blockly.Blocks.make_pin_input = {
+    init: function () {
+        this.setHelpUrl('help/block-digitalpin.html#write');
+        this.setColour(230);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.appendDummyInput("")
+                .appendField("Make PIN#");
+        this.appendValueInput('PIN')
+                .setCheck('Number');
+        this.appendDummyInput("")
+                .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toogle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
+    }
+};
+
+Blockly.propc.make_pin = function () {
+    var dropdown_pin = this.getFieldValue('PIN');
+    var dropdown_action = this.getFieldValue('ACTION');
+    switch (dropdown_action) {
+        case "HIGH":
+            return 'high(' + dropdown_pin + ');\n';
+        case "LOW":
+            return 'low(' + dropdown_pin + ');\n';
+        case "TOGGLE":
+            return 'toggle(' + dropdown_pin + ');\n';
+        case "INPUT":
+            return 'set_direction(' + dropdown_pin + ', 0);\n';
+        case "REVERSE":
+            return 'reverse(' + dropdown_pin + ');\n';
+    }
+};
+
+Blockly.propc.make_pin_input = function () {
+    var pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || 0; //Number(this.getFieldValue('PIN'));
+    var dropdown_action = this.getFieldValue('ACTION');
+    switch (dropdown_action) {
+        case "HIGH":
+            return 'high(' + pin + ');\n';
+        case "LOW":
+            return 'low(' + pin + ');\n';
+        case "TOGGLE":
+            return 'toggle(' + pin + ');\n';
+        case "INPUT":
+            return 'set_direction(' + pin + ', 0);\n';
+        case "REVERSE":
+            return 'reverse(' + pin + ');\n';
+    }
+};
+
 Blockly.Blocks.inout_digital_write = {
     init: function () {
         this.setHelpUrl('help/block-digitalpin.html#write');
