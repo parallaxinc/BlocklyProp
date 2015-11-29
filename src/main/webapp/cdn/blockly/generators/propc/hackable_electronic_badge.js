@@ -460,3 +460,26 @@ Blockly.propc.badge_axis_acceleration = function() {
   var code = 'accel( ' + axis + ' )';
   return [ code, Blockly.propc.ORDER_NONE ];
 };
+
+Blockly.Blocks.badge_was_shaken = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( "Was shaken?" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Number );
+  }
+};
+
+Blockly.propc.badge_was_shaken = function() {
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'accel_shaken()';
+  return [ code, Blockly.propc.ORDER_NONE ];
+};
