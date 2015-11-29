@@ -103,12 +103,12 @@ Blockly.propc.controls_repeat = function () {
             code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
                     branch + '}\n';
             break;
-        case "UNTIL":
+        case "WHILE":
             var repeatCondition = Blockly.propc.valueToCode(this, 'REPEAT_CONDITION', order) || '0';
             code = 'while (' + repeatCondition + ') {\n' +
                     branch + '}\n';
             break;
-        case "WHILE":
+        case "UNTIL":
             var repeatCondition = Blockly.propc.valueToCode(this, 'REPEAT_CONDITION', order) || '0';
             code = 'while (!(' + repeatCondition + ')) {\n' +
                     branch + '}\n';
