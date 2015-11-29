@@ -53,7 +53,7 @@ Blockly.propc.toggle_led = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'led( ' + led_number + ', ' + led_state + ' );';
+  var code = 'led( ' + led_number + ', ' + led_state + ' );\n';
   return code;
 };
 
@@ -82,7 +82,7 @@ Blockly.propc.set_led_rgb = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'rgb( ' + led_side + ', ' + led_rgb + ' );';
+  var code = 'rgb( ' + led_side + ', ' + led_rgb + ' );\n';
   return code;
 };
 
@@ -107,7 +107,31 @@ Blockly.propc.print_string = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'oledprint( "' + string_to_print + '" );';
+  var code = 'oledprint( "' + string_to_print + '" );\n';
+  return code;
+};
+
+Blockly.Blocks.print_string_var = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendValueInput('VALUE')
+      .appendField("Print a variable");
+    this.setPreviousStatement( true, null );
+    this.setNextStatement( true, null );
+  }
+};
+
+Blockly.propc.print_string_var = function() {
+  var string_to_print = Blockly.propc.valueToCode( this, "VALUE", Blockly.propc.ORDER_NONE );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'oledprint( ' + string_to_print + ' );\n';
   return code;
 };
 
@@ -132,7 +156,7 @@ Blockly.propc.text_size = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'text_size( ' + text_size + ' );';
+  var code = 'text_size( ' + text_size + ' );\n';
   return code;
 };
 
@@ -161,7 +185,7 @@ Blockly.propc.cursor_position = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'cursor( ' + columns + ', ' + rows + ' );';
+  var code = 'cursor( ' + columns + ', ' + rows + ' );\n';
   return code;
 };
 
@@ -183,7 +207,7 @@ Blockly.propc.clear_screen = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'clear();';
+  var code = 'clear();\n';
   return code;
 };
 
@@ -205,7 +229,7 @@ Blockly.propc.rotate = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'rotate180();';
+  var code = 'rotate180();\n';
   return code;
 };
 
@@ -230,7 +254,7 @@ Blockly.propc.send_signal = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'send( ' + message + ' );';
+  var code = 'send( "' + message + '" );\n';
   return code;
 };
 
@@ -280,7 +304,7 @@ Blockly.propc.clear_ir_buffer = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'irclear();';
+  var code = 'irclear();\n';
   return code;
 };
 
@@ -305,7 +329,7 @@ Blockly.propc.badge_eeprom_store = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'store( new char[]{"' + contact + '"} );';
+  var code = 'store( new char[]{"' + contact + '"} );\n';
   return code;
 };
 
@@ -362,6 +386,6 @@ Blockly.propc.badge_eeprom_retrieve = function() {
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'retrieve( ' + buffer + ', ' + index + ' );';
+  var code = 'retrieve( ' + buffer + ', ' + index + ' );\n';
   return code;
 };
