@@ -30,7 +30,8 @@ Blockly.Blocks.controls_repeat = {
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
     init: function () {
         this.setColour(120);
-        var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["with", "WITH"], ["until", "UNTIL"], ["while", "WHILE"]];
+        // ["with", "WITH"]
+        var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
         var fieldDropdown = new Blockly.FieldDropdown(PROPERTIES, function (type) {
             this.sourceBlock_.updateShape_(type);
         });
@@ -85,17 +86,48 @@ Blockly.Blocks.controls_repeat = {
 };
 
 Blockly.propc.controls_repeat = function () {
-    // Repeat n times.
-    var repeats = 5;// Number(this.getFieldValue('TIMES'));
+    var type = this.getFieldValue('TYPE');
     var branch = Blockly.propc.statementToCode(this, 'DO');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
         branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
                 '\'' + this.id + '\'') + branch;
     }
-    var code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
-            branch + '}\n';
+    var order = Blockly.propc.ORDER_UNARY_PREFIX;
+    var code = '';
+    switch (type) {
+        case "FOREVER":
+            code = 'while(1) {\n' + branch + '}\n';
+            break;
+        case "TIMES":
+            var repeats = Number(this.getFieldValue('TIMES'));
+            code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
+                    branch + '}\n';
+            break;
+        case "UNTIL":
+            var repeatCondition = Blockly.propc.valueToCode(this, 'REPEAT_CONDITION', order) || '0';
+            code = 'while (' + repeatCondition + ') {\n' +
+                    branch + '}\n';
+            break;
+        case "WHILE":
+            var repeatCondition = Blockly.propc.valueToCode(this, 'REPEAT_CONDITION', order) || '0';
+            code = 'while (!(' + repeatCondition + ')) {\n' +
+                    branch + '}\n';
+            break;
+    }
     return code;
-};
+    // Repeat n times.
+//    var repeats = 5;// Number(this.getFieldValue('TIMES'));
+
+//    var branch = Blockly.propc.statementToCode(this, 'DO');
+//    if (Blockly.propc.INFINITE_LOOP_TRAP) {
+//        branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
+//                '\'' + this.id + '\'') + branch;
+//    }
+//    var code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
+//            branch + '}\n';
+//    return code;
+}
+;
 
 Blockly.propc.controls_if = function () {
     // If/elseif/else condition.

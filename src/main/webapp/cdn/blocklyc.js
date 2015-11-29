@@ -76,7 +76,7 @@ function renderContent() {
     } else if (content.id == 'content_propc') {
         //content.innerHTML = Blockly.Generator.workspaceToCode('Arduino');
         var propcTextarea = document.getElementById('textarea_propc');
-        propcTextarea.value = Blockly.propc.workspaceToCode();
+        propcTextarea.value = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
         propcTextarea.focus();
     }
 }
