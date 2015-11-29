@@ -129,6 +129,90 @@ Blockly.propc.check_pin_input = function () {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
+Blockly.Blocks.set_pins = {
+    init: function () {
+        this.setHelpUrl('help/block-digitalpin.html#write');
+        this.setColour(230);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        var start_pin = [];
+        for (var i = 0; i < 32; i++) {
+            start_pin.push([i.toString(), i.toString()]);
+        }
+        var pin_count = [];
+        for (var i = 1; i <= 32; i++) {
+            pin_count.push([i.toString(), i.toString()]);
+        }
+        this.appendDummyInput("")
+                .appendField("Set the")
+                .appendField(new Blockly.FieldDropdown([["state", "STATE"], ["direction", "DIRECTION"]], function (action) {
+                    this.sourceBlock_.updateShape_({"ACTION": action});
+                }), "ACTION")
+                .appendField("of")
+                .appendField(new Blockly.FieldDropdown(pin_count, function (pinCount) {
+                    this.sourceBlock_.updateShape_({"PIN_COUNT": pinCount});
+                }), "PIN_COUNT")
+                .appendField("pins starting at #")
+                .appendField(new Blockly.FieldDropdown(start_pin, function (startPin) {
+                    this.sourceBlock_.updateShape_({"START_PIN": startPin});
+                }), "START_PIN");
+        this.appendDummyInput("PINS")
+                .appendField("Values:")
+                .appendField("p0:")
+                .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "P0");
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('ACTION');
+        container.setAttribute('action', action);
+        var pinCount = this.getFieldValue('PIN_COUNT');
+        container.setAttribute('pin_count', pinCount);
+        var startPin = this.getFieldValue('START_PIN');
+        container.setAttribute('start_pin', startPin);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        var pinCount = xmlElement.getAttribute('pin_count');
+        var startPin = xmlElement.getAttribute('start_pin');
+        //var type = this.getFieldValue('TYPE');
+        this.updateShape_({"ACTION": action, "PIN_COUNT": pinCount, "START_PIN": startPin});
+    },
+    updateShape_: function (details) {
+        var action = details['ACTION'];
+        if (details['ACTION'] === undefined) {
+            action = this.getFieldValue('ACTION');
+        }
+        var pinCount = details['PIN_COUNT'];
+        if (details['PIN_COUNT'] === undefined) {
+            pinCount = this.getFieldValue('PIN_COUNT');
+        }
+        var startPin = details['START_PIN'];
+        if (details['START_PIN'] === undefined) {
+            startPin = this.getFieldValue('START_PIN');
+        }
+        pinCount = Number(pinCount);
+        startPin = Number(startPin);
+
+        this.removeInput('PINS');
+        this.appendDummyInput("PINS")
+                .appendField("Values:");
+        var inputPins = this.getInput('PINS');
+        for (var i = 0; i < pinCount; i++) {
+            var pin = startPin + i
+            inputPins.appendField("p" + pin + ":")
+                    .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "P" + pin);
+        }
+    }
+};
+
+Blockly.propc.set_pins = function () {
+    var dropdown_pin_count = this.getFieldValue('PIN_COUNT');
+    var dropdown_start_pin = this.getFieldValue('START_PIN');
+    return 'reverse(' + dropdown_start_pin + ');\n';
+};
+
+
 Blockly.Blocks.inout_digital_write = {
     init: function () {
         this.setHelpUrl('help/block-digitalpin.html#write');
