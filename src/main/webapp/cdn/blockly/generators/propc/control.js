@@ -115,19 +115,7 @@ Blockly.propc.controls_repeat = function () {
             break;
     }
     return code;
-    // Repeat n times.
-//    var repeats = 5;// Number(this.getFieldValue('TIMES'));
-
-//    var branch = Blockly.propc.statementToCode(this, 'DO');
-//    if (Blockly.propc.INFINITE_LOOP_TRAP) {
-//        branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
-//                '\'' + this.id + '\'') + branch;
-//    }
-//    var code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
-//            branch + '}\n';
-//    return code;
-}
-;
+};
 
 Blockly.propc.controls_if = function () {
     // If/elseif/else condition.
