@@ -46,12 +46,27 @@ Blockly.Spin.logic_compare.OPERATORS = {
 
 Blockly.Spin.logic_operation = function () {
     // Operations 'and', 'or'.
-    var operator = (this.getTitleValue('OP') == 'AND') ? 'AND' : 'OR';
-    var order = (operator == '&&') ? Blockly.Spin.ORDER_LOGICAL_AND :
-            Blockly.Spin.ORDER_LOGICAL_OR;
-    var argument0 = Blockly.Spin.valueToCode(this, 'A', order) || 'FALSE';
-    var argument1 = Blockly.Spin.valueToCode(this, 'B', order) || 'FALSE';
-    var code = argument0 + ' ' + operator + ' ' + argument1;
+    var operator = ''; //(this.getFieldValue('OP') == 'AND') ? '&&' : '||';
+    var order = Blockly.Spin.ORDER_LOGICAL_AND;
+    switch (this.getFieldValue('OP')) {
+        case 'AND':
+            operator = 'AND ';
+            break;
+        case 'OR':
+            operator = 'OR ';
+            order = Blockly.Spin.ORDER_LOGICAL_OR;
+            break;
+        case 'AND_NOT':
+            operator = 'AND !';
+            break;
+        case 'OR_NOT':
+            operator = 'OR !';
+            order = Blockly.Spin.ORDER_LOGICAL_OR;
+            break;
+    }
+    var argument0 = Blockly.Spin.valueToCode(this, 'A', order) || '0';
+    var argument1 = Blockly.Spin.valueToCode(this, 'B', order) || '0';
+    var code = argument0 + ' ' + operator + argument1;
     return [code, order];
 };
 
