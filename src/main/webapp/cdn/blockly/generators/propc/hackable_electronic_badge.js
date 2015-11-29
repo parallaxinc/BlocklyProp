@@ -483,3 +483,29 @@ Blockly.propc.badge_was_shaken = function() {
   var code = 'accel_shaken()';
   return [ code, Blockly.propc.ORDER_NONE ];
 };
+
+Blockly.Blocks.touchpad_status = {
+  category : 'Hackable Electronic Badge',
+  helpUrl : '',
+  init : function() {
+    // @TODO : Set proper color scheme
+    this.setColour( 250 );
+    this.appendDummyInput()
+      .appendField( "Is-touchpad-pressed?" )
+      .appendField( new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"]]), "TOUCHPAD" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, Boolean );
+  }
+};
+
+Blockly.propc.touchpad_status = function() {
+  var touchpad = this.getFieldValue( "TOUCHPAD" );
+
+  // @TODO : move initialization & set up to be automatic
+  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+
+  var code = 'button( ' + touchpad + ' )';
+  return [ code, Blockly.propc.ORDER_NONE ];
+};
