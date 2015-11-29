@@ -30,16 +30,14 @@ Blockly.Blocks.controls_repeat = {
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
     init: function () {
         this.setColour(120);
-        var fieldDropdown = new Blockly.FieldDropdown([["forever", "FOREVER"], ["x times", "TIMES"], ["with", "WITH"], ["until", "UNTIL"], ["while", "WHILE"]], function (type) {
+        var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["with", "WITH"], ["until", "UNTIL"], ["while", "WHILE"]];
+        var fieldDropdown = new Blockly.FieldDropdown(PROPERTIES, function (type) {
             this.sourceBlock_.updateShape_(type);
         });
-        var fieldTimes = new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator);
-        fieldTimes.setVisible(false);
-        this.appendDummyInput("REPEAT")
-                .appendField("repeat")
-                .appendField(fieldTimes, 'TIMES')
-                .appendField(fieldDropdown, "TYPE");
-        this.appendStatementInput('DO')
+        this.appendDummyInput()
+                .appendField("repeat");
+        this.appendDummyInput("REPEAT").appendField(fieldDropdown, "TYPE");
+        this.appendStatementInput("DO")
                 .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
@@ -49,28 +47,33 @@ Blockly.Blocks.controls_repeat = {
     mutationToDom: function () {
         var container = document.createElement('mutation');
         var type = this.getFieldValue('TYPE');
-        container.setAttribute('TYPE', type);
+        container.setAttribute('type', type);
         return container;
     },
     domToMutation: function (xmlElement) {
-        var type = xmlElement.getAttribute('TYPE');
+        var type = xmlElement.getAttribute('type');
+        //var type = this.getFieldValue('TYPE');
         this.updateShape_(type);
     },
     updateShape_: function (type) {
         // Add or remove a Value Input.
-        var fieldTimes = this.getField_('TIMES');
+        var inputTimes = this.getInput('TIMES');
         if (type === 'TIMES') {
-            if (fieldTimes) {
-                fieldTimes.setVisible(true);
+            if (!inputTimes) {
+                this.appendValueInput('TIMES')
+                        .setCheck('Number');
+                this.moveInputBefore('TIMES', 'REPEAT');
             }
         } else {
-            fieldTimes.setVisible(false);
+            if (inputTimes) {
+                this.removeInput('TIMES');
+            }
         }
         var inputCondition = this.getInput('REPEAT_CONDITION');
         if (type === 'WHILE' || type === 'UNTIL') {
             if (!inputCondition) {
                 this.appendValueInput('REPEAT_CONDITION')
-                        .setCheck('Number');
+                        .setCheck(Boolean);
                 this.moveInputBefore('REPEAT_CONDITION', 'DO');
             }
         } else {
@@ -83,7 +86,7 @@ Blockly.Blocks.controls_repeat = {
 
 Blockly.propc.controls_repeat = function () {
     // Repeat n times.
-    var repeats = Number(this.getFieldValue('TIMES'));
+    var repeats = 5;// Number(this.getFieldValue('TIMES'));
     var branch = Blockly.propc.statementToCode(this, 'DO');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
         branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
@@ -113,4 +116,3 @@ Blockly.propc.controls_if = function () {
     }
     return code + '\n';
 };
-
