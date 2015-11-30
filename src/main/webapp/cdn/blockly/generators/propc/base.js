@@ -179,6 +179,11 @@ Blockly.Blocks.set_pins = {
         this.updateShape_({"ACTION": action, "PIN_COUNT": pinCount, "START_PIN": startPin});
     },
     updateShape_: function (details) {
+        var data = [];
+        for (var i = 0; i < 32; i++) {
+            data.push(this.getFieldValue('P' + i));
+        }
+
         var action = details['ACTION'];
         if (details['ACTION'] === undefined) {
             action = this.getFieldValue('ACTION');
@@ -199,17 +204,43 @@ Blockly.Blocks.set_pins = {
                 .appendField("Values:");
         var inputPins = this.getInput('PINS');
         for (var i = 0; i < pinCount; i++) {
-            var pin = startPin + i
-            inputPins.appendField("p" + pin + ":")
-                    .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "P" + pin);
+            var pin = startPin + i;
+            if (action === 'STATE') {
+                inputPins.appendField("p" + pin + ":")
+                        .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "P" + pin);
+            } else if (action === 'DIRECTION') {
+                inputPins.appendField("p" + pin + ":")
+                        .appendField(new Blockly.FieldDropdown([["OUT", "1"], ["IN", "0"]]), "P" + pin);
+            }
+        }
+
+        for (var i = 0; i < 32; i++) {
+            if (this.getField('P' + i) && data[i] !== null) {
+                this.setFieldValue(data[i], 'P' + i);
+            }
         }
     }
 };
 
 Blockly.propc.set_pins = function () {
-    var dropdown_pin_count = this.getFieldValue('PIN_COUNT');
-    var dropdown_start_pin = this.getFieldValue('START_PIN');
-    return 'reverse(' + dropdown_start_pin + ');\n';
+    var code = '';
+    var action = this.getFieldValue('ACTION');
+    var dropdown_pin_count = Number(this.getFieldValue('PIN_COUNT'));
+    var dropdown_start_pin = Number(this.getFieldValue('START_PIN'));
+    if (action === 'STATE') {
+        code = 'set_outputs(';
+    } else if (action === 'DIRECTION') {
+        code = 'set_directions(';
+    }
+    var highestPin = dropdown_start_pin + dropdown_pin_count - 1;
+    code += highestPin;
+    code += ', ';
+    code += dropdown_pin_count;
+    code += ', 0b';
+    for (var i = highestPin; i >= dropdown_start_pin; i--) {
+        code += this.getFieldValue('P' + i);
+    }
+    return code + ');\n';
 };
 
 
@@ -231,7 +262,6 @@ Blockly.Blocks.inout_digital_write = {
 
 
 Blockly.Blocks.inout_digital_write_pin = {
-    category: 'In/Out',
     helpUrl: 'help/block-digitalpin.html#write-pin',
     init: function () {
         this.setColour(230);
@@ -247,7 +277,6 @@ Blockly.Blocks.inout_digital_write_pin = {
 };
 
 Blockly.Blocks.inout_digital_read_pin = {
-    category: 'In/Out',
     helpUrl: 'help/block-digitalpin.html#read-pin',
     init: function () {
         this.setColour(230);
@@ -260,7 +289,6 @@ Blockly.Blocks.inout_digital_read_pin = {
 };
 
 Blockly.Blocks.base_delay = {
-    category: 'Control',
     helpUrl: 'help/block-delay.html',
     init: function () {
         this.setColour(120);
@@ -275,7 +303,6 @@ Blockly.Blocks.base_delay = {
 };
 
 Blockly.Blocks.base_freqout = {
-    category: 'Control',
     helpUrl: '',
     init: function () {
         this.setColour(120);
