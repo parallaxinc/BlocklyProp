@@ -13,6 +13,7 @@
         <meta name="base" content="<c:url value="/"/>">
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/demoeditor.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
@@ -35,10 +36,12 @@
                         <iframe name="content_blocks" src="<c:url value="/cdn/framec.html"/>"></iframe>
                     </div>
                     <div id="content_propc">
-                        <textarea id="textarea_propc" readonly></textarea>
+                        <!--<textarea id="textarea_propc" readonly></textarea>-->
+                        <div id="code-propc"></div>
                     </div>
                     <div id="content_xml">
-                        <textarea id="textarea_xml" readonly></textarea>
+                        <!--<textarea id="textarea_xml" readonly></textarea>-->
+                        <div id="code-xml"></div>
                     </div>
                 </td>
             </tr>

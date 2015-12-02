@@ -10,6 +10,9 @@ var selected = 'blocks';
 
 var term = null;
 
+var codePropC = null;
+var codeXml = null;
+
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} id ID of tab clicked.
@@ -62,22 +65,27 @@ function renderContent() {
         // an incomplete rendering due to Blockly being invisible.  Rerender.
         Blockly.mainWorkspace.render();
     } else if (content.id == 'content_xml') {
-        var xmlTextarea = document.getElementById('textarea_xml');
+//        var xmlTextarea = document.getElementById('textarea_xml');
         var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-        xmlTextarea.value = xmlText;
-        xmlTextarea.focus();
+//        xmlTextarea.value = xmlText;
+//        xmlTextarea.focus();
+
         /*} else if (content.id == 'content_javascript') {
          content.innerHTML = Blockly.Generator.workspaceToCode('JavaScript');
          } else if (content.id == 'content_dart') {
          content.innerHTML = Blockly.Generator.workspaceToCode('Dart');
          } else if (content.id == 'content_python') {
          content.innerHTML = Blockly.Generator.workspaceToCode('Python');*/
+        codeXml.setValue(xmlText);
+        codeXml.gotoLine(0);
     } else if (content.id == 'content_propc') {
         //content.innerHTML = Blockly.Generator.workspaceToCode('Arduino');
-        var propcTextarea = document.getElementById('textarea_propc');
-        propcTextarea.value = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
-        propcTextarea.focus();
+        //  var propcTextarea = document.getElementById('textarea_propc');
+        //  propcTextarea.value = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+        //  propcTextarea.focus();
+        codePropC.setValue(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+        codePropC.gotoLine(0);
     }
 }
 
@@ -86,6 +94,15 @@ function renderContent() {
  * @param {!Blockly} blockly Instance of Blockly from iframe.
  */
 function init(blockly) {
+    codePropC = ace.edit("code-propc");
+    codePropC.setTheme("ace/theme/chrome");
+    codePropC.getSession().setMode("ace/mode/c_cpp");
+    codePropC.setReadOnly(true);
+
+    codeXml = ace.edit("code-xml");
+    codeXml.setTheme("ace/theme/chrome");
+    codeXml.getSession().setMode("ace/mode/xml");
+    codeXml.setReadOnly(true);
 
     window.Blockly = blockly;
 

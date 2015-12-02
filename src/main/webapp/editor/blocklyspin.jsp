@@ -15,6 +15,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/bootstrap/plugins/bootstrap-wizard.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/ace/ace.js"/>"></script>
         <!-- <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script> -->
         <script type="text/javascript" src="<c:url value="/cdn/detect.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklypropclient.js"/>"></script>
@@ -48,7 +49,8 @@
                     </div>
                     <!--pre id="content_python"></pre-->
                     <div id="content_xml">
-                        <textarea id="textarea_xml" readonly></textarea>
+                        <!--<textarea id="textarea_xml" readonly></textarea>-->
+                        <div id="code-xml"></div>
                     </div>
                 </td>
             </tr>
