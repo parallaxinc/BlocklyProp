@@ -35,15 +35,10 @@
                     <div id="content_blocks">
                         <iframe name="content_blocks" src="<c:url value="/cdn/framespin.html"/>"></iframe>
                     </div>
-                    <!--div id="content_blocks" style="height:auto !important;height:400px; min-height:400px;"></div-->
-                    <!--pre id="content_javascript"></pre>
-                    <pre id="content_dart"></pre-->
                     <div id="content_spin">
                         <textarea id="textarea_spin" readonly></textarea>
                     </div>
-                    <!--pre id="content_python"></pre-->
                     <div id="content_xml">
-                        <!--<textarea id="textarea_xml" readonly></textarea>-->
                         <div id="code-xml"></div>
                     </div>
                 </td>

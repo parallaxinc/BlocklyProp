@@ -1,26 +1,3 @@
-// Whitelist of blocks to keep.
-/*var newLanguage = {}
- var keepers = ['controls_loop', 'controls_delay', 'control_map',
- //'setup_pinmode', 'output_digital_write', 'output_analog_write',
- //'controls_if', 'controls_if_if', 'controls_if_elseif',
- //'controls_if_else', 'controls_whileUntil', 'controls_for',
- //'controls_flow_statements',
- //'math_number','math_arithmetic',//'math_modulo',
- //'logic_compare', 'logic_operation', 'logic_negate', 'logic_boolean',
- //'variables_get','variables_set',
- //'procedures_defnoreturn', 'procedures_defreturn', 'procedures_callnoreturn', 'procedures_callreturn'
- ];
- for (var x = 0; x < keepers.length; x++) {
- newLanguage[keepers[x]] = Blockly.Language[keepers[x]];
- }
- // Fold control category into logic category.
- for (var name in newLanguage) {
- if (newLanguage[name].category == 'Math') {
- newLanguage[name].category = 'Logic';
- }
- }
- Blockly.Language = newLanguage;*/
-
 /**
  * List of tab names.
  * @private
@@ -86,27 +63,14 @@ function renderContent() {
     var content = document.getElementById('content_' + selected);
     // Initialize the pane.
     if (content.id == 'content_blocks') {
-        // If the workspace was changed by the XML tab, Firefox will have performed
-        // an incomplete rendering due to Blockly being invisible.  Rerender.
         Blockly.mainWorkspace.render();
     } else if (content.id == 'content_xml') {
 //        var xmlTextarea = document.getElementById('textarea_xml');
         var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-//        xmlTextarea.value = xmlText;
-//        xmlTextarea.focus();
-
-        /*} else if (content.id == 'content_javascript') {
-         content.innerHTML = Blockly.Generator.workspaceToCode('JavaScript');
-         } else if (content.id == 'content_dart') {
-         content.innerHTML = Blockly.Generator.workspaceToCode('Dart');
-         } else if (content.id == 'content_python') {
-         content.innerHTML = Blockly.Generator.workspaceToCode('Python');*/
-
         codeXml.setValue(xmlText);
         codeXml.gotoLine(0);
     } else if (content.id == 'content_spin') {
-        //content.innerHTML = Blockly.Generator.workspaceToCode('Arduino');
         var spinTextarea = document.getElementById('textarea_spin');
         spinTextarea.value = Blockly.Spin.workspaceToCode(Blockly.mainWorkspace);
         spinTextarea.focus();
@@ -118,19 +82,12 @@ function renderContent() {
  * @param {!Blockly} blockly Instance of Blockly from iframe.
  */
 function init(blockly) {
-    //window.onbeforeunload = function() {
-    //  return 'Leaving this page will result in the loss of your work.';
-    //};
-
     codeXml = ace.edit("code-xml");
     codeXml.setTheme("ace/theme/chrome");
     codeXml.getSession().setMode("ace/mode/xml");
     codeXml.setReadOnly(true);
 
     window.Blockly = blockly;
-
-    // var blockly_frame = document.getElementById("content_blocks");
-    // Blockly.inject(blockly_frame, {path: '../../'});
 
     // Make the 'Blocks' tab line up with the toolbox.
     if (Blockly.Toolbox) {

@@ -36,11 +36,9 @@
                         <iframe name="content_blocks" src="<c:url value="/cdn/framec.html"/>"></iframe>
                     </div>
                     <div id="content_propc">
-                        <!--<textarea id="textarea_propc" readonly></textarea>-->
                         <div id="code-propc"></div>
                     </div>
                     <div id="content_xml">
-                        <!--<textarea id="textarea_xml" readonly></textarea>-->
                         <div id="code-xml"></div>
                     </div>
                 </td>

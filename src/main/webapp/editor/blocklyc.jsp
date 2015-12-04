@@ -12,13 +12,10 @@
         <meta charset="utf-8">
         <meta name="base" content="<c:url value="/"/>">
         <title>BlocklyProp</title>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/Blob.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/lib/term.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/lib/FileSaver.min.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/detect.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly_helper.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklypropclient.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>
@@ -42,16 +39,10 @@
                         <div id="content_blocks">
                             <iframe name="content_blocks" src="<c:url value="/cdn/framec.html"/>"></iframe>
                         </div>
-                        <!--div id="content_blocks" style="height:auto !important;height:400px; min-height:400px;"></div-->
-                        <!--pre id="content_javascript"></pre>
-                        <pre id="content_dart"></pre-->
                         <div id="content_propc">
-                            <!--<textarea id="textarea_propc" readonly></textarea>-->
                             <div id="code-propc"></div>
                         </div>
-                        <!--pre id="content_python"></pre-->
                         <div id="content_xml">
-                            <!--<textarea id="textarea_xml" readonly></textarea>-->
                             <div id="code-xml"></div>
                         </div>
                     </td>
