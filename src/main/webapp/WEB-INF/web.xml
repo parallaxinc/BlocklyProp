@@ -72,4 +72,11 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://blocklyprop.parallax.com/properties</taglib-uri>
+            <taglib-location>/WEB-INF/properties.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
 </web-app>

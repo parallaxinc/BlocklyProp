@@ -18,17 +18,17 @@
                 <p>How to start the client.</p>
                 <div class="clients">
                     <div class="client MacOS">
-                        MacOS client
+                        <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}">MacOS client</a>
                     </div>
-                    <div class="client Windows">
+                    <!--<div class="client Windows">
                         Windows 32bit client
-                    </div>
+                    </div>-->
                     <div class="client Windows">
-                        Windows 64bit client
+                        <a href="${properties:downloadfiles('/blocklyprop-client-win64.zip')}">Windows 64bit client</a>
                     </div>
-                    <div class="client Windows">
-                        Windows service
-                    </div>
+                    <!--    <div class="client Windows">
+                            Windows service
+                        </div>-->
                 </div>
             </div>
         </div><!-- /.modal-content -->
