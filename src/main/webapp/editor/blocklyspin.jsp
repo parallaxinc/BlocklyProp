@@ -36,7 +36,7 @@
             <tr>
                 <td id="content">
                     <div id="content_blocks">
-                        <iframe name="content_blocks" src="<c:url value="/cdn/framespin.html"/>"></iframe>
+                        <iframe name="content_blocks" src="<c:url value="/frame/framespin.jsp"/>"></iframe>
                     </div>
                     <div id="content_spin">
                         <textarea id="textarea_spin" readonly></textarea>

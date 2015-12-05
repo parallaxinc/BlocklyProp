@@ -16,7 +16,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/demoeditor.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdb/blocklyc.js"/>"></script>
         <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<c:url value="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
@@ -33,7 +33,7 @@
             <tr>
                 <td id="content">
                     <div id="content_blocks">
-                        <iframe name="content_blocks" src="<c:url value="/cdn/framec.html"/>"></iframe>
+                        <iframe name="content_blocks" src="<c:url value="/frame/framec.jsp"/>"></iframe>
                     </div>
                     <div id="content_propc">
                         <div id="code-propc"></div>

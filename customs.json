@@ -10,12 +10,7 @@
                 "name": {}
             }
         },
-        "xml": {
-            "attributes": {
-                "style": {},
-                "id": {}
-            }
-        },
+        "xml": {},
         "block": {
             "attributes": {
                 "type": {}

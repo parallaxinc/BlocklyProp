@@ -37,7 +37,7 @@
                 <tr>
                     <td id="content">
                         <div id="content_blocks">
-                            <iframe name="content_blocks" src="<c:url value="/cdn/framec.html"/>"></iframe>
+                            <iframe name="content_blocks" src="<c:url value="/frame/framec.jsp"/>"></iframe>
                         </div>
                         <div id="content_propc">
                             <div id="code-propc"></div>
