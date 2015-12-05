@@ -26,64 +26,7 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-Blockly.Blocks.controls_repeat = {
-    helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
-    init: function () {
-        this.setColour(120);
-        // ["with", "WITH"]
-        var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
-        var fieldDropdown = new Blockly.FieldDropdown(PROPERTIES, function (type) {
-            this.sourceBlock_.updateShape_(type);
-        });
-        this.appendDummyInput()
-                .appendField("repeat");
-        this.appendDummyInput("REPEAT").appendField(fieldDropdown, "TYPE");
-        this.appendStatementInput("DO")
-                .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
-        this.setInputsInline(true);
-    },
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
-        var type = this.getFieldValue('TYPE');
-        container.setAttribute('type', type);
-        return container;
-    },
-    domToMutation: function (xmlElement) {
-        var type = xmlElement.getAttribute('type');
-        //var type = this.getFieldValue('TYPE');
-        this.updateShape_(type);
-    },
-    updateShape_: function (type) {
-        // Add or remove a Value Input.
-        var inputTimes = this.getInput('TIMES');
-        if (type === 'TIMES') {
-            if (!inputTimes) {
-                this.appendValueInput('TIMES')
-                        .setCheck('Number');
-                this.moveInputBefore('TIMES', 'REPEAT');
-            }
-        } else {
-            if (inputTimes) {
-                this.removeInput('TIMES');
-            }
-        }
-        var inputCondition = this.getInput('REPEAT_CONDITION');
-        if (type === 'WHILE' || type === 'UNTIL') {
-            if (!inputCondition) {
-                this.appendValueInput('REPEAT_CONDITION')
-                        .setCheck(Boolean);
-                this.moveInputBefore('REPEAT_CONDITION', 'DO');
-            }
-        } else {
-            if (inputCondition) {
-                this.removeInput('REPEAT_CONDITION');
-            }
-        }
-    }
-};
+
 
 Blockly.propc.controls_repeat = function () {
     var type = this.getFieldValue('TYPE');

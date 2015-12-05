@@ -213,160 +213,61 @@ Blockly.Blocks.controls_if_else = {
     }
 };
 
-
-
-Blockly.Blocks.controls_whileUntil = {
-    // Do while/until loop.
-    category: Blockly.LANG_CATEGORY_CONTROLS,
-    helpUrl: Blockly.LANG_CONTROLS_WHILEUNTIL_HELPURL,
+Blockly.Blocks.controls_repeat = {
+    helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
     init: function () {
         this.setColour(120);
-        this.appendValueInput('BOOL')
-                .setCheck(Boolean)
-                .appendField(Blockly.LANG_CONTROLS_WHILEUNTIL_TITLE_REPEAT)
-                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'MODE');
-        this.appendStatementInput('DO')
-                .appendField(Blockly.LANG_CONTROLS_WHILEUNTIL_INPUT_DO);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        // Assign 'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip(function () {
-            var op = thisBlock.getFieldValue('MODE');
-            return Blockly.Language.controls_whileUntil.TOOLTIPS[op];
+        // ["with", "WITH"]
+        var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
+        var fieldDropdown = new Blockly.FieldDropdown(PROPERTIES, function (type) {
+            this.sourceBlock_.updateShape_(type);
         });
-    }
-};
-
-Blockly.Blocks.controls_whileUntil.OPERATORS =
-        [[Blockly.LANG_CONTROLS_WHILEUNTIL_OPERATOR_WHILE, 'WHILE'],
-            [Blockly.LANG_CONTROLS_WHILEUNTIL_OPERATOR_UNTIL, 'UNTIL']];
-
-Blockly.Blocks.controls_whileUntil.TOOLTIPS = {
-    WHILE: Blockly.LANG_CONTROLS_WHILEUNTIL_TOOLTIP_WHILE,
-    UNTIL: Blockly.LANG_CONTROLS_WHILEUNTIL_TOOLTIP_UNTIL
-};
-
-Blockly.Blocks.controls_for = {
-    // For loop.
-    category: Blockly.LANG_CATEGORY_CONTROLS,
-    helpUrl: Blockly.LANG_CONTROLS_FOR_HELPURL,
-    init: function () {
-        this.setColour(120);
         this.appendDummyInput()
-                .appendField(Blockly.LANG_CONTROLS_FOR_INPUT_WITH)
-                .appendField(new Blockly.FieldVariable(null), 'VAR');
-        this.appendValueInput('FROM')
-                .setCheck(Number)
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField(Blockly.LANG_CONTROLS_FOR_INPUT_FROM);
-        this.appendValueInput('TO')
-                .setCheck(Number)
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField(Blockly.LANG_CONTROLS_FOR_INPUT_TO);
-        this.appendStatementInput('DO')
-                .appendField(Blockly.LANG_CONTROLS_FOR_INPUT_DO);
+                .appendField("repeat");
+        this.appendDummyInput("REPEAT").appendField(fieldDropdown, "TYPE");
+        this.appendStatementInput("DO")
+                .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
+        this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
         this.setInputsInline(true);
-        // Assign 'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip(function () {
-            return Blockly.LANG_CONTROLS_FOR_TOOLTIP.replace('%1',
-                    thisBlock.getFieldValue('VAR'));
-        });
     },
-    getVars: function () {
-        return [this.getFieldValue('VAR')];
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var type = this.getFieldValue('TYPE');
+        container.setAttribute('type', type);
+        return container;
     },
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
-        }
-    }
-};
-
-Blockly.Blocks.controls_forEach = {
-    // For each loop.
-    category: Blockly.LANG_CATEGORY_CONTROLS,
-    helpUrl: Blockly.LANG_CONTROLS_FOREACH_HELPURL,
-    init: function () {
-        this.setColour(120);
-        this.appendValueInput('LIST')
-                .setCheck(Array)
-                .appendField(Blockly.LANG_CONTROLS_FOREACH_INPUT_ITEM)
-                .appendField(new Blockly.FieldVariable(null), 'VAR')
-                .appendField(Blockly.LANG_CONTROLS_FOREACH_INPUT_INLIST);
-        this.appendStatementInput('DO')
-                .appendField(Blockly.LANG_CONTROLS_FOREACH_INPUT_DO);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        // Assign 'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip(function () {
-            return Blockly.LANG_CONTROLS_FOREACH_TOOLTIP.replace('%1',
-                    thisBlock.getFieldValue('VAR'));
-        });
+    domToMutation: function (xmlElement) {
+        var type = xmlElement.getAttribute('type');
+        //var type = this.getFieldValue('TYPE');
+        this.updateShape_(type);
     },
-    getVars: function () {
-        return [this.getFieldValue('VAR')];
-    },
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
-        }
-    }
-};
-
-Blockly.Blocks.controls_flow_statements = {
-    // Flow statements: continue, break.
-    category: Blockly.LANG_CATEGORY_CONTROLS,
-    helpUrl: Blockly.LANG_CONTROLS_FLOW_STATEMENTS_HELPURL,
-    init: function () {
-        this.setColour(120);
-        var dropdown = new Blockly.FieldDropdown(this.OPERATORS);
-        this.appendDummyInput()
-                .appendField(dropdown, 'FLOW')
-                .appendField(Blockly.LANG_CONTROLS_FLOW_STATEMENTS_INPUT_OFLOOP);
-        this.setPreviousStatement(true);
-        // Assign 'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip(function () {
-            var op = thisBlock.getFieldValue('FLOW');
-            return Blockly.Language.controls_flow_statements.TOOLTIPS[op];
-        });
-    },
-    onchange: function () {
-        if (!this.workspace) {
-            // Block has been deleted.
-            return;
-        }
-        var legal = false;
-        // Is the block nested in a control statement?
-        var block = this;
-        do {
-            if (block.type == 'controls_repeat' ||
-                    block.type == 'controls_forEach' ||
-                    block.type == 'controls_for' ||
-                    block.type == 'controls_whileUntil') {
-                legal = true;
-                break;
+    updateShape_: function (type) {
+        // Add or remove a Value Input.
+        var inputTimes = this.getInput('TIMES');
+        if (type === 'TIMES') {
+            if (!inputTimes) {
+                this.appendValueInput('TIMES')
+                        .setCheck('Number');
+                this.moveInputBefore('TIMES', 'REPEAT');
             }
-            block = block.getSurroundParent();
-        } while (block);
-        if (legal) {
-            this.setWarningText(null);
         } else {
-            this.setWarningText(Blockly.LANG_CONTROLS_FLOW_STATEMENTS_WARNING);
+            if (inputTimes) {
+                this.removeInput('TIMES');
+            }
+        }
+        var inputCondition = this.getInput('REPEAT_CONDITION');
+        if (type === 'WHILE' || type === 'UNTIL') {
+            if (!inputCondition) {
+                this.appendValueInput('REPEAT_CONDITION')
+                        .setCheck(Boolean);
+                this.moveInputBefore('REPEAT_CONDITION', 'DO');
+            }
+        } else {
+            if (inputCondition) {
+                this.removeInput('REPEAT_CONDITION');
+            }
         }
     }
-};
-
-Blockly.Blocks.controls_flow_statements.OPERATORS =
-        [[Blockly.LANG_CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK, 'BREAK'],
-            [Blockly.LANG_CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE, 'CONTINUE']];
-
-Blockly.Blocks.controls_flow_statements.TOOLTIPS = {
-    BREAK: Blockly.LANG_CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK,
-    CONTINUE: Blockly.LANG_CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE
 };

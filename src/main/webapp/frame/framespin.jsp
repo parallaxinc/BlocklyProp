@@ -11,6 +11,7 @@
 
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin.js"/>"></script>
 
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/base.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/servo.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/sensors.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/debug_lcd.js"/>"></script>
@@ -28,6 +29,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/procedures.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/serial.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/control.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/pins.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/logic.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/joystick.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/math.js"/>"></script>
@@ -96,11 +98,18 @@
     <xml id="toolbox" style="display: none">
         <category name="<fmt:message key="category.programming" />">
             <category name="<fmt:message key="category.programming.control" />">
-                <block type="base_delay"></block>
-                <block type="text"></block>
-                <block type="controls_repeat_forever"></block>
-                <block type="controls_repeat"></block>
                 <block type="controls_if"></block>
+                <block type="controls_repeat">
+                    <mutation TYPE="FOREVER"></mutation>
+                </block>
+                <block type="base_delay">
+                    <value name="DELAY_TIME">
+                        <block type="math_number">
+                            <field name="NUM">1000</field>
+                        </block>
+                    </value>
+                </block>
+                <!--<block type="text"></block>-->
             </category>
             <category name="<fmt:message key="category.programming.conditions" />">
                 <block type="logic_compare"></block>
@@ -114,16 +123,25 @@
                 <block type="math_single"></block>
                 <block type="math_limit"></block>
                 <block type="math_crement"></block>
+                <block type="bit_math_shift"></block>
+                <!-- Repeat from Conditions -->
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
             </category>
             <category name="<fmt:message key="category.programming.multicore" />">
-
+                <block type="cog_new"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.input-output" />">
             <category name="<fmt:message key="category.input-output.pin-states" />">
+                <block type="make_pin"></block>
+                <block type="make_pin_input"></block>
+                <block type="check_pin"></block>
+                <block type="check_pin_input"></block>
+                <block type="set_pins"></block>
             </category>
             <category name="<fmt:message key="category.input-output.timing" />">
-
+                <block type="base_freqout"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.communicate" />">
@@ -197,8 +215,7 @@
         </category>
         <category name="<fmt:message key="category.robot" />">
             <category name="<fmt:message key="category.robot.activitybot" />">
-                <block type="ab_drive_speed"></block>
-                <block type="ab_drive_goto"></block>
+
             </category>
             <category name="<fmt:message key="category.robot.servo-diff-drive" />">
 

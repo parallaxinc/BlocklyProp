@@ -11,7 +11,9 @@
 
         <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc.js"/>"></script>
 
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/base.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/control.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/pins.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/logic.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/math.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/text.js"/>"></script>
@@ -127,7 +129,6 @@
                 <block type="math_single"></block>
                 <block type="math_limit"></block>
                 <block type="math_crement"></block>
-                <block type="math_crement"></block>
                 <block type="bit_math_shift"></block>
                 <!--<block type="bit_math_rotate"></block>-->
                 <!-- Repeat from Conditions -->
@@ -147,7 +148,7 @@
                 <block type="set_pins"></block>
             </category>
             <category name="<fmt:message key="category.input-output.timing" />">
-
+                <block type="base_freqout"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.communicate" />">
