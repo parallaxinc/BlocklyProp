@@ -43,6 +43,11 @@ public class ProjectCreationServlet extends HttpServlet {
         String boardType = req.getParameter("board-type");
         String projectDescription = req.getParameter("project-description");
         String projectTypeString = req.getParameter("project-type");
+        String privateString = req.getParameter("private");
+        String sharedString = req.getParameter("shared");
+
+        boolean privateProject = "true".equals(privateString);
+        boolean sharedProject = "true".equals(sharedString);
 
         ProjectType projectType = null;
         try {
@@ -60,7 +65,7 @@ public class ProjectCreationServlet extends HttpServlet {
             return;
         }
 
-        ProjectRecord project = projectService.createProject(projectName, projectDescription, false, true, projectType, boardType);
+        ProjectRecord project = projectService.createProject(projectName, projectDescription, privateProject, sharedProject, projectType, boardType);
         result.addProperty("success", true);
         result.addProperty("id", project.getId());
         resp.getWriter().write(result.toString());

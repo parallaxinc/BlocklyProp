@@ -19,6 +19,8 @@
     </head>
     <body>
 
+        <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
+
         <div id="project">
             <!--   Big container   -->
             <div class="container">
@@ -33,13 +35,13 @@
 
                                     <div class="wizard-header">
                                         <h3>
-                                            Your project
+                                            <fmt:message key="project.create.title" />
                                             <!--<small>This information will let us know more about your boat.</small>-->
                                         </h3>
                                     </div>
                                     <ul>
-                                        <li><a href="#project-manager-base" data-toggle="tab">Basic info</a></li>
-                                        <li><a href="#project-manager-sharing" data-toggle="tab">Sharing</a></li>
+                                        <li><a href="#project-manager-base" data-toggle="tab"><fmt:message key="project.create.basic" /></a></li>
+                                        <li><a href="#project-manager-sharing" data-toggle="tab"><fmt:message key="project.create.sharing" /></a></li>
                                         <!--   <li><a href="#description" data-toggle="tab">Description</a></li>-->
                                     </ul>
 
@@ -47,52 +49,59 @@
                                         <div class="tab-pane" id="project-manager-base">
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <h4 class="info-text">Basic project info</h4>
+                                                    <h4 class="info-text"><fmt:message key="project.create.basic.title" /></h4>
                                                 </div>
                                                 <div class="col-sm-5 col-sm-offset-1">
                                                     <div class="form-group">
-                                                        <label for="project-name">Project name</label>
+                                                        <label for="project-name"><fmt:message key="project.create.project_name" /></label>
                                                         <input type="text" class="form-control" id="project-name" name="project-name"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-5">
                                                     <div class="form-group">
-                                                        <label>Board Type</label>
+                                                        <label for="board-type"><fmt:message key="project.create.board_type" /></label>
                                                         <select class="form-control" id="board-type" name="board-type">
-                                                            <option disabled="" selected="">- board type -</option>
-                                                            <option value="activity-board">Activity board</option>
-                                                            <option value="board-of-education">Board of Education</option>
-                                                            <option value="c3">Propeller C3</option>
-                                                            <option value="demo-board">Demo board</option>
-                                                            <option value="proto-board">Proto board</option>
-                                                            <option value="quickstart">Quickstart</option>
-                                                            <option value="scribbler2">Scribbler 2</option>
-                                                            <option value="other">Other</option>
+                                                            <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
+                                                            <option value="activity-board"><fmt:message key="project.board.activity-board" /></option>
+                                                            <option value="board-of-education"><fmt:message key="project.board.board-of-education" /></option>
+                                                            <option value="c3"><fmt:message key="project.board.c3" /></option>
+                                                            <option value="demo-board"><fmt:message key="project.board.demo-board" /></option>
+                                                            <option value="proto-board"><fmt:message key="project.board.proto-board" /></option>
+                                                            <option value="quickstart"><fmt:message key="project.board.quickstart" /></option>
+                                                            <option value="scribbler2"><fmt:message key="project.board.scribbler2" /></option>
+                                                            <option value="other"><fmt:message key="project.board.other" /></option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-10 col-sm-offset-1">
-                                                    <label for="project-description">Description</label>
+                                                    <label for="project-description"><fmt:message key="project.create.description" /></label>
                                                     <textarea class="form-control" id="project-description" rows="7" name="project-description"></textarea>
                                                 </div>
                                                 <input type="hidden" id="project-type" name="project-type"/>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="project-manager-sharing">
-                                            <h4 class="info-text">Project sharing</h4>
+                                            <h4 class="info-text"><fmt:message key="project.create.sharing.title" /></h4>
                                             <div class="row">
-
+                                                <div class="col-sm-5 col-sm-offset-1">
+                                                    <div class="form-group">
+                                                        <input type="checkbox" name="private" value="true" id="project-private"/><label for="name"><fmt:message key="project.create.private" /></label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="checkbox" name="shared" value="true" id="project-shared"/><label for="description"><fmt:message key="project.create.shared" /></label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="wizard-footer">
                                         <div class="pull-right">
-                                            <input type='button' class='btn btn-next btn-fill btn-info btn-wd btn-sm' name='next' value='Next' />
-                                            <input type='button' id='finish' class='btn btn-finish btn-fill btn-info btn-wd btn-sm' name='finish' value='Finish' data-editor='<c:url value="/editor/"/>' />
+                                            <input type='button' class='btn btn-next btn-fill btn-info btn-wd btn-sm' name='next' value='<fmt:message key="project.create.nextlink" />' />
+                                            <input type='button' id='finish' class='btn btn-finish btn-fill btn-info btn-wd btn-sm' name='finish' value='<fmt:message key="project.create.finishlink" />' data-editor='<c:url value="/editor/"/>' />
 
                                         </div>
                                         <div class="pull-left">
-                                            <input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm' name='previous' value='Previous' />
+                                            <input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm' name='previous' value='<fmt:message key="project.create.previouslink" />' />
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>

@@ -12,6 +12,10 @@
         <div class="col-md-12">
             <h2><a href="#" class="btn btn-default"><fmt:message key="back" /></a> <a href="<c:url value="/index.jsp"/>">BlocklyProp</a>: <fmt:message key="project.title" /></h2>
             <form id="project-form" action="<c:url value="/rest/project"/>" method="post">
+                <div class="alert alert-success alert-dismissible hidden project-changed" id="project-changed">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p><fmt:message key="project.changed" /></p>
+                </div>
                 <input type="hidden" name="id" id="project-form-id"/>
                 <div class="form-group">
                     <label for="name"><fmt:message key="project.name" /></label>
