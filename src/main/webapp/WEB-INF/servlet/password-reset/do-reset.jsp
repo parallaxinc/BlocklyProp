@@ -26,19 +26,25 @@
                         String serverError = (String) request.getAttribute("server-error");
                         if (serverError != null) {
                     %>
-                    <div><fmt:message key="error.generic" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="error.generic" /></p>
+                    </div>
                     <%
                         }
                         String errorDescription = (String) request.getAttribute("invalidToken");
                         if (errorDescription != null) {
                     %>
-                    <div><fmt:message key="password_reset.do.error.invalid_combination" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="password_reset.do.error.invalid_combination" /></p>
+                    </div>
                     <%
                         }
                         String passwordsDontMatch = (String) request.getAttribute("passwordsDontMatch");
                         if (passwordsDontMatch != null) {
                     %>
-                    <div><fmt:message key="password_reset.do.error.passwords_dont_match" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="password_reset.do.error.passwords_dont_match" /></p>
+                    </div>
                     <%
                         }
                     %>

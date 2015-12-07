@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<table id="project-table" class="table" data-toggle="table" data-url="<c:url value="${param.url}"/>"  data-toolbar="#toolbar" data-search="true" data-side-pagination="server" data-pagination=true" data-search="true">
+<table id="project-table" class="table" data-toggle="table" data-url="<c:url value="${param.url}"/>"  data-toolbar="#toolbar" data-search="true" data-side-pagination="server" data-pagination="true" data-search="true">
     <thead>
         <tr>
             <th data-field="type" data-formatter="formatType" data-width="30px" data-align="center"></th>
@@ -42,7 +42,7 @@
 
     function formatUser(value, row) {
         if (row['yours']) {
-            return '<fmt:message key="project.yours" />yours';
+            return '<fmt:message key="project.yours" />';
         }
         return value;
     }

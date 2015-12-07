@@ -26,19 +26,25 @@
                         Boolean error = (Boolean) request.getAttribute("error");
                         if (error != null && error) {
                     %>
-                    <div><fmt:message key="error.generic" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="error.generic" /></p>
+                    </div>
                     <%
                         }
                         Boolean unknownEmail = (Boolean) request.getAttribute("unknownEmail");
                         if (unknownEmail != null && unknownEmail) {
                     %>
-                    <div><fmt:message key="error.unknownemail" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="error.unknownemail" /></p>
+                    </div>
                     <%
                         }
                         Boolean insufficientTokens = (Boolean) request.getAttribute("insufficientTokens");
                         if (insufficientTokens != null && insufficientTokens) {
                     %>
-                    <div><fmt:message key="password_reset.error.requested_too_often" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="password_reset.error.requested_too_often" /></p>
+                    </div>
                     <%
                         }
                     %>

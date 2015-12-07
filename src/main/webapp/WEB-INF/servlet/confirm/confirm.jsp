@@ -26,13 +26,17 @@
                         String serverError = (String) request.getAttribute("server-error");
                         if (serverError != null) {
                     %>
-                    <div><fmt:message key="error.generic" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="error.generic" /></p>
+                    </div>
                     <%
                         }
                         String errorDescription = (String) request.getAttribute("invalidToken");
                         if (errorDescription != null) {
                     %>
-                    <div><fmt:message key="confirm.do.error.invalid_combination" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="confirm.do.error.invalid_combination" /></p>
+                    </div>
                     <%
                         }
                     %>

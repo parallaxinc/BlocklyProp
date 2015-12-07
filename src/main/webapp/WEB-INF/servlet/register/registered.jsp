@@ -22,7 +22,9 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                     <h2><fmt:message key="register.done.title" /></h2>
-                    <p><fmt:message key="register.done.text" /></p>
+                    <div class="alert alert-success">
+                        <p><fmt:message key="register.done.text" /></p>
+                    </div>
                 </div>
             </div>
         </div>

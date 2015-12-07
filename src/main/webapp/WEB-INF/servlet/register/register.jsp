@@ -31,19 +31,25 @@
                         Boolean error = (Boolean) request.getAttribute("error");
                         if (error != null && error) {
                     %>
-                    <div><fmt:message key="error.generic" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="error.generic" /></p>
+                    </div>
                     <%
                         }
                         Boolean emailAlreadyUsed = (Boolean) request.getAttribute("emailAlreadyUsed");
                         if (emailAlreadyUsed != null && emailAlreadyUsed) {
                     %>
-                    <div><fmt:message key="register.error.email_already_used" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.email_already_used" /></p>
+                    </div>
                     <%
                         }
                         Boolean passwordsDontMatch = (Boolean) request.getAttribute("passwordsDontMatch");
                         if (passwordsDontMatch != null && passwordsDontMatch) {
                     %>
-                    <div><fmt:message key="register.error.passwords_dont_match" /></div>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.passwords_dont_match" /></p>
+                    </div>
                     <%
                         }
                     %>
