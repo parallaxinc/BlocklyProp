@@ -18,6 +18,7 @@ public class SessionData implements Serializable {
 
     private User user;
     private Long idUser;
+    private String locale;
 
     public User getUser() {
         return user;
@@ -33,6 +34,14 @@ public class SessionData implements Serializable {
 
     public void setIdUser(Long idUser) {
         this.idUser = idUser;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
 }

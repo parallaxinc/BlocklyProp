@@ -21,4 +21,6 @@ public interface UserService {
 
     public String getUserScreenName(Long idUser);
 
+    void setLocale(String locale);
+
 }

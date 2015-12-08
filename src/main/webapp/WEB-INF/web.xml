@@ -77,6 +77,10 @@
             <taglib-uri>http://blocklyprop.parallax.com/properties</taglib-uri>
             <taglib-location>/WEB-INF/properties.tld</taglib-location>
         </taglib>
+        <taglib>
+            <taglib-uri>http://blocklyprop.parallax.com/locale</taglib-uri>
+            <taglib-location>/WEB-INF/locale.tld</taglib-location>
+        </taglib>
     </jsp-config>
 
 </web-app>

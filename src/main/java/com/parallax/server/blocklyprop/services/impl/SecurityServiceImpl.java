@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.services.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -18,11 +19,14 @@ import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
+import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.SecurityUtils;
 
@@ -109,6 +113,15 @@ public class SecurityServiceImpl implements SecurityService {
                 try {
                     User user = instance.userService.getUser((String) SecurityUtils.getSubject().getPrincipal());
                     if (user != null) {
+                        if (!Strings.isNullOrEmpty(sessionData.getLocale())) {
+                            if (!sessionData.getLocale().equals(user.getLocale())) {
+                                try {
+                                    user = instance.userService.changeUserLocale(user.getId(), sessionData.getLocale());
+                                } catch (UnknownUserIdException ex) {
+                                    Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
                         sessionData.setUser(user);
                         sessionData.setIdUser(instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
                         instance.userDao.updateScreenname(sessionData.getIdUser(), user.getScreenname());

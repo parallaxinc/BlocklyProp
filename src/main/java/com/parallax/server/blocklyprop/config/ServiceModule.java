@@ -27,7 +27,7 @@ public class ServiceModule extends AbstractModule {
         bind(ProjectConverter.class);
 
         bind(ProjectService.class).to(ProjectServiceImpl.class);
-        bind(UserService.class).to(UserServiceImpl.class);
+        bind(UserService.class).to(UserServiceImpl.class).asEagerSingleton();
         bind(SecurityService.class).to(SecurityServiceImpl.class).asEagerSingleton();
         bind(SessionService.class).to(SessionServiceImpl.class).asEagerSingleton();
     }

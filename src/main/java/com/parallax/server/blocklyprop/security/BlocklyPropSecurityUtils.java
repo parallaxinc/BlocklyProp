@@ -40,4 +40,26 @@ public class BlocklyPropSecurityUtils extends SecurityUtils {
         return null;
     }
 
+    public static void setUserInfo(User user) {
+        SessionData sessionData = SecurityServiceImpl.getSessionData();
+        if (sessionData != null) {
+            sessionData.setUser(user);
+        }
+    }
+
+    public static String getLocale() {
+        SessionData sessionData = SecurityServiceImpl.getSessionData();
+        if (sessionData != null) {
+            return sessionData.getLocale();
+        }
+        return null;
+    }
+
+    public static void setLocale(String locale) {
+        SessionData sessionData = SecurityServiceImpl.getSessionData();
+        if (sessionData != null) {
+            sessionData.setLocale(locale);
+        }
+    }
+
 }
