@@ -139,6 +139,7 @@ Blockly.Spin.definitions_ = {};
         // Create a list of stacks
         Blockly.Spin.stacks_ = [];
         Blockly.Spin.vartype_ = {};
+        Blockly.Spin.serial_terminal_ = false;
         if (Blockly.Variables) {
 if (!Blockly.Spin.variableDB_) {
 Blockly.Spin.variableDB_ =
@@ -211,7 +212,11 @@ Blockly.Spin.definitions_['variables'] = defvars.join('\n');
         setups.push('Start');
                 var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
                 var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
-                var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
+                var setup = '';
+                if (Blockly.Spin.serial_terminal_) {
+        setup += "'SERIAL_TERMINAL USED\n";
+        }
+        setup += 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
                 return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
         };
         /**

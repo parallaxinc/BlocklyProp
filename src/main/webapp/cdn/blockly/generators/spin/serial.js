@@ -53,13 +53,26 @@ Blockly.Blocks.serial_send_text = {
         this.setColour(180);
         this.appendDummyInput("")
                 .appendField("Serial transmit")
-                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                        'media/quote0.png', 12, 12))
+                .appendField(this.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                        'media/quote1.png', 12, 12));
+                .appendField(this.newQuote_(false));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    /**
+     * Create an image of an open or closed quote.
+     * @param {boolean} open True if open quote, false if closed.
+     * @return {!Blockly.FieldImage} The field image of the quote.
+     * @this Blockly.Block
+     * @private
+     */
+    newQuote_: function (open) {
+        if (open == this.RTL) {
+            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAqUlEQVQI1z3KvUpCcRiA8ef9E4JNHhI0aFEacm1o0BsI0Slx8wa8gLauoDnoBhq7DcfWhggONDmJJgqCPA7neJ7p934EOOKOnM8Q7PDElo/4x4lFb2DmuUjcUzS3URnGib9qaPNbuXvBO3sGPHJDRG6fGVdMSeWDP2q99FQdFrz26Gu5Tq7dFMzUvbXy8KXeAj57cOklgA+u1B5AoslLtGIHQMaCVnwDnADZIFIrXsoXrgAAAABJRU5ErkJggg==';
+        } else {
+            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAn0lEQVQI1z3OMa5BURSF4f/cQhAKjUQhuQmFNwGJEUi0RKN5rU7FHKhpjEH3TEMtkdBSCY1EIv8r7nFX9e29V7EBAOvu7RPjwmWGH/VuF8CyN9/OAdvqIXYLvtRaNjx9mMTDyo+NjAN1HNcl9ZQ5oQMM3dgDUqDo1l8DzvwmtZN7mnD+PkmLa+4mhrxVA9fRowBWmVBhFy5gYEjKMfz9AylsaRRgGzvZAAAAAElFTkSuQmCC';
+        }
+        return new Blockly.FieldImage(file, 12, 12, '"');
     }
 };
 
@@ -80,6 +93,7 @@ Blockly.Spin.serial_open = function () {
     var baud = this.getTitleValue('BAUD');
 
     Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
+    Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.StartRxTx( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', %1100, ' + baud + ' );';
     }
@@ -91,6 +105,7 @@ Blockly.Spin.serial_send_text = function () {
     var text = this.getTitleValue('TEXT');
 
     Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
+    Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         return '';
     }
@@ -101,6 +116,7 @@ Blockly.Spin.serial_send_text = function () {
 Blockly.Spin.serial_rx_byte = function () {
 
     Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
+    Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
         return '';
     }

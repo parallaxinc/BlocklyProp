@@ -146,6 +146,9 @@
         </category>
         <category name="<fmt:message key="category.communicate" />">
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
+                <block type="serial_open"></block>
+                <block type="serial_send_text"></block>
+                <block type="serial_rx_byte"></block>
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
             </category>
