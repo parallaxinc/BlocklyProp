@@ -43,11 +43,10 @@ public class ProjectCreationServlet extends HttpServlet {
         String boardType = req.getParameter("board-type");
         String projectDescription = req.getParameter("project-description");
         String projectTypeString = req.getParameter("project-type");
-        String privateString = req.getParameter("private");
-        String sharedString = req.getParameter("shared");
+        String sharing = req.getParameter("sharing");
 
-        boolean privateProject = "true".equals(privateString);
-        boolean sharedProject = "true".equals(sharedString);
+        boolean privateProject = "private".equalsIgnoreCase(sharing);
+        boolean sharedProject = "shared".equalsIgnoreCase(sharing);
 
         ProjectType projectType = null;
         try {

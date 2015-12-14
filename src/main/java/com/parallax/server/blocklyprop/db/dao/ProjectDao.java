@@ -30,11 +30,11 @@ public interface ProjectDao {
 
     List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset);
 
-    List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset);
+    List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset, Long idUser);
 
     int countUserProjects(Long idUser);
 
-    int countSharedProjects();
+    int countSharedProjects(Long idUser);
 
     ProjectRecord cloneProject(Long idProject);
 

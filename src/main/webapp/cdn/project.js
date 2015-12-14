@@ -68,8 +68,15 @@ function loadProject(idProject) {
         $("#project-form-id").val(project['id']);
         $("#project-form-name").val(project['name']);
         $("#project-form-description").val(project['description']);
-        $("#project-form-private").prop('checked', project['private']);
-        $("#project-form-shared").prop('checked', project['shared']);
+        if (project['private']) {
+            $("#project-form-private").prop('checked', 'checked').parent().addClass('active');
+        } else if (project['shared']) {
+            $("#project-form-shared").prop('checked', 'checked').parent().addClass('active');
+        } else {
+            $("#project-form-friends").prop('checked', 'checked').parent().addClass('active');
+        }
+
+
         var openProjectLink = $("a.open-project-link");
         openProjectLink.removeClass("editor-c-link editor-spin-link");
         openProjectLink.attr("href", baseUrl + "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id']);

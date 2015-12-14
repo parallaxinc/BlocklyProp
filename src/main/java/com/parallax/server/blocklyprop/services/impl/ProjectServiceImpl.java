@@ -61,7 +61,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset) {
-        return projectDao.getSharedProjects(order, limit, offset);
+        return projectDao.getSharedProjects(order, limit, offset, BlocklyPropSecurityUtils.getCurrentUserId());
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public int countSharedProjects() {
-        return projectDao.countSharedProjects();
+        return projectDao.countSharedProjects(BlocklyPropSecurityUtils.getCurrentUserId());
     }
 
     @Override

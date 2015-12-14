@@ -117,8 +117,15 @@ public class RestProject {
     @Detail("Save project")
     @Name("Save project")
     @Produces("application/json")
-    public Response saveProject(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("private") boolean privateProject, @FormParam("shared") boolean sharedProject, @FormParam("type") ProjectType type, @FormParam("board") String board) {
+    public Response saveProject(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("sharing") String projectSharing, @FormParam("type") ProjectType type, @FormParam("board") String board) {
         try {
+            boolean privateProject = false;
+            boolean sharedProject = false;
+            if ("private".equalsIgnoreCase(projectSharing)) {
+                privateProject = true;
+            } else if ("shared".equalsIgnoreCase(projectSharing)) {
+                sharedProject = true;
+            }
             ProjectRecord savedProject = projectService.saveProject(idProject, name, description, privateProject, sharedProject, type, board);
             JsonObject result = projectConverter.toJson(savedProject);
 

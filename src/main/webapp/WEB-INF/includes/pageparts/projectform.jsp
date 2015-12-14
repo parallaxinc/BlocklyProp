@@ -25,12 +25,22 @@
                     <label for="description"><fmt:message key="project.description" /></label>
                     <textarea class="form-control" name="description" id="project-form-description" rows="8" required="required"></textarea>
                 </div>
+
                 <div class="form-group">
-                    <input type="checkbox" name="private" value="true" id="project-form-private"/><label for="name"><fmt:message key="project.private" /></label>
+                    <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default">
+                            <input type="radio" name="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" name="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" name="sharing" value="friends" id="project-form-friends"/><fmt:message key="project.sharing.friends" />
+                        </label>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="checkbox" name="shared" value="true" id="project-form-shared"/><label for="description"><fmt:message key="project.shared" /></label>
-                </div>
+
                 <div>
                     <shiro:notAuthenticated>
                         <a class="btn btn-default open-project-link editor-view-link" href="#" ><fmt:message key="project.openlink" /></a>
@@ -48,6 +58,7 @@
                         </div>
                     </shiro:authenticated>
                 </div>
+
             </form>
         </div>
     </div>

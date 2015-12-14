@@ -85,10 +85,18 @@
                                             <div class="row">
                                                 <div class="col-sm-5 col-sm-offset-1">
                                                     <div class="form-group">
-                                                        <input type="checkbox" name="private" value="true" id="project-private"/><label for="name"><fmt:message key="project.create.private" /></label>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="checkbox" name="shared" value="true" id="project-shared"/><label for="description"><fmt:message key="project.create.shared" /></label>
+                                                        <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
+                                                        <div class="btn-group" data-toggle="buttons">
+                                                            <label class="btn btn-default">
+                                                                <input type="radio" name="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
+                                                            </label>
+                                                            <label class="btn btn-default">
+                                                                <input type="radio" name="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
+                                                            </label>
+                                                            <label class="btn btn-default active">
+                                                                <input type="radio" name="sharing" value="friends" id="project-form-friends" checked="checked"/><fmt:message key="project.sharing.friends" />
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

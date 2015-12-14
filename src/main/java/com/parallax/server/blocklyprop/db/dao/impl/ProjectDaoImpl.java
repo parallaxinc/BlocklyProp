@@ -15,6 +15,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import java.util.List;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.SortField;
 
@@ -117,12 +118,16 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset) {
+    public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset, Long idUser) {
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
         if (TableOrder.desc == order) {
             orderField = Tables.PROJECT.NAME.desc();
         }
-        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.SHARED.eq(Boolean.TRUE)).orderBy(orderField).limit(limit).offset(offset).fetch();
+        Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
+        if (idUser != null) {
+            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
+        }
+        return create.selectFrom(Tables.PROJECT).where(conditions).orderBy(orderField).limit(limit).offset(offset).fetch();
     }
 
     @Override
@@ -131,8 +136,12 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public int countSharedProjects() {
-        return create.fetchCount(Tables.PROJECT, Tables.PROJECT.SHARED.equal(Boolean.TRUE));
+    public int countSharedProjects(Long idUser) {
+        Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
+        if (idUser != null) {
+            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
+        }
+        return create.fetchCount(Tables.PROJECT, conditions);
     }
 
     @Override
