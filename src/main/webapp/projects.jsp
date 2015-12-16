@@ -45,5 +45,7 @@
 
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
 
+        <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
+
     </body>
 </html>

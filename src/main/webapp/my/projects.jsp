@@ -43,5 +43,7 @@
             <jsp:param name="shared" value="false" />
         </jsp:include>
 
+        <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
+
     </body>
 </html>

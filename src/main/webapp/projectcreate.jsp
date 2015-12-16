@@ -121,6 +121,8 @@
             </div> <!--  big container -->
         </div>
 
+        <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
+
         <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script src="<c:url value="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>

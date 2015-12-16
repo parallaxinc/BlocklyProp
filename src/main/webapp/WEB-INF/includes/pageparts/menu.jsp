@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
+
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">

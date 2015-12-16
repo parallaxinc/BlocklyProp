@@ -32,9 +32,9 @@
                     <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
                     <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
                     <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
-                    <%
-                        }
-                    %>
+                        <%
+                            }
+                        %>
                     <form name="loginform" action="" method="post">
                         <div class="form-group">
                             <label for="username" ><fmt:message key="login.email" /></label>
@@ -52,6 +52,8 @@
                 </div>
             </div>
         </div>
+
+        <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
 
     </body>
 </html>

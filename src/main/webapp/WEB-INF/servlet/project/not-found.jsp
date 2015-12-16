@@ -28,8 +28,10 @@
 
                 <shiro:authenticated><a href="<c:url value="/my/projects.jsp"/>">Your projects</a></shiro:authenticated>
 
+                </div>
             </div>
-        </div>
+
+        <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
 
     </body>
 </html>

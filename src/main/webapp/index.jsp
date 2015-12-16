@@ -46,5 +46,7 @@
 
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
         <script src="<c:url value="/cdn/latest.js"/>" ></script>
+
+        <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
     </body>
 </html>
