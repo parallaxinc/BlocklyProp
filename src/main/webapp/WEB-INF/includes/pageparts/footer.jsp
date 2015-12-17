@@ -14,7 +14,7 @@
         <div class="container">
             <div>
                 <ul class="nav navbar-nav">
-                    <li><a href="#"><fmt:message key="footer.licenselink" /></a></li>
+                    <li><a href="<c:url value="/public/license"/>"><fmt:message key="footer.licenselink" /></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="navbar-text"><fmt:message key="footer.copyright" /></li>
