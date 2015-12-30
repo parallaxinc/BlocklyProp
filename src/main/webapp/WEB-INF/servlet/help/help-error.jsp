@@ -20,6 +20,17 @@
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
+            <div class="navbar navbar-default">
+                <p class="navbar-text"><strong><fmt:message key="help.title" /></strong></p>
+                <ul class="nav navbar-nav">
+                    <li><a href="<c:url value="/public/help?f=blocklyprop"/>"><fmt:message key="help.menu.blocklyprop" /></a></li>
+                    <li><a href="<c:url value="/public/help?f=blocks"/>"><fmt:message key="help.menu.blocks" /></a></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="container">
             <div class="row">
                 <div class="col-md-12">
 
