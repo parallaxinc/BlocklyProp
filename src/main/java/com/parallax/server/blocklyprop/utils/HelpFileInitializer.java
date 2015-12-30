@@ -5,13 +5,12 @@
  */
 package com.parallax.server.blocklyprop.utils;
 
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -74,13 +73,7 @@ public class HelpFileInitializer {
         @Override
         public void run() {
             System.out.println("Start help file conversion");
-            File[] files = sourceDirectoryFile.listFiles(new FilenameFilter() {
-
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".textile");
-                }
-            });
+            File[] files = sourceDirectoryFile.listFiles();
             iterateFiles(files, destinationDirectoryFile);
             System.out.println("End help file conversion");
         }
@@ -88,17 +81,10 @@ public class HelpFileInitializer {
         private void iterateFiles(File[] files, File destinationDirectory) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    iterateFiles(file.listFiles(new FilenameFilter() {
-
-                        @Override
-                        public boolean accept(File dir, String name) {
-                            return name.endsWith(".textile");
-                        }
-
-                    }), new File(destinationDirectory, file.getName()));
+                    iterateFiles(file.listFiles(), new File(destinationDirectory, file.getName()));
                 } else {
                     try {
-                        convertTextileFile(file, destinationDirectory);
+                        convertFile(file, destinationDirectory);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -106,7 +92,15 @@ public class HelpFileInitializer {
             }
         }
 
-        private void convertTextileFile(File file, File destinationDirectory) throws FileNotFoundException, IOException {
+        private void convertFile(File file, File destinationDirectory) throws IOException {
+            if (file.getName().endsWith(".textile")) {
+                convertTextileFile(file, destinationDirectory);
+            } else {
+                Files.copy(file, new File(destinationDirectory, file.getName()));
+            }
+        }
+
+        private void convertTextileFile(File file, File destinationDirectory) throws IOException {
             InputStreamReader textileStreamReader = new FileReader(file);
 
             destinationDirectory.mkdirs();

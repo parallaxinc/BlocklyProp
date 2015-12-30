@@ -13,6 +13,7 @@ import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class HelpServlet extends HttpServlet {
     private Configuration configuration;
 
     private File destinationDirectoryFile;
+    private MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
 
     @Inject
     public void setConfiguration(Configuration configuration) {
@@ -44,19 +46,54 @@ public class HelpServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String filePath = req.getParameter("f");
 
-        File file = new File(destinationDirectoryFile, filePath + ".xml");
+        if (filePath == null) {
+            filePath = "index";
+        }
 
-        if (isSubDirectory(destinationDirectoryFile, file)) {
-            if (file.exists() && file.isFile()) {
-                req.setAttribute("html", Files.toString(file, Charset.forName("UTF-8")));
-                req.getRequestDispatcher("/WEB-INF/servlet/help/help.jsp").forward(req, resp);
+        File file = new File(destinationDirectoryFile, filePath);
+        if (!filePath.contains(".")) {
+            file = new File(destinationDirectoryFile, filePath + ".xml");
+
+            String fileName = Files.getNameWithoutExtension(file.getName());
+            String extension = Files.getFileExtension(file.getName());
+
+            File localeFile = new File(destinationDirectoryFile, fileName + "_" + getLocale(req) + "." + extension);
+            if (localeFile.exists() && localeFile.isFile()) {
+                file = localeFile;
+            }
+
+            if (isSubDirectory(destinationDirectoryFile, file)) {
+                if (file.exists() && file.isFile()) {
+                    req.setAttribute("html", Files.toString(file, Charset.forName("UTF-8")));
+                    req.getRequestDispatcher("/WEB-INF/servlet/help/help.jsp").forward(req, resp);
+                } else {
+                    req.setAttribute("help-not-found", true);
+                    req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);;
+                }
             } else {
-                req.setAttribute("help-not-found", true);
-                req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);;
+
             }
         } else {
-            req.setAttribute("help-invalid-path", true);
-            req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);
+            String fileName = Files.getNameWithoutExtension(file.getName());
+            String extension = Files.getFileExtension(file.getName());
+
+            File localeFile = new File(destinationDirectoryFile, fileName + "_" + getLocale(req) + "." + extension);
+            if (localeFile.exists() && localeFile.isFile()) {
+                file = localeFile;
+            }
+
+            if (isSubDirectory(destinationDirectoryFile, file)) {
+                if (file.exists() && file.isFile()) {
+                    resp.setContentType(java.nio.file.Files.probeContentType(file.toPath()));
+                    Files.copy(file, resp.getOutputStream());
+                } else {
+                    req.setAttribute("help-not-found", true);
+                    req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);;
+                }
+            } else {
+                req.setAttribute("help-invalid-path", true);
+                req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);
+            }
         }
     }
 
