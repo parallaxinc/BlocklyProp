@@ -79,6 +79,7 @@ public class HelpFileInitializer {
         }
 
         private void iterateFiles(File[] files, File destinationDirectory) {
+            destinationDirectory.mkdirs();
             for (File file : files) {
                 if (file.isDirectory()) {
                     iterateFiles(file.listFiles(), new File(destinationDirectory, file.getName()));
@@ -103,7 +104,6 @@ public class HelpFileInitializer {
         private void convertTextileFile(File file, File destinationDirectory) throws IOException {
             InputStreamReader textileStreamReader = new FileReader(file);
 
-            destinationDirectory.mkdirs();
             File destinationFile = new File(destinationDirectory, file.getName().substring(0, file.getName().length() - 8) + ".xml");
 
             try (OutputStreamWriter xmlStreamWriter = new FileWriter(destinationFile)) {

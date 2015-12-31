@@ -25,7 +25,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="<c:url value="/public/help?f=blocklyprop"/>"><fmt:message key="help.menu.blocklyprop" /></a></li>
                     <li><a href="<c:url value="/public/help?f=blocks"/>"><fmt:message key="help.menu.blocks" /></a></li>
-
+                    <li><a href="<c:url value="/public/help?f=langref"/>"><fmt:message key="help.menu.languagereference" /></a></li>
                 </ul>
             </div>
         </div>
