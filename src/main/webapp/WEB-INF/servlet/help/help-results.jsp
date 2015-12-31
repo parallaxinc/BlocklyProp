@@ -40,16 +40,14 @@
             <div class="row">
                 <div class="col-md-12">
 
+                    <h2><fmt:message key="help.search.results" /></h2>
                     <%
-                        Boolean notFound = (Boolean) request.getAttribute("help-not-found");
-                        if (notFound != null && notFound) {
+                        String html = (String) request.getAttribute("html");
+                        if (html != null) {
                     %>
-                    <h2><fmt:message key="help.not-found" /></h2>
-                    <% }
-                        Boolean invalidPath = (Boolean) request.getAttribute("help-invalid-path");
-                        if (invalidPath != null && invalidPath) {
-                    %>
-                    <h2><fmt:message key="help.invalid-path" /></h2>
+                    <%= html%>
+                    <% } else {%>
+                    <h2><fmt:message key="help.search.no-results" /></h2>
                     <% }%>
 
                 </div>

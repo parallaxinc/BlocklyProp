@@ -27,6 +27,12 @@
                     <li><a href="<c:url value="/public/help?f=blocks"/>"><fmt:message key="help.menu.blocks" /></a></li>
                     <li><a href="<c:url value="/public/help?f=langref"/>"><fmt:message key="help.menu.languagereference" /></a></li>
                 </ul>
+                <form action="<c:url value="/public/helpsearch"/>" class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input name="query" type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
             </div>
         </div>
 
