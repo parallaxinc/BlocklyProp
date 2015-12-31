@@ -63,3 +63,8 @@ body {
 .footer .navbar {
     margin-bottom: 0;
 }
+
+/* Help */
+.short {
+    display: none;
+}

@@ -338,6 +338,12 @@
             <artifactId>commons-pool2</artifactId>
             <version>2.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
         <!-- END Apache commons Dependencies -->
 
         <!-- Rest API -->
@@ -394,6 +400,20 @@
             <version>6.0.0</version>
         </dependency>
 
+        <!-- Lucene search engine -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+
+
         <!-- Other dependencies -->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
@@ -424,6 +444,13 @@
             <artifactId>textile-j</artifactId>
             <version>2.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.8.3</version>
+        </dependency>
+
 
 
         <!-- Clients for other Parallax servers -->
