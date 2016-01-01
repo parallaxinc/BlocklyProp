@@ -72,6 +72,11 @@ public class HelpSearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String queryText = req.getParameter("query");
+        if (Strings.isNullOrEmpty(queryText)) {
+            req.getRequestDispatcher("/WEB-INF/servlet/help/help-results.jsp").forward(req, resp);
+            return;
+        }
+
         try {
             IndexSearcher indexSearcher = initialize();
             if (indexSearcher == null) {
@@ -91,13 +96,13 @@ public class HelpSearchServlet extends HttpServlet {
                     String shortDescription = document.get("short");
                     String path = document.get("path");
 
-                    s.append("<div class='result'><a href='help?f=").append(path).append("'><div class='result-body'><h4>").append(title).append("</h4>");
+                    s.append("<div class='result'><div class='result-body'><h4><a href='help?f=").append(path).append("'>").append(title).append("</a></h4>");
                     if (shortDescription != null) {
                         s.append("<p>");
                         s.append(shortDescription);
                         s.append("</p>");
                     }
-                    s.append("</div></a></div>");
+                    s.append("</div></div>");
                 }
 
                 req.setAttribute("html", s.toString());

@@ -24,6 +24,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
@@ -157,11 +158,12 @@ public class HelpFileInitializer {
 
         private void indexFile(File file, String path) throws IOException {
             Document doc = new Document();
-            doc.add(new TextField("text", new FileReader(file)));
+            //doc.add(new TextField("text", new FileReader(file)));
             doc.add(new StoredField("path", path));
             // TODO: locale?
 
             org.jsoup.nodes.Document jsoup = Jsoup.parse(file, "UTF-8");
+            doc.add(new TextField("text", jsoup.text(), Field.Store.NO));
             Element title = jsoup.select("h1, h2").first();
             if (title != null) {
                 doc.add(new StoredField("title", title.text()));

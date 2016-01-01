@@ -19,28 +19,13 @@
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
-        <div class="container">
-            <div class="navbar navbar-default">
-                <p class="navbar-text"><strong><fmt:message key="help.title" /></strong></p>
-                <ul class="nav navbar-nav">
-                    <li><a href="<c:url value="/public/help?f=blocklyprop"/>"><fmt:message key="help.menu.blocklyprop" /></a></li>
-                    <li><a href="<c:url value="/public/help?f=blocks"/>"><fmt:message key="help.menu.blocks" /></a></li>
-                    <li><a href="<c:url value="/public/help?f=langref"/>"><fmt:message key="help.menu.languagereference" /></a></li>
-                </ul>
-                <form action="<c:url value="/public/helpsearch"/>" class="navbar-form navbar-right" role="search">
-                    <div class="form-group">
-                        <input name="query" type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-            </div>
-        </div>
+        <%@ include file="/WEB-INF/servlet/help/menu.jsp"%>
 
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
 
-                    <h2><fmt:message key="help.search.results" /></h2>
+                    <h2><fmt:message key="help.search.results" />: <small><%= request.getParameter("query") == null ? "" : request.getParameter("query")%></small></h2>
                     <%
                         String html = (String) request.getAttribute("html");
                         if (html != null) {
