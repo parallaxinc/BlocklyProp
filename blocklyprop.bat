@@ -1,1 +1,0 @@
-java -jar BlocklyProp-1.0-SNAPSHOT.jar

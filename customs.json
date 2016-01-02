@@ -1,0 +1,33 @@
+{
+    "elements": {
+        "mutation": {
+            "attributes": {
+                "TYPE": {}
+            }
+        },
+        "field": {
+            "attributes": {
+                "name": {}
+            }
+        },
+        "xml": {},
+        "block": {
+            "attributes": {
+                "type": {}
+            }
+        },
+        "category": {
+            "attributes": {
+                "custom": {},
+                "name": {}
+            }
+        },
+        "value": {
+            "attributes": {
+                "name": {}
+            }
+        },
+        "sep": {}
+    },
+    "attributes": {}
+}

@@ -1,0 +1,254 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/includes/include.jsp"%>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Blockly Demo: Code</title>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/apps/blockly_compressed.js"/>"></script>
+
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/en/_messages.js"/>"></script>
+
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc.js"/>"></script>
+
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/base.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/control.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/pins.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/logic.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/math.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/text.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/lists.js"/>"></script>
+        <!--script type="text/javascript" src="../../language/common/variables.js"></script-->
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/procedures.js"/>"></script>
+        <!-- define blocks -->
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/bit_math.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/math.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/base.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/console.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/control.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/cog.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/variables.js"/>"></script>
+        <!--<script type="text/javascript" src="blockly/generators/propc/pointers.js"></script>-->
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/procedures.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/logic.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/pressure.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/TiltandAcceleration.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/GPS.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/joystick.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/abdrive.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/debug_LCD.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/serial.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/sensors.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/abvolts.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/servo.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/joystick.js"/>"></script>
+
+        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/propc/file.js"/>"></script>
+        <!--<script type="text/javascript" src="generators/arduino/grove.js"></script>-->
+        <!-- custom block -->
+        <!--<script type="text/javascript" src="generators/arduino/custom.js"></script>-->
+
+        <style>
+            html, body {
+                background-color: #fff;
+                margin: 0;
+                padding:0;
+                overflow: hidden;
+            }
+            .blocklySvg {
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+        <script>
+            function init() {
+
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<c:url value="/cdn/blockly/media/"/>', path: '<c:url value="/cdn/blockly/"/>'}); // path: '/' ,
+
+                if (window.parent.init) {
+                    // Let the top-level application know that Blockly is ready.
+                    window.parent.init(Blockly);
+                } else {
+                    // Attempt to diagnose the problem.
+                    var msg = 'Error: Unable to communicate between frames.\n\n';
+                    if (window.parent == window) {
+                        msg += 'Try loading index.html instead of frame.html';
+                    } else if (window.location.protocol == 'file:') {
+                        msg += 'This may be due to a security restriction preventing\n' +
+                                'access when using the file:// protocol.\n' +
+                                'http://code.google.com/p/chromium/issues/detail?id=47416';
+                    }
+                    alert(msg);
+                }
+            }
+
+            function load(xmlText) {
+                var xmlDom = Blockly.Xml.textToDom(xmlText)
+                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+            }
+
+            function ready() {
+                if (window.parent.blocklyReady) {
+                    // Let the top-level application know that the frame is ready.
+                    window.parent.blocklyReady();
+                }
+            }
+
+            function getXml() {
+                var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+                return Blockly.Xml.domToText(xml);
+            }
+        </script>
+    </head>
+    <body  onload="ready()" >
+    <xml id="toolbox" style="display: none">
+        <category name="<fmt:message key="category.programming" />">
+            <category name="<fmt:message key="category.programming.control" />">
+                <block type="controls_if"></block>
+                <block type="controls_repeat">
+                    <mutation TYPE="FOREVER"></mutation>
+                </block>
+                <block type="base_delay">
+                    <value name="DELAY_TIME">
+                        <block type="math_number">
+                            <field name="NUM">1000</field>
+                        </block>
+                    </value>
+                </block>
+                <!--<block type="text"></block>-->
+            </category>
+            <category name="<fmt:message key="category.programming.conditions" />">
+                <block type="logic_compare"></block>
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+                <block type="logic_boolean"></block>
+            </category>
+            <category name="<fmt:message key="category.programming.math" />">
+                <block type="math_number"></block>
+                <block type="math_arithmetic"></block>
+                <block type="math_single"></block>
+                <block type="math_limit"></block>
+                <block type="math_crement"></block>
+                <block type="bit_math_shift"></block>
+                <!--<block type="bit_math_rotate"></block>-->
+                <!-- Repeat from Conditions -->
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+            </category>
+            <category name="<fmt:message key="category.programming.multicore" />">
+                <block type="cog_new"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.input-output" />">
+            <category name="<fmt:message key="category.input-output.pin-states" />">
+                <block type="make_pin"></block>
+                <block type="make_pin_input"></block>
+                <block type="check_pin"></block>
+                <block type="check_pin_input"></block>
+                <block type="set_pins"></block>
+            </category>
+            <category name="<fmt:message key="category.input-output.timing" />">
+                <block type="base_freqout"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.communicate" />">
+            <category name="<fmt:message key="category.communicate.serial-terminal" />">
+                <block type="console_print"></block>
+                <block type="console_print_variables"></block>
+            </category>
+            <category name="<fmt:message key="category.communicate.protocols" />">
+                <block type="serial_open"></block>
+                <block type="serial_tx_byte"></block>
+                <block type="serial_send_text"></block>
+                <block type="serial_rx_byte"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.activity-board" />">
+            <category name="<fmt:message key="category.activity-board.voltage" />">
+                <block type="ab_volt_v_in"></block>
+                <block type="ab_volt_v_out"></block>
+                <block type="ab_volt_in"></block>
+                <block type="ab_volt_out"></block>
+            </category>
+            <category name="<fmt:message key="category.activity-board.memory" />">
+
+            </category>
+            <category name="<fmt:message key="category.activity-board.audio" />">
+
+            </category>
+        </category>
+        <category name="<fmt:message key="category.sensor-input" />">
+            <category name="<fmt:message key="category.sensor-input.etape" />">
+                <block type="etape_rc_time"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.hmc58783" />">
+
+            </category>
+            <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
+                <block type="joystick_input_xaxis"></block>
+                <block type="joystick_input_yaxis"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
+
+            </category>
+            <category name="<fmt:message key="category.sensor-input.mma7455" />">
+
+            </category>
+            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
+                <block type="PAM_7Q_Init"></block>
+                <block type="PAM_7Q_Latitude"></block>
+                <block type="PAM_7Q_Longitude"></block>
+                <block type="PAM_7Q_Velocity"></block>
+                <block type="PAM_7Q_Heading"></block>
+                <block type="PAM_7Q_Altitude"></block>
+                <block type="PAM_7Q_SatsTracked"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.ping" />">
+                <block type="sensor_ping"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.pir" />">
+                <block type="PIR_Sensor"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.rfid" />">
+
+            </category>
+            <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
+                <block type="SF02_Laser_Rangefinder"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.sony-remote" />">
+
+            </category>
+            <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
+
+            </category>
+        </category>
+        <category name="<fmt:message key="category.actuator-output" />">
+            <category name="<fmt:message key="category.actuator-output.standard-senvo" />">
+                <block type="servo_move"></block>
+            </category>
+            <category name="<fmt:message key="category.actuator-output.cr-servo" />">
+
+            </category>
+            <category name="<fmt:message key="category.actuator-output.serial-lcd" />">
+                <block type="debug_lcd_init"></block>
+                <block type="debug_lcd_clear"></block>
+                <block type="debug_lcd_print"></block>
+                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_action"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.robot" />">
+            <category name="<fmt:message key="category.robot.activitybot" />">
+                <block type="ab_drive_speed"></block>
+                <block type="ab_drive_goto"></block>
+            </category>
+            <category name="<fmt:message key="category.robot.servo-diff-drive" />">
+
+            </category>
+        </category>
+        <sep></sep>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
+    </xml>
+</body>
+</html>
