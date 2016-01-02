@@ -16,7 +16,7 @@
             <li><a href="<c:url value="/public/help?f=blocks"/>"><fmt:message key="help.menu.blocks" /></a></li>
             <li><a href="<c:url value="/public/help?f=langref"/>"><fmt:message key="help.menu.languagereference" /></a></li>
         </ul>
-        <form action="<c:url value="/public/helpsearch"/>" class="navbar-form navbar-right" role="search" style="margin-right: 0px;">
+        <form action="<%= request.getContextPath()%>/public/helpsearch" class="navbar-form navbar-right" role="search" style="margin-right: 0px;">
             <div class="form-group">
                 <input name="query" type="text" class="form-control" placeholder="<fmt:message key="help.search" />" value="<%= request.getParameter("query") == null ? "" : request.getParameter("query")%>">
             </div>
