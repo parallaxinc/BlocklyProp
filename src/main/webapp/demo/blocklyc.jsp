@@ -16,7 +16,7 @@
         <script type="text/javascript" src="<c:url value="/cdn/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/utils.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/cdn/demoeditor.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdb/blocklyc.js"/>"></script>
+        <script type="text/javascript" src="<c:url value="/cdn/blocklyc.js"/>"></script>
         <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<c:url value="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
