@@ -1,0 +1,28 @@
+h2. Libraries
+
+BlocklyProp is based on a whole set of open source libraries, improving stability and release times.
+
+h3. Server
+
+* "Apache Commons Configuration":https://commons.apache.org/proper/commons-configuration/ configuration framework
+* "Apache Commons Collections":https://commons.apache.org/proper/commons-collections/ collection utils
+* "Apache Commons DBCP":https://commons.apache.org/proper/commons-dbcp/ database connection utils
+* "Apache Commons Pool":https://commons.apache.org/proper/commons-pool/ database connection pooling
+* "Apache Commons IO":https://commons.apache.org/proper/commons-io/ IO utility framework
+* "Cuubez":http://www.cuubez.com/ Rest API visualizer
+* "Gson":https://github.com/google/gson json serializer
+* "Guava":https://code.google.com/p/guava-libraries/ utilities
+* "Guice":https://github.com/google/guice dependency injection
+* "Lucene":http://lucene.apache.org/ full text search engine
+* "MySql connector":https://dev.mysql.com/downloads/connector/j/
+* "Jackson":https://github.com/FasterXML/jackson json parser
+* "Jersey":https://jersey.java.net/ RESTful Web Services
+* "jOOQ":http://www.jooq.org/ orm library
+* "jsoup":http://jsoup.org/ HTML parser
+* "Shiro":http://shiro.apache.org/ security framework
+* "Textile-J":https://java.net/projects/textile-j markup notation library
+
+h3. Browser
+
+* "Blockly":https://developers.google.com/blockly/?hl=en
+* "jQuery":https://jquery.com/
