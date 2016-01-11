@@ -7,13 +7,17 @@ package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.AbstractModule;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
+import com.parallax.server.blocklyprop.services.AuthenticationService;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import com.parallax.server.blocklyprop.services.SessionService;
+import com.parallax.server.blocklyprop.services.TokenGeneratorService;
 import com.parallax.server.blocklyprop.services.UserService;
+import com.parallax.server.blocklyprop.services.impl.AuthenticationServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.ProjectServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.SessionServiceImpl;
+import com.parallax.server.blocklyprop.services.impl.UUIDTokenGeneratorServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.UserServiceImpl;
 
 /**
@@ -25,6 +29,9 @@ public class ServiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(ProjectConverter.class);
+
+        bind(TokenGeneratorService.class).to(UUIDTokenGeneratorServiceImpl.class);
+        bind(AuthenticationService.class).to(AuthenticationServiceImpl.class);
 
         bind(ProjectService.class).to(ProjectServiceImpl.class);
         bind(UserService.class).to(UserServiceImpl.class).asEagerSingleton();

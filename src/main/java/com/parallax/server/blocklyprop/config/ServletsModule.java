@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
+import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
 import com.parallax.server.blocklyprop.servlets.HelpSearchServlet;
@@ -30,6 +31,8 @@ public class ServletsModule extends ServletModule {
     @Override
     protected void configureServlets() {
         serve("/pong").with(PingServlet.class);
+
+        serve("/authenticate").with(AuthenticationServlet.class);
 
         serve("/project").with(ProjectServlet.class);
         serve("/user").with(UserServlet.class);

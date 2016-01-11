@@ -20,6 +20,9 @@ public class SessionData implements Serializable {
     private Long idUser;
     private String locale;
 
+    private String token;
+    private String challenge;
+
     public User getUser() {
         return user;
     }
@@ -42,6 +45,22 @@ public class SessionData implements Serializable {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(String challenge) {
+        this.challenge = challenge;
     }
 
 }
