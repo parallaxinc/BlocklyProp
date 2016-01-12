@@ -42,7 +42,7 @@
                     </li>
                 </shiro:authenticated>
 
-                <li><a href="<c:url value="/public/help"/>"><fmt:message key="menu.help" /></a></li>
+                <li><a href="<c:url value="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
                 <li class="navbar-text">
                     <form style="margin-bottom: 0;">
                         <select id="language" name="language" onchange="submit()">
