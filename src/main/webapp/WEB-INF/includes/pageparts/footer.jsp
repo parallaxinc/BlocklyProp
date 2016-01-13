@@ -18,7 +18,8 @@
                     <li><a href="<c:url value="/public/libraries"/>"><fmt:message key="footer.librarieslink" /></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="navbar-text"><fmt:message key="footer.copyright" /></li>
+                    <jsp:useBean id="date" class="java.util.Date" />
+                    <li><a href="http://www.parallax.com" target="_blank">Parallax &copy; 2015 - <fmt:formatDate value="${date}" pattern="yyyy" /></a></li>
                 </ul>
             </div>
         </div>
