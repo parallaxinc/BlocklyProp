@@ -10,8 +10,8 @@
 <div id="project-form-container"  class="container collapse">
     <div class="row">
         <div class="col-md-12">
-            <h2><a href="#" class="btn btn-default"><fmt:message key="back" /></a> <a href="<c:url value="/index.jsp"/>">BlocklyProp</a>: <fmt:message key="project.title" /></h2>
-            <form id="project-form" action="<c:url value="/rest/project"/>" method="post">
+            <h2><a href="#" class="btn btn-default"><fmt:message key="back" /></a> <a href="<url:getUrl url="/index.jsp"/>">BlocklyProp</a>: <fmt:message key="project.title" /></h2>
+            <form id="project-form" action="<url:getUrl url="/rest/project"/>" method="post">
                 <div class="alert alert-success alert-dismissible hidden project-changed" id="project-changed">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <p><fmt:message key="project.changed" /></p>
@@ -49,12 +49,12 @@
                     <shiro:authenticated>
                         <a class="btn btn-default open-project-link editor-view-link" href="#" ><fmt:message key="project.openlink" /></a>
                         <div class="btn-group not-your-project hidden">
-                            <a class="btn btn-default clone-project" href="<c:url value="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
+                            <a class="btn btn-default clone-project" href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
                         </div>
                         <div class="btn-group your-project hidden">
                             <button class="btn btn-primary" ><fmt:message key="project.savelink" /></button>
-                            <a class="btn btn-danger delete-project" href="<c:url value="/project?delete="/>" ><fmt:message key="project.deletelink" /></a>
-                            <a class="btn btn-default clone-project" href="<c:url value="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
+                            <a class="btn btn-danger delete-project" href="<url:getUrl url="/project?delete="/>" ><fmt:message key="project.deletelink" /></a>
+                            <a class="btn btn-default clone-project" href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
                         </div>
                     </shiro:authenticated>
                 </div>

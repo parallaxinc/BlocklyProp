@@ -10,12 +10,12 @@
 <html><!-- manifest=node.manifest> -->
     <head>
         <meta charset="utf-8">
-        <meta name="base" content="<c:url value="/"/>">
+        <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
-        <script src="<c:url value="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
-        <link href="<c:url value="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
-        <link href="<c:url value="/cdn/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
-        <link href="<c:url value="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
+        <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
+        <link href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
+        <link href="<url:getUrl url="/cdn/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
+        <link href="<url:getUrl url="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>
 
@@ -105,7 +105,7 @@
                                     <div class="wizard-footer">
                                         <div class="pull-right">
                                             <input type='button' class='btn btn-next btn-fill btn-info btn-wd btn-sm' name='next' value='<fmt:message key="project.create.nextlink" />' />
-                                            <input type='button' id='finish' class='btn btn-finish btn-fill btn-info btn-wd btn-sm' name='finish' value='<fmt:message key="project.create.finishlink" />' data-editor='<c:url value="/editor/"/>' />
+                                            <input type='button' id='finish' class='btn btn-finish btn-fill btn-info btn-wd btn-sm' name='finish' value='<fmt:message key="project.create.finishlink" />' data-editor='<url:getUrl url="/editor/"/>' />
 
                                         </div>
                                         <div class="pull-left">
@@ -123,11 +123,11 @@
 
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
 
-        <script src="<c:url value="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<c:url value="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
-        <script src="<c:url value="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
-        <script src="<c:url value="/cdn/lib/jquery.validate.min.js"/>"></script>
-        <script src="<c:url value="/cdn/utils.js"/>"></script>
-        <script src="<c:url value="/cdn/projectcreation.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/jquery.validate.min.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/utils.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/projectcreation.js"/>"></script>
     </body>
 </html>

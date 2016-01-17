@@ -9,22 +9,22 @@
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="containter-fluid">
-        <a id="nav-logo" href="<c:url value="/index.jsp"/>">BlocklyProp</a>
+        <a id="nav-logo" href="<url:getUrl url="/index.jsp"/>">BlocklyProp</a>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav" id="navbar-left">
                 <!--  <li><a href="help/index.html">Manual</a></li> -->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.newproject.title" /><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<c:url value="/editor/blocklyspin.jsp"/>"><fmt:message key="editor.newproject.spin" /></a></li>
-                        <li><a href="<c:url value="/editor/blocklyc.jsp"/>"><fmt:message key="editor.newproject.c" /></a></li>
+                        <li><a href="<url:getUrl url="/editor/blocklyspin.jsp"/>"><fmt:message key="editor.newproject.spin" /></a></li>
+                        <li><a href="<url:getUrl url="/editor/blocklyc.jsp"/>"><fmt:message key="editor.newproject.c" /></a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.projects.title" /> <b class="caret"></b></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="<c:url value="/projects.jsp"/>"><fmt:message key="editor.projects.community" /></a></li>
-                        <li><a href="<c:url value="/my/projects.jsp"/>"><fmt:message key="editor.projects.mine" /></a></li>
+                        <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="editor.projects.community" /></a></li>
+                        <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="editor.projects.mine" /></a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

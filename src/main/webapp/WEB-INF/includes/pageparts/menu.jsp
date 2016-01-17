@@ -17,32 +17,32 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" id="nav-logo" href="<c:url value="/"/>">BlocklyProp</a>
+            <a class="navbar-brand" id="nav-logo" href="<url:getUrl url="/"/>">BlocklyProp</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="<c:url value="/projects.jsp"/>"><fmt:message key="menu.project_list" /></a></li>
+                <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.project_list" /></a></li>
                     <shiro:authenticated>
-                    <li><a href="<c:url value="/my/projects.jsp"/>"><fmt:message key="menu.your_projects" /></a></li>
+                    <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.your_projects" /></a></li>
                     </shiro:authenticated>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <shiro:notAuthenticated>
-                    <li><a href="<c:url value="/login.jsp"/>"><fmt:message key="menu.login_and_register" /></a></li>
+                    <li><a href="<url:getUrl url="/login.jsp"/>"><fmt:message key="menu.login_and_register" /></a></li>
                     </shiro:notAuthenticated>
                     <shiro:authenticated>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><shiro:principal></shiro:principal> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<c:url value="/profile"/>"><fmt:message key="menu.profile" /></a></li>
-                            <li><a href="<c:url value="/logout"/>"><fmt:message key="logout" /></a></li>
+                                <li><a href="<url:getUrl url="/profile"/>"><fmt:message key="menu.profile" /></a></li>
+                            <li><a href="<url:getUrl url="/logout"/>"><fmt:message key="logout" /></a></li>
                         </ul>
                     </li>
                 </shiro:authenticated>
 
-                <li><a href="<c:url value="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
+                <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
                 <li class="navbar-text">
                     <form style="margin-bottom: 0;">
                         <select id="language" name="language" onchange="submit()">

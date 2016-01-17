@@ -24,8 +24,8 @@
                     </div>
                     <div class="col-md-6">
                         <h2>Log in</h2>
-                        <a class="full-editor-link" href="<c:url value="/login.jsp"/>">Login</a>
-                        <a href="<c:url value="register"/>" >Register</a>
+                        <a class="full-editor-link" href="<url:getUrl url="/login.jsp"/>">Login</a>
+                        <a href="<url:getUrl url="register"/>" >Register</a>
                     </div>
                 </div>
                 <div class="modal-footer">

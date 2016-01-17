@@ -5,40 +5,40 @@
     <head>
         <meta charset="utf-8">
         <title>Blockly Demo: Code</title>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/apps/blockly_compressed.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/apps/blockly_compressed.js"/>"></script>
 
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/en/_messages.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/en/_messages.js"/>"></script>
 
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin.js"/>"></script>
 
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/base.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/servo.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/sensors.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/debug_lcd.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/control.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/logic.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/math.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/PIRSensor.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/bit_math.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/distance.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/pressure.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/TiltandAcceleration.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/base.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/servo.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/sensors.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/debug_lcd.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/control.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/logic.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/math.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/PIRSensor.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/bit_math.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/distance.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/pressure.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/TiltandAcceleration.js"/>"></script>
         <!--<script type="text/javascript" src="generators/arduino/text.js"></script>-->
         <!--<script type="text/javascript" src="generators/arduino/lists.js"></script>-->
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/variables.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/procedures.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/serial.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/control.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/pins.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/logic.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/joystick.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/math.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/text.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/lists.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/variables.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/procedures.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/serial.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/control.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/pins.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/logic.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/joystick.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/math.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/text.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/lists.js"/>"></script>
         <!--script type="text/javascript" src="../../language/common/variables.js"></script-->
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/language/common/procedures.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/language/common/procedures.js"/>"></script>
         <!-- define blocks -->
-        <script type="text/javascript" src="<c:url value="/cdn/blockly/generators/spin/base.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/spin/base.js"/>"></script>
         <!--<script type="text/javascript" src="generators/arduino/grove.js"></script>-->
         <!-- custom block -->
         <!--<script type="text/javascript" src="generators/arduino/custom.js"></script>-->
@@ -57,7 +57,7 @@
         </style>
         <script>
             function init() {
-                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<c:url value="/cdn/blockly/media/"/>', path: '<c:url value="/cdn/blockly/"/>'}); // path: '/' ,
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
 
                 if (window.parent.init) {
                     // Let the top-level application know that Blockly is ready.
