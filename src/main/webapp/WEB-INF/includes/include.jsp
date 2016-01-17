@@ -10,6 +10,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib prefix="properties" uri="http://blocklyprop.parallax.com/properties" %>
 <%@ taglib prefix="locale" uri="http://blocklyprop.parallax.com/locale" %>
+<%@ taglib prefix="url" uri="http://blocklyprop.parallax.com/url" %>
 
 <c:if test="${!language_set}">
     <c:set var="language_set" value="true" scope="request" />

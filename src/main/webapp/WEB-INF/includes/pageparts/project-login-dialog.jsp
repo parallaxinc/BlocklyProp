@@ -23,8 +23,8 @@
                     </div>
                     <div class="col-md-6">
                         <h2><fmt:message key="not_loggedin.login.title" /></h2>
-                        <a class="editor-continue-link" href="<c:url value="/login.jsp"/>"><fmt:message key="not_loggedin.login.loginlink" /></a>
-                        <a href="<c:url value="register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
+                        <a class="editor-continue-link" href="<url:getUrl url="/login.jsp"/>"><fmt:message key="not_loggedin.login.loginlink" /></a>
+                        <a href="<url:getUrl url="register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
                     </div>
                 </div>
                 <div class="modal-footer">

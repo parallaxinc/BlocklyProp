@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<table id="project-table" class="table" data-toggle="table" data-url="<c:url value="${param.url}"/>"  data-toolbar="#toolbar" data-search="true" data-side-pagination="server" data-pagination="true" data-search="true">
+<table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="${param.url}"/>"  data-toolbar="#toolbar" data-search="true" data-side-pagination="server" data-pagination="true" data-search="true">
     <thead>
         <tr>
             <th data-field="type" data-formatter="formatType" data-width="30px" data-align="center"></th>
@@ -22,8 +22,8 @@
 
 <script>
     var languageUrls = {
-        "PROPC": "<c:url value="/cdn/images/lang-icons/c.png" />",
-        "SPIN": "<c:url value="/cdn/images/lang-icons/spin.png" />"
+        "PROPC": "<url:getUrl url="/cdn/images/lang-icons/c.png" />",
+        "SPIN": "<url:getUrl url="/cdn/images/lang-icons/spin.png" />"
     };
 
     function formatType(value, row) {
