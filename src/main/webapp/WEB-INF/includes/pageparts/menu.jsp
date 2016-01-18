@@ -11,7 +11,7 @@
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -34,7 +34,7 @@
                     </shiro:notAuthenticated>
                     <shiro:authenticated>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><shiro:principal></shiro:principal> <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"><shiro:principal></shiro:principal> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="<url:getUrl url="/profile"/>"><fmt:message key="menu.profile" /></a></li>
                             <li><a href="<url:getUrl url="/logout"/>"><fmt:message key="logout" /></a></li>
