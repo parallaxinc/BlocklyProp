@@ -81,7 +81,7 @@
         </taglib>
         <taglib>
             <taglib-uri>http://blocklyprop.parallax.com/url</taglib-uri>
-            <taglib-location>/WEB-INF/utl.tld</taglib-location>
+            <taglib-location>/WEB-INF/url.tld</taglib-location>
         </taglib>
     </jsp-config>
 
