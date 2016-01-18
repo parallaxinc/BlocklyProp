@@ -68,7 +68,7 @@ public class SecurityServiceImpl implements SecurityService {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         registerService = new CloudSessionRegisterService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
-        authenticateService = new CloudSessionAuthenticateService(configuration.getString("cloudsession.baseurl"));
+        authenticateService = new CloudSessionAuthenticateService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
         userService = new CloudSessionUserService(configuration.getString("cloudsession.baseurl"));
     }
 
