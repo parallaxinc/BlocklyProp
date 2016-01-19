@@ -22,6 +22,7 @@ public class SessionData implements Serializable {
 
     private String token;
     private String challenge;
+    private Long lastTimestamp;
 
     public User getUser() {
         return user;
@@ -61,6 +62,14 @@ public class SessionData implements Serializable {
 
     public void setChallenge(String challenge) {
         this.challenge = challenge;
+    }
+
+    public Long getLastTimestamp() {
+        return lastTimestamp;
+    }
+
+    public void setLastTimestamp(Long lastTimestamp) {
+        this.lastTimestamp = lastTimestamp;
     }
 
 }
