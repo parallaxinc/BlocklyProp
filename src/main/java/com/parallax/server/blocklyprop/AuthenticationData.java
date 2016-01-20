@@ -6,7 +6,6 @@
 package com.parallax.server.blocklyprop;
 
 import com.google.inject.servlet.SessionScoped;
-import com.parallax.client.cloudsession.objects.User;
 import java.io.Serializable;
 
 /**
@@ -14,23 +13,13 @@ import java.io.Serializable;
  * @author Michel
  */
 @SessionScoped
-public class SessionData implements Serializable {
+public class AuthenticationData implements Serializable {
 
-    private User user;
     private Long idUser;
-    private String locale;
 
     private String token;
     private String challenge;
     private Long lastTimestamp;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Long getIdUser() {
         return idUser;
@@ -38,14 +27,6 @@ public class SessionData implements Serializable {
 
     public void setIdUser(Long idUser) {
         this.idUser = idUser;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
     }
 
     public String getToken() {
@@ -74,7 +55,7 @@ public class SessionData implements Serializable {
 
     @Override
     public String toString() {
-        return "SessionData{" + "user=" + user + ", idUser=" + idUser + ", locale=" + locale + ", token=" + token + ", challenge=" + challenge + ", lastTimestamp=" + lastTimestamp + '}';
+        return "AuthenticationData{" + "idUser=" + idUser + ", token=" + token + ", challenge=" + challenge + ", lastTimestamp=" + lastTimestamp + '}';
     }
 
 }

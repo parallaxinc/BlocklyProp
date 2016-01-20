@@ -5,8 +5,8 @@
  */
 package com.parallax.server.blocklyprop.services;
 
-import com.parallax.server.blocklyprop.SessionData;
-import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
+import com.parallax.client.cloudsession.objects.User;
+import com.parallax.server.blocklyprop.AuthenticationData;
 
 /**
  *
@@ -14,8 +14,8 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
  */
 public interface AuthenticationService {
 
-    SessionData getNewAuthenticationData();
+    AuthenticationData getNewAuthenticationData();
 
-    UserRecord authenticate(Long idUser, String timestamp, String hash);
+    User authenticate(Long idUser, Long timestamp, String hash, String userAgent, String remoteAddress);
 
 }

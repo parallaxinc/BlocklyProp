@@ -1,13 +1,21 @@
+var timestamp = undefined;
+var challenge = undefined;
+
 $(document).ready(function () {
 // bind 'myForm' and provide a simple callback function
-    $('#loginform').ajaxForm({
+    var loginForm = $('#loginform');
+
+    challenge = loginForm.data('challenge');
+    timestamp = loginForm.data('timestamp');
+
+    loginForm.ajaxForm({
         dataType: 'json',
         success: onSuccess
     });
+
 });
 
-var timestamp = 1234567890;
-var challenge = "azertyuiop";
+
 
 function onSuccess(response, statusText, xhr, $form) {
     //   alert(response.data.token);
