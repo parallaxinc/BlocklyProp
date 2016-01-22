@@ -28,7 +28,7 @@ if (!Blockly.Blocks)
   Blockly.Blocks = {};
 
 // @TODO : Change "toggle_led" to something more appropriate maybe?
-Blockly.Blocks.toggle_led = {
+Blockly.Blocks.heb_toggle_led = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -45,7 +45,7 @@ Blockly.Blocks.toggle_led = {
   }
 };
 
-Blockly.propc.toggle_led = function() {
+Blockly.propc.heb_toggle_led = function() {
   var led_number = this.getFieldValue( "LED_#" );
   var led_state = this.getFieldValue( "STATE" );
 
@@ -57,7 +57,7 @@ Blockly.propc.toggle_led = function() {
   return code;
 };
 
-Blockly.Blocks.set_led_rgb = {
+Blockly.Blocks.heb_set_led_rgb = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -74,7 +74,7 @@ Blockly.Blocks.set_led_rgb = {
   }
 };
 
-Blockly.propc.set_led_rgb = function() {
+Blockly.propc.heb_set_led_rgb = function() {
   var led_side = this.getFieldValue( "SIDE" );
   var led_rgb = this.getFieldValue( "RGB" );
 
@@ -86,7 +86,7 @@ Blockly.propc.set_led_rgb = function() {
   return code;
 };
 
-Blockly.Blocks.print_string = {
+Blockly.Blocks.heb_print_string = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -100,7 +100,7 @@ Blockly.Blocks.print_string = {
   }
 };
 
-Blockly.propc.print_string = function() {
+Blockly.propc.heb_print_string = function() {
   var string_to_print = this.getFieldValue( "STRING" );
 
   // @TODO : move initialization & set up to be automatic
@@ -111,7 +111,7 @@ Blockly.propc.print_string = function() {
   return code;
 };
 
-Blockly.Blocks.print_string_var = {
+Blockly.Blocks.heb_print_string_var = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -124,7 +124,7 @@ Blockly.Blocks.print_string_var = {
   }
 };
 
-Blockly.propc.print_string_var = function() {
+Blockly.propc.heb_print_string_var = function() {
   var string_to_print = Blockly.propc.valueToCode( this, "VALUE", Blockly.propc.ORDER_NONE );
 
   // @TODO : move initialization & set up to be automatic
@@ -135,7 +135,7 @@ Blockly.propc.print_string_var = function() {
   return code;
 };
 
-Blockly.Blocks.cursor_position = {
+Blockly.Blocks.heb_cursor_position = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -154,7 +154,7 @@ Blockly.Blocks.cursor_position = {
   }
 };
 
-Blockly.propc.cursor_position = function() {
+Blockly.propc.heb_cursor_position = function() {
   var columns = this.getFieldValue( "COLS" );
   var rows = this.getFieldValue( "ROWS" );
   var text_size = this.getFieldValue( "TEXT_SIZE" );
@@ -167,7 +167,7 @@ Blockly.propc.cursor_position = function() {
   return code;
 };
 
-Blockly.Blocks.clear_screen = {
+Blockly.Blocks.heb_clear_screen = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -180,7 +180,7 @@ Blockly.Blocks.clear_screen = {
   }
 };
 
-Blockly.propc.clear_screen = function() {
+Blockly.propc.heb_clear_screen = function() {
   // @TODO : move initialization & set up to be automatic
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
@@ -189,7 +189,7 @@ Blockly.propc.clear_screen = function() {
   return code;
 };
 
-Blockly.Blocks.rotate = {
+Blockly.Blocks.heb_rotate = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -202,7 +202,7 @@ Blockly.Blocks.rotate = {
   }
 };
 
-Blockly.propc.rotate = function() {
+Blockly.propc.heb_rotate = function() {
   // @TODO : move initialization & set up to be automatic
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
@@ -211,7 +211,7 @@ Blockly.propc.rotate = function() {
   return code;
 };
 
-Blockly.Blocks.send_signal = {
+Blockly.Blocks.heb_send_signal = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -225,7 +225,7 @@ Blockly.Blocks.send_signal = {
   }
 };
 
-Blockly.propc.send_signal = function() {
+Blockly.propc.heb_send_signal = function() {
   var message = this.getFieldValue( "MESSAGE" );
 
   // @TODO : move initialization & set up to be automatic
@@ -236,7 +236,7 @@ Blockly.propc.send_signal = function() {
   return code;
 };
 
-Blockly.Blocks.read_signal = {
+Blockly.Blocks.heb_read_signal = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -252,7 +252,7 @@ Blockly.Blocks.read_signal = {
   }
 };
 
-Blockly.propc.read_signal = function() {
+Blockly.propc.heb_read_signal = function() {
   var buffer = Blockly.propc.valueToCode( this, "BUFFER", Blockly.propc.ORDER_NONE );
 
   // @TODO : move initialization & set up to be automatic
@@ -263,7 +263,7 @@ Blockly.propc.read_signal = function() {
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.Blocks.clear_ir_buffer = {
+Blockly.Blocks.heb_clear_ir_buffer = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -277,7 +277,7 @@ Blockly.Blocks.clear_ir_buffer = {
   }
 };
 
-Blockly.propc.clear_ir_buffer = function() {
+Blockly.propc.heb_clear_ir_buffer = function() {
   // @TODO : move initialization & set up to be automatic
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
@@ -286,7 +286,7 @@ Blockly.propc.clear_ir_buffer = function() {
   return code;
 };
 
-Blockly.Blocks.badge_eeprom_store = {
+Blockly.Blocks.heb_badge_eeprom_store = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -300,7 +300,7 @@ Blockly.Blocks.badge_eeprom_store = {
   }
 };
 
-Blockly.propc.badge_eeprom_store = function() {
+Blockly.propc.heb_badge_eeprom_store = function() {
   var contact = this.getFieldValue( "CONTACT" );
 
   // @TODO : move initialization & set up to be automatic
@@ -311,7 +311,7 @@ Blockly.propc.badge_eeprom_store = function() {
   return code;
 };
 
-Blockly.Blocks.badge_eeprom_is_stored = {
+Blockly.Blocks.heb_badge_eeprom_is_stored = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -327,7 +327,7 @@ Blockly.Blocks.badge_eeprom_is_stored = {
   }
 };
 
-Blockly.propc.badge_eeprom_is_stored = function() {
+Blockly.propc.heb_badge_eeprom_is_stored = function() {
   var contact = this.getFieldValue( "CONTACT" );
 
   // @TODO : move initialization & set up to be automatic
@@ -338,7 +338,7 @@ Blockly.propc.badge_eeprom_is_stored = function() {
   return [ code, Blockly.propc.ORDER_ATOMIC ];
 };
 
-Blockly.Blocks.badge_eeprom_retrieve = {
+Blockly.Blocks.heb_badge_eeprom_retrieve = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -356,7 +356,7 @@ Blockly.Blocks.badge_eeprom_retrieve = {
   }
 };
 
-Blockly.propc.badge_eeprom_retrieve = function() {
+Blockly.propc.heb_badge_eeprom_retrieve = function() {
   var buffer = Blockly.propc.valueToCode( this, "BUFFER", Blockly.propc.ORDER_NONE );
   var index = this.getFieldValue( "INDEX" );
 
@@ -368,7 +368,7 @@ Blockly.propc.badge_eeprom_retrieve = function() {
   return code;
 };
 
-Blockly.Blocks.count_contacts = {
+Blockly.Blocks.heb_count_contacts = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -382,7 +382,7 @@ Blockly.Blocks.count_contacts = {
   }
 };
 
-Blockly.propc.count_contacts = function() {
+Blockly.propc.heb_count_contacts = function() {
   // @TODO : move initialization & set up to be automatic
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
@@ -391,7 +391,7 @@ Blockly.propc.count_contacts = function() {
   return [ code, Blockly.propc.ORDER_NONE ];
 };
 
-Blockly.Blocks.erase_all_contacts = {
+Blockly.Blocks.heb_erase_all_contacts = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -404,7 +404,7 @@ Blockly.Blocks.erase_all_contacts = {
   }
 };
 
-Blockly.propc.erase_all_contacts = function() {
+Blockly.propc.heb_erase_all_contacts = function() {
   // @TODO : move initialization & set up to be automatic
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
@@ -413,7 +413,7 @@ Blockly.propc.erase_all_contacts = function() {
   return code;
 };
 
-Blockly.Blocks.badge_axis_acceleration = {
+Blockly.Blocks.heb_badge_axis_acceleration = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -428,7 +428,7 @@ Blockly.Blocks.badge_axis_acceleration = {
   }
 };
 
-Blockly.propc.badge_axis_acceleration = function() {
+Blockly.propc.heb_badge_axis_acceleration = function() {
   var axis = this.getFieldValue( "AXIS" );
 
   // @TODO : move initialization & set up to be automatic
@@ -439,7 +439,7 @@ Blockly.propc.badge_axis_acceleration = function() {
   return [ code, Blockly.propc.ORDER_NONE ];
 };
 
-Blockly.Blocks.badge_was_shaken = {
+Blockly.Blocks.heb_badge_was_shaken = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -453,7 +453,7 @@ Blockly.Blocks.badge_was_shaken = {
   }
 };
 
-Blockly.propc.badge_was_shaken = function() {
+Blockly.propc.heb_badge_was_shaken = function() {
   // @TODO : move initialization & set up to be automatic
   Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
   Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
@@ -462,7 +462,7 @@ Blockly.propc.badge_was_shaken = function() {
   return [ code, Blockly.propc.ORDER_NONE ];
 };
 
-Blockly.Blocks.touchpad_status = {
+Blockly.Blocks.heb_touchpad_status = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
@@ -477,7 +477,7 @@ Blockly.Blocks.touchpad_status = {
   }
 };
 
-Blockly.propc.touchpad_status = function() {
+Blockly.propc.heb_touchpad_status = function() {
   var touchpad = this.getFieldValue( "TOUCHPAD" );
 
   // @TODO : move initialization & set up to be automatic
