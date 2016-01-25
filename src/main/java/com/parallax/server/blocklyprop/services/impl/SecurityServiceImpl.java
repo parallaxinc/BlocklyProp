@@ -92,9 +92,27 @@ public class SecurityServiceImpl implements SecurityService {
         return instance.authenticateLocalUser(email, password);
     }
 
+    public static User authenticateLocalUserStatic(Long idUser) throws UnknownUserIdException, UserBlockedException, EmailNotConfirmedException {
+        return instance.authenticateLocalUser(idUser);
+    }
+
     public User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException {
         try {
             User user = authenticateService.authenticateLocalUser(email, password);
+//            sessionData.get().setUser(user);
+//            sessionData.get().setIdUser(userDao.getUserIdForCloudSessionUserId(user.getId()));
+            return user;
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+            throw npe;
+        } catch (ServerException se) {
+            return null;
+        }
+    }
+
+    public User authenticateLocalUser(Long idUser) throws UnknownUserIdException, UserBlockedException, EmailNotConfirmedException {
+        try {
+            User user = userService.getUser(idUser);
 //            sessionData.get().setUser(user);
 //            sessionData.get().setIdUser(userDao.getUserIdForCloudSessionUserId(user.getId()));
             return user;

@@ -16,6 +16,7 @@ import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.AuthenticationData;
+import com.parallax.server.blocklyprop.security.IdAuthenticationToken;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import com.parallax.server.blocklyprop.services.TokenGeneratorService;
 import java.nio.charset.Charset;
@@ -23,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.configuration.Configuration;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,8 +44,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private CloudSessionUserService userService;
     private CloudSessionAuthenticationTokenService authenticationTokenService;
 
-    private Provider<AuthenticationData> authenticationDataProvider;
-
     private TokenGeneratorService tokenGeneratorService;
 
     private Provider<HttpSession> sessionProvider;
@@ -52,11 +53,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.configuration = configuration;
         userService = new CloudSessionUserService(configuration.getString("cloudsession.baseurl"));
         authenticationTokenService = new CloudSessionAuthenticationTokenService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
-    }
-
-    @Inject
-    public void setSessionDataProvider(Provider<AuthenticationData> authenticationDataProvider) {
-        this.authenticationDataProvider = authenticationDataProvider;
     }
 
     @Inject
@@ -73,31 +69,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationData getNewAuthenticationData() {
         String challenge = tokenGeneratorService.generateToken();
         sessionProvider.get().setAttribute("challenge", challenge);
-        AuthenticationData sessionData = authenticationDataProvider.get();
+        AuthenticationData sessionData = new AuthenticationData();
         sessionData.setChallenge(challenge);
         sessionData.setLastTimestamp(new Date().getTime());
-        System.out.println("Setting authentication data: " + sessionData);
+        // System.out.println("Setting authentication data: " + sessionData);
         return sessionData;
     }
 
     @Override
     public User authenticate(Long idUser, Long timestamp, String hash, String userAgent, String remoteAddress) {
         try {
-            AuthenticationData sessionData = authenticationDataProvider.get();
+            String challenge = (String) sessionProvider.get().getAttribute("challenge");
 
-            System.out.println(sessionData);
-            System.out.println(sessionProvider.get().getAttribute("BOE"));
-
-            System.out.println("Challenge: " + sessionData.getChallenge() + " Hash: " + hash);
+            System.out.println("Challenge: " + challenge + " Hash: " + hash);
             System.out.println("Timestamp: " + timestamp);
 
-            String challenge = (String) sessionProvider.get().getAttribute("challenge");
             List<String> tokens = authenticationTokenService.getTokens(idUser, userAgent, remoteAddress);
             for (String token : tokens) {
                 String permittedHash = Hashing.sha256().hashString(token + challenge + timestamp, Charset.forName("UTF-8")).toString();
                 System.out.println("Token: " + token + " hash: " + permittedHash);
                 if (permittedHash.equalsIgnoreCase(hash)) {
-                    return userService.getUser(idUser);
+                    User user = userService.getUser(idUser);
+                    doAuthentication(user);
+                    return user;
                 }
             }
             return null;
@@ -107,6 +101,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("Unknown user id", uuie);
         }
         return null;
+    }
+
+    private void doAuthentication(User user) {
+        Subject currentUser = SecurityUtils.getSubject();
+        IdAuthenticationToken idAuthenticationToken = new IdAuthenticationToken(user.getId());
+
+        try {
+            currentUser.login(idAuthenticationToken);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+//        try {
+//
+//            //if no exception, that's it, we're done!
+//        } catch (UnknownAccountException uae) {
+//            //username wasn't in the system, show them an error message?
+//        } catch (IncorrectCredentialsException ice) {
+//            //password didn't match, try again?
+//        } catch (LockedAccountException lae) {
+//            //account for that username is locked - can't login.  Show them a message?
+//        } catch (AuthenticationException ae) {
+//            //unexpected condition - error?
+//        }
     }
 
 }

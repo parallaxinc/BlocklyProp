@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.configuration.Configuration;
 import org.jooq.DSLContext;
 
 /**
@@ -30,9 +31,16 @@ public class SessionDaoImpl implements SessionDao {
 
     private DSLContext create;
 
+    private Configuration configuration;
+
     @Inject
     public void setDSLContext(DSLContext dsl) {
         this.create = dsl;
+    }
+
+    @Inject
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
@@ -76,19 +84,21 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     private void printSessionInfo(String action, SessionRecord session) {
-        try {
-            if (session == null || session.getAttributes() == null) {
-                System.out.println(action + ": NO SESSION AVAILABLE");
-            } else {
-                ByteArrayInputStream bis = new ByteArrayInputStream(session.getAttributes());
-                ObjectInput in = new ObjectInputStream(bis);
-                HashMap attributes = (HashMap) in.readObject();
-                System.out.println(action + ": " + attributes);
+        if (configuration.getBoolean("debug.session", false)) {
+            try {
+                if (session == null || session.getAttributes() == null) {
+                    System.out.println(action + ": NO SESSION AVAILABLE");
+                } else {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(session.getAttributes());
+                    ObjectInput in = new ObjectInputStream(bis);
+                    HashMap attributes = (HashMap) in.readObject();
+                    System.out.println(action + ": " + attributes);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(SessionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException cnfe) {
+                Logger.getLogger(SessionDaoImpl.class.getName()).log(Level.SEVERE, null, cnfe);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(SessionDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException cnfe) {
-            Logger.getLogger(SessionDaoImpl.class.getName()).log(Level.SEVERE, null, cnfe);
         }
 
     }
