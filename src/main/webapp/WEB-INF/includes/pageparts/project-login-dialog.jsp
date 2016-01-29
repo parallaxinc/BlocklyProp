@@ -15,7 +15,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title"><fmt:message key="not_loggedin.title" /></h4>
                 </div>
-                <div class="modal-body"  style="height: 200px;">
+                <div class="modal-body"  style="height: 320px;">
                     <div class="col-md-6">
                         <h2><fmt:message key="not_loggedin.try.title" /></h2>
                         <p><fmt:message key="not_loggedin.try" /></p>
@@ -23,8 +23,10 @@
                     </div>
                     <div class="col-md-6">
                         <h2><fmt:message key="not_loggedin.login.title" /></h2>
-                        <a class="editor-continue-link" href="<url:getUrl url="/login.jsp"/>"><fmt:message key="not_loggedin.login.loginlink" /></a>
-                        <a href="<url:getUrl url="register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
+
+                        <%@ include file="/WEB-INF/includes/pageparts/loginform.jsp"%>
+
+                        <a href="<url:getUrl url="/register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
                     </div>
                 </div>
                 <div class="modal-footer">

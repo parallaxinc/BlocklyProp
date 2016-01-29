@@ -94,15 +94,17 @@ public class AuthenticationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-
-        AuthenticationData sessionData = authenticationService.getNewAuthenticationData();
+        AuthenticationData sessionData = authenticationService.getAuthenticationData();
 
         req.setAttribute("blocklyPropAuthUrl", configuration.getString("blocklyprop-auth.baseurl") + "/authenticate");
         req.setAttribute("challenge", sessionData.getChallenge());
         req.setAttribute("timestamp", String.valueOf(sessionData.getLastTimestamp()));
 
         String format = req.getParameter("format");
+        if (format == null) {
+            format = "form";
+        }
+        System.out.println("Format: " + format);
 
         if ("page".equalsIgnoreCase(format)) {
             req.getRequestDispatcher("/WEB-INF/servlet/login/loginpage.jsp").forward(req, resp);

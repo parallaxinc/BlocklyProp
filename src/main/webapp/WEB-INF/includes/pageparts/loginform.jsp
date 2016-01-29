@@ -7,19 +7,13 @@
 
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<%
-    String blocklyPropAuthUrl = (String) request.getAttribute("blocklyPropAuthUrl");
-    String challenge = (String) request.getAttribute("challenge");
-    String timestamp = (String) request.getAttribute("timestamp");
-%>
 <div>
-    <h2><fmt:message key="login.title" /></h2>
     <div id="failure" class="hidden">
         <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
         <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
         <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
     </div>
-    <form id="loginform" name="loginform" action="<%= blocklyPropAuthUrl%>" method="post" data-challenge="<%= challenge%>" data-timestamp="<%= timestamp%>">
+    <form id="loginform" name="loginform" action="${properties:authenticationserver('/authenticate')}" method="post" data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />">
         <div class="form-group">
             <label for="username" ><fmt:message key="login.email" /></label>
             <input class="form-control" type="text" name="username" maxlength="255" required="required"/>

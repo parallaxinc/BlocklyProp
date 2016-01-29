@@ -39,6 +39,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
+    private static AuthenticationService _instance;
+
     private Configuration configuration;
 
     private CloudSessionUserService userService;
@@ -47,6 +49,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private TokenGeneratorService tokenGeneratorService;
 
     private Provider<HttpSession> sessionProvider;
+
+    public AuthenticationServiceImpl() {
+        _instance = this;
+    }
+
+    public static AuthenticationService get() {
+        return _instance;
+    }
 
     @Inject
     public void setConfiguration(Configuration configuration) {
@@ -66,27 +76,44 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationData getNewAuthenticationData() {
-        String challenge = tokenGeneratorService.generateToken();
-        sessionProvider.get().setAttribute("challenge", challenge);
-        AuthenticationData sessionData = new AuthenticationData();
-        sessionData.setChallenge(challenge);
-        sessionData.setLastTimestamp(new Date().getTime());
-        // System.out.println("Setting authentication data: " + sessionData);
-        return sessionData;
+    public AuthenticationData getAuthenticationData() {
+        AuthenticationData authenticationData = (AuthenticationData) sessionProvider.get().getAttribute("authentication");
+        if (authenticationData == null) {
+            String challenge = tokenGeneratorService.generateToken();
+
+            authenticationData = new AuthenticationData();
+            authenticationData.setChallenge(challenge);
+            authenticationData.setLastTimestamp(new Date().getTime());
+            // System.out.println("Setting authentication data: " + sessionData);
+
+            sessionProvider.get().setAttribute("authentication", authenticationData);
+        }
+        return authenticationData;
+    }
+
+    @Override
+    public String getChallenge() {
+        AuthenticationData authenticationData = getAuthenticationData();
+        return authenticationData.getChallenge();
+    }
+
+    @Override
+    public Long getTimestamp() {
+        AuthenticationData authenticationData = getAuthenticationData();
+        return authenticationData.getLastTimestamp();
     }
 
     @Override
     public User authenticate(Long idUser, Long timestamp, String hash, String userAgent, String remoteAddress) {
         try {
-            String challenge = (String) sessionProvider.get().getAttribute("challenge");
+            AuthenticationData authenticationData = getAuthenticationData();
 
-            System.out.println("Challenge: " + challenge + " Hash: " + hash);
+            System.out.println("Challenge: " + authenticationData.getChallenge() + " Hash: " + hash);
             System.out.println("Timestamp: " + timestamp);
 
             List<String> tokens = authenticationTokenService.getTokens(idUser, userAgent, remoteAddress);
             for (String token : tokens) {
-                String permittedHash = Hashing.sha256().hashString(token + challenge + timestamp, Charset.forName("UTF-8")).toString();
+                String permittedHash = Hashing.sha256().hashString(token + authenticationData.getChallenge() + timestamp, Charset.forName("UTF-8")).toString();
                 System.out.println("Token: " + token + " hash: " + permittedHash);
                 if (permittedHash.equalsIgnoreCase(hash)) {
                     User user = userService.getUser(idUser);

@@ -31,7 +31,7 @@ public class ServiceModule extends AbstractModule {
         bind(ProjectConverter.class);
 
         bind(TokenGeneratorService.class).to(UUIDTokenGeneratorServiceImpl.class);
-        bind(AuthenticationService.class).to(AuthenticationServiceImpl.class);
+        bind(AuthenticationService.class).to(AuthenticationServiceImpl.class).asEagerSingleton();
 
         bind(ProjectService.class).to(ProjectServiceImpl.class);
         bind(UserService.class).to(UserServiceImpl.class).asEagerSingleton();

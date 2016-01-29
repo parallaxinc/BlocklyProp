@@ -14,8 +14,12 @@ import com.parallax.server.blocklyprop.AuthenticationData;
  */
 public interface AuthenticationService {
 
-    AuthenticationData getNewAuthenticationData();
+    AuthenticationData getAuthenticationData();
 
     User authenticate(Long idUser, Long timestamp, String hash, String userAgent, String remoteAddress);
+
+    String getChallenge();
+
+    Long getTimestamp();
 
 }
