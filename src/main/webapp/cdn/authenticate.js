@@ -1,6 +1,7 @@
 var timestamp = undefined;
 var timediff = 0;
 var challenge = undefined;
+var token = window.localStorage.getItem('token');
 
 $(document).ready(function () {
 // bind 'myForm' and provide a simple callback function
@@ -19,6 +20,23 @@ $(document).ready(function () {
 
         $.post(loginForm.attr('action'), loginForm.serialize(), onSuccess);
     });
+
+    if (token !== undefined && timestamp) {
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            if (!options.beforeSend) {
+                options.beforeSend = function (xhr) {
+                    var requestTimestamp = Date.now() + timediff;
+                    var hash = sha256(token + challenge + requestTimestamp);
+                    xhr.setRequestHeader('X-Timestamp', requestTimestamp);
+                    xhr.setRequestHeader('X-Authorization', hash);
+                };
+            }
+        });
+    }
+
+    if (typeof window['post_auth_init'] === 'function') {
+        window['post_auth_init']();
+    }
 
 });
 

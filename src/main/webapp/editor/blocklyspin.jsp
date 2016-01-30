@@ -13,6 +13,8 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/sha256.min.js"/>" ></script>
+        <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/lib/term.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/detect.js"/>"></script>
@@ -20,11 +22,10 @@
         <script type="text/javascript" src="<url:getUrl url="/cdn/blocklyspin.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/editor.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/sha256.js"/>" ></script>
         <link href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getUrl url="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
-    <body>
+    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
         <table id="content_table">
             <tr>
                 <td>

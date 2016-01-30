@@ -8,7 +8,6 @@
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
 <div>
-    <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
     <div id="failure" class="hidden">
         <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
         <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>

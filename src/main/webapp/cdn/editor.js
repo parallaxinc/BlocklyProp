@@ -13,7 +13,7 @@ var projectLoaded = false;
 
 var idProject = 0;
 
-$(document).ready(function () {
+function post_auth_init() {
     idProject = getUrlParameters('project', '', false);
     if (!idProject) {
         window.location = baseUrl;
@@ -33,7 +33,7 @@ $(document).ready(function () {
         saveProject();
     });
 
-});
+}
 
 saveProject = function () {
     projectData['code'] = window.frames["content_blocks"].getXml();

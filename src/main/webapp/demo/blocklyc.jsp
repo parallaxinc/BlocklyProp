@@ -13,6 +13,8 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/sha256.min.js"/>" ></script>
+        <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/demoeditor.js"/>"></script>
