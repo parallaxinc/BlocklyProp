@@ -128,6 +128,7 @@
         <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
         <script src="<url:getUrl url="/cdn/lib/jquery.validate.min.js"/>"></script>
         <script src="<url:getUrl url="/cdn/utils.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/sha256.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/projectcreation.js"/>"></script>
     </body>
 </html>

@@ -8,12 +8,13 @@
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
 <div>
+    <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
     <div id="failure" class="hidden">
         <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
         <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
         <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
     </div>
-    <form id="loginform" name="loginform" action="${properties:authenticationserver('/authenticate')}" method="post" data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />">
+    <form id="loginform" name="loginform" action="${properties:authenticationserver('/authenticate')}" method="post">
         <div class="form-group">
             <label for="username" ><fmt:message key="login.email" /></label>
             <input class="form-control" type="text" name="username" maxlength="255" required="required"/>

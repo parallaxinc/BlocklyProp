@@ -51,6 +51,10 @@
         function setEditorLinksAndShow(linkText) {
             $(".try-view-editor").text(linkText);
             $("a.editor-continue-link").attr("href", $(this).attr("href"));
+            var link = $(this).attr("href");
+            window['post-authenticate'] = function () {
+                location.href = link;
+            };
             if ($(this).data("href")) {
                 $("a.editor-demo-link").attr("href", $(this).data("href").replace('editor', 'demo'));
             } else {

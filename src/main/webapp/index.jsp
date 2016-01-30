@@ -15,8 +15,9 @@
         <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
+        <script src="<url:getUrl url="/cdn/lib/sha256.js"/>" ></script>
     </head>
-    <body>
+    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
