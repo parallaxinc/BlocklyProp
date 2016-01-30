@@ -18,6 +18,7 @@
         <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/project.js"/>" ></script>
+        <script src="<url:getUrl url="/cdn/lib/sha256.js"/>" ></script>
     </head>
     <body>
 

@@ -17,6 +17,7 @@
         <script type="text/javascript" src="<url:getUrl url="/cdn/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/demoeditor.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/blocklyc.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/sha256.js"/>" ></script>
         <link href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getUrl url="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
