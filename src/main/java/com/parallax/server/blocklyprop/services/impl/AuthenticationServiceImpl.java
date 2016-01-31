@@ -100,6 +100,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Long getTimestamp() {
         AuthenticationData authenticationData = getAuthenticationData();
+        authenticationData.setLastTimestamp(new Date().getTime());
+        sessionProvider.get().setAttribute("authentication", authenticationData);
         return authenticationData.getLastTimestamp();
     }
 
@@ -108,9 +110,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             AuthenticationData authenticationData = getAuthenticationData();
 
-            System.out.println("Challenge: " + authenticationData.getChallenge() + " Hash: " + hash);
-            System.out.println("Timestamp: " + timestamp);
-
+//            System.out.println("Challenge: " + authenticationData.getChallenge() + " Hash: " + hash);
+//            System.out.println("Timestamp: " + timestamp);
             authenticationData.setUserAgent(userAgent);
             authenticationData.setRemoteAddress(remoteAddress);
 
@@ -124,7 +125,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             List<String> tokens = authenticationTokenService.getTokens(idUser, userAgent, remoteAddress);
             for (String token : tokens) {
                 String permittedHash = Hashing.sha256().hashString(token + authenticationData.getChallenge() + timestamp, Charset.forName("UTF-8")).toString();
-                System.out.println("Token: " + token + " hash: " + permittedHash);
+//                System.out.println("Token: " + token + " hash: " + permittedHash);
                 if (permittedHash.equalsIgnoreCase(hash)) {
                     User user = userService.getUser(idUser);
 

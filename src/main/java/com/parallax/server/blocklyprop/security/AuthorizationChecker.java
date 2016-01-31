@@ -48,8 +48,17 @@ public class AuthorizationChecker {
 
     public static boolean check(HttpSession httpSession, String authorization, Long timestamp, String remoteAddress, String userAgent) {
         AuthenticationData authenticationData = (AuthenticationData) httpSession.getAttribute("authentication");
+        if (authenticationData == null) {
+            log.info("No authenticationdata in session");
+            return false;
+        }
+        if (timestamp == null) {
+            log.info("Timestamp not provided");
+            return false;
+        }
 
         if (authenticationData.getLastTimestamp() >= timestamp) {
+            log.info("Timestamp to low: last: {} - provided: {}", authenticationData.getLastTimestamp(), timestamp);
             return false;
         } else {
             authenticationData.setLastTimestamp(timestamp);
@@ -57,10 +66,15 @@ public class AuthorizationChecker {
         }
 
         if (!(authenticationData.getRemoteAddress().equalsIgnoreCase(remoteAddress) && authenticationData.getUserAgent().equalsIgnoreCase(userAgent))) {
+            log.info("User browser info changed");
             return false;
         }
 
         String permittedHash = Hashing.sha256().hashString(authenticationData.getToken() + authenticationData.getChallenge() + timestamp, Charset.forName("UTF-8")).toString();
+        if (!permittedHash.equalsIgnoreCase(authorization)) {
+            log.info("Authorization hash doesn't match: {} vs {}", permittedHash, authorization);
+            log.info("Using token: {}, challenge: {}, Timestamp: {}", authenticationData.getToken(), authenticationData.getChallenge(), timestamp);
+        }
         return permittedHash.equalsIgnoreCase(authorization);
     }
 

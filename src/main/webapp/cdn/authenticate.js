@@ -12,7 +12,7 @@ $(document).ready(function () {
     timestamp = body.data('timestamp');
 
     var nowEpoch = Date.now();
-    timediff = nowEpoch - timestamp;
+    timediff = timestamp - nowEpoch;
 
     loginForm.submit(function (event) {
         // Stop form from submitting normally
@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     if (token !== undefined && timestamp) {
         $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-            if (!options.beforeSend) {
+            if (!options.beforeSend && !options.crossDomain) {
                 options.beforeSend = function (xhr) {
                     var requestTimestamp = Date.now() + timediff;
                     var hash = sha256(token + challenge + requestTimestamp);
