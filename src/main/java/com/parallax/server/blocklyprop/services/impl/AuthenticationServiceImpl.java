@@ -111,12 +111,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             System.out.println("Challenge: " + authenticationData.getChallenge() + " Hash: " + hash);
             System.out.println("Timestamp: " + timestamp);
 
+            authenticationData.setUserAgent(userAgent);
+            authenticationData.setRemoteAddress(remoteAddress);
+
+            if (authenticationData.getLastTimestamp() >= timestamp) {
+                return null;
+            } else {
+                authenticationData.setLastTimestamp(timestamp);
+                sessionProvider.get().setAttribute("authentication", authenticationData);
+            }
+
             List<String> tokens = authenticationTokenService.getTokens(idUser, userAgent, remoteAddress);
             for (String token : tokens) {
                 String permittedHash = Hashing.sha256().hashString(token + authenticationData.getChallenge() + timestamp, Charset.forName("UTF-8")).toString();
                 System.out.println("Token: " + token + " hash: " + permittedHash);
                 if (permittedHash.equalsIgnoreCase(hash)) {
                     User user = userService.getUser(idUser);
+
+                    authenticationData.setToken(token);
+
+                    sessionProvider.get().setAttribute("authentication", authenticationData);
                     doAuthentication(user);
                     return user;
                 }

@@ -7,7 +7,6 @@ package com.parallax.server.blocklyprop.security;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 /**
@@ -18,12 +17,7 @@ public class AuthorizationHeaderFilter extends AccessControlFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String authorization = req.getHeader("X-Authorization");
-        String timestampString = req.getHeader("X-Timestamp");
-
-        System.out.println("Authorization: " + authorization);
-        return true;
+        return AuthorizationChecker.check(request);
     }
 
     @Override

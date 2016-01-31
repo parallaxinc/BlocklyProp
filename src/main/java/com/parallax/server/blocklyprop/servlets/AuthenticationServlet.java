@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 
 /**
  *
@@ -76,14 +78,20 @@ public class AuthenticationServlet extends HttpServlet {
         User user = authenticationService.authenticate(idUser, timestamp, hash, userAgent, remoteAddress);
 
         if (user != null) {
-            JsonObject response = new JsonObject();
-            response.addProperty("success", true);
-            JsonObject userJson = new JsonObject();
-            userJson.addProperty("id-user", user.getId());
-            userJson.addProperty("screenname", user.getScreenname());
-            userJson.addProperty("email", user.getEmail());
-            response.add("user", userJson);
-            resp.getWriter().write(response.toString());
+            SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
+            if (savedRequest != null) {
+                resp.sendRedirect(savedRequest.getRequestUrl());
+            } else {
+
+                JsonObject response = new JsonObject();
+                response.addProperty("success", true);
+                JsonObject userJson = new JsonObject();
+                userJson.addProperty("id-user", user.getId());
+                userJson.addProperty("screenname", user.getScreenname());
+                userJson.addProperty("email", user.getEmail());
+                response.add("user", userJson);
+                resp.getWriter().write(response.toString());
+            }
         } else {
             JsonObject response = new JsonObject();
             response.addProperty("success", false);

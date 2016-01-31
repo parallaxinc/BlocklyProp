@@ -21,6 +21,9 @@ public class AuthenticationData implements Serializable {
     private String challenge;
     private Long lastTimestamp;
 
+    private String userAgent;
+    private String remoteAddress;
+
     public Long getIdUser() {
         return idUser;
     }
@@ -51,6 +54,22 @@ public class AuthenticationData implements Serializable {
 
     public void setLastTimestamp(Long lastTimestamp) {
         this.lastTimestamp = lastTimestamp;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
     }
 
     @Override
