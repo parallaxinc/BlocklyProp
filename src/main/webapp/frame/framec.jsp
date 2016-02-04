@@ -116,6 +116,7 @@
                         </block>
                     </value>
                 </block>
+                <block type="string_type_block"></block>
                 <!--<block type="text"></block>-->
             </category>
             <category name="<fmt:message key="category.programming.conditions" />">
@@ -247,35 +248,35 @@
 
             </category>
         </category>
-        <category name="Hackable Electronic Badge">
-          <category name="LED Control">
+        <category name="<fmt:message key="category.hackable-electronic-badge" />">
+          <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
             <block type="heb_toggle_led"></block>
             <block type="heb_set_led_rgb"></block>
           </category>
-          <category name="OLED">
+          <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
             <block type="heb_print_string"></block>
             <block type="heb_print_string_var"></block>
             <block type="heb_cursor_position"></block>
             <block type="heb_clear_screen"></block>
             <block type="heb_rotate"></block>
           </category>
-          <category name="IR Communication">
+          <category name="<fmt:message key="category.hackable-electronic-badge.ir-communication" />">
             <block type="heb_send_signal"></block>
             <block type="heb_read_signal"></block>
             <block type="heb_clear_ir_buffer"></block>
           </category>
-          <category name="EEPROM">
+          <category name="<fmt:message key="category.hackable-electronic-badge.eeprom" />">
             <block type="heb_badge_eeprom_store"></block>
             <block type="heb_badge_eeprom_is_stored"></block>
             <block type="heb_badge_eeprom_retrieve"></block>
             <block type="heb_count_contacts"></block>
             <block type="heb_erase_all_contacts"></block>
           </category>
-          <category name="Accelerometer">
+          <category name="<fmt:message key="category.hackable-electronic-badge.accelerometer" />"54ewq>
             <block type="heb_badge_axis_acceleration"></block>
             <block type="heb_badge_was_shaken"></block>
           </category>
-          <category name="Touchpad Control">
+          <category name="<fmt:message key="category.hackable-electronic-badge.touchpad-control" />">
             <block type="heb_touchpad_status"></block>
           </category>
         </category>
