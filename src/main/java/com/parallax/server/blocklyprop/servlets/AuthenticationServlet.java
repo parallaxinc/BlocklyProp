@@ -10,7 +10,6 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.objects.User;
-import com.parallax.server.blocklyprop.AuthenticationData;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -97,29 +96,6 @@ public class AuthenticationServlet extends HttpServlet {
             response.addProperty("success", false);
             response.addProperty("message", "Invalid authentication");
             resp.getWriter().write(response.toString());
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AuthenticationData sessionData = authenticationService.getAuthenticationData();
-
-        req.setAttribute("blocklyPropAuthUrl", configuration.getString("blocklyprop-auth.baseurl") + "/authenticate");
-        req.setAttribute("challenge", sessionData.getChallenge());
-        req.setAttribute("timestamp", String.valueOf(sessionData.getLastTimestamp()));
-
-        String format = req.getParameter("format");
-        if (format == null) {
-            format = "form";
-        }
-        System.out.println("Format: " + format);
-
-        if ("page".equalsIgnoreCase(format)) {
-            req.getRequestDispatcher("/WEB-INF/servlet/login/loginpage.jsp").forward(req, resp);
-        } else if ("modal".equalsIgnoreCase(format)) {
-            req.getRequestDispatcher("/WEB-INF/servlet/login/loginmodal.jsp").forward(req, resp);
-        } else if ("form".equalsIgnoreCase(format)) {
-            req.getRequestDispatcher("/WEB-INF/servlet/login/loginform.jsp").forward(req, resp);
         }
     }
 

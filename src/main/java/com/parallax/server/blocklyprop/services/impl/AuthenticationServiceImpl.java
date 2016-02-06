@@ -152,21 +152,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             currentUser.login(idAuthenticationToken);
         } catch (Throwable t) {
-            t.printStackTrace();
+            log.error("Error while authenticating", t);
         }
-
-//        try {
-//
-//            //if no exception, that's it, we're done!
-//        } catch (UnknownAccountException uae) {
-//            //username wasn't in the system, show them an error message?
-//        } catch (IncorrectCredentialsException ice) {
-//            //password didn't match, try again?
-//        } catch (LockedAccountException lae) {
-//            //account for that username is locked - can't login.  Show them a message?
-//        } catch (AuthenticationException ae) {
-//            //unexpected condition - error?
-//        }
     }
 
 }
