@@ -52,6 +52,7 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = BlocklyPropSecurityUtils.getUserInfo();
+        req.setAttribute("id", user.getId());
         req.setAttribute("email", user.getEmail());
         req.setAttribute("screenname", user.getScreenname());
         req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
