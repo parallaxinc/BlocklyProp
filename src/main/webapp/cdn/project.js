@@ -85,3 +85,10 @@ function loadProject(idProject) {
         openProjectLink.addClass(projectTypes[project['type']]['class']);
     });
 }
+
+window['table-authentication'] = function (request) {
+    if (typeof authorize === 'function') {
+        authorize(request);
+    }
+    $.ajax(request);
+};

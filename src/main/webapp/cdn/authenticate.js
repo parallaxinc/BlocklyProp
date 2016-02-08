@@ -34,13 +34,14 @@ $(document).ready(function () {
         });
     }
 
+    if (jQuery().bootstrapTable) {
+        $("[data-toggle='secure-table']").bootstrapTable();
+    }
     if (typeof window['post_auth_init'] === 'function') {
         window['post_auth_init']();
     }
 
 });
-
-
 
 function onSuccess(response, statusText, xhr, $form) {
     // alert(response.data.token);
