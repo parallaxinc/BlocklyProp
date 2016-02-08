@@ -30,6 +30,12 @@
             </div>
             <div id="unlock-form" class="row collapse in">
                 <div class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6 col-xs-12">
+                    <div class="alert alert-success hidden form-message" id="password-success">
+                        <p><fmt:message key="profile.password.success" /></p>
+                    </div>
+                    <div class="alert alert-danger hidden form-message" id="unlock-error">
+                        <p><fmt:message key="profile.unlock.error" /></p>
+                    </div>
                     <form id="loginform" action="${properties:authenticationserver('/authenticate')}" method="post">
                         <h3><fmt:message key="profile.unlock.title" /></h3>
                         <input type="hidden" name="username" value="<%= request.getAttribute("email")%>" />
@@ -63,9 +69,6 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="save-base" value="<fmt:message key="profile.submit" />">
                     </form>
-                    <div class="alert alert-success hidden form-message" id="password-success">
-                        <p><fmt:message key="profile.password.success" /></p>
-                    </div>
                     <div class="alert alert-danger hidden form-message" id="password-error">
                         <p><fmt:message key="profile.password.error" /></p>
                     </div>

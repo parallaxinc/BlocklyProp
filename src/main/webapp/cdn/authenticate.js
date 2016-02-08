@@ -58,5 +58,9 @@ function onSuccess(response, statusText, xhr, $form) {
                 }
             }
         });
+    } else {
+        if (typeof window['failed-authentication'] === 'function') {
+            window['failed-authentication']();
+        }
     }
 }

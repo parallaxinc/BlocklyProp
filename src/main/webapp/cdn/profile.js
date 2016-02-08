@@ -25,6 +25,11 @@ $(document).ready(function () {
         success: function (response) {
             if (response['success']) {
                 $("#password-success").removeClass("hidden");
+
+                $(".password-match").val('');
+
+                $("#unlock-form").collapse("show");
+                $("#profile-form").collapse("hide");
             } else {
                 $("#password-error").removeClass("hidden");
             }
@@ -34,7 +39,12 @@ $(document).ready(function () {
 
 
 window['post-authenticate'] = function () {
-    $("#unlock-form").collapse();
-    $("#profile-form").collapse();
+    $("#unlock-form").collapse("hide");
+    $("#profile-form").collapse("show");
     $(".password").val($("#password").val());
+    $("#password").val('');
+};
+
+window['failed-authentication'] = function () {
+    $("#unlock-error").removeClass("hidden");
 };
