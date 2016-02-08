@@ -43,10 +43,10 @@
             </div>
             <div id="profile-form" class="row collapse">
                 <div class="col-md-12 col-sm-12">
-                    <div class="alert alert-success hidden" id="base-success">
+                    <div class="alert alert-success hidden form-message" id="base-success">
                         <p><fmt:message key="profile.base.success" /></p>
                     </div>
-                    <div class="alert alert-danger hidden" id="base-error">
+                    <div class="alert alert-danger hidden form-message" id="base-error">
                         <p><fmt:message key="profile.base.error" /></p>
                     </div>
                     <form id="baseInfoForm" name="baseInfoForm" action="${properties:authenticationserver('/rest/profile/base')}" method="post">
@@ -63,13 +63,13 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="save-base" value="<fmt:message key="profile.submit" />">
                     </form>
-                    <div class="alert alert-success hidden" id="password-success">
+                    <div class="alert alert-success hidden form-message" id="password-success">
                         <p><fmt:message key="profile.password.success" /></p>
                     </div>
-                    <div class="alert alert-danger hidden" id="password-error">
+                    <div class="alert alert-danger hidden form-message" id="password-error">
                         <p><fmt:message key="profile.password.error" /></p>
                     </div>
-                    <div class="alert alert-danger hidden" id="password-matching-error">
+                    <div class="alert alert-danger hidden form-message" id="password-matching-error">
                         <p><fmt:message key="profile.password-confirm.error" /></p>
                     </div>
                     <form id="passwordForm" name="passwordForm" action="${properties:authenticationserver('/rest/profile/password')}" method="post">
@@ -78,11 +78,11 @@
                         <input class="password" type="hidden" name="oldpassword" />
                         <div class="form-group">
                             <label for="password" ><fmt:message key="profile.password" /></label>
-                            <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
+                            <input class="form-control password-match" type="password" name="password" maxlength="255" required="required"/>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" ><fmt:message key="profile.confirm_password" /></label>
-                            <input class="form-control" type="password" name="confirmpassword" maxlength="255" required="required"/>
+                            <input class="form-control password-match" type="password" name="confirmpassword" maxlength="255" required="required"/>
                         </div>
                         <input class="btn btn-default" type="submit" name="save-password" value="<fmt:message key="profile.submit_password" />">
                     </form>

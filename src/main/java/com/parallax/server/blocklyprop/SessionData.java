@@ -20,10 +20,6 @@ public class SessionData implements Serializable {
     private Long idUser;
     private String locale;
 
-    private String token;
-    private String challenge;
-    private Long lastTimestamp;
-
     public User getUser() {
         return user;
     }
@@ -48,33 +44,9 @@ public class SessionData implements Serializable {
         this.locale = locale;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getChallenge() {
-        return challenge;
-    }
-
-    public void setChallenge(String challenge) {
-        this.challenge = challenge;
-    }
-
-    public Long getLastTimestamp() {
-        return lastTimestamp;
-    }
-
-    public void setLastTimestamp(Long lastTimestamp) {
-        this.lastTimestamp = lastTimestamp;
-    }
-
     @Override
     public String toString() {
-        return "SessionData{" + "user=" + user + ", idUser=" + idUser + ", locale=" + locale + ", token=" + token + ", challenge=" + challenge + ", lastTimestamp=" + lastTimestamp + '}';
+        return "SessionData{" + "user=" + user + ", idUser=" + idUser + ", locale=" + locale + '}';
     }
 
 }
