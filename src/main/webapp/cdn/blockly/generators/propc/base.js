@@ -111,3 +111,23 @@ Blockly.propc.base_freqout = function () {
 
     return code;
 };
+
+Blockly.Blocks.string_type_block = {
+  category : 'Protocols',
+  helpUrl : '',
+  init : function() {
+    this.setColour( 180 );
+    this.appendDummyInput()
+      .appendField( new Blockly.FieldTextInput( '' ), "TEXT" );
+    this.setPreviousStatement( false, null );
+    this.setNextStatement( false, null );
+    this.setOutput( true, String );
+  }
+};
+
+Blockly.propc.string_type_block = function() {
+  var text = this.getFieldValue( "TEXT" );
+
+  var code = '"' + text + '"';
+  return [ code, Blockly.propc.ORDER_NONE ];
+};
