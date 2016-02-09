@@ -42,7 +42,7 @@
         <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/propc/abvolts.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/propc/servo.js"/>"></script>
         <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/propc/joystick.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/hackable_electronic_badge.js"/>"></script>
+        <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
 
         <script type="text/javascript" src="<url:getUrl url="/cdn/blockly/generators/propc/file.js"/>"></script>
         <!--<script type="text/javascript" src="generators/arduino/grove.js"></script>-->
@@ -249,36 +249,36 @@
             </category>
         </category>
         <category name="<fmt:message key="category.hackable-electronic-badge" />">
-          <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
-            <block type="heb_toggle_led"></block>
-            <block type="heb_set_led_rgb"></block>
-          </category>
-          <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
-            <block type="heb_print_string"></block>
-            <block type="heb_print_string_var"></block>
-            <block type="heb_cursor_position"></block>
-            <block type="heb_clear_screen"></block>
-            <block type="heb_rotate"></block>
-          </category>
-          <category name="<fmt:message key="category.hackable-electronic-badge.ir-communication" />">
-            <block type="heb_send_signal"></block>
-            <block type="heb_read_signal"></block>
-            <block type="heb_clear_ir_buffer"></block>
-          </category>
-          <category name="<fmt:message key="category.hackable-electronic-badge.eeprom" />">
-            <block type="heb_badge_eeprom_store"></block>
-            <block type="heb_badge_eeprom_is_stored"></block>
-            <block type="heb_badge_eeprom_retrieve"></block>
-            <block type="heb_count_contacts"></block>
-            <block type="heb_erase_all_contacts"></block>
-          </category>
-          <category name="<fmt:message key="category.hackable-electronic-badge.accelerometer" />"54ewq>
-            <block type="heb_badge_axis_acceleration"></block>
-            <block type="heb_badge_was_shaken"></block>
-          </category>
-          <category name="<fmt:message key="category.hackable-electronic-badge.touchpad-control" />">
-            <block type="heb_touchpad_status"></block>
-          </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
+                <block type="heb_toggle_led"></block>
+                <block type="heb_set_led_rgb"></block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
+                <block type="heb_print_string"></block>
+                <block type="heb_print_string_var"></block>
+                <block type="heb_cursor_position"></block>
+                <block type="heb_clear_screen"></block>
+                <block type="heb_rotate"></block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.ir-communication" />">
+                <block type="heb_send_signal"></block>
+                <block type="heb_read_signal"></block>
+                <block type="heb_clear_ir_buffer"></block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.eeprom" />">
+                <block type="heb_badge_eeprom_store"></block>
+                <block type="heb_badge_eeprom_is_stored"></block>
+                <block type="heb_badge_eeprom_retrieve"></block>
+                <block type="heb_count_contacts"></block>
+                <block type="heb_erase_all_contacts"></block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.accelerometer" />">
+                <block type="heb_badge_axis_acceleration"></block>
+                <block type="heb_badge_was_shaken"></block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.touchpad-control" />">
+                <block type="heb_touchpad_status"></block>
+            </category>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>

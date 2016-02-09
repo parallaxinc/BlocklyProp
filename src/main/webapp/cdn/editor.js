@@ -113,5 +113,5 @@ function getUrlParameters(parameter, staticURL, decode) {
 }
 
 setInterval(function () {
-    $.get('ping');
+    $.get(baseUrl + 'ping');
 }, 60000);

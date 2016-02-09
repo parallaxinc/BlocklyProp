@@ -29,7 +29,7 @@ public class ServletsModule extends ServletModule {
 
     @Override
     protected void configureServlets() {
-        serve("/pong").with(PingServlet.class);
+        serve("/ping").with(PingServlet.class);
 
         serve("/authenticate").with(AuthenticationServlet.class);
 
