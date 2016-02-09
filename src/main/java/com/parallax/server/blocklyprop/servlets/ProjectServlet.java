@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
+import com.parallax.server.blocklyprop.security.AuthorizationChecker;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -32,6 +33,10 @@ public class ProjectServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!AuthorizationChecker.checkUsingParameters(req)) {
+            req.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(req, resp);
+        }
+
         String clone = req.getParameter("clone");
         if (!Strings.isNullOrEmpty(clone)) {
             clone(Long.parseLong(clone), req, resp);

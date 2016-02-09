@@ -17,7 +17,7 @@
         <link href="<url:getUrl url="/cdn/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
         <link href="<url:getUrl url="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
-    <body>
+    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
@@ -30,7 +30,7 @@
                         <!--      Wizard container        -->
                         <div class="wizard-container">
                             <div class="card wizard-card ct-wizard-azzure" id="wizard">
-                                <form action="" method="">
+                                <form>
                                     <!--        You can switch "ct-wizard-azzure"  with one of the next bright colors: "ct-wizard-blue", "ct-wizard-green", "ct-wizard-orange", "ct-wizard-red"             -->
 
                                     <div class="wizard-header">
@@ -124,7 +124,6 @@
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
 
         <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
         <script src="<url:getUrl url="/cdn/lib/jquery.validate.min.js"/>"></script>
         <script src="<url:getUrl url="/cdn/utils.js"/>"></script>

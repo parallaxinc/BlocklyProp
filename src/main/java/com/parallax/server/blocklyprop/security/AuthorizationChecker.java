@@ -22,6 +22,19 @@ public class AuthorizationChecker {
 
     private final static Logger log = LoggerFactory.getLogger(AuthorizationChecker.class);
 
+    public static boolean checkUsingParameters(ServletRequest servletRequest) {
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        String authorization = req.getParameter("authorization");
+        String timestampString = req.getParameter("timestamp");
+
+        String remoteAddress = req.getRemoteAddr();
+        String userAgent = req.getHeader("User-Agent");
+
+        HttpSession session = req.getSession(true);
+
+        return check(session, authorization, timestampString, remoteAddress, userAgent);
+    }
+
     public static boolean check(ServletRequest servletRequest) {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String authorization = req.getHeader("X-Authorization");

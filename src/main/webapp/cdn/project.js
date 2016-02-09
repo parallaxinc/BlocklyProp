@@ -14,8 +14,8 @@ var projectTypes = {
 };
 
 $(document).ready(function () {
-    cloneUrl = $('.clone-project').attr('href');
-    deleteUrl = $('.delete-project').attr('href');
+    cloneUrl = $('.clone-project').data('href');
+    deleteUrl = $('.delete-project').data('href');
     if (window.location.hash && window.location.hash !== "#") {
         loadProject(window.location.hash.substr(1));
         $("#project-form-container").addClass('in');
@@ -80,15 +80,8 @@ function loadProject(idProject) {
         var openProjectLink = $("a.open-project-link");
         openProjectLink.removeClass("editor-c-link editor-spin-link");
         openProjectLink.attr("href", baseUrl + "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id']);
-        $('.clone-project').attr('href', cloneUrl + project['id']);
-        $('.delete-project').attr('href', deleteUrl + project['id']);
+        $('.clone-project').attr('href', cloneUrl + project['id'] + '&' + getUrlAuthentication());
+        $('.delete-project').attr('href', deleteUrl + project['id'] + '&' + getUrlAuthentication());
         openProjectLink.addClass(projectTypes[project['type']]['class']);
     });
 }
-
-window['table-authentication'] = function (request) {
-    if (typeof authorize === 'function') {
-        authorize(request);
-    }
-    $.ajax(request);
-};

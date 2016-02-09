@@ -43,6 +43,15 @@ $(document).ready(function () {
 
 });
 
+function getUrlAuthentication() {
+    if (token !== undefined && timestamp) {
+        var requestTimestamp = Date.now() + timediff;
+        var hash = sha256(token + challenge + requestTimestamp);
+        return "timestamp=" + requestTimestamp + "&authorization=" + hash;
+    }
+    return "";
+}
+
 function onSuccess(response, statusText, xhr, $form) {
     // alert(response.data.token);
     if (response.success === true) {
