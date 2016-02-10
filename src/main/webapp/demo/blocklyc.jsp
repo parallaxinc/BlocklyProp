@@ -12,16 +12,13 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/sha256.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/ace/ace.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/utils.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/demoeditor.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/blocklyc.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/sha256.js"/>" ></script>
-        <link href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
-        <link href="<url:getUrl url="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/demoeditor.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blocklyc.js"/>"></script>
+        <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
+        <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <table id="content_table">
@@ -48,8 +45,8 @@
             </tr>
         </table>
 
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script>
             var type = 'PROPC';
         </script>

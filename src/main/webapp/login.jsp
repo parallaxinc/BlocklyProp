@@ -9,12 +9,12 @@
 
 <html>
     <head>
-        <link type="text/css" rel="stylesheet" href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>"/>
-        <link type="text/css" rel="stylesheet" href="<url:getUrl url="/cdn/style.css"/>" />
-        <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/sha256.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
+        <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>"/>
+        <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
+        <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/sha256.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
     </head>
     <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
 

@@ -22,8 +22,8 @@
 
 <script>
     var languageUrls = {
-        "PROPC": "<url:getUrl url="/cdn/images/lang-icons/c.png" />",
-        "SPIN": "<url:getUrl url="/cdn/images/lang-icons/spin.png" />"
+        "PROPC": "<url:getCdnUrl url="/images/lang-icons/c.png" />",
+        "SPIN": "<url:getCdnUrl url="/images/lang-icons/spin.png" />"
     };
 
     function formatType(value, row) {

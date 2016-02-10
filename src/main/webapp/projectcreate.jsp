@@ -12,10 +12,10 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
-        <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
-        <link href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
-        <link href="<url:getUrl url="/cdn/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
-        <link href="<url:getUrl url="/cdn/style.css"/>" rel="stylesheet" type="text/css" />
+        <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
+        <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
+        <link href="<url:getCdnUrl url="/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
+        <link href="<url:getCdnUrl url="/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
 
@@ -123,12 +123,12 @@
 
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
 
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/jquery.validate.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/utils.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/sha256.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/projectcreation.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/jquery.validate.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/utils.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/sha256.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/projectcreation.js"/>"></script>
     </body>
 </html>
