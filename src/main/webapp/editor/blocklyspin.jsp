@@ -24,6 +24,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
         <table id="content_table">

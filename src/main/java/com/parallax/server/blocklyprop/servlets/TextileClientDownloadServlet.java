@@ -19,15 +19,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author Michel
  */
 @Singleton
-public class TextileLibrariesServlet extends HttpServlet {
+public class TextileClientDownloadServlet extends HttpServlet {
 
     private final TextileReader textileFileReader = new TextileReader();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String html = textileFileReader.readFile("libraries", ServletUtils.getLocale(req));
+        String html = textileFileReader.readFile("clientdownload", ServletUtils.getLocale(req));
         req.setAttribute("html", html);
-        req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/servlet/clientdownload.jsp").forward(req, resp);
     }
 
 }
