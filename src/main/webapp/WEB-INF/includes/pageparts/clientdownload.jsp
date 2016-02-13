@@ -12,24 +12,26 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Client not running</h4>
+                <h4 class="modal-title"><fmt:message key="editor.client.title" /></h4>
             </div>
             <div class="modal-body">
-                <p>How to start the client.</p>
                 <div class="clients">
                     <div class="client MacOS">
-                        <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}">MacOS client</a>
+                        <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
+                        <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}"><fmt:message key="clientdownload.client.macos" /></a>
                     </div>
                     <!--<div class="client Windows">
                         Windows 32bit client
                     </div>-->
                     <div class="client Windows">
-                        <a href="${properties:downloadfiles('/blocklyprop-client-win64.zip')}">Windows 64bit client</a>
+                        <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
+                        <a href="${properties:downloadfiles('/blocklyprop-client-win64.zip')}"><fmt:message key="clientdownload.client.windows64" /></a>
                     </div>
                     <!--    <div class="client Windows">
                             Windows service
                         </div>-->
                 </div>
+                <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');"><fmt:message key="clientdownload.showall" /></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

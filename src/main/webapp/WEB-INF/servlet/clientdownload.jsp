@@ -20,12 +20,12 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <h2><fmt:message key="clientdownload.title" /></h2>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-8 col-sm-12">
 
                     <%
                         String html = (String) request.getAttribute("html");
@@ -38,21 +38,24 @@
 
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4 col-sm-12">
                     <div class="clients">
                         <div class="client MacOS">
-                            <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}">MacOS client</a>
+                            <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
+                            <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}"><fmt:message key="clientdownload.client.macos" /></a>
                         </div>
                         <!--<div class="client Windows">
                             Windows 32bit client
                         </div>-->
                         <div class="client Windows">
-                            <a href="${properties:downloadfiles('/blocklyprop-client-win64.zip')}">Windows 64bit client</a>
+                            <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
+                            <a href="${properties:downloadfiles('/blocklyprop-client-win64.zip')}"><fmt:message key="clientdownload.client.windows64" /></a>
                         </div>
                         <!--    <div class="client Windows">
                                 Windows service
                             </div>-->
                     </div>
+                    <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');"><fmt:message key="clientdownload.showall" /></button>
                 </div>
             </div>
         </div>

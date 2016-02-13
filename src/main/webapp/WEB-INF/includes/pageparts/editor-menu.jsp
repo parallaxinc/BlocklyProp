@@ -16,8 +16,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.newproject.title" /><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<url:getUrl url="/editor/blocklyspin.jsp"/>"><fmt:message key="editor.newproject.spin" /></a></li>
-                        <li><a href="<url:getUrl url="/editor/blocklyc.jsp"/>"><fmt:message key="editor.newproject.c" /></a></li>
+                        <li><a href="<url:getUrl url="/projectcreate.jsp?lang=SPIN"/>"><fmt:message key="editor.newproject.spin" /></a></li>
+                        <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="editor.newproject.c" /></a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -44,7 +44,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${!param.demo}">
                     <li>
-                        <p class="navbar-text"><a data-toggle="modal" data-target="#client-download-modal" href="#"><span id="client_status">Checking for BlocklyPropClient</span></a></p>
+                        <p class="navbar-text"><a data-toggle="modal" data-target="#client-download-modal" href="#"><span id="client_status" data-not-available="<fmt:message key="editor.client.not-available" />" data-available="<fmt:message key="editor.client.available" />"><fmt:message key="editor.client.checking" /></span></a></p>
                     </li>
                     <li>
                         <form class="navbar-form">
@@ -71,7 +71,7 @@
                         <a href="#" class="dropdown-toggle demo-function" ><fmt:message key="editor.run.title" /> <b class="caret"></b></a>
                         </c:if>
                 </li>
-                <li><a href="#" onclick="project()"><fmt:message key="editor.project" /></a></li>
+             <!--   <li><a href="#" onclick="project()"><fmt:message key="editor.project" /></a></li> -->
                 <li><a href="#" id="save-project"><fmt:message key="editor.save" /></a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
