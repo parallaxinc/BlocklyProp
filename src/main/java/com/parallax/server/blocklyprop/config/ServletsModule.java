@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
+import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
 import com.parallax.server.blocklyprop.servlets.HelpSearchServlet;
@@ -17,9 +18,9 @@ import com.parallax.server.blocklyprop.servlets.ProfileServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectCreationServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
+import com.parallax.server.blocklyprop.servlets.TextileClientDownloadServlet;
 import com.parallax.server.blocklyprop.servlets.TextileLibrariesServlet;
 import com.parallax.server.blocklyprop.servlets.TextileLicenseServlet;
-import com.parallax.server.blocklyprop.servlets.UserServlet;
 
 /**
  *
@@ -29,10 +30,11 @@ public class ServletsModule extends ServletModule {
 
     @Override
     protected void configureServlets() {
-        serve("/pong").with(PingServlet.class);
+        serve("/ping").with(PingServlet.class);
+
+        serve("/authenticate").with(AuthenticationServlet.class);
 
         serve("/project").with(ProjectServlet.class);
-        serve("/user").with(UserServlet.class);
         serve("/register").with(RegisterServlet.class);
         serve("/profile").with(ProfileServlet.class);
 
@@ -47,6 +49,7 @@ public class ServletsModule extends ServletModule {
         // Textile pages
         serve("/public/license").with(TextileLicenseServlet.class);
         serve("/public/libraries").with(TextileLibrariesServlet.class);
+        serve("/public/clientdownload").with(TextileClientDownloadServlet.class);
 
         // Help
         serve("/public/help").with(HelpServlet.class);

@@ -25,7 +25,7 @@
 
 Blockly.Spin.procedures_defreturn = function () {
     // Define a procedure with a return value.
-    var funcName = Blockly.Spin.variableDB_.getName(this.getTitleValue('NAME'),
+    var funcName = Blockly.Spin.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
     var branch = Blockly.Spin.statementToCode(this, 'STACK');
     if (Blockly.Spin.INFINITE_LOOP_TRAP) {
@@ -61,7 +61,7 @@ Blockly.Spin.procedures_defnoreturn = Blockly.Spin.procedures_defreturn;
 
 Blockly.Spin.procedures_callreturn = function () {
     // Call a procedure with a return value.
-    var funcName = Blockly.Spin.variableDB_.getName(this.getTitleValue('NAME'),
+    var funcName = Blockly.Spin.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
     var args = [];
     for (var x = 0; x < this.arguments_.length; x++) {
@@ -74,7 +74,7 @@ Blockly.Spin.procedures_callreturn = function () {
 
 Blockly.Spin.procedures_callnoreturn = function () {
     // Call a procedure with no return value.
-    var funcName = Blockly.Spin.variableDB_.getName(this.getTitleValue('NAME'),
+    var funcName = Blockly.Spin.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
     var args = [];
     for (var x = 0; x < this.arguments_.length; x++) {

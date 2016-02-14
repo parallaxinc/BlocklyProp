@@ -49,12 +49,12 @@
                     <shiro:authenticated>
                         <a class="btn btn-default open-project-link editor-view-link" href="#" ><fmt:message key="project.openlink" /></a>
                         <div class="btn-group not-your-project hidden">
-                            <a class="btn btn-default clone-project" href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
+                            <a class="btn btn-default clone-project" data-href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
                         </div>
                         <div class="btn-group your-project hidden">
                             <button class="btn btn-primary" ><fmt:message key="project.savelink" /></button>
-                            <a class="btn btn-danger delete-project" href="<url:getUrl url="/project?delete="/>" ><fmt:message key="project.deletelink" /></a>
-                            <a class="btn btn-default clone-project" href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
+                            <a class="btn btn-danger delete-project" data-href="<url:getUrl url="/project?delete="/>" ><fmt:message key="project.deletelink" /></a>
+                            <a class="btn btn-default clone-project" data-href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
                         </div>
                     </shiro:authenticated>
                 </div>

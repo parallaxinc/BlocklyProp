@@ -12,18 +12,21 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/lib/term.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/ace/ace.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/detect.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/blocklypropclient.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/blocklyc.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/utils.js"/>"></script>
-        <script type="text/javascript" src="<url:getUrl url="/cdn/editor.js"/>"></script>
-        <link href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
-        <link href="<url:getUrl url="/cdn/style-editor.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/sha256.min.js"/>" ></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/term.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/detect.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blocklypropclient.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blocklyc.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
+        <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
+        <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
     </head>
-    <body>
+    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
         <div id="editor">
             <table id="content_table">
                 <tr>
@@ -77,7 +80,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="console-dialog-title">Console</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="height: 400px;">
                         <div id="serial_console" class="console"></div>
                     </div>
                     <div class="modal-footer">
@@ -89,8 +92,8 @@
 
         <%@ include file="/WEB-INF/includes/pageparts/clientdownload.jsp"%>
 
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script>
             var type = 'PROPC';
         </script>

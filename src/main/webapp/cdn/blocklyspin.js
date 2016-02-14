@@ -17,25 +17,25 @@ var codeXml = null;
  */
 function tabClick(id) {
     // If the XML tab was open, save and render the content.
-    if (document.getElementById('tab_xml').className == 'active') {
-        var xmlTextarea = document.getElementById('textarea_xml');
-        var xmlText = xmlTextarea.value;
-        var xmlDom = null;
-        try {
-            xmlDom = Blockly.Xml.textToDom(xmlText);
-        } catch (e) {
-            var q =
-                    window.confirm('Error parsing XML:\n' + e + '\n\nAbandon changes?');
-            if (!q) {
-                // Leave the user on the XML tab.
-                return;
-            }
-        }
-        if (xmlDom) {
-            Blockly.mainWorkspace.clear();
-            Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
-        }
-    }
+    /*  if (document.getElementById('tab_xml').className == 'active') {
+     var xmlTextarea = document.getElementById('textarea_xml');
+     var xmlText = xmlTextarea.value;
+     var xmlDom = null;
+     try {
+     xmlDom = Blockly.Xml.textToDom(xmlText);
+     } catch (e) {
+     var q =
+     window.confirm('Error parsing XML:\n' + e + '\n\nAbandon changes?');
+     if (!q) {
+     // Leave the user on the XML tab.
+     return;
+     }
+     }
+     if (xmlDom) {
+     Blockly.mainWorkspace.clear();
+     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+     }
+     }*/
 
     // Deselect all tabs and hide all panes.
     for (var x in TABS_) {
@@ -105,11 +105,11 @@ function cloudCompile(text, action, successHandler) {
     $("#compile-console").val('');
     $('#compile-dialog').modal('show');
 
-    var propcCode = Blockly.propc.workspaceToCode();
+    var spinCode = Blockly.Spin.workspaceToCode(Blockly.mainWorkspace);
     $.ajax({
         'method': 'POST',
-        'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
-        'data': propcCode
+        'url': baseUrl + 'rest/compile/spin/' + action + '?id=' + idProject,
+        'data': {"code": spinCode}
     }).done(function (data) {
         if (data.error) {
             alert(data['message']);
@@ -209,6 +209,8 @@ function serial_console() {
 
         if (newTerminal) {
             term.open(document.getElementById("serial_console"));
+        } else {
+            term.reset();
         }
         connection.onClose = function () {
             //  term.destroy();

@@ -88,37 +88,37 @@ Blockly.Blocks.serial_rx_byte = {
 };
 
 Blockly.Spin.serial_open = function () {
-    var dropdown_rx_pin = this.getTitleValue('RXPIN');
-    var dropdown_tx_pin = this.getTitleValue('TXPIN');
-    var baud = this.getTitleValue('BAUD');
+    var dropdown_rx_pin = this.getFieldValue('RXPIN');
+    var dropdown_tx_pin = this.getFieldValue('TXPIN');
+    var baud = this.getFieldValue('BAUD');
 
-    Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
+    Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
-    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.StartRxTx( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', %1100, ' + baud + ' );';
-    }
+    //  if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
+    Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.StartRxTx( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', %1100, ' + baud + ' )';
+    // }
 
     return '';
 };
 
 Blockly.Spin.serial_send_text = function () {
-    var text = this.getTitleValue('TEXT');
+    var text = this.getFieldValue('TEXT');
 
-    Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
+    Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        return '';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
     }
 
-    return 'serial.Str( ' + text + ' );\n';
+    return 'serial.Str(String("' + text + '"))\n';
 };
 
 Blockly.Spin.serial_rx_byte = function () {
 
-    Blockly.Spin.definitions_[ "include_serial" ] = 'serial    : "Parallax Serial Terminal"';
+    Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        return '';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
     }
 
     return ['serial.CharIn', Blockly.Spin.ORDER_ATOMIC];

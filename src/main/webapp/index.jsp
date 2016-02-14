@@ -9,14 +9,16 @@
 
 <html>
     <head>
-        <link type="text/css" rel="stylesheet" href="<url:getUrl url="/cdn/style.css"/>" />
-        <link rel="stylesheet" href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
-        <link rel="stylesheet" href="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
-        <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
+        <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
+        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
+        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
+        <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/lib/sha256.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
     </head>
-    <body>
+    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
@@ -45,7 +47,7 @@
         </div>
 
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
-        <script src="<url:getUrl url="/cdn/latest.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/latest.js"/>" ></script>
 
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
     </body>

@@ -87,11 +87,13 @@ function validateFirstStep() {
     $(".wizard-card form").validate({
         rules: {
             'project-name': "required",
-            'board-type': "required"
+            'board-type': "required",
+            'project-description': "required"
         },
         messages: {
             'project-name': "Please enter a project name",
-            'board-type': "Please select a board type"
+            'board-type': "Please select a board type",
+            'project-description': "Please enter a description"
         }
     });
 

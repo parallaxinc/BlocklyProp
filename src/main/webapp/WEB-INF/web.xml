@@ -83,6 +83,10 @@
             <taglib-uri>http://blocklyprop.parallax.com/url</taglib-uri>
             <taglib-location>/WEB-INF/url.tld</taglib-location>
         </taglib>
+        <taglib>
+            <taglib-uri>http://blocklyprop.parallax.com/authentication</taglib-uri>
+            <taglib-location>/WEB-INF/authentication.tld</taglib-location>
+        </taglib>
     </jsp-config>
 
 </web-app>

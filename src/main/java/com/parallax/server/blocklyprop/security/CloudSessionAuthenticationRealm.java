@@ -29,6 +29,11 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
     private static Logger log = LoggerFactory.getLogger(CloudSessionAuthenticationRealm.class);
 
     @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof IdAuthenticationToken;
+    }
+
+    @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         System.out.println("AUTHORIZATION");
         AuthorizationInfo authorizationInfo = new SimpleAccount();
@@ -39,28 +44,46 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         try {
-            // Principal = login
-            String principal = (String) token.getPrincipal();
+            if (token instanceof IdAuthenticationToken) {
+                Long idUser = (Long) token.getPrincipal();
 
-            // Credentials = password
-            String credentials = new String((char[]) token.getCredentials());
+                User user = SecurityServiceImpl.authenticateLocalUserStatic(idUser);
+                if (user != null) {
+                    System.out.println("USER = " + user);
+                } else {
+                    System.out.println("USER = null");
+                    return null;
+                }
 
-            User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
-            if (user != null) {
-                System.out.println("USER = " + user);
+                try {
+                    return new SimpleAccount(user.getEmail(), "", "CloudSession");
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
             } else {
-                System.out.println("USER = null");
+                // Principal = login
+                String principal = (String) token.getPrincipal();
+
+                // Credentials = password
+                String credentials = new String((char[]) token.getCredentials());
+
+                User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
+                if (user != null) {
+                    System.out.println("USER = " + user);
+                } else {
+                    System.out.println("USER = null");
+                    return null;
+                }
+
+                System.out.println("CREATING AUTHENTICATION DETAILS");
+                try {
+                    return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+                System.out.println("credentials set");
                 return null;
             }
-
-            System.out.println("CREATING AUTHENTICATION DETAILS");
-            try {
-                return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-            System.out.println("credentials set");
-            return null;
         } catch (UnknownUserException ex) {
             log.warn("Unknown user", ex);
         } catch (UserBlockedException ex) {

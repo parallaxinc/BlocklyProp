@@ -21,8 +21,16 @@ public class Properties {
         Properties.configuration = configuration;
     }
 
+    public static Configuration getConfiguration() {
+        return configuration;
+    }
+
     public static String getDownloadFilesBaseUrl(String file) {
         return configuration.getString("downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
+    }
+
+    public static String getAuthenticationServerBaseUrl(String path) {
+        return configuration.getString("blocklyprop-auth.baseurl") + (path.startsWith("/") ? "" : "/") + path;
     }
 
 }

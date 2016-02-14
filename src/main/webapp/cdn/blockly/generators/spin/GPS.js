@@ -120,9 +120,9 @@ Blockly.Blocks.PAM_7Q_Velocity = {
 };
 
 Blockly.Spin.PAM_7Q_Init = function () {
-    var rx_pin = this.getTitleValue('RXPIN');
+    var rx_pin = this.getFieldValue('RXPIN');
     var tx_pin = this.getTtileValue('TXPIN');
-    var baud = this.getTitleValue('BAUD');
+    var baud = this.getFieldValue('BAUD');
 
     //ADD SPIN CODE
     //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';
@@ -172,7 +172,7 @@ Blockly.Spin.PAM_7Q_SatsTracked = function () {
 };
 
 Blockly.Spin.PAM_7Q_Velocity = function () {
-    var velocity_units = this.getTitleValue('VELOCITYUNITS');
+    var velocity_units = this.getFieldValue('VELOCITYUNITS');
 
     //ADD SPIN CODE
     //Blockly.Spin.definitions_[ "include PAM7Q" ] = '#include "gps.h"';

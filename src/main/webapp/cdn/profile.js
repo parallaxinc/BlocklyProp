@@ -1,0 +1,50 @@
+$(document).ready(function () {
+    $('#baseInfoForm').ajaxForm({
+        beforeSubmit: function (arr, $form, options) {
+            $(".form-message").addClass("hidden");
+        },
+        success: function (response) {
+            if (response['success']) {
+                $("#base-success").removeClass("hidden");
+                $.post("profile", {});
+            } else {
+                $("#base-error").removeClass("hidden");
+            }
+        }
+    });
+    $('#passwordForm').ajaxForm({
+        beforeSubmit: function (arr, $form, options) {
+            $(".form-message").addClass("hidden");
+
+            var passwordFields = $(".password-match");
+            if ($(passwordFields[0]).val() !== $(passwordFields[1]).val()) {
+                $("#password-matching-error").removeClass("hidden");
+                return false;
+            }
+        },
+        success: function (response) {
+            if (response['success']) {
+                $("#password-success").removeClass("hidden");
+
+                $(".password-match").val('');
+
+                $("#unlock-form").collapse("show");
+                $("#profile-form").collapse("hide");
+            } else {
+                $("#password-error").removeClass("hidden");
+            }
+        }
+    });
+});
+
+
+window['post-authenticate'] = function () {
+    $("#unlock-form").collapse("hide");
+    $("#profile-form").collapse("show");
+    $(".password").val($("#password").val());
+    $("#password").val('');
+};
+
+window['failed-authentication'] = function () {
+    $("#unlock-error").removeClass("hidden");
+};

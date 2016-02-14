@@ -1,102 +1,55 @@
 
-.form-control::-moz-placeholder{
-   color: #DDDDDD;
-   opacity: 1;
+.wizard-container .form-control::-moz-placeholder{
+    color: #DDDDDD;
+    opacity: 1;
 }
-.form-control:-moz-placeholder{
-   color: #DDDDDD;
-   opacity: 1;  
-}  
-.form-control::-webkit-input-placeholder{
-   color: #DDDDDD;
-   opacity: 1; 
-} 
-.form-control:-ms-input-placeholder{
-   color: #DDDDDD;
-   opacity: 1; 
+.wizard-container .form-control:-moz-placeholder{
+    color: #DDDDDD;
+    opacity: 1;
+}
+.wizard-container .form-control::-webkit-input-placeholder{
+    color: #DDDDDD;
+    opacity: 1;
+}
+.wizard-container .form-control:-ms-input-placeholder{
+    color: #DDDDDD;
+    opacity: 1;
 }
 /*     General overwrite     */
-a{
+.wizard-container a{
     color: #2CA8FF;
 }
-a:hover, a:focus {
+.wizard-container a:hover, a:focus {
     color: #109CFF;
 }
-a:focus, a:active, 
-button::-moz-focus-inner,
-input[type="reset"]::-moz-focus-inner,
-input[type="button"]::-moz-focus-inner,
-input[type="submit"]::-moz-focus-inner,
-select::-moz-focus-inner,
-input[type="file"] > input[type="button"]::-moz-focus-inner,
-input[type="button"]:focus {
+.wizard-container a:focus, a:active,
+.wizard-container button::-moz-focus-inner,
+.wizard-container input[type="reset"]::-moz-focus-inner,
+.wizard-container input[type="button"]::-moz-focus-inner,
+.wizard-container input[type="submit"]::-moz-focus-inner,
+.wizard-container select::-moz-focus-inner,
+.wizard-container input[type="file"] > input[type="button"]::-moz-focus-inner,
+.wizard-container input[type="button"]:focus {
     outline: 0 !important;
 }
 
-.btn:focus,
-.btn:hover,
-.btn:active{
+.wizard-container .btn:focus,
+.wizard-container .btn:hover,
+.wizard-container .btn:active{
     outline: 0;
 }
 
-/*           Font Smoothing      */
-
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, .btn-simple{
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-}
-
-/*           Typography          */
-
-h1, .h1, h2, .h2, h3, .h3, h4, .h4{
-    font-weight: 400;
-    margin: 30px 0 15px;
-}
-
-h1, .h1 {
-    font-size: 52px;
-}
-h2, .h2{
-    font-size: 36px;
-}
-h3, .h3{
-    font-size: 28px;
-    margin: 20px 0 10px;
-}
-h4, .h4{
-    font-size: 22px;
-}
-h5, .h5 {
-    font-size: 16px;
-}
-h6, .h6{
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-p{
-    font-size: 16px;
-    line-height: 1.6180em;
-}
-h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
-    color: #999999;
-    font-weight: 300;
-    line-height: 1;
-}
-h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
-    font-size: 60%;
-}
-h1 .subtitle{
+.wizard-container h1 .subtitle{
     display: block;
     font-family: 'Grand Hotel',cursive;
     line-height: 40px;
     margin: 15px 0 30px;
-    
+
 }
 
 
 /*           Animations              */
-.form-control, .input-group-addon{
+.wizard-container .form-control, .wizard-container .input-group-addon{
     -webkit-transition: all 300ms linear;
     -moz-transition: all 300ms linear;
     -o-transition: all 300ms linear;
@@ -104,122 +57,6 @@ h1 .subtitle{
     transition: all 300ms linear;
 }
 
-.btn{
-    border-width: 2px;
-    background-color: rgba(0,0,0,.0);
-    font-weight: 400;
-    opacity: 0.8;
-    padding: 8px 16px;
-}
-.btn-round{
-    border-width: 1px;
-    border-radius: 30px !important;
-    opacity: 0.79;
-    padding: 9px 18px;
-}
-.btn-sm, .btn-xs {
-    border-radius: 3px;
-    font-size: 12px;
-    padding: 5px 10px;
-}
-.btn-xs {
-    padding: 1px 5px;
-}
-.btn-lg{
-   border-radius: 6px;
-   font-size: 18px;
-   font-weight: 400;
-   padding: 14px 30px;
-}
-.btn-wd {
-    min-width: 100px;
-}
-.btn-default{
-    color: #777777;
-    border-color: #999999
-}
-.btn-primary {
-    color: #3472F7;
-    border-color: #3472F7;
-}
-.btn-info{
-     color: #2CA8FF;
-    border-color: #2CA8FF;
-}
-.btn-success{
-    color: #05AE0E;
-    border-color: #05AE0E;
-}
-.btn-warning{
-    color: #FF9500;
-    border-color: #FF9500;
-}
-.btn-danger{
-    color: #FF3B30;
-    border-color: #FF3B30;
-}
-.btn:hover{
-    background-color: rgba(0,0,0,.0);
-    opacity: 1;
-}
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
-    color: #1D62F0;
-    border-color: #1D62F0;
-    background-color: rgba(0,0,0,.0);
-}
-.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
-    color: #109CFF;
-    border-color: #109CFF;
-    background-color: rgba(0,0,0,.0);
-}
-.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
-    color: #049F0C;
-    border-color: #049F0C;
-    background-color: rgba(0,0,0,.0);
-}
-.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning {
-    color: #ED8D00;
-    border-color: #ED8D00;
-    background-color: rgba(0,0,0,.0);
-}
-.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
-    color: #EE2D20;
-    border-color: #EE2D20;
-    background-color: rgba(0,0,0,.0);
-}
-.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
-    color: #666666;
-    border-color: #888888;
-    background-color: rgba(0,0,0,.0);
-}
-.btn:active, .btn.active {
-    background-image: none;
-    box-shadow: none;
-    
-}
-.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
-    opacity: 0.45;
-}
-.btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary.active[disabled], fieldset[disabled] .btn-primary.active {
-    background-color: rgba(0, 0, 0, 0);
-    border-color: #3472F7;
-}
-.btn-info.disabled, .btn-info[disabled], fieldset[disabled] .btn-info, .btn-info.disabled:hover, .btn-info[disabled]:hover, fieldset[disabled] .btn-info:hover, .btn-info.disabled:focus, .btn-info[disabled]:focus, fieldset[disabled] .btn-info:focus, .btn-info.disabled:active, .btn-info[disabled]:active, fieldset[disabled] .btn-info:active, .btn-info.disabled.active, .btn-info.active[disabled], fieldset[disabled] .btn-info.active {
-    background-color: rgba(0, 0, 0, 0);
-    border-color: #2CA8FF;
-}
-.btn-success.disabled, .btn-success[disabled], fieldset[disabled] .btn-success, .btn-success.disabled:hover, .btn-success[disabled]:hover, fieldset[disabled] .btn-success:hover, .btn-success.disabled:focus, .btn-success[disabled]:focus, fieldset[disabled] .btn-success:focus, .btn-success.disabled:active, .btn-success[disabled]:active, fieldset[disabled] .btn-success:active, .btn-success.disabled.active, .btn-success.active[disabled], fieldset[disabled] .btn-success.active {
-    background-color: rgba(0, 0, 0, 0);
-    border-color: #05AE0E;
-}
-.btn-danger.disabled, .btn-danger[disabled], fieldset[disabled] .btn-danger, .btn-danger.disabled:hover, .btn-danger[disabled]:hover, fieldset[disabled] .btn-danger:hover, .btn-danger.disabled:focus, .btn-danger[disabled]:focus, fieldset[disabled] .btn-danger:focus, .btn-danger.disabled:active, .btn-danger[disabled]:active, fieldset[disabled] .btn-danger:active, .btn-danger.disabled.active, .btn-danger.active[disabled], fieldset[disabled] .btn-danger.active {
-    background-color: rgba(0, 0, 0, 0);
-    border-color: #FF3B30;
-}
-.btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning, .btn-warning.disabled:hover, .btn-warning[disabled]:hover, fieldset[disabled] .btn-warning:hover, .btn-warning.disabled:focus, .btn-warning[disabled]:focus, fieldset[disabled] .btn-warning:focus, .btn-warning.disabled:active, .btn-warning[disabled]:active, fieldset[disabled] .btn-warning:active, .btn-warning.disabled.active, .btn-warning.active[disabled], fieldset[disabled] .btn-warning.active {
-    background-color: rgba(0, 0, 0, 0);
-    border-color: #FF9500;
-}
 
 
 /*           Buttons fill .btn-fill           */
@@ -247,8 +84,8 @@ h1 .subtitle{
     border-color: #05AE0E;
 }
 .btn-warning.btn-fill{
-   background-color: #FF9500;
-   border-color: #FF9500;
+    background-color: #FF9500;
+    border-color: #FF9500;
 }
 .btn-danger.btn-fill{
     background-color: #FF3B30;
@@ -293,7 +130,7 @@ h1 .subtitle{
     padding: 7px 10px;
 }
 .btn-simple.btn-lg{
-   padding: 16px 60px;
+    padding: 16px 60px;
 }
 .btn-round.btn-xs{
     padding: 2px 5px;
@@ -336,20 +173,20 @@ h1 .subtitle{
     height: 56px;
     padding: 10px 16px;
 }
-.has-success .form-control, 
-.has-error .form-control, 
-.has-success .form-control:focus, 
+.has-success .form-control,
+.has-error .form-control,
+.has-success .form-control:focus,
 .has-error .form-control:focus{
     border-color: #E3E3E3;
     box-shadow: none;
 }
-.has-success .form-control, 
+.has-success .form-control,
 .has-success .form-control-feedback,
 .form-control.valid:focus{
     border-color: #05AE0E;
     color: #05AE0E;
 }
-.has-error .form-control, 
+.has-error .form-control,
 .has-error .form-control-feedback,
 .form-control.error{
     color: #FF3B30;
@@ -412,7 +249,7 @@ h1 .subtitle{
 }
 
 label.error{
-    color: #FF3B30;    
+    color: #FF3B30;
     margin-top: 5px;
     margin-bottom: 0;
 
@@ -426,22 +263,22 @@ label small{
     color: #FFFFFF;
 }
 .label-primary.label-fill, .progress-bar, .progress-bar-primary{
-   background-color: #3472F7;
+    background-color: #3472F7;
 }
 .label-info.label-fill, .progress-bar-info{
     background-color: #2CA8FF;
 }
 .label-success.label-fill, .progress-bar-success{
-   background-color: #05AE0E;
+    background-color: #05AE0E;
 }
 .label-warning.label-fill, .progress-bar-warning{
-   background-color: #FF9500;
+    background-color: #FF9500;
 }
 .label-danger.label-fill, .progress-bar-danger{
-   background-color: #FF3B30;
+    background-color: #FF3B30;
 }
 .label-default.label-fill{
-   background-color: #999999;
+    background-color: #999999;
 }
 
 .progress {
@@ -468,19 +305,19 @@ label small{
     background-color: #F5F5F5;
 }
 .nav-pills.ct-blue > li.active > a, .nav-pills.ct-blue > li.active > a:hover, .nav-pills.ct-blue > li.active > a:focus, .pagination.ct-blue > .active > a, .pagination.ct-blue > .active > span, .pagination.ct-blue > .active > a:hover, .pagination.ct-blue > .active > span:hover, .pagination.ct-blue > .active > a:focus, .pagination.ct-blue > .active > span:focus{
-   background-color: #3472F7;
+    background-color: #3472F7;
 }
 .nav-pills.ct-azure > li.active > a, .nav-pills.ct-azure > li.active > a:hover, .nav-pills.ct-azure > li.active > a:focus, .pagination.ct-azure > .active > a, .pagination.ct-azure > .active > span, .pagination.ct-azure > .active > a:hover, .pagination.ct-azure > .active > span:hover, .pagination.ct-azure > .active > a:focus, .pagination.ct-azure > .active > span:focus{
     background-color: #2CA8FF;
 }
 .nav-pills.ct-green > li.active > a, .nav-pills.ct-green > li.active > a:hover, .nav-pills.ct-green > li.active > a:focus, .pagination.ct-green > .active > a, .pagination.ct-green > .active > span, .pagination.ct-green > .active > a:hover, .pagination.ct-green > .active > span:hover, .pagination.ct-green > .active > a:focus, .pagination.ct-green > .active > span:focus{
-   background-color: #05AE0E;
+    background-color: #05AE0E;
 }
 .nav-pills.ct-orange > li.active > a, .nav-pills.ct-orange > li.active > a:hover, .nav-pills.ct-orange > li.active > a:focus, .pagination.ct-orange > .active > a, .pagination.ct-orange > .active > span, .pagination.ct-orange > .active > a:hover, .pagination.ct-orange > .active > span:hover, .pagination.ct-orange > .active > a:focus, .pagination.ct-orange > .active > span:focus{
-   background-color: #FF9500;
+    background-color: #FF9500;
 }
 .nav-pills.ct-red > li.active > a, .nav-pills.ct-red > li.active > a:hover, .nav-pills.ct-red > li.active > a:focus, .pagination.ct-red > .active > a, .pagination.ct-red > .active > span, .pagination.ct-red > .active > a:hover, .pagination.ct-red > .active > span:hover, .pagination.ct-red > .active > a:focus, .pagination.ct-red > .active > span:focus{
-   background-color: #FF3B30;
+    background-color: #FF3B30;
 }
 .nav-pills.ct-blue > li > a {
     border: 1px solid #3472F7;
@@ -503,8 +340,8 @@ label small{
     color: #FF3B30;
 }
 
-.nav-pills > li.active > a, 
-.nav-pills > li.active > a:hover, 
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
     background-color: #2CA8FF;
     color: #FFFFFF;
@@ -549,7 +386,7 @@ label small{
 }
 .modal-header {
     border: 0 none;
-    
+
 }
 
 .tooltip {
@@ -661,13 +498,13 @@ label small{
     left: 50px;
     position: absolute;
     top: 20px;
-     z-index: 3;
+    z-index: 3;
 }
 .logo-container .logo{
     overflow: hidden;
     border-radius: 50%;
     border: 1px solid #333333;
-    width: 60px; 
+    width: 60px;
     float: left;
 }
 .logo-container .brand{
@@ -717,7 +554,7 @@ label{
 
 
 .wizard-container{
-   
+
     padding-top: 100px;
     z-index: 3;
 }
@@ -778,7 +615,7 @@ label{
 
 .wizard-card .picture-src{
     width: 100%;
-    
+
 }
 .wizard-card .tab-content{
     min-height: 340px;
@@ -826,8 +663,8 @@ label{
 .wizard-card .nav-pills > li > a:hover, .wizard-card .nav-pills > li > a:focus{
     background-color: #999999;
     cursor: default;
-} 
-.wizard-card .btn{
+}
+.wizard-card input.btn, .wizard-card a.btn{
     text-transform: uppercase;
 }
 .wizard-card .nav-pills > li:first-child > a {
@@ -848,17 +685,17 @@ label{
     margin-top: 20px;
 }
 .wizard-card .choice .icon{
-   text-align: center;
-   vertical-align: middle;
-   height: 116px;
-   width: 116px;
-   border-radius: 50%;
-   background-color: #999999;
-   color: #FFFFFF;
-   margin: 0 auto 20px;
-   border: 4px solid #CCCCCC;
-   transition: all 0.2s;
-   -webkit-transition: all 0.2s;
+    text-align: center;
+    vertical-align: middle;
+    height: 116px;
+    width: 116px;
+    border-radius: 50%;
+    background-color: #999999;
+    color: #FFFFFF;
+    margin: 0 auto 20px;
+    border: 4px solid #CCCCCC;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
 }
 .wizard-card .choice i{
     font-size: 30px;
@@ -901,20 +738,7 @@ label{
 }
 
 
-.footer{
-    position: relative;
-    bottom: 20px;
-    right: 0px;
-    width: 100%;
-    color: #FFFFFF;
-    z-index: 4;
-    text-align: right;
-    margin-top: 60px;
-    text-shadow: 0 1px 3px black;
-}
-.footer a{
-    color: #FFFFFF;
-}
+
 .footer .heart{
     color: #FF3B30;
 }
@@ -926,13 +750,13 @@ label{
 }
 
 @media (min-width: 768px){
-     .navbar-form {
+    .navbar-form {
         margin-top: 21px;
         margin-bottom: 21px;
         padding-left: 5px;
         padding-right: 5px;
     }
-    
+
     .btn-wd {
         min-width: 140px;
     }

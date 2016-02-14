@@ -82,7 +82,7 @@ Blockly.Blocks.debug_lcd_number = {
         this.setColour(180);
         this.appendDummyInput("")
                 .appendField("LCD print");
-        this.appendDummyInput("").appendTitle("Number");
+        this.appendDummyInput("").appendField("Number");
         this.appendValueInput('NUMBER').setCheck(Number);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -105,9 +105,9 @@ Blockly.Blocks.debug_lcd_action = {
 //Blockly.Spin = new Blockly.Generator('Spin');
 
 Blockly.Spin.debug_lcd_init = function () {
-    var dropdown_pin = this.getTitleValue('PIN');
-    var baud = this.getTitleValue('BAUD');
-    var lines = this.getTitleValue('LINES');
+    var dropdown_pin = this.getFieldValue('PIN');
+    var baud = this.getFieldValue('BAUD');
+    var lines = this.getFieldValue('LINES');
 
     Blockly.Spin.definitions_['define_debug_lcd'] = 'OBJDEBUGLCD : "debug_lcd"';
     Blockly.Spin.setups_['setup_debug_lcd'] = 'DEBUGLCD.init(' + dropdown_pin + ', ' + baud + ', ' + lines + ')';
@@ -126,7 +126,7 @@ Blockly.Spin.debug_lcd_clear = function () {
 };
 
 Blockly.Spin.debug_lcd_print = function () {
-    var text = this.getTitleValue('TEXT');
+    var text = this.getFieldValue('TEXT');
 
     Blockly.Spin.definitions_['define_debug_lcd'] = 'OBJDEBUGLCD : "debug_lcd"';
     if (Blockly.Spin.setups_['setup_debug_lcd'] == undefined) {
@@ -148,7 +148,7 @@ Blockly.Spin.debug_lcd_number = function () {
 };
 
 Blockly.Spin.debug_lcd_action = function () {
-    var action = this.getTitleValue('ACTION');
+    var action = this.getFieldValue('ACTION');
 
     Blockly.Spin.definitions_['define_debug_lcd'] = 'OBJDEBUGLCD : "debug_lcd"';
     if (Blockly.Spin.setups_['setup_debug_lcd'] == undefined) {

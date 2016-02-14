@@ -44,4 +44,9 @@ public class SessionData implements Serializable {
         this.locale = locale;
     }
 
+    @Override
+    public String toString() {
+        return "SessionData{" + "user=" + user + ", idUser=" + idUser + ", locale=" + locale + '}';
+    }
+
 }

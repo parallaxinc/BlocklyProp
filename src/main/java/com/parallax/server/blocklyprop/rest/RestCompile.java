@@ -11,6 +11,7 @@ import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.parallax.client.cloudcompiler.CCloudCompileService;
 import com.parallax.client.cloudcompiler.SpinCloudCompileService;
 import com.parallax.client.cloudcompiler.objects.CompilationException;
@@ -25,7 +26,8 @@ import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.server.blocklyprop.rest.typewrappers.CompileActionTypeWrapper;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
-import javax.ws.rs.Consumes;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -54,6 +56,8 @@ public class RestCompile {
     private SpinCloudCompileService spinCloudCompileService;
     private Configuration configuration;
 
+    private Provider<HttpServletRequest> requestProvider;
+
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -75,9 +79,9 @@ public class RestCompile {
     @Path("/spin/{action}")
     @Detail("Spin compile")
     @Name("Spin")
-    @Consumes("text/plain")
+    //  @Consumes("text/plain")
     @Produces("application/json")
-    public Response compileSpin(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, String code) {
+    public Response compileSpin(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, @FormParam("code") String code) {
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;
@@ -98,7 +102,7 @@ public class RestCompile {
     @Detail("C compile")
     @Name("C")
     @Produces("text/json")
-    public Response compileC(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, String code) {
+    public Response compileC(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, @FormParam("code") String code) {
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;

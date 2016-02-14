@@ -18,6 +18,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord
 import com.parallax.server.blocklyprop.services.ProjectService;
 import java.util.List;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -73,7 +74,7 @@ public class RestSharedProject {
     @Detail("Get project by id")
     @Name("Get project by id")
     @Produces("application/json")
-    public Response get(@PathParam("id") Long idProject) {
+    public Response get(@HeaderParam("X-Authorization") String authorization, @HeaderParam("X-Timestamp") Long timestamp, @PathParam("id") Long idProject) {
         ProjectRecord project = projectService.getProject(idProject);
 
         if (project == null) {
@@ -90,7 +91,9 @@ public class RestSharedProject {
     @Detail("Get project by id for editor")
     @Name("Get project by id for editor")
     @Produces("application/json")
-    public Response getEditor(@PathParam("id") Long idProject) {
+    public Response getEditor(@HeaderParam("X-Authorization") String authorization, @HeaderParam("X-Timestamp") Long timestamp, @PathParam("id") Long idProject) {
+        System.out.println("Authorization: " + authorization);
+
         ProjectRecord project = projectService.getProject(idProject);
 
         if (project == null) {

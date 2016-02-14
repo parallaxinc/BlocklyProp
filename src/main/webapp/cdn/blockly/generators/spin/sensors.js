@@ -44,8 +44,8 @@ Blockly.Blocks.sensor_ping = {
 };
 
 Blockly.Spin.sensor_ping = function () {
-    var dropdown_pin = this.getTitleValue('PIN');
-    var unit = this.getTitleValue('UNIT');
+    var dropdown_pin = this.getFieldValue('PIN');
+    var unit = this.getFieldValue('UNIT');
     var methodForUnit = Blockly.Spin.sensor_ping.UNITS[unit];
 
     Blockly.Spin.definitions_['define_ping'] = 'OBJPING : "ping"';

@@ -20,4 +20,16 @@
             <required>true</required>
         </attribute>
     </tag>
+
+    <tag>
+        <name>getCdnUrl</name>
+        <tag-class>com.parallax.server.blocklyprop.jsp.GetCdnUrl</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>url</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+    </tag>
 </taglib>

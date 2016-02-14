@@ -9,10 +9,7 @@
 
 <html>
     <head>
-        <link rel="stylesheet" href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
-        <link type="text/css" rel="stylesheet" href="<url:getUrl url="/cdn/style.css"/>" />
-        <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
     </head>
     <body>
 

@@ -31,7 +31,7 @@ if (!Blockly.Blocks)
 
 Blockly.Spin.math_number = function () {
     // Numeric value.
-    var code = window.parseFloat(this.getTitleValue('NUM'));
+    var code = window.parseFloat(this.getFieldValue('NUM'));
     // -4.abs() returns -4 in Dart due to strange order of operation choices.
     // -4 is actually an operator and a number.  Reflect this in the order.
     var order = code < 0 ?
@@ -42,7 +42,7 @@ Blockly.Spin.math_number = function () {
 
 Blockly.Spin.math_arithmetic = function () {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.Spin.math_arithmetic.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];
@@ -70,7 +70,7 @@ Blockly.Spin.math_arithmetic.OPERATORS = {
 
 Blockly.Spin.math_single = function () {
     // Math operators with single operand.
-    var operator = this.getTitleValue('OP');
+    var operator = this.getFieldValue('OP');
     var code;
     var arg;
     if (operator == 'NEG') {
@@ -134,7 +134,7 @@ Blockly.Blocks.math_limit.OPERATORS =
 
 Blockly.Spin.math_limit = function () {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.Spin.math_limit.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];
@@ -177,7 +177,7 @@ Blockly.Blocks.math_crement.OPERATORS =
 
 Blockly.Spin.math_crement = function () {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.Spin.math_crement.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];

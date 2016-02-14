@@ -28,9 +28,8 @@ if (!Blockly.Blocks)
 
 Blockly.Blocks.variables_get = {
     // Variable getter.
-    category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_GET_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(330);
         this.appendDummyInput("")
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
@@ -39,10 +38,10 @@ Blockly.Blocks.variables_get = {
         this.setOutput(true, null);
         //      this.setTooltip(Blockly.LANG_VARIABLES_GET_TOOLTIP_1);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -51,9 +50,8 @@ Blockly.Blocks.variables_get = {
 
 Blockly.Blocks.variables_declare = {
     // Variable setter.
-    category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(330);
         this.appendValueInput('VALUE', null)
                 .appendField('Declare')
@@ -66,10 +64,10 @@ Blockly.Blocks.variables_declare = {
         this.setNextStatement(true);
 //        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -78,9 +76,8 @@ Blockly.Blocks.variables_declare = {
 
 Blockly.Blocks.variables_set = {
     // Variable setter.
-    category: null, // Variables are handled specially.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
-    init: function() {
+    init: function () {
         this.setColour(330);
         this.appendValueInput('VALUE')
                 .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
@@ -90,10 +87,10 @@ Blockly.Blocks.variables_set = {
         this.setNextStatement(true);
 //        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -108,14 +105,14 @@ Blockly.Blocks.variables_set = {
 
 //Blockly.propc = new Blockly.Generator('propc');
 
-Blockly.propc.variables_get = function() {
+Blockly.propc.variables_get = function () {
     // Variable getter.
     var code = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.propc.variables_declare = function() {
+Blockly.propc.variables_declare = function () {
     // Variable setter.
     var dropdown_type = this.getFieldValue('TYPE');
     //TODO: settype to variable
@@ -128,7 +125,7 @@ Blockly.propc.variables_declare = function() {
     return '';
 };
 
-Blockly.propc.variables_set = function() {
+Blockly.propc.variables_set = function () {
     // Variable setter.
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';

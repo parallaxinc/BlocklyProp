@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,6 +32,8 @@ import org.apache.commons.configuration.Configuration;
  */
 @Singleton
 public class ProfileServlet extends HttpServlet {
+
+    private Logger log = LoggerFactory.getLogger(ProfileServlet.class);
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private CloudSessionUserService cloudSessionUserService;
@@ -52,6 +56,7 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = BlocklyPropSecurityUtils.getUserInfo();
+        req.setAttribute("id", user.getId());
         req.setAttribute("email", user.getEmail());
         req.setAttribute("screenname", user.getScreenname());
         req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
@@ -59,6 +64,22 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            log.info("Updating user info");
+            User user = cloudSessionUserService.getUser(BlocklyPropSecurityUtils.getUserInfo().getId());
+            if (user != null) {
+                SecurityServiceImpl.getSessionData().setUser(user);
+                userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+            }
+        } catch (UnknownUserIdException uuie) {
+            log.error("Unknown user", uuie);
+        } catch (ServerException se) {
+            log.error("Server exception", se);
+        }
+    }
+
+    //@Override
+    protected void doNOTPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String saveBase = req.getParameter("save-base");
         if (!Strings.isNullOrEmpty(saveBase)) {
