@@ -82,7 +82,7 @@ Blockly.Blocks.MMA7455_acceleration = {
 
 //CURRENTLY NOT SPIN SUPPORTED
 Blockly.Spin.MX2125_acceleration_xaxis = function () {
-    var pin = this.getTitleValue('PINX');
+    var pin = this.getFieldValue('PINX');
 
     //ADD SPIN CODE
     //Blockly.Spin.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
@@ -93,7 +93,7 @@ Blockly.Spin.MX2125_acceleration_xaxis = function () {
 
 //CURRENTLY NOT SPIN SUPPORTED
 Blockly.Spin.MX2125_acceleration_yaxis = function () {
-    var pin = this.getTitleValue('PINY');
+    var pin = this.getFieldValue('PINY');
 
     //ADD SPIN CODE HERE
     //Blockly.Spin.definitions_[ "include_mx2125" ] = '#include "mx2125.h"';
@@ -103,9 +103,9 @@ Blockly.Spin.MX2125_acceleration_yaxis = function () {
 };
 
 Blockly.Spin.MMA7455_acceleration = function () {
-    var pinx = this.getTitleValue('PINX');
-    var piny = this.getTitleValue('PINY');
-    var pinz = this.getTitleValue('PINZ');
+    var pinx = this.getFieldValue('PINX');
+    var piny = this.getFieldValue('PINY');
+    var pinz = this.getFieldValue('PINZ');
 
     var xstorage = Blockly.Spin.valueToCode(this, 'VARX');
     var ystorage = Blockly.Spin.valueToCode(this, 'VARY');

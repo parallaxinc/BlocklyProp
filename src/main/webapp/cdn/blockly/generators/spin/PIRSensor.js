@@ -41,7 +41,7 @@ Blockly.Blocks.PIR_Sensor = {
 };
 
 Blockly.Spin.PIR_Sensor = function () {
-    var pin = this.getTitleValue('PIN');
+    var pin = this.getFieldValue('PIN');
 
     var code = 'ina[ ' + pin + ' ]';
     return [code, Blockly.Spin.ORDER_ATOMIC];

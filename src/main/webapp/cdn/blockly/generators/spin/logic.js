@@ -25,7 +25,7 @@
 
 Blockly.Spin.logic_compare = function () {
     // Comparison operator.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var operator = Blockly.Spin.logic_compare.OPERATORS[mode];
     var order = (operator == '==' || operator == '!=') ?
             Blockly.Spin.ORDER_EQUALITY : Blockly.Spin.ORDER_RELATIONAL;
@@ -80,6 +80,6 @@ Blockly.Spin.logic_negate = function () {
 
 Blockly.Spin.logic_boolean = function () {
     // Boolean values true and false.
-    var code = (this.getTitleValue('BOOL') == 'TRUE') ? 'TRUE' : 'FALSE';
+    var code = (this.getFieldValue('BOOL') == 'TRUE') ? 'TRUE' : 'FALSE';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };

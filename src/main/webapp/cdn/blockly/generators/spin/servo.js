@@ -49,7 +49,7 @@ Blockly.Blocks.servo_move = {
 };
 
 Blockly.Spin.servo_move = function () {
-    var dropdown_pin = this.getTitleValue('PIN');
+    var dropdown_pin = this.getFieldValue('PIN');
     var pulse_time = Blockly.Spin.valueToCode(this, 'PULSE', Blockly.Spin.ORDER_NONE);
 
     Blockly.Spin.definitions_['define_servo'] = 'OBJSERVO : "Servo32v7"';

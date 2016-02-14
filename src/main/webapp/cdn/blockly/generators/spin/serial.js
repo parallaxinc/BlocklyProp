@@ -88,9 +88,9 @@ Blockly.Blocks.serial_rx_byte = {
 };
 
 Blockly.Spin.serial_open = function () {
-    var dropdown_rx_pin = this.getTitleValue('RXPIN');
-    var dropdown_tx_pin = this.getTitleValue('TXPIN');
-    var baud = this.getTitleValue('BAUD');
+    var dropdown_rx_pin = this.getFieldValue('RXPIN');
+    var dropdown_tx_pin = this.getFieldValue('TXPIN');
+    var baud = this.getFieldValue('BAUD');
 
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
@@ -102,7 +102,7 @@ Blockly.Spin.serial_open = function () {
 };
 
 Blockly.Spin.serial_send_text = function () {
-    var text = this.getTitleValue('TEXT');
+    var text = this.getFieldValue('TEXT');
 
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;

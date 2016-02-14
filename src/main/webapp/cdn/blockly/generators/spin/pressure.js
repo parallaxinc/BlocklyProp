@@ -27,10 +27,10 @@ Blockly.Blocks.etape_rc_time = {
         this.setInputsInline(true);
     },
     getVars: function () {
-        return [this.getTitleValue('VAR')];
+        return [this.getFieldValue('VAR')];
     },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getTitleValue('VAR'))) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
     }
@@ -53,8 +53,8 @@ Blockly.Blocks.etape_voltage_input = {
 
 //Create code for blocks
 Blockly.Spin.etape_rc_time = function () {
-    var pin = this.getTitleValue('PIN');
-    var inputStorage = Blockly.Spin.variableDB_.getName(this.getTitleValue('VAR'), Blockly.Variables.NAME_TYPE);
+    var pin = this.getFieldValue('PIN');
+    var inputStorage = Blockly.Spin.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
     Blockly.Spin.definitions_[ "include_rctime" ] = 'rc : "RC Time"';
     Blockly.Spin.setups_[ "rctime" ] = 'rc.ChargeTime(clkfreq/1000)\nrc.TimeOut(clkfreq/50)\n'
@@ -64,7 +64,7 @@ Blockly.Spin.etape_rc_time = function () {
 };
 
 Blockly.Spin.etape_voltage_input = function () {
-    var pin = this.getTitleValue('PIN');
+    var pin = this.getFieldValue('PIN');
 
     Blockly.Spin.definitions_[ "abvolts" ] = 'adc : "PropBOE ADC"';
 

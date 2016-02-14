@@ -42,7 +42,7 @@ Blockly.Blocks.SF02_Laser_Rangefinder = {
 
 //Create code for blocks
 Blockly.Spin.SF02_Laser_Rangefinder = function () {
-    var pin = this.getTitleValue('PIN');
+    var pin = this.getFieldValue('PIN');
 
     //ADD SPIN CODE
     Blockly.Spin.definitions_[ "include_serial" ] = 'serial : "Parallax Serial Terminal"';

@@ -52,7 +52,7 @@ Blockly.Blocks.bit_math_shift.OPERATORS =
 
 Blockly.Spin.bit_math_shift = function () {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.Spin.bit_math_shift.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];
@@ -93,7 +93,7 @@ Blockly.Blocks.bit_math_rotate.OPERATORS =
 
 Blockly.Spin.bit_math_rotate = function () {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.Spin.bit_math_rotate.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];
@@ -135,7 +135,7 @@ Blockly.Blocks.bit_math_operations.OPERATORS =
 
 Blockly.Spin.bit_math_operations = function () {
     // Basic arithmetic operators, and power.
-    var mode = this.getTitleValue('OP');
+    var mode = this.getFieldValue('OP');
     var tuple = Blockly.Spin.bit_math_operations.OPERATORS[mode];
     var operator = tuple[0];
     var order = tuple[1];

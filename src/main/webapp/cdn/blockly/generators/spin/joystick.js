@@ -58,7 +58,7 @@ Blockly.Blocks.joystick_input_xaxis = {
 };
 
 Blockly.Spin.joystick_input_yaxis = function () {
-    var pin_number_yaxis = this.getTitleValue('PINY');
+    var pin_number_yaxis = this.getFieldValue('PINY');
 
     Blockly.Spin.definitions_[ "abvolts" ] = 'adc : "PropBOE ADC"';
 
@@ -67,7 +67,7 @@ Blockly.Spin.joystick_input_yaxis = function () {
 };
 
 Blockly.Spin.joystick_input_xaxis = function () {
-    var pin_number_xaxis = this.getTitleValue('PINX');
+    var pin_number_xaxis = this.getFieldValue('PINX');
 
     Blockly.Spin.definitions_[ "abvolts" ] = 'adc : "PropBOE ADC"';
 

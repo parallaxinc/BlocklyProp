@@ -56,6 +56,10 @@
                 height: 100%;
                 width: 100%;
             }
+
+            .blocklyMinimalBody {
+                height: 64px;
+            }
         </style>
         <script>
             function init() {

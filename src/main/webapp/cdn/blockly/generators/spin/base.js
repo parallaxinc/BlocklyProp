@@ -118,7 +118,7 @@ Blockly.Spin.base_delay = function () {
 Blockly.Spin.cog_new = function () {
     var method = Blockly.Spin.statementToCode(this, 'METHOD');
     method = method.replace("  ", "").replace("\n", "");
-    var stackSize = this.getTitleValue('STACK_SIZE');
+    var stackSize = this.getFieldValue('STACK_SIZE');
     var stackName = 'Stack' + Blockly.Spin.stacks_.length;
 
     Blockly.Spin.stacks_.push('long ' + stackName + '[' + stackSize + ']');
