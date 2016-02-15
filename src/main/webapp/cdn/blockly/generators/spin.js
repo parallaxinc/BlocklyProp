@@ -273,7 +273,7 @@ Blockly.Spin.scrub_ = function (block, code) {
                 if (childBlock) {
                     var comment = Blockly.Spin.allNestedComments(childBlock);
                     if (comment) {
-                        commentCode += Blockly.Spin.prefixLines(comment, '// ');
+                        commentCode += Blockly.Spin.prefixLines(comment, '\' ');
                     }
                 }
             }
