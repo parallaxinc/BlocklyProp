@@ -108,6 +108,7 @@ function cloudCompile(text, action, successHandler) {
     $('#compile-dialog').modal('show');
 
     var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+    var terminalNeeded = propcCode.indexOf("SERIAL_TERMINAL USED") > -1;
     $.ajax({
         'method': 'POST',
         'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
@@ -118,7 +119,7 @@ function cloudCompile(text, action, successHandler) {
         } else {
             if (data.success) {
                 $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
-                successHandler(data);
+                successHandler(data, terminalNeeded);
             } else {
                 $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
             }
@@ -132,7 +133,7 @@ function cloudCompile(text, action, successHandler) {
  *
  */
 function compile() {
-    cloudCompile('Compile', 'compile', function (data) {
+    cloudCompile('Compile', 'compile', function (data, terminalNeeded) {
 
     });
 }
@@ -142,10 +143,13 @@ function compile() {
  */
 function loadIntoRam() {
     if (client_available) {
-        cloudCompile('Load into ram', 'bin', function (data) {
+        cloudCompile('Load into ram', 'bin', function (data, terminalNeeded) {
             $.post(client_url + 'load.action', {action: "RAM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                 $("#compile-console").val($("#compile-console").val() + loaddata.message);
                 console.log(loaddata);
+                if (terminalNeeded && loaddata.success) {
+                    serial_console();
+                }
             });
         });
     } else {
@@ -158,10 +162,13 @@ function loadIntoRam() {
  */
 function loadIntoEeprom() {
     if (client_available) {
-        cloudCompile('Load into eeprom', 'eeprom', function (data) {
+        cloudCompile('Load into eeprom', 'eeprom', function (data, terminalNeeded) {
             $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                 $("#compile-console").val($("#compile-console").val() + loaddata.message);
                 console.log(loaddata);
+                if (terminalNeeded && loaddata.success) {
+                    serial_console();
+                }
             });
         });
     } else {
