@@ -32,6 +32,11 @@
         </div>
 
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
+        <script>
+            window['post-authenticate'] = function () {
+                window.location = <url:getUrl url="/"/>;
+            };
+        </script>
 
     </body>
 </html>

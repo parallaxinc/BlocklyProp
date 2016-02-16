@@ -72,7 +72,12 @@
                         </c:if>
                 </li>
              <!--   <li><a href="#" onclick="project()"><fmt:message key="editor.project" /></a></li> -->
-                <li><a href="#" id="save-project"><fmt:message key="editor.save" /></a></li>
+                <c:if test="${!param.demo}">
+                    <li><a href="#" id="save-project"><fmt:message key="editor.save" /></a></li>
+                    </c:if>
+                    <c:if test="${param.demo}">
+                    <li><a href="#" class="demo-function" ><fmt:message key="editor.save" /></a></li>
+                        </c:if>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

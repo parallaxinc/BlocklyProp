@@ -14,22 +14,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><fmt:message key="not_logged_in_title" /></h4>
+                    <h4 class="modal-title"><fmt:message key="editor.demo.dialog.title" /></h4>
                 </div>
                 <div class="modal-body"  style="height: 200px;">
                     <div class="col-md-6">
-                        <h2>Continue demo</h2>
-                        <p>Compiling and saving are disabled</p>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Continue</button>
+                        <h2><fmt:message key="editor.demo.dialog.continue" /></h2>
+                        <p><fmt:message key="editor.demo.dialog.continue.text" /></p>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.demo.dialog.continue.continuelink" /></button>
                     </div>
                     <div class="col-md-6">
-                        <h2>Log in</h2>
-                        <a class="full-editor-link" href="<url:getUrl url="/login.jsp"/>">Login</a>
-                        <a href="<url:getUrl url="register"/>" >Register</a>
+                        <h2><fmt:message key="editor.demo.dialog.login" /></h2>
+                        <a class="full-editor-link" href="<url:getUrl url="/login.jsp"/>"><fmt:message key="editor.demo.dialog.login.loginlink" /></a>
+                        <a href="<url:getUrl url="register"/>" ><fmt:message key="editor.demo.dialog.login.registerlink" /></a>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="cancel" /></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

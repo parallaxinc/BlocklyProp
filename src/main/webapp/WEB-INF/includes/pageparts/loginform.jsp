@@ -8,8 +8,10 @@
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
 <div>
-    <div id="failure" class="hidden">
-        <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
+    <div id="login-failure" class="hidden">
+        <div class="alert alert-danger" id="unlock-error">
+            <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
+        </div>
         <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
         <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
     </div>

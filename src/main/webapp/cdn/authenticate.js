@@ -15,6 +15,7 @@ $(document).ready(function () {
     timediff = timestamp - nowEpoch;
 
     loginForm.submit(function (event) {
+        $("#login-failure").addClass("hidden");
         // Stop form from submitting normally
         event.preventDefault();
 
@@ -66,9 +67,15 @@ function onSuccess(response, statusText, xhr, $form) {
                 } else {
                     location.reload(true);
                 }
+            } else {
+                $("#login-failure").removeClass("hidden");
+                if (typeof window['failed-authentication'] === 'function') {
+                    window['failed-authentication']();
+                }
             }
         });
     } else {
+        $("#login-failure").removeClass("hidden");
         if (typeof window['failed-authentication'] === 'function') {
             window['failed-authentication']();
         }
