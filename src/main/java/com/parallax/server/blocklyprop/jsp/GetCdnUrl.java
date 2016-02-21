@@ -32,7 +32,13 @@ public class GetCdnUrl extends SimpleTagSupport {
             PageContext pageContext = (PageContext) getJspContext();
             JspWriter out = pageContext.getOut();
 
-            out.write(Properties.getConfiguration().getString("cdnfiles.baseurl") + (url.startsWith("/") ? "" : "/") + url);
+            String cdnUrl = Properties.getConfiguration().getString("cdnfiles.baseurl");
+            if (pageContext.getRequest().isSecure()) {
+                cdnUrl = cdnUrl.replaceFirst("http://", "https://");
+                cdnUrl = Properties.getConfiguration().getString("cdnfiles.baseurl.https", cdnUrl);
+            }
+
+            out.write(cdnUrl + (url.startsWith("/") ? "" : "/") + url);
         } else {
             System.out.println("Url = null or empty");
         }
