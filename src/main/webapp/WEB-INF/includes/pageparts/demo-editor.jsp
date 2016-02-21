@@ -24,8 +24,8 @@
                     </div>
                     <div class="col-md-6">
                         <h2><fmt:message key="editor.demo.dialog.login" /></h2>
-                        <a class="full-editor-link" href="<url:getUrl url="/login.jsp"/>"><fmt:message key="editor.demo.dialog.login.loginlink" /></a>
-                        <a href="<url:getUrl url="/register"/>" ><fmt:message key="editor.demo.dialog.login.registerlink" /></a>
+                        <p><a class="full-editor-link" href="<url:getUrl url="/login.jsp"/>"><fmt:message key="editor.demo.dialog.login.loginlink" /></a></p>
+                        <p><a href="<url:getUrl url="/register"/>" ><fmt:message key="editor.demo.dialog.login.registerlink" /></a></p>
                     </div>
                 </div>
                 <div class="modal-footer">
