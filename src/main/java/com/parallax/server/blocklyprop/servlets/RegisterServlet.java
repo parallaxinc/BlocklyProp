@@ -68,6 +68,9 @@ public class RegisterServlet extends HttpServlet {
         } catch (PasswordVerifyException ex) {
             req.setAttribute("passwordsDontMatch", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
+        } catch (NullPointerException npe) {
+            req.setAttribute("missingFields", true);
+            req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
     }
 

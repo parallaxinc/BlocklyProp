@@ -49,6 +49,14 @@
                     </div>
                     <%
                         }
+                        Boolean missingFields = (Boolean) request.getAttribute("missingFields");
+                        if (missingFields != null && missingFields) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.missing_fields" /></p>
+                    </div>
+                    <%
+                        }
                     %>
 
                     <form name="registerForm" action="" method="post">
