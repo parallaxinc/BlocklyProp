@@ -30,7 +30,9 @@ check_client = function () {
             }
 
             client_available = true;
-            $("#client_status").text($("#client_status").data('available')).removeClass("not_available").addClass("available");
+            $("#client-available").removeClass("hidden");
+            $("#client-unavailable").addClass("hidden");
+            // $("#client_status").text($("#client_status").data('available')).removeClass("not_available").addClass("available");
             if (check_com_ports && typeof (check_com_ports) === "function") {
                 check_com_ports();
                 check_com_ports_interval = setInterval(check_com_ports, 5000);
@@ -41,6 +43,8 @@ check_client = function () {
         clearInterval(check_com_ports_interval);
         client_available = false;
         $("#client_status").text($("#client_status").data('not-available')).removeClass("available").addClass("not_available");
+        $("#client-available").addClass("hidden");
+        $("#client-unavailable").removeClass("hidden");
         setTimeout(check_client, 2000);
     });
 };

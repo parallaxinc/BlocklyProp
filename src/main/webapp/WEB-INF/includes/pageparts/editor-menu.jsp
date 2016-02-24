@@ -43,8 +43,11 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${!param.demo}">
-                    <li>
-                        <p class="navbar-text"><a data-toggle="modal" data-target="#client-download-modal" href="#"><span id="client_status" data-not-available="<fmt:message key="editor.client.not-available" />" data-available="<fmt:message key="editor.client.available" />"><fmt:message key="editor.client.checking" /></span></a></p>
+                    <li id="client-unavailable">
+                        <p class="navbar-text"><a data-toggle="modal" data-target="#client-download-modal" href="#"><span id="client_status" data-not-available="<fmt:message key="editor.client.not-available" />" ><fmt:message key="editor.client.checking" /></span></a></p>
+                    </li>
+                    <li id="client-available" class="hidden">
+                        <p class="navbar-text"><fmt:message key="editor.client.available" /></p>
                     </li>
                     <li>
                         <form class="navbar-form">
@@ -77,7 +80,7 @@
                     </c:if>
                     <c:if test="${param.demo}">
                     <li><a href="#" class="demo-function" ><fmt:message key="editor.save" /></a></li>
-                        </c:if>
+                    </c:if>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
