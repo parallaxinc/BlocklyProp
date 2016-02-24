@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ include file="WEB-INF/includes/include.jsp"%>
+<%@ include file="/WEB-INF/includes/include.jsp"%>
 
 <html>
     <head>
@@ -23,10 +23,14 @@
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
-            <div class="jumbotron logo">
-                <h1><fmt:message key="home.title" /></h1>
-                <p><fmt:message key="home.text" /></p>
-            </div>
+            <%
+                String html = (String) request.getAttribute("html");
+                if (html != null) {
+            %>
+            <%= html%>
+            <% } else {%>
+            <h2><fmt:message key="html.content_missing" /></h2>
+            <% }%>
 
             <div class="row">
                 <div class="col-md-4">

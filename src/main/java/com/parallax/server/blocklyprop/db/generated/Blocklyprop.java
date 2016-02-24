@@ -4,6 +4,7 @@
 package com.parallax.server.blocklyprop.db.generated;
 
 
+import com.parallax.server.blocklyprop.db.generated.tables.Authenticationtoken;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
@@ -35,7 +36,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Blocklyprop extends SchemaImpl {
 
-	private static final long serialVersionUID = 2087160912;
+	private static final long serialVersionUID = 1874177776;
 
 	/**
 	 * The reference instance of <code>blocklyprop</code>
@@ -58,6 +59,7 @@ public class Blocklyprop extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
+			Authenticationtoken.AUTHENTICATIONTOKEN,
 			Project.PROJECT,
 			ProjectTag.PROJECT_TAG,
 			SecRole.SEC_ROLE,

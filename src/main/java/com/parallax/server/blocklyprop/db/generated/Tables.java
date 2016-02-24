@@ -4,6 +4,7 @@
 package com.parallax.server.blocklyprop.db.generated;
 
 
+import com.parallax.server.blocklyprop.db.generated.tables.Authenticationtoken;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
@@ -27,6 +28,11 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+	/**
+	 * The table blocklyprop.authenticationtoken
+	 */
+	public static final Authenticationtoken AUTHENTICATIONTOKEN = com.parallax.server.blocklyprop.db.generated.tables.Authenticationtoken.AUTHENTICATIONTOKEN;
 
 	/**
 	 * The table blocklyprop.project
