@@ -14,7 +14,7 @@
                 <th data-field="name" data-formatter="formatProject"><fmt:message key="project.table.name" /></th>
             <th data-field="description"><fmt:message key="project.table.description" /></th>
                 <c:if test="${param.showuser}">
-                <th data-field="user" data-formatter="formatUser"><fmt:message key="project.table.user" /></th>
+                <th data-field="user"><fmt:message key="project.table.user" /></th>
                 </c:if>
         </tr>
     </thead>
@@ -38,12 +38,5 @@
             value,
             "</a>"
         ].join('');
-    }
-
-    function formatUser(value, row) {
-        if (row['yours']) {
-            return '<fmt:message key="project.yours" />';
-        }
-        return value;
     }
 </script>

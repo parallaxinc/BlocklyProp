@@ -46,9 +46,9 @@ public class ProjectConverter {
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
-        if (!isYours) {
-            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
-        }
+        // if (!isYours) {
+        result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+        // }
 
         return result;
     }
