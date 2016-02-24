@@ -57,6 +57,14 @@
                     </div>
                     <%
                         }
+                        Boolean passwordComplexity = (Boolean) request.getAttribute("passwordComplexity");
+                        if (passwordComplexity != null && passwordComplexity) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="password.complexity.error" /></p>
+                    </div>
+                    <%
+                        }
                     %>
 
                     <form name="registerForm" action="" method="post">
@@ -71,6 +79,7 @@
                         <div class="form-group">
                             <label for="password" ><fmt:message key="register.do.password" /></label>
                             <input class="form-control" type="password" name="password" maxlength="255">
+                            <span id="helpBlock" class="help-block"><fmt:message key="password.complexity" /></span>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" ><fmt:message key="register.do.confirm_password" /></label>

@@ -31,7 +31,11 @@ $(document).ready(function () {
                 $("#unlock-form").collapse("show");
                 $("#profile-form").collapse("hide");
             } else {
-                $("#password-error").removeClass("hidden");
+                if (response['message'] === "password-complexity") {
+                    $("#password-complexity-error").removeClass("hidden");
+                } else {
+                    $("#password-error").removeClass("hidden");
+                }
             }
         }
     });

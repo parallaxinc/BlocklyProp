@@ -16,6 +16,7 @@ import com.parallax.client.cloudsession.CloudSessionRegisterService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
+import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
@@ -73,7 +74,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException {
+    public Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException, PasswordComplexityException {
         Preconditions.checkNotNull(screenname, "Screenname cannot be null");
         Preconditions.checkNotNull(email, "Email cannot be null");
         Preconditions.checkNotNull(password, "Password cannot be null");

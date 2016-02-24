@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
+import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import java.io.IOException;
@@ -70,6 +71,9 @@ public class RegisterServlet extends HttpServlet {
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         } catch (NullPointerException npe) {
             req.setAttribute("missingFields", true);
+            req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
+        } catch (PasswordComplexityException pce) {
+            req.setAttribute("passwordComplexity", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
     }

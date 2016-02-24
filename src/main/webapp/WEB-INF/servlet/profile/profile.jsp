@@ -69,8 +69,12 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="save-base" value="<fmt:message key="profile.submit" />">
                     </form>
+
                     <div class="alert alert-danger hidden form-message" id="password-error">
                         <p><fmt:message key="profile.password.error" /></p>
+                    </div>
+                    <div class="alert alert-danger hidden form-message" id="password-complexity-error">
+                        <p><fmt:message key="password.complexity.error" /></p>
                     </div>
                     <div class="alert alert-danger hidden form-message" id="password-matching-error">
                         <p><fmt:message key="profile.password-confirm.error" /></p>
@@ -82,6 +86,7 @@
                         <div class="form-group">
                             <label for="password" ><fmt:message key="profile.password" /></label>
                             <input class="form-control password-match" type="password" name="password" maxlength="255" required="required"/>
+                            <span id="helpBlock" class="help-block"><fmt:message key="password.complexity" /></span>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" ><fmt:message key="profile.confirm_password" /></label>

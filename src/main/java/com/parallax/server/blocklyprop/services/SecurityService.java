@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.services;
 
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
+import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 
 /**
@@ -14,6 +15,6 @@ import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
  */
 public interface SecurityService {
 
-    Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException;
+    Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException, PasswordComplexityException;
 
 }
