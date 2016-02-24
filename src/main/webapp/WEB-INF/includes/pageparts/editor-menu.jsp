@@ -23,8 +23,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="editor.projects.title" /> <b class="caret"></b></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="editor.projects.community" /></a></li>
-                        <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="editor.projects.mine" /></a></li>
+                        <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a></li>
+                        <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

@@ -22,9 +22,9 @@
 
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.project_list" /></a></li>
+                <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a></li>
                     <shiro:authenticated>
-                    <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.your_projects" /></a></li>
+                    <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a></li>
                     </shiro:authenticated>
             </ul>
 
