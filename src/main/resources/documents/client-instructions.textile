@@ -1,0 +1,4 @@
+To download code to your Propeller, BlocklyProp requires that the BlocklyPropClient software is installed and connected on your computer.
+
+* If BlocklyPropClient is already installed, run it and click the "Connect" button, then return to this editor
+* If BlocklyPropClient is not installed, download and install it using the link for your computer type below

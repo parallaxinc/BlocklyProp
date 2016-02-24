@@ -15,6 +15,9 @@ var client_min_version = 0.2;
 
 $(document).ready(function () {
     check_client();
+    $.get($("#client-instructions").data('url'), function (data) {
+        $("#client-instructions").html(data);
+    });
 });
 
 var check_com_ports_interval = null;
