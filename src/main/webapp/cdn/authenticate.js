@@ -25,6 +25,14 @@ $(document).ready(function () {
         });
 
     });
+
+    if (jQuery().bootstrapTable) {
+        $("[data-toggle='secure-table']").bootstrapTable();
+    }
+    if (typeof window['post_auth_init'] === 'function') {
+        window['post_auth_init']();
+    }
+
 });
 
 if (token !== undefined && timestamp) {
@@ -39,14 +47,6 @@ if (token !== undefined && timestamp) {
         }
     });
 }
-
-if (jQuery().bootstrapTable) {
-    $("[data-toggle='secure-table']").bootstrapTable();
-}
-if (typeof window['post_auth_init'] === 'function') {
-    window['post_auth_init']();
-}
-
 
 function getUrlAuthentication() {
     if (token !== undefined && timestamp) {

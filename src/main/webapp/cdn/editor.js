@@ -66,7 +66,8 @@ window.onbeforeunload = function () {
 
 checkLeave = function () {
     var currentXml = window.frames["content_blocks"].getXml();
-//    console.log(currentXml);
+    //console.log(projectData['code']);
+    //console.log(currentXml);
     if (projectData === null) {
         if (currentXml === '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>') {
             return false;
