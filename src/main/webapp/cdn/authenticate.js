@@ -19,30 +19,34 @@ $(document).ready(function () {
         // Stop form from submitting normally
         event.preventDefault();
 
-        $.post(loginForm.attr('action'), loginForm.serialize(), onSuccess);
-    });
-
-    if (token !== undefined && timestamp) {
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-            if (!options.beforeSend && !options.crossDomain) {
-                options.beforeSend = function (xhr) {
-                    var requestTimestamp = Date.now() + timediff;
-                    var hash = sha256(token + challenge + requestTimestamp);
-                    xhr.setRequestHeader('X-Timestamp', requestTimestamp);
-                    xhr.setRequestHeader('X-Authorization', hash);
-                };
-            }
+        var jqxhr = $.post(loginForm.attr('action'), loginForm.serialize(), onSuccess);
+        jqxhr.fail(function (jqXHR, textStatus, errorThrown) {
+            alert("An unexpected error occured. Please try again later or contact the webmaster.");
         });
-    }
 
-    if (jQuery().bootstrapTable) {
-        $("[data-toggle='secure-table']").bootstrapTable();
-    }
-    if (typeof window['post_auth_init'] === 'function') {
-        window['post_auth_init']();
-    }
-
+    });
 });
+
+if (token !== undefined && timestamp) {
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        if (!options.beforeSend && !options.crossDomain) {
+            options.beforeSend = function (xhr) {
+                var requestTimestamp = Date.now() + timediff;
+                var hash = sha256(token + challenge + requestTimestamp);
+                xhr.setRequestHeader('X-Timestamp', requestTimestamp);
+                xhr.setRequestHeader('X-Authorization', hash);
+            };
+        }
+    });
+}
+
+if (jQuery().bootstrapTable) {
+    $("[data-toggle='secure-table']").bootstrapTable();
+}
+if (typeof window['post_auth_init'] === 'function') {
+    window['post_auth_init']();
+}
+
 
 function getUrlAuthentication() {
     if (token !== undefined && timestamp) {
