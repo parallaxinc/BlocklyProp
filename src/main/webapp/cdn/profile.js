@@ -8,7 +8,11 @@ $(document).ready(function () {
                 $("#base-success").removeClass("hidden");
                 $.post("profile", {});
             } else {
-                $("#base-error").removeClass("hidden");
+                if (response['message'] === "screenname-used") {
+                    $("#base-screenname-error").removeClass("hidden");
+                } else {
+                    $("#base-error").removeClass("hidden");
+                }
             }
         }
     });

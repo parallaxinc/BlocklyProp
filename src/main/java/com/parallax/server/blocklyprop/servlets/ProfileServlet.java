@@ -12,6 +12,7 @@ import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
+import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.objects.User;
@@ -138,6 +139,9 @@ public class ProfileServlet extends HttpServlet {
                 }
             } catch (UnknownUserIdException uuie) {
                 req.setAttribute("base-error", "Unknown user");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            } catch (ScreennameUsedException sue) {
+                req.setAttribute("base-error", "screenname-used");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             } catch (ServerException se) {
                 req.setAttribute("base-error", "Server error");

@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
+import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -74,6 +75,9 @@ public class RegisterServlet extends HttpServlet {
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         } catch (PasswordComplexityException pce) {
             req.setAttribute("passwordComplexity", true);
+            req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
+        } catch (ScreennameUsedException sue) {
+            req.setAttribute("screennameUsed", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
     }

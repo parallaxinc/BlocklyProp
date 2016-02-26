@@ -55,6 +55,9 @@
                     <div class="alert alert-danger hidden form-message" id="base-error">
                         <p><fmt:message key="profile.base.error" /></p>
                     </div>
+                    <div class="alert alert-danger hidden form-message" id="base-screenname-error">
+                        <p><fmt:message key="profile.base.error.screenname" /></p>
+                    </div>
                     <form id="baseInfoForm" name="baseInfoForm" action="${properties:authenticationserver('/rest/profile/base')}" method="post">
                         <input type="hidden" name="id" value="<%= request.getAttribute("id")%>">
                         <input type="hidden" name="username" value="<%= request.getAttribute("email")%>" />

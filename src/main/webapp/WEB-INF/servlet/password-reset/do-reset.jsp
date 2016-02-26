@@ -44,8 +44,8 @@
                     </div>
                     <%
                         }
-                        Boolean passwordComplexity = (Boolean) request.getAttribute("passwordComplexity");
-                        if (passwordComplexity != null && passwordComplexity) {
+                        String passwordComplexity = (String) request.getAttribute("passwordComplexity");
+                        if (passwordComplexity != null) {
                     %>
                     <div class="alert alert-danger">
                         <p><fmt:message key="password.complexity.error" /></p>

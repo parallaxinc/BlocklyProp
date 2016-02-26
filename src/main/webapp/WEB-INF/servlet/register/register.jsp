@@ -65,6 +65,14 @@
                     </div>
                     <%
                         }
+                        Boolean screennameUsed = (Boolean) request.getAttribute("screennameUsed");
+                        if (screennameUsed != null && screennameUsed) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.screenname_used" /></p>
+                    </div>
+                    <%
+                        }
                     %>
 
                     <form name="registerForm" action="" method="post">
