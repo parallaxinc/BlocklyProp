@@ -26,6 +26,19 @@ $(document).ready(function () {
 
     });
 
+    if (token !== undefined && timestamp) {
+        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+            if (!options.beforeSend && !options.crossDomain) {
+                options.beforeSend = function (xhr) {
+                    var requestTimestamp = Date.now() + timediff;
+                    var hash = sha256(token + challenge + requestTimestamp);
+                    xhr.setRequestHeader('X-Timestamp', requestTimestamp);
+                    xhr.setRequestHeader('X-Authorization', hash);
+                };
+            }
+        });
+    }
+
     if (jQuery().bootstrapTable) {
         $("[data-toggle='secure-table']").bootstrapTable();
     }
@@ -34,19 +47,6 @@ $(document).ready(function () {
     }
 
 });
-
-if (token !== undefined && timestamp) {
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        if (!options.beforeSend && !options.crossDomain) {
-            options.beforeSend = function (xhr) {
-                var requestTimestamp = Date.now() + timediff;
-                var hash = sha256(token + challenge + requestTimestamp);
-                xhr.setRequestHeader('X-Timestamp', requestTimestamp);
-                xhr.setRequestHeader('X-Authorization', hash);
-            };
-        }
-    });
-}
 
 function getUrlAuthentication() {
     if (token !== undefined && timestamp) {
