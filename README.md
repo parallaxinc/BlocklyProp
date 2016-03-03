@@ -64,24 +64,11 @@ You may obtain a copy of the License at
 
   http://www.apache.org/licenses/LICENSE-2.0
 ```
+
 To Do list/Roadmap
 -----------------
 
-Below is the current to do list. It is organized by priority. Please edit this as the features of BlocklyProp changes.
-
-Thanks for the help and best of luck!
-
-1. Blocks ( more products just keep coming from Parallax! )
-2. Fix download ( centralize everything in one place )
-  1. Document download instructions
-3. Add sub-categories
-4. Tutorials/General Documentation
-  1. Blocks ( User )
-  2. Developer
-5. Community features
-  1. Circuit picture capabilities associated with programs
-  2. Friends
-6. Example projects
+1. Example projects
   1. Alarm System for your room ( ping and wavplayer )
   2. Zombie detector with PIR
   3. RF message decoder XBee
@@ -93,26 +80,6 @@ Thanks for the help and best of luck!
   9. Musical Instrument control of something
   10. RF tilt video game controller ( mx2125 )
   11. Light sensor
-
-Roadmap:
-- High priority
-  - Local Usage
-  - Sub categories
-  - Code autoconverter ( dedicated program, not support in BlocklyProp's UI for user )
-  - Community Features
-    - Friends
-  - Testing ( We need to have people test the current code to find bugs )
-  - Documentation/Help pages
-  - Example projects
-- Medium priority
-  - BASIC Stamp Support ( not set in stone yet, only a possibility )
-  - LameStation Support
-  - Code highlighter
-  - Code autoconverter ( in program that allows user to select file to convert to blocks, dynamically add those blocks to Blockly )
-- Low priority
-  - Breadboard feature
-  - IOS Support
-  - Android Support
 
 Sensor/Hardware Compatibility
 -----------------
