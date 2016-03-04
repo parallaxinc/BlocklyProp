@@ -138,7 +138,13 @@
                 <block type="logic_negate"></block>
             </category>
             <category name="<fmt:message key="category.programming.multicore" />">
-                <block type="cog_new"></block>
+                <block type="cog_new">
+                  <value name="STACK_SIZE">
+                    <block type="math_number">
+                      <field name="NUM">128</field>
+                    </block>
+                  </value>
+                </block>
             </category>
         </category>
         <category name="<fmt:message key="category.input-output" />">
