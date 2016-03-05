@@ -32,9 +32,9 @@ Blockly.Spin.make_pin = function () {
     var dropdown_action = this.getFieldValue('ACTION');
     switch (dropdown_action) {
         case "HIGH":
-            return 'DIRA[' + dropdown_pin + ']~~\nOUTA[' + dropdown_pin + ']~~\n';
+            return 'OUTA[' + dropdown_pin + ']~~\nDIRA[' + dropdown_pin + ']~~\n';
         case "LOW":
-            return 'DIRA[' + dropdown_pin + ']~~\nOUTA[' + dropdown_pin + ']~\n';
+            return 'OUTA[' + dropdown_pin + ']~\nDIRA[' + dropdown_pin + ']~~\n';
         case "TOGGLE":
             return '!OUTA[' + dropdown_pin + ']\n';
         case "INPUT":
@@ -49,9 +49,9 @@ Blockly.Spin.make_pin_input = function () {
     var dropdown_action = this.getFieldValue('ACTION');
     switch (dropdown_action) {
         case "HIGH":
-            return 'DIRA[' + pin + ']~~\nOUTA[' + pin + ']~~\n';
+            return 'OUTA[' + pin + ']~~\nDIRA[' + pin + ']~~\n';
         case "LOW":
-            return 'DIRA[' + pin + ']~~\nOUTA[' + pin + ']~\n';
+            return 'OUTA[' + pin + ']~\nDIRA[' + pin + ']~~\n';
         case "TOGGLE":
             return '!OUTA[' + pin + ']\n';
         case "INPUT":
@@ -126,4 +126,3 @@ Blockly.Spin.cog_new = function () {
     var code = 'cognew(' + method + ', @' + stackName + ')\n';
     return code;
 };
-
