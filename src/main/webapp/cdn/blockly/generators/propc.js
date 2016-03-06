@@ -70,6 +70,12 @@ var profile = {
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
         serial: 9600
     },
+    "hackable-electronic-badge": {
+        description: "Parallax Hackable Electronic Badge",
+        digital: [["0", "11"]],
+        analog: [],
+        serial: 9600
+    },
     "board-of-education": {
         description: "Parallax propeller board of education",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"]],
