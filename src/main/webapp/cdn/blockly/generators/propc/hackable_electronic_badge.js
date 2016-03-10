@@ -87,52 +87,67 @@ Blockly.propc.heb_set_led_rgb = function() {
 };
 
 Blockly.Blocks.heb_print_string = {
-  category : 'Hackable Electronic Badge',
-  helpUrl : '',
-  init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
-    this.appendDummyInput()
-      .appendField( 'Print a string' )
-      .appendField( new Blockly.FieldTextInput( '' ), "STRING" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
-  }
+    category : 'Hackable Electronic Badge',
+    helpUrl : '',
+    init : function() {
+      // @TODO : Set proper color scheme
+      this.setColour 250);
+      this.appendDummyInput()
+          .appendField('Print')
+          .appendField(this.newQuote_(true))
+          .appendField(new Blockly.FieldTextInput(''), "STRING")
+          .appendField(this.newQuote_(false));
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+    },
+    /**
+    * Create an image of an open or closed quote.
+    * @param {boolean} open True if open quote, false if closed.
+    * @return {!Blockly.FieldImage} The field image of the quote.
+    * @this Blockly.Block
+    * @private
+    */
+    newQuote_: function (open) {
+         if (open == this.RTL) {
+             var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAqUlEQVQI1z3KvUpCcRiA8ef9E4JNHhI0aFEacm1o0BsI0Slx8wa8gLauoDnoBhq7DcfWhggONDmJJgqCPA7neJ7p934EOOKOnM8Q7PDElo/4x4lFb2DmuUjcUzS3URnGib9qaPNbuXvBO3sGPHJDRG6fGVdMSeWDP2q99FQdFrz26Gu5Tq7dFMzUvbXy8KXeAj57cOklgA+u1B5AoslLtGIHQMaCVnwDnADZIFIrXsoXrgAAAABJRU5ErkJggg==';
+         } else {
+             var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAn0lEQVQI1z3OMa5BURSF4f/cQhAKjUQhuQmFNwGJEUi0RKN5rU7FHKhpjEH3TEMtkdBSCY1EIv8r7nFX9e29V7EBAOvu7RPjwmWGH/VuF8CyN9/OAdvqIXYLvtRaNjx9mMTDyo+NjAN1HNcl9ZQ5oQMM3dgDUqDo1l8DzvwmtZN7mnD+PkmLa+4mhrxVA9fRowBWmVBhFy5gYEjKMfz9AylsaRRgGzvZAAAAAElFTkSuQmCC';
+         }
+         return new Blockly.FieldImage(file, 12, 12, '"');
+     }
 };
 
 Blockly.propc.heb_print_string = function() {
-  var string_to_print = this.getFieldValue( "STRING" );
+    var string_to_print = this.getFieldValue( "STRING" );
 
-  // @TODO : move initialization & set up to be automatic
-  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
-  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+    Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
+    Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
 
-  var code = 'oledprint( "' + string_to_print + '" );\n';
-  return code;
+    var code = 'oledprint( "' + string_to_print + '" );\n';
+    return code;
 };
 
 Blockly.Blocks.heb_print_string_var = {
-  category : 'Hackable Electronic Badge',
-  helpUrl : '',
-  init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
-    this.appendValueInput('VALUE')
-      .appendField("Print a variable");
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
-  }
+    category : 'Hackable Electronic Badge',
+    helpUrl : '',
+    init : function() {
+        // @TODO : Set proper color scheme
+        this.setColour(250);
+        this.appendValueInput('VALUE')
+          .appendField("Print");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
 };
 
 Blockly.propc.heb_print_string_var = function() {
-  var string_to_print = Blockly.propc.valueToCode( this, "VALUE", Blockly.propc.ORDER_NONE );
+    var string_to_print = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
 
-  // @TODO : move initialization & set up to be automatic
-  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
-  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-  var code = 'oledprint( ' + string_to_print + ' );\n';
-  return code;
+    var code = 'oledprint( ' + string_to_print + ' );\n';
+    return code;
 };
 
 Blockly.Blocks.heb_cursor_position = {
