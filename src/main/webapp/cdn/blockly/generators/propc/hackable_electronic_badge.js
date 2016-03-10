@@ -58,32 +58,31 @@ Blockly.propc.heb_toggle_led = function() {
 };
 
 Blockly.Blocks.heb_set_led_rgb = {
-  category : 'Hackable Electronic Badge',
-  helpUrl : '',
-  init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
-    this.appendDummyInput()
-      .appendField( 'Set LED' + "'" + 's RGB' )
-      .appendField( 'LED side' )
-      .appendField( new Blockly.FieldDropdown([["L", "L"], ["R", "R"]]), "SIDE" )
-      .appendField( 'RGB value' )
-      .appendField( new Blockly.FieldDropdown([["BLUE", "BLUE"], ["GREEN", "GREEN"], ["CYAN", "CYAN"], ["RED", "RED"], ["MAGENTA", "MAGENTA"], ["YELLOW", "YELLOW"], ["WHITE", "WHITE"]]), "RGB" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
-  }
+    category : 'Hackable Electronic Badge',
+    helpUrl : '',
+    init : function() {
+        // @TODO : Set proper color scheme
+        this.setColour(250);
+        this.appendDummyInput()
+          .appendField('Set LED' + "'" + 's RGB')
+          .appendField('LED side')
+          .appendField(new Blockly.FieldDropdown([["L", "L"], ["R", "R"]]), "SIDE")
+          .appendField('RGB value')
+          .appendField(new Blockly.FieldDropdown([["BLUE", "BLUE"], ["GREEN", "GREEN"], ["CYAN", "CYAN"], ["RED", "RED"], ["MAGENTA", "MAGENTA"], ["YELLOW", "YELLOW"], ["WHITE", "WHITE"], ["OFF", "OFF"]]), "RGB");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
 };
 
 Blockly.propc.heb_set_led_rgb = function() {
-  var led_side = this.getFieldValue( "SIDE" );
-  var led_rgb = this.getFieldValue( "RGB" );
+    var led_side = this.getFieldValue("SIDE");
+    var led_rgb = this.getFieldValue("RGB");
 
-  // @TODO : move initialization & set up to be automatic
-  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
-  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-  var code = 'rgb( ' + led_side + ', ' + led_rgb + ' );\n';
-  return code;
+    var code = 'rgb( ' + led_side + ', ' + led_rgb + ' );\n';
+    return code;
 };
 
 Blockly.Blocks.heb_print_string = {
