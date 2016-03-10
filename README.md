@@ -23,7 +23,7 @@ To make the BlocklyPropClient lighter and to support Chromebooks and tablets com
 Requirements and setup
 ----------------------
 
-BlocklyProp is written to on a modern linux system.
+BlocklyProp is written to run on a modern linux system.
 It requires:
 
 * Tomcat 7 or higher
