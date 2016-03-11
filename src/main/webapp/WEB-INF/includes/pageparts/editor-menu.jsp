@@ -40,6 +40,7 @@
                         <li id="tab_xml"><a href="#" onclick="tabClick('tab_xml')"><fmt:message key="editor.view.xml" /></a></li>
                     </ul>
                 </li>
+                <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${!param.demo}">
