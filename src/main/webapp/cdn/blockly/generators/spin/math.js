@@ -186,7 +186,7 @@ Blockly.Spin.math_crement = function () {
 //        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
 //        return [code, Blockly.Spin.ORDER_UNARY_POSTFIX];
 //    }
-    var code = operator + variable + '\n';
+    var code = variable + operator + '\n';
     return code;
 };
 
