@@ -63,6 +63,7 @@
                                                         <select class="form-control" id="board-type" name="board-type">
                                                             <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
                                                             <option value="activity-board"><fmt:message key="project.board.activity-board" /></option>
+                                                            <option value="hackable-electronic-badge"><fmt:message key="project.board.hackable-electronic-badge" /></option>
                                                             <option value="board-of-education"><fmt:message key="project.board.board-of-education" /></option>
                                                             <option value="c3"><fmt:message key="project.board.c3" /></option>
                                                             <option value="demo-board"><fmt:message key="project.board.demo-board" /></option>
