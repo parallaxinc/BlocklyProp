@@ -7,6 +7,9 @@ package com.parallax.server.blocklyprop;
 
 import com.google.inject.servlet.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -23,6 +26,8 @@ public class AuthenticationData implements Serializable {
 
     private String userAgent;
     private String remoteAddress;
+
+    private List<Long> usedTimestamps;
 
     public Long getIdUser() {
         return idUser;
@@ -70,6 +75,42 @@ public class AuthenticationData implements Serializable {
 
     public void setRemoteAddress(String remoteAddress) {
         this.remoteAddress = remoteAddress;
+    }
+
+    public List<Long> getUsedTimestamps() {
+        if (usedTimestamps == null) {
+            usedTimestamps = new ArrayList<>();
+        }
+        return usedTimestamps;
+    }
+
+    public void setUsedTimestamps(List<Long> usedTimestamps) {
+        this.usedTimestamps = usedTimestamps;
+    }
+
+    public boolean isTimestampUsed(Long timestamp) {
+        for (Long usedTimestamp : getUsedTimestamps()) {
+//            System.out.println("Already used: " + usedTimestamp);
+            if (usedTimestamp.equals(timestamp)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addUsedTimestamp(Long timestamp) {
+        List<Long> timestamps = getUsedTimestamps();
+        timestamps.add(timestamp);
+        int amountOfUsedTimestamps = timestamps.size();
+        if (amountOfUsedTimestamps > 20) {
+            amountOfUsedTimestamps -= 20;
+            Iterator<Long> iter = timestamps.iterator();
+            while (iter.hasNext() && amountOfUsedTimestamps > 0) {
+                iter.next();
+                iter.remove();
+            }
+            setUsedTimestamps(timestamps);
+        }
     }
 
     @Override

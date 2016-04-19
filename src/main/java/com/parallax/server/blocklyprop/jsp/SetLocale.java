@@ -26,7 +26,7 @@ public class SetLocale extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException, IOException {
         if (!Strings.isNullOrEmpty(locale)) {
-            System.out.println("Set locale: " + locale);
+//            System.out.println("Set locale: " + locale);
             UserServiceImpl.getUserService().setLocale(locale);
         } else {
             System.out.println("Locale = null or empty");

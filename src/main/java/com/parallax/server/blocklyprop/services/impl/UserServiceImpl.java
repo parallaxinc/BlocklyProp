@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
                 try {
                     com.parallax.client.cloudsession.objects.User user = BlocklyPropSecurityUtils.getUserInfo();
                     if (!user.getLocale().equals(locale)) {
+                        LOG.info("Setting user locale: {} - {}", user.getId(), locale);
                         user = userService.changeUserLocale(user.getId(), locale);
                         BlocklyPropSecurityUtils.setUserInfo(user);
                     }

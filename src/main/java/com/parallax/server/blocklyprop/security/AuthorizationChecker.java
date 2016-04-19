@@ -70,10 +70,18 @@ public class AuthorizationChecker {
             return false;
         }
 
-        if (authenticationData.getLastTimestamp() >= timestamp) {
+        // RACE CONDITION!
+        if ((authenticationData.getLastTimestamp() - 5000) >= timestamp) {
             log.info("Timestamp to low: last: {} - provided: {}", authenticationData.getLastTimestamp(), timestamp);
             return false;
+        }
+        // Check if timestamp was already used
+        // System.out.println("Using: " + timestamp);
+        if (authenticationData.isTimestampUsed(timestamp)) {
+            log.info("Timestamp already used: {}", timestamp);
+            return false;
         } else {
+            authenticationData.addUsedTimestamp(timestamp);
             authenticationData.setLastTimestamp(timestamp);
             httpSession.setAttribute("authentication", authenticationData);
         }

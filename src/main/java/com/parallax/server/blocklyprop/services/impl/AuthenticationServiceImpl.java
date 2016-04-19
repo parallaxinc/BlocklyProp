@@ -20,6 +20,7 @@ import com.parallax.server.blocklyprop.security.IdAuthenticationToken;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import com.parallax.server.blocklyprop.services.TokenGeneratorService;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -84,6 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             authenticationData = new AuthenticationData();
             authenticationData.setChallenge(challenge);
             authenticationData.setLastTimestamp(new Date().getTime());
+            authenticationData.setUsedTimestamps(new ArrayList<Long>());
             // System.out.println("Setting authentication data: " + sessionData);
 
             sessionProvider.get().setAttribute("authentication", authenticationData);
