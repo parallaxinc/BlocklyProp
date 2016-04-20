@@ -36,9 +36,11 @@ function post_auth_init() {
 }
 
 saveProject = function () {
-    projectData['code'] = window.frames["content_blocks"].getXml();
+    var code = window.frames["content_blocks"].getXml();
+    projectData['code'] = code
     $.post(baseUrl + 'rest/project/code', projectData, function (data) {
         projectData = data;
+        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
         utils.showMessage("Project saved", "The project has been saved");
     });
 };
