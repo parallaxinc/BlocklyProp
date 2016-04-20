@@ -63,12 +63,8 @@
                                                         <select class="form-control" id="board-type" name="board-type">
                                                             <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
                                                             <option value="activity-board"><fmt:message key="project.board.activity-board" /></option>
-                                                            <option value="board-of-education"><fmt:message key="project.board.board-of-education" /></option>
-                                                            <option value="c3"><fmt:message key="project.board.c3" /></option>
-                                                            <option value="demo-board"><fmt:message key="project.board.demo-board" /></option>
-                                                            <option value="proto-board"><fmt:message key="project.board.proto-board" /></option>
-                                                            <option value="quickstart"><fmt:message key="project.board.quickstart" /></option>
-                                                            <option value="scribbler2"><fmt:message key="project.board.scribbler2" /></option>
+                                                            <option value="s3"><fmt:message key="project.board.s3" /></option>
+                                                            <option value="heb"><fmt:message key="project.board.heb" /></option>
                                                             <option value="other"><fmt:message key="project.board.other" /></option>
                                                         </select>
                                                     </div>
