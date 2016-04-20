@@ -30,9 +30,9 @@ Blockly.Blocks.cog_new = {
         this.appendDummyInput()
                 .appendTitle('Cognew ');
 
-        this.appendDummyInput()
-                .appendField('Stacksize ')
-                .appendField(new Blockly.FieldTextInput("48", Blockly.Language.math_number.validator), "STACK_SIZE");
+        this.appendValueInput("STACK_SIZE", 'Number')
+                        .appendField("Stacksize")
+                        .setCheck('Number');
 
         this.appendStatementInput("METHOD")
                 .appendTitle("Method");

@@ -34,7 +34,7 @@ Blockly.Blocks.make_pin = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
-                .appendField("Make PIN#")
+                .appendField("Make Pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
     }
@@ -47,7 +47,7 @@ Blockly.Blocks.make_pin_input = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
-                .appendField("Make PIN#");
+                .appendField("Make Pin#");
         this.appendValueInput('PIN')
                 .setCheck('Number');
         this.appendDummyInput("")
