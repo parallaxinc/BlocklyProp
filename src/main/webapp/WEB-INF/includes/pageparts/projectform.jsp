@@ -53,7 +53,7 @@
                         </div>
                         <div class="btn-group your-project hidden">
                             <button class="btn btn-primary" ><fmt:message key="project.savelink" /></button>
-                            <a class="btn btn-danger delete-project" data-href="<url:getUrl url="/project?delete="/>" ><fmt:message key="project.deletelink" /></a>
+                            <a class="btn btn-danger delete-project" data-href="<url:getUrl url="/project?delete="/>" id="project-delete" ><fmt:message key="project.deletelink" /></a>
                             <a class="btn btn-default clone-project" data-href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
                         </div>
                     </shiro:authenticated>
@@ -63,6 +63,26 @@
         </div>
     </div>
 </div>
+
+<shiro:authenticated>
+    <div id="project-delete-confirm" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><fmt:message key="project.delete.confirm.title" /></h4>
+                </div>
+                <div class="modal-body">
+                    <p><fmt:message key="project.delete.confirm" /></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="project-delete-confirmed">Delete</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</shiro:authenticated>
 
 <script>
     var shared = <c:out value="${param.shared}" />;

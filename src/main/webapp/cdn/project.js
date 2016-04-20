@@ -39,6 +39,15 @@ $(document).ready(function () {
             projectChanged.remove();
         });
     });
+
+    $("#project-delete").click(function (e) {
+        e.preventDefault();
+        $("#project-delete-confirm").modal('show');
+    });
+
+    $("#project-delete-confirmed").click(function () {
+        window.location.href = $('.delete-project').attr('href');
+    });
 });
 
 function showTable() {
