@@ -39,7 +39,9 @@ function tabClick(id) {
 
     // Deselect all tabs and hide all panes.
     for (var x in TABS_) {
-        document.getElementById('tab_' + TABS_[x]).className = 'taboff';
+        if (document.getElementById('tab_' + TABS_[x])) {
+            document.getElementById('tab_' + TABS_[x]).className = 'taboff';
+        }
         if (document.getElementById('content_' + TABS_[x])) {
             document.getElementById('content_' + TABS_[x]).style.display = 'none';
         } else {

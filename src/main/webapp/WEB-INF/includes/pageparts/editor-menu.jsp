@@ -37,7 +37,10 @@
                             <c:if test="${param.editor_lang == 'spin'}">
                             <li id="tab_spin"><a href="#" onclick="tabClick('tab_spin')"><fmt:message key="editor.view.spin" /></a></li>
                             </c:if>
+                            <% if ("1".equals(request.getParameter("debug"))) {%>
                         <li id="tab_xml"><a href="#" onclick="tabClick('tab_xml')"><fmt:message key="editor.view.xml" /></a></li>
+                            <%   }%>
+
                     </ul>
                 </li>
                 <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
