@@ -10,7 +10,7 @@
 <div id="project-form-container"  class="container collapse">
     <div class="row">
         <div class="col-md-12">
-            <h2><a href="#" class="btn btn-default"><fmt:message key="back" /></a> <a href="<url:getUrl url="/index.jsp"/>">BlocklyProp</a>: <fmt:message key="project.title" /></h2>
+            <h2><a href="#" class="btn btn-default"><fmt:message key="back" /></a> BlocklyProp: <fmt:message key="project.details_title" /></h2>
             <form id="project-form" action="<url:getUrl url="/rest/project"/>" method="post">
                 <div class="alert alert-success alert-dismissible hidden project-changed" id="project-changed">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
