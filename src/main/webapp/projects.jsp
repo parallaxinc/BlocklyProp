@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <h2><a href="<url:getUrl url="/index.jsp"/>">BlocklyProp</a>: Projects</h2>
+                    <h2><a href="<url:getUrl url="/index.jsp"/>">BlocklyProp</a>: <fmt:message key="community_projects.title" /></h2>
 
                     <jsp:include page="/WEB-INF/includes/pageparts/projecttable.jsp">
                         <jsp:param name="url" value="/rest/shared/project/list" />
