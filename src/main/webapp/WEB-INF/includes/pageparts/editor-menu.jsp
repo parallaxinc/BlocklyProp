@@ -43,7 +43,7 @@
 
                     </ul>
                 </li>
-                <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
+                <li><a class="external_link" href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${!param.demo}">

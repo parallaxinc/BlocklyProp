@@ -64,3 +64,10 @@ var utils = {
     }
 
 };
+
+$(document).ready(function () {
+    $(".external_link").click(function (e) {
+        window.open($(this).attr("href"), "_blank");
+        e.preventDefault();
+    });
+});
