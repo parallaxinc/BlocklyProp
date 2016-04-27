@@ -85,7 +85,7 @@
 
             function load(xmlText) {
                 var xmlDom = Blockly.Xml.textToDom(xmlText)
-                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+                Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
             }
 
             function ready() {
@@ -139,11 +139,11 @@
             </category>
             <category name="<fmt:message key="category.programming.multicore" />">
                 <block type="cog_new">
-                  <value name="STACK_SIZE">
-                    <block type="math_number">
-                      <field name="NUM">128</field>
-                    </block>
-                  </value>
+                    <value name="STACK_SIZE">
+                        <block type="math_number">
+                            <field name="NUM">128</field>
+                        </block>
+                    </value>
                 </block>
             </category>
         </category>

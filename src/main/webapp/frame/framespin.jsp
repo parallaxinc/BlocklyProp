@@ -74,7 +74,7 @@
 
             function load(xmlText) {
                 var xmlDom = Blockly.Xml.textToDom(xmlText)
-                Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+                Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
             }
 
             function ready() {
