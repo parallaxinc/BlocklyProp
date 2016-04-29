@@ -52,7 +52,7 @@ Blockly.Blocks.serial_tx_byte = {
         this.setColour(180);
         this.appendDummyInput("")
                 .appendField("Serial transmit");
-        this.appendValueInput('VALUE').setCheck(Number);
+        this.appendValueInput('VALUE').setCheck('Number');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
 //        this.setInputsInline(true);

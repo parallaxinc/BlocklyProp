@@ -40,7 +40,7 @@ Blockly.Blocks.servo_move = {
                 .appendField("PIN#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
         this.appendValueInput("PULSE", Number)
-                .setCheck(Number)
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("Pulse (1500~2500)");
         this.setPreviousStatement(true, null);

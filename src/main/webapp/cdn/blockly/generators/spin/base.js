@@ -103,7 +103,7 @@ Blockly.Spin.base_freqout = function () {
     var duration = Blockly.Spin.valueToCode(this, 'DURATION', Blockly.Spin.ORDER_ATOMIC) || 1000;
     var frequency = Blockly.Spin.valueToCode(this, 'FREQUENCY', Blockly.Spin.ORDER_ATOMIC) || 3000;
 
-    var code = 'freqout( ' + dropdown_pin + ', ' + duration + ', ' + frequency + ' );\n';
+    var code = 'freqout( ' + dropdown_pin + ', ' + duration + ', ' + frequency + ' )\n';
     // TODO
     return code;
 };

@@ -42,9 +42,9 @@ Blockly.Blocks.bit_math_shift = {
         this.setColour(200);
         this.setOutput(true, Number);
         this.appendValueInput('A')
-                .setCheck(Number);
+                .setCheck('Number');
         this.appendValueInput('B')
-                .setCheck(Number)
+                .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("");
@@ -83,9 +83,9 @@ Blockly.Blocks.bit_math_rotate = {
         this.setColour(200);
         this.setOutput(true, Number);
         this.appendValueInput('A')
-                .setCheck(Number);
+                .setCheck('Number');
         this.appendValueInput('B')
-                .setCheck(Number)
+                .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("");
@@ -124,9 +124,9 @@ Blockly.Blocks.bit_math_operations = {
         this.setColour(200);
         this.setOutput(true, Number);
         this.appendValueInput('A')
-                .setCheck(Number);
+                .setCheck('Number');
         this.appendValueInput('B')
-                .setCheck(Number)
+                .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("");
@@ -168,7 +168,7 @@ Blockly.Blocks.bit_math_not = {
         this.setOutput(true, Number);
 
         this.appendValueInput('VAR')
-                .setCheck(Number)
+                .setCheck('Number')
                 .appendField('Bit NOT');
         this.setTooltip("");
     }

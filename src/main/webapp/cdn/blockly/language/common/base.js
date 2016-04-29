@@ -31,8 +31,8 @@ Blockly.Blocks.cog_new = {
                 .appendTitle('Cognew ');
 
         this.appendValueInput("STACK_SIZE", 'Number')
-                        .appendField("Stacksize")
-                        .setCheck('Number');
+                .appendField("Stacksize")
+                .setCheck('Number');
 
         this.appendStatementInput("METHOD")
                 .appendTitle("Method");
@@ -64,12 +64,12 @@ Blockly.Blocks.base_freqout = {
         this.appendDummyInput("")
                 .appendField("Freq PIN#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.appendValueInput("DURATION", Number)
+        this.appendValueInput("DURATION", 'Number')
                 .appendField("Duration (ms)")
-                .setCheck(Number);
-        this.appendValueInput("FREQUENCY", Number)
+                .setCheck('Number');
+        this.appendValueInput("FREQUENCY", 'Number')
                 .appendField("frequecy (hz)")
-                .setCheck(Number);
+                .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

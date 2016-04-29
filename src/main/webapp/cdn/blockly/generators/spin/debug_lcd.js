@@ -83,7 +83,7 @@ Blockly.Blocks.debug_lcd_number = {
         this.appendDummyInput("")
                 .appendField("LCD print");
         this.appendDummyInput("").appendField("Number");
-        this.appendValueInput('NUMBER').setCheck(Number);
+        this.appendValueInput('NUMBER').setCheck('Number');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }

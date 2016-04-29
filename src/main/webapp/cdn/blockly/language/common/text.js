@@ -230,7 +230,7 @@ Blockly.Blocks.text_endString = {
     this.setOutput(true, String);
     var menu = new Blockly.FieldDropdown(this.OPERATORS);
     this.appendValueInput('NUM')
-        .setCheck(Number)
+        .setCheck('Number')
         .appendField(menu, 'END');
     this.appendValueInput('TEXT')
         .setCheck(String)
@@ -276,7 +276,7 @@ Blockly.Blocks.text_charAt = {
     this.setColour(160);
     this.setOutput(true, String);
     this.appendValueInput('AT')
-        .setCheck(Number)
+        .setCheck('Number')
         .appendField(Blockly.LANG_TEXT_CHARAT_INPUT_AT);
     this.appendValueInput('VALUE')
         .setCheck(String)

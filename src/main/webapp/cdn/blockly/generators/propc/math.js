@@ -126,9 +126,9 @@ Blockly.Blocks.math_limit = {
         this.setColour(230);
         this.setOutput(true, Number);
         this.appendValueInput('A')
-                .setCheck(Number);
+                .setCheck('Number');
         this.appendValueInput('B')
-                .setCheck(Number)
+                .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         this.setTooltip("Limit");
@@ -173,7 +173,7 @@ Blockly.Blocks.math_crement = {
         this.setNextStatement(true);
 
         this.appendValueInput('VAR')
-                .setCheck(Number)
+                .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setTooltip("");
     }

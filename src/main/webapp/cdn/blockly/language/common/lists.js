@@ -164,7 +164,7 @@ Blockly.Blocks.lists_repeat = {
     this.appendValueInput('ITEM')
         .appendField(Blockly.LANG_LISTS_REPEAT_INPUT_WITH);
     this.appendValueInput('NUM')
-        .setCheck(Number)
+        .setCheck('Number')
         .appendField(Blockly.LANG_LISTS_REPEAT_INPUT_REPEATED);
     this.appendDummyInput()
         .appendField(Blockly.LANG_LISTS_REPEAT_INPUT_TIMES);
@@ -232,7 +232,7 @@ Blockly.Blocks.lists_getIndex = {
     this.setColour(210);
     this.setOutput(true, null);
     this.appendValueInput('AT')
-        .setCheck(Number)
+        .setCheck('Number')
         .appendField(Blockly.LANG_LISTS_GET_INDEX_INPUT_AT);
     this.appendValueInput('VALUE')
         .setCheck(Array)
@@ -249,7 +249,7 @@ Blockly.Blocks.lists_setIndex = {
   init: function() {
     this.setColour(210);
     this.appendValueInput('AT')
-        .setCheck(Number)
+        .setCheck('Number')
         .appendField(Blockly.LANG_LISTS_SET_INDEX_INPUT_AT);
     this.appendValueInput('LIST')
         .setCheck(Array)

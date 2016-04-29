@@ -34,7 +34,7 @@ Blockly.Blocks.cog_new = {
                 .appendField("cognew");
         this.appendValueInput("STACK_SIZE", Number)
                 .appendField("Stacksize")
-                .setCheck(Number);
+                .setCheck('Number');
         this.appendStatementInput("METHOD")
                 .appendField("Method");
         this.setInputsInline(true);

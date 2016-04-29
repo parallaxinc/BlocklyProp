@@ -62,7 +62,7 @@ Blockly.Blocks.ab_volt_out = {
                 .appendField("DAC channel")
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
         this.appendValueInput("VALUE", Number)
-                .setCheck(Number)
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("Value");
         this.setPreviousStatement(true, null);
@@ -79,7 +79,7 @@ Blockly.Blocks.ab_volt_v_out = {
                 .appendField("DAC in V channel")
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
         this.appendValueInput("VALUE", Number)
-                .setCheck(Number)
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("Value");
         this.setPreviousStatement(true, null);

@@ -43,16 +43,16 @@ Blockly.Blocks.colour_rgb = {
   init: function() {
     this.setColour(20);
     this.appendValueInput('RED')
-        .setCheck(Number)
+        .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(Blockly.LANG_COLOUR_RGB_TITLE)
         .appendField(Blockly.LANG_COLOUR_RGB_RED);
     this.appendValueInput('GREEN')
-        .setCheck(Number)
+        .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(Blockly.LANG_COLOUR_RGB_GREEN);
     this.appendValueInput('BLUE')
-        .setCheck(Number)
+        .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(Blockly.LANG_COLOUR_RGB_BLUE);
     this.setOutput(true, 'Colour');
@@ -76,7 +76,7 @@ Blockly.Blocks.colour_blend = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(Blockly.LANG_COLOUR_BLEND_COLOUR2);
     this.appendValueInput('RATIO')
-        .setCheck(Number)
+        .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(Blockly.LANG_COLOUR_BLEND_RATIO);
     this.setOutput(true, 'Colour');
