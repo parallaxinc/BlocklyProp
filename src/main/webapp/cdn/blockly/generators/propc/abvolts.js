@@ -33,7 +33,7 @@ Blockly.Blocks.ab_volt_in = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
-        this.setColour(314);
+        this.setColour(colorPalette.getColor('ab'));
         this.appendDummyInput("")
                 .appendField("ADC channel")
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
@@ -45,7 +45,7 @@ Blockly.Blocks.ab_volt_v_in = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
-        this.setColour(314);
+        this.setColour(colorPalette.getColor('ab'));
         this.appendDummyInput("")
                 .appendField("ADC in V channel")
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
@@ -57,7 +57,7 @@ Blockly.Blocks.ab_volt_out = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
-        this.setColour(314);
+        this.setColour(colorPalette.getColor('ab'));
         this.appendDummyInput("")
                 .appendField("DAC channel")
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
@@ -74,7 +74,7 @@ Blockly.Blocks.ab_volt_v_out = {
     category: 'ADC/DAC',
     helpUrl: '',
     init: function() {
-        this.setColour(314);
+        this.setColour(colorPalette.getColor('ab'));
         this.appendDummyInput("")
                 .appendField("DAC in V channel")
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");

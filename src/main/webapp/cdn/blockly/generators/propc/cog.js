@@ -29,7 +29,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.cog_new = {
     helpUrl: '',
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField("cognew");
         this.appendValueInput("STACK_SIZE", Number)

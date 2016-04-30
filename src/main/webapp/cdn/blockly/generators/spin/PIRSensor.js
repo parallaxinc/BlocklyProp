@@ -29,7 +29,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.PIR_Sensor = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("PIR Sensor")
                 .appendField("Pin")

@@ -30,7 +30,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.make_pin = {
     init: function () {
         this.setHelpUrl('help/block-digitalpin.html#write');
-        this.setColour(230);
+        this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
@@ -43,7 +43,7 @@ Blockly.Blocks.make_pin = {
 Blockly.Blocks.make_pin_input = {
     init: function () {
         this.setHelpUrl('help/block-digitalpin.html#write');
-        this.setColour(230);
+        this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
@@ -58,7 +58,7 @@ Blockly.Blocks.make_pin_input = {
 Blockly.Blocks.check_pin = {
     helpUrl: 'help/block-digitalpin.html#read',
     init: function () {
-        this.setColour(230);
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
                 .appendField("Check PIN#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
@@ -70,7 +70,7 @@ Blockly.Blocks.check_pin = {
 Blockly.Blocks.check_pin_input = {
     helpUrl: 'help/block-digitalpin.html#read',
     init: function () {
-        this.setColour(230);
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
                 .appendField("Check PIN#");
         this.appendValueInput('PIN')
@@ -84,7 +84,7 @@ Blockly.Blocks.check_pin_input = {
 Blockly.Blocks.set_pins = {
     init: function () {
         this.setHelpUrl('help/block-digitalpin.html#write');
-        this.setColour(230);
+        this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         var start_pin = [];

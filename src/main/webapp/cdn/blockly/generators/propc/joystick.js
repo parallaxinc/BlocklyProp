@@ -31,7 +31,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.joystick_input_yaxis = {
     helpUrl: '',
     init: function () {
-        this.setColour(210);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Joystick")
                 .appendField("A/D y-axis PIN#")
@@ -44,7 +44,7 @@ Blockly.Blocks.joystick_input_yaxis = {
 Blockly.Blocks.joystick_input_xaxis = {
     helpUrl: '',
     init: function () {
-        this.setColour(210);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Joystick")
                 .appendField("A/D x-axis PIN#")

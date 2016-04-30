@@ -30,7 +30,7 @@ Blockly.Blocks.MX2125_acceleration_xaxis = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
-    this.setColour( 300 );
+    this.setColour( colorPalette.getColor('input') );
     this.appendDummyInput( "" )
       .appendField( "MX2125 X-axis pin#" )
       .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINX" );
@@ -44,7 +44,7 @@ Blockly.Blocks.MX2125_acceleration_yaxis = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
-    this.setColour( 300 );
+    this.setColour( colorPalette.getColor('input') );
     this.appendDummyInput( "" )
       .appendField( "MX2125 Y-axis pin#" )
       .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINY" );
@@ -59,7 +59,7 @@ Blockly.Blocks.MMA7455_acceleration = {
   category: 'Sensors',
   helpUrl: '',
   init: function() {
-    this.setColour( 300 );
+    this.setColour( colorPalette.getColor('input') );
     this.appendDummyInput( "" )
       .appendField( "MMA7455 X-axis pin#" )
       .appendField( new Blockly.FieldDropdown( profile.default.digital ), "PINX" )

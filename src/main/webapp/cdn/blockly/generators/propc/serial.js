@@ -31,7 +31,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.serial_open = {
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
                 .appendField("Serial init")
                 .appendField("rxPIN#")
@@ -49,7 +49,7 @@ Blockly.Blocks.serial_open = {
 Blockly.Blocks.serial_tx_byte = {
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
                 .appendField("Serial transmit");
         this.appendValueInput('VALUE').setCheck('Number');
@@ -62,7 +62,7 @@ Blockly.Blocks.serial_tx_byte = {
 Blockly.Blocks.serial_send_text = {
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
                 .appendField("Serial transmit")
                 .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
@@ -78,7 +78,7 @@ Blockly.Blocks.serial_send_text = {
 Blockly.Blocks.serial_rx_byte = {
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
                 .appendField("Serial read byte");
         this.setOutput(true, Number);

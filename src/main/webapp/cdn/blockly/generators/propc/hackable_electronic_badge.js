@@ -32,8 +32,7 @@ Blockly.Blocks.heb_toggle_led = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Set LED state' )
       .appendField( 'LED #' )
@@ -61,8 +60,7 @@ Blockly.Blocks.heb_set_led_rgb = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Set LED' + "'" + 's RGB' )
       .appendField( 'LED side' )
@@ -90,8 +88,7 @@ Blockly.Blocks.heb_print_string = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Print a string' )
       .appendField( new Blockly.FieldTextInput( '' ), "STRING" );
@@ -115,8 +112,7 @@ Blockly.Blocks.heb_print_string_var = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendValueInput('VALUE')
       .appendField("Print a variable");
     this.setPreviousStatement( true, null );
@@ -139,8 +135,7 @@ Blockly.Blocks.heb_cursor_position = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Set cursor position' )
       .appendField( 'Set text size' )
@@ -171,8 +166,7 @@ Blockly.Blocks.heb_clear_screen = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Clear screen' );
     this.setPreviousStatement( true, null );
@@ -193,8 +187,7 @@ Blockly.Blocks.heb_rotate = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Rotate 180' );
     this.setPreviousStatement( true, null );
@@ -215,8 +208,7 @@ Blockly.Blocks.heb_send_signal = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Send a message' )
       .appendField( new Blockly.FieldTextInput( '' ), "MESSAGE" );
@@ -240,8 +232,7 @@ Blockly.Blocks.heb_read_signal = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( 'Retrieve a message' );
     this.appendValueInput( "BUFFER" )
@@ -267,8 +258,7 @@ Blockly.Blocks.heb_clear_ir_buffer = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       // @TODO : Should the title be something else? This might be confusing for beginners...
       .appendField( "Clear IR buffer" );
@@ -290,8 +280,7 @@ Blockly.Blocks.heb_badge_eeprom_store = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Store a contact" )
       .appendField( new Blockly.FieldTextInput( '' ), "CONTACT" );
@@ -315,8 +304,7 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Already stored?" )
       .appendField( "Info:" )
@@ -342,8 +330,7 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Retrieve an EEPROM value" )
       .appendField( "EEPROM Index" )
@@ -372,8 +359,7 @@ Blockly.Blocks.heb_count_contacts = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Count contacts" );
     this.setPreviousStatement( false, null );
@@ -395,8 +381,7 @@ Blockly.Blocks.heb_erase_all_contacts = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Erase all contacts" );
     this.setPreviousStatement( true, null );
@@ -417,8 +402,7 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Get axis acceleration" )
       .appendField( new Blockly.FieldDropdown([["X", "AX"], ["Y", "AY"], ["Z", "AZ"]]), "AXIS" );
@@ -443,8 +427,7 @@ Blockly.Blocks.heb_badge_was_shaken = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Was shaken?" );
     this.setPreviousStatement( false, null );
@@ -466,8 +449,7 @@ Blockly.Blocks.heb_touchpad_status = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    // @TODO : Set proper color scheme
-    this.setColour( 250 );
+    this.setColour( colorPalette.getColor('heb') );
     this.appendDummyInput()
       .appendField( "Is-touchpad-pressed?" )
       .appendField( new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"]]), "TOUCHPAD" );

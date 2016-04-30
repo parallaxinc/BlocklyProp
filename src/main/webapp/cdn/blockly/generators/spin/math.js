@@ -116,8 +116,8 @@ Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
     helpUrl: "",
     init: function () {
-        this.setColour(230);
-        this.setOutput(true, Number);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Number');
         this.appendValueInput('A')
                 .setCheck('Number');
         this.appendValueInput('B')
@@ -159,7 +159,7 @@ Blockly.Blocks.math_crement = {
     // Rounding functions.
     helpUrl: "",
     init: function () {
-        this.setColour(230);
+        this.setColour(colorPalette.getColor('math'));
         // this.setOutput(true, Number);
         this.setPreviousStatement(true);
         this.setNextStatement(true);

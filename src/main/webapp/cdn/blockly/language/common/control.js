@@ -28,7 +28,7 @@ Blockly.Blocks.controls_if = {
     category: Blockly.LANG_CATEGORY_CONTROLS,
     helpUrl: Blockly.LANG_CONTROLS_IF_HELPURL,
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput('IF0')
                 .setCheck(Boolean)
                 .appendField(Blockly.LANG_CONTROLS_IF_MSG_IF);
@@ -179,7 +179,7 @@ Blockly.Blocks.controls_if = {
 Blockly.Blocks.controls_if_if = {
     // If condition.
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_IF_TITLE_IF);
         this.appendStatementInput('STACK');
@@ -191,7 +191,7 @@ Blockly.Blocks.controls_if_if = {
 Blockly.Blocks.controls_if_elseif = {
     // Else-If condition.
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_ELSEIF_TITLE_ELSEIF);
         this.setPreviousStatement(true);
@@ -204,7 +204,7 @@ Blockly.Blocks.controls_if_elseif = {
 Blockly.Blocks.controls_if_else = {
     // Else condition.
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_ELSE_TITLE_ELSE);
         this.setPreviousStatement(true);
@@ -216,7 +216,7 @@ Blockly.Blocks.controls_if_else = {
 Blockly.Blocks.controls_repeat = {
     helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         // ["with", "WITH"]
         var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
         var fieldDropdown = new Blockly.FieldDropdown(PROPERTIES, function (type) {

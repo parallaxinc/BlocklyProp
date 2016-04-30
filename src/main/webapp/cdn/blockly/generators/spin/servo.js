@@ -34,7 +34,7 @@ Blockly.Blocks.servo_move = {
     category: 'Servo',
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput("")
                 .appendField("Servo")
                 .appendField("PIN#")

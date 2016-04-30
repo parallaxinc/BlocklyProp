@@ -26,16 +26,16 @@
 Blockly.Blocks.cog_new = {
     helpUrl: 'help/block-cognew.html',
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendTitle('Cognew ');
+                .appendField('Cognew ');
 
         this.appendValueInput("STACK_SIZE", 'Number')
                 .appendField("Stacksize")
                 .setCheck('Number');
 
         this.appendStatementInput("METHOD")
-                .appendTitle("Method");
+                .appendField("Method");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
@@ -46,7 +46,7 @@ Blockly.Blocks.cog_new = {
 Blockly.Blocks.base_delay = {
     helpUrl: 'help/block-delay.html',
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput("DELAY_TIME", 'Number')
                 .appendField("Delay (ms)")
                 .setCheck('Number');
@@ -60,7 +60,7 @@ Blockly.Blocks.base_delay = {
 Blockly.Blocks.base_freqout = {
     helpUrl: '',
     init: function () {
-        this.setColour(120);
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
                 .appendField("Freq PIN#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");

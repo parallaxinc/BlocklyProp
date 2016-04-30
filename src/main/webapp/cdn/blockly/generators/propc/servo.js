@@ -33,11 +33,11 @@ if (!Blockly.Blocks)
 Blockly.Blocks.servo_move = {
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput("")
                 .appendField("Servo")
                 .appendField("PIN#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("DEGREES", Number)
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)

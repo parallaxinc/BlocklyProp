@@ -32,7 +32,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.console_print = {
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
                 .appendField("Print")
                 .appendField(this.newQuote_(true))
@@ -61,7 +61,7 @@ Blockly.Blocks.console_print = {
 Blockly.Blocks.console_print_variables = {
     helpUrl: '',
     init: function () {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
                 .appendField("Print");
         this.setInputsInline(true);

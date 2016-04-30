@@ -30,13 +30,13 @@ if (!Blockly.Blocks)
 Blockly.Blocks.MX2125_acceleration_xaxis = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("MX2125 X-axis pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX");
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
-        this.setOutput(true, Number);
+        this.setOutput(true, 'Number');
     }
 };
 
@@ -44,13 +44,13 @@ Blockly.Blocks.MX2125_acceleration_xaxis = {
 Blockly.Blocks.MX2125_acceleration_yaxis = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("MX2125 Y-axis pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
-        this.setOutput(true, Number);
+        this.setOutput(true, 'Number');
     }
 };
 
@@ -58,20 +58,20 @@ Blockly.Blocks.MX2125_acceleration_yaxis = {
 Blockly.Blocks.MMA7455_acceleration = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("MMA7455 X-axis pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX");
         this.appendValueInput('VARX')
                 .appendField("Storage for X-axis");
         this.appendDummyInput("")
                 .appendField("MMA7455 Y-axis pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
         this.appendValueInput('VARY')
                 .appendField("Storage for Y-axis");
         this.appendDummyInput("")
                 .appendField("MMA7455 Z-axis pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINZ")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINZ");
         this.appendValueInput('VARZ')
                 .appendField("Storage for Z-axis");
         this.setInputsInline(true);

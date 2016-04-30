@@ -32,7 +32,7 @@ Blockly.Blocks.ab_drive_goto = {
     category: 'Drive',
     helpUrl: '',
     init: function() {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField('Drive goto')
                 .appendField('Left')
@@ -50,7 +50,7 @@ Blockly.Blocks.ab_drive_speed = {
     category: 'Drive',
     helpUrl: '',
     init: function() {
-        this.setColour(180);
+        this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField('Drive speed')
                 .appendField('Left')

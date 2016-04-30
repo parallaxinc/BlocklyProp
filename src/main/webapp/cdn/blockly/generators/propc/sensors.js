@@ -32,7 +32,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.sensor_ping = {
     helpUrl: '',
     init: function () {
-        this.setColour(314);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Ping)))")
                 .appendField(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"], ["ticks", "TICKS"]]), "UNIT")
@@ -64,7 +64,7 @@ Blockly.propc.sensor_ping.UNITS = {
 Blockly.Blocks.PIR_Sensor = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("PIR Sensor")
                 .appendField("Pin")
@@ -86,7 +86,7 @@ Blockly.propc.PIR_Sensor = function () {
 Blockly.Blocks.SF02_Laser_Rangefinder = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("SF02 Laser Rangefinder Pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");

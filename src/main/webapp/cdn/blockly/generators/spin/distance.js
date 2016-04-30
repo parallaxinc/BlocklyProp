@@ -29,7 +29,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.SF02_Laser_Rangefinder = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("SF02 Laser Rangefinder Pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");

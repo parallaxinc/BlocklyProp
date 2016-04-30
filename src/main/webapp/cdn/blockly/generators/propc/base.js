@@ -116,7 +116,7 @@ Blockly.Blocks.string_type_block = {
   category : 'Protocols',
   helpUrl : '',
   init : function() {
-    this.setColour(180);
+    this.setColour(colorPalette.getColor('programming'));
     this.appendDummyInput()
       .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
     this.setPreviousStatement(false, null);

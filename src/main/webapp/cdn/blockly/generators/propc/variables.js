@@ -30,7 +30,7 @@ Blockly.Blocks.variables_get = {
     // Variable getter.
     helpUrl: Blockly.LANG_VARIABLES_GET_HELPURL,
     init: function () {
-        this.setColour(330);
+        this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput("")
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(
@@ -52,7 +52,7 @@ Blockly.Blocks.variables_declare = {
     // Variable setter.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
     init: function () {
-        this.setColour(330);
+        this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE', null)
                 .appendField('Declare')
                 .appendField(new Blockly.FieldVariable(
@@ -78,7 +78,7 @@ Blockly.Blocks.variables_set = {
     // Variable setter.
     helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
     init: function () {
-        this.setColour(330);
+        this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE')
                 .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(

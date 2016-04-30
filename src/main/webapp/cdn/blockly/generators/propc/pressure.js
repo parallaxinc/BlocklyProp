@@ -28,7 +28,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.etape_rc_time = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("ETape sensor rc_time input")
                 .appendField("Pin")
@@ -52,7 +52,7 @@ Blockly.Blocks.etape_rc_time = {
 Blockly.Blocks.etape_voltage_input = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("ETape sensor voltage input")
                 .appendField("Pin")

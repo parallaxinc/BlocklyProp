@@ -34,7 +34,7 @@ Blockly.Blocks.debug_lcd_init = {
     category: 'Debug LCD',
     helpUrl: '',
     init: function() {
-        this.setColour( 180 );
+        this.setColour( colorPalette.getColor('protocols') );
         this.appendDummyInput( "" )
                 .appendField( "LCD init" )
                 .appendField( "PIN#" )
@@ -51,7 +51,7 @@ Blockly.Blocks.debug_lcd_clear = {
     category: 'Debug LCD',
     helpUrl: '',
     init: function() {
-        this.setColour( 180 );
+        this.setColour( colorPalette.getColor('protocols') );
         this.appendDummyInput( "" )
                 .appendField( "LCD clear" );
         this.setPreviousStatement( true, null );
@@ -63,7 +63,7 @@ Blockly.Blocks.debug_lcd_print = {
     category: 'Debug LCD',
     helpUrl: '',
     init: function() {
-        this.setColour( 180 );
+        this.setColour( colorPalette.getColor('protocols') );
         this.appendDummyInput( "" )
                 .appendField( "LCD print" )
                 .appendField( new Blockly.FieldImage( Blockly.pathToMedia +
@@ -80,7 +80,7 @@ Blockly.Blocks.debug_lcd_number = {
     category: 'Debug LCD',
     helpUrl: '',
     init: function() {
-        this.setColour( 180 );
+        this.setColour( colorPalette.getColor('protocols') );
         this.appendDummyInput( "" )
                 .appendField( "LCD print" );
         this.appendDummyInput( "" ).appendField( "Number" );
@@ -95,7 +95,7 @@ Blockly.Blocks.debug_lcd_action = {
     category: 'Debug LCD',
     helpUrl: '',
     init: function() {
-        this.setColour( 180 );
+        this.setColour( colorPalette.getColor('protocols') );
         this.appendDummyInput( "" )
                 .appendField( "LCD action" )
                 .appendField( new Blockly.FieldDropdown( [["Newline", "13"]] ), "ACTION" );

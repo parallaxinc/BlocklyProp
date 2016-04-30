@@ -4,11 +4,11 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Blockly Demo: Code</title>
+        <title>Blockly</title>
+
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
-
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
-
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin.js"/>"></script>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/base.js"/>"></script>

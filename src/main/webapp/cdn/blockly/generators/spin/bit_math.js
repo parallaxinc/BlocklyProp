@@ -34,8 +34,8 @@ if (!Blockly.Blocks)
 Blockly.Blocks.bit_math_shift = {
     helpUrl: "",
     init: function () {
-        this.setColour(200);
-        this.setOutput(true, Number);
+        this.setColour(colorPalette.getColor('binary'));
+        this.setOutput(true, 'Number');
         this.appendValueInput('A')
                 .setCheck('Number');
         this.appendValueInput('B')
@@ -75,8 +75,8 @@ Blockly.Spin.bit_math_shift.OPERATORS = {
 Blockly.Blocks.bit_math_rotate = {
     helpUrl: "",
     init: function () {
-        this.setColour(200);
-        this.setOutput(true, Number);
+        this.setColour(colorPalette.getColor('binary'));
+        this.setOutput(true, 'Number');
         this.appendValueInput('A')
                 .setCheck('Number');
         this.appendValueInput('B')
@@ -116,8 +116,8 @@ Blockly.Spin.bit_math_rotate.OPERATORS = {
 Blockly.Blocks.bit_math_operations = {
     helpUrl: "",
     init: function () {
-        this.setColour(200);
-        this.setOutput(true, Number);
+        this.setColour(colorPalette.getColor('binary'));
+        this.setOutput(true, 'Number');
         this.appendValueInput('A')
                 .setCheck('Number');
         this.appendValueInput('B')
@@ -159,8 +159,8 @@ Blockly.Spin.bit_math_operations.OPERATORS = {
 Blockly.Blocks.bit_math_not = {
     helpUrl: "",
     init: function () {
-        this.setColour(200);
-        this.setOutput(true, Number);
+        this.setColour(colorPalette.getColor('binary'));
+        this.setOutput(true, 'Number');
 
         this.appendValueInput('VAR')
                 .setCheck('Number')

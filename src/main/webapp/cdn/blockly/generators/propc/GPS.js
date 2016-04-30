@@ -29,7 +29,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.PAM_7Q_Init = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("PAM7Q GPS Module");
         this.appendDummyInput("")
@@ -49,7 +49,7 @@ Blockly.Blocks.PAM_7Q_Init = {
 Blockly.Blocks.PAM_7Q_Latitude = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Get latitude");
         this.setOutput(true, Number);
@@ -61,7 +61,7 @@ Blockly.Blocks.PAM_7Q_Latitude = {
 Blockly.Blocks.PAM_7Q_Longitude = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Get longitude");
         this.setOutput(true, Number);
@@ -73,7 +73,7 @@ Blockly.Blocks.PAM_7Q_Longitude = {
 Blockly.Blocks.PAM_7Q_Heading = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Get heading");
         this.setOutput(true, Number);
@@ -85,7 +85,7 @@ Blockly.Blocks.PAM_7Q_Heading = {
 Blockly.Blocks.PAM_7Q_Altitude = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Get altitude");
         this.setOutput(true, Number);
@@ -97,7 +97,7 @@ Blockly.Blocks.PAM_7Q_Altitude = {
 Blockly.Blocks.PAM_7Q_SatsTracked = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Get # of satellites tracked");
         this.setOutput(true, Number);
@@ -109,7 +109,7 @@ Blockly.Blocks.PAM_7Q_SatsTracked = {
 Blockly.Blocks.PAM_7Q_Velocity = {
     helpUrl: '',
     init: function () {
-        this.setColour(300);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Get velocity in units")
                 .appendField(new Blockly.FieldDropdown([["MPH", "MPH"], ["KNOTS", "KNOTS"]]), "VELOCITYUNITS");
