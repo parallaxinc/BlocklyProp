@@ -4,6 +4,8 @@ BlocklyProp
 Introduction
 -----------------
 
+Active public installation at http://blockly.parallax.com/blockly/
+
 BlocklyProp is based on Blockly, the web-based, graphical programming editor. Provide language blocks and code generators for Parallax Propeller programming.
 (It actually started with the BlocklyDuino as a base because it already generates code for a microcontroller and was easier to adapt.)
 
@@ -47,7 +49,7 @@ Credit
 The project is inspired by and based on BlocklyDuino https://github.com/gasolin/BlocklyDuino
 Fred Lin is the creator of BlocklyDuino.
 
-Which in turn is created using Blockly http://code.google.com/p/blockly/
+Which in turn is created using Blockly https://developers.google.com/blockly/
 
 To compile your code I use Openspin for spin https://code.google.com/p/open-source-spin-compiler/ and the Propeller-gcc toolchain for C code: https://sites.google.com/site/propellergcc/
 
@@ -55,7 +57,7 @@ Thanks to you all.
 
 License
 -----------------
-Copyright (C) 2014 Michel Lampo michel@creatingfuture.eu
+Copyright (C) 2014 - 2016 Parallax
 
 ```
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,6 +66,21 @@ You may obtain a copy of the License at
 
   http://www.apache.org/licenses/LICENSE-2.0
 ```
+
+Main contributors
+-----------------
+
+* Michel Lampo: Project initiator and lead
+* Vale Tolpegin: Help files and blocks
+
+Supported board
+-----------------
+
+* Activity Board (WX)
+* S3
+* Hackable electronic badge
+
+Available all purpose pins differ from board to board. It's also possible to select a generic board wich gives access to all 32 pins.
 
 To Do list/Roadmap
 -----------------
@@ -120,6 +137,5 @@ Sensor/Hardware Compatibility
   - MMA7455 Acceleration sensor
   - Etape liquid sensor
   - PIR Sensor
-  - Freqout command
   - LCD ( currently, only 1 LCD can be attached )
   - Servo
