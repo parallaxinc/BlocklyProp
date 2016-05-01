@@ -18,6 +18,7 @@ import com.parallax.server.blocklyprop.servlets.ProfileServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectCreationServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
+import com.parallax.server.blocklyprop.servlets.TextileChangeLogServlet;
 import com.parallax.server.blocklyprop.servlets.TextileClientDownloadServlet;
 import com.parallax.server.blocklyprop.servlets.TextileClientInstructionsServlet;
 import com.parallax.server.blocklyprop.servlets.TextileIndexServlet;
@@ -54,6 +55,7 @@ public class ServletsModule extends ServletModule {
         serve("/public/libraries").with(TextileLibrariesServlet.class);
         serve("/public/clientdownload").with(TextileClientDownloadServlet.class);
         serve("/public/clientinstructions").with(TextileClientInstructionsServlet.class);
+        serve("/public/changelog").with(TextileChangeLogServlet.class);
 
         // Help
         serve("/public/help").with(HelpServlet.class);
