@@ -10,7 +10,11 @@
 <div id="project-form-container"  class="container collapse">
     <div class="row">
         <div class="col-md-12">
-            <h2><a href="#" class="btn btn-default"><fmt:message key="back" /></a> <fmt:message key="project.title"/>: <fmt:message key="project.details_title" /></h2>
+            <h2>
+                <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <fmt:message key="back" /></a>
+                <fmt:message key="project.details_title" />
+                <a class="btn btn-primary open-project-link editor-view-link" href="#" ><fmt:message key="project.viewcode" /></a>
+            </h2>
             <form id="project-form" action="<url:getUrl url="/rest/project"/>" method="post">
                 <div class="alert alert-success alert-dismissible hidden project-changed" id="project-changed">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -41,13 +45,9 @@
                     </div>
                 </div>
 
-                <div>
-                    <shiro:notAuthenticated>
-                        <a class="btn btn-default open-project-link editor-view-link" href="#" ><fmt:message key="project.openlink" /></a>
-                    </shiro:notAuthenticated>
 
-                    <shiro:authenticated>
-                        <a class="btn btn-default open-project-link editor-view-link" href="#" ><fmt:message key="project.openlink" /></a>
+                <shiro:authenticated>
+                    <div class="modal-footer">
                         <div class="btn-group not-your-project hidden">
                             <a class="btn btn-default clone-project" data-href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
                         </div>
@@ -56,8 +56,8 @@
                             <a class="btn btn-danger delete-project" data-href="<url:getUrl url="/project?delete="/>" id="project-delete" ><fmt:message key="project.deletelink" /></a>
                             <a class="btn btn-default clone-project" data-href="<url:getUrl url="/project?clone="/>" ><fmt:message key="project.clonelink" /></a>
                         </div>
-                    </shiro:authenticated>
-                </div>
+                    </div>
+                </shiro:authenticated>
 
             </form>
         </div>
