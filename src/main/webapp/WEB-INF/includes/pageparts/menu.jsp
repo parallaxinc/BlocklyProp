@@ -37,6 +37,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"><shiro:principal></shiro:principal> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="<url:getUrl url="/profile"/>"><fmt:message key="menu.profile" /></a></li>
+                            <li><a href="<url:getUrl url="/public/profile"/>"><fmt:message key="menu.public-profile" /></a></li>
                             <li><a href="<url:getUrl url="/logout"/>"><fmt:message key="logout" /></a></li>
                         </ul>
                     </li>
