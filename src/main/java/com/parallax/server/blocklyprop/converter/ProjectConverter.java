@@ -48,6 +48,7 @@ public class ProjectConverter {
         result.addProperty("yours", isYours);
         // if (!isYours) {
         result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+        result.addProperty("id-user", project.getIdUser());
         // }
 
         return result;
