@@ -406,21 +406,35 @@ Blockly.Blocks['math_constrain'] = {
     }
 };
 
-Blockly.Blocks['math_random_int'] = {
-    /**
-     * Block for random integer between [X] and [Y].
-     * @this Blockly.Block
-     */
-    init: function () {
-        this.setHelpUrl(Blockly.Msg.MATH_RANDOM_INT_HELPURL);
+Blockly.Blocks.math_random_integer = {
+    helpUrl: '',
+    init: function() {
         this.setColour(colorPalette.getColor('math'));
-        this.setOutput(true, 'Number');
-        this.interpolateMsg(Blockly.Msg.MATH_RANDOM_INT_TITLE,
-                ['FROM', 'Number', Blockly.ALIGN_RIGHT],
-                ['TO', 'Number', Blockly.ALIGN_RIGHT],
-                Blockly.ALIGN_RIGHT);
+        this.appendDummyInput("")
+            .appendField("Random integer")
+        this.appendValueInput("MIN", 'Number')
+            .appendField("Min")
+            .setCheck('Number');
+        this.appendValueInput("MAX", 'Number')
+            .appendField("Max")
+            .setCheck('Number');
         this.setInputsInline(true);
-        this.setTooltip(Blockly.Msg.MATH_RANDOM_INT_TOOLTIP);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks.math_random_float = {
+    helpUrl: '',
+    init: function() {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput("")
+            .appendField("Random float (from 0 to 1)")
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
     }
 };
 

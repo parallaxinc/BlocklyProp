@@ -127,6 +127,8 @@
             </category>
             <category name="<fmt:message key="category.programming.math" />">
                 <block type="math_number"></block>
+                <block type="math_random_integer"></block>
+                <block type="math_random_float"></block>
                 <block type="math_arithmetic"></block>
                 <block type="math_single"></block>
                 <block type="math_limit"></block>
