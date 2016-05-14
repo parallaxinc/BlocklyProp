@@ -64,15 +64,13 @@ Blockly.Blocks.console_print_variables = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
                 .appendField("Print");
+        
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-
-// define generators
-//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.console_print = function () {
     var text = this.getFieldValue('TEXT');
@@ -83,5 +81,6 @@ Blockly.propc.console_print = function () {
 Blockly.propc.console_print_variables = function () {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1000';
     Blockly.propc.serial_terminal_ = true;
-    return 'print( ' + value + ' );\n';
+    
+    return 'print("' + value + ' = %d \n",' + value + ');\n';
 };
