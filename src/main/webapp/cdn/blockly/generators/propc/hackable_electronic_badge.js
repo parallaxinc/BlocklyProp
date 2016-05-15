@@ -96,13 +96,13 @@ Blockly.Blocks.heb_print_string_var = {
 };
 
 Blockly.propc.heb_print_string_var = function() {
-  var string_to_print = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
+  var value = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
 
   // @TODO : move initialization & set up to be automatic
   Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
   Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-  var code = 'oledprint(' + string_to_print + ');\n';
+  var code = 'oledprint("' + value + ' = %d \n",' + value + ');\n';
   return code;
 };
 
