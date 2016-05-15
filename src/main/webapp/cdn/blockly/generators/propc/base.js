@@ -131,3 +131,10 @@ Blockly.propc.string_type_block = function() {
   var code = '"' + text + '"';
   return [code, Blockly.propc.ORDER_NONE];
 };
+
+Blockly.propc.rc_charge_discharge = function() {
+    var pin = this.getFieldValue("PIN");
+    var state = this.getFieldValue("STATE");
+    
+    return 'rc_time(' + pin + ', ' + state + ')';
+};

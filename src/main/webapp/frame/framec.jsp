@@ -157,6 +157,7 @@
             </category>
             <category name="<fmt:message key="category.input-output.timing" />">
                 <block type="base_freqout"></block>
+                <block type="rc_charge_discharge"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.communicate" />">
