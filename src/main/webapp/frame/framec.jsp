@@ -41,6 +41,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abvolts.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
@@ -182,7 +183,10 @@
 
             </category>
             <category name="<fmt:message key="category.activity-board.audio" />">
-
+                <block type="wav_play"></block>
+                <block type="wav_status"></block>
+                <block type="wav_volume"></block>
+                <block type="wav_stop"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.sensor-input" />">
