@@ -197,10 +197,11 @@
                 <block type="joystick_input_yaxis"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
-
+                <block type="MX2125_acceleration_xaxis"></block>
+                <block type="MX2125_acceleration_yaxis"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
-
+                <block type="MMA7455_acceleration"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
                 <block type="PAM_7Q_Init"></block>
