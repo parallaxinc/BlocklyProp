@@ -38,6 +38,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/debug_LCD.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/serial.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/rfid.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abvolts.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
@@ -218,7 +219,10 @@
                 <block type="PIR_Sensor"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.rfid" />">
-
+                <block type="rfid_enable"></block>
+                <block type="rfid_get"></block>
+                <block type="rfid_disable"></block>
+                <block type="rfid_close"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
                 <block type="SF02_Laser_Rangefinder"></block>
