@@ -227,7 +227,9 @@
 
             </category>
             <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
-
+                <block type="sound_impact_run"></block>
+                <block type="sound_impact_get"></block>
+                <block type="sound_impact_end"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.actuator-output" />">
