@@ -36,7 +36,7 @@ Blockly.Blocks.heb_toggle_led = {
     this.appendDummyInput()
       .appendField( 'Set LED state' )
       .appendField( 'LED #' )
-      .appendField( new Blockly.FieldDropdown([["1", "0"], ["2", "1"], ["3", "2"], ["4", "3"], ["5", "4"], ["6", "5"]]), "LED_#" )
+      .appendField( new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"]]), "LED_#" )
       .appendField( 'LED state' )
       .appendField( new Blockly.FieldDropdown([["ON", "1"], ["OFF", "0"]]), "STATE" );
     this.setPreviousStatement( true, null );
