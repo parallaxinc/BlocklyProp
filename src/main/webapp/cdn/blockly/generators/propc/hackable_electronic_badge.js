@@ -83,50 +83,26 @@ Blockly.propc.heb_set_led_rgb = function() {
     return code;
 };
 
-Blockly.Blocks.heb_print_string = {
-  category : 'Hackable Electronic Badge',
-  helpUrl : '',
-  init : function() {
-    this.setColour( colorPalette.getColor('heb') );
-    this.appendDummyInput()
-      .appendField( 'Print a string' )
-      .appendField( new Blockly.FieldTextInput( '' ), "STRING" );
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
-  }
-};
-
-Blockly.propc.heb_print_string = function() {
-  var string_to_print = this.getFieldValue( "STRING" );
-
-  // @TODO : move initialization & set up to be automatic
-  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
-  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
-
-  var code = 'oledprint( "' + string_to_print + '" );\n';
-  return code;
-};
-
 Blockly.Blocks.heb_print_string_var = {
   category : 'Hackable Electronic Badge',
   helpUrl : '',
   init : function() {
-    this.setColour( colorPalette.getColor('heb') );
+    this.setColour(colorPalette.getColor('heb'));
     this.appendValueInput('VALUE')
-      .appendField("Print a variable");
-    this.setPreviousStatement( true, null );
-    this.setNextStatement( true, null );
+      .appendField("Print");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
   }
 };
 
 Blockly.propc.heb_print_string_var = function() {
-  var string_to_print = Blockly.propc.valueToCode( this, "VALUE", Blockly.propc.ORDER_NONE );
+  var value = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
 
   // @TODO : move initialization & set up to be automatic
-  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
-  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+  Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+  Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-  var code = 'oledprint( ' + string_to_print + ' );\n';
+  var code = 'oledprint("' + value + ' = %d \n",' + value + ');\n';
   return code;
 };
 
