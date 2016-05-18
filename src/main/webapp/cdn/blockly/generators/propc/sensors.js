@@ -103,3 +103,75 @@ Blockly.propc.SF02_Laser_Rangefinder = function () {
     var code = 'ad_volts( ' + pin + ' )';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
+
+Blockly.Blocks.sound_impact_run = {
+    helpUrl: '',
+    init: function() {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+            .appendField("Sound impact")
+            .appendField("Run in cog#")
+            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COG");
+
+        this.setInputsInline(true);
+        this.setNextStatement(true, null);
+        this.setPreviousStatement(true, null);
+    }
+};
+
+Blockly.Blocks.sound_impact_get = {
+    helpUrl: '',
+    init: function() {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+            .appendField( "Get sound impact data" );
+
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
+        this.setOutput(true, Number);
+    }
+};
+
+Blockly.Blocks.sound_impact_end = {
+    helpUrl: '',
+    init: function() {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+            .appendField( "Turn the sound impact sensor off" );
+
+        this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.sound_impact_run = function() {
+    var cog = this.getTitleValue('COG');
+
+    Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
+    Blockly.propc.setups_["sound_impact"] = 'int *soundimpactcog = soundImpact_run(' + cog + ');\n';
+
+    return '';
+};
+
+Blockly.propc.sound_impact_get = function() {
+    Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
+
+    if (Blockly.propc.setups_["sound_impact"] === undefined)
+    {
+        return '-1 /*Missing sound impact sensor declaration statement*/';
+    }
+
+    return 'soundImpact_getCount()';
+};
+
+Blockly.propc.sound_impact_end = function() {
+    Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
+    if (Blockly.propc.setups_["sound_impact"] === undefined)
+    {
+        return '//Missing sound impact sensor declaration statement';
+    }
+
+    return 'soundImpact_end(soundimpactcog);\n';
+};
