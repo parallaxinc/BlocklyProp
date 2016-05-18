@@ -76,3 +76,21 @@ Blockly.Blocks.base_freqout = {
         this.setTooltip('Frequency output');
     }
 };
+
+Blockly.Blocks.rc_charge_discharge = {
+    helpUrl: '',
+    init: function() {
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput("")
+            .appendField("RC")
+            .appendField(new Blockly.FieldDropdown([["Charge", "0"], ["Discharge", "1"]]), "STATE");
+        this.appendDummyInput("")
+            .appendField("PIN#")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('RC Output');
+    }
+};

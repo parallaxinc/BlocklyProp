@@ -159,8 +159,12 @@
             </category>
             <category name="<fmt:message key="category.input-output.timing" />">
                 <block type="base_freqout"></block>
+<<<<<<< HEAD
                 <block type="pulse_in"></block>
                 <block type="pulse_out"></block>
+=======
+                <block type="rc_charge_discharge"></block>
+>>>>>>> d8af21deb943fa5cf33f5889e531a1597bebb15f
             </category>
         </category>
         <category name="<fmt:message key="category.communicate" />">
