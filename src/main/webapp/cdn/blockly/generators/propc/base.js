@@ -113,35 +113,43 @@ Blockly.propc.base_freqout = function () {
 };
 
 Blockly.Blocks.string_type_block = {
-  category : 'Protocols',
-  helpUrl : '',
-  init : function() {
-    this.setColour(colorPalette.getColor('programming'));
-    this.appendDummyInput()
-      .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
-    this.setPreviousStatement(false, null);
-    this.setNextStatement(false, null);
-    this.setOutput(true, String);
-  }
+    category: 'Protocols',
+    helpUrl: '',
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, String);
+    }
 };
 
-Blockly.propc.string_type_block = function() {
-  var text = this.getFieldValue( "TEXT" );
+Blockly.propc.string_type_block = function () {
+    var text = this.getFieldValue("TEXT");
 
-  var code = '"' + text + '"';
-  return [code, Blockly.propc.ORDER_NONE];
+    var code = '"' + text + '"';
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
-Blockly.propc.pulse_in = function() {
+Blockly.propc.pulse_in = function () {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
-    
+
     return 'pulse_in(' + pin + ', ' + state + ');\n';
 };
 
-Blockly.propc.pulse_out = function() {
+Blockly.propc.pulse_out = function () {
     var pin = this.getFieldValue("PIN");
     var pulse_length = Blockly.propc.valueToCode(this, 'PULSE_LENGTH', Blockly.propc.ORDER_ATOMIC);
-    
+
     return 'pulse_out(' + pin + ', ' + pulse_length + ');\n';
 };
+
+Blockly.propc.rc_charge_discharge = function () {
+    var pin = this.getFieldValue("PIN");
+    var state = this.getFieldValue("STATE");
+
+    return 'rc_time(' + pin + ', ' + state + ');\n';
+};
+
