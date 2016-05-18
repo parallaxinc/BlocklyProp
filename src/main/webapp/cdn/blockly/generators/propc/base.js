@@ -131,3 +131,17 @@ Blockly.propc.string_type_block = function() {
   var code = '"' + text + '"';
   return [code, Blockly.propc.ORDER_NONE];
 };
+
+Blockly.propc.pulse_in = function() {
+    var pin = this.getFieldValue("PIN");
+    var state = this.getFieldValue("STATE");
+    
+    return 'pulse_in(' + pin + ', ' + state + ');\n';
+};
+
+Blockly.propc.pulse_out = function() {
+    var pin = this.getFieldValue("PIN");
+    var pulse_length = Blockly.propc.valueToCode(this, 'PULSE_LENGTH', Blockly.propc.ORDER_ATOMIC);
+    
+    return 'pulse_out(' + pin + ', ' + pulse_length + ');\n';
+};

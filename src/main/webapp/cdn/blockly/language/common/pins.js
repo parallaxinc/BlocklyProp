@@ -173,3 +173,37 @@ Blockly.Blocks.set_pins = {
         }
     }
 };
+
+Blockly.Blocks.pulse_in = {
+    helpUrl: '',
+    init: function() {
+        this.setColour(colorPalette('io'));
+        this.appendDummyInput("")
+            .appendfield("Pulse-in PIN#")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendDummyInput("")
+            .appendField(new Blockly.FieldDropdown([["Negative/low pulses", "0"], ["Positive/high pulses", "1"]]), "STATE");
+        
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+    }
+};
+
+Blockly.Blocks.pulse_out = {
+    helpUrl: '',
+    init: function() {
+        this.setColour(colorPalette('io'));
+        this.appendDummyInput("")
+            .appendfield("Pulse-out PIN#")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendValueInput('PULSE_LENGTH')
+            .appendField("Pulse length");
+    
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+    }
+}
