@@ -40,6 +40,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abvolts.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
 
@@ -165,6 +166,9 @@
                 <block type="console_print_variables"></block>
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
+                <block type="i2c_new_bus"></block>
+                <block type="i2c_in"></block>
+                <block type="i2c_out"></block>
                 <block type="serial_open"></block>
                 <block type="serial_tx_byte"></block>
                 <block type="serial_send_text"></block>
