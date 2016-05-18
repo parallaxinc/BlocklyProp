@@ -5,3 +5,7 @@ h4. 2016/05/02
 * First version with change log
 * Redesigned project form
 * Public profile pages
+
+h4. 2016/05/18
+
+* New blocks and block bugfixes
