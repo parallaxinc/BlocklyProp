@@ -18,11 +18,11 @@ Author: valetolpegin@gmail.com
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- 
+
 */
 'use strict';
 
-if ( !Blockly.Blocks )
+if (!Blockly.Blocks)
   Blockly.Blocks = {};
 
 Blockly.Blocks.wav_play = {
@@ -32,7 +32,7 @@ Blockly.Blocks.wav_play = {
         this.appendDummyInput()
             .appendField("Play file")
             .appendField(new Blockly.FieldTextInput('File_name'), 'FILENAME');
-        
+
         this.setInputInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -45,7 +45,7 @@ Blockly.Blocks.wav_status = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Status");
-        
+
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, Number);
@@ -60,7 +60,7 @@ Blockly.Blocks.wav_volume = {
             .appendField("Volume");
         this.appendValueInput('LENGTH')
             .appendField("Length of file (in milliseconds)");
-    
+
         this.setInputInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -73,7 +73,7 @@ Blockly.Blocks.wav_stop = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendfield("Stop");
-    
+
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -81,26 +81,26 @@ Blockly.Blocks.wav_stop = {
 
 Blockly.propc.wav_play = function() {
     var filename = this.getFieldValue('FILENAME');
-    
-    Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
-    
+
+    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+
     var code = 'const char file' + filename + '[] = {"' + filename + '"};\nwav_play(' + filename + ');\n';
     return code;
 };
 
 Blockly.propc.wav_status = function() {
-    Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
-    
-    var code = 'wav_playing();\n';
+    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+
+    var code = 'wav_playing()';
     return code;
 };
 
 Blockly.propc.wav_volume = function() {
     var volume = Blockly.propc.valueToCode(this, 'VOLUME', Blockly.propc.ORDER_NONE) || '0';
     var length = Blockly.propc.valueToCode(this, 'LENGTH', Blockly.propc.ORDER_NONE) || '0';
-    
-    Blockly.propc.definitions_[ "wavplayer" ] = '#include "wavplayer.h"';
-    
+
+    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+
     var code = 'wav_volume(' + volume + ');\npause(' + length + ');\n';
     return code;
 };
