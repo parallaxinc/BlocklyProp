@@ -120,7 +120,7 @@ button:hover {
     /* new custom width */
     width: 610px;
     /* must be half of the width, minus scrollbar on the left (30px) */
-    //margin-left: -305px;
+    /* margin-left: -305px; */
 }
 
 .navbar {
