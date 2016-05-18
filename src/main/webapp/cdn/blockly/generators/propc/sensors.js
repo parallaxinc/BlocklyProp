@@ -128,6 +128,7 @@ Blockly.Blocks.sound_impact_get = {
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
+        this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
         this.setOutput(true, Number);
     }
 };
@@ -139,6 +140,7 @@ Blockly.Blocks.sound_impact_end = {
         this.appendDummyInput()
             .appendField( "Turn the sound impact sensor off" );
 
+        this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
