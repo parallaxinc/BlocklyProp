@@ -264,6 +264,8 @@
             <category name="<fmt:message key="category.robot.activitybot" />">
                 <block type="ab_drive_speed"></block>
                 <block type="ab_drive_goto"></block>
+                <block type="servo_set_ramp"></block>
+                <block type="servo_speed"></block>
             </category>
             <category name="<fmt:message key="category.robot.servo-diff-drive" />">
 
