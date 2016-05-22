@@ -271,7 +271,10 @@
                 <block type="activitybot_display_calibration"></block>
             </category>
             <category name="<fmt:message key="category.robot.servo-diff-drive" />">
-
+                <block type="servodiffdrive_library_drive_pins"></block>
+                <block type="servodiffdrive_library_drive_speed"></block>
+                <block type="servodiffdrive_library_drive_setRamp"></block>
+                <block type="servodiffdrive_library_drive_sleep"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.hackable-electronic-badge" />">
