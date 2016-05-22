@@ -44,6 +44,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/activitybot.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
@@ -266,6 +267,8 @@
                 <block type="ab_drive_goto"></block>
                 <block type="servo_set_ramp"></block>
                 <block type="servo_speed"></block>
+                <block type="activitybot_calibrate"></block>
+                <block type="activitybot_display_calibration"></block>
             </category>
             <category name="<fmt:message key="category.robot.servo-diff-drive" />">
 
