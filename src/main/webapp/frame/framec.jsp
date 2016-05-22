@@ -43,6 +43,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
@@ -275,9 +276,9 @@
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
                 <block type="heb_print_string_var">
-                  <value name="VALUE">
+                  <value name="TEXT">
                     <block type="string_type_block">
-                      <field name="VALUE">Hello</field>
+                      <field name="TEXT">Hello</field>
                     </block>
                   </value>
                 </block>

@@ -33,7 +33,7 @@ Blockly.Blocks.wav_play = {
             .appendField("Play file")
             .appendField(new Blockly.FieldTextInput('File_name'), 'FILENAME');
 
-        this.setInputInline(true);
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -61,7 +61,7 @@ Blockly.Blocks.wav_volume = {
         this.appendValueInput('LENGTH')
             .appendField("Length of file (in milliseconds)");
 
-        this.setInputInline(true);
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
