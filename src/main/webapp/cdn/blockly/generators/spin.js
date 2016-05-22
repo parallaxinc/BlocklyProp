@@ -150,7 +150,7 @@ Blockly.Spin.finish = function (code) {
     for (var name in Blockly.Spin.definitions_) {
         var def = Blockly.Spin.definitions_[name];
         if (def.match(/^PUB/)) {
-            methods.push('  ' + def);
+            methods.push(def);
         } else if (def.match(/^OBJ/)) {
             objects.push('  ' + def.substring(3));
         } else {
