@@ -267,6 +267,8 @@
             <category name="<fmt:message key="category.robot.activitybot" />">
                 <block type="ab_drive_speed"></block>
                 <block type="ab_drive_goto"></block>
+                <block type="ab_drive_ramp"></block>
+                <block type="ab_drive_set_ramp_step"></block>
                 <block type="activitybot_calibrate"></block>
                 <block type="activitybot_display_calibration"></block>
             </category>
