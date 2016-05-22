@@ -249,6 +249,8 @@
         <category name="<fmt:message key="category.actuator-output" />">
             <category name="<fmt:message key="category.actuator-output.standard-senvo" />">
                 <block type="servo_move"></block>
+                <block type="servo_set_ramp"></block>
+                <block type="servo_speed"></block>
             </category>
             <category name="<fmt:message key="category.actuator-output.cr-servo" />">
 
@@ -265,8 +267,6 @@
             <category name="<fmt:message key="category.robot.activitybot" />">
                 <block type="ab_drive_speed"></block>
                 <block type="ab_drive_goto"></block>
-                <block type="servo_set_ramp"></block>
-                <block type="servo_speed"></block>
                 <block type="activitybot_calibrate"></block>
                 <block type="activitybot_display_calibration"></block>
             </category>
