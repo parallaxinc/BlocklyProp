@@ -204,29 +204,31 @@ Blockly.propc.heb_send_signal = function() {
 };
 
 Blockly.Blocks.heb_read_signal = {
-  category : 'Hackable Electronic Badge',
-  helpUrl : '',
-  init : function() {
-    this.setColour( colorPalette.getColor('heb') );
-    this.appendDummyInput()
-      .appendField( 'Retrieve a message' );
-    this.appendValueInput( "BUFFER" )
-      .appendField( 'Variable' );
-    this.setOutput( true, Number );
-    this.setPreviousStatement( false, null );
-    this.setNextStatement( false, null );
-  }
+    helpUrl : '',
+    init : function() {
+        this.setColour(colorPalette.getColor('heb'));
+        this.appendDummyInput()
+            .appendField('Receive');
+        this.appendValueInput("BUFFER")
+            .appendField('Message contents:');
+        this.appendValueInput("LENGTH")
+            .appendField('Length:');
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
 };
 
 Blockly.propc.heb_read_signal = function() {
-  var buffer = Blockly.propc.valueToCode( this, "BUFFER", Blockly.propc.ORDER_NONE );
+    var buffer = Blockly.propc.valueToCode(this, "BUFFER", Blockly.propc.ORDER_NONE);
+    var length = Blockly.propc.valueToCode(this, "LENGTH", Blockly.propc.ORDER_NONE);
 
-  // @TODO : move initialization & set up to be automatic
-  Blockly.propc.definitions_[ "badgetools" ] = '#include "badgetools.h"';
-  Blockly.propc.setups_[ "badgetools" ] = 'badge_setup();';
+    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-  var code = 'receive( ' + buffer + ' )';
-  return [ code, Blockly.propc.ORDER_ATOMIC ];
+    var code = length ' = receive(' + bufferg + ')';
+    return code;
 };
 
 Blockly.Blocks.heb_clear_ir_buffer = {
@@ -286,7 +288,7 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
       .appendField( new Blockly.FieldTextInput( '' ), "CONTACT" );
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
-    this.setOutput( true, Number );
+    this.setOutput( true, 'Number' );
   }
 };
 
@@ -339,7 +341,7 @@ Blockly.Blocks.heb_count_contacts = {
       .appendField( "Count contacts" );
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
-    this.setOutput( true, Number );
+    this.setOutput( true, 'Number' );
   }
 };
 
@@ -383,7 +385,7 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
       .appendField( new Blockly.FieldDropdown([["X", "AX"], ["Y", "AY"], ["Z", "AZ"]]), "AXIS" );
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
-    this.setOutput( true, Number );
+    this.setOutput( true, 'Number' );
   }
 };
 
@@ -407,7 +409,7 @@ Blockly.Blocks.heb_badge_was_shaken = {
       .appendField( "Was shaken?" );
     this.setPreviousStatement( false, null );
     this.setNextStatement( false, null );
-    this.setOutput( true, Number );
+    this.setOutput( true, 'Number' );
   }
 };
 
