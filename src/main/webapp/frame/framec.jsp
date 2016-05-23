@@ -33,6 +33,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/TiltandAcceleration.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/GPS.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/eeprom.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abdrive.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/debug_LCD.js"/>"></script>
@@ -189,7 +190,12 @@
                 <block type="ab_volt_out"></block>
             </category>
             <category name="<fmt:message key="category.activity-board.memory" />">
-
+                <block type="eeprom_int_to"></block>
+                <block type="eeprom_int_from"></block>
+                <block type="eeprom_float_to"></block>
+                <block type="eeprom_float_from"></block>
+                <block type="eeprom_text_to"></block>
+                <block type="eeprom_text_from"></block>
             </category>
             <category name="<fmt:message key="category.activity-board.audio" />">
                 <block type="wav_play"></block>
