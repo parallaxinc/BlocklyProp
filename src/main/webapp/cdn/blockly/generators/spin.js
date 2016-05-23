@@ -20,6 +20,7 @@
 /**
  * @fileoverview Helper functions for generating Spin for blocks.
  * @author michel@creatingfuture.eu (Michel Lampo)
+ * @author valetolpegin@gmail.com (Vale Tolpegin)
  */
 'use strict';
 Blockly.Spin = new Blockly.Generator('Spin');
@@ -143,16 +144,13 @@ Blockly.Spin.finish = function (code) {
     code = code.replace(/\n\s+$/, '\n');
     code = 'PUB Start\n\n' + code;
     // Convert the definitions dictionary into a list.
-    var imports = [];
     var methods = [];
     var objects = [];
     var definitions = [];
     for (var name in Blockly.Spin.definitions_) {
         var def = Blockly.Spin.definitions_[name];
-        if (def.match(/^#include/)) {
-            imports.push(def);
-        } else if (def.match(/^PUB/)) {
-            methods.push('  ' + def);
+        if (def.match(/^PUB/)) {
+            methods.push(def);
         } else if (def.match(/^OBJ/)) {
             objects.push('  ' + def.substring(3));
         } else {
@@ -184,7 +182,7 @@ Blockly.Spin.finish = function (code) {
     }
     setups.push('Start');
     var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
-    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
+    var allDefs = 'VAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
     var setup = '';
     if (Blockly.Spin.serial_terminal_) {
         setup += "'SERIAL_TERMINAL USED\n";
