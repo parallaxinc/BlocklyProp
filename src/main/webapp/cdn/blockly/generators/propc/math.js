@@ -202,3 +202,19 @@ Blockly.propc.math_crement.OPERATORS = {
     DEC: ['--', Blockly.propc.ORDER_UNARY_PREFIX],
     INC: ['++', Blockly.propc.ORDER_UNARY_PREFIX]
 };
+
+Blockly.propc.math_random_integer = {
+    // Random integer generator
+    var min = Number(Blockly.propc.valueToCode(this, 'MIN',
+                Blockly.propc.ORDER_UNARY_PREFIX) || '0');
+    var max = Number(Blockly.propc.valueToCode(this, 'MAX',
+                Blockly.propc.ORDER_UNARY_PREFIX) || '1');
+    
+    var randomNumber = Math.floor(Math.random() * (max - min)) + min;
+    return randomNumber;
+};
+
+Blockly.propc.math_random_float = {
+    // Random float generator --> Returns values between 0 and 1
+    return Math.random();
+};
