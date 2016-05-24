@@ -33,6 +33,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/TiltandAcceleration.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/GPS.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/eeprom.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abdrive.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/debug_LCD.js"/>"></script>
@@ -41,8 +42,10 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/rfid.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abvolts.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
@@ -159,12 +162,9 @@
             </category>
             <category name="<fmt:message key="category.input-output.timing" />">
                 <block type="base_freqout"></block>
-<<<<<<< HEAD
                 <block type="pulse_in"></block>
                 <block type="pulse_out"></block>
-=======
                 <block type="rc_charge_discharge"></block>
->>>>>>> d8af21deb943fa5cf33f5889e531a1597bebb15f
             </category>
         </category>
         <category name="<fmt:message key="category.communicate" />">
@@ -173,6 +173,9 @@
                 <block type="console_print_variables"></block>
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
+                <block type="i2c_new_bus"></block>
+                <block type="i2c_in"></block>
+                <block type="i2c_out"></block>
                 <block type="serial_open"></block>
                 <block type="serial_tx_byte"></block>
                 <block type="serial_send_text"></block>
@@ -187,7 +190,12 @@
                 <block type="ab_volt_out"></block>
             </category>
             <category name="<fmt:message key="category.activity-board.memory" />">
-
+                <block type="eeprom_int_to"></block>
+                <block type="eeprom_int_from"></block>
+                <block type="eeprom_float_to"></block>
+                <block type="eeprom_float_from"></block>
+                <block type="eeprom_text_to"></block>
+                <block type="eeprom_text_from"></block>
             </category>
             <category name="<fmt:message key="category.activity-board.audio" />">
                 <block type="wav_play"></block>
@@ -278,9 +286,9 @@
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
                 <block type="heb_print_string_var">
-                  <value name="VALUE">
+                  <value name="TEXT">
                     <block type="string_type_block">
-                      <field name="VALUE">Hello</field>
+                      <field name="TEXT">Hello</field>
                     </block>
                   </value>
                 </block>

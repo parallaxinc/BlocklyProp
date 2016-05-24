@@ -26,6 +26,13 @@
                     <shiro:authenticated>
                     <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a></li>
                     </shiro:authenticated>
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fmt:message key="menu.newproject.title" /> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<url:getUrl url="/projectcreate.jsp?lang=SPIN"/>"><fmt:message key="menu.newproject.spin" /></a></li>
+                        <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.c" /></a></li>
+                    </ul>
+                </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
