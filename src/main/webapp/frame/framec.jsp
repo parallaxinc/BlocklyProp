@@ -45,7 +45,11 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
+<<<<<<< HEAD
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
+=======
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>
+>>>>>>> DarkmatterVale-sd_card_blocks
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
@@ -190,12 +194,25 @@
                 <block type="ab_volt_out"></block>
             </category>
             <category name="<fmt:message key="category.activity-board.memory" />">
+<<<<<<< HEAD
                 <block type="eeprom_int_to"></block>
                 <block type="eeprom_int_from"></block>
                 <block type="eeprom_float_to"></block>
                 <block type="eeprom_float_from"></block>
                 <block type="eeprom_text_to"></block>
                 <block type="eeprom_text_from"></block>
+=======
+                <block type="sd_card_mount"></block>
+                <block type="sd_card_int_to"></block>
+                <block type="sd_card_int_from"></block>
+                <block type="sd_card_read_int"></block>
+                <block type="sd_card_float_to"></block>
+                <block type="sd_card_float_from"></block>
+                <block type="sd_card_read_float"></block>
+                <block type="sd_card_text_to"></block>
+                <block type="sd_card_text_from"></block>
+                <block type="sd_card_read_text"></block>
+>>>>>>> DarkmatterVale-sd_card_blocks
             </category>
             <category name="<fmt:message key="category.activity-board.audio" />">
                 <block type="wav_play"></block>
