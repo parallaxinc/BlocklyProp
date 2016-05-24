@@ -122,8 +122,6 @@
                         </block>
                     </value>
                 </block>
-                <block type="string_type_block"></block>
-                <!--<block type="text"></block>-->
             </category>
             <category name="<fmt:message key="category.programming.conditions" />">
                 <block type="logic_compare"></block>
@@ -131,8 +129,11 @@
                 <block type="logic_negate"></block>
                 <block type="logic_boolean"></block>
             </category>
-            <category name="<fmt:message key="category.programming.math" />">
+            <category name="<fmt:message key="category.programming.data_types" />">
                 <block type="math_number"></block>
+                <block type="string_type_block"></block>
+            </category>
+            <category name="<fmt:message key="category.programming.math" />">
                 <block type="math_arithmetic"></block>
                 <block type="math_single"></block>
                 <block type="math_limit"></block>
