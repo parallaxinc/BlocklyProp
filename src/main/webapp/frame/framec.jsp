@@ -45,13 +45,10 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
-<<<<<<< HEAD
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
-=======
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>
->>>>>>> DarkmatterVale-sd_card_blocks
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/activitybot.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
-
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
 
         <style>
@@ -194,14 +191,12 @@
                 <block type="ab_volt_out"></block>
             </category>
             <category name="<fmt:message key="category.activity-board.memory" />">
-<<<<<<< HEAD
                 <block type="eeprom_int_to"></block>
                 <block type="eeprom_int_from"></block>
                 <block type="eeprom_float_to"></block>
                 <block type="eeprom_float_from"></block>
                 <block type="eeprom_text_to"></block>
                 <block type="eeprom_text_from"></block>
-=======
                 <block type="sd_card_mount"></block>
                 <block type="sd_card_int_to"></block>
                 <block type="sd_card_int_from"></block>
@@ -212,7 +207,6 @@
                 <block type="sd_card_text_to"></block>
                 <block type="sd_card_text_from"></block>
                 <block type="sd_card_read_text"></block>
->>>>>>> DarkmatterVale-sd_card_blocks
             </category>
             <category name="<fmt:message key="category.activity-board.audio" />">
                 <block type="wav_play"></block>
@@ -275,6 +269,8 @@
         <category name="<fmt:message key="category.actuator-output" />">
             <category name="<fmt:message key="category.actuator-output.standard-senvo" />">
                 <block type="servo_move"></block>
+                <block type="servo_set_ramp"></block>
+                <block type="servo_speed"></block>
             </category>
             <category name="<fmt:message key="category.actuator-output.cr-servo" />">
 
@@ -291,9 +287,16 @@
             <category name="<fmt:message key="category.robot.activitybot" />">
                 <block type="ab_drive_speed"></block>
                 <block type="ab_drive_goto"></block>
+                <block type="ab_drive_ramp"></block>
+                <block type="ab_drive_set_ramp_step"></block>
+                <block type="activitybot_calibrate"></block>
+                <block type="activitybot_display_calibration"></block>
             </category>
             <category name="<fmt:message key="category.robot.servo-diff-drive" />">
-
+                <block type="servodiffdrive_library_drive_pins"></block>
+                <block type="servodiffdrive_library_drive_speed"></block>
+                <block type="servodiffdrive_library_drive_setRamp"></block>
+                <block type="servodiffdrive_library_drive_sleep"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.hackable-electronic-badge" />">
@@ -303,11 +306,11 @@
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
                 <block type="heb_print_string_var">
-                  <value name="TEXT">
-                    <block type="string_type_block">
-                      <field name="TEXT">Hello</field>
-                    </block>
-                  </value>
+                    <value name="TEXT">
+                        <block type="string_type_block">
+                            <field name="TEXT">Hello</field>
+                        </block>
+                    </value>
                 </block>
                 <block type="heb_cursor_position"></block>
                 <block type="heb_clear_screen"></block>
