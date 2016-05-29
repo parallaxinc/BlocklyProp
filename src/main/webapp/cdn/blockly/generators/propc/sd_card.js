@@ -25,8 +25,8 @@
 if ( !Blockly.Blocks )
     Blockly.Blocks = {};
 
+
 Blockly.Blocks.sd_card_mount = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -50,7 +50,6 @@ Blockly.Blocks.sd_card_mount = {
 };
 
 Blockly.Blocks.sd_card_int_to = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -75,7 +74,6 @@ Blockly.Blocks.sd_card_int_to = {
 };
 
 Blockly.Blocks.sd_card_int_from = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -98,7 +96,6 @@ Blockly.Blocks.sd_card_int_from = {
 };
 
 Blockly.Blocks.sd_card_read_int = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -111,7 +108,6 @@ Blockly.Blocks.sd_card_read_int = {
 };
 
 Blockly.Blocks.sd_card_float_to = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -136,7 +132,6 @@ Blockly.Blocks.sd_card_float_to = {
 };
 
 Blockly.Blocks.sd_card_float_from = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -159,7 +154,6 @@ Blockly.Blocks.sd_card_float_from = {
 };
 
 Blockly.Blocks.sd_card_read_float = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -172,7 +166,6 @@ Blockly.Blocks.sd_card_read_float = {
 };
 
 Blockly.Blocks.sd_card_text_to = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -204,7 +197,6 @@ Blockly.Blocks.sd_card_text_to = {
 };
 
 Blockly.Blocks.sd_card_text_from = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -227,7 +219,6 @@ Blockly.Blocks.sd_card_text_from = {
 };
 
 Blockly.Blocks.sd_card_read_text = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()

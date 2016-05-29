@@ -29,42 +29,36 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.file_open = {
-    category: 'File',
-    helpUrl: '',
     init: function() {
-        this.setColour(180);
-        this.appendDummyInput("")
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
             .appendField("Open file")
             .appendField(new Blockly.FieldTextInput('file.txt'), 'FILE')
             .appendField("mode")
             .appendField(new Blockly.FieldDropdown([["read", "r"], ["write", "w"]]), "MODE");
+
         this.setOutput(true, 'Pointer');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
     }
 };
 
 Blockly.Blocks.file_close = {
-    category: 'File',
-    helpUrl: '',
     init: function() {
-        this.setColour(180);
-        this.appendDummyInput("")
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
             .appendField("Close file");
         this.appendValueInput('FILE');
+
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setInputsInline(true);
     }
 };
-
-
-// define generators
-//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.file_open = function() {
     var file = this.getFieldValue('FILE');
     var mode = this.getFieldValue('MODE');
-
- //   Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
 
     var code = 'fopen("' + file + '", "' + mode + '")';
     return [code, Blockly.propc.ORDER_ATOMIC];
@@ -73,8 +67,6 @@ Blockly.propc.file_open = function() {
 
 Blockly.propc.file_close = function() {
     var file = Blockly.propc.valueToCode(this, 'FILE', Blockly.propc.ORDER_UNARY_PREFIX);
-
-    //   Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
 
     if (file) {
         return 'fclose(' + file + ');\n'

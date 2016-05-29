@@ -26,7 +26,6 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 Blockly.Blocks.i2c_new_bus = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -47,7 +46,6 @@ Blockly.Blocks.i2c_new_bus = {
 };
 
 Blockly.Blocks.i2c_in = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -63,7 +61,6 @@ Blockly.Blocks.i2c_in = {
 };
 
 Blockly.Blocks.i2c_out = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()

@@ -25,8 +25,8 @@ Author: valetolpegin@gmail.com
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
+
 Blockly.Blocks.sirc_get = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()

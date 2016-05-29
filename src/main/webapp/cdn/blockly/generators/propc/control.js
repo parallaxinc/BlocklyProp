@@ -27,8 +27,7 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 
-
-Blockly.propc.controls_repeat = function () {
+Blockly.propc.controls_repeat = function() {
     var type = this.getFieldValue('TYPE');
     var branch = Blockly.propc.statementToCode(this, 'DO');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
@@ -60,7 +59,7 @@ Blockly.propc.controls_repeat = function () {
     return code;
 };
 
-Blockly.propc.controls_if = function () {
+Blockly.propc.controls_if = function() {
     // If/elseif/else condition.
     var n = 0;
     var argument = Blockly.propc.valueToCode(this, 'IF' + n,

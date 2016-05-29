@@ -24,16 +24,10 @@
 'use strict';
 
 //To support syntax defined in http://arduino.cc/en/Reference/HomePage
-
 //define blocks
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-
-
-
-// define generators
-//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc['math_number'] = function() {
     // Numeric value.
@@ -55,10 +49,7 @@ Blockly.propc.math_arithmetic = function() {
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
     var code;
-//    if (!operator) {
-//        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-//        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-//    }
+
     code = argument0 + operator + argument1;
     return [code, order];
 };
@@ -69,7 +60,6 @@ Blockly.propc.math_arithmetic.OPERATORS = {
     MULTIPLY: [' * ', Blockly.propc.ORDER_MULTIPLICATIVE],
     DIVIDE: [' / ', Blockly.propc.ORDER_MULTIPLICATIVE],
     MODULUS: [' % ', Blockly.propc.ORDER_MULTIPLICATIVE],
-    //   POWER: [null, Blockly.propc.ORDER_NONE]  // Handle power separately.
 };
 
 
@@ -117,27 +107,28 @@ Blockly.propc.math_single = function() {
 };
 
 // Limit
-
 Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
-    category: Blockly.LANG_CATEGORY_MATH,
-    helpUrl: "",
     init: function() {
         this.setColour(colorPalette.getColor('math'));
-        this.setOutput(true, 'Number');
         this.appendValueInput('A')
-                .setCheck('Number');
+            .setCheck('Number');
         this.appendValueInput('B')
-                .setCheck('Number')
-                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+            .setCheck('Number')
+            .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+
         this.setInputsInline(true);
         this.setTooltip("Limit");
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
     }
 };
 
-Blockly.Blocks.math_limit.OPERATORS =
-        [["Limit min", 'LIMIT_MIN'],
-            ["Limit max", 'LIMIT_MAX']];
+Blockly.Blocks.math_limit.OPERATORS = [
+    ["Limit min", 'LIMIT_MIN'],
+    ["Limit max", 'LIMIT_MAX']
+];
 
 Blockly.propc.math_limit = function() {
     // Basic arithmetic operators, and power.
@@ -148,10 +139,7 @@ Blockly.propc.math_limit = function() {
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
     var code;
-//    if (!operator) {
-//        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-//        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-//    }
+
     code = argument0 + operator + argument1;
     return [code, order];
 };
@@ -164,24 +152,22 @@ Blockly.propc.math_limit.OPERATORS = {
 // Increment/decrement
 Blockly.Blocks.math_crement = {
     // Rounding functions.
-    category: Blockly.LANG_CATEGORY_MATH,
-    helpUrl: "",
     init: function() {
         this.setColour(colorPalette.getColor('math'));
-        // this.setOutput(true, Number);
+        this.appendValueInput('VAR')
+            .setCheck('Number')
+            .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+
+        this.setTooltip("");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-
-        this.appendValueInput('VAR')
-                .setCheck('Number')
-                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
-        this.setTooltip("");
     }
 };
 
-Blockly.Blocks.math_crement.OPERATORS =
-        [["Decrement", 'DEC'],
-            ["Increment", 'INC']];
+Blockly.Blocks.math_crement.OPERATORS = [
+    ["Decrement", 'DEC'],
+    ["Increment", 'INC']
+];
 
 Blockly.propc.math_crement = function() {
     // Basic arithmetic operators, and power.
@@ -190,10 +176,7 @@ Blockly.propc.math_crement = function() {
     var operator = tuple[0];
     var order = tuple[1];
     var variable = Blockly.propc.valueToCode(this, 'VAR', order) || '0';
-//    if (!operator) {
-//        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-//        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-//    }
+
     var code = variable + operator + ';\n';
     return code;
 };
