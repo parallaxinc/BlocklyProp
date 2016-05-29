@@ -90,10 +90,7 @@ Blockly.propc.i2c_new_bus = function() {
     var sda_pin = this.getFieldValue('SDA_PIN');
     var scl_drive = this.getFieldValue('SCL_DRIVE') || '0';
 
-    if (Blockly.propc.setups_["i2c_newbus"] === undefined)
-    {
-        Blockly.propc.setups_["12c_newbus"] = 'i2cBusUD = i2c_newbus(' + scl_pin + ', ' + sda_pin + ', ' + scl_drive + ');\n';
-    }
+    Blockly.propc.setups_["i2c_newbus"] = 'i2cBusUD = i2c_newbus(' + scl_pin + ', ' + sda_pin + ', ' + scl_drive + ');\n';
 
     return '';
 };
