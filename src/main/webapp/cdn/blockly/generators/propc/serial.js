@@ -1,4 +1,4 @@
-/**
+ /**
  * Visual Blocks Language
  *
  * Copyright 2014 Michel Lampo.
@@ -65,11 +65,9 @@ Blockly.Blocks.serial_send_text = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
                 .appendField("Serial transmit")
-                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                        'media/quote0.png', 12, 12))
+                .appendField(quotes.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                        'media/quote1.png', 12, 12));
+                .appendField(quotes.newQuote_(false));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }

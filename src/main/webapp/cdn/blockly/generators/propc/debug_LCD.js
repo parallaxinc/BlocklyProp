@@ -66,11 +66,9 @@ Blockly.Blocks.debug_lcd_print = {
         this.setColour( colorPalette.getColor('protocols') );
         this.appendDummyInput( "" )
                 .appendField( "LCD print" )
-                .appendField( new Blockly.FieldImage( Blockly.pathToMedia +
-                    'quote0.png', 12, 12 ) )
+                .appendField(quotes.newQuote_(true))
                 .appendField( new Blockly.FieldTextInput( '' ), 'TEXT' )
-                .appendField( new Blockly.FieldImage( Blockly.pathToMedia +
-                    'quote1.png', 12, 12 ) );
+                .appendField(quotes.newQuote_(false));
         this.setPreviousStatement( true, null );
         this.setNextStatement( true, null );
     }
@@ -112,7 +110,7 @@ Blockly.propc.debug_lcd_init = function() {
     var baud = this.getFieldValue('BAUD');
 
     Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open( ' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ' );\n';
-    
+
     var code = 'writeChar( debug_lcd, 22 );\n';
     return code;
 };
