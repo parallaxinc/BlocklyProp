@@ -18,7 +18,7 @@ Author: valetolpegin@gmail.com
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- 
+
 */
 'use strict';
 
@@ -32,7 +32,7 @@ Blockly.Blocks.MX2125_acceleration_xaxis = {
         this.appendDummyInput()
             .appendField("MX2125 X-axis pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX");
-        
+
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
         this.setOutput(true, Number);
@@ -46,7 +46,7 @@ Blockly.Blocks.MX2125_acceleration_yaxis = {
         this.appendDummyInput()
             .appendField("MX2125 Y-axis pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
-    
+
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
         this.setOutput(true, Number);
@@ -60,38 +60,53 @@ Blockly.Blocks.MMA7455_acceleration = {
         this.appendDummyInput()
             .appendField("MMA7455 X-axis pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX")
-        this.appendValueInput('VARX')
-            .appendField("Store X-axis value");
+        this.appendDummyInput()
+            .appendField("Store X-axis value")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR');
         this.appendDummyInput()
             .appendField("MMA7455 Y-axis pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY")
-        this.appendValueInput('VARY')
-            .appendField("Store Y-axis value");
+        this.appendDummyInput()
+            .appendField("Store Y-axis value")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR');
         this.appendDummyInput()
             .appendField("MMA7455 Z-axis pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINZ")
-        this.appendValueInput('VARZ')
-            .appendField("Store Z-axis value");
-   
-        this.setInputsInline(true);
+        this.appendDummyInput()
+            .appendField("Store Z-axis value")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
+
+        this.setInputsInline(false);
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
+    },
+    getVars: function() {
+        return [this.getFieldValue('X_VAR'), this.getFieldValue('Y_VAR'), this.getFieldValue('Z_VAR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('X_VAR'))) {
+            this.setTitleValue(newName, 'X_VAR');
+        } else if (Blockly.Names.equals(oldName, this.getFieldValue('Y_VAR'))) {
+            this.setTitleValue(newName, 'Y_VAR');
+        } else if (Blockly.Names.equals(oldName, this.getFieldValue('Z_VAR'))) {
+            this.setTitleValue(newName, 'Z_VAR');
+        }
     }
 };
 
 Blockly.propc.MX2125_acceleration_xaxis = function() {
     var pin = this.getFieldValue('PINX');
-  
+
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
-  
+
     return 'mx_tilt(' + pin + ')';
 };
 
 Blockly.propc.MX2125_acceleration_yaxis = function() {
     var pin = this.getFieldValue('PINY');
-  
+
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
-  
+
     return 'mx_tilt( ' + pin + ' )';
 };
 
@@ -99,13 +114,13 @@ Blockly.propc.MMA7455_acceleration = function() {
     var pinx = this.getFieldValue('PINX');
     var piny = this.getFieldValue('PINY');
     var pinz = this.getFieldValue('PINZ');
-  
-    var xstorage = Blockly.propc.valueToCode(this, 'VARX');
-    var ystorage = Blockly.propc.valueToCode(this, 'VARY');
-    var zstorage = Blockly.propc.valueToCode(this, 'VARZ');
-  
+
+    var xstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('X_VAR'), Blockly.Variables.NAME_TYPE);
+    var ystorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Y_VAR'), Blockly.Variables.NAME_TYPE);
+    var zstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
+
     Blockly.propc.definitions_["include_mma7455"] = '#include "mma7455.h"';
     Blockly.propc.setups_["mma_7455"] = 'MMA7455_init(' + pinx + ', ' + piny + ', ' + pinz + ');\n';
-  
+
     return 'MMA7455_getxyz10(&' + xstorage + ', &' + ystorage + ', &' + zstorage + ');\n';
 };
