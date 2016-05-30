@@ -23,9 +23,7 @@
  */
 'use strict';
 
-//Blockly.propc = new Blockly.Generator('propc');
-
-Blockly.propc.logic_compare = function () {
+Blockly.propc.logic_compare = function() {
     // Comparison operator.
     var mode = this.getFieldValue('OP');
     var operator = Blockly.propc.logic_compare.OPERATORS[mode];
@@ -46,9 +44,9 @@ Blockly.propc.logic_compare.OPERATORS = {
     GTE: '>='
 };
 
-Blockly.propc.logic_operation = function () {
+Blockly.propc.logic_operation = function() {
     // Operations 'and', 'or'.
-    var operator = ''; //(this.getFieldValue('OP') == 'AND') ? '&&' : '||';
+    var operator = '';
     var order = Blockly.propc.ORDER_LOGICAL_AND;
     switch (this.getFieldValue('OP')) {
         case 'AND':
@@ -72,7 +70,7 @@ Blockly.propc.logic_operation = function () {
     return [code, order];
 };
 
-Blockly.propc.logic_negate = function () {
+Blockly.propc.logic_negate = function() {
     // Negation.
     var order = Blockly.propc.ORDER_UNARY_PREFIX;
     var argument0 = Blockly.propc.valueToCode(this, 'BOOL', order) || '0';
@@ -80,7 +78,7 @@ Blockly.propc.logic_negate = function () {
     return [code, order];
 };
 
-Blockly.propc.logic_boolean = function () {
+Blockly.propc.logic_boolean = function() {
     // Boolean values true and false.
     var code = (this.getFieldValue('BOOL') == 'TRUE') ? '1' : '0';
     return [code, Blockly.propc.ORDER_ATOMIC];

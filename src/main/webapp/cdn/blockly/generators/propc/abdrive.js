@@ -29,8 +29,6 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.ab_drive_goto = {
-    category: 'Drive',
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
@@ -41,14 +39,13 @@ Blockly.Blocks.ab_drive_goto = {
                 .appendField('Right')
                 .appendField(new Blockly.FieldTextInput('64',
                         Blockly.FieldTextInput.numberValidator), 'RIGHT');
+
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.Blocks.ab_drive_speed = {
-    category: 'Drive',
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
@@ -59,6 +56,7 @@ Blockly.Blocks.ab_drive_speed = {
                 .appendField('Right')
                 .appendField(new Blockly.FieldTextInput('64',
                         Blockly.FieldTextInput.numberValidator), 'RIGHT');
+
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }

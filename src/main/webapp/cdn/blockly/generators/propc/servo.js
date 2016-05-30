@@ -29,17 +29,17 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.servo_move = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('output'));
-        this.appendDummyInput("")
-                .appendField("Servo")
-                .appendField("PIN#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendDummyInput()
+            .appendField("Servo")
+            .appendField("PIN#")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("DEGREES", Number)
-                .setCheck('Number')
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("Degrees (0 - 180°)");
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("Degrees (0 - 180°)");
+
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }

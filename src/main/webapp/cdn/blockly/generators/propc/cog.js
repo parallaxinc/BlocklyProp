@@ -27,7 +27,6 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.cog_new = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
@@ -37,22 +36,17 @@ Blockly.Blocks.cog_new = {
                 .setCheck('Number');
         this.appendStatementInput("METHOD")
                 .appendField("Method");
+
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-//get generators
-//Blockly.propc = new Blockly.Generator('propc');
-
-Blockly.propc.cog_new = function () {
+Blockly.propc.cog_new = function() {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
     method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
     var stackSize = Blockly.propc.valueToCode(this, 'STACK_SIZE', Blockly.propc.ORDER_NONE) || '10';
-
-//  var stackName = 'Stack' + Blockly.propc.stacks_.length;
-//  Blockly.propc.stacks_.push('long ' + stackName + '[' + stackSize + '];');
 
     var code = 'cog_run(' + method + ', ' + stackSize + ');';
     return code;

@@ -25,8 +25,8 @@ Author: valetolpegin@gmail.com
 if (!Blockly.Blocks)
   Blockly.Blocks = {};
 
+
 Blockly.Blocks.wav_play = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -40,7 +40,6 @@ Blockly.Blocks.wav_play = {
 };
 
 Blockly.Blocks.wav_status = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -48,12 +47,11 @@ Blockly.Blocks.wav_status = {
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
-        this.setOutput(true, Number);
+        this.setOutput(true, 'Number');
     }
 };
 
 Blockly.Blocks.wav_volume = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('VOLUME')
@@ -68,7 +66,6 @@ Blockly.Blocks.wav_volume = {
 };
 
 Blockly.Blocks.wav_stop = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()

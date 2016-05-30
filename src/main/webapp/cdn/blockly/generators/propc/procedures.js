@@ -23,8 +23,6 @@
  */
 'use strict';
 
-//Blockly.propc = new Blockly.Generator('propc');
-
 Blockly.propc.procedures_defreturn = function() {
     // Define a procedure with a return value.
     var funcName = Blockly.propc.variableDB_.getName(this.getFieldValue('NAME'),
@@ -103,4 +101,3 @@ Blockly.propc.procedures_ifreturn = function() {
     code += '}\n';
     return code;
 };
-

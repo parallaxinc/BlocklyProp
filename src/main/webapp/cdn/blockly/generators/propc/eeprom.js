@@ -25,7 +25,6 @@ if ( !Blockly.Blocks )
   Blockly.Blocks = {};
 
 Blockly.Blocks.eeprom_int_to = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -43,7 +42,6 @@ Blockly.Blocks.eeprom_int_to = {
 };
 
 Blockly.Blocks.eeprom_int_from = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -58,7 +56,6 @@ Blockly.Blocks.eeprom_int_from = {
 };
 
 Blockly.Blocks.eeprom_float_to = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -76,7 +73,6 @@ Blockly.Blocks.eeprom_float_to = {
 };
 
 Blockly.Blocks.eeprom_float_from = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -91,7 +87,6 @@ Blockly.Blocks.eeprom_float_from = {
 };
 
 Blockly.Blocks.eeprom_text_to = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -115,7 +110,6 @@ Blockly.Blocks.eeprom_text_to = {
 };
 
 Blockly.Blocks.eeprom_text_from = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()

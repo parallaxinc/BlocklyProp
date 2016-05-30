@@ -31,7 +31,7 @@ Blockly.Blocks.activitybot_calibrate = {
     init: function() {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-          .appendField("Calibrate");
+            .appendField("Calibrate");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -42,7 +42,7 @@ Blockly.Blocks.activitybot_display_calibration = {
     init: function() {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-          .appendField("Display calibration");
+            .appendField("Display calibration");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
