@@ -19,11 +19,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 
+
  */
+
 'use strict';
 
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
+
 
 
 Blockly.Blocks.MX2125_acceleration_xaxis = {
@@ -32,6 +35,7 @@ Blockly.Blocks.MX2125_acceleration_xaxis = {
         this.appendDummyInput()
                 .appendField("MX2125 X-axis pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX");
+
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -73,7 +77,9 @@ Blockly.Blocks.MMA7455_acceleration = {
         this.appendDummyInput()
                 .appendField("Store Z-axis value")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
+
         this.setInputsInline(false);
+
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
     },
