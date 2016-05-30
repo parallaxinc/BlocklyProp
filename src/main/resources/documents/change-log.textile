@@ -9,3 +9,10 @@ h4. 2016/05/02
 h4. 2016/05/18
 
 * New blocks and block bugfixes
+
+h4. 2016/05/24
+
+* Eeprom and sd cards
+* ActivityBot and servo
+* Datatypes
+* Spin issues
