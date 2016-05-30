@@ -271,11 +271,13 @@
         <category name="<fmt:message key="category.actuator-output" />">
             <category name="<fmt:message key="category.actuator-output.standard-senvo" />">
                 <block type="servo_move"></block>
-                <block type="servo_set_ramp"></block>
-                <block type="servo_speed"></block>
             </category>
             <category name="<fmt:message key="category.actuator-output.cr-servo" />">
-
+                <block type="servo_speed"></block>
+                <block type="servo_set_ramp"></block>
+                <block type="pwm_start"></block>
+                <block type="pwm_set"></block>
+                <block type="pwm_stop"></block>
             </category>
             <category name="<fmt:message key="category.actuator-output.serial-lcd" />">
                 <block type="debug_lcd_init"></block>

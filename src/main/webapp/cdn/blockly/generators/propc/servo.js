@@ -152,6 +152,51 @@ Blockly.Blocks.servodiffdrive_library_drive_stop = {
     }
 };
 
+Blockly.Blocks.pwm_start = {
+    init: function() {
+        this.setColour(colorPalette.getColor('output'));
+        this.appendDummyInput()
+            .appendField("PWM start");
+        this.appendValueInput("CYCLE", Number)
+            .appendField("cycle (microseconds)")
+            .setCheck('Number');
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Blocks.pwm_set = {
+    init: function() {
+        this.setColour(colorPalette.getColor('output'));
+        this.appendDummyInput()
+            .appendField("PWM set")
+            .appendField("pin")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendDummyInput()
+            .appendField("channel")
+            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL");
+        this.appendValueInput("HIGH_TIME", Number)
+            .setCheck('Number');
+            .appendField("high time");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Blocks.pwm_stop = {
+    init: function() {
+        this.setColour(colorPalette.getColor('output'));
+        this.appendDummyInput()
+            .appendField("PWM stop");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
 Blockly.propc.servo_move = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var degrees = Blockly.propc.valueToCode(this, 'DEGREES', Blockly.propc.ORDER_NONE);
@@ -203,4 +248,22 @@ Blockly.propc.servodiffdrive_library_drive_sleep = function() {
 
 Blockly.propc.servodiffdrive_library_drive_stop = function() {
     return 'drive_stop();\n';
+};
+
+Blockly.propc.pwm_start = function() {
+    var cycle = Blockly.propc.valueToCode(this, "CYCLE", Blockly.propc.ORDER_NONE);
+
+    return 'pwm_start(' + cycle + ');\n';
+};
+
+Blockly.propc.pwm_set = function() {
+    var pin = this.getFieldValue("PIN");
+    var channel = this.getFieldValue("CHANNEL");
+    var high_time = Blockly.propc.valueToCode(this, "HIGH_TIME", Blockly.propc.ORDER_NONE);
+
+    return 'pwm_set(' + pin + ', ' + channel + ', ' + high_time + ');\n';
+};
+
+Blockly.propc.pwm_stop = function() {
+    return 'pwm_stop();\n';
 };
