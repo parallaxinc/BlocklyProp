@@ -1,14 +1,11 @@
 h2. Change log
 
-h4. 2016/05/02
+h4. 2016/05/30
 
-* First version with change log
-* Redesigned project form
-* Public profile pages
-
-h4. 2016/05/18
-
-* New blocks and block bugfixes
+* Clean C blocks
+* Correct quotes
+* PWM blocks
+* Fix issues
 
 h4. 2016/05/24
 
@@ -16,3 +13,13 @@ h4. 2016/05/24
 * ActivityBot and servo
 * Datatypes
 * Spin issues
+
+h4. 2016/05/18
+
+* New blocks and block bugfixes
+
+h4. 2016/05/02
+
+* First version with change log
+* Redesigned project form
+* Public profile pages
