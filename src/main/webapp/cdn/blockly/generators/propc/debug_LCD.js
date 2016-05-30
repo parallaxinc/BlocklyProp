@@ -29,15 +29,15 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.debug_lcd_init = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("LCD init")
-            .appendField("PIN#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+                .appendField("LCD init")
+                .appendField("PIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
-            .appendField("Baud")
-            .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
+                .appendField("Baud")
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -45,7 +45,7 @@ Blockly.Blocks.debug_lcd_init = {
 };
 
 Blockly.Blocks.debug_lcd_clear = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD clear");
@@ -56,29 +56,26 @@ Blockly.Blocks.debug_lcd_clear = {
 };
 
 Blockly.Blocks.debug_lcd_print = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-            .appendField("LCD print")
-            .appendField(new Blockly.FieldImage( Blockly.pathToMedia +
-                    'quote0.png', 12, 12 ) )
-            .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField( new Blockly.FieldImage( Blockly.pathToMedia +
-                    'quote1.png', 12, 12 ) );
-
+        this.appendDummyInput("")
+                .appendField("LCD print")
+                .appendField(quotes.newQuote_(true))
+                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+                .appendField(quotes.newQuote_(false));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.Blocks.debug_lcd_number = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("LCD print");
+                .appendField("LCD print");
         this.appendValueInput('NUMBER', Number)
-            .appendField("Number")
-            .setCheck('Number');
+                .appendField("Number")
+                .setCheck('Number');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -86,18 +83,18 @@ Blockly.Blocks.debug_lcd_number = {
 };
 
 Blockly.Blocks.debug_lcd_action = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("LCD action")
-            .appendField(new Blockly.FieldDropdown([["Newline", "13"]]), "ACTION");
+                .appendField("LCD action")
+                .appendField(new Blockly.FieldDropdown([["Newline", "13"]]), "ACTION");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.debug_lcd_init = function() {
+Blockly.propc.debug_lcd_init = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var baud = this.getFieldValue('BAUD');
 
@@ -107,23 +104,23 @@ Blockly.propc.debug_lcd_init = function() {
     return code;
 };
 
-Blockly.propc.debug_lcd_clear = function() {
+Blockly.propc.debug_lcd_clear = function () {
     return 'writeChar( debug_lcd, 12 );\npause( 5 );\n';
 };
 
-Blockly.propc.debug_lcd_print = function() {
+Blockly.propc.debug_lcd_print = function () {
     var text = this.getFieldValue('TEXT');
 
     return 'dprint( debug_lcd, "' + text + '" );\n';
 };
 
-Blockly.propc.debug_lcd_number = function() {
+Blockly.propc.debug_lcd_number = function () {
     var number = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
 
     return 'dprint( debug_lcd, "' + number + '" );\n';
 };
 
-Blockly.propc.debug_lcd_action = function() {
+Blockly.propc.debug_lcd_action = function () {
     var action = this.getFieldValue('ACTION');
 
     return 'dprint( debug_lcd, ' + action + ' );\n';
