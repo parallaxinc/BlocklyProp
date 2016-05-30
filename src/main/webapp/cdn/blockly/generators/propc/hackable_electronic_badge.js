@@ -208,15 +208,25 @@ Blockly.Blocks.heb_read_signal = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Receive');
-        this.appendValueInput("BUFFER")
-                .appendField('Message contents:');
-        this.appendValueInput("LENGTH")
-                .appendField('Length:');
+                .appendField('number of characters received');
+        this.appendDummyInput()
+            .appendField('Receive an array of characters');
+        this.appendDummyInput()
+                .appendField('Message contents:')
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+        this.setInputsInline(false);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    },
+    getVars: function() {
+        return [this.getFieldValue('BUFFER')];
+    },
+    renameVar: function(oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
+            this.setTitleValue(newName, 'BUFFER');
+        }
     }
 };
 
@@ -227,7 +237,7 @@ Blockly.propc.heb_read_signal = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = length + ' = receive(' + bufferg + ')';
+    var code = length + ' = receive(' + buffer + ')';
     return code;
 };
 
