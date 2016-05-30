@@ -69,7 +69,7 @@ Blockly.Blocks.wav_stop = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendfield("Stop");
+            .appendField("Stop");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
