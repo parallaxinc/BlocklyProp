@@ -7,6 +7,7 @@
         <title>Blockly</title>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc.js"/>"></script>

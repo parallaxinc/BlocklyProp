@@ -26,18 +26,18 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 Blockly.Blocks.i2c_new_bus = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("I2C new bus")
-            .appendField("sclPin")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL_PIN");
+                .appendField("I2C new bus")
+                .appendField("sclPin")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL_PIN");
         this.appendDummyInput()
-            .appendField("sdaPin")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "SDA_PIN");
+                .appendField("sdaPin")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SDA_PIN");
         this.appendDummyInput()
-            .appendField("sclDrive")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL_DRIVE");
+                .appendField("sclDrive")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL_DRIVE");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -46,12 +46,12 @@ Blockly.Blocks.i2c_new_bus = {
 };
 
 Blockly.Blocks.i2c_in = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("I2C in");
+                .appendField("I2C in");
         this.appendValueInput('VALUE')
-            .appendField("data count");
+                .appendField("data count");
 
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
@@ -61,20 +61,18 @@ Blockly.Blocks.i2c_in = {
 };
 
 Blockly.Blocks.i2c_out = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("I2C out");
+                .appendField("I2C out");
         this.appendDummyInput()
-            .appendField("data")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DATA")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                                'media/quote0.png', 12, 12))
-            .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                                'media/quote1.png', 12, 12));
+                .appendField("data")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "DATA")
+                .appendField(new Blockly.FieldImage(quotes.newQuote_(true)))
+                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+                .appendField(new Blockly.FieldImage(quotes.newQuote_(false)));
         this.appendValueInput('VALUE')
-            .appendField("data count");
+                .appendField("data count");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -82,7 +80,7 @@ Blockly.Blocks.i2c_out = {
     }
 };
 
-Blockly.propc.i2c_new_bus = function() {
+Blockly.propc.i2c_new_bus = function () {
     var scl_pin = this.getFieldValue('SCL_PIN');
     var sda_pin = this.getFieldValue('SDA_PIN');
     var scl_drive = this.getFieldValue('SCL_DRIVE') || '0';
@@ -95,7 +93,7 @@ Blockly.propc.i2c_new_bus = function() {
     return '';
 };
 
-Blockly.propc.i2c_out = function() {
+Blockly.propc.i2c_out = function () {
     var data = this.getFieldValue('TEXT') || '';
     var dataCount = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
 
@@ -107,7 +105,7 @@ Blockly.propc.i2c_out = function() {
     return 'i2c_out(i2cBusUD, 0b1010000, 32768, 2, ' + data + ', ' + dataCount + ')';
 };
 
-Blockly.propc.i2c_in = function() {
+Blockly.propc.i2c_in = function () {
     var dataCount = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
 
     if (Blockly.propc.setups_["i2c_newbus"] === undefined)

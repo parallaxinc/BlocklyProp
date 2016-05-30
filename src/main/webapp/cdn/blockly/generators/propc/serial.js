@@ -29,17 +29,17 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.serial_open = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("Serial init")
-            .appendField("rxPIN#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
-            .appendField("txPIN#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
+                .appendField("Serial init")
+                .appendField("rxPIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
+                .appendField("txPIN#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput()
-            .appendField("Baud")
-            .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
+                .appendField("Baud")
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -47,12 +47,12 @@ Blockly.Blocks.serial_open = {
 };
 
 Blockly.Blocks.serial_tx_byte = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("Serial transmit");
+                .appendField("Serial transmit");
         this.appendValueInput('VALUE', Number)
-            .setCheck('Number');
+                .setCheck('Number');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -60,23 +60,21 @@ Blockly.Blocks.serial_tx_byte = {
 };
 
 Blockly.Blocks.serial_send_text = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-            .appendField("Serial transmit")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                        'media/quote0.png', 12, 12))
-            .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                        'media/quote1.png', 12, 12));
 
+        this.appendDummyInput("")
+                .appendField("Serial transmit")
+                .appendField(quotes.newQuote_(true))
+                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
+                .appendField(quotes.newQuote_(false));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.Blocks.serial_rx_byte = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial read byte");
@@ -87,7 +85,7 @@ Blockly.Blocks.serial_rx_byte = {
     }
 };
 
-Blockly.propc.serial_open = function() {
+Blockly.propc.serial_open = function () {
     var dropdown_rx_pin = this.getFieldValue('RXPIN');
     var dropdown_tx_pin = this.getFieldValue('TXPIN');
     var baud = this.getFieldValue('BAUD');
@@ -99,7 +97,7 @@ Blockly.propc.serial_open = function() {
     return '';
 };
 
-Blockly.propc.serial_tx_byte = function() {
+Blockly.propc.serial_tx_byte = function () {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
 
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
@@ -111,7 +109,7 @@ Blockly.propc.serial_tx_byte = function() {
     return 'fdserial_txChar(fdser, ' + value + ');\n';
 };
 
-Blockly.propc.serial_send_text = function() {
+Blockly.propc.serial_send_text = function () {
     var text = this.getFieldValue('TEXT');
 
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
@@ -123,7 +121,7 @@ Blockly.propc.serial_send_text = function() {
     return 'writeLine(fdser, "' + text + '");\n';
 };
 
-Blockly.propc.serial_rx_byte = function() {
+Blockly.propc.serial_rx_byte = function () {
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
     Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
