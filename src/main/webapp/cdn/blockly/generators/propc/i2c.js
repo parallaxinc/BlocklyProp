@@ -68,9 +68,9 @@ Blockly.Blocks.i2c_out = {
         this.appendDummyInput()
                 .appendField("data")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "DATA")
-                .appendField(new Blockly.FieldImage(quotes.newQuote_(true)))
+                .appendField(quotes.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendField(new Blockly.FieldImage(quotes.newQuote_(false)));
+                .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
                 .appendField("data count");
 
