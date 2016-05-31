@@ -55,11 +55,9 @@ Blockly.Blocks.sd_card_int_to = {
         this.appendDummyInput()
             .appendField("Save an int to the SD Card")
             .appendField("Filename")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
             .appendField("value");
         this.appendValueInput('STARTING_POINT_VALUE')
@@ -79,11 +77,9 @@ Blockly.Blocks.sd_card_int_from = {
         this.appendDummyInput()
             .appendField("Get an int from the SD Card")
             .appendField("Filename")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
             .appendField("Starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
@@ -113,11 +109,9 @@ Blockly.Blocks.sd_card_float_to = {
         this.appendDummyInput()
             .appendField("Save a float to the SD Card")
             .appendField("Filename")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
             .appendField("Value");
         this.appendValueInput('STARTING_POINT_VALUE')
@@ -137,11 +131,9 @@ Blockly.Blocks.sd_card_float_from = {
         this.appendDummyInput()
             .appendField("Get a float from the SD Card")
             .appendField("Filename")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
             .appendField("Starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
@@ -171,18 +163,14 @@ Blockly.Blocks.sd_card_text_to = {
         this.appendDummyInput()
             .appendField("Save text to the SD Card")
             .appendField("Filename")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT_FILENAME')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendDummyInput()
             .appendField("Text")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT_INPUT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
             .appendField("Value");
         this.appendValueInput('STARTING_POINT_VALUE')
@@ -202,11 +190,9 @@ Blockly.Blocks.sd_card_text_from = {
         this.appendDummyInput()
             .appendField("Get text from the SD Card")
             .appendField("Filename")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                            'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
             .appendField("Starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
