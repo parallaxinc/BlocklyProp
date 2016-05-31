@@ -195,11 +195,11 @@ Blockly.Blocks.heb_read_signal = {
     init: function() {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('number of characters received');
+            .appendField('number of characters received');
         this.appendDummyInput()
             .appendField('Receive an array of characters');
         this.appendDummyInput()
-                .appendField('Message contents:')
+            .appendField('Message contents:')
             .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
         this.setInputsInline(false);
@@ -218,13 +218,12 @@ Blockly.Blocks.heb_read_signal = {
 };
 
 Blockly.propc.heb_read_signal = function() {
-    var buffer = Blockly.propc.valueToCode(this, "BUFFER", Blockly.propc.ORDER_NONE);
-    var length = Blockly.propc.valueToCode(this, "LENGTH", Blockly.propc.ORDER_NONE);
+    var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = length + ' = receive(' + buffer + ')';
+    var code = 'receive(' + buffer + ')';
     return code;
 };
 
