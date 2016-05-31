@@ -108,7 +108,7 @@ Blockly.propc.base_freqout = function () {
     var duration = Blockly.propc.valueToCode(this, 'DURATION', Blockly.propc.ORDER_ATOMIC) || 1000;
     var frequency = Blockly.propc.valueToCode(this, 'FREQUENCY', Blockly.propc.ORDER_ATOMIC) || 3000;
 
-    var code = 'freqout( ' + dropdown_pin + ', ' + duration + ', ' + frequency + ' );\n';
+    var code = 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
 
     return code;
 };
