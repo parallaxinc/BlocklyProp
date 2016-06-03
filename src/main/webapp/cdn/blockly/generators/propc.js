@@ -25,7 +25,7 @@
 Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.HSV_SATURATION = 0.75;
-Blockly.HSV_VALUE = 0.70;
+Blockly.HSV_VALUE = 0.60;
 /**
  * List of illegal variable names.
  * This is not intended to be a security feature.  Blockly is 100% client-side,
@@ -38,9 +38,9 @@ if (!Blockly.propc.RESERVED_WORDS_) {
 }
 
 Blockly.propc.RESERVED_WORDS_ +=
-    // http://arduino.cc/en/Reference/HomePage
-    'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
-;
+        // http://arduino.cc/en/Reference/HomePage
+        'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
+        ;
 /**
  * Order of operation ENUMs.
  *
@@ -157,7 +157,7 @@ Blockly.propc.init = function (workspace) {
     if (Blockly.Variables) {
         if (!Blockly.propc.variableDB_) {
             Blockly.propc.variableDB_ =
-                new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
+                    new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
         } else {
             Blockly.propc.variableDB_.reset();
         }
@@ -166,9 +166,9 @@ Blockly.propc.init = function (workspace) {
         var variables = Blockly.Variables.allVariables(workspace);
         for (var x = 0; x < variables.length; x++) {
             var varName = Blockly.propc.variableDB_.getName(variables[x],
-                Blockly.Variables.NAME_TYPE);
+                    Blockly.Variables.NAME_TYPE);
             defvars[x] = '' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
-                varName + ';\n';
+                    varName + ';\n';
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
     }
@@ -176,7 +176,7 @@ Blockly.propc.init = function (workspace) {
     if (Blockly.Pointers) {
         if (!Blockly.propc.pointerDB_) {
             Blockly.propc.pointerDB_ =
-                new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
+                    new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
         } else {
             Blockly.propc.pointerDB_.reset();
         }
@@ -185,9 +185,9 @@ Blockly.propc.init = function (workspace) {
         var pointers = Blockly.Pointers.allPointers();
         for (var x = 0; x < pointers.length; x++) {
             var pointerName = Blockly.propc.pointerDB_.getName(pointers[x],
-                Blockly.Pointers.NAME_TYPE);
+                    Blockly.Pointers.NAME_TYPE);
             defvars[x] = '' + '{{$pointer_type_' + pointers[x].name + '}} ' +
-                pointerName + ';\n';
+                    pointerName + ';\n';
         }
         Blockly.propc.definitions_['pointers'] = defvars.join('\n');
     }
@@ -285,9 +285,9 @@ Blockly.propc.scrubNakedValue = function (line) {
 Blockly.propc.quote_ = function (string) {
     // TODO: This is a quick hack.  Replace with goog.string.quote
     string = string.replace(/\\/g, '\\\\')
-        .replace(/\n/g, '\\\n')
-        .replace(/\$/g, '\\$')
-        .replace(/'/g, '\\\'');
+            .replace(/\n/g, '\\\n')
+            .replace(/\$/g, '\\$')
+            .replace(/'/g, '\\\'');
     return '\"' + string + '\"';
 };
 /**
