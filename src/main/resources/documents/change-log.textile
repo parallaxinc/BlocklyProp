@@ -1,5 +1,17 @@
 h2. Change log
 
+h4. 2016/06/06
+
+* Change color palette
+* Fix timing blocks
+* Add default values to blocks
+* Rework cog_new and cog_end for the C editor
+* Improve coding style in generated code
+* Fix HEB IR receive block
+* Fix quotes and invalid block code for I2C blocks
+* Fix quotes in SD card blocks
+* HMC5883L compass blocks
+
 h4. 2016/05/30
 
 * Clean C blocks
