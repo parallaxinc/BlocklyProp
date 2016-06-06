@@ -92,6 +92,55 @@ Blockly.Blocks.MMA7455_acceleration = {
     }
 };
 
+Blockly.Blocks.HMC5883L_init = {
+    init: function() {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+            .appendField("Initialize")
+            .appendField("SCL Pin#")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL");
+        this.appendDummyInput()
+            .appendField("SDA Pin#")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "SDA");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Blocks.HMC5883L_read = {
+    init: function() {
+        this.setColour(color.Palette.getColor('input'));
+        this.appendDummyInput()
+            .appendField("Read")
+            .appendField("Store x-coords in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR');
+        this.appendDummyInput()
+            .appendField("Store y-coords in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR');
+        this.appendDummyInput()
+            .appendField("Store z-coords in")
+            .appendField(new BlocklyFieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function() {
+        return [this.getFieldValue('X_VAR'), this.getFieldValue('Y_VAR'), this.getFieldValue('Z_VAR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('X_VAR'))) {
+            this.setTitleValue(newName, 'X_VAR');
+        } else if (Blockly.Names.equals(oldName, this.getFieldValue('Y_VAR'))) {
+            this.setTitleValue(newName, 'Y_VAR');
+        } else if (Blockly.Names.equals(oldName, this.getFieldValue('Z_VAR'))) {
+            this.setTitleValue(newName, 'Z_VAR');
+        }
+    }
+};
+
 Blockly.propc.MX2125_acceleration_xaxis = function () {
     var pin = this.getFieldValue('PINX');
 
@@ -122,4 +171,22 @@ Blockly.propc.MMA7455_acceleration = function () {
     Blockly.propc.setups_["mma_7455"] = 'MMA7455_init(' + pinx + ', ' + piny + ', ' + pinz + ');\n';
 
     return 'MMA7455_getxyz10(&' + xstorage + ', &' + ystorage + ', &' + zstorage + ');\n';
+};
+
+Blockly.propc.HMC5883L_init = function() {
+    var scl = this.getFieldValue("SCL");
+    var sda = this.getFieldValue("SDA");
+
+    Blockly.propc.definitions_["HMC5883L"] = '#include "compass3d.h"';
+    Blockly.propc.setups_["HMC5883L"] = 'i2c *HMC5883L_bus = i2c_newbus(' + scl + ', ' + sda + ', 0);\n\tcompass_init(HMC5883L_bus);';
+
+    return '';
+};
+
+Blockly.propc.HMC5883L_read = function() {
+    var x_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('X_VAR'), Blockly.Variables.NAME_TYPE);
+    var y_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('Y_VAR'), Blockly.Variables.NAME_TYPE);
+    var z_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
+
+    return 'compass_read(HMC5883L_bus, &' + x_storage + ', &' + y_storage + ', &' + z_storage + ');\n';
 };

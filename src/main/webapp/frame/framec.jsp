@@ -323,7 +323,8 @@
                 <block type="etape_rc_time"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.hmc58783" />">
-
+                <block type="HMC5883L_init"></block>
+                <block type="HMC5883L_read"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>
