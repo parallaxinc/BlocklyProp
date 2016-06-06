@@ -153,6 +153,7 @@
                         </block>
                     </value>
                 </block>
+                <block type="cog_end"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.input-output" />">
