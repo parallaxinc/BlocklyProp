@@ -158,13 +158,36 @@
         <category name="<fmt:message key="category.input-output" />">
             <category name="<fmt:message key="category.input-output.pin-states" />">
                 <block type="make_pin"></block>
-                <block type="make_pin_input"></block>
+                <block type="make_pin_input">
+                    <value name="PIN">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="check_pin"></block>
-                <block type="check_pin_input"></block>
+                <block type="check_pin_input">
+                    <value name="PIN">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="set_pins"></block>
             </category>
             <category name="<fmt:message key="category.input-output.timing" />">
-                <block type="base_freqout"></block>
+                <block type="base_freqout">
+                    <value name="DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="FREQUENCY">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="pulse_in"></block>
                 <block type="pulse_out"></block>
                 <block type="rc_charge_discharge"></block>
@@ -200,20 +223,97 @@
                 <block type="eeprom_text_to"></block>
                 <block type="eeprom_text_from"></block>
                 <block type="sd_card_mount"></block>
-                <block type="sd_card_int_to"></block>
-                <block type="sd_card_int_from"></block>
+                <block type="sd_card_int_to">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_int_from">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="sd_card_read_int"></block>
-                <block type="sd_card_float_to"></block>
-                <block type="sd_card_float_from"></block>
+                <block type="sd_card_float_to">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_float_from">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="sd_card_read_float"></block>
-                <block type="sd_card_text_to"></block>
-                <block type="sd_card_text_from"></block>
+                <block type="sd_card_text_to">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_text_from">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="sd_card_read_text"></block>
             </category>
             <category name="<fmt:message key="category.activity-board.audio" />">
                 <block type="wav_play"></block>
                 <block type="wav_status"></block>
-                <block type="wav_volume"></block>
+                <block type="wav_volume">
+                    <value name="VOLUME">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="LENGTH">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="wav_stop"></block>
             </category>
         </category>
