@@ -59,7 +59,7 @@ Blockly.propc.joystick_input_yaxis = function() {
 
     Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt'] = 'ad_init( 21, 20, 19, 18 );\n';
+        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);\n';
     }
 
     var code = 'ad_volts(' + pin_number_yaxis + ')';
@@ -71,7 +71,7 @@ Blockly.propc.joystick_input_xaxis = function() {
 
     Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt'] = 'ad_init( 21, 20, 19, 18 );\n';
+        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);\n';
     }
 
     var code = 'ad_volts(' + pin_number_xaxis + ')';

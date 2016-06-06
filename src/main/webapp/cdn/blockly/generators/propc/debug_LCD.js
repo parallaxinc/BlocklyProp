@@ -98,30 +98,30 @@ Blockly.propc.debug_lcd_init = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var baud = this.getFieldValue('BAUD');
 
-    Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open( ' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ' );\n';
+    Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
 
-    var code = 'writeChar( debug_lcd, 22 );\n';
+    var code = 'writeChar(debug_lcd, 22);\n';
     return code;
 };
 
 Blockly.propc.debug_lcd_clear = function () {
-    return 'writeChar( debug_lcd, 12 );\npause( 5 );\n';
+    return 'writeChar(debug_lcd, 12);\npause(5);\n';
 };
 
 Blockly.propc.debug_lcd_print = function () {
     var text = this.getFieldValue('TEXT');
 
-    return 'dprint( debug_lcd, "' + text + '" );\n';
+    return 'dprint(debug_lcd, "' + text + '");\n';
 };
 
 Blockly.propc.debug_lcd_number = function () {
     var number = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
 
-    return 'dprint( debug_lcd, "' + number + '" );\n';
+    return 'dprint(debug_lcd, "' + number + '");\n';
 };
 
 Blockly.propc.debug_lcd_action = function () {
     var action = this.getFieldValue('ACTION');
 
-    return 'dprint( debug_lcd, ' + action + ' );\n';
+    return 'dprint(debug_lcd, ' + action + ');\n';
 };

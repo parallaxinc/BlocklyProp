@@ -125,7 +125,7 @@ Blockly.propc.PAM_7Q_Init = function() {
 
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
 
-    var code = 'gps_open( ' + rx_pin + ', ' + tx_pin + ', ' + baud + ' );\n\npause( 100 )';
+    var code = 'gps_open(' + rx_pin + ', ' + tx_pin + ', ' + baud + ');\n\npause(100)';
     return code;
 };
 
@@ -169,6 +169,6 @@ Blockly.propc.PAM_7Q_Velocity = function() {
 
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
 
-    var code = 'gps_velocity( ' + velocity_units + ' )';
+    var code = 'gps_velocity(' + velocity_units + ')';
     return code;
 };

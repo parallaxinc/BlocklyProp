@@ -51,7 +51,7 @@ Blockly.propc.heb_toggle_led = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'led( ' + led_number + ', ' + led_state + ' );\n';
+    var code = 'led(' + led_number + ', ' + led_state + ');\n';
     return code;
 };
 
@@ -77,7 +77,7 @@ Blockly.propc.heb_set_led_rgb = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'rgb( ' + led_side + ', ' + led_rgb + ' );\n';
+    var code = 'rgb(' + led_side + ', ' + led_rgb + ');\n';
     return code;
 };
 
@@ -127,7 +127,7 @@ Blockly.propc.heb_cursor_position = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'text_size( ' + text_size + ' );\n' + 'cursor( ' + columns + ', ' + rows + ' );\n';
+    var code = 'text_size(' + text_size + ');\n' + 'cursor(' + columns + ', ' + rows + ');\n';
     return code;
 };
 
@@ -187,7 +187,7 @@ Blockly.propc.heb_send_signal = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'send( "' + message + '" );\n';
+    var code = 'send("' + message + '");\n';
     return code;
 };
 
@@ -266,7 +266,7 @@ Blockly.propc.heb_badge_eeprom_store = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'store( new char[]{"' + contact + '"} );\n';
+    var code = 'store(new char[]{"' + contact + '"});\n';
     return code;
 };
 
@@ -290,7 +290,7 @@ Blockly.propc.heb_badge_eeprom_is_stored = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'stored( new char[]{"' + contact + '"} )';
+    var code = 'stored(new char[]{"' + contact + '"})';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
@@ -317,7 +317,7 @@ Blockly.propc.heb_badge_eeprom_retrieve = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'retrieve( ' + buffer + ', ' + index + ' );\n';
+    var code = 'retrieve(' + buffer + ', ' + index + ');\n';
     return code;
 };
 
@@ -379,7 +379,7 @@ Blockly.propc.heb_badge_axis_acceleration = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'accel( ' + axis + ' )';
+    var code = 'accel(' + axis + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
@@ -422,6 +422,6 @@ Blockly.propc.heb_touchpad_status = function() {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'button( ' + touchpad + ' )';
+    var code = 'button(' + touchpad + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
