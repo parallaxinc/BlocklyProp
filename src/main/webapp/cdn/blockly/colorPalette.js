@@ -5,17 +5,17 @@
 var colorPalette = {
     defaultColors: {
         'programming': 220,
-        'math': 220,
-        'binary': 220,
-        'io': 155,
-        'protocols': 200,
-        'ab': 240,
-        'input': 180,
-        'output': 280,
-        'robot': 220,
-        'heb': 260,
-        'functions': 220,
-        'variables': 220
+        'math': 275,
+        'binary': 275,
+        'io': 200,
+        'protocols': 320,
+        'ab': 305,
+        'input': 155,
+        'output': 180,
+        'robot': 290,
+        'heb': 290,
+        'functions': 240,
+        'variables': 260,
     },
     activePalette: null,
     getColor: function (type) {
