@@ -11,7 +11,6 @@
 <%@ taglib prefix="properties" uri="http://blocklyprop.parallax.com/properties" %>
 <%@ taglib prefix="locale" uri="http://blocklyprop.parallax.com/locale" %>
 <%@ taglib prefix="url" uri="http://blocklyprop.parallax.com/url" %>
-<%@ taglib prefix="authentication" uri="http://blocklyprop.parallax.com/authentication" %>
 
 <c:if test="${!language_set}">
     <c:set var="language_set" value="true" scope="request" />

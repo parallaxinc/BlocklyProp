@@ -14,10 +14,4 @@
         <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
         <function-signature>String getDownloadFilesBaseUrl(java.lang.String)</function-signature>
     </function>
-
-    <function>
-        <name>authenticationserver</name>
-        <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
-        <function-signature>String getAuthenticationServerBaseUrl(java.lang.String)</function-signature>
-    </function>
 </taglib>

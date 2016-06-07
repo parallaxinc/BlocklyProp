@@ -9,7 +9,7 @@
 
 <nav class="navbar navbar-default" role="navigation">
     <div class="containter-fluid">
-        <a id="nav-logo" href="<url:getUrl url="/"/>">BlocklyProp</a>
+        <a id="nav-logo" href="<url:getUrl url="/"/>"><strong>BETA</strong> BlocklyProp</a>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav" id="navbar-left">
                 <!--  <li><a href="help/index.html">Manual</a></li> -->

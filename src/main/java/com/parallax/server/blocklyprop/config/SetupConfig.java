@@ -9,7 +9,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
-import com.parallax.server.blocklyprop.AuthenticationData;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.utils.HelpFileInitializer;
@@ -40,7 +39,6 @@ public class SetupConfig extends GuiceServletContextListener {
             protected void configure() {
                 bind(Configuration.class).toInstance(configuration);
 
-                bind(AuthenticationData.class);
                 bind(SessionData.class);
                 bind(Properties.class).asEagerSingleton();
 

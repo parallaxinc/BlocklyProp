@@ -5,24 +5,16 @@
  */
 package com.parallax.server.blocklyprop.services.impl;
 
-import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import com.parallax.client.cloudsession.CloudSessionAuthenticationTokenService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
-import com.parallax.client.cloudsession.exceptions.ServerException;
-import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.objects.User;
-import com.parallax.server.blocklyprop.AuthenticationData;
 import com.parallax.server.blocklyprop.security.IdAuthenticationToken;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import com.parallax.server.blocklyprop.services.TokenGeneratorService;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.SecurityUtils;
@@ -74,77 +66,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     public void setTokenGeneratorService(TokenGeneratorService tokenGeneratorService) {
         this.tokenGeneratorService = tokenGeneratorService;
-    }
-
-    @Override
-    public AuthenticationData getAuthenticationData() {
-        AuthenticationData authenticationData = (AuthenticationData) sessionProvider.get().getAttribute("authentication");
-        if (authenticationData == null) {
-            String challenge = tokenGeneratorService.generateToken();
-
-            authenticationData = new AuthenticationData();
-            authenticationData.setChallenge(challenge);
-            authenticationData.setLastTimestamp(new Date().getTime());
-            authenticationData.setUsedTimestamps(new ArrayList<Long>());
-            // System.out.println("Setting authentication data: " + sessionData);
-
-            sessionProvider.get().setAttribute("authentication", authenticationData);
-        }
-        return authenticationData;
-    }
-
-    @Override
-    public String getChallenge() {
-        AuthenticationData authenticationData = getAuthenticationData();
-        return authenticationData.getChallenge();
-    }
-
-    @Override
-    public Long getTimestamp() {
-        AuthenticationData authenticationData = getAuthenticationData();
-        authenticationData.setLastTimestamp(new Date().getTime());
-        sessionProvider.get().setAttribute("authentication", authenticationData);
-        return authenticationData.getLastTimestamp();
-    }
-
-    @Override
-    public User authenticate(Long idUser, Long timestamp, String hash, String userAgent, String remoteAddress) {
-        try {
-            AuthenticationData authenticationData = getAuthenticationData();
-
-//            System.out.println("Challenge: " + authenticationData.getChallenge() + " Hash: " + hash);
-//            System.out.println("Timestamp: " + timestamp);
-            authenticationData.setUserAgent(userAgent);
-            authenticationData.setRemoteAddress(remoteAddress);
-
-            if (authenticationData.getLastTimestamp() >= timestamp) {
-                return null;
-            } else {
-                authenticationData.setLastTimestamp(timestamp);
-                sessionProvider.get().setAttribute("authentication", authenticationData);
-            }
-
-            List<String> tokens = authenticationTokenService.getTokens(idUser, userAgent, remoteAddress);
-            for (String token : tokens) {
-                String permittedHash = Hashing.sha256().hashString(token + authenticationData.getChallenge() + timestamp, Charset.forName("UTF-8")).toString();
-//                System.out.println("Token: " + token + " hash: " + permittedHash);
-                if (permittedHash.equalsIgnoreCase(hash)) {
-                    User user = userService.getUser(idUser);
-
-                    authenticationData.setToken(token);
-
-                    sessionProvider.get().setAttribute("authentication", authenticationData);
-                    doAuthentication(user);
-                    return user;
-                }
-            }
-            return null;
-        } catch (ServerException se) {
-            log.error("Server exception", se);
-        } catch (UnknownUserIdException uuie) {
-            log.error("Unknown user id", uuie);
-        }
-        return null;
     }
 
     private void doAuthentication(User user) {

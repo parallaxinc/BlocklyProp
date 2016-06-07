@@ -13,12 +13,10 @@
         <link type="text/css" rel="stylesheet" href="<url:getUrl url="/cdn/style.css"/>" />
         <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/sha256.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/lib/jquery.form.min.js"/>"></script>
         <script src="<url:getUrl url="/cdn/profile.js"/>"></script>
     </head>
-    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
+    <body>
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 

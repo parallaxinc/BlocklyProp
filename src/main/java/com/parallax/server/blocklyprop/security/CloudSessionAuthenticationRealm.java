@@ -30,7 +30,8 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof IdAuthenticationToken;
+        return true;
+        //return token instanceof IdAuthenticationToken;
     }
 
     @Override
@@ -43,8 +44,11 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        System.out.println("AUTHENTICATION");
         try {
             if (token instanceof IdAuthenticationToken) {
+                log.info("AUTHENTICATION using idAuthenticationToken");
+
                 Long idUser = (Long) token.getPrincipal();
 
                 User user = SecurityServiceImpl.authenticateLocalUserStatic(idUser);
@@ -61,6 +65,8 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                     t.printStackTrace();
                 }
             } else {
+                log.info("AUTHENTICATION using login and password");
+
                 // Principal = login
                 String principal = (String) token.getPrincipal();
 
@@ -85,11 +91,11 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                 return null;
             }
         } catch (UnknownUserException ex) {
-            log.warn("Unknown user", ex);
+            log.info("Unknown user", ex);
         } catch (UserBlockedException ex) {
-            log.warn("Blocked user", ex);
+            log.info("Blocked user", ex);
         } catch (EmailNotConfirmedException ex) {
-            log.warn("Email not confirmed", ex);
+            log.info("Email not confirmed", ex);
         } catch (NullPointerException npe) {
             log.warn("NullPointer", npe);
         } catch (Throwable t) {

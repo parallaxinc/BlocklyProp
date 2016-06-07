@@ -17,7 +17,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" id="nav-logo" href="<url:getUrl url="/"/>">BlocklyProp</a>
+            <a class="navbar-brand" id="nav-logo" href="<url:getUrl url="/"/>"><strong>BETA</strong> BlocklyProp</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse">

@@ -17,7 +17,7 @@
         <link href="<url:getCdnUrl url="/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
-    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
+    <body>
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
@@ -123,8 +123,6 @@
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
         <script src="<url:getCdnUrl url="/lib/jquery.validate.min.js"/>"></script>
         <script src="<url:getCdnUrl url="/utils.js"/>"></script>
-        <script src="<url:getCdnUrl url="/lib/sha256.min.js"/>" ></script>
-        <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
         <script src="<url:getCdnUrl url="/projectcreation.js"/>"></script>
     </body>
 </html>
