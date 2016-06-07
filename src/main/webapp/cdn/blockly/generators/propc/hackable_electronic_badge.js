@@ -224,7 +224,7 @@ Blockly.propc.heb_read_signal = function() {
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'receive(' + buffer + ')';
-    return code;
+    return [code, Blockly.propc.ORDERN_NONE];
 };
 
 Blockly.Blocks.heb_clear_ir_buffer = {
