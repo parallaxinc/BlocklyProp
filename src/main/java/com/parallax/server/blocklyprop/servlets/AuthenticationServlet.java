@@ -43,7 +43,10 @@ public class AuthenticationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
 
-        User user = null;// authenticationService.authenticate(idUser, timestamp, hash, userAgent, remoteAddress);
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+
+        User user = authenticationService.authenticate(username, password);
 
         if (user != null) {
             SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);

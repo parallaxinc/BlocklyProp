@@ -46,50 +46,31 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         System.out.println("AUTHENTICATION");
         try {
-            if (token instanceof IdAuthenticationToken) {
-                log.info("AUTHENTICATION using idAuthenticationToken");
 
-                Long idUser = (Long) token.getPrincipal();
+            log.info("AUTHENTICATION using login and password");
 
-                User user = SecurityServiceImpl.authenticateLocalUserStatic(idUser);
-                if (user != null) {
-                    System.out.println("USER = " + user);
-                } else {
-                    System.out.println("USER = null");
-                    return null;
-                }
+            // Principal = login
+            String principal = (String) token.getPrincipal();
 
-                try {
-                    return new SimpleAccount(user.getEmail(), "", "CloudSession");
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
+            // Credentials = password
+            String credentials = new String((char[]) token.getCredentials());
+
+            User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
+            if (user != null) {
+                System.out.println("USER = " + user);
             } else {
-                log.info("AUTHENTICATION using login and password");
-
-                // Principal = login
-                String principal = (String) token.getPrincipal();
-
-                // Credentials = password
-                String credentials = new String((char[]) token.getCredentials());
-
-                User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
-                if (user != null) {
-                    System.out.println("USER = " + user);
-                } else {
-                    System.out.println("USER = null");
-                    return null;
-                }
-
-                System.out.println("CREATING AUTHENTICATION DETAILS");
-                try {
-                    return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-                System.out.println("credentials set");
+                System.out.println("USER = null");
                 return null;
             }
+
+            System.out.println("CREATING AUTHENTICATION DETAILS");
+            try {
+                return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            System.out.println("credentials set");
+            return null;
         } catch (UnknownUserException ex) {
             log.info("Unknown user", ex);
         } catch (UserBlockedException ex) {
