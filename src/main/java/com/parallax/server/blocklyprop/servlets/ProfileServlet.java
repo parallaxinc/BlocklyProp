@@ -6,18 +6,23 @@
 package com.parallax.server.blocklyprop.servlets;
 
 import com.google.common.base.Strings;
+import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
+import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
+import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
+import com.parallax.server.blocklyprop.services.SecurityService;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -43,6 +48,8 @@ public class ProfileServlet extends HttpServlet {
 
     private UserDao userDao;
 
+    private SecurityService securityService;
+
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -55,6 +62,11 @@ public class ProfileServlet extends HttpServlet {
         this.userDao = userDao;
     }
 
+    @Inject
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = BlocklyPropSecurityUtils.getUserInfo();
@@ -64,8 +76,8 @@ public class ProfileServlet extends HttpServlet {
         req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    //@Override
+    protected void oldDoPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             log.info("Updating user info");
             User user = cloudSessionUserService.getUser(BlocklyPropSecurityUtils.getUserInfo().getId());
@@ -80,40 +92,62 @@ public class ProfileServlet extends HttpServlet {
         }
     }
 
-    //@Override
-    protected void doNOTPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
 
+        String unlock = req.getParameter("unlock");
+        if (!Strings.isNullOrEmpty(unlock)) {
+            unlock(req, resp);
+            return;
+        }
         String saveBase = req.getParameter("save-base");
         if (!Strings.isNullOrEmpty(saveBase)) {
             saveBase(req, resp);
+            return;
         }
         String savePassword = req.getParameter("save-password");
         if (!Strings.isNullOrEmpty(savePassword)) {
             savePassword(req, resp);
+            return;
         }
-//        String email = req.getParameter("email");
-//        req.setAttribute("token", token == null ? "" : token);
-//        req.setAttribute("email", email == null ? "" : email);
-//        String password = req.getParameter("password");
-//        String confirmPassword = req.getParameter("confirmpassword");
-//        if (Strings.isNullOrEmpty(token) || Strings.isNullOrEmpty(email) || Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(confirmPassword)) {
-//            req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
-//        } else {
-//            try {
-//                if (cloudSessionLocalUserService.doPasswordReset(token, email, password, confirmPassword)) {
-//                    req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-done.jsp").forward(req, resp);
-//                } else {
-//                    req.setAttribute("error", "Invalid token");
-//                    req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
-//                }
-//            } catch (UnknownUserException ex) {
-//                req.setAttribute("error", "Unknown email");
-//                req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
-//            } catch (PasswordVerifyException ex) {
-//                req.setAttribute("error", "Passwords do not match");
-//                req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
-//            }
-//        }
+    }
+
+    private void unlock(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(password)) {
+            resp.getWriter().write(createFailure("Invalid authentication").toString());
+            return;
+        } else {
+            try {
+                User user = securityService.authenticateLocalUser(username, password);
+
+                if (user != null) {
+
+                    JsonObject response = new JsonObject();
+                    response.addProperty("success", true);
+                    JsonObject userJson = new JsonObject();
+                    userJson.addProperty("id-user", user.getId());
+                    userJson.addProperty("screenname", user.getScreenname());
+                    userJson.addProperty("email", user.getEmail());
+                    response.add("user", userJson);
+                    resp.getWriter().write(response.toString());
+                } else {
+                    resp.getWriter().write(createFailure("Invalid authentication").toString());
+                }
+            } catch (UnknownUserException ex) {
+                resp.getWriter().write(createFailure("Invalid authentication").toString());
+                return;
+            } catch (UserBlockedException ex) {
+                resp.getWriter().write(createFailure("Invalid authentication").toString());
+                return;
+            } catch (EmailNotConfirmedException ex) {
+                resp.getWriter().write(createFailure("Invalid authentication").toString());
+                return;
+            }
+
+        }
     }
 
     private void saveBase(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -186,6 +220,13 @@ public class ProfileServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             }
         }
+    }
+
+    private static JsonObject createFailure(String message) {
+        JsonObject response = new JsonObject();
+        response.addProperty("success", false);
+        response.addProperty("message", message);
+        return response;
     }
 
 }

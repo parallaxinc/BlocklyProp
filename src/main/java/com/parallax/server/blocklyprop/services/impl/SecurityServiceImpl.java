@@ -98,6 +98,7 @@ public class SecurityServiceImpl implements SecurityService {
         return instance.authenticateLocalUser(idUser);
     }
 
+    @Override
     public User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException {
         try {
             User user = authenticateService.authenticateLocalUser(email, password);
