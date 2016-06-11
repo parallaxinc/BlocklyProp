@@ -6,7 +6,11 @@
         <meta charset="utf-8">
         <title>Blockly</title>
 
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
+
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/toolboxfilter.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin.js"/>"></script>
@@ -52,7 +56,9 @@
             }
         </style>
         <script>
-            function init() {
+            function init(profileName, peripherals) {
+                filterToolbox(profileName, peripherals);
+
                 Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
 
                 if (window.parent.init) {

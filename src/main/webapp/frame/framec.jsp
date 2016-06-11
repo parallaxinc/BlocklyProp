@@ -6,6 +6,9 @@
         <meta charset="utf-8">
         <title>Blockly</title>
 
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
+
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/toolboxfilter.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
@@ -69,7 +72,8 @@
             }
         </style>
         <script>
-            function init() {
+            function init(profileName, peripherals) {
+                filterToolbox(profileName, peripherals);
 
                 Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
 
@@ -209,7 +213,7 @@
                 <block type="serial_rx_byte"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.activity-board" />">
+        <category name="<fmt:message key="category.activity-board" />" include="activity-board">
             <category name="<fmt:message key="category.activity-board.voltage" />">
                 <block type="ab_volt_v_in"></block>
                 <block type="ab_volt_v_out"></block>
@@ -405,7 +409,7 @@
                 <block type="servodiffdrive_library_drive_sleep"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.hackable-electronic-badge" />">
+        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb">
             <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
                 <block type="heb_toggle_led"></block>
                 <block type="heb_set_led_rgb"></block>

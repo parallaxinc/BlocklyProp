@@ -20,7 +20,7 @@ $(document).ready(function () {
         projectLoaded = true;
         if (ready) {
             window.frames["content_blocks"].setProfile('activity-board');
-            window.frames["content_blocks"].init();
+            window.frames["content_blocks"].init('activity-board', []);
         }
     } else {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
@@ -29,7 +29,7 @@ $(document).ready(function () {
             projectLoaded = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
-                window.frames["content_blocks"].init();
+                window.frames["content_blocks"].init(data['board'], []);
             }
         });
     }
@@ -38,7 +38,7 @@ $(document).ready(function () {
 blocklyReady = function () {
     if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init();
+        window.frames["content_blocks"].init(projectData['board'], []);
     } else {
         ready = true;
     }

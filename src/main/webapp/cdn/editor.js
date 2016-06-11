@@ -24,7 +24,7 @@ $(document).ready(function () {
             projectLoaded = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
-                window.frames["content_blocks"].init();
+                window.frames["content_blocks"].init(data['board'], []);
             }
         });
     }
@@ -48,7 +48,7 @@ saveProject = function () {
 blocklyReady = function () {
     if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init();
+        window.frames["content_blocks"].init(data['board'], []);
     } else {
         ready = true;
     }
