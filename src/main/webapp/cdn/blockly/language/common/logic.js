@@ -29,7 +29,7 @@ Blockly.Blocks.logic_compare = {
     helpUrl: Blockly.LANG_LOGIC_COMPARE_HELPURL,
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.appendValueInput('A');
         this.appendValueInput('B')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
@@ -66,11 +66,11 @@ Blockly.Blocks.logic_operation = {
     helpUrl: Blockly.LANG_LOGIC_OPERATION_HELPURL,
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.appendValueInput('A')
-                .setCheck(Boolean);
+                .setCheck('Boolean');
         this.appendValueInput('B')
-                .setCheck(Boolean)
+                .setCheck('Boolean')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
@@ -99,9 +99,9 @@ Blockly.Blocks.logic_negate = {
     helpUrl: Blockly.LANG_LOGIC_NEGATE_HELPURL,
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.appendValueInput('BOOL')
-                .setCheck(Boolean)
+                .setCheck('Boolean')
                 .appendField(Blockly.LANG_LOGIC_NEGATE_INPUT_NOT);
         this.setTooltip(Blockly.LANG_LOGIC_NEGATE_TOOLTIP);
     }
@@ -113,7 +113,7 @@ Blockly.Blocks.logic_boolean = {
     helpUrl: Blockly.LANG_LOGIC_BOOLEAN_HELPURL,
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'BOOL');
         this.setTooltip(Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP);

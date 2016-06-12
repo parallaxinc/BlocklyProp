@@ -196,7 +196,7 @@ Blockly.Blocks.lists_isEmpty = {
     this.appendValueInput('VALUE')
         .setCheck([Array, String])
         .appendField(Blockly.LANG_LISTS_INPUT_IS_EMPTY);
-    this.setOutput(true, Boolean);
+    this.setOutput(true, 'Boolean');
     this.setTooltip(Blockly.LANG_LISTS_TOOLTIP);
   }
 };

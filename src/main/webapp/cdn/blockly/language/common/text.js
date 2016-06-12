@@ -216,7 +216,7 @@ Blockly.Blocks.text_isEmpty = {
     this.appendValueInput('VALUE')
         .setCheck([String, Array])
         .appendField(Blockly.LANG_TEXT_ISEMPTY_INPUT_ISEMPTY);
-    this.setOutput(true, Boolean);
+    this.setOutput(true, 'Boolean');
     this.setTooltip(Blockly.LANG_TEXT_ISEMPTY_TOOLTIP);
   }
 };

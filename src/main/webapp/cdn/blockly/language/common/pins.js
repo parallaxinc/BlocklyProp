@@ -62,7 +62,7 @@ Blockly.Blocks.check_pin = {
         this.appendDummyInput("")
                 .appendField("Check PIN#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.setTooltip('');
     }
 };
@@ -75,7 +75,7 @@ Blockly.Blocks.check_pin_input = {
                 .appendField("Check PIN#");
         this.appendValueInput('PIN')
                 .setCheck('Number');
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.setInputsInline(true);
         this.setTooltip('');
     }
