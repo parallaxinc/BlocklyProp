@@ -93,15 +93,15 @@ Blockly.Blocks.MMA7455_acceleration = {
 };
 
 Blockly.Blocks.HMC5883L_init = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Initialize")
-            .appendField("SCL Pin#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL");
+                .appendField("Initialize")
+                .appendField("SCL Pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL");
         this.appendDummyInput()
-            .appendField("SDA Pin#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "SDA");
+                .appendField("SDA Pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SDA");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -110,24 +110,24 @@ Blockly.Blocks.HMC5883L_init = {
 };
 
 Blockly.Blocks.HMC5883L_read = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Read")
-            .appendField("Store x-coords in")
-            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR');
+                .appendField("Read")
+                .appendField("Store x-coords in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR');
         this.appendDummyInput()
-            .appendField("Store y-coords in")
-            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR');
+                .appendField("Store y-coords in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR');
         this.appendDummyInput()
-            .appendField("Store z-coords in")
-            .appendField(new BlocklyFieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
+                .appendField("Store z-coords in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('X_VAR'), this.getFieldValue('Y_VAR'), this.getFieldValue('Z_VAR')];
     },
     renameVar: function (oldName, newName) {
@@ -173,7 +173,7 @@ Blockly.propc.MMA7455_acceleration = function () {
     return 'MMA7455_getxyz10(&' + xstorage + ', &' + ystorage + ', &' + zstorage + ');\n';
 };
 
-Blockly.propc.HMC5883L_init = function() {
+Blockly.propc.HMC5883L_init = function () {
     var scl = this.getFieldValue("SCL");
     var sda = this.getFieldValue("SDA");
 
@@ -183,7 +183,7 @@ Blockly.propc.HMC5883L_init = function() {
     return '';
 };
 
-Blockly.propc.HMC5883L_read = function() {
+Blockly.propc.HMC5883L_read = function () {
     var x_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('X_VAR'), Blockly.Variables.NAME_TYPE);
     var y_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('Y_VAR'), Blockly.Variables.NAME_TYPE);
     var z_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
