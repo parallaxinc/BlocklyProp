@@ -27,6 +27,7 @@ Blockly.Spin = new Blockly.Generator('Spin');
 
 Blockly.HSV_SATURATION = 0.75;
 Blockly.HSV_VALUE = 0.60;
+Blockly.RTL = false;
 
 /**
  * List of illegal variable names.

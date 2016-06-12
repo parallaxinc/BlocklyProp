@@ -26,6 +26,7 @@ Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.HSV_SATURATION = 0.75;
 Blockly.HSV_VALUE = 0.60;
+Blockly.RTL = false;
 /**
  * List of illegal variable names.
  * This is not intended to be a security feature.  Blockly is 100% client-side,
