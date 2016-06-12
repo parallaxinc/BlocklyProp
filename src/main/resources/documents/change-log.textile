@@ -11,6 +11,11 @@ h4. 2016/06/12
 * Fix HEB IR receive block
 * Add BETA mark
 
+Second deployment to fix:
+
+* HEB OLED print static text
+* HEB IR receive block data types
+
 h4. 2016/06/06
 
 * Change color palette
