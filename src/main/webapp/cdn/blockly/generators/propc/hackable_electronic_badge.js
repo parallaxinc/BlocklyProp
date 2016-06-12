@@ -174,7 +174,7 @@ Blockly.propc.heb_rotate = function () {
     return code;
 };
 
-Blockly.Blocks.heb_send_signal = {
+Blockly.Blocks.heb_ir_send_signal = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
@@ -186,7 +186,7 @@ Blockly.Blocks.heb_send_signal = {
     }
 };
 
-Blockly.propc.heb_send_signal = function () {
+Blockly.propc.heb_ir_send_signal = function () {
     var message = this.getFieldValue("MESSAGE");
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
@@ -196,7 +196,7 @@ Blockly.propc.heb_send_signal = function () {
     return code;
 };
 
-Blockly.Blocks.heb_read_signal = {
+Blockly.Blocks.heb_ir_read_signal = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
@@ -222,17 +222,18 @@ Blockly.Blocks.heb_read_signal = {
     }
 };
 
-Blockly.propc.heb_read_signal = function () {
+Blockly.propc.heb_ir_read_signal = function () {
     var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+    Blockly.propc.vartype_[buffer] = 'char[128]';
 
     var code = 'receive(' + buffer + ')';
     return [code, Blockly.propc.ORDERN_NONE];
 };
 
-Blockly.Blocks.heb_clear_ir_buffer = {
+Blockly.Blocks.heb_ir_clear_buffer = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
@@ -244,7 +245,7 @@ Blockly.Blocks.heb_clear_ir_buffer = {
     }
 };
 
-Blockly.propc.heb_clear_ir_buffer = function () {
+Blockly.propc.heb_ir_clear_buffer = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 

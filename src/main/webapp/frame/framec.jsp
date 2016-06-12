@@ -431,9 +431,9 @@
                 <block type="heb_rotate"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.ir-communication" />">
-                <block type="heb_send_signal"></block>
-                <block type="heb_read_signal"></block>
-                <block type="heb_clear_ir_buffer"></block>
+                <block type="heb_ir_send_signal"></block>
+                <block type="heb_ir_read_signal"></block>
+                <block type="heb_ir_clear_buffer"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.eeprom" />">
                 <block type="heb_badge_eeprom_store"></block>

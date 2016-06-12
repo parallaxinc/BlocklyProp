@@ -167,24 +167,24 @@ Blockly.propc.init = function (workspace) {
         for (var x = 0; x < variables.length; x++) {
             var varName = Blockly.propc.variableDB_.getName(variables[x],
                     Blockly.Variables.NAME_TYPE);
-            switch (typeof variables[x]) {
-                case 'number':
-                    if (variables[x].indexOf(".") > -1) {
-                        defvars[x] = "float " + varName + ';\n';
-                    } else {
-                        defvars[x] = "int " + varName + ';\n';
-                    }
-                    break
-                case 'string':
-                    defvars[x] = "char " + varName + '[' + variables[x].length + '];\n';
-                    break
-                case 'boolean':
-                    defvars[x] = "boolean " + varName + ';\n';
-                    break
-                default:
-                    defvars[x] = '' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
-                        varName + ';\n';
-            }
+            /*  switch (typeof variables[x]) {
+             case 'number':
+             if (variables[x].indexOf(".") > -1) {
+             defvars[x] = "float " + varName + ';\n';
+             } else {
+             defvars[x] = "int " + varName + ';\n';
+             }
+             break
+             case 'string':
+             defvars[x] = "char " + varName + '[' + variables[x].length + '];\n';
+             break
+             case 'boolean':
+             defvars[x] = "boolean " + varName + ';\n';
+             break
+             default: */
+            defvars[x] = '' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
+                    varName + ';\n';
+            //  }
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
     }

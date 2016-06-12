@@ -29,19 +29,19 @@ if (!Blockly.Blocks)
 
 Blockly.Blocks.variables_get = {
     // Variable getter.
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput("")
-            .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
-            .appendField(new Blockly.FieldVariable(
+                .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
 
         this.setOutput(true, null);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -50,23 +50,23 @@ Blockly.Blocks.variables_get = {
 
 Blockly.Blocks.variables_declare = {
     // Variable setter.
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE', null)
-            .appendField('Declare')
-            .appendField(new Blockly.FieldVariable(
+                .appendField('Declare')
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_SET_ITEM), 'VAR')
-            .appendField("as")
-            .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["char", "char"], ["unsigned int", "unsigned int"], ["signed char", "signed char"]]), "TYPE")
-            .appendField("value");
+                .appendField("as")
+                .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["char", "char"], ["unsigned int", "unsigned int"], ["signed char", "signed char"]]), "TYPE")
+                .appendField("value");
 
         this.setPreviousStatement(true);
         this.setNextStatement(true);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -75,20 +75,20 @@ Blockly.Blocks.variables_declare = {
 
 Blockly.Blocks.variables_set = {
     // Variable setter.
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE')
-            .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
-            .appendField(new Blockly.FieldVariable(
+                .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
+                .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_SET_ITEM), 'VAR').appendField('=');
 
         this.setPreviousStatement(true);
         this.setNextStatement(true);
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('VAR')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');
         }
@@ -101,14 +101,14 @@ Blockly.Blocks.variables_set = {
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
 
-Blockly.propc.variables_get = function() {
+Blockly.propc.variables_get = function () {
     // Variable getter.
     var code = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.propc.variables_declare = function() {
+Blockly.propc.variables_declare = function () {
     // Variable setter.
     var dropdown_type = this.getFieldValue('TYPE');
     //TODO: settype to variable
@@ -121,30 +121,33 @@ Blockly.propc.variables_declare = function() {
     return '';
 };
 
-Blockly.propc.variables_set = function() {
+Blockly.propc.variables_set = function () {
     // Variable setter.
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
-        switch (typeof argument0) {
-            case 'number':
-                if (variables[x].indexOf(".") > -1) {
-                    Blockly.propc.vartype_[varName] = 'float';
-                } else {
-                    Blockly.propc.vartype_[varName] = 'int';
-                }
-                break
-            case 'string':
-                Blockly.propc.vartype_[varName] = 'char';
-                break
-            case 'boolean':
-                Blockly.propc.vartype_[varName] = 'boolean';
-                break
-            default:
-                break
-        }
+        Blockly.propc.vartype_[varName] = 'int';
+        /*
+         switch (typeof argument0) {
+         case 'number':
+         if (variables[x].indexOf(".") > -1) {
+         Blockly.propc.vartype_[varName] = 'float';
+         } else {
+         Blockly.propc.vartype_[varName] = 'int';
+         }
+         break
+         case 'string':
+         Blockly.propc.vartype_[varName] = 'char';
+         break
+         case 'boolean':
+         Blockly.propc.vartype_[varName] = 'boolean';
+         break
+         default:
+         break
+         }
+         */
     }
     return varName + ' = ' + argument0 + ';\n';
 };
