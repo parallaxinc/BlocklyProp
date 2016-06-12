@@ -18,6 +18,7 @@ $(document).ready(function () {
     var idProject = getUrlParameters('project', '', false);
     if (!idProject) {
         projectLoaded = true;
+        showInfo({'name': '', 'yours': true});
         if (ready) {
             window.frames["content_blocks"].setProfile('activity-board');
             window.frames["content_blocks"].init('activity-board', []);
@@ -26,6 +27,7 @@ $(document).ready(function () {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
             console.log(data);
             projectData = data;
+            showInfo(data);
             projectLoaded = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
@@ -37,6 +39,7 @@ $(document).ready(function () {
 
 blocklyReady = function () {
     if (projectLoaded) {
+        showInfo(projectData);
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
     } else {
@@ -44,6 +47,12 @@ blocklyReady = function () {
     }
 };
 
+showInfo = function (data) {
+    $(".project-name").text(data['name']);
+    if (!data['yours']) {
+        $(".project-owner").text("(" + data['user'] + ")");
+    }
+}
 
 loadProject = function () {
     if (projectData['code']) {

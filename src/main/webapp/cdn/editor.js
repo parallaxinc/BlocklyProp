@@ -21,6 +21,7 @@ $(document).ready(function () {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
             console.log(data);
             projectData = data;
+            showInfo(data);
             projectLoaded = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
@@ -34,6 +35,14 @@ $(document).ready(function () {
     });
 
 });
+
+showInfo = function (data) {
+    console.log(data);
+    $(".project-name").text(data['name']);
+    if (!data['yours']) {
+        $(".project-owner").text("(" + data['user'] + ")");
+    }
+};
 
 saveProject = function () {
     var code = window.frames["content_blocks"].getXml();
