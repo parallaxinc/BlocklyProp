@@ -419,6 +419,7 @@
                 <block type="heb_set_led_rgb"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
+                <block type="heb_print_numeric_var"></block>
                 <block type="heb_print_string_var">
                     <value name="VALUE">
                         <block type="string_type_block">

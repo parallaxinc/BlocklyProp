@@ -81,6 +81,32 @@ Blockly.propc.heb_set_led_rgb = function () {
     return code;
 };
 
+Blockly.Blocks.heb_print_numeric_var = {
+    init: function () {
+        this.setColour(colorPalette.getColor('heb'));
+        this.appendValueInput('VALUE')
+                .appendField("Print number");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.heb_print_numeric_var = function () {
+    var value = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
+
+    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+
+
+    if (value.startsWith('"') && value.endsWith('"')) {
+        return 'oledprint(' + value + ');\n';
+    } else {
+        var code = 'oledprint("' + value + ' = %d", ' + value + ');\n';
+        return code;
+    }
+};
+
 Blockly.Blocks.heb_print_string_var = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
@@ -99,12 +125,7 @@ Blockly.propc.heb_print_string_var = function () {
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
 
-    if (value.startsWith('"') && value.endsWith('"')) {
-        return 'oledprint(' + value + ');\n';
-    } else {
-        var code = 'oledprint("' + value + ' = %d", ' + value + ');\n';
-        return code;
-    }
+    return 'oledprint(' + value + ');\n';
 };
 
 Blockly.Blocks.heb_cursor_position = {
