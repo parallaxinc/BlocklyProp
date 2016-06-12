@@ -7,6 +7,7 @@
         <title>Blockly</title>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/polyfill.js"/>"></script>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/toolboxfilter.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
@@ -201,7 +202,7 @@
                 <block type="rc_charge_discharge"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.communicate" />">
+        <category name="<fmt:message key="category.communicate" />" exclude="heb">
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
                 <block type="console_print_variables"></block>
@@ -216,7 +217,7 @@
                 <block type="serial_rx_byte"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.activity-board" />" include="activity-board">
+        <category name="<fmt:message key="category.activity-board" />" include="activity-board" exclude="heb">
             <category name="<fmt:message key="category.activity-board.voltage" />">
                 <block type="ab_volt_v_in"></block>
                 <block type="ab_volt_v_out"></block>
@@ -325,7 +326,7 @@
                 <block type="wav_stop"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.sensor-input" />">
+        <category name="<fmt:message key="category.sensor-input" />" exclude="heb" >
             <category name="<fmt:message key="category.sensor-input.etape" />">
                 <block type="etape_rc_time"></block>
             </category>
@@ -377,7 +378,7 @@
                 <block type="sound_impact_end"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.actuator-output" />">
+        <category name="<fmt:message key="category.actuator-output" />" exclude="heb" >
             <category name="<fmt:message key="category.actuator-output.standard-senvo" />">
                 <block type="servo_move"></block>
             </category>
@@ -396,7 +397,7 @@
                 <block type="debug_lcd_action"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.robot" />">
+        <category name="<fmt:message key="category.robot" />" exclude="heb" >
             <category name="<fmt:message key="category.robot.activitybot" />">
                 <block type="ab_drive_speed"></block>
                 <block type="ab_drive_goto"></block>
@@ -419,7 +420,7 @@
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
                 <block type="heb_print_string_var">
-                    <value name="TEXT">
+                    <value name="VALUE">
                         <block type="string_type_block">
                             <field name="TEXT">Hello</field>
                         </block>

@@ -30,21 +30,21 @@ if (!Blockly.Blocks)
 
 // @TODO : Change "toggle_led" to something more appropriate maybe?
 Blockly.Blocks.heb_toggle_led = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField('Set LED state')
-            .appendField('LED #')
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"]]), "LED_#")
-            .appendField('LED state')
-            .appendField(new Blockly.FieldDropdown([["ON", "1"], ["OFF", "0"]]), "STATE");
+                .appendField('Set LED state')
+                .appendField('LED #')
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"]]), "LED_#")
+                .appendField('LED state')
+                .appendField(new Blockly.FieldDropdown([["ON", "1"], ["OFF", "0"]]), "STATE");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_toggle_led = function() {
+Blockly.propc.heb_toggle_led = function () {
     var led_number = this.getFieldValue("LED_#");
     var led_state = this.getFieldValue("STATE");
 
@@ -56,21 +56,21 @@ Blockly.propc.heb_toggle_led = function() {
 };
 
 Blockly.Blocks.heb_set_led_rgb = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField('Set LED' + "'" + 's RGB')
-            .appendField('LED side')
-            .appendField(new Blockly.FieldDropdown([["L", "L"], ["R", "R"]]), "SIDE")
-            .appendField('RGB value')
-            .appendField(new Blockly.FieldDropdown([["BLUE", "BLUE"], ["GREEN", "GREEN"], ["CYAN", "CYAN"], ["RED", "RED"], ["MAGENTA", "MAGENTA"], ["YELLOW", "YELLOW"], ["WHITE", "WHITE"], ["OFF", "OFF"]]), "RGB");
+                .appendField('Set LED' + "'" + 's RGB')
+                .appendField('LED side')
+                .appendField(new Blockly.FieldDropdown([["L", "L"], ["R", "R"]]), "SIDE")
+                .appendField('RGB value')
+                .appendField(new Blockly.FieldDropdown([["BLUE", "BLUE"], ["GREEN", "GREEN"], ["CYAN", "CYAN"], ["RED", "RED"], ["MAGENTA", "MAGENTA"], ["YELLOW", "YELLOW"], ["WHITE", "WHITE"], ["OFF", "OFF"]]), "RGB");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_set_led_rgb = function() {
+Blockly.propc.heb_set_led_rgb = function () {
     var led_side = this.getFieldValue("SIDE");
     var led_rgb = this.getFieldValue("RGB");
 
@@ -82,44 +82,49 @@ Blockly.propc.heb_set_led_rgb = function() {
 };
 
 Blockly.Blocks.heb_print_string_var = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendValueInput('VALUE')
-            .appendField("Print");
+                .appendField("Print");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_print_string_var = function() {
+Blockly.propc.heb_print_string_var = function () {
     var value = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'oledprint("' + value + ' = %d \n",' + value + ');\n';
-    return code;
+
+    if (value.startsWith('"') && value.endsWith('"')) {
+        return 'oledprint(' + value + ');\n';
+    } else {
+        var code = 'oledprint("' + value + ' = %d", ' + value + ');\n';
+        return code;
+    }
 };
 
 Blockly.Blocks.heb_cursor_position = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField('Set cursor position')
-            .appendField('Set text size')
-            .appendField(new Blockly.FieldDropdown([["SMALL", "SMALL"], ["LARGE", "LARGE"]]), "TEXT_SIZE")
-            .appendField('Columns')
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COLS")
-            .appendField('Rows')
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "ROWS");
+                .appendField('Set cursor position')
+                .appendField('Set text size')
+                .appendField(new Blockly.FieldDropdown([["SMALL", "SMALL"], ["LARGE", "LARGE"]]), "TEXT_SIZE")
+                .appendField('Column')
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COLS")
+                .appendField('Row')
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "ROWS");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_cursor_position = function() {
+Blockly.propc.heb_cursor_position = function () {
     var columns = this.getFieldValue("COLS");
     var rows = this.getFieldValue("ROWS");
     var text_size = this.getFieldValue("TEXT_SIZE");
@@ -132,17 +137,17 @@ Blockly.propc.heb_cursor_position = function() {
 };
 
 Blockly.Blocks.heb_clear_screen = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField('Clear screen');
+                .appendField('Clear screen');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_clear_screen = function() {
+Blockly.propc.heb_clear_screen = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
@@ -151,10 +156,10 @@ Blockly.propc.heb_clear_screen = function() {
 };
 
 Blockly.Blocks.heb_rotate = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField('Rotate 180');
+                .appendField('Rotate 180');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -170,18 +175,18 @@ Blockly.propc.heb_rotate = function () {
 };
 
 Blockly.Blocks.heb_send_signal = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField('Send a message')
-            .appendField(new Blockly.FieldTextInput(''), "MESSAGE");
+                .appendField('Send a message')
+                .appendField(new Blockly.FieldTextInput(''), "MESSAGE");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_send_signal = function() {
+Blockly.propc.heb_send_signal = function () {
     var message = this.getFieldValue("MESSAGE");
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
@@ -192,32 +197,32 @@ Blockly.propc.heb_send_signal = function() {
 };
 
 Blockly.Blocks.heb_read_signal = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField('number of characters received');
+                .appendField('number of characters received');
         this.appendDummyInput()
-            .appendField('Receive an array of characters');
+                .appendField('Receive an array of characters');
         this.appendDummyInput()
-            .appendField('Message contents:')
-            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
+                .appendField('Message contents:')
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
         this.setInputsInline(false);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
     },
-    getVars: function() {
+    getVars: function () {
         return [this.getFieldValue('BUFFER')];
     },
-    renameVar: function(oldName, newName) {
+    renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
             this.setTitleValue(newName, 'BUFFER');
         }
     }
 };
 
-Blockly.propc.heb_read_signal = function() {
+Blockly.propc.heb_read_signal = function () {
     var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
@@ -228,18 +233,18 @@ Blockly.propc.heb_read_signal = function() {
 };
 
 Blockly.Blocks.heb_clear_ir_buffer = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            // @TODO : Should the title be something else? This might be confusing for beginners...
-            .appendField("Clear IR buffer");
+                // @TODO : Should the title be something else? This might be confusing for beginners...
+                .appendField("Clear IR buffer");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_clear_ir_buffer = function() {
+Blockly.propc.heb_clear_ir_buffer = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
@@ -248,18 +253,18 @@ Blockly.propc.heb_clear_ir_buffer = function() {
 };
 
 Blockly.Blocks.heb_badge_eeprom_store = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Store a contact")
-            .appendField(new Blockly.FieldTextInput(''), "CONTACT");
+                .appendField("Store a contact")
+                .appendField(new Blockly.FieldTextInput(''), "CONTACT");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_badge_eeprom_store = function() {
+Blockly.propc.heb_badge_eeprom_store = function () {
     var contact = this.getFieldValue("CONTACT");
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
@@ -270,12 +275,12 @@ Blockly.propc.heb_badge_eeprom_store = function() {
 };
 
 Blockly.Blocks.heb_badge_eeprom_is_stored = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Already stored?")
-            .appendField("Info")
-            .appendField(new Blockly.FieldTextInput(''), "CONTACT");
+                .appendField("Already stored?")
+                .appendField("Info")
+                .appendField(new Blockly.FieldTextInput(''), "CONTACT");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -283,7 +288,7 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
     }
 };
 
-Blockly.propc.heb_badge_eeprom_is_stored = function() {
+Blockly.propc.heb_badge_eeprom_is_stored = function () {
     var contact = this.getFieldValue("CONTACT");
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
@@ -294,22 +299,22 @@ Blockly.propc.heb_badge_eeprom_is_stored = function() {
 };
 
 Blockly.Blocks.heb_badge_eeprom_retrieve = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Retrieve an EEPROM value")
-            .appendField("EEPROM Index")
-            // @TODO : Get proper EEPROM index values ( THESE ARE  FOR TESTING PURPOSES ONLY )
-            .appendField(new Blockly.FieldDropdown([["1", "0"], ["2", "1"], ["3", "2"]]), "INDEX");
+                .appendField("Retrieve an EEPROM value")
+                .appendField("EEPROM Index")
+                // @TODO : Get proper EEPROM index values ( THESE ARE  FOR TESTING PURPOSES ONLY )
+                .appendField(new Blockly.FieldDropdown([["1", "0"], ["2", "1"], ["3", "2"]]), "INDEX");
         this.appendValueInput("BUFFER")
-            .appendField('Variable');
+                .appendField('Variable');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_badge_eeprom_retrieve = function() {
+Blockly.propc.heb_badge_eeprom_retrieve = function () {
     var buffer = Blockly.propc.valueToCode(this, "BUFFER", Blockly.propc.ORDER_NONE);
     var index = this.getFieldValue("INDEX");
 
@@ -321,10 +326,10 @@ Blockly.propc.heb_badge_eeprom_retrieve = function() {
 };
 
 Blockly.Blocks.heb_count_contacts = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Count contacts");
+                .appendField("Count contacts");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -332,7 +337,7 @@ Blockly.Blocks.heb_count_contacts = {
     }
 };
 
-Blockly.propc.heb_count_contacts = function() {
+Blockly.propc.heb_count_contacts = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
@@ -341,17 +346,17 @@ Blockly.propc.heb_count_contacts = function() {
 };
 
 Blockly.Blocks.heb_erase_all_contacts = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Erase all contacts");
+                .appendField("Erase all contacts");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.heb_erase_all_contacts = function() {
+Blockly.propc.heb_erase_all_contacts = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
@@ -363,8 +368,8 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Get axis acceleration")
-            .appendField(new Blockly.FieldDropdown([["X", "AX"], ["Y", "AY"], ["Z", "AZ"]]), "AXIS");
+                .appendField("Get axis acceleration")
+                .appendField(new Blockly.FieldDropdown([["X", "AX"], ["Y", "AY"], ["Z", "AZ"]]), "AXIS");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -372,7 +377,7 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
     }
 };
 
-Blockly.propc.heb_badge_axis_acceleration = function() {
+Blockly.propc.heb_badge_axis_acceleration = function () {
     var axis = this.getFieldValue("AXIS");
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
@@ -383,10 +388,10 @@ Blockly.propc.heb_badge_axis_acceleration = function() {
 };
 
 Blockly.Blocks.heb_badge_was_shaken = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Was shaken?");
+                .appendField("Was shaken?");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -403,11 +408,11 @@ Blockly.propc.heb_badge_was_shaken = function () {
 };
 
 Blockly.Blocks.heb_touchpad_status = {
-    init: function() {
+    init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-            .appendField("Is-touchpad-pressed?")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"]]), "TOUCHPAD");
+                .appendField("Is-touchpad-pressed?")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"]]), "TOUCHPAD");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -415,7 +420,7 @@ Blockly.Blocks.heb_touchpad_status = {
     }
 };
 
-Blockly.propc.heb_touchpad_status = function() {
+Blockly.propc.heb_touchpad_status = function () {
     var touchpad = this.getFieldValue("TOUCHPAD");
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
