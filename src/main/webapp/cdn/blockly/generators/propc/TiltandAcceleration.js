@@ -111,7 +111,7 @@ Blockly.Blocks.HMC5883L_init = {
 
 Blockly.Blocks.HMC5883L_read = {
     init: function() {
-        this.setColour(color.Palette.getColor('input'));
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Read")
             .appendField("Store x-coords in")
