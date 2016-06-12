@@ -145,7 +145,7 @@ function setProfile(profileName) {
  * Initialise the database of variable names.
  */
 Blockly.propc.init = function (workspace) {
-// Create a dictionary of definitions to be printed before setups.
+    // Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
     // Create a dictionary of setups to be printed before the code.
@@ -153,7 +153,6 @@ Blockly.propc.init = function (workspace) {
     // Create a list of stacks
     Blockly.propc.stacks_ = [];
     Blockly.propc.vartype_ = {};
-    Blockly.propc.pointerType_ = {};
     Blockly.propc.serial_terminal_ = false;
     if (Blockly.Variables) {
         if (!Blockly.propc.variableDB_) {
@@ -168,29 +167,26 @@ Blockly.propc.init = function (workspace) {
         for (var x = 0; x < variables.length; x++) {
             var varName = Blockly.propc.variableDB_.getName(variables[x],
                     Blockly.Variables.NAME_TYPE);
-            defvars[x] = '' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
-                    varName + ';\n';
+            switch (typeof variables[x]) {
+                case 'number':
+                    if (variables[x].indexOf(".") > -1) {
+                        defvars[x] = "float " + varName + ';\n';
+                    } else {
+                        defvars[x] = "int " + varName + ';\n';
+                    }
+                    break
+                case 'string':
+                    defvars[x] = "char " + varName + '[' + variables[x].length + '];\n';
+                    break
+                case 'boolean':
+                    defvars[x] = "boolean " + varName + ';\n';
+                    break
+                default:
+                    defvars[x] = '' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
+                        varName + ';\n';
+            }
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
-    }
-
-    if (Blockly.Pointers) {
-        if (!Blockly.propc.pointerDB_) {
-            Blockly.propc.pointerDB_ =
-                    new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
-        } else {
-            Blockly.propc.pointerDB_.reset();
-        }
-
-        var defvars = [];
-        var pointers = Blockly.Pointers.allPointers();
-        for (var x = 0; x < pointers.length; x++) {
-            var pointerName = Blockly.propc.pointerDB_.getName(pointers[x],
-                    Blockly.Pointers.NAME_TYPE);
-            defvars[x] = '' + '{{$pointer_type_' + pointers[x].name + '}} ' +
-                    pointerName + ';\n';
-        }
-        Blockly.propc.definitions_['pointers'] = defvars.join('\n');
     }
 };
 /**
@@ -199,8 +195,6 @@ Blockly.propc.init = function (workspace) {
  * @return {string} Completed code.
  */
 Blockly.propc.finish = function (code) {
-//alert(code);
-
     // Convert the definitions dictionary into a list.
     var imports = [];
     var methods = [];
@@ -210,10 +204,6 @@ Blockly.propc.finish = function (code) {
         var def = Blockly.propc.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
-            // } else if (def.match(/^PUB/)) {
-            //     methods.push(def);
-            // } else if (def.match(/^OBJ/)) {
-            //     objects.push('' + def.substring(3));
         } else {
             definitions.push(def);
         }
@@ -230,16 +220,6 @@ Blockly.propc.finish = function (code) {
             }
             definitions[def] = definitions[def].replace("\n\n", "\n");
         }
-        for (var pointer in Blockly.propc.pointerType_) {
-            if (definitions[def].indexOf("{{$pointer_type_" + pointer + "}}") > -1) {
-                if (Blockly.propc.pointerType_[pointer] !== 'LOCAL') {
-                    definitions[def] = definitions[def].replace("{{$pointer_type_" + pointer + "}}", Blockly.propc.pointerType_[pointer]);
-                } else {
-                    definitions[def] = definitions[def].replace("{{$pointer_type_" + pointer + "}} " + pointer, "");
-                }
-            }
-            definitions[def] = definitions[def].replace("\n\n", "\n");
-        }
     }
 
     for (var stack in Blockly.propc.stacks_) {
@@ -251,12 +231,9 @@ Blockly.propc.finish = function (code) {
     for (var name in Blockly.propc.setups_) {
         setups.push('  ' + Blockly.propc.setups_[name]);
     }
-//    setups.push('Start');
 
-    //  var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
     var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
-    //   var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
 
     // Indent every line.
     code = '  ' + code.replace(/\n/g, '\n  ');
@@ -276,20 +253,6 @@ Blockly.propc.finish = function (code) {
  */
 Blockly.propc.scrubNakedValue = function (line) {
     return line + ';\n';
-};
-/**
- * Encode a string as a properly escaped propc string, complete with quotes.
- * @param {string} string Text to encode.
- * @return {string} Prop-c string.
- * @private
- */
-Blockly.propc.quote_ = function (string) {
-    // TODO: This is a quick hack.  Replace with goog.string.quote
-    string = string.replace(/\\/g, '\\\\')
-            .replace(/\n/g, '\\\n')
-            .replace(/\$/g, '\\$')
-            .replace(/'/g, '\\\'');
-    return '\"' + string + '\"';
 };
 /**
  * Common tasks for generating Prop-c from blocks.
