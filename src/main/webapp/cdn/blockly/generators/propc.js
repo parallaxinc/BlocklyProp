@@ -145,7 +145,7 @@ function setProfile(profileName) {
  * Initialise the database of variable names.
  */
 Blockly.propc.init = function (workspace) {
-// Create a dictionary of definitions to be printed before setups.
+    // Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
     // Create a dictionary of setups to be printed before the code.
@@ -179,8 +179,6 @@ Blockly.propc.init = function (workspace) {
  * @return {string} Completed code.
  */
 Blockly.propc.finish = function (code) {
-//alert(code);
-
     // Convert the definitions dictionary into a list.
     var imports = [];
     var methods = [];
@@ -190,10 +188,6 @@ Blockly.propc.finish = function (code) {
         var def = Blockly.propc.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
-            // } else if (def.match(/^PUB/)) {
-            //     methods.push(def);
-            // } else if (def.match(/^OBJ/)) {
-            //     objects.push('' + def.substring(3));
         } else {
             definitions.push(def);
         }
@@ -221,12 +215,9 @@ Blockly.propc.finish = function (code) {
     for (var name in Blockly.propc.setups_) {
         setups.push('  ' + Blockly.propc.setups_[name]);
     }
-//    setups.push('Start');
 
-    //  var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
     var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
-    //   var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
 
     // Indent every line.
     code = '  ' + code.replace(/\n/g, '\n  ');
@@ -246,20 +237,6 @@ Blockly.propc.finish = function (code) {
  */
 Blockly.propc.scrubNakedValue = function (line) {
     return line + ';\n';
-};
-/**
- * Encode a string as a properly escaped propc string, complete with quotes.
- * @param {string} string Text to encode.
- * @return {string} Prop-c string.
- * @private
- */
-Blockly.propc.quote_ = function (string) {
-    // TODO: This is a quick hack.  Replace with goog.string.quote
-    string = string.replace(/\\/g, '\\\\')
-            .replace(/\n/g, '\\\n')
-            .replace(/\$/g, '\\$')
-            .replace(/'/g, '\\\'');
-    return '\"' + string + '\"';
 };
 /**
  * Common tasks for generating Prop-c from blocks.
