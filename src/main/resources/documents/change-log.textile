@@ -1,5 +1,16 @@
 h2. Change log
 
+h4. 2016/06/12
+
+* Simplify authentication and authorization
+* Filter editor toolbox based on selected board
+* Fix set-pins block
+* Fix delete all blocks functionality in editor
+* Put variables and functions under programming category
+* Fix HMC5883 Category
+* Fix HEB IR receive block
+* Add BETA mark
+
 h4. 2016/06/06
 
 * Change color palette

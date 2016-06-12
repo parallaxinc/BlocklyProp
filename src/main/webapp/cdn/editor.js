@@ -48,7 +48,7 @@ saveProject = function () {
 blocklyReady = function () {
     if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init(data['board'], []);
+        window.frames["content_blocks"].init(projectData['board'], []);
     } else {
         ready = true;
     }
