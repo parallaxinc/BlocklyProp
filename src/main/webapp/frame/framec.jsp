@@ -159,6 +159,9 @@
                 </block>
                 <block type="cog_end"></block>
             </category>
+            <sep></sep>
+            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
+            <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
         </category>
         <category name="<fmt:message key="category.input-output" />">
             <category name="<fmt:message key="category.input-output.pin-states" />">
@@ -446,9 +449,6 @@
                 <block type="heb_touchpad_status"></block>
             </category>
         </category>
-        <sep></sep>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
     </xml>
 </body>
 </html>
