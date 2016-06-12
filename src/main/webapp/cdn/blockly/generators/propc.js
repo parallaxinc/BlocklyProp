@@ -23,7 +23,6 @@
  */
 'use strict';
 Blockly.propc = new Blockly.Generator('propc');
-
 Blockly.HSV_SATURATION = 0.75;
 Blockly.HSV_VALUE = 0.60;
 Blockly.RTL = false;
@@ -145,7 +144,7 @@ function setProfile(profileName) {
  * Initialise the database of variable names.
  */
 Blockly.propc.init = function (workspace) {
-    // Create a dictionary of definitions to be printed before setups.
+// Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
     // Create a dictionary of setups to be printed before the code.
@@ -153,6 +152,7 @@ Blockly.propc.init = function (workspace) {
     // Create a list of stacks
     Blockly.propc.stacks_ = [];
     Blockly.propc.vartype_ = {};
+    Blockly.propc.varlength_ = {};
     Blockly.propc.serial_terminal_ = false;
     if (Blockly.Variables) {
         if (!Blockly.propc.variableDB_) {
@@ -183,7 +183,7 @@ Blockly.propc.init = function (workspace) {
              break
              default: */
             defvars[x] = '' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
-                    varName + ';\n';
+                    varName + '{{$var_length_' + varName /* variables[x].name */ + '}};\n';
             //  }
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
@@ -215,7 +215,16 @@ Blockly.propc.finish = function (code) {
                 if (Blockly.propc.vartype_[variable] !== 'LOCAL') {
                     definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}}", Blockly.propc.vartype_[variable]);
                 } else {
-                    definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable, "");
+                    definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable + '{{$var_length_' + variable + '}}', "");
+                }
+                if (Blockly.propc.vartype_[variable] === 'char') {
+                    if (Blockly.propc.varlength_[variable]) {
+                        definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", '[' + Blockly.propc.varlength_[variable] + ']');
+                    } else {
+                        definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", '[128]');
+                    }
+                } else {
+                    definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", "");
                 }
             }
             definitions[def] = definitions[def].replace("\n\n", "\n");
@@ -234,7 +243,6 @@ Blockly.propc.finish = function (code) {
 
     var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
-
     // Indent every line.
     code = '  ' + code.replace(/\n/g, '\n  ');
     code = code.replace(/\n\s+$/, '\n');

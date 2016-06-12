@@ -227,7 +227,8 @@ Blockly.propc.heb_ir_read_signal = function () {
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-    Blockly.propc.vartype_[buffer] = 'char[128]';
+    Blockly.propc.vartype_[buffer] = 'char';
+    Blockly.propc.varlength_[buffer] = 128;
 
     var code = 'receive(' + buffer + ')';
     return [code, Blockly.propc.ORDERN_NONE];
