@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <h2><a href="<url:getUrl url="/index.jsp"/>">BlocklyProp</a>: Project not found</h2>
+                <h2><a href="<url:getUrl url="/index"/>">BlocklyProp</a>: Project not found</h2>
                 <shiro:authenticated><a href="<url:getUrl url="/profile"/>"><shiro:principal></shiro:principal></a></shiro:authenticated>
                 <shiro:notAuthenticated><a href="<url:getUrl url="/login.jsp"/>">Login/Register</a></shiro:notAuthenticated>
 

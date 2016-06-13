@@ -1,5 +1,11 @@
 h2. Change log
 
+h4. 2016/06/13
+
+* Fix type checking for Booleans
+* Show project name and owner in editor
+* Fix project delete and clone
+
 h4. 2016/06/12
 
 * Simplify authentication and authorization

@@ -73,7 +73,7 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="password_reset.do.submit" />">
                     </form>
-                    <p><a href="index.jsp">Go to home</a></p>
+                    <p><a href="<url:getUrl url="/index"/>">Go to home</a></p>
                 </div>
             </div>
         </div>
