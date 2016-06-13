@@ -5,6 +5,7 @@ h4. 2016/06/13
 * Fix type checking for Booleans
 * Show project name and owner in editor
 * Fix project delete and clone
+* Fix wrong links to old home page
 
 h4. 2016/06/12
 
