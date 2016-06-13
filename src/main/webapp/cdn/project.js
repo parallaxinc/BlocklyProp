@@ -89,8 +89,8 @@ function loadProject(idProject) {
         var openProjectLink = $("a.open-project-link");
         openProjectLink.removeClass("editor-c-link editor-spin-link");
         openProjectLink.attr("href", baseUrl + "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id']);
-        $('.clone-project').attr('href', cloneUrl + project['id'] + '&' + getUrlAuthentication());
-        $('.delete-project').attr('href', deleteUrl + project['id'] + '&' + getUrlAuthentication());
+        $('.clone-project').attr('href', cloneUrl + project['id']);
+        $('.delete-project').attr('href', deleteUrl + project['id']);
         openProjectLink.addClass(projectTypes[project['type']]['class']);
     });
 }
