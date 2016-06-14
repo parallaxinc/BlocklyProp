@@ -1,5 +1,11 @@
 h2. Change log
 
+h4. 2016/06/14
+
+* Toolbox: programming menu simplification
+* Toolbox: remove Input/output for HEB board selection
+* Make 'wait' a reserved word in C
+
 h4. 2016/06/13
 
 * Fix type checking for Booleans
