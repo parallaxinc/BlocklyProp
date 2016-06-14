@@ -115,55 +115,50 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.programming" />">
-            <category name="<fmt:message key="category.programming.control" />">
-                <block type="controls_if"></block>
-                <block type="controls_repeat">
-                    <mutation TYPE="FOREVER"></mutation>
-                </block>
-                <block type="base_delay">
-                    <value name="DELAY_TIME">
-                        <block type="math_number">
-                            <field name="NUM">1000</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
-            <category name="<fmt:message key="category.programming.conditions" />">
-                <block type="logic_compare"></block>
-                <block type="logic_operation"></block>
-                <block type="logic_negate"></block>
-                <block type="logic_boolean"></block>
-            </category>
-            <category name="<fmt:message key="category.programming.data_types" />">
-                <block type="math_number"></block>
-                <block type="string_type_block"></block>
-            </category>
-            <category name="<fmt:message key="category.programming.math" />">
-                <block type="math_arithmetic"></block>
-                <block type="math_single"></block>
-                <block type="math_limit"></block>
-                <block type="math_crement"></block>
-                <block type="bit_math_shift"></block>
-                <!--<block type="bit_math_rotate"></block>-->
-                <!-- Repeat from Conditions -->
-                <block type="logic_operation"></block>
-                <block type="logic_negate"></block>
-            </category>
-            <category name="<fmt:message key="category.programming.multicore" />">
-                <block type="cog_new">
-                    <value name="STACK_SIZE">
-                        <block type="math_number">
-                            <field name="NUM">128</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="cog_end"></block>
-            </category>
-            <sep></sep>
-            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-            <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
+        <category name="<fmt:message key="category.control" />">
+            <block type="controls_if"></block>
+            <block type="controls_repeat">
+                <mutation TYPE="FOREVER"></mutation>
+            </block>
+            <block type="base_delay">
+                <value name="DELAY_TIME">
+                    <block type="math_number">
+                        <field name="NUM">1000</field>
+                    </block>
+                </value>
+            </block>
+            <block type="cog_new">
+                <value name="STACK_SIZE">
+                    <block type="math_number">
+                        <field name="NUM">128</field>
+                    </block>
+                </value>
+            </block>
+            <block type="cog_end"></block>
         </category>
+        <category name="<fmt:message key="category.operators" />">
+            <block type="math_arithmetic"></block>
+            <block type="math_single"></block>
+            <block type="math_limit"></block>
+            <block type="math_crement"></block>
+            <block type="bit_math_shift"></block>
+            <!--<block type="bit_math_rotate"></block>-->
+            <!-- Repeat from Conditions -->
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+
+            <block type="logic_compare"></block>
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+            <block type="logic_boolean"></block>
+        </category>
+        <category name="<fmt:message key="category.data_types" />">
+            <block type="math_number"></block>
+            <block type="string_type_block"></block>
+        </category>
+        <sep></sep>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
         <category name="<fmt:message key="category.input-output" />" exclude="heb">
             <category name="<fmt:message key="category.input-output.pin-states" />">
                 <block type="make_pin"></block>

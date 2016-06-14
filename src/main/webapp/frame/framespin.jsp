@@ -99,45 +99,41 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.programming" />">
-            <category name="<fmt:message key="category.programming.control" />">
-                <block type="controls_if"></block>
-                <block type="controls_repeat">
-                    <mutation TYPE="FOREVER"></mutation>
-                </block>
-                <block type="base_delay">
-                    <value name="DELAY_TIME">
-                        <block type="math_number">
-                            <field name="NUM">1000</field>
-                        </block>
-                    </value>
-                </block>
-                <!--<block type="text"></block>-->
-            </category>
-            <category name="<fmt:message key="category.programming.conditions" />">
-                <block type="logic_compare"></block>
-                <block type="logic_operation"></block>
-                <block type="logic_negate"></block>
-                <block type="logic_boolean"></block>
-            </category>
-            <category name="<fmt:message key="category.programming.math" />">
-                <block type="math_number"></block>
-                <block type="math_arithmetic"></block>
-                <block type="math_single"></block>
-                <block type="math_limit"></block>
-                <block type="math_crement"></block>
-                <block type="bit_math_shift"></block>
-                <!-- Repeat from Conditions -->
-                <block type="logic_operation"></block>
-                <block type="logic_negate"></block>
-            </category>
-            <category name="<fmt:message key="category.programming.multicore" />">
-                <block type="cog_new"></block>
-            </category>
-            <sep></sep>
-            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-            <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
+        <category name="<fmt:message key="category.control" />">
+            <block type="controls_if"></block>
+            <block type="controls_repeat">
+                <mutation TYPE="FOREVER"></mutation>
+            </block>
+            <block type="base_delay">
+                <value name="DELAY_TIME">
+                    <block type="math_number">
+                        <field name="NUM">1000</field>
+                    </block>
+                </value>
+            </block>
+
+            <block type="cog_new"></block>
+            <!--<block type="text"></block>-->
         </category>
+        <category name="<fmt:message key="category.operators" />">
+            <block type="logic_compare"></block>
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+            <block type="logic_boolean"></block>
+
+            <block type="math_number"></block>
+            <block type="math_arithmetic"></block>
+            <block type="math_single"></block>
+            <block type="math_limit"></block>
+            <block type="math_crement"></block>
+            <block type="bit_math_shift"></block>
+            <!-- Repeat from Conditions -->
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+        </category>
+        <sep></sep>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
         <category name="<fmt:message key="category.input-output" />">
             <category name="<fmt:message key="category.input-output.pin-states" />">
                 <block type="make_pin"></block>
