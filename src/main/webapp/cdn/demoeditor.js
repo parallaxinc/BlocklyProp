@@ -39,7 +39,6 @@ $(document).ready(function () {
 
 blocklyReady = function () {
     if (projectLoaded) {
-        showInfo(projectData);
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
     } else {

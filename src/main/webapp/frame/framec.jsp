@@ -164,7 +164,7 @@
             <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
             <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
         </category>
-        <category name="<fmt:message key="category.input-output" />">
+        <category name="<fmt:message key="category.input-output" />" exclude="heb">
             <category name="<fmt:message key="category.input-output.pin-states" />">
                 <block type="make_pin"></block>
                 <block type="make_pin_input">
