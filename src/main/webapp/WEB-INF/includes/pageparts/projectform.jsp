@@ -25,6 +25,14 @@
                     <label for="name"><fmt:message key="project.name" /></label>
                     <input type="text" class="form-control" name="name" id="project-form-name" required="required"/>
                 </div>
+                <div class="form-group not-your-project hidden">
+                    <label for="user"><fmt:message key="project.user" /></label>
+                    <input type="text" class="form-control" name="user" id="project-form-user" readonly="readonly"/>
+                </div>
+                <div class="form-group">
+                    <label for="board"><fmt:message key="project.board" /></label>
+                    <input type="text" class="form-control" name="board" id="project-form-board" readonly="readonly"/>
+                </div>
                 <div class="form-group">
                     <label for="description"><fmt:message key="project.description" /></label>
                     <textarea class="form-control" name="description" id="project-form-description" rows="8" required="required"></textarea>
@@ -34,13 +42,13 @@
                     <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default">
-                            <input type="radio" name="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
+                            <input type="radio" name="sharing" class="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
                         </label>
                         <label class="btn btn-default">
-                            <input type="radio" name="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
+                            <input type="radio" name="sharing" class="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
                         </label>
                         <label class="btn btn-default">
-                            <input type="radio" name="sharing" value="friends" id="project-form-friends"/><fmt:message key="project.sharing.friends" />
+                            <input type="radio" name="sharing" class="sharing" value="friends" id="project-form-friends"/><fmt:message key="project.sharing.friends" />
                         </label>
                     </div>
                 </div>
@@ -86,4 +94,11 @@
 
 <script>
     var shared = <c:out value="${param.shared}" />;
+
+    var boards = {
+        "activity-board": "<fmt:message key="project.board.activity-board" />",
+        "s3": "<fmt:message key="project.board.s3" />",
+        "heb": "<fmt:message key="project.board.heb" />",
+        "other": "<fmt:message key="project.board.other" />"
+    };
 </script>

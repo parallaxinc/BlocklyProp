@@ -12,7 +12,8 @@
         <tr>
             <th data-field="type" data-formatter="formatType" data-width="30px" data-align="center"></th>
             <th data-field="name" data-formatter="formatProject"><fmt:message key="project.table.name" /></th>
-            <th data-field="description"><fmt:message key="project.table.description" /></th>
+            <th data-field="board" data-formatter="formatBoard"><fmt:message key="project.table.board" /></th>
+            <th data-field="description"  data-formatter="formatDescription"><fmt:message key="project.table.description" /></th>
                 <c:if test="${param.showuser}">
                 <th data-field="user" data-formatter="formatUser"><fmt:message key="project.table.user" /></th>
                 </c:if>
@@ -48,5 +49,29 @@
             value,
             "</a>"
         ].join('');
+    }
+
+    var boards = {
+        "activity-board": "<fmt:message key="project.board.activity-board" />",
+        "s3": "<fmt:message key="project.board.s3" />",
+        "heb": "<fmt:message key="project.board.heb" />",
+        "other": "<fmt:message key="project.board.other" />"
+    };
+
+    function formatBoard(value, row) {
+        var boardTranslation = boards[value];
+        if (!boardTranslation) {
+            boardTranslation = boards['other'];
+        }
+        return boardTranslation;
+    }
+
+    function formatDescription(value, row) {
+        if (value) {
+            if (value.length > 30) {
+                return value.substring(0, 27) + '&hellip;';
+            }
+        }
+        return value;
     }
 </script>

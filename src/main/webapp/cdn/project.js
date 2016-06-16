@@ -58,6 +58,7 @@ function showTable() {
 
 function showProject(idProject) {
     // Clear form
+    $(".sharing").removeProp('checked').parent().removeClass('active');
     $('.your-project').addClass('hidden');
     $('.not-your-project').addClass('hidden');
 
@@ -73,9 +74,16 @@ function loadProject(idProject) {
             $('.your-project').removeClass('hidden');
         } else {
             $('.not-your-project').removeClass('hidden');
+            $("#project-form-user").val(project['user']);
         }
         $("#project-form-id").val(project['id']);
         $("#project-form-name").val(project['name']);
+
+        var boardTranslation = boards[project['board']];
+        if (!boardTranslation) {
+            boardTranslation = boards['other'];
+        }
+        $("#project-form-board").val(boardTranslation);
         $("#project-form-description").val(project['description']);
         if (project['private']) {
             $("#project-form-private").prop('checked', 'checked').parent().addClass('active');
