@@ -392,7 +392,7 @@
                 <block type="debug_lcd_action"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.robot" />" exclude="heb" >
+        <category name="<fmt:message key="category.robot" />" exclude="heb,activity-board" >
             <category name="<fmt:message key="category.robot.activitybot" />">
                 <block type="ab_drive_speed"></block>
                 <block type="ab_drive_goto"></block>
