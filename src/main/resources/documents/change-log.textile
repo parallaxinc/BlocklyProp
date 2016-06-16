@@ -1,5 +1,10 @@
 h2. Change log
 
+h4. 2016/06/16
+
+* Minor toolbox organization and naming changes
+* Project table and form improvement (board and user)
+
 h4. 2016/06/14
 
 * Toolbox: programming menu simplification
