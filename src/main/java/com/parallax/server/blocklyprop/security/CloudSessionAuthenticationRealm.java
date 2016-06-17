@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.security;
 
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
+import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.objects.User;
@@ -36,7 +37,7 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("AUTHORIZATION");
+        log.info("AUTHORIZATION");
         AuthorizationInfo authorizationInfo = new SimpleAccount();
 
         return authorizationInfo;
@@ -44,7 +45,6 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("AUTHENTICATION");
         try {
 
             log.info("AUTHENTICATION using login and password");
@@ -57,19 +57,17 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
             User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
             if (user != null) {
-                System.out.println("USER = " + user);
+                // System.out.println("USER = " + user);
             } else {
-                System.out.println("USER = null");
+                log.info("No exception but user object is null");
                 return null;
             }
 
-            System.out.println("CREATING AUTHENTICATION DETAILS");
             try {
                 return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
             } catch (Throwable t) {
-                t.printStackTrace();
+                log.error("Unexpected exception creating account object", t);
             }
-            System.out.println("credentials set");
             return null;
         } catch (UnknownUserException ex) {
             log.info("Unknown user", ex);
@@ -77,6 +75,8 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
             log.info("Blocked user", ex);
         } catch (EmailNotConfirmedException ex) {
             log.info("Email not confirmed", ex);
+        } catch (InsufficientBucketTokensException ibte) {
+            log.info("Insufficient bucken tokens", ibte);
         } catch (NullPointerException npe) {
             log.warn("NullPointer", npe);
         } catch (Throwable t) {

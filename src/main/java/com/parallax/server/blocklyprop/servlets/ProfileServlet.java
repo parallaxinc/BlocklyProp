@@ -12,6 +12,7 @@ import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
+import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
@@ -143,6 +144,9 @@ public class ProfileServlet extends HttpServlet {
                 resp.getWriter().write(createFailure("Invalid authentication").toString());
                 return;
             } catch (EmailNotConfirmedException ex) {
+                resp.getWriter().write(createFailure("Invalid authentication").toString());
+                return;
+            } catch (InsufficientBucketTokensException ex) {
                 resp.getWriter().write(createFailure("Invalid authentication").toString());
                 return;
             }

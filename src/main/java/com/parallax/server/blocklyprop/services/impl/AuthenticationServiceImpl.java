@@ -18,6 +18,7 @@ import com.parallax.server.blocklyprop.services.TokenGeneratorService;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -75,6 +76,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         try {
             currentUser.login(authenticationToken);
+        } catch (UnknownAccountException e) {
+            log.info("Unknown account (wrong password?)", e);
+            return null;
         } catch (Throwable t) {
             log.error("Error while authenticating", t);
             return null;
