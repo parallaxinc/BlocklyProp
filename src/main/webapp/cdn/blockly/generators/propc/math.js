@@ -141,3 +141,22 @@ Blockly.propc.math_crement.OPERATORS = {
     DEC: ['--', Blockly.propc.ORDER_UNARY_PREFIX],
     INC: ['++', Blockly.propc.ORDER_UNARY_PREFIX]
 };
+
+Blockly.Blocks.math_random = {
+    // Rounding functions.
+    init: function() {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+            .appendField("random");
+
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.math_random = function() {
+    Blockly.propc.setups_["random_seed"] = "srand(23);\n";
+
+    return 'rand() % 100';
+};
