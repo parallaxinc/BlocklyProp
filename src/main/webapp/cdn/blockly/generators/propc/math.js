@@ -62,50 +62,6 @@ Blockly.propc.math_arithmetic.OPERATORS = {
     MODULUS: [' % ', Blockly.propc.ORDER_MULTIPLICATIVE],
 };
 
-
-
-Blockly.propc.math_single = function() {
-    // Math operators with single operand.
-    var operator = this.getFieldValue('OP');
-    var code;
-    var arg;
-    if (operator == 'NEG') {
-        // Negation is a special case given its different operator precedents.
-        arg = Blockly.propc.valueToCode(this, 'NUM',
-                Blockly.propc.ORDER_UNARY_PREFIX) || '0';
-        if (arg[0] == '-') {
-            // --3 is not legal in Dart.
-            arg = ' ' + arg;
-        }
-        code = '-' + arg;
-        return [code, Blockly.propc.ORDER_UNARY_PREFIX];
-    }
-    if (operator == 'ABS' || operator.substring(0, 5) == 'ROUND') {
-        arg = Blockly.propc.valueToCode(this, 'NUM',
-                Blockly.propc.ORDER_UNARY_POSTFIX) || '0';
-    } else if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
-        arg = Blockly.propc.valueToCode(this, 'NUM',
-                Blockly.propc.ORDER_MULTIPLICATIVE) || '0';
-    } else {
-        arg = Blockly.propc.valueToCode(this, 'NUM',
-                Blockly.propc.ORDER_NONE) || '0';
-    }
-    // First, handle cases which generate values that don't need parentheses.
-    switch (operator) {
-        case 'ABS':
-            code = '||' + arg;
-            break;
-        case 'ROOT':
-            code = '^^' + arg;
-            break;
-        case 'EXP':
-            code = 'Math.exp(' + arg + ')';
-            break;
-    }
-
-    return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-};
-
 // Limit
 Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
