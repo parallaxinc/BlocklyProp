@@ -128,11 +128,6 @@
                 </value>
             </block>
             <block type="cog_new">
-                <value name="STACK_SIZE">
-                    <block type="math_number">
-                        <field name="NUM">128</field>
-                    </block>
-                </value>
             </block>
         </category>
         <category name="<fmt:message key="category.operators" />">

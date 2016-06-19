@@ -31,24 +31,19 @@ Blockly.Blocks.cog_new = {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("cognew");
-        this.appendValueInput("STACK_SIZE", Number)
-            .appendField("Stacksize")
-            .setCheck('Number');
         this.appendStatementInput("METHOD")
             .appendField("Method");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(false, null);
-        this.setNextStatement(false, null);
-        this.setOutput(true, 'Number');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.cog_new = function() {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
     method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
-    var stackSize = Blockly.propc.valueToCode(this, 'STACK_SIZE', Blockly.propc.ORDER_NONE) || '10';
 
-    var code = 'cog_run(' + method + ', ' + stackSize + ')';
+    var code = 'cog_run(' + method + ', 128)';
     return code;
 };
