@@ -46,6 +46,8 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="login.submit" />">
                     </form>
+
+                    <a href="<url:getUrl url="/oauth/google" />">Log in using Google</a>
                 </div>
 
             </div>

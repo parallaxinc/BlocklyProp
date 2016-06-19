@@ -6,7 +6,10 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.name.Names;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
+import com.parallax.server.blocklyprop.security.oauth.GoogleAuthenticator;
+import com.parallax.server.blocklyprop.security.oauth.OAuthAuthenticator;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import com.parallax.server.blocklyprop.services.SecurityService;
@@ -37,6 +40,8 @@ public class ServiceModule extends AbstractModule {
         bind(UserService.class).to(UserServiceImpl.class).asEagerSingleton();
         bind(SecurityService.class).to(SecurityServiceImpl.class).asEagerSingleton();
         bind(SessionService.class).to(SessionServiceImpl.class).asEagerSingleton();
+
+        bind(OAuthAuthenticator.class).annotatedWith(Names.named("Google")).to(GoogleAuthenticator.class);
     }
 
 }
