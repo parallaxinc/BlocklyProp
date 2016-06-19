@@ -134,7 +134,6 @@
                     </block>
                 </value>
             </block>
-            <block type="cog_end"></block>
         </category>
         <category name="<fmt:message key="category.operators" />">
             <block type="math_arithmetic"></block>

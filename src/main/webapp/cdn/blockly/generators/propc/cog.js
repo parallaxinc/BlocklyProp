@@ -44,39 +44,11 @@ Blockly.Blocks.cog_new = {
     }
 };
 
-Blockly.Blocks.cog_end = {
-    init: function() {
-        this.setColour(colorPalette.getColor('programming'));
-        this.appendDummyInput()
-            .appendField("Stop a cog:")
-            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'COG');
-
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-    },
-    getVars: function() {
-        return [this.getFieldValue('COG')];
-    },
-    renameVar: function(oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('COG'))) {
-            this.setTitleValue(newName, 'COG');
-        }
-    }
-}
-
 Blockly.propc.cog_new = function() {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
     method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
     var stackSize = Blockly.propc.valueToCode(this, 'STACK_SIZE', Blockly.propc.ORDER_NONE) || '10';
 
     var code = 'cog_run(' + method + ', ' + stackSize + ')';
-    return code;
-};
-
-Blockly.propc.cog_end = function() {
-    var cog = Blockly.variableDB_.getName(this.getFieldValue('COG'), Blockly.Variables.NAME_TYPE);
-
-    var code = 'cog_end(' + cog + ');\n';
     return code;
 };
