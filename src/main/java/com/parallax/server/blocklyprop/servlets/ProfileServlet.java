@@ -20,6 +20,7 @@ import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
@@ -147,6 +148,9 @@ public class ProfileServlet extends HttpServlet {
                 resp.getWriter().write(createFailure("Invalid authentication").toString());
                 return;
             } catch (InsufficientBucketTokensException ex) {
+                resp.getWriter().write(createFailure("Invalid authentication").toString());
+                return;
+            } catch (WrongAuthenticationSourceException ex) {
                 resp.getWriter().write(createFailure("Invalid authentication").toString());
                 return;
             }

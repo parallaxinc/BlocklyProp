@@ -24,6 +24,7 @@ import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
@@ -93,7 +94,7 @@ public class SecurityServiceImpl implements SecurityService {
         }
     }
 
-    public static User authenticateLocalUserStatic(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException {
+    public static User authenticateLocalUserStatic(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException, WrongAuthenticationSourceException {
         return instance.authenticateLocalUser(email, password);
     }
 
@@ -102,7 +103,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException {
+    public User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException, WrongAuthenticationSourceException {
         try {
             User user = authenticateService.authenticateLocalUser(email, password);
 //            sessionData.get().setUser(user);

@@ -17,6 +17,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.parallax.client.cloudsession.exceptions.ServerException;
+import com.parallax.client.cloudsession.exceptions.UnknownUserException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
+import com.parallax.client.cloudsession.objects.User;
+import com.parallax.server.blocklyprop.security.OAuthService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,12 +40,19 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
 
     private OAuth20Service service;
 
+    private OAuthService oauthService;
+
     @Inject
     public void setConfiguration(Configuration configuration) {
         service = new ServiceBuilder()
                 .apiKey("870921351080-ida0dmvbi4amao2d98ac1souu3ao25dv.apps.googleusercontent.com")
                 .apiSecret("3n5f093hsMDs4qmWc7Q8z8Bn").scope("https://www.googleapis.com/auth/userinfo.email")
                 .callback("http://dev.blockly.parallax.com:8084/blockly/oauth/google").debug().build(GoogleApi20.instance());
+    }
+
+    @Inject
+    public void setOauthService(OAuthService oauthService) {
+        this.oauthService = oauthService;
     }
 
     @Override
@@ -56,7 +68,7 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
     }
 
     @Override
-    public String handleAuthentication(String authenticationCode) {
+    public String handleAuthentication(String authenticationCode) throws UnknownUserException, WrongAuthenticationSourceException, ServerException {
         try {
             OAuth2AccessToken accessToken = service.getAccessToken(authenticationCode);
             System.out.println("Access token: " + accessToken.getAccessToken());
@@ -72,6 +84,14 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
             String name = responseObject.get("name").getAsString();
             String email = responseObject.get("email").getAsString();
             // return email
+
+            try {
+                User user = oauthService.authenticateUser(email, "Google");
+            } catch (UnknownUserException uue) {
+                uue.setEmail(email);
+                throw uue;
+            }
+
             return email;
         } catch (IOException ioe) {
             log.error("IOError gettting Access token", ioe);

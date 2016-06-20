@@ -6,12 +6,18 @@
 package com.parallax.server.blocklyprop.utils;
 
 import com.google.common.base.Strings;
+import com.google.gson.JsonObject;
+import com.parallax.client.cloudsession.exceptions.ServerException;
+import com.parallax.client.cloudsession.exceptions.UnknownUserException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.server.blocklyprop.security.oauth.OAuthAuthenticator;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +39,31 @@ public abstract class OAuthServlet extends HttpServlet {
             resp.sendRedirect(getAuthenticator().getAuthorizationUrl());
         } else {
             log.info("Received authentication code: {}", code);
-            String userEmail = getAuthenticator().handleAuthentication(code);
+            JsonObject response = new JsonObject();
+            response.addProperty("success", true);
+
+            try {
+                String userEmail = getAuthenticator().handleAuthentication(code);
+
+                SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
+                if (savedRequest != null) {
+                    resp.sendRedirect(savedRequest.getRequestUrl());
+                } else {
+                    resp.sendRedirect("/");
+                    response.addProperty("action", "error");
+                }
+
+            } catch (UnknownUserException ex) {
+
+            } catch (WrongAuthenticationSourceException ex) {
+
+            } catch (ServerException ex) {
+                log.error("A server exception accured in the oauth authentication process", ex);
+                response.addProperty("action", "error");
+                response.addProperty("error", "ERROR|SERVER_EXCEPTION");
+            }
+
+            resp.getWriter().write(response.toString());
         }
     }
 
