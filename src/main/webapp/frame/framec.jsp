@@ -405,6 +405,13 @@
         <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb">
             <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
                 <block type="heb_toggle_led"></block>
+                <block type="heb_toggle_led_open">
+                    <value name="LED_NUM">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="heb_set_led_rgb"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">

@@ -28,7 +28,6 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 
-// @TODO : Change "toggle_led" to something more appropriate maybe?
 Blockly.Blocks.heb_toggle_led = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
@@ -47,6 +46,33 @@ Blockly.Blocks.heb_toggle_led = {
 Blockly.propc.heb_toggle_led = function () {
     var led_number = this.getFieldValue("LED_#");
     var led_state = this.getFieldValue("STATE");
+
+    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+
+    var code = 'led(' + led_number + ', ' + led_state + ');\n';
+    return code;
+};
+
+Blockly.Blocks.heb_toggle_led_open = {
+    init: function () {
+        this.setColour(colorPalette.getColor('heb'));
+        this.appendDummyInput()
+                .appendField('Set LED state');
+        this.appendValueInput('LED_NUM')
+                .appendField('LED #')
+                .setCheck('Number');
+        this.appendValueInput('LED_STATE')
+                .appendField('LED state');
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.heb_toggle_led_open = function () {
+    var led_number = Blockly.propc.valueToCode(this, "LED_NUM", Blockly.propc.ORDER_NONE);
+    var led_state = Blockly.propc.valueToCode(this, "LED_STATE", Blockly.propc.ORDER_NONE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
