@@ -412,6 +412,11 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="LED_STATE">
+                        <block type="high_low_value">
+                            <field name="VALUE">'HIGH'</field>
+                        </block>
+                    </value>
                 </block>
                 <block type="heb_set_led_rgb"></block>
             </category>
