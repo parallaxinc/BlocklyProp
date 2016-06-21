@@ -18,9 +18,9 @@ import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.exceptions.ServerException;
-import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.client.cloudsession.objects.User;
+import com.parallax.server.blocklyprop.security.NewOAuthUserException;
 import com.parallax.server.blocklyprop.security.OAuthService;
 import java.io.IOException;
 import java.util.HashMap;
@@ -68,7 +68,7 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
     }
 
     @Override
-    public String handleAuthentication(String authenticationCode) throws UnknownUserException, WrongAuthenticationSourceException, ServerException {
+    public String handleAuthentication(String authenticationCode) throws NewOAuthUserException, WrongAuthenticationSourceException, ServerException {
         try {
             OAuth2AccessToken accessToken = service.getAccessToken(authenticationCode);
             System.out.println("Access token: " + accessToken.getAccessToken());
@@ -85,12 +85,7 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
             String email = responseObject.get("email").getAsString();
             // return email
 
-            try {
-                User user = oauthService.authenticateUser(email, "Google");
-            } catch (UnknownUserException uue) {
-                uue.setEmail(email);
-                throw uue;
-            }
+            User user = oauthService.authenticateUser(email, "Google");
 
             return email;
         } catch (IOException ioe) {

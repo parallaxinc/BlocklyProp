@@ -6,8 +6,8 @@
 package com.parallax.server.blocklyprop.security.oauth;
 
 import com.parallax.client.cloudsession.exceptions.ServerException;
-import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
+import com.parallax.server.blocklyprop.security.NewOAuthUserException;
 
 /**
  *
@@ -17,6 +17,6 @@ public interface OAuthAuthenticator {
 
     String getAuthorizationUrl();
 
-    String handleAuthentication(String authenticationCode) throws UnknownUserException, WrongAuthenticationSourceException, ServerException;
+    String handleAuthentication(String authenticationCode) throws NewOAuthUserException, WrongAuthenticationSourceException, ServerException;
 
 }

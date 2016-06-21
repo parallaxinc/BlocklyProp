@@ -12,7 +12,6 @@ import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.client.cloudsession.objects.User;
-import com.parallax.server.blocklyprop.security.OAuthToken;
 import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -37,25 +36,29 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public User authenticateUser(String email, String authenticationSource) throws UnknownUserException, WrongAuthenticationSourceException, ServerException {
-        User user = oauthService.validateUser(email, authenticationSource);
-        if (user != null) {
-            Subject currentUser = SecurityUtils.getSubject();
+    public User authenticateUser(String email, String authenticationSource) throws NewOAuthUserException, WrongAuthenticationSourceException, ServerException {
+        try {
+            User user = oauthService.validateUser(email, authenticationSource);
+            if (user != null) {
+                Subject currentUser = SecurityUtils.getSubject();
 
-            OAuthToken authenticationToken = new OAuthToken(email, authenticationSource);
+                OAuthToken authenticationToken = new OAuthToken(email, authenticationSource);
 
-            try {
-                currentUser.login(authenticationToken);
-                return user;
-            } catch (UnknownAccountException e) {
-                log.info("Unknown account (wrong password?)", e);
-                return null;
-            } catch (Throwable t) {
-                log.error("Error while authenticating", t);
+                try {
+                    currentUser.login(authenticationToken);
+                    return user;
+                } catch (UnknownAccountException e) {
+                    log.info("Unknown account (wrong password?)", e);
+                    return null;
+                } catch (Throwable t) {
+                    log.error("Error while authenticating", t);
+                    return null;
+                }
+            } else {
                 return null;
             }
-        } else {
-            return null;
+        } catch (UnknownUserException uue) {
+            throw new NewOAuthUserException(email, authenticationSource);
         }
     }
 
