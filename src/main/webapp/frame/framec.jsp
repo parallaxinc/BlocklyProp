@@ -144,12 +144,12 @@
             <block type="logic_compare"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
-            <block type="logic_boolean"></block>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
+            <block type="logic_boolean"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
