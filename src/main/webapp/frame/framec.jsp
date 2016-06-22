@@ -429,7 +429,8 @@
                         </block>
                     </value>
                 </block>
-                <block type="heb_cursor_position"></block>
+                <block type="heb_cursor_position_large"></block>
+                <block type="heb_cursor_position_small"></block>
                 <block type="heb_clear_screen"></block>
                 <block type="heb_rotate"></block>
             </category>
