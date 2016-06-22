@@ -92,11 +92,9 @@ Blockly.Blocks.eeprom_text_to = {
         this.appendDummyInput()
             .appendField("Save text to EEPROM")
             .appendField("text")
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                          'media/quote0.png', 12, 12))
+            .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-            .appendField(new Blockly.FieldImage(Blockly.pathToBlockly +
-                                          'media/quote1.png', 12, 12));
+            .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
             .appendField("text length");
         this.appendDummyInput()
