@@ -136,14 +136,9 @@
             <block type="math_crement"></block>
             <block type="bit_math_shift"></block>
             <block type="math_random"></block>
-            <!--<block type="bit_math_rotate"></block>-->
-            <!-- Repeat from Conditions -->
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
-
             <block type="logic_compare"></block>
-            <block type="logic_operation"></block>
-            <block type="logic_negate"></block>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />">
