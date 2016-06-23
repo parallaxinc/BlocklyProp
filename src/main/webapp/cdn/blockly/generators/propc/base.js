@@ -37,6 +37,8 @@ Blockly.propc.make_pin = function () {
         case "LOW":
             return 'low(' + dropdown_pin + ');\n';
         case "TOGGLE":
+            Blockly.propc.setups_["init_pin_" + dropdown_pin] = 'low(' + dropdown_pin + ');\n';
+
             return 'toggle(' + dropdown_pin + ');\n';
         case "INPUT":
             return 'set_direction(' + dropdown_pin + ', 0);\n';
