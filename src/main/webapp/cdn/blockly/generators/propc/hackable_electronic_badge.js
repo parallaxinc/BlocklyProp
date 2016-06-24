@@ -65,6 +65,7 @@ Blockly.Blocks.heb_toggle_led_open = {
         this.appendValueInput('LED_STATE')
                 .appendField('LED state');
 
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -78,7 +79,7 @@ Blockly.propc.heb_toggle_led_open = function () {
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'led(' + led_number + ', ' + led_state + ');\n';
-    return code;
+    return [code, Blockly.propc.ORDERN_NONE];
 };
 
 Blockly.Blocks.heb_set_led_rgb = {
