@@ -1,5 +1,18 @@
 h2. Change log
 
+h4. 2016/06/24
+
+* C variable types
+* Simplify cognew
+* Problem with newline character in print block
+* Remove math_single
+* Add random number block
+* Hackable Electronic Badge: toggle led
+* Move boolean block to values category
+* Fix EEPROM quote issues
+* Remove duplicate blocks in category
+* Add initialization for pins that get toggled
+
 h4. 2016/06/16
 
 * Minor toolbox organization and naming changes
