@@ -185,7 +185,7 @@ Blockly.Blocks.heb_cursor_position_small = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Setup to print LARGE text. Cursor at:')
+                .appendField('Setup to print SMALL text. Cursor at:')
                 .appendField('Column')
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"]]), "COLS")
                 .appendField('Row')
