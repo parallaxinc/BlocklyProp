@@ -123,7 +123,6 @@
 
             <block type="math_number"></block>
             <block type="math_arithmetic"></block>
-            <block type="math_single"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
             <block type="bit_math_shift"></block>

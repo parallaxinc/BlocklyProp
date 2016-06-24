@@ -85,46 +85,6 @@ Blockly.Blocks['math_arithmetic'] = {
     }
 };
 
-Blockly.Blocks['math_single'] = {
-    /**
-     * Block for advanced math operators with single operand.
-     * @this Blockly.Block
-     */
-    init: function () {
-        var OPERATORS =
-                [['ROOT', 'ROOT'],
-                    ['ABS', 'ABS'],
-                    ['-', 'NEG'],
-                    ['ln', 'LN'],
-                    ['log10', 'LOG10'],
-                    ['e^', 'EXP'],
-                    ['10^', 'POW10']];
-//    this.setHelpUrl(Blockly.Msg.MATH_SINGLE_HELPURL);
-        this.setColour(colorPalette.getColor('math'));
-        this.setOutput(true, 'Number');
-//    this.interpolateMsg('%1 %2',
-//        ['OP', new Blockly.FieldDropdown(OPERATORS)],
-//        ['NUM', 'Number', Blockly.ALIGN_RIGHT],
-//        Blockly.ALIGN_RIGHT);
-        // Assign 'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip("");
-        /*  this.setTooltip(function() {
-         var mode = thisBlock.getFieldValue('OP');
-         var TOOLTIPS = {
-         'ROOT': Blockly.Msg.MATH_SINGLE_TOOLTIP_ROOT,
-         'ABS': Blockly.Msg.MATH_SINGLE_TOOLTIP_ABS,
-         'NEG': Blockly.Msg.MATH_SINGLE_TOOLTIP_NEG,
-         'LN': Blockly.Msg.MATH_SINGLE_TOOLTIP_LN,
-         'LOG10': Blockly.Msg.MATH_SINGLE_TOOLTIP_LOG10,
-         'EXP': Blockly.Msg.MATH_SINGLE_TOOLTIP_EXP,
-         'POW10': Blockly.Msg.MATH_SINGLE_TOOLTIP_POW10
-         };
-         return TOOLTIPS[mode];
-         });*/
-    }
-};
-
 Blockly.Blocks['math_trig'] = {
     /**
      * Block for trigonometry operators.

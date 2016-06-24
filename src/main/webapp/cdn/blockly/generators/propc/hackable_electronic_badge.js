@@ -28,7 +28,6 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 
-// @TODO : Change "toggle_led" to something more appropriate maybe?
 Blockly.Blocks.heb_toggle_led = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
@@ -47,6 +46,33 @@ Blockly.Blocks.heb_toggle_led = {
 Blockly.propc.heb_toggle_led = function () {
     var led_number = this.getFieldValue("LED_#");
     var led_state = this.getFieldValue("STATE");
+
+    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+
+    var code = 'led(' + led_number + ', ' + led_state + ');\n';
+    return code;
+};
+
+Blockly.Blocks.heb_toggle_led_open = {
+    init: function () {
+        this.setColour(colorPalette.getColor('heb'));
+        this.appendDummyInput()
+                .appendField('Set LED state');
+        this.appendValueInput('LED_NUM')
+                .appendField('LED #')
+                .setCheck('Number');
+        this.appendValueInput('LED_STATE')
+                .appendField('LED state');
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.heb_toggle_led_open = function () {
+    var led_number = Blockly.propc.valueToCode(this, "LED_NUM", Blockly.propc.ORDER_NONE);
+    var led_state = Blockly.propc.valueToCode(this, "LED_STATE", Blockly.propc.ORDER_NONE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -128,13 +154,11 @@ Blockly.propc.heb_print_string_var = function () {
     return 'oledprint(' + value + ');\n';
 };
 
-Blockly.Blocks.heb_cursor_position = {
+Blockly.Blocks.heb_cursor_position_large = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Set cursor position')
-                .appendField('Set text size')
-                .appendField(new Blockly.FieldDropdown([["SMALL", "SMALL"], ["LARGE", "LARGE"]]), "TEXT_SIZE")
+                .appendField('Setup to print LARGE text. Cursor at:')
                 .appendField('Column')
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COLS")
                 .appendField('Row')
@@ -145,15 +169,40 @@ Blockly.Blocks.heb_cursor_position = {
     }
 };
 
-Blockly.propc.heb_cursor_position = function () {
+Blockly.propc.heb_cursor_position_large = function () {
     var columns = this.getFieldValue("COLS");
     var rows = this.getFieldValue("ROWS");
-    var text_size = this.getFieldValue("TEXT_SIZE");
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'text_size(' + text_size + ');\n' + 'cursor(' + columns + ', ' + rows + ');\n';
+    var code = 'text_size(LARGE);\n' + 'cursor(' + columns + ', ' + rows + ');\n';
+    return code;
+};
+
+Blockly.Blocks.heb_cursor_position_small = {
+    init: function () {
+        this.setColour(colorPalette.getColor('heb'));
+        this.appendDummyInput()
+                .appendField('Setup to print LARGE text. Cursor at:')
+                .appendField('Column')
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"]]), "COLS")
+                .appendField('Row')
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "ROWS");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.heb_cursor_position_small = function () {
+    var columns = this.getFieldValue("COLS");
+    var rows = this.getFieldValue("ROWS");
+
+    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+
+    var code = 'text_size(SMALL);\n' + 'cursor(' + columns + ', ' + rows + ');\n';
     return code;
 };
 

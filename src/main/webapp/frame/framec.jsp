@@ -128,34 +128,24 @@
                 </value>
             </block>
             <block type="cog_new">
-                <value name="STACK_SIZE">
-                    <block type="math_number">
-                        <field name="NUM">128</field>
-                    </block>
-                </value>
             </block>
-            <block type="cog_end"></block>
         </category>
         <category name="<fmt:message key="category.operators" />">
             <block type="math_arithmetic"></block>
-            <block type="math_single"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
             <block type="bit_math_shift"></block>
-            <!--<block type="bit_math_rotate"></block>-->
-            <!-- Repeat from Conditions -->
+            <block type="math_random"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
-
             <block type="logic_compare"></block>
-            <block type="logic_operation"></block>
-            <block type="logic_negate"></block>
-            <block type="logic_boolean"></block>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
+            <block type="logic_boolean"></block>
+            <block type="high_low_value"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
@@ -411,6 +401,18 @@
         <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb">
             <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
                 <block type="heb_toggle_led"></block>
+                <block type="heb_toggle_led_open">
+                    <value name="LED_NUM">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="LED_STATE">
+                        <block type="high_low_value">
+                            <field name="VALUE">'HIGH'</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="heb_set_led_rgb"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
@@ -422,7 +424,8 @@
                         </block>
                     </value>
                 </block>
-                <block type="heb_cursor_position"></block>
+                <block type="heb_cursor_position_large"></block>
+                <block type="heb_cursor_position_small"></block>
                 <block type="heb_clear_screen"></block>
                 <block type="heb_rotate"></block>
             </category>

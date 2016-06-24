@@ -37,6 +37,8 @@ Blockly.propc.make_pin = function () {
         case "LOW":
             return 'low(' + dropdown_pin + ');\n';
         case "TOGGLE":
+            Blockly.propc.setups_["init_pin_" + dropdown_pin] = 'low(' + dropdown_pin + ');\n';
+
             return 'toggle(' + dropdown_pin + ');\n';
         case "INPUT":
             return 'set_direction(' + dropdown_pin + ', 0);\n';
@@ -130,6 +132,28 @@ Blockly.propc.string_type_block = function() {
 
     var code = '"' + text + '"';
     return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.high_low_value = {
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'VALUE');
+
+        this.setOutput(true, 'Boolean');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setTooltip(Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP);
+    }
+};
+
+Blockly.Blocks.high_low_value.OPERATORS =
+        [[Blockly.LANG_LOGIC_BOOLEAN_TRUE, 'HIGH'],
+            [Blockly.LANG_LOGIC_BOOLEAN_FALSE, 'LOW']];
+
+Blockly.propc.logic_boolean = function() {
+    var code = (this.getFieldValue('VALUE') == 'HIGH') ? '1' : '0';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.pulse_in = function() {
