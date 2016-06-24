@@ -211,7 +211,9 @@ Blockly.propc.servo_speed = function () {
     var pin = this.getFieldValue('PIN');
     var speed = this.getFieldValue('SPEED');
 
-    return 'servo_speed(' + pin + ', ' + speed + ');\n';
+    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+
+    return 'drive_speed(' + pin + ', ' + speed + ');\n';
 };
 
 Blockly.propc.servo_set_ramp = function () {
