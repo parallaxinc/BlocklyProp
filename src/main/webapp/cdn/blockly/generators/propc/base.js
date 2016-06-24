@@ -138,20 +138,15 @@ Blockly.Blocks.high_low_value = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'VALUE');
+                .appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), 'VALUE');
 
         this.setOutput(true, 'Boolean');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
-        this.setTooltip(Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP);
     }
 };
 
-Blockly.Blocks.high_low_value.OPERATORS =
-        [[Blockly.LANG_LOGIC_BOOLEAN_TRUE, 'HIGH'],
-            [Blockly.LANG_LOGIC_BOOLEAN_FALSE, 'LOW']];
-
-Blockly.propc.logic_boolean = function() {
+Blockly.propc.high_low_value = function() {
     var code = (this.getFieldValue('VALUE') == 'HIGH') ? '1' : '0';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
