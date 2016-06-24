@@ -128,26 +128,15 @@ Blockly.propc.variables_set = function () {
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
-        Blockly.propc.vartype_[varName] = 'int';
-        /*
-         switch (typeof argument0) {
-         case 'number':
-         if (variables[x].indexOf(".") > -1) {
-         Blockly.propc.vartype_[varName] = 'float';
+         if (argument0.indexOf("\"") > -1) {
+           Blockly.propc.vartype_[varName] = 'char';
+         } else if (argument0.indexOf(".") > -1) {
+           Blockly.propc.vartype_[varName] = 'float';
+         } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false")) {
+           Blockly.propc.vartype_[varName] = 'boolean';
          } else {
-         Blockly.propc.vartype_[varName] = 'int';
+           Blockly.propc.vartype_[varName] = 'int';
          }
-         break
-         case 'string':
-         Blockly.propc.vartype_[varName] = 'char';
-         break
-         case 'boolean':
-         Blockly.propc.vartype_[varName] = 'boolean';
-         break
-         default:
-         break
-         }
-         */
     }
     return varName + ' = ' + argument0 + ';\n';
 };
