@@ -466,7 +466,7 @@ Blockly.Blocks.heb_badge_was_shaken = {
         this.appendDummyInput()
                 .appendField("Was shaken?");
 
-        this.setOutput(true, 'Number');
+        this.setOutput(true, 'Boolean');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
     }
