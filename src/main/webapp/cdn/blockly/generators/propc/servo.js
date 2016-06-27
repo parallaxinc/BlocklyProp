@@ -34,7 +34,7 @@ Blockly.Blocks.servo_move = {
         this.appendDummyInput()
                 .appendField("Servo")
                 .appendField("PIN#")
-                .appendField(new Blockly.FieldDropdown([["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"]]), "PIN");
+                .appendField(new Blockly.FieldDropdown(profile.default.servo), "PIN");
         this.appendDummyInput()
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("Degrees (0 - 180°)")
