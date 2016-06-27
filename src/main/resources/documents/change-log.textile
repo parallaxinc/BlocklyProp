@@ -1,5 +1,11 @@
 h2. Change log
 
+h4. 2016/06/27
+
+* Fix bugs introduced in build 2016/06/24
+* Limit servo to a limited set of pins
+* Replace servo angle input by angle selection
+
 h4. 2016/06/24
 
 * C variable types
