@@ -47,5 +47,6 @@ Blockly.propc.sirc_get = function() {
     Blockly.propc.definitions_["sirc"] = '#include "sirc.h"';
     Blockly.propc.setups_["sirc"] = "sirc_setTimeout( 70 );\n";
 
-    return 'sirc_button(' + pin + ')';
+    var code = 'sirc_button(' + pin + ')';
+    return [code, Blockly.propc.ORDER_NONE];
 };
