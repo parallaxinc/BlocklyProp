@@ -34,7 +34,7 @@ Blockly.Blocks.servo_move = {
         this.appendDummyInput()
                 .appendField("Servo")
                 .appendField("PIN#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+                .appendField(new Blockly.FieldDropdown([["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"]]), "PIN");
         this.appendValueInput("DEGREES", Number)
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
@@ -211,7 +211,9 @@ Blockly.propc.servo_speed = function () {
     var pin = this.getFieldValue('PIN');
     var speed = this.getFieldValue('SPEED');
 
-    return 'servo_speed(' + pin + ', ' + speed + ');\n';
+    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+
+    return 'drive_speed(' + pin + ', ' + speed + ');\n';
 };
 
 Blockly.propc.servo_set_ramp = function () {

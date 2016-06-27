@@ -58,11 +58,8 @@ Blockly.propc.joystick_input_yaxis = function() {
     var pin_number_yaxis = this.getFieldValue('PINY');
 
     Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);\n';
-    }
 
-    var code = 'ad_volts(' + pin_number_yaxis + ')';
+    var code = 'ad_in(' + pin_number_yaxis + ') * 100 / 4096';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
@@ -70,10 +67,7 @@ Blockly.propc.joystick_input_xaxis = function() {
     var pin_number_xaxis = this.getFieldValue('PINX');
 
     Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);\n';
-    }
 
-    var code = 'ad_volts(' + pin_number_xaxis + ')';
+    var code = 'ad_in(' + pin_number_xaxis + ') * 100 / 4096';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };

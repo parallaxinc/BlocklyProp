@@ -65,6 +65,7 @@ Blockly.Blocks.heb_toggle_led_open = {
         this.appendValueInput('LED_STATE')
                 .appendField('LED state');
 
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -78,7 +79,7 @@ Blockly.propc.heb_toggle_led_open = function () {
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'led(' + led_number + ', ' + led_state + ');\n';
-    return code;
+    return [code, Blockly.propc.ORDERN_NONE];
 };
 
 Blockly.Blocks.heb_set_led_rgb = {
@@ -184,7 +185,7 @@ Blockly.Blocks.heb_cursor_position_small = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Setup to print LARGE text. Cursor at:')
+                .appendField('Setup to print SMALL text. Cursor at:')
                 .appendField('Column')
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"]]), "COLS")
                 .appendField('Row')
@@ -465,7 +466,7 @@ Blockly.Blocks.heb_badge_was_shaken = {
         this.appendDummyInput()
                 .appendField("Was shaken?");
 
-        this.setOutput(true, 'Number');
+        this.setOutput(true, 'Boolean');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
     }

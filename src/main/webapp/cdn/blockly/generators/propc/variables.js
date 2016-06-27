@@ -132,7 +132,7 @@ Blockly.propc.variables_set = function () {
            Blockly.propc.vartype_[varName] = 'char';
          } else if (argument0.indexOf(".") > -1) {
            Blockly.propc.vartype_[varName] = 'float';
-         } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false")) {
+         } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false") > -1) {
            Blockly.propc.vartype_[varName] = 'boolean';
          } else {
            Blockly.propc.vartype_[varName] = 'int';

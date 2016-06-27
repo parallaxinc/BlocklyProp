@@ -158,5 +158,6 @@ Blockly.Blocks.math_random = {
 Blockly.propc.math_random = function() {
     Blockly.propc.setups_["random_seed"] = "srand(23);\n";
 
-    return 'rand() % 100';
+    var code = 'rand() % 100';
+    return [code, Blockly.propc.ORDER_NONE];
 };
