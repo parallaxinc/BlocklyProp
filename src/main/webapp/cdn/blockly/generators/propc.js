@@ -176,7 +176,7 @@ Blockly.propc.init = function (workspace) {
                 defvars[x] = "char " + varName + '{{$var_length_' + varName + '}};\n';
             } else if (variables[x].indexOf(".") > -1) {
                 defvars[x] = "float " + varName + ';\n';
-            } else if (variables[x].indexOf("true") > -1 || variables[x].indexOf("false")) {
+            } else if (variables[x].indexOf("true") > -1 || variables[x].indexOf("false") > -1) {
                 defvars[x] = "boolean " + varName + ';\n';
             } else {
                 defvars[x] = "int " + varName + ';\n';
