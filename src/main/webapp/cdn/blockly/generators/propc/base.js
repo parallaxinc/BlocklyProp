@@ -140,7 +140,7 @@ Blockly.Blocks.high_low_value = {
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), 'VALUE');
 
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
     }
