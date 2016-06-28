@@ -10,8 +10,20 @@
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
+        <script type="text/javascript" src="<url:getCdnUrl url="/oauth-complete.js"/>"></script>
     </head>
-    <body>
+    <%
+        String redirect = (String) request.getAttribute("redirect");
+        if (redirect != null) {
+    %>
+    <body data-redirect="<%= redirect%>" >
+        <%
+        } else {
+        %>
+    <body data-redirect="<url:getUrl url="/" />" >
+        <%
+            }
+        %>
 
         <div class="container">
             <div class="row">

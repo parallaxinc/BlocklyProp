@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,13 +44,10 @@ public abstract class OAuthServlet extends HttpServlet {
                 String userEmail = getAuthenticator().handleAuthentication(code);
 
                 // Show confirm or straight redirect
-//                SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
-//                if (savedRequest != null) {
-//                    resp.sendRedirect(savedRequest.getRequestUrl());
-//                } else {
-//                    resp.sendRedirect("/");
-//                    response.addProperty("action", "redirect");
-//                }
+                SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
+                if (savedRequest != null) {
+                    req.setAttribute("redirect", savedRequest.getRequestUrl());
+                }
                 req.getRequestDispatcher("/WEB-INF/servlet/oauth/success.jsp").forward(req, resp);
             } catch (NewOAuthUserException noaue) {
                 // Save info in session
