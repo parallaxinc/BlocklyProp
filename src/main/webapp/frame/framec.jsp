@@ -134,7 +134,6 @@
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
-            <block type="bit_math_shift"></block>
             <block type="math_random"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
