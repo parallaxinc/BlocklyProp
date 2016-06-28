@@ -201,7 +201,7 @@ Blockly.propc.servo_move = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var degrees = Blockly.propc.valueToCode(this, 'DEGREES', Blockly.propc.ORDER_NONE);
 
-    Blockly.propc.definitions_['define_servo'] = '#include "servo.h"';
+    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
 
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
     return code;
