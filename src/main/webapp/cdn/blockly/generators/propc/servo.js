@@ -69,9 +69,9 @@ Blockly.Blocks.servo_set_ramp = {
                 .appendField("Servo set ramp")
                 .appendField("Pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
-        this.appendDummyInput()
+        this.appendValueInput('RAMPSTEP')
                 .appendField("Rampstep")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"]]), 'RAMP_STEP');
+                .setCheck('Number');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -218,7 +218,15 @@ Blockly.propc.servo_speed = function () {
 
 Blockly.propc.servo_set_ramp = function () {
     var pin = this.getFieldValue('PIN');
-    var ramp_step = this.getFieldValue('RAMP_STEP');
+    var ramp_step = Blockly.propc.valueToCode(this, 'RAMPSTEP', Blockly.propc.ORDER_NONE);
+
+    if (Number(ramp_step) < 0) {
+      ramp_step = "0"
+    } else if (Number(ramp_step) > 100) {
+      ramp_step = "100"
+    }
+
+    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
 
     return 'servo_setramp(' + pin + ', ' + ramp_step + ');\n';
 };

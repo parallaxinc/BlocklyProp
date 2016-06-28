@@ -369,7 +369,13 @@
             </category>
             <category name="<fmt:message key="category.actuator-output.cr-servo" />">
                 <block type="servo_speed"></block>
-                <block type="servo_set_ramp"></block>
+                <block type="servo_set_ramp">
+                    <value name="RAMPSTEP">
+                        <block type="math_number">
+                            <field name="NUM">50</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="pwm_start"></block>
                 <block type="pwm_set"></block>
                 <block type="pwm_stop"></block>
