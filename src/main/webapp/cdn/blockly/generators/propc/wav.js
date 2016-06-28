@@ -79,24 +79,25 @@ Blockly.Blocks.wav_stop = {
 Blockly.propc.wav_play = function() {
     var filename = this.getFieldValue('FILENAME');
 
-    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.setups_["sd_card"] = 'sd_mount(' + do_pin + ', ' + clk_pin + ', ' + di_pin + ', ' + cs_pin + ');';
 
-    var code = 'const char file' + filename + '[] = {"' + filename + '"};\nwav_play(' + filename + ');\n';
+    var code = 'wav_play("' + filename + '.wav");\n';
     return code;
 };
 
 Blockly.propc.wav_status = function() {
-    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
 
     var code = 'wav_playing()';
-    return code;
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.wav_volume = function() {
     var volume = Blockly.propc.valueToCode(this, 'VOLUME', Blockly.propc.ORDER_NONE) || '0';
     var length = Blockly.propc.valueToCode(this, 'LENGTH', Blockly.propc.ORDER_NONE) || '0';
 
-    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
 
     var code = 'wav_volume(' + volume + ');\npause(' + length + ');\n';
     return code;
