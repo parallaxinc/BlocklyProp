@@ -57,7 +57,7 @@ Blockly.propc.make_pin_input = function () {
             return 'low(' + pin + ');\n';
         case "TOGGLE":
             Blockly.propc.setups_["init_pin_" + dropdown_pin] = 'low(' + dropdown_pin + ');\n';
-            
+
             return 'toggle(' + pin + ');\n';
         case "INPUT":
             return 'set_direction(' + pin + ', 0);\n';
@@ -140,7 +140,7 @@ Blockly.Blocks.high_low_value = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), 'VALUE');
+                .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), 'VALUE');
 
         this.setOutput(true, 'Boolean');
         this.setPreviousStatement(false, null);
@@ -149,7 +149,7 @@ Blockly.Blocks.high_low_value = {
 };
 
 Blockly.propc.high_low_value = function() {
-    var code = (this.getFieldValue('VALUE') == 'HIGH') ? '1' : '0';
+    var code = this.getFieldValue('VALUE');
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
