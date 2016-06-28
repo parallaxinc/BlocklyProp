@@ -129,7 +129,7 @@ Blockly.propc.heb_print_numeric_var = function () {
     if (value.startsWith('"') && value.endsWith('"')) {
         return 'oledprint(' + value + ');\n';
     } else {
-        var code = 'oledprint("' + value + ' = %d", ' + value + ');\n';
+        var code = 'oledprint("%d", ' + value + ');\n';
         return code;
     }
 };
