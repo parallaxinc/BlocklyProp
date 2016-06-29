@@ -13,14 +13,18 @@ import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
 import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
+import com.parallax.server.blocklyprop.security.OAuthToken;
 import java.io.IOException;
-import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.configuration.Configuration;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,30 +57,46 @@ public class NewOAuthUserServlet extends HttpServlet {
         String authenticator = (String) session.getAttribute("oauth-authenticator");
         if (Strings.isNullOrEmpty(email) || Strings.isNullOrEmpty(authenticator)) {
             log.error("New OAuth request while missing info in session");
-            req.getRequestDispatcher("WEB-INF/servlet/oauth/server-error.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/servlet/oauth/server-error.jsp").forward(req, resp);
         }
 
         String screenname = req.getParameter("screenname");
         if (Strings.isNullOrEmpty(screenname)) {
             req.setAttribute("missing-error", "Missing fields");
-            req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
         } else {
             try {
                 // Create user
                 oauthService.registerUser(email, authenticator, "en", screenname);
                 // Authenticate user
 
-                resp.getWriter().write("Welcome new user");
+                Subject currentUser = SecurityUtils.getSubject();
+
+                OAuthToken authenticationToken = new OAuthToken(email, authenticator);
+
+                try {
+                    currentUser.login(authenticationToken);
+                } catch (Throwable t) {
+                    log.error("Error while authenticating", t);
+                }
+
+                // Show confirm or straight redirect
+                SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
+                if (savedRequest != null) {
+                    req.setAttribute("redirect", savedRequest.getRequestUrl());
+                }
+                req.getRequestDispatcher("/WEB-INF/servlet/oauth/success.jsp").forward(req, resp);
             } catch (NonUniqueEmailException ex) {
-                java.util.logging.Logger.getLogger(NewOAuthUserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                log.error("Non unique email exception", ex);
+                req.getRequestDispatcher("/WEB-INF/servlet/oauth/server-error.jsp").forward(req, resp);
             } catch (ScreennameUsedException ex) {
                 // Username already in use
                 req.setAttribute("screenname", screenname);
                 req.setAttribute("screenname-error", "screenname-used");
-                req.getRequestDispatcher("WEB-INF/servlet/oauth/new-oauth-user.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/servlet/oauth/new-oauth-user.jsp").forward(req, resp);
             } catch (ServerException ex) {
                 log.error("A server exception accured in the oauth authentication process", ex);
-                req.getRequestDispatcher("WEB-INF/servlet/oauth/server-error.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/servlet/oauth/server-error.jsp").forward(req, resp);
             }
         }
 
