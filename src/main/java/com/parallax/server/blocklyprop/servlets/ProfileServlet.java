@@ -231,6 +231,10 @@ public class ProfileServlet extends HttpServlet {
             } catch (PasswordComplexityException pce) {
                 req.setAttribute("passwordComplexity", "Password is not complex enough");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            } catch (WrongAuthenticationSourceException ex) {
+                log.warn("Trying to change password of non local user!");
+                req.setAttribute("base-error", "Server error");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             }
         }
     }

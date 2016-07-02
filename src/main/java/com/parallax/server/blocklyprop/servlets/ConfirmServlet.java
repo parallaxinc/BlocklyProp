@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -25,6 +28,8 @@ import org.apache.commons.configuration.Configuration;
  */
 @Singleton
 public class ConfirmServlet extends HttpServlet {
+
+    private static Logger log = LoggerFactory.getLogger(ConfirmServlet.class);
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
@@ -71,6 +76,10 @@ public class ConfirmServlet extends HttpServlet {
                 req.setAttribute("invalidToken", "Unknown email");
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
             } catch (ServerException se) {
+                req.setAttribute("server-error", "Server exception");
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
+            } catch (WrongAuthenticationSourceException ex) {
+                log.warn("Trying to confirm email of non local user!");
                 req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
             }
