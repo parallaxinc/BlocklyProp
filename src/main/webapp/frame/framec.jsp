@@ -148,45 +148,33 @@
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-        <category name="<fmt:message key="category.input-output" />" exclude="heb">
-            <category name="<fmt:message key="category.input-output.pin-states" />">
-                <block type="make_pin"></block>
-                <block type="make_pin_input">
-                    <value name="PIN">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="check_pin"></block>
-                <block type="check_pin_input">
-                    <value name="PIN">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="set_pins"></block>
-            </category>
-            <category name="<fmt:message key="category.input-output.timing" />">
-                <block type="base_freqout">
-                    <value name="DURATION">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="FREQUENCY">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="pulse_in"></block>
-                <block type="pulse_out"></block>
-                <block type="rc_charge_discharge"></block>
-            </category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="heb">
+            <block type="make_pin"></block>
+            <block type="make_pin_input">
+                <value name="PIN">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="check_pin"></block>
+            <block type="check_pin_input">
+                <value name="PIN">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="set_pins"></block>
         </category>
         <category name="<fmt:message key="category.communicate" />" exclude="heb">
+            <category name="<fmt:message key="category.actuator-output.serial-lcd" />">
+                <block type="debug_lcd_init"></block>
+                <block type="debug_lcd_clear"></block>
+                <block type="debug_lcd_print"></block>
+                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_action"></block>
+            </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
                 <block type="console_print_variables"></block>
@@ -201,20 +189,68 @@
                 <block type="serial_rx_byte"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.activity-board" />" include="activity-board" exclude="heb">
-            <category name="<fmt:message key="category.activity-board.voltage" />">
-                <block type="ab_volt_v_in"></block>
-                <block type="ab_volt_v_out"></block>
-                <block type="ab_volt_in"></block>
-                <block type="ab_volt_out"></block>
+        <category name="<fmt:message key="category.sensor-input" />" exclude="heb">
+            <category name="<fmt:message key="category.sensor-input.etape" />">
+                <block type="etape_rc_time"></block>
             </category>
-            <category name="<fmt:message key="category.activity-board.memory" />">
+            <category name="<fmt:message key="category.sensor-input.hmc58783" />">
+                <block type="HMC5883L_init"></block>
+                <block type="HMC5883L_read"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
+                <block type="joystick_input_xaxis"></block>
+                <block type="joystick_input_yaxis"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
+                <block type="MX2125_acceleration_xaxis"></block>
+                <block type="MX2125_acceleration_yaxis"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.mma7455" />">
+                <block type="MMA7455_acceleration"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
+                <block type="PAM_7Q_Init"></block>
+                <block type="PAM_7Q_Latitude"></block>
+                <block type="PAM_7Q_Longitude"></block>
+                <block type="PAM_7Q_Velocity"></block>
+                <block type="PAM_7Q_Heading"></block>
+                <block type="PAM_7Q_Altitude"></block>
+                <block type="PAM_7Q_SatsTracked"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.ping" />">
+                <block type="sensor_ping"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.pir" />">
+                <block type="PIR_Sensor"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.rfid" />">
+                <block type="rfid_enable"></block>
+                <block type="rfid_get"></block>
+                <block type="rfid_disable"></block>
+                <block type="rfid_close"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
+                <block type="SF02_Laser_Rangefinder"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.sony-remote" />">
+                <block type="sirc_get"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
+                <block type="sound_impact_run"></block>
+                <block type="sound_impact_get"></block>
+                <block type="sound_impact_end"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.memory" />" include="activity-board">
+            <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_int_to"></block>
                 <block type="eeprom_int_from"></block>
                 <block type="eeprom_float_to"></block>
                 <block type="eeprom_float_from"></block>
                 <block type="eeprom_text_to"></block>
                 <block type="eeprom_text_from"></block>
+            </category>
+            <category name="<fmt:message key="category.memory.sdcard" />">
                 <block type="sd_card_mount"></block>
                 <block type="sd_card_int_to">
                     <value name="STARTING_POINT_VALUE">
@@ -292,7 +328,30 @@
                 </block>
                 <block type="sd_card_read_text"></block>
             </category>
-            <category name="<fmt:message key="category.activity-board.audio" />">
+        </category>
+        <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb">
+            <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">
+                <block type="rc_charge_discharge"></block>
+            </category>
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb">
+                <block type="ab_volt_v_in"></block>
+                <block type="ab_volt_v_out"></block>
+                <block type="ab_volt_in"></block>
+                <block type="ab_volt_out"></block>
+            </category>
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb">
+                <block type="ab_volt_v_in"></block>
+                <block type="ab_volt_v_out"></block>
+                <block type="ab_volt_in"></block>
+                <block type="ab_volt_out"></block>
+            </category>
+            <category name="fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb">
+                <block type="pulse_in"></block>
+                <block type="pulse_out"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb">
+            <category name="<fmt:message key="category.audio.audio" />">
                 <block type="wav_play"></block>
                 <block type="wav_status"></block>
                 <block type="wav_volume">
@@ -309,64 +368,26 @@
                 </block>
                 <block type="wav_stop"></block>
             </category>
-        </category>
-        <category name="<fmt:message key="category.sensor-input" />" exclude="heb" >
-            <category name="<fmt:message key="category.sensor-input.etape" />">
-                <block type="etape_rc_time"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.hmc58783" />">
-                <block type="HMC5883L_init"></block>
-                <block type="HMC5883L_read"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
-                <block type="joystick_input_xaxis"></block>
-                <block type="joystick_input_yaxis"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
-                <block type="MX2125_acceleration_xaxis"></block>
-                <block type="MX2125_acceleration_yaxis"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.mma7455" />">
-                <block type="MMA7455_acceleration"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
-                <block type="PAM_7Q_Init"></block>
-                <block type="PAM_7Q_Latitude"></block>
-                <block type="PAM_7Q_Longitude"></block>
-                <block type="PAM_7Q_Velocity"></block>
-                <block type="PAM_7Q_Heading"></block>
-                <block type="PAM_7Q_Altitude"></block>
-                <block type="PAM_7Q_SatsTracked"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.ping" />">
-                <block type="sensor_ping"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.pir" />">
-                <block type="PIR_Sensor"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.rfid" />">
-                <block type="rfid_enable"></block>
-                <block type="rfid_get"></block>
-                <block type="rfid_disable"></block>
-                <block type="rfid_close"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
-                <block type="SF02_Laser_Rangefinder"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sony-remote" />">
-                <block type="sirc_get"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
-                <block type="sound_impact_run"></block>
-                <block type="sound_impact_get"></block>
-                <block type="sound_impact_end"></block>
+            <category name="<fmt:message key="category.audio.freqout" />">
+                <block type="base_freqout">
+                    <value name="DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="FREQUENCY">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.actuator-output" />" exclude="heb" >
-            <category name="<fmt:message key="category.actuator-output.standard-senvo" />">
+        <category name="<fmt:message key="category.servo" />" exclude="heb">
+            <category name="<fmt:message key="category.servo.standard-servo" />">
                 <block type="servo_move"></block>
             </category>
-            <category name="<fmt:message key="category.actuator-output.cr-servo" />">
+            <category name="<fmt:message key="category.servo.cr-servo" />">
                 <block type="servo_speed"></block>
                 <block type="servo_set_ramp">
                     <value name="RAMPSTEP">
@@ -378,13 +399,6 @@
                 <block type="pwm_start"></block>
                 <block type="pwm_set"></block>
                 <block type="pwm_stop"></block>
-            </category>
-            <category name="<fmt:message key="category.actuator-output.serial-lcd" />">
-                <block type="debug_lcd_init"></block>
-                <block type="debug_lcd_clear"></block>
-                <block type="debug_lcd_print"></block>
-                <block type="debug_lcd_number"></block>
-                <block type="debug_lcd_action"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.robot" />" exclude="heb,activity-board" >
