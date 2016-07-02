@@ -121,8 +121,8 @@ Blockly.Blocks.math_crement = {
 };
 
 Blockly.Blocks.math_crement.OPERATORS = [
-    ["Decrement", 'DEC'],
-    ["Increment", 'INC']
+    ["decrement", 'DEC'],
+    ["increment", 'INC']
 ];
 
 Blockly.propc.math_crement = function() {

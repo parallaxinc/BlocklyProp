@@ -138,7 +138,7 @@ Blockly.Blocks.high_low_value = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), 'VALUE');
+                .appendField(new Blockly.FieldDropdown([["high", "1"], ["low", "0"]]), 'VALUE');
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);

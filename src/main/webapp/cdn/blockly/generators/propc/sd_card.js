@@ -30,17 +30,17 @@ Blockly.Blocks.sd_card_mount = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Mount a SD Card")
-            .appendField("DO pin")
+            .appendField("mount a SD Card")
+            .appendField("do pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN');
         this.appendDummyInput()
-            .appendField("CLK pin")
+            .appendField("clk pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'CLK_PIN');
         this.appendDummyInput()
-            .appendField("DI pin")
+            .appendField("di pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN');
         this.appendDummyInput()
-            .appendField("CS pin")
+            .appendField("cs pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'CS_PIN');
 
         this.setInputsInline(true);
@@ -53,17 +53,17 @@ Blockly.Blocks.sd_card_int_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save an int to the SD Card")
-            .appendField("Filename")
+            .appendField("save an int to the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
             .appendField("value");
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -75,15 +75,15 @@ Blockly.Blocks.sd_card_int_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get an int from the SD Card")
-            .appendField("Filename")
+            .appendField("get an int from the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -95,7 +95,7 @@ Blockly.Blocks.sd_card_read_int = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get the stored SD Card int");
+            .appendField("get the stored SD Card int");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -107,17 +107,17 @@ Blockly.Blocks.sd_card_float_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save a float to the SD Card")
-            .appendField("Filename")
+            .appendField("save a float to the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
-            .appendField("Value");
+            .appendField("value");
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -129,15 +129,15 @@ Blockly.Blocks.sd_card_float_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get a float from the SD Card")
-            .appendField("Filename")
+            .appendField("get a float from the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -149,7 +149,7 @@ Blockly.Blocks.sd_card_read_float = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField( "Get the stored SD Card float" );
+            .appendField("get the stored SD Card float");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -161,22 +161,22 @@ Blockly.Blocks.sd_card_text_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save text to the SD Card")
-            .appendField("Filename")
+            .appendField("save text to the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT_FILENAME')
             .appendField(quotes.newQuote_(false));
         this.appendDummyInput()
-            .appendField("Text")
+            .appendField("text")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT_INPUT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
-            .appendField("Value");
+            .appendField("value");
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -188,15 +188,15 @@ Blockly.Blocks.sd_card_text_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get text from the SD Card")
-            .appendField("Filename")
+            .appendField("get text from the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -208,7 +208,7 @@ Blockly.Blocks.sd_card_read_text = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get the stored SD Card text");
+            .appendField("get the stored SD Card text");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
