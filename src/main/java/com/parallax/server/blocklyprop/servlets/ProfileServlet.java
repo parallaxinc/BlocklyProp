@@ -75,7 +75,12 @@ public class ProfileServlet extends HttpServlet {
         req.setAttribute("id", user.getId());
         req.setAttribute("email", user.getEmail());
         req.setAttribute("screenname", user.getScreenname());
-        req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+        if ("local".equals(user.getAuthenticationSource())) {
+            req.getRequestDispatcher("/WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("authentication-source", user.getAuthenticationSource());
+            req.getRequestDispatcher("/WEB-INF/servlet/profile/profile-oauth.jsp").forward(req, resp);
+        }
     }
 
     //@Override
