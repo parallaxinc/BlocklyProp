@@ -168,7 +168,7 @@
             <block type="set_pins"></block>
         </category>
         <category name="<fmt:message key="category.communicate" />" exclude="heb">
-            <category name="<fmt:message key="category.actuator-output.serial-lcd" />">
+            <category name="<fmt:message key="category.communicate.serial-lcd" />">
                 <block type="debug_lcd_init"></block>
                 <block type="debug_lcd_clear"></block>
                 <block type="debug_lcd_print"></block>
