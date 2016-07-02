@@ -22,28 +22,28 @@
  */
 'use strict';
 
-
 //define blocks
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 
-//servo block
 Blockly.Blocks.sensor_ping = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('input'));
-        this.appendDummyInput("")
-                .appendField("Ping)))")
-                .appendField(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"], ["ticks", "TICKS"]]), "UNIT")
-                .appendField("PIN#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.setOutput(true, Number);
+        this.appendDummyInput()
+            .appendField("Ping)))")
+            .appendField(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"]]), "UNIT")
+            .appendField("PIN#")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
     }
 };
 
 
-Blockly.propc.sensor_ping = function () {
+Blockly.propc.sensor_ping = function() {
     var dropdown_pin = this.getFieldValue('PIN');
     var unit = this.getFieldValue('UNIT');
     var methodForUnit = Blockly.propc.sensor_ping.UNITS[unit];
@@ -60,52 +60,51 @@ Blockly.propc.sensor_ping.UNITS = {
     TICKS: ''
 };
 
-//PIR sensor blocks
 Blockly.Blocks.PIR_Sensor = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('input'));
-        this.appendDummyInput("")
+        this.appendDummyInput()
                 .appendField("PIR Sensor")
                 .appendField("Pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
-        this.setOutput(true, Number);
+        this.setOutput(true, 'Number');
     }
 };
 
 Blockly.propc.PIR_Sensor = function () {
     var pin = this.getFieldValue('PIN');
 
-    var code = 'input( ' + pin + ' )';
+    var code = 'input(' + pin + ')';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-// SF02 Laser Rangefinder
 Blockly.Blocks.SF02_Laser_Rangefinder = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('input'));
-        this.appendDummyInput("")
+        this.appendDummyInput()
                 .appendField("SF02 Laser Rangefinder Pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.setOutput(true, Number);
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
     }
 };
 
-Blockly.propc.SF02_Laser_Rangefinder = function () {
+Blockly.propc.SF02_Laser_Rangefinder = function() {
     var pin = this.getFieldValue('PIN');
 
-    Blockly.propc.definitions_[ "include abvolt" ] = '#include "abvolts.h"';
+    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
     Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
 
-    var code = 'ad_volts( ' + pin + ' )';
+    var code = 'ad_volts(' + pin + ')';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.Blocks.sound_impact_run = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -120,25 +119,23 @@ Blockly.Blocks.sound_impact_run = {
 };
 
 Blockly.Blocks.sound_impact_get = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField( "Get sound impact data" );
+            .appendField("Get sound impact data");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
         this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
-        this.setOutput(true, Number);
+        this.setOutput(true, 'Number');
     }
 };
 
 Blockly.Blocks.sound_impact_end = {
-    helpUrl: '',
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField( "Turn the sound impact sensor off" );
+            .appendField("Turn the sound impact sensor off");
 
         this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
         this.setPreviousStatement(true, null);

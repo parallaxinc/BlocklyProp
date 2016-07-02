@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.parallax.server.blocklyprop.rest.RestCompile;
+import com.parallax.server.blocklyprop.rest.RestProfile;
 import com.parallax.server.blocklyprop.rest.RestProject;
 import com.parallax.server.blocklyprop.rest.RestSharedProject;
 import com.parallax.server.blocklyprop.rest.RestUser;
@@ -27,6 +28,7 @@ public class RestModule extends JerseyServletModule {
         bind(RestUser.class);
         bind(RestProject.class);
         bind(RestSharedProject.class);
+        bind(RestProfile.class);
 
         /* bind jackson converters for JAXB/JSON serialization */
         bind(MessageBodyReader.class).to(JacksonJsonProvider.class);

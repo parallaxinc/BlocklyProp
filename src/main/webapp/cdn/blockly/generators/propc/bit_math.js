@@ -23,21 +23,12 @@
  */
 'use strict';
 
-
-
 //define blocks
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 
-
-
-// define generators
-//Blockly.propc = new Blockly.Generator('propc');
-
-// Shift
 Blockly.Blocks.bit_math_shift = {
-    helpUrl: "",
     init: function () {
         this.setColour(colorPalette.getColor('binary'));
         this.setOutput(true, 'Number');
@@ -46,16 +37,18 @@ Blockly.Blocks.bit_math_shift = {
         this.appendValueInput('B')
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+
         this.setInputsInline(true);
         this.setTooltip("");
     }
 };
 
-Blockly.Blocks.bit_math_shift.OPERATORS =
-        [["Shift left", 'LEFT'],
-            ["Shift right", 'RIGHT']];
+Blockly.Blocks.bit_math_shift.OPERATORS = [
+    ["Shift left", 'LEFT'],
+    ["Shift right", 'RIGHT']
+];
 
-Blockly.propc.bit_math_shift = function () {
+Blockly.propc.bit_math_shift = function() {
     // Basic arithmetic operators, and power.
     var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_shift.OPERATORS[mode];
@@ -63,10 +56,7 @@ Blockly.propc.bit_math_shift = function () {
     var order = tuple[1];
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
-//    if (!operator) {
-//        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-//        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-//    }
+
     var code = argument0 + operator + argument1;
     return [code, order];
 };
@@ -78,7 +68,6 @@ Blockly.propc.bit_math_shift.OPERATORS = {
 
 // Rotate
 Blockly.Blocks.bit_math_rotate = {
-    helpUrl: "",
     init: function () {
         this.setColour(colorPalette.getColor('binary'));
         this.setOutput(true, 'Number');
@@ -92,11 +81,12 @@ Blockly.Blocks.bit_math_rotate = {
     }
 };
 
-Blockly.Blocks.bit_math_rotate.OPERATORS =
-        [["Rotate left", 'LEFT'],
-            ["Rotate right", 'RIGHT']];
+Blockly.Blocks.bit_math_rotate.OPERATORS = [
+    ["Rotate left", 'LEFT'],
+    ["Rotate right", 'RIGHT']
+];
 
-Blockly.propc.bit_math_rotate = function () {
+Blockly.propc.bit_math_rotate = function() {
     // Basic arithmetic operators, and power.
     var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_rotate.OPERATORS[mode];
@@ -104,10 +94,7 @@ Blockly.propc.bit_math_rotate = function () {
     var order = tuple[1];
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
-//    if (!operator) {
-//        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-//        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-//    }
+
     var code = argument0 + operator + argument1;
     return [code, order];
 };
@@ -119,7 +106,6 @@ Blockly.propc.bit_math_rotate.OPERATORS = {
 
 // BIT-wise operations
 Blockly.Blocks.bit_math_operations = {
-    helpUrl: "",
     init: function () {
         this.setColour(colorPalette.getColor('binary'));
         this.setOutput(true, 'Number');
@@ -128,17 +114,19 @@ Blockly.Blocks.bit_math_operations = {
         this.appendValueInput('B')
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+
         this.setInputsInline(true);
         this.setTooltip("");
     }
 };
 
-Blockly.Blocks.bit_math_operations.OPERATORS =
-        [["Bit AND", 'AND'],
-            ["Bit OR", 'OR'],
-            ["Bit XOR", 'XOR']];
+Blockly.Blocks.bit_math_operations.OPERATORS = [
+    ["Bit AND", 'AND'],
+    ["Bit OR", 'OR'],
+    ["Bit XOR", 'XOR']
+];
 
-Blockly.propc.bit_math_operations = function () {
+Blockly.propc.bit_math_operations = function() {
     // Basic arithmetic operators, and power.
     var mode = this.getFieldValue('OP');
     var tuple = Blockly.propc.bit_math_operations.OPERATORS[mode];
@@ -146,10 +134,7 @@ Blockly.propc.bit_math_operations = function () {
     var order = tuple[1];
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
-//    if (!operator) {
-//        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-//        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-//    }
+
     var code = argument0 + operator + argument1;
     return [code, order];
 };
@@ -162,24 +147,19 @@ Blockly.propc.bit_math_operations.OPERATORS = {
 
 // NOT
 Blockly.Blocks.bit_math_not = {
-    helpUrl: "",
     init: function () {
         this.setColour(colorPalette.getColor('binary'));
-        this.setOutput(true, 'Number');
-
         this.appendValueInput('VAR')
                 .setCheck('Number')
                 .appendField('Bit NOT');
+
+        this.setOutput(true, 'Number');
         this.setTooltip("");
     }
 };
 
-Blockly.propc.bit_math_not = function () {
+Blockly.propc.bit_math_not = function() {
     var variable = Blockly.propc.valueToCode(this, 'VAR', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
-//    if (!operator) {
-//        code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-//        return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
-//    }
 
     var code = '~' + variable;
     return [code, Blockly.propc.ORDER_UNARY_PREFIX];

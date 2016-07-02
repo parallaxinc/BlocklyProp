@@ -30,7 +30,7 @@ Blockly.Blocks.controls_if = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput('IF0')
-                .setCheck(Boolean)
+                .setCheck('Boolean')
                 .appendField(Blockly.LANG_CONTROLS_IF_MSG_IF);
         this.appendStatementInput('DO0')
                 .appendField(Blockly.LANG_CONTROLS_IF_MSG_THEN);
@@ -73,7 +73,7 @@ Blockly.Blocks.controls_if = {
         this.elseCount_ = window.parseInt(xmlElement.getAttribute('else'), 10);
         for (var x = 1; x <= this.elseifCount_; x++) {
             this.appendValueInput('IF' + x)
-                    .setCheck(Boolean)
+                    .setCheck('Boolean')
                     .appendField(Blockly.LANG_CONTROLS_IF_MSG_ELSEIF);
             this.appendStatementInput('DO' + x)
                     .appendField(Blockly.LANG_CONTROLS_IF_MSG_THEN);
@@ -119,7 +119,7 @@ Blockly.Blocks.controls_if = {
                 case 'controls_if_elseif':
                     this.elseifCount_++;
                     var ifInput = this.appendValueInput('IF' + this.elseifCount_)
-                            .setCheck(Boolean)
+                            .setCheck('Boolean')
                             .appendField(Blockly.LANG_CONTROLS_IF_MSG_ELSEIF);
                     var doInput = this.appendStatementInput('DO' + this.elseifCount_);
                     doInput.appendField(Blockly.LANG_CONTROLS_IF_MSG_THEN);
@@ -261,7 +261,7 @@ Blockly.Blocks.controls_repeat = {
         if (type === 'WHILE' || type === 'UNTIL') {
             if (!inputCondition) {
                 this.appendValueInput('REPEAT_CONDITION')
-                        .setCheck(Boolean);
+                        .setCheck('Boolean');
                 this.moveInputBefore('REPEAT_CONDITION', 'DO');
             }
         } else {

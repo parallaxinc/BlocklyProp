@@ -64,7 +64,7 @@ Blockly.Blocks.PAM_7Q_Longitude = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput("")
                 .appendField("Get longitude");
-        this.setOutput(true, Number);
+        this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
     }

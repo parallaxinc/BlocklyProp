@@ -30,5 +30,4 @@ h3. Browser
 * "jQuery":https://jquery.com/
 * "jQuery Form Plugin":http://malsup.com/jquery/form/
 * "jQuery Validation Plugin":http://jqueryvalidation.org/
-* "js-sha256":https://github.com/emn178/js-sha256
 * "term.js":https://github.com/chjj/term.js serial terminal

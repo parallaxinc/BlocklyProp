@@ -5,7 +5,6 @@
  */
 package com.parallax.server.blocklyprop.servlets;
 
-import com.google.common.base.Strings;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -44,37 +43,10 @@ public class AuthenticationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
 
-        String idUserString = req.getParameter("id-user");
-        String timestampString = req.getParameter("timestamp");
-        String hash = req.getParameter("hash");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
 
-        String remoteAddress = req.getRemoteAddr();
-        String userAgent = req.getHeader("User-Agent");
-
-        if (Strings.isNullOrEmpty(idUserString) || Strings.isNullOrEmpty(idUserString) || Strings.isNullOrEmpty(idUserString)) {
-            // TODO:
-            JsonObject response = new JsonObject();
-            response.addProperty("success", false);
-            response.addProperty("message", "Missing argument");
-            resp.getWriter().write(response.toString());
-            return;
-        }
-
-        Long idUser = null;
-        Long timestamp = null;
-        try {
-            idUser = Long.parseLong(idUserString);
-            timestamp = Long.parseLong(timestampString);
-        } catch (NumberFormatException nfe) {
-            // TODO:
-            JsonObject response = new JsonObject();
-            response.addProperty("success", false);
-            response.addProperty("message", "Argument has wrong format");
-            resp.getWriter().write(response.toString());
-            return;
-        }
-
-        User user = authenticationService.authenticate(idUser, timestamp, hash, userAgent, remoteAddress);
+        User user = authenticationService.authenticate(username, password);
 
         if (user != null) {
             SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);

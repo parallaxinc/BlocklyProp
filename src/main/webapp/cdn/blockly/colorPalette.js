@@ -3,25 +3,22 @@
  */
 
 var colorPalette = {
-
     defaultColors: {
-        'programming': 0,
-        'math': 30,
-        'binary': 60,
-        'io': 90,
-        'protocols': 120,
-        'ab': 150,
-        'input': 180,
-        'output': 210,
-        'robot': 240,
-        'heb': 270,
-        'functions': 300,
-        'variables': 330
+        'programming': 220,
+        'math': 275,
+        'binary': 275,
+        'io': 200,
+        'protocols': 320,
+        'ab': 305,
+        'input': 155,
+        'output': 180,
+        'robot': 290,
+        'heb': 290,
+        'functions': 240,
+        'variables': 260,
     },
-
     activePalette: null,
-
-    getColor: function(type) {
+    getColor: function (type) {
         if (colorPalette.activePalette && colorPalette.activePalette[type] != undefined) {
             return colorPalette.activePalette[type];
         }

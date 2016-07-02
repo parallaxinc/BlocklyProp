@@ -12,7 +12,6 @@
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
     </head>
     <body>
-
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">

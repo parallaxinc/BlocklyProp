@@ -15,7 +15,7 @@
         <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
         <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
     </div>
-    <form id="loginform" name="loginform" action="${properties:authenticationserver('/authenticate')}" method="post">
+    <form id="loginform" name="loginform" action="<url:getUrl url="/authenticate" />" method="post">
         <div class="form-group">
             <label for="username" ><fmt:message key="login.email" /></label>
             <input class="form-control" type="text" name="username" maxlength="255" required="required"/>

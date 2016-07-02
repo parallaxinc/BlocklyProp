@@ -6,7 +6,12 @@
         <meta charset="utf-8">
         <title>Blockly</title>
 
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/polyfill.js"/>"></script>
+
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/toolboxfilter.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin.js"/>"></script>
@@ -52,7 +57,9 @@
             }
         </style>
         <script>
-            function init() {
+            function init(profileName, peripherals) {
+                filterToolbox(profileName, peripherals);
+
                 Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
 
                 if (window.parent.init) {
@@ -92,42 +99,40 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.programming" />">
-            <category name="<fmt:message key="category.programming.control" />">
-                <block type="controls_if"></block>
-                <block type="controls_repeat">
-                    <mutation TYPE="FOREVER"></mutation>
-                </block>
-                <block type="base_delay">
-                    <value name="DELAY_TIME">
-                        <block type="math_number">
-                            <field name="NUM">1000</field>
-                        </block>
-                    </value>
-                </block>
-                <!--<block type="text"></block>-->
-            </category>
-            <category name="<fmt:message key="category.programming.conditions" />">
-                <block type="logic_compare"></block>
-                <block type="logic_operation"></block>
-                <block type="logic_negate"></block>
-                <block type="logic_boolean"></block>
-            </category>
-            <category name="<fmt:message key="category.programming.math" />">
-                <block type="math_number"></block>
-                <block type="math_arithmetic"></block>
-                <block type="math_single"></block>
-                <block type="math_limit"></block>
-                <block type="math_crement"></block>
-                <block type="bit_math_shift"></block>
-                <!-- Repeat from Conditions -->
-                <block type="logic_operation"></block>
-                <block type="logic_negate"></block>
-            </category>
-            <category name="<fmt:message key="category.programming.multicore" />">
-                <block type="cog_new"></block>
-            </category>
+        <category name="<fmt:message key="category.control" />">
+            <block type="controls_if"></block>
+            <block type="controls_repeat">
+                <mutation TYPE="FOREVER"></mutation>
+            </block>
+            <block type="base_delay">
+                <value name="DELAY_TIME">
+                    <block type="math_number">
+                        <field name="NUM">1000</field>
+                    </block>
+                </value>
+            </block>
+
+            <block type="cog_new"></block>
+            <!--<block type="text"></block>-->
         </category>
+        <category name="<fmt:message key="category.operators" />">
+            <block type="logic_compare"></block>
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+            <block type="logic_boolean"></block>
+
+            <block type="math_number"></block>
+            <block type="math_arithmetic"></block>
+            <block type="math_limit"></block>
+            <block type="math_crement"></block>
+            <block type="bit_math_shift"></block>
+            <!-- Repeat from Conditions -->
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+        </category>
+        <sep></sep>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
         <category name="<fmt:message key="category.input-output" />">
             <category name="<fmt:message key="category.input-output.pin-states" />">
                 <block type="make_pin"></block>
@@ -220,9 +225,6 @@
 
             </category>
         </category>
-        <sep></sep>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
     </xml>
 </body>
 </html>

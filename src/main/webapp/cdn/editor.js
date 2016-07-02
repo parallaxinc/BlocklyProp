@@ -13,7 +13,7 @@ var projectLoaded = false;
 
 var idProject = 0;
 
-function post_auth_init() {
+$(document).ready(function () {
     idProject = getUrlParameters('project', '', false);
     if (!idProject) {
         window.location = baseUrl;
@@ -21,10 +21,11 @@ function post_auth_init() {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
             console.log(data);
             projectData = data;
+            showInfo(data);
             projectLoaded = true;
             if (ready) {
                 window.frames["content_blocks"].setProfile(data['board']);
-                window.frames["content_blocks"].init();
+                window.frames["content_blocks"].init(data['board'], []);
             }
         });
     }
@@ -33,7 +34,15 @@ function post_auth_init() {
         saveProject();
     });
 
-}
+});
+
+showInfo = function (data) {
+    console.log(data);
+    $(".project-name").text(data['name']);
+    if (!data['yours']) {
+        $(".project-owner").text("(" + data['user'] + ")");
+    }
+};
 
 saveProject = function () {
     var code = window.frames["content_blocks"].getXml();
@@ -48,7 +57,7 @@ saveProject = function () {
 blocklyReady = function () {
     if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init();
+        window.frames["content_blocks"].init(projectData['board'], []);
     } else {
         ready = true;
     }

@@ -20,12 +20,14 @@
 /**
  * @fileoverview Helper functions for generating Spin for blocks.
  * @author michel@creatingfuture.eu (Michel Lampo)
+ * @author valetolpegin@gmail.com (Vale Tolpegin)
  */
 'use strict';
 Blockly.Spin = new Blockly.Generator('Spin');
 
 Blockly.HSV_SATURATION = 0.75;
-Blockly.HSV_VALUE = 0.70;
+Blockly.HSV_VALUE = 0.60;
+Blockly.RTL = false;
 
 /**
  * List of illegal variable names.
@@ -39,9 +41,9 @@ if (!Blockly.Spin.RESERVED_WORDS_) {
 }
 
 Blockly.Spin.RESERVED_WORDS_ +=
-    // http://arduino.cc/en/Reference/HomePage
-    'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
-;
+        // http://arduino.cc/en/Reference/HomePage
+        'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
+        ;
 /**
  * Order of operation ENUMs.
  *
@@ -71,25 +73,28 @@ var profile = {
     "activity-board": {
         description: "Parallax propeller Activity board",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["26", "26"], ["27", "27"]],
+        servo: [["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
         serial: 9600
     },
     "s3": {
         description: "Parallax propeller C3",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
+        servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
         serial: 9600
     },
     "heb": {
         description: "Parallax propeller proto board",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
+        servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
         serial: 9600
     },
     "other": {
         description: "Other propeller boards",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
-        analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
+        servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]], analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
         serial: 9600
     }
 };
@@ -116,7 +121,7 @@ Blockly.Spin.init = function (workspace) {
     if (Blockly.Variables) {
         if (!Blockly.Spin.variableDB_) {
             Blockly.Spin.variableDB_ =
-                new Blockly.Names(Blockly.Spin.RESERVED_WORDS_);
+                    new Blockly.Names(Blockly.Spin.RESERVED_WORDS_);
         } else {
             Blockly.Spin.variableDB_.reset();
         }
@@ -125,9 +130,9 @@ Blockly.Spin.init = function (workspace) {
         var variables = Blockly.Variables.allVariables(workspace);
         for (var x = 0; x < variables.length; x++) {
             var varName = Blockly.Spin.variableDB_.getName(variables[x],
-                Blockly.Variables.NAME_TYPE);
+                    Blockly.Variables.NAME_TYPE);
             defvars[x] = '  ' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
-                varName + '\n';
+                    varName + '\n';
         }
         Blockly.Spin.definitions_['variables'] = defvars.join('\n');
     }
@@ -143,16 +148,13 @@ Blockly.Spin.finish = function (code) {
     code = code.replace(/\n\s+$/, '\n');
     code = 'PUB Start\n\n' + code;
     // Convert the definitions dictionary into a list.
-    var imports = [];
     var methods = [];
     var objects = [];
     var definitions = [];
     for (var name in Blockly.Spin.definitions_) {
         var def = Blockly.Spin.definitions_[name];
-        if (def.match(/^#include/)) {
-            imports.push(def);
-        } else if (def.match(/^PUB/)) {
-            methods.push('  ' + def);
+        if (def.match(/^PUB/)) {
+            methods.push(def);
         } else if (def.match(/^OBJ/)) {
             objects.push('  ' + def.substring(3));
         } else {
@@ -184,7 +186,7 @@ Blockly.Spin.finish = function (code) {
     }
     setups.push('Start');
     var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
-    var allDefs = imports.join('\n') + '\n\nVAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
+    var allDefs = 'VAR\n' + definitions.join('\n') + OBJ + '\n\nPUB Setup\n  ' + setups.join('\n  ') + '\n\n';
     var setup = '';
     if (Blockly.Spin.serial_terminal_) {
         setup += "'SERIAL_TERMINAL USED\n";
@@ -210,9 +212,9 @@ Blockly.Spin.scrubNakedValue = function (line) {
 Blockly.Spin.quote_ = function (string) {
     // TODO: This is a quick hack.  Replace with goog.string.quote
     string = string.replace(/\\/g, '\\\\')
-        .replace(/\n/g, '\\\n')
-        .replace(/\$/g, '\\$')
-        .replace(/'/g, '\\\'');
+            .replace(/\n/g, '\\\n')
+            .replace(/\$/g, '\\$')
+            .replace(/'/g, '\\\'');
     return '\"' + string + '\"';
 };
 /**

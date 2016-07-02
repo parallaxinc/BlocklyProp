@@ -6,7 +6,6 @@
 package com.parallax.server.blocklyprop.services;
 
 import com.parallax.client.cloudsession.objects.User;
-import com.parallax.server.blocklyprop.AuthenticationData;
 
 /**
  *
@@ -14,12 +13,6 @@ import com.parallax.server.blocklyprop.AuthenticationData;
  */
 public interface AuthenticationService {
 
-    AuthenticationData getAuthenticationData();
-
-    User authenticate(Long idUser, Long timestamp, String hash, String userAgent, String remoteAddress);
-
-    String getChallenge();
-
-    Long getTimestamp();
+    public User authenticate(String username, String password);
 
 }

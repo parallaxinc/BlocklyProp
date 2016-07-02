@@ -22,7 +22,7 @@
                     <div class="alert alert-success">
                         <p><fmt:message key="confirm.requested" /></p>
                     </div>
-                    <p><a href="index.jsp">Go to home</a></p>
+                    <p><a href="<url:getUrl url="/index"/>">Go to home</a></p>
                 </div>
             </div>
         </div>

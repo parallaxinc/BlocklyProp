@@ -18,10 +18,9 @@
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/project.js"/>" ></script>
-        <script src="<url:getCdnUrl url="/lib/sha256.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
     </head>
-    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
+    <body>
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 

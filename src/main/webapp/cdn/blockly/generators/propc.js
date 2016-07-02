@@ -23,9 +23,9 @@
  */
 'use strict';
 Blockly.propc = new Blockly.Generator('propc');
-
 Blockly.HSV_SATURATION = 0.75;
-Blockly.HSV_VALUE = 0.70;
+Blockly.HSV_VALUE = 0.60;
+Blockly.RTL = false;
 /**
  * List of illegal variable names.
  * This is not intended to be a security feature.  Blockly is 100% client-side,
@@ -38,9 +38,9 @@ if (!Blockly.propc.RESERVED_WORDS_) {
 }
 
 Blockly.propc.RESERVED_WORDS_ +=
-    // http://arduino.cc/en/Reference/HomePage
-    'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
-;
+        // http://arduino.cc/en/Reference/HomePage
+        'wait,cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
+        ;
 /**
  * Order of operation ENUMs.
  *
@@ -70,25 +70,69 @@ var profile = {
     "activity-board": {
         description: "Parallax propeller Activity board",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["26", "26"], ["27", "27"]],
+        servo: [["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
+        eeprom: [["0", "32768"], ["1", "32769"], ["2", "32770"], ["3", "32771"], ["4", "32772"], ["5", "32773"], ["6", "32774"], ["7", "32775"], ["8", "32776"], ["9", "32777"], ["10", "32778"], ["11", "32779"],
+            ["12", "32780"], ["13", "32781"], ["14", "32782"], ["15", "32783"], ["16", "32784"], ["17", "32785"], ["18", "32786"], ["19", "32787"], ["20", "32788"], ["21", "32789"], ["22", "32790"],
+            ["23", "32791"], ["24", "32792"], ["25", "32793"], ["26", "32794"], ["27", "32795"], ["28", "32796"], ["29", "32797"], ["30", "32798"], ["31", "32799"], ["32", "32800"], ["33", "32801"],
+            ["34", "32802"], ["35", "32803"], ["36", "32804"], ["37", "32805"], ["38", "32806"], ["39", "32807"], ["40", "32808"], ["41", "32809"], ["42", "32810"], ["43", "32811"], ["44", "32812"],
+            ["45", "32813"], ["46", "32814"], ["47", "32815"], ["48", "32816"], ["49", "32817"], ["50", "32818"], ["51", "32819"], ["52", "32820"], ["53", "32821"], ["54", "32822"], ["55", "32823"],
+            ["56", "32824"], ["57", "32825"], ["58", "32826"], ["59", "32827"], ["60", "32828"], ["61", "32829"], ["62", "32830"], ["63", "32831"], ["64", "32832"], ["65", "32833"], ["66", "32834"],
+            ["67", "32835"], ["68", "32836"], ["69", "32837"], ["70", "32838"], ["71", "32839"], ["72", "32840"], ["73", "32841"], ["74", "32842"], ["75", "32843"], ["76", "32844"], ["77", "32845"],
+            ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
+            ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
+            ["99", "32868"], ["100", "32869"]],
         serial: 9600
     },
     "s3": {
         description: "Parallax propeller C3",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
+        servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
+        eeprom: [["0", "32768"], ["1", "32769"], ["2", "32770"], ["3", "32771"], ["4", "32772"], ["5", "32773"], ["6", "32774"], ["7", "32775"], ["8", "32776"], ["9", "32777"], ["10", "32778"], ["11", "32779"],
+            ["12", "32780"], ["13", "32781"], ["14", "32782"], ["15", "32783"], ["16", "32784"], ["17", "32785"], ["18", "32786"], ["19", "32787"], ["20", "32788"], ["21", "32789"], ["22", "32790"],
+            ["23", "32791"], ["24", "32792"], ["25", "32793"], ["26", "32794"], ["27", "32795"], ["28", "32796"], ["29", "32797"], ["30", "32798"], ["31", "32799"], ["32", "32800"], ["33", "32801"],
+            ["34", "32802"], ["35", "32803"], ["36", "32804"], ["37", "32805"], ["38", "32806"], ["39", "32807"], ["40", "32808"], ["41", "32809"], ["42", "32810"], ["43", "32811"], ["44", "32812"],
+            ["45", "32813"], ["46", "32814"], ["47", "32815"], ["48", "32816"], ["49", "32817"], ["50", "32818"], ["51", "32819"], ["52", "32820"], ["53", "32821"], ["54", "32822"], ["55", "32823"],
+            ["56", "32824"], ["57", "32825"], ["58", "32826"], ["59", "32827"], ["60", "32828"], ["61", "32829"], ["62", "32830"], ["63", "32831"], ["64", "32832"], ["65", "32833"], ["66", "32834"],
+            ["67", "32835"], ["68", "32836"], ["69", "32837"], ["70", "32838"], ["71", "32839"], ["72", "32840"], ["73", "32841"], ["74", "32842"], ["75", "32843"], ["76", "32844"], ["77", "32845"],
+            ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
+            ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
+            ["99", "32868"], ["100", "32869"]],
         serial: 9600
     },
     "heb": {
         description: "Parallax propeller proto board",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
+        servo: [["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
+        eeprom: [["0", "32768"], ["1", "32769"], ["2", "32770"], ["3", "32771"], ["4", "32772"], ["5", "32773"], ["6", "32774"], ["7", "32775"], ["8", "32776"], ["9", "32777"], ["10", "32778"], ["11", "32779"],
+            ["12", "32780"], ["13", "32781"], ["14", "32782"], ["15", "32783"], ["16", "32784"], ["17", "32785"], ["18", "32786"], ["19", "32787"], ["20", "32788"], ["21", "32789"], ["22", "32790"],
+            ["23", "32791"], ["24", "32792"], ["25", "32793"], ["26", "32794"], ["27", "32795"], ["28", "32796"], ["29", "32797"], ["30", "32798"], ["31", "32799"], ["32", "32800"], ["33", "32801"],
+            ["34", "32802"], ["35", "32803"], ["36", "32804"], ["37", "32805"], ["38", "32806"], ["39", "32807"], ["40", "32808"], ["41", "32809"], ["42", "32810"], ["43", "32811"], ["44", "32812"],
+            ["45", "32813"], ["46", "32814"], ["47", "32815"], ["48", "32816"], ["49", "32817"], ["50", "32818"], ["51", "32819"], ["52", "32820"], ["53", "32821"], ["54", "32822"], ["55", "32823"],
+            ["56", "32824"], ["57", "32825"], ["58", "32826"], ["59", "32827"], ["60", "32828"], ["61", "32829"], ["62", "32830"], ["63", "32831"], ["64", "32832"], ["65", "32833"], ["66", "32834"],
+            ["67", "32835"], ["68", "32836"], ["69", "32837"], ["70", "32838"], ["71", "32839"], ["72", "32840"], ["73", "32841"], ["74", "32842"], ["75", "32843"], ["76", "32844"], ["77", "32845"],
+            ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
+            ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
+            ["99", "32868"], ["100", "32869"]],
         serial: 9600
     },
     "other": {
         description: "Other propeller boards",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
+        servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
+        eeprom: [["0", "32768"], ["1", "32769"], ["2", "32770"], ["3", "32771"], ["4", "32772"], ["5", "32773"], ["6", "32774"], ["7", "32775"], ["8", "32776"], ["9", "32777"], ["10", "32778"], ["11", "32779"],
+            ["12", "32780"], ["13", "32781"], ["14", "32782"], ["15", "32783"], ["16", "32784"], ["17", "32785"], ["18", "32786"], ["19", "32787"], ["20", "32788"], ["21", "32789"], ["22", "32790"],
+            ["23", "32791"], ["24", "32792"], ["25", "32793"], ["26", "32794"], ["27", "32795"], ["28", "32796"], ["29", "32797"], ["30", "32798"], ["31", "32799"], ["32", "32800"], ["33", "32801"],
+            ["34", "32802"], ["35", "32803"], ["36", "32804"], ["37", "32805"], ["38", "32806"], ["39", "32807"], ["40", "32808"], ["41", "32809"], ["42", "32810"], ["43", "32811"], ["44", "32812"],
+            ["45", "32813"], ["46", "32814"], ["47", "32815"], ["48", "32816"], ["49", "32817"], ["50", "32818"], ["51", "32819"], ["52", "32820"], ["53", "32821"], ["54", "32822"], ["55", "32823"],
+            ["56", "32824"], ["57", "32825"], ["58", "32826"], ["59", "32827"], ["60", "32828"], ["61", "32829"], ["62", "32830"], ["63", "32831"], ["64", "32832"], ["65", "32833"], ["66", "32834"],
+            ["67", "32835"], ["68", "32836"], ["69", "32837"], ["70", "32838"], ["71", "32839"], ["72", "32840"], ["73", "32841"], ["74", "32842"], ["75", "32843"], ["76", "32844"], ["77", "32845"],
+            ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
+            ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
+            ["99", "32868"], ["100", "32869"]],
         serial: 9600
     }
 };
@@ -112,12 +156,12 @@ Blockly.propc.init = function (workspace) {
     // Create a list of stacks
     Blockly.propc.stacks_ = [];
     Blockly.propc.vartype_ = {};
-    Blockly.propc.pointerType_ = {};
+    Blockly.propc.varlength_ = {};
     Blockly.propc.serial_terminal_ = false;
     if (Blockly.Variables) {
         if (!Blockly.propc.variableDB_) {
             Blockly.propc.variableDB_ =
-                new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
+                    new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
         } else {
             Blockly.propc.variableDB_.reset();
         }
@@ -126,30 +170,19 @@ Blockly.propc.init = function (workspace) {
         var variables = Blockly.Variables.allVariables(workspace);
         for (var x = 0; x < variables.length; x++) {
             var varName = Blockly.propc.variableDB_.getName(variables[x],
-                Blockly.Variables.NAME_TYPE);
-            defvars[x] = '' + '{{$var_type_' + varName /* variables[x].name */ + '}} ' +
-                varName + ';\n';
+                    Blockly.Variables.NAME_TYPE);
+
+            if (variables[x].indexOf("\"") > -1) {
+                defvars[x] = "char " + varName + '{{$var_length_' + varName + '}};\n';
+            } else if (variables[x].indexOf(".") > -1) {
+                defvars[x] = "float " + varName + ';\n';
+            } else if (variables[x].indexOf("true") > -1 || variables[x].indexOf("false")) {
+                defvars[x] = "boolean " + varName + ';\n';
+            } else {
+                defvars[x] = "int " + varName + ';\n';
+            }
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
-    }
-
-    if (Blockly.Pointers) {
-        if (!Blockly.propc.pointerDB_) {
-            Blockly.propc.pointerDB_ =
-                new Blockly.Names(Blockly.propc.RESERVED_WORDS_);
-        } else {
-            Blockly.propc.pointerDB_.reset();
-        }
-
-        var defvars = [];
-        var pointers = Blockly.Pointers.allPointers();
-        for (var x = 0; x < pointers.length; x++) {
-            var pointerName = Blockly.propc.pointerDB_.getName(pointers[x],
-                Blockly.Pointers.NAME_TYPE);
-            defvars[x] = '' + '{{$pointer_type_' + pointers[x].name + '}} ' +
-                pointerName + ';\n';
-        }
-        Blockly.propc.definitions_['pointers'] = defvars.join('\n');
     }
 };
 /**
@@ -158,8 +191,6 @@ Blockly.propc.init = function (workspace) {
  * @return {string} Completed code.
  */
 Blockly.propc.finish = function (code) {
-//alert(code);
-
     // Convert the definitions dictionary into a list.
     var imports = [];
     var methods = [];
@@ -169,10 +200,6 @@ Blockly.propc.finish = function (code) {
         var def = Blockly.propc.definitions_[name];
         if (def.match(/^#include/)) {
             imports.push(def);
-            // } else if (def.match(/^PUB/)) {
-            //     methods.push(def);
-            // } else if (def.match(/^OBJ/)) {
-            //     objects.push('' + def.substring(3));
         } else {
             definitions.push(def);
         }
@@ -184,17 +211,16 @@ Blockly.propc.finish = function (code) {
                 if (Blockly.propc.vartype_[variable] !== 'LOCAL') {
                     definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}}", Blockly.propc.vartype_[variable]);
                 } else {
-                    definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable, "");
+                    definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable + '{{$var_length_' + variable + '}}', "");
                 }
-            }
-            definitions[def] = definitions[def].replace("\n\n", "\n");
-        }
-        for (var pointer in Blockly.propc.pointerType_) {
-            if (definitions[def].indexOf("{{$pointer_type_" + pointer + "}}") > -1) {
-                if (Blockly.propc.pointerType_[pointer] !== 'LOCAL') {
-                    definitions[def] = definitions[def].replace("{{$pointer_type_" + pointer + "}}", Blockly.propc.pointerType_[pointer]);
+                if (Blockly.propc.vartype_[variable] === 'char') {
+                    if (Blockly.propc.varlength_[variable]) {
+                        definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", '[' + Blockly.propc.varlength_[variable] + ']');
+                    } else {
+                        definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", '[128]');
+                    }
                 } else {
-                    definitions[def] = definitions[def].replace("{{$pointer_type_" + pointer + "}} " + pointer, "");
+                    definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", "");
                 }
             }
             definitions[def] = definitions[def].replace("\n\n", "\n");
@@ -210,13 +236,9 @@ Blockly.propc.finish = function (code) {
     for (var name in Blockly.propc.setups_) {
         setups.push('  ' + Blockly.propc.setups_[name]);
     }
-//    setups.push('Start');
 
-    //  var OBJ = (objects.length > 0) ? '\n\nOBJ\n' + objects.join('\n') + '\n' : '';
     var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
-    //   var setup = 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
-
     // Indent every line.
     code = '  ' + code.replace(/\n/g, '\n  ');
     code = code.replace(/\n\s+$/, '\n');
@@ -235,20 +257,6 @@ Blockly.propc.finish = function (code) {
  */
 Blockly.propc.scrubNakedValue = function (line) {
     return line + ';\n';
-};
-/**
- * Encode a string as a properly escaped propc string, complete with quotes.
- * @param {string} string Text to encode.
- * @return {string} Prop-c string.
- * @private
- */
-Blockly.propc.quote_ = function (string) {
-    // TODO: This is a quick hack.  Replace with goog.string.quote
-    string = string.replace(/\\/g, '\\\\')
-        .replace(/\n/g, '\\\n')
-        .replace(/\$/g, '\\$')
-        .replace(/'/g, '\\\'');
-    return '\"' + string + '\"';
 };
 /**
  * Common tasks for generating Prop-c from blocks.

@@ -18,16 +18,9 @@ public class CloudSessionCredentialsMatcher extends SimpleCredentialsMatcher {
 
     @Override
     protected boolean equals(Object tokenCredentials, Object accountCredentials) {
-        System.out.println("Performing credentials equality check for tokenCredentials of type ["
-                + tokenCredentials.getClass().getName() + " and accountCredentials of type ["
-                + accountCredentials.getClass().getName() + "]");
         if (isByteSource(tokenCredentials) && isByteSource(accountCredentials)) {
-            System.out.println("Both credentials arguments can be easily converted to byte arrays.  Performing "
-                    + "array equals comparison");
             byte[] tokenBytes = toBytes(tokenCredentials);
             byte[] accountBytes = toBytes(accountCredentials);
-            System.out.println("Token: " + new String(tokenBytes));
-            System.out.println("Account: " + new String(accountBytes));
             return Arrays.equals(tokenBytes, accountBytes);
         } else {
             return accountCredentials.equals(tokenCredentials);
@@ -36,7 +29,6 @@ public class CloudSessionCredentialsMatcher extends SimpleCredentialsMatcher {
 
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-        System.out.println("MATCHING!!");
         Object tokenCredentials = getCredentials(token);
         Object accountCredentials = getCredentials(info);
         return equals(tokenCredentials, accountCredentials);

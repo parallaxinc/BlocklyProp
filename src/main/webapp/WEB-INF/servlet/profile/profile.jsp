@@ -13,12 +13,10 @@
         <link type="text/css" rel="stylesheet" href="<url:getUrl url="/cdn/style.css"/>" />
         <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getUrl url="/cdn/lib/sha256.min.js"/>" ></script>
-        <script src="<url:getUrl url="/cdn/authenticate.js"/>" ></script>
         <script src="<url:getUrl url="/cdn/lib/jquery.form.min.js"/>"></script>
         <script src="<url:getUrl url="/cdn/profile.js"/>"></script>
     </head>
-    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
+    <body>
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
@@ -36,14 +34,14 @@
                     <div class="alert alert-danger hidden form-message" id="unlock-error">
                         <p><fmt:message key="profile.unlock.error" /></p>
                     </div>
-                    <form id="loginform" action="${properties:authenticationserver('/authenticate')}" method="post">
+                    <form id="loginform" action="<url:getUrl url="/profile" />" method="post">
                         <h3><fmt:message key="profile.unlock.title" /></h3>
                         <input type="hidden" name="username" value="<%= request.getAttribute("email")%>" />
                         <div class="form-group">
                             <label for="password" ><fmt:message key="profile.unlock.password" /></label>
                             <input class="form-control" type="password" name="password" id="password" maxlength="255" required="required"/>
                         </div>
-                        <input class="btn btn-default" type="submit" value="<fmt:message key="profile.unlock.submit" />">
+                        <input class="btn btn-default" type="submit" name="unlock" value="<fmt:message key="profile.unlock.submit" />">
                     </form>
                 </div>
             </div>
@@ -58,7 +56,7 @@
                     <div class="alert alert-danger hidden form-message" id="base-screenname-error">
                         <p><fmt:message key="profile.base.error.screenname" /></p>
                     </div>
-                    <form id="baseInfoForm" name="baseInfoForm" action="${properties:authenticationserver('/rest/profile/base')}" method="post">
+                    <form id="baseInfoForm" name="baseInfoForm" action="<url:getUrl url="/rest/profile/base" />" method="post">
                         <input type="hidden" name="id" value="<%= request.getAttribute("id")%>">
                         <input type="hidden" name="username" value="<%= request.getAttribute("email")%>" />
                         <input class="password" type="hidden" name="password" value="">
@@ -82,7 +80,7 @@
                     <div class="alert alert-danger hidden form-message" id="password-matching-error">
                         <p><fmt:message key="profile.password-confirm.error" /></p>
                     </div>
-                    <form id="passwordForm" name="passwordForm" action="${properties:authenticationserver('/rest/profile/password')}" method="post">
+                    <form id="passwordForm" name="passwordForm" action="<url:getUrl url="/rest/profile/password" />" method="post">
                         <input type="hidden" name="id" value="<%= request.getAttribute("id")%>">
                         <input type="hidden" name="username" value="<%= request.getAttribute("email")%>" />
                         <input class="password" type="hidden" name="oldpassword" />

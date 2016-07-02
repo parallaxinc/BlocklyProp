@@ -15,6 +15,7 @@ import com.parallax.client.cloudsession.CloudSessionAuthenticateService;
 import com.parallax.client.cloudsession.CloudSessionRegisterService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
+import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
@@ -27,10 +28,10 @@ import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -39,6 +40,8 @@ import org.apache.shiro.SecurityUtils;
 @Singleton
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
+
+    private static Logger log = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
     private Provider<SessionData> sessionData;
 
@@ -90,7 +93,7 @@ public class SecurityServiceImpl implements SecurityService {
         }
     }
 
-    public static User authenticateLocalUserStatic(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException {
+    public static User authenticateLocalUserStatic(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException {
         return instance.authenticateLocalUser(email, password);
     }
 
@@ -98,7 +101,8 @@ public class SecurityServiceImpl implements SecurityService {
         return instance.authenticateLocalUser(idUser);
     }
 
-    public User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException {
+    @Override
+    public User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException {
         try {
             User user = authenticateService.authenticateLocalUser(email, password);
 //            sessionData.get().setUser(user);
@@ -138,7 +142,7 @@ public class SecurityServiceImpl implements SecurityService {
                                 try {
                                     user = instance.userService.changeUserLocale(user.getId(), sessionData.getLocale());
                                 } catch (UnknownUserIdException ex) {
-                                    Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                                    log.error("UnknownUserId", ex);
                                 }
                             }
                         }

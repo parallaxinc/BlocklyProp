@@ -26,17 +26,17 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
+
 Blockly.Blocks.variables_get = {
     // Variable getter.
-    helpUrl: Blockly.LANG_VARIABLES_GET_HELPURL,
     init: function () {
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput("")
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+
         this.setOutput(true, null);
-        //      this.setTooltip(Blockly.LANG_VARIABLES_GET_TOOLTIP_1);
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
@@ -50,7 +50,6 @@ Blockly.Blocks.variables_get = {
 
 Blockly.Blocks.variables_declare = {
     // Variable setter.
-    helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
     init: function () {
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE', null)
@@ -60,9 +59,9 @@ Blockly.Blocks.variables_declare = {
                 .appendField("as")
                 .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["char", "char"], ["unsigned int", "unsigned int"], ["signed char", "signed char"]]), "TYPE")
                 .appendField("value");
+
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-//        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
@@ -76,16 +75,15 @@ Blockly.Blocks.variables_declare = {
 
 Blockly.Blocks.variables_set = {
     // Variable setter.
-    helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
     init: function () {
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE')
                 .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_SET_ITEM), 'VAR').appendField('=');
+
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-//        this.setTooltip(Blockly.LANG_VARIABLES_SET_TOOLTIP_1);
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
@@ -102,8 +100,6 @@ Blockly.Blocks.variables_set = {
  * @fileoverview Generating propc for control blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
  */
-
-//Blockly.propc = new Blockly.Generator('propc');
 
 Blockly.propc.variables_get = function () {
     // Variable getter.
@@ -132,7 +128,15 @@ Blockly.propc.variables_set = function () {
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
-        Blockly.propc.vartype_[varName] = 'int';
+         if (argument0.indexOf("\"") > -1) {
+           Blockly.propc.vartype_[varName] = 'char';
+         } else if (argument0.indexOf(".") > -1) {
+           Blockly.propc.vartype_[varName] = 'float';
+         } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false") > -1) {
+           Blockly.propc.vartype_[varName] = 'boolean';
+         } else {
+           Blockly.propc.vartype_[varName] = 'int';
+         }
     }
     return varName + ' = ' + argument0 + ';\n';
 };

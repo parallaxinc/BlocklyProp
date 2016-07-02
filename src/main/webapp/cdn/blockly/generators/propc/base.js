@@ -27,6 +27,7 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
+
 Blockly.propc.make_pin = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var dropdown_action = this.getFieldValue('ACTION');
@@ -36,6 +37,8 @@ Blockly.propc.make_pin = function () {
         case "LOW":
             return 'low(' + dropdown_pin + ');\n';
         case "TOGGLE":
+            Blockly.propc.setups_["init_pin_" + dropdown_pin] = 'low(' + dropdown_pin + ');\n';
+
             return 'toggle(' + dropdown_pin + ');\n';
         case "INPUT":
             return 'set_direction(' + dropdown_pin + ', 0);\n';
@@ -45,7 +48,7 @@ Blockly.propc.make_pin = function () {
 };
 
 Blockly.propc.make_pin_input = function () {
-    var pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || 0; //Number(this.getFieldValue('PIN'));
+    var pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || 0;
     var dropdown_action = this.getFieldValue('ACTION');
     switch (dropdown_action) {
         case "HIGH":
@@ -53,6 +56,8 @@ Blockly.propc.make_pin_input = function () {
         case "LOW":
             return 'low(' + pin + ');\n';
         case "TOGGLE":
+            Blockly.propc.setups_["init_pin_" + dropdown_pin] = 'low(' + dropdown_pin + ');\n';
+            
             return 'toggle(' + pin + ');\n';
         case "INPUT":
             return 'set_direction(' + pin + ', 0);\n';
@@ -63,14 +68,14 @@ Blockly.propc.make_pin_input = function () {
 
 Blockly.propc.check_pin = function () {
     var dropdown_pin = this.getFieldValue('PIN');
-    //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
+
     var code = 'input(' + dropdown_pin + ')';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.check_pin_input = function () {
     var dropdown_pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
-    //  Blockly.Spin.setups_['setup_input_' + dropdown_pin] = 'pinMode(' + dropdown_pin + ', INPUT);';
+
     var code = 'input(' + dropdown_pin + ')';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
@@ -107,49 +112,64 @@ Blockly.propc.base_freqout = function () {
     var duration = Blockly.propc.valueToCode(this, 'DURATION', Blockly.propc.ORDER_ATOMIC) || 1000;
     var frequency = Blockly.propc.valueToCode(this, 'FREQUENCY', Blockly.propc.ORDER_ATOMIC) || 3000;
 
-    var code = 'freqout( ' + dropdown_pin + ', ' + duration + ', ' + frequency + ' );\n';
+    var code = 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
 
     return code;
 };
 
 Blockly.Blocks.string_type_block = {
-    category: 'Protocols',
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
+
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
-        this.setOutput(true, String);
+        this.setOutput(true, 'String');
     }
 };
 
-Blockly.propc.string_type_block = function () {
+Blockly.propc.string_type_block = function() {
     var text = this.getFieldValue("TEXT");
 
     var code = '"' + text + '"';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
-Blockly.propc.pulse_in = function () {
+Blockly.Blocks.high_low_value = {
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), 'VALUE');
+
+        this.setOutput(true, 'Boolean');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.high_low_value = function() {
+    var code = (this.getFieldValue('VALUE') == 'HIGH') ? '1' : '0';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+Blockly.propc.pulse_in = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
 
     return 'pulse_in(' + pin + ', ' + state + ');\n';
 };
 
-Blockly.propc.pulse_out = function () {
+Blockly.propc.pulse_out = function() {
     var pin = this.getFieldValue("PIN");
     var pulse_length = Blockly.propc.valueToCode(this, 'PULSE_LENGTH', Blockly.propc.ORDER_ATOMIC);
 
     return 'pulse_out(' + pin + ', ' + pulse_length + ');\n';
 };
 
-Blockly.propc.rc_charge_discharge = function () {
+Blockly.propc.rc_charge_discharge = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
 
     return 'rc_time(' + pin + ', ' + state + ');\n';
 };
-

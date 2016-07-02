@@ -1,4 +1,20 @@
 $(document).ready(function () {
+    $('#loginform').ajaxForm({
+//        beforeSubmit: function (arr, $form, options) {
+//            $(".form-message").addClass("hidden");
+//        },
+        success: function (response) {
+            if (response['success']) {
+                $("#unlock-form").collapse("hide");
+                $("#profile-form").collapse("show");
+                $(".password").val($("#password").val());
+                $("#password").val('');
+            } else {
+                $("#unlock-error").removeClass("hidden");
+            }
+        }
+    });
+
     $('#baseInfoForm').ajaxForm({
         beforeSubmit: function (arr, $form, options) {
             $(".form-message").addClass("hidden");
@@ -6,7 +22,6 @@ $(document).ready(function () {
         success: function (response) {
             if (response['success']) {
                 $("#base-success").removeClass("hidden");
-                $.post("profile", {});
             } else {
                 if (response['message'] === "screenname-used") {
                     $("#base-screenname-error").removeClass("hidden");

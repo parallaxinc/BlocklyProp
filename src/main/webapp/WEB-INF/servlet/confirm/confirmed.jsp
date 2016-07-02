@@ -19,8 +19,8 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                     <h2><fmt:message key="confirm.confirmed.title" /></h2>
-                    <p><a href="index.jsp">Go to home</a></p>
-                    <p><a href="my/projects.jsp">Log in</a></p>
+                    <p><a href="<url:getUrl url="/index"/>">Go to home</a></p>
+                    <p><a href="<url:getUrl url="/my/projects.jsp"/>">Log in</a></p>
                 </div>
             </div>
         </div>

@@ -149,10 +149,21 @@ button:hover {
     background-size: 50px 50px;
     padding-left: 60px;
     margin-left: 0;
+    height: 50px;
+    font-size: 25px;
+    display: block;
+    float: left;
+}
+
+#nav-title {
     color: #BCD0E4;
     height: 50px;
     font-size: 25px;
     position: absolute;
+}
+
+#nav-title > span.project-name {
+    margin-left: 15px;
 }
 
 a#nav-logo:hover, a#nav-logo:active {

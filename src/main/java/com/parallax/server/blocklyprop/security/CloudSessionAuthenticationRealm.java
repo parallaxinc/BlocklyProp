@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.security;
 
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
+import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.objects.User;
@@ -30,12 +31,13 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof IdAuthenticationToken;
+        return true;
+        //return token instanceof IdAuthenticationToken;
     }
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("AUTHORIZATION");
+        log.info("AUTHORIZATION");
         AuthorizationInfo authorizationInfo = new SimpleAccount();
 
         return authorizationInfo;
@@ -44,52 +46,37 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         try {
-            if (token instanceof IdAuthenticationToken) {
-                Long idUser = (Long) token.getPrincipal();
 
-                User user = SecurityServiceImpl.authenticateLocalUserStatic(idUser);
-                if (user != null) {
-                    System.out.println("USER = " + user);
-                } else {
-                    System.out.println("USER = null");
-                    return null;
-                }
+            log.info("AUTHENTICATION using login and password");
 
-                try {
-                    return new SimpleAccount(user.getEmail(), "", "CloudSession");
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
+            // Principal = login
+            String principal = (String) token.getPrincipal();
+
+            // Credentials = password
+            String credentials = new String((char[]) token.getCredentials());
+
+            User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
+            if (user != null) {
+                // System.out.println("USER = " + user);
             } else {
-                // Principal = login
-                String principal = (String) token.getPrincipal();
-
-                // Credentials = password
-                String credentials = new String((char[]) token.getCredentials());
-
-                User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
-                if (user != null) {
-                    System.out.println("USER = " + user);
-                } else {
-                    System.out.println("USER = null");
-                    return null;
-                }
-
-                System.out.println("CREATING AUTHENTICATION DETAILS");
-                try {
-                    return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-                System.out.println("credentials set");
+                log.info("No exception but user object is null");
                 return null;
             }
+
+            try {
+                return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
+            } catch (Throwable t) {
+                log.error("Unexpected exception creating account object", t);
+            }
+            return null;
         } catch (UnknownUserException ex) {
-            log.warn("Unknown user", ex);
+            log.info("Unknown user", ex);
         } catch (UserBlockedException ex) {
-            log.warn("Blocked user", ex);
+            log.info("Blocked user", ex);
         } catch (EmailNotConfirmedException ex) {
-            log.warn("Email not confirmed", ex);
+            log.info("Email not confirmed", ex);
+        } catch (InsufficientBucketTokensException ibte) {
+            log.info("Insufficient bucken tokens", ibte);
         } catch (NullPointerException npe) {
             log.warn("NullPointer", npe);
         } catch (Throwable t) {

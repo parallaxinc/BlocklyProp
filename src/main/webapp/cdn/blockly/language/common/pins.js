@@ -62,7 +62,7 @@ Blockly.Blocks.check_pin = {
         this.appendDummyInput("")
                 .appendField("Check PIN#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.setTooltip('');
     }
 };
@@ -75,7 +75,7 @@ Blockly.Blocks.check_pin_input = {
                 .appendField("Check PIN#");
         this.appendValueInput('PIN')
                 .setCheck('Number');
-        this.setOutput(true, Boolean);
+        this.setOutput(true, 'Boolean');
         this.setInputsInline(true);
         this.setTooltip('');
     }
@@ -175,35 +175,31 @@ Blockly.Blocks.set_pins = {
 };
 
 Blockly.Blocks.pulse_in = {
-    helpUrl: '',
     init: function() {
-        this.setColour(colorPalette('io'));
-        this.appendDummyInput("")
-            .appendfield("Pulse-in PIN#")
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
+            .appendField("Pulse-in PIN#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.appendDummyInput("")
+        this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([["Negative/low pulses", "0"], ["Positive/high pulses", "1"]]), "STATE");
-        
+
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setTooltip('');
     }
 };
 
 Blockly.Blocks.pulse_out = {
-    helpUrl: '',
     init: function() {
-        this.setColour(colorPalette('io'));
-        this.appendDummyInput("")
-            .appendfield("Pulse-out PIN#")
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
+            .appendField("Pulse-out PIN#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
             .appendField("Pulse length");
-    
+
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setTooltip('');
     }
 }
