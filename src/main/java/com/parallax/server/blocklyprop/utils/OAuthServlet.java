@@ -12,6 +12,7 @@ import com.parallax.server.blocklyprop.security.NewOAuthUserException;
 import com.parallax.server.blocklyprop.security.oauth.OAuthAuthenticator;
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +36,13 @@ public abstract class OAuthServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String code = req.getParameter("code");
         if (Strings.isNullOrEmpty(code)) {
+            // Save url if provided
+            String url = req.getParameter("url");
+            if (!Strings.isNullOrEmpty(url)) {
+                ServletRequest request = new HttpServletRequestImpl(url);
+                WebUtils.saveRequest(request);
+            }
+
             log.info("Sending redirect");
             resp.sendRedirect(getAuthenticator().getAuthorizationUrl());
         } else {

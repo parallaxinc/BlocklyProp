@@ -26,6 +26,7 @@
 
                         <%@ include file="/WEB-INF/includes/pageparts/loginform.jsp"%>
 
+                        <a href="<url:getUrl url="/oauth/google" />?url=" target="oauth" class="oauth" id="oauth-google">Log in using Google</a>
                         <a href="<url:getUrl url="/register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
                     </div>
                 </div>
@@ -38,6 +39,15 @@
 
 
     <script>
+        var oauthUrls = {};
+        var baseUrl = '<url:getUrl url="/" />';
+
+        $(document).ready(function () {
+            $(".oauth").each(function () {
+                oauthUrls[$(this).attr('id')] = $(this).attr("href");
+            });
+        });
+
         $("body").on("click", "a.editor-new-link", function (event) {
             event.preventDefault();
             setEditorLinksAndShow.call(this, "<fmt:message key="not_loggedin.try.trylink" />");
@@ -52,9 +62,12 @@
             $(".try-view-editor").text(linkText);
             $("a.editor-continue-link").attr("href", $(this).attr("href"));
             var link = $(this).attr("href");
-            window['post-authenticate'] = function () {
-                location.href = link;
-            };
+            //window['post-authenticate'] = function () {
+            //    location.href = link;
+            //};
+            $(".oauth").each(function () {
+                $(this).attr("href", oauthUrls[$(this).attr('id')] + encodeURI(baseUrl + link));
+            });
             if ($(this).data("href")) {
                 $("a.editor-demo-link").attr("href", $(this).data("href").replace('editor', 'demo'));
             } else {
