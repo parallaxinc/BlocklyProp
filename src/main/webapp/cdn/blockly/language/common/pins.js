@@ -34,7 +34,7 @@ Blockly.Blocks.make_pin = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
-                .appendField("Make Pin#")
+                .appendField("make pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
     }
@@ -47,7 +47,7 @@ Blockly.Blocks.make_pin_input = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
-                .appendField("Make Pin#");
+                .appendField("make pin#");
         this.appendValueInput('PIN')
                 .setCheck('Number');
         this.appendDummyInput("")
@@ -60,7 +60,7 @@ Blockly.Blocks.check_pin = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("Check PIN#")
+                .appendField("check pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.setOutput(true, 'Boolean');
         this.setTooltip('');
@@ -72,7 +72,7 @@ Blockly.Blocks.check_pin_input = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("Check PIN#");
+                .appendField("check pin#");
         this.appendValueInput('PIN')
                 .setCheck('Number');
         this.setOutput(true, 'Boolean');
@@ -96,7 +96,7 @@ Blockly.Blocks.set_pins = {
             pin_count.push([i.toString(), i.toString()]);
         }
         this.appendDummyInput("")
-                .appendField("Set the")
+                .appendField("set the")
                 .appendField(new Blockly.FieldDropdown([["state", "STATE"], ["direction", "DIRECTION"]], function (action) {
                     this.sourceBlock_.updateShape_({"ACTION": action});
                 }), "ACTION")
@@ -109,7 +109,7 @@ Blockly.Blocks.set_pins = {
                     this.sourceBlock_.updateShape_({"START_PIN": startPin});
                 }), "START_PIN");
         this.appendDummyInput("PINS")
-                .appendField("Values:")
+                .appendField("values:")
                 .appendField("p0:")
                 .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "P0");
     },
@@ -178,10 +178,10 @@ Blockly.Blocks.pulse_in = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("Pulse-in PIN#")
+            .appendField("pulse-in pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["Negative/low pulses", "0"], ["Positive/high pulses", "1"]]), "STATE");
+            .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -193,10 +193,10 @@ Blockly.Blocks.pulse_out = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("Pulse-out PIN#")
+            .appendField("pulse-out pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
-            .appendField("Pulse length");
+            .appendField("pulse length");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

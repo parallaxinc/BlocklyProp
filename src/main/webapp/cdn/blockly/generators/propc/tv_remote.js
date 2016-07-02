@@ -30,8 +30,8 @@ Blockly.Blocks.sirc_get = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get a button pressed")
-            .appendField("Pin#")
+            .appendField("get a button pressed")
+            .appendField("pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setInputsInline(true);

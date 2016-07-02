@@ -32,7 +32,7 @@ Blockly.Blocks.cog_new = {
         this.appendDummyInput()
             .appendField("cognew");
         this.appendStatementInput("METHOD")
-            .appendField("Method");
+            .appendField("method");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
