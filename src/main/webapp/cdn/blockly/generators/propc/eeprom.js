@@ -28,7 +28,7 @@ Blockly.Blocks.eeprom_int_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save an int to EEPROM");
+            .appendField("save an int to EEPROM");
         this.appendValueInput('VALUE')
             .appendField("value");
         this.appendDummyInput()
@@ -45,7 +45,7 @@ Blockly.Blocks.eeprom_int_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get an int from EEPROM")
+            .appendField("get an int from EEPROM")
             .appendField("address")
             .appendField(new Blockly.FieldDropdown(profile.default.eeprom), "ADDRESS");
 
@@ -59,7 +59,7 @@ Blockly.Blocks.eeprom_float_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save a float to EEPROM");
+            .appendField("save a float to EEPROM");
         this.appendValueInput('VALUE')
             .appendField("value");
         this.appendDummyInput()
@@ -76,7 +76,7 @@ Blockly.Blocks.eeprom_float_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get a float from EEPROM")
+            .appendField("get a float from EEPROM")
             .appendField("address")
             .appendField(new Blockly.FieldDropdown(profile.default.eeprom), "ADDRESS");
 
@@ -90,7 +90,7 @@ Blockly.Blocks.eeprom_text_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save text to EEPROM")
+            .appendField("save text to EEPROM")
             .appendField("text")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
@@ -111,7 +111,7 @@ Blockly.Blocks.eeprom_text_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get text from EEPROM");
+            .appendField("get text from EEPROM");
         this.appendValueInput('VALUE')
             .appendField("text length");
         this.appendDummyInput()

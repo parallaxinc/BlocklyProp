@@ -33,7 +33,7 @@ Blockly.Blocks.sensor_ping = {
         this.appendDummyInput()
             .appendField("Ping)))")
             .appendField(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"]]), "UNIT")
-            .appendField("PIN#")
+            .appendField("pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setOutput(true, 'Number');
@@ -64,8 +64,8 @@ Blockly.Blocks.PIR_Sensor = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("PIR Sensor")
-                .appendField("Pin")
+                .appendField("PIR sensor")
+                .appendField("pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setNextStatement(false, null);
@@ -108,8 +108,8 @@ Blockly.Blocks.sound_impact_run = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound impact")
-            .appendField("Run in cog#")
+            .appendField("sound impact")
+            .appendField("run in cog#")
             .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COG");
 
         this.setInputsInline(true);
@@ -122,7 +122,7 @@ Blockly.Blocks.sound_impact_get = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get sound impact data");
+            .appendField("get sound impact data");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -135,7 +135,7 @@ Blockly.Blocks.sound_impact_end = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Turn the sound impact sensor off");
+            .appendField("turn the sound impact sensor off");
 
         this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
         this.setPreviousStatement(true, null);

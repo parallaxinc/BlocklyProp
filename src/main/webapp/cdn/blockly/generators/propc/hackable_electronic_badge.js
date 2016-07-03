@@ -79,7 +79,7 @@ Blockly.propc.heb_toggle_led_open = function () {
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'led(' + led_number + ', ' + led_state + ');\n';
-    return [code, Blockly.propc.ORDERN_NONE];
+    return code;
 };
 
 Blockly.Blocks.heb_set_led_rgb = {
@@ -129,7 +129,7 @@ Blockly.propc.heb_print_numeric_var = function () {
     if (value.startsWith('"') && value.endsWith('"')) {
         return 'oledprint(' + value + ');\n';
     } else {
-        var code = 'oledprint("' + value + ' = %d", ' + value + ');\n';
+        var code = 'oledprint("%d", ' + value + ');\n';
         return code;
     }
 };

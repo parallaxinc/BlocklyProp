@@ -32,7 +32,7 @@ Blockly.Blocks.cog_new = {
         this.appendDummyInput()
             .appendField("cognew");
         this.appendStatementInput("METHOD")
-            .appendField("Method");
+            .appendField("method");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -44,6 +44,6 @@ Blockly.propc.cog_new = function() {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
     method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
 
-    var code = 'cog_run(' + method + ', 128)';
+    var code = 'cog_run(' + method + ', 128);\n';
     return code;
 };
