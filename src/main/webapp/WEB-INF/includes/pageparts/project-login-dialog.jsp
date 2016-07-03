@@ -26,7 +26,9 @@
 
                         <%@ include file="/WEB-INF/includes/pageparts/loginform.jsp"%>
 
-                        <a href="<url:getUrl url="/oauth/google" />?url=" target="oauth" class="oauth" id="oauth-google">Log in using Google</a>
+                        <c:if test="${properties:oauth('google')}">
+                            <a href="<url:getUrl url="/oauth/google" />?url=" target="oauth" class="oauth" id="oauth-google">Log in using Google</a>
+                        </c:if>
                         <a href="<url:getUrl url="/register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
                     </div>
                 </div>

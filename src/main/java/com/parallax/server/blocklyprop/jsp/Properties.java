@@ -29,4 +29,8 @@ public class Properties {
         return configuration.getString("downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
     }
 
+    public static boolean isOauthEnabled(String oauthProvider) {
+        return configuration.getBoolean("oauth." + oauthProvider + ".enabled", true);
+    }
+
 }

@@ -42,12 +42,20 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
 
     private OAuthService oauthService;
 
+    private boolean active = false;
+
     @Inject
     public void setConfiguration(Configuration configuration) {
-        service = new ServiceBuilder()
-                .apiKey("870921351080-ida0dmvbi4amao2d98ac1souu3ao25dv.apps.googleusercontent.com")
-                .apiSecret("3n5f093hsMDs4qmWc7Q8z8Bn").scope("https://www.googleapis.com/auth/userinfo.email")
-                .callback("http://dev.blockly.parallax.com:8084/blockly/oauth/google").debug().build(GoogleApi20.instance());
+        if (configuration.getBoolean("oauth.google.enabled", false)) {
+            ServiceBuilder serviceBuilder = new ServiceBuilder();
+            serviceBuilder.apiKey(configuration.getString("oauth.google.key"));
+            serviceBuilder.apiSecret(configuration.getString("oauth.google.secret"));
+            serviceBuilder.callback(configuration.getString("oauth.google.callback"));
+
+            service = serviceBuilder.scope("https://www.googleapis.com/auth/userinfo.email").build(GoogleApi20.instance());
+
+            active = true;
+        }
     }
 
     @Inject
@@ -57,6 +65,9 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
 
     @Override
     public String getAuthorizationUrl() {
+        if (!active) {
+            return "";
+        }
         Map<String, String> additionalParams = new HashMap<>();
         additionalParams.put("scope", "https://www.googleapis.com/auth/userinfo.email");
 
@@ -69,6 +80,9 @@ public class GoogleAuthenticator implements OAuthAuthenticator {
 
     @Override
     public String handleAuthentication(String authenticationCode) throws NewOAuthUserException, WrongAuthenticationSourceException, ServerException {
+        if (!active) {
+            return "";
+        }
         try {
             OAuth2AccessToken accessToken = service.getAccessToken(authenticationCode);
             System.out.println("Access token: " + accessToken.getAccessToken());
