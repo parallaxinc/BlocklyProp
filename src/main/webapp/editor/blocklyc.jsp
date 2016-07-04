@@ -14,6 +14,7 @@
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/term.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/beautify.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/detect.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blocklypropclient.js"/>"></script>

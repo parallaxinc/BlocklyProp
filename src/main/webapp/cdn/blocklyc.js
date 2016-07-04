@@ -70,7 +70,10 @@ function renderContent() {
         codeXml.setValue(xmlText);
         codeXml.gotoLine(0);
     } else if (content.id == 'content_propc') {
-        codePropC.setValue(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+        var code = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+        codePropC.setValue(js_beautify(code, {
+            'brace_style': 'expand'
+        }));
         codePropC.gotoLine(0);
     }
 }
@@ -110,6 +113,9 @@ function cloudCompile(text, action, successHandler) {
     $('#compile-dialog').modal('show');
 
     var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+    propcCode.setValue(js_beautify(code, {
+        'brace_style': 'expand'
+    }));
     var terminalNeeded = propcCode.indexOf("SERIAL_TERMINAL USED") > -1;
     $.ajax({
         'method': 'POST',
