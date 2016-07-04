@@ -153,6 +153,7 @@ Blockly.propc.init = function (workspace) {
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
     // Create a dictionary of setups to be printed before the code.
     Blockly.propc.setups_ = {};
+    Blockly.propc.global_vars_ = {};
     // Create a list of stacks
     Blockly.propc.stacks_ = [];
     Blockly.propc.vartype_ = {};
@@ -203,6 +204,13 @@ Blockly.propc.finish = function (code) {
         } else {
             definitions.push(def);
         }
+    }
+
+    // Gives BlocklyProp developers the ability to add global variables
+    for (var name in Blockly.propc.global_vars_) {
+        var def = Blockly.propc.global_vars_[name];
+
+        definitions.push(def);
     }
 
     for (var def in definitions) {
