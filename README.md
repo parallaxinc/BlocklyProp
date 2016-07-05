@@ -11,9 +11,7 @@ BlocklyProp is based on Blockly, the web-based, graphical programming editor. Pr
 
 BlocklyProp generates Spin and C code, and can compile and load into the Propeller with a single click on the web-page.
 
-Whereas Blockly is only client side, BlocklyProp is hosted on a server and
-
-There where 3 previous versions with each a different feature sets and target groups:
+Whereas Blockly is only client side, BlocklyProp is hosted on a server and there were 3 previous versions, each implementing  different sets of features and targeting different groups:
 
 1. Java version that is started as a Java application, internally creates a http-server and opens the browser. The server is used to compile programs and load them into Propeller
 2. A second version is a demo version without the server functionality. It's just to have a go at using the blockly editor with the Propeller specific blocks.
@@ -80,62 +78,19 @@ Supported board
 * S3
 * Hackable electronic badge
 
-Available all purpose pins differ from board to board. It's also possible to select a generic board wich gives access to all 32 pins.
+Available all purpose pins differ from board to board. It's also possible to select a generic board which gives access to all 32 pins.
 
-To Do list/Roadmap
+Example projects
 -----------------
 
-1. Example projects
-  1. Alarm System for your room ( ping and wavplayer )
-  2. Zombie detector with PIR
-  3. RF message decoder XBee
-  4. Joystick controlled servo
-  5. Ping distance note player
-  6. Mood display
-  7. LED candle
-  8. ColorPal LED display
-  9. Musical Instrument control of something
-  10. RF tilt video game controller ( mx2125 )
-  11. Light sensor
-
-Sensor/Hardware Compatibility
------------------
-- Propeller C
-  - PIR Sensor ( all Parallax PIR Sensors )
-  - Mutli-Cog ( start )
-  - Digital and Analog I/O support
-  - Serial connection ( initialize, transmit, receive )
-  - Freqout command
-  - Joystick
-  - Ping))) sensor
-  - Abdrive
-  - LCD ( currently, only 1 LCD can be attached )
-  - Servo
-  - MX2125 Acceleration sensor & rotation and tilt functions
-  - MMA7455 Acceleration sensor
-  - SF02 Laser Rangefinder
-  - Etape liquid sensor
-  - Activitybot Library functions
-  - Servodiffdrivelibrary functions
-  - Wavplayer
-  - File I/O
-  - TV remote functions
-  - EEPROM
-  - I2C
-  - rc_time
-  - RFID card I/O
-  - sd card I/O
-  - sound impact
-  - assorted simpletools library functions ( see base.js )
-- Spin
-  - Ping))) sensor
-  - Digital and Analog I/O support
-  - Multi-Cog
-  - Serial connection ( initialize, transmit, receive )
-  - SF02 Laser Rangefinder
-  - Joystick
-  - MMA7455 Acceleration sensor
-  - Etape liquid sensor
-  - PIR Sensor
-  - LCD ( currently, only 1 LCD can be attached )
-  - Servo
+1. Alarm System for your room ( ping and wavplayer )
+2. Zombie detector with PIR
+3. RF message decoder XBee
+4. Joystick controlled servo
+5. Ping distance note player
+6. Mood display
+7. LED candle
+8. ColorPal LED display
+9. Musical Instrument control of something
+10. RF tilt video game controller ( mx2125 )
+11. Light sensor
