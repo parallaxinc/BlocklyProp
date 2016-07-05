@@ -172,16 +172,7 @@ Blockly.propc.init = function (workspace) {
         for (var x = 0; x < variables.length; x++) {
             var varName = Blockly.propc.variableDB_.getName(variables[x],
                     Blockly.Variables.NAME_TYPE);
-
-            if (variables[x].indexOf("\"") > -1) {
-                defvars[x] = "char " + varName + '{{$var_length_' + varName + '}};\n';
-            } else if (variables[x].indexOf(".") > -1) {
-                defvars[x] = "float " + varName + ';\n';
-            } else if (variables[x].indexOf("true") > -1 || variables[x].indexOf("false") > -1) {
-                defvars[x] = "boolean " + varName + ';\n';
-            } else {
-                defvars[x] = "int " + varName + ';\n';
-            }
+            defvars[x] = '{{$var_type_' + varName + '}} ' + varName + '{{$var_length_' + varName + '}};\n';
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
     }
@@ -221,18 +212,14 @@ Blockly.propc.finish = function (code) {
                 } else {
                     definitions[def] = definitions[def].replace("{{$var_type_" + variable + "}} " + variable + '{{$var_length_' + variable + '}}', "");
                 }
-                if (Blockly.propc.vartype_[variable] === 'char') {
-                    if (Blockly.propc.varlength_[variable]) {
-                        definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", '[' + Blockly.propc.varlength_[variable] + ']');
-                    } else {
-                        definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", '[128]');
-                    }
+                if (Blockly.propc.varlength_[variable]) {
+                    definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", '[' + Blockly.propc.varlength_[variable] + ']');
                 } else {
                     definitions[def] = definitions[def].replace("{{$var_length_" + variable + "}}", "");
                 }
             }
-            definitions[def] = definitions[def].replace("\n\n", "\n");
         }
+        definitions[def] = definitions[def].replace("\n\n", "\n");
     }
 
     for (var stack in Blockly.propc.stacks_) {
