@@ -33,10 +33,10 @@ Blockly.Blocks.debug_lcd_init = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD init")
-                .appendField("PIN#")
+                .appendField("pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
-                .appendField("Baud")
+                .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
 
         this.setPreviousStatement(true, null);
@@ -74,7 +74,7 @@ Blockly.Blocks.debug_lcd_number = {
         this.appendDummyInput()
                 .appendField("LCD print");
         this.appendValueInput('NUMBER', Number)
-                .appendField("Number")
+                .appendField("number")
                 .setCheck('Number');
 
         this.setPreviousStatement(true, null);
@@ -87,7 +87,7 @@ Blockly.Blocks.debug_lcd_action = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD action")
-                .appendField(new Blockly.FieldDropdown([["Newline", "13"]]), "ACTION");
+                .appendField(new Blockly.FieldDropdown([["newline", "13"]]), "ACTION");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
