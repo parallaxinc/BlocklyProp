@@ -130,6 +130,7 @@ Blockly.propc.variables_set = function () {
     if (Blockly.propc.vartype_[varName] === undefined) {
          if (argument0.indexOf("\"") > -1) {
            Blockly.propc.vartype_[varName] = 'char';
+           Blockly.propc.varlength_[varName] = '128';
          } else if (argument0.indexOf(".") > -1) {
            Blockly.propc.vartype_[varName] = 'float';
          } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false") > -1) {
