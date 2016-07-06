@@ -30,7 +30,7 @@ Blockly.Blocks.MX2125_acceleration_xaxis = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("MX2125 x-axis pin#")
+                .appendField("MX2125 acceleration x-axis pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX");
 
         this.setNextStatement(false, null);
@@ -43,7 +43,7 @@ Blockly.Blocks.MX2125_acceleration_yaxis = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("MX2125 y-axis pin#")
+                .appendField("MX2125 acceleration y-axis pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
 
         this.setNextStatement(false, null);
@@ -146,7 +146,8 @@ Blockly.propc.MX2125_acceleration_xaxis = function () {
 
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
 
-    return 'mx_tilt(' + pin + ')';
+    var code = 'mx_accel(' + pin + ')';
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.MX2125_acceleration_yaxis = function () {
@@ -155,7 +156,8 @@ Blockly.propc.MX2125_acceleration_yaxis = function () {
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
 
 
-    return 'mx_tilt(' + pin + ')';
+    var code = 'mx_accel(' + pin + ')';
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.MMA7455_acceleration = function () {
