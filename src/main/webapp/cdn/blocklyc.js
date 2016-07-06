@@ -113,9 +113,9 @@ function cloudCompile(text, action, successHandler) {
     $('#compile-dialog').modal('show');
 
     var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
-    propcCode.setValue(js_beautify(code, {
+    propcCode = js_beautify(propcCode, {
         'brace_style': 'expand'
-    }));
+    });
     var terminalNeeded = propcCode.indexOf("SERIAL_TERMINAL USED") > -1;
     $.ajax({
         'method': 'POST',
