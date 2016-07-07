@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.db.dao;
 
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import java.util.List;
@@ -28,9 +29,9 @@ public interface ProjectDao {
 
     ProjectRecord saveCode(Long idProject, String code);
 
-    List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset);
+    List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset);
 
-    List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset, Long idUser);
+    List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser);
 
     int countUserProjects(Long idUser);
 

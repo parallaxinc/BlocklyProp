@@ -13,6 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
@@ -56,9 +57,9 @@ public class RestProject {
     @Detail("Get all projects for the authenticated user")
     @Name("Get all projects for the authenticated user")
     @Produces("application/json")
-    public Response get(@QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        List<ProjectRecord> userProjects = projectService.getUserProjects(idUser, order, limit, offset);
+        List<ProjectRecord> userProjects = projectService.getUserProjects(idUser, sort, order, limit, offset);
         int projectCount = projectService.countUserProjects(idUser);
 
         JsonObject result = new JsonObject();

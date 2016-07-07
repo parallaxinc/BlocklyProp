@@ -9,7 +9,7 @@ var projectTypes = {
     }
 };
 
-$.get("rest/shared/project/list?order=desc&limit=5&offset=0", function (data) {
+$.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", function (data) {
     $.each(data['rows'], function (index, project) {
         var user = '';
         if (project['user']) {

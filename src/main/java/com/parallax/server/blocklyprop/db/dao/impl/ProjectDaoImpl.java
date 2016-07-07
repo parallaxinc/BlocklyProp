@@ -8,6 +8,7 @@ package com.parallax.server.blocklyprop.db.dao.impl;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.Tables;
@@ -109,7 +110,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset) {
+    public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
         if (TableOrder.desc == order) {
             orderField = Tables.PROJECT.NAME.desc();
@@ -118,10 +119,10 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset, Long idUser) {
-        SortField<String> orderField = Tables.PROJECT.NAME.asc();
+    public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
+        SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
         if (TableOrder.desc == order) {
-            orderField = Tables.PROJECT.NAME.desc();
+            orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
         }
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
         if (idUser != null) {
