@@ -211,6 +211,11 @@ Blockly.propc.finish = function (code) {
                 }
             }
         }
+
+        if (definitions[def].indexOf("{{$var_type_") > -1) {
+            definitions[def] = definitions[def].replace(/\{\{\$var_type_.*?\}\}/ig, "int").replace(/\{\{\$var_length_.*?\}\}/ig, '');
+        }
+
         definitions[def] = definitions[def].replace("\n\n", "\n");
     }
 
