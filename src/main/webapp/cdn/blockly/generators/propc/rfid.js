@@ -30,11 +30,19 @@ Blockly.Blocks.rfid_get = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get RFID");
+            .appendField("get RFID's sensor value and store it:")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
-        this.setPreviousStatement(false, null);
-        this.setNextStatement(false, null);
-        this.setOutput(true, 'Number');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('BUFFER')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
+            this.setTitleValue(newName, 'BUFFER');
+        }
     }
 };
 
@@ -77,15 +85,17 @@ Blockly.Blocks.rfid_close = {
 };
 
 Blockly.propc.rfid_get = function() {
+    var saveVariable = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
+
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    return 'rfid_get(rfid, 1000)';
+    return saveVariable + ' = rfid_get(rfid, 1000)';
 };
 
 Blockly.propc.rfid_disable = function() {
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    return 'rfid_disable();\n';
+    return 'rfid_disable(rfid);\n';
 };
 
 Blockly.propc.rfid_enable = function() {
@@ -93,16 +103,17 @@ Blockly.propc.rfid_enable = function() {
     var pin_out = this.getFieldValue('PIN_OUT');
 
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
+    Blockly.propc.global_vars_["rfidser"] = 'rfidser *rfid;\n';
     if (Blockly.propc.setups_["rfidser" + pin_in] === undefined && Blockly.propc.setups_["rfidser" + pin_out] === undefined)
     {
-        Blockly.propc.setups_["rfidser" + pin_in] = "rfidser *rfid = rfid_open(" + pin_out + ", " + pin_in + ");"
+        Blockly.propc.setups_["rfidser" + pin_in] = "rfid = rfid_open(" + pin_out + ", " + pin_in + ");"
     }
 
-    return 'rfid_enable();\n';
+    return '';
 };
 
 Blockly.propc.rfid_close = function() {
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    return 'rfid_close();\n';
+    return 'rfid_close(rfid);\n';
 };
