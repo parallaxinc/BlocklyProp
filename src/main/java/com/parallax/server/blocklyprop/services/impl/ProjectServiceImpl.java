@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
@@ -47,21 +48,21 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset) {
+    public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
         Long idCurrentUser = BlocklyPropSecurityUtils.getCurrentUserId();
         if (idCurrentUser == null) {
             throw new UnauthorizedException();
         }
         if (idCurrentUser.equals(idUser)) {
-            return projectDao.getUserProjects(idUser, order, limit, offset);
+            return projectDao.getUserProjects(idUser, sort, order, limit, offset);
         } else {
             throw new UnauthorizedException();
         }
     }
 
     @Override
-    public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset) {
-        return projectDao.getSharedProjects(order, limit, offset, BlocklyPropSecurityUtils.getCurrentUserId());
+    public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset) {
+        return projectDao.getSharedProjects(sort, order, limit, offset, BlocklyPropSecurityUtils.getCurrentUserId());
     }
 
     @Override
