@@ -403,6 +403,13 @@
             <version>5.3.1</version>
         </dependency>
 
+        <!-- Oauth -->
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-apis</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+
 
         <!-- Other dependencies -->
         <dependency>

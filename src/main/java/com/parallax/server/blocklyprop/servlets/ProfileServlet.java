@@ -20,6 +20,7 @@ import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
@@ -74,7 +75,12 @@ public class ProfileServlet extends HttpServlet {
         req.setAttribute("id", user.getId());
         req.setAttribute("email", user.getEmail());
         req.setAttribute("screenname", user.getScreenname());
-        req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+        if ("local".equals(user.getAuthenticationSource())) {
+            req.getRequestDispatcher("/WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("authentication-source", user.getAuthenticationSource());
+            req.getRequestDispatcher("/WEB-INF/servlet/profile/profile-oauth.jsp").forward(req, resp);
+        }
     }
 
     //@Override
@@ -149,6 +155,9 @@ public class ProfileServlet extends HttpServlet {
             } catch (InsufficientBucketTokensException ex) {
                 resp.getWriter().write(createFailure("Invalid authentication").toString());
                 return;
+            } catch (WrongAuthenticationSourceException ex) {
+                resp.getWriter().write(createFailure("Invalid authentication").toString());
+                return;
             }
 
         }
@@ -221,6 +230,10 @@ public class ProfileServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             } catch (PasswordComplexityException pce) {
                 req.setAttribute("passwordComplexity", "Password is not complex enough");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            } catch (WrongAuthenticationSourceException ex) {
+                log.warn("Trying to change password of non local user!");
+                req.setAttribute("base-error", "Server error");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             }
         }

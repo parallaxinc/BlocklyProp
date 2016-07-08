@@ -13,12 +13,15 @@ import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -26,6 +29,8 @@ import org.apache.commons.configuration.Configuration;
  */
 @Singleton
 public class PasswordResetServlet extends HttpServlet {
+
+    private static Logger log = LoggerFactory.getLogger(PasswordResetServlet.class);
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
@@ -74,6 +79,10 @@ public class PasswordResetServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             } catch (PasswordComplexityException pce) {
                 req.setAttribute("passwordComplexity", "Password is not complex enough");
+                req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
+            } catch (WrongAuthenticationSourceException ex) {
+                log.warn("Trying to change password of non local user!");
+                req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             }
         }

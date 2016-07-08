@@ -44,6 +44,14 @@
                     </div>
                     <%
                         }
+                        Boolean wrongAuthenticationSource = (Boolean) request.getAttribute("wrongAuthenticationSource");
+                        if (wrongAuthenticationSource != null && wrongAuthenticationSource) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="confirm.error.wrong_authentication_source" /></p>
+                    </div>
+                    <%
+                        }
                     %>
                     <form name="confirmRequestForm" action="" method="post">
                         <div class="form-group">
