@@ -1,0 +1,37 @@
+#
+# BlocklyProp server configuration
+#
+
+# Database connector target
+database.url = jdbc:mysql://localhost:3306/blocklyprop
+
+# Database account that has full access to the blocklyprop and cloudsession databases.
+database.username = user_account_name
+database.password = user_password
+
+# The BlocklyProp service will use this URL to communicate with the
+# cloud session server on port 5011.
+cloudsession.baseurl = http://localhost:5011
+
+# The BlocklyProp service will use this URL to communicate with the
+# cloud compiler server on port 5001.
+cloudcompiler.baseurl = http://localhost:5001
+
+# Static files can be served from the BlocklyProp server directly or from a
+# content delivery network, such as Amazon's S3 CDN. Specify the location of
+# the static content here.
+cdnfiles.baseurl = http://localhost/blockly/cdn
+
+# BlocklyProp requires a software driver, loaded on the client's computer, to
+# pass the compiled code to a device attached to the client computer. The
+# drivers can be hosted on the BlocklyProp server or in a content delivery
+# network. Specify the URL to the download resource here.
+downloadfiles.baseurl =  http://demo.blockly.parallax.com/download
+
+# OAuth support for Google users
+oauth.google.enabled = false
+oauth.google.key = hash_key_assigned_by_Google.apps.googleusercontent.com
+oauth.google.secret = secret_key_hash_assigned_by_Google
+
+# Supply the URL Google should use to reply to the OAuth request.
+oauth.google.callback = http://host_name.example.com/blockly/oauth/google
