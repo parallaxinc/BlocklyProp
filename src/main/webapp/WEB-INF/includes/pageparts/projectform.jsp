@@ -60,7 +60,7 @@
                             <span class="input-group-addon">
                                 <input type="checkbox" id="project-link-share-enable">
                             </span>
-                            <input type="text" class="form-control"  name="share-link" id="project-link-share" data-href="<url:getUrl url="/projectlink?id="/>"/>
+                            <input type="text" class="form-control"  name="share-link" id="project-link-share" data-href="<url:getUrl url="/projectlink?id="/>" title="Ctrl/&#8984; + c to copy" readonly="readonly"/>
                         </div><!-- /input-group -->
                     </div>
                 </shiro:authenticated>
