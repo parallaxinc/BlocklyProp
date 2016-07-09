@@ -52,6 +52,23 @@ Blockly.Blocks.MX2125_acceleration_yaxis = {
     }
 };
 
+Blockly.Blocks.MX2125_rotation = {
+    init: function () {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("MX2125 rotation")
+                .appendField("x-axis pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX")
+                .appendField("y-axis pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
+
+        this.setInputsInline(true);
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.Blocks.MMA7455_acceleration = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
@@ -157,6 +174,17 @@ Blockly.propc.MX2125_acceleration_yaxis = function () {
 
 
     var code = 'mx_accel(' + pin + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.propc.MX2125_rotation = function () {
+    var pinx = this.getFieldValue('PINX');
+    var piny = this.getFieldValue('PINY');
+
+    Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
+
+
+    var code = 'mx_rotate(' + pinx + ', ' + piny + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
