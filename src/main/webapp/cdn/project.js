@@ -1,6 +1,9 @@
 var baseUrl = $("meta[name=base]").attr("content");
 var cloneUrl = '';
 var deleteUrl = '';
+var linkShareUrl = '';
+
+var idProject = null;
 
 var projectTypes = {
     "PROPC": {
@@ -16,6 +19,7 @@ var projectTypes = {
 $(document).ready(function () {
     cloneUrl = $('.clone-project').data('href');
     deleteUrl = $('.delete-project').data('href');
+    linkShareUrl = $('#project-link-share').data('href');
     if (window.location.hash && window.location.hash !== "#") {
         loadProject(window.location.hash.substr(1));
         $("#project-form-container").addClass('in');
@@ -48,6 +52,14 @@ $(document).ready(function () {
     $("#project-delete-confirmed").click(function () {
         window.location.href = $('.delete-project').attr('href');
     });
+
+    $("#project-link-share-enable").click(function () {
+        if ($(this).prop('checked')) {
+            $("#project-link-share").val(window.location.origin + linkShareUrl + idProject + "&key=" + guid());
+        } else {
+            $("#project-link-share").val('');
+        }
+    });
 });
 
 function showTable() {
@@ -68,6 +80,8 @@ function showProject(idProject) {
 }
 
 function loadProject(idProject) {
+    window.idProject = idProject;
+
     // Get details
     $.get(baseUrl + "rest/shared/project/get/" + idProject, function (project) {
         if (project['yours']) {
@@ -101,4 +115,14 @@ function loadProject(idProject) {
         $('.delete-project').attr('href', deleteUrl + project['id']);
         openProjectLink.addClass(projectTypes[project['type']]['class']);
     });
+}
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
 }
