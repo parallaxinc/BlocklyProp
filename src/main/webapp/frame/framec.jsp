@@ -204,6 +204,7 @@
             <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
                 <block type="MX2125_acceleration_xaxis"></block>
                 <block type="MX2125_acceleration_yaxis"></block>
+                <block type="MX2125_rotation"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
                 <block type="MMA7455_acceleration"></block>
