@@ -56,7 +56,10 @@ $(document).ready(function () {
     $("#project-link-share-enable").click(function () {
         if ($(this).prop('checked')) {
             $("#project-link-share").val(window.location.origin + linkShareUrl + idProject + "&key=" + guid());
+            $("#project-link-share").tooltip();
+            $("#project-link-share").tooltip('show');
         } else {
+            $("#project-link-share").tooltip('destroy');
             $("#project-link-share").val('');
         }
     });
