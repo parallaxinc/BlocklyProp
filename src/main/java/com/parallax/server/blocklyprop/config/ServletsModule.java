@@ -18,6 +18,7 @@ import com.parallax.server.blocklyprop.servlets.PasswordResetServlet;
 import com.parallax.server.blocklyprop.servlets.PingServlet;
 import com.parallax.server.blocklyprop.servlets.ProfileServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectCreationServlet;
+import com.parallax.server.blocklyprop.servlets.ProjectLinkServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.PublicProfileServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
@@ -51,6 +52,7 @@ public class ServletsModule extends ServletModule {
         serve("/reset").with(PasswordResetServlet.class);
 
         serve("/createproject").with(ProjectCreationServlet.class);
+        serve("/projectlink").with(ProjectLinkServlet.class);
 
         serve("/public/profile").with(PublicProfileServlet.class);
 
