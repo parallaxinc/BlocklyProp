@@ -54,14 +54,22 @@ $(document).ready(function () {
     });
 
     $("#project-link-share-enable").click(function () {
+        var linkShareInput = $("#project-link-share");
         if ($(this).prop('checked')) {
-            $("#project-link-share").val(window.location.origin + linkShareUrl + idProject + "&key=" + guid());
-            $("#project-link-share").tooltip();
-            $("#project-link-share").tooltip('show');
+            linkShareInput.val(window.location.origin + linkShareUrl + idProject + "&key=" + guid());
+            linkShareInput.focus();
+            linkShareInput[0].setSelectionRange(0, linkShareInput.val().length);
+            linkShareInput.tooltip();
+            linkShareInput.tooltip('show');
         } else {
-            $("#project-link-share").tooltip('destroy');
-            $("#project-link-share").val('');
+            linkShareInput.tooltip('destroy');
+            linkShareInput.val('');
         }
+    });
+
+    $("#project-link-share").click(function () {
+        var linkShareInput = $("#project-link-share");
+        linkShareInput[0].setSelectionRange(0, linkShareInput.val().length);
     });
 });
 
