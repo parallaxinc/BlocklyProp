@@ -206,7 +206,7 @@ Blockly.propc.xbee_transmit = function () {
 
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
 
-    var code = 'dprint(xbee, "%d\n", ' + data + ');\n';
+    var code = 'dprint(xbee, "%d\\n", ' + data + ');\n';
     return code;
 };
 
