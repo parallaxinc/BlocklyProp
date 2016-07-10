@@ -241,6 +241,10 @@
                 <block type="sound_impact_get"></block>
                 <block type="sound_impact_end"></block>
             </category>
+            <category name="<fmt:message key="category.sensor-input.colorpal" />">
+                <block type="colorpal_enable"></block>
+                <block type="colorpal_get_colors"></block>
+            </category>
         </category>
         <category name="<fmt:message key="category.memory" />" include="activity-board">
             <category name="<fmt:message key="category.memory.eeprom" />">
