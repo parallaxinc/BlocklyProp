@@ -196,7 +196,7 @@ Blockly.propc.xbee_setup = function () {
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
 
     Blockly.propc.global_vars_["xbee"] = "fdserial *xbee;";
-    Blockly.propc.setups["xbee"] = 'fdserial_open(' + do_pin + ', ' + di_pin + ', 0, 9600);\n';
+    Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + do_pin + ', ' + di_pin + ', 0, 9600);\n';
 
     return '';
 };
