@@ -89,8 +89,9 @@ Blockly.Blocks.rc_charge_discharge = {
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
         this.setTooltip('RC Output');
     }
 };
