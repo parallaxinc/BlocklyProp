@@ -250,7 +250,7 @@ Blockly.propc.sd_card_int_from = function() {
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    Blockly.propc.globalvars_["int_array_reading"] = 'int file_reading_array_int[128];\n';
+    Blockly.propc.global_vars_["int_array_reading"] = 'int file_reading_array_int[128];';
     Blockly.propc.setups_["int_array_reading"] = 'file_reading_array_int = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
 
     return 'fread(file_reading_array_int, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
@@ -277,7 +277,7 @@ Blockly.propc.sd_card_float_from = function() {
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    Blockly.propc.globalvars_["float_array_reading"] = 'float file_reading_array_float[128];\n';
+    Blockly.propc.global_vars_["float_array_reading"] = 'float file_reading_array_float[128];\n';
     Blockly.propc.setups_["float_array_reading"] = 'file_reading_array_float = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
 
     return 'fread(file_reading_array_float, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
@@ -304,7 +304,7 @@ Blockly.propc.sd_card_text_from = function() {
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    Blockly.propc.globalvars_["text_array_reading"] = 'char file_reading_array_int[128];\n';
+    Blockly.propc.global_vars_["text_array_reading"] = 'char file_reading_array_int[128];\n';
     Blockly.propc.setups_["text_array_reading"] = 'file_reading_array_text = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
 
 
