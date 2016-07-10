@@ -184,8 +184,9 @@ Blockly.Blocks.pulse_in = {
             .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
     }
 };
 
