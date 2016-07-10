@@ -31,4 +31,14 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
         return create.selectFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject).and(Tables.PROJECT_SHARING.SHAREKEY.equal(accessKey))).fetchOne();
     }
 
+    @Override
+    public ProjectSharingRecord shareProject(Long idProject, String shareKey) {
+        return create.insertInto(Tables.PROJECT_SHARING).columns(Tables.PROJECT_SHARING.ID_PROJECT, Tables.PROJECT_SHARING.SHAREKEY).values(idProject, shareKey).returning().fetchOne();
+    }
+
+    @Override
+    public int revokeSharing(Long idProject) {
+        return create.deleteFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject)).execute();
+    }
+
 }
