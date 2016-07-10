@@ -184,9 +184,10 @@
                 <block type="i2c_in"></block>
                 <block type="i2c_out"></block>
                 <block type="serial_open"></block>
-                <block type="serial_tx_byte"></block>
                 <block type="serial_send_text"></block>
-                <block type="serial_rx_byte"></block>
+                <block type="xbee_setup"></block>
+                <block type="xbee_transmit"></block>
+                <block type="xbee_receive"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" exclude="heb">
