@@ -11,6 +11,7 @@ import com.google.inject.persist.Transactional;
 import com.parallax.server.blocklyprop.db.dao.ProjectSharingDao;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import com.parallax.server.blocklyprop.services.ProjectSharingService;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,7 +29,7 @@ public class ProjectSharingServiceImpl implements ProjectSharingService {
         this.projectSharingDao = projectSharingDao;
     }
 
-    @Inject
+    @Override
     public ProjectSharingRecord shareProject(Long idProject) {
         String shareKey = UUID.randomUUID().toString();
 
@@ -38,6 +39,11 @@ public class ProjectSharingServiceImpl implements ProjectSharingService {
     @Override
     public int revokeSharing(Long idProject) {
         return projectSharingDao.revokeSharing(idProject);
+    }
+
+    @Override
+    public List<ProjectSharingRecord> getSharingInfo(Long idProject) {
+        return projectSharingDao.getSharingInfo(idProject);
     }
 
 }
