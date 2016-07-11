@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.db.dao;
 
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
+import java.util.List;
 
 /**
  *
@@ -18,5 +19,7 @@ public interface ProjectSharingDao {
     ProjectSharingRecord shareProject(Long idProject, String shareKey);
 
     int revokeSharing(Long idProject);
+
+    public List<ProjectSharingRecord> getSharingInfo(Long idProject);
 
 }
