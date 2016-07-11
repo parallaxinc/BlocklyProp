@@ -56,14 +56,24 @@ $(document).ready(function () {
     $("#project-link-share-enable").click(function () {
         var linkShareInput = $("#project-link-share");
         if ($(this).prop('checked')) {
-            linkShareInput.val(window.location.origin + linkShareUrl + idProject + "&key=" + guid());
-            linkShareInput.focus();
-            linkShareInput[0].setSelectionRange(0, linkShareInput.val().length);
-            linkShareInput.tooltip();
-            linkShareInput.tooltip('show');
+            $.post(baseUrl + "projectlink", {'id': idProject, 'action': 'share'}, function (response) {
+                if (response['success']) {
+                    linkShareInput.val(window.location.origin + linkShareUrl + idProject + "&key=" + response['share-key']);
+                    linkShareInput.focus();
+                    linkShareInput[0].setSelectionRange(0, linkShareInput.val().length);
+                    linkShareInput.tooltip();
+                    linkShareInput.tooltip('show');
+                }
+            });
+
+
         } else {
-            linkShareInput.tooltip('destroy');
-            linkShareInput.val('');
+            $.post(baseUrl + "projectlink", {'id': idProject, 'action': 'revoke'}, function (response) {
+                if (response['success']) {
+                    linkShareInput.tooltip('destroy');
+                    linkShareInput.val('');
+                }
+            });
         }
     });
 
@@ -93,10 +103,21 @@ function showProject(idProject) {
 function loadProject(idProject) {
     window.idProject = idProject;
 
+    var linkShareInput = $("#project-link-share");
+    linkShareInput.tooltip('destroy');
+    linkShareInput.val('');
+    $("#project-link-share-enable").prop('checked', false);
+
     // Get details
     $.get(baseUrl + "rest/shared/project/get/" + idProject, function (project) {
         if (project['yours']) {
             $('.your-project').removeClass('hidden');
+
+            if (project['share-key']) {
+                $("#project-link-share-enable").prop('checked', true);
+                linkShareInput.val(window.location.origin + linkShareUrl + idProject + "&key=" + project['share-key']);
+                linkShareInput.tooltip();
+            }
         } else {
             $('.not-your-project').removeClass('hidden');
             $("#project-form-user").val(project['user']);

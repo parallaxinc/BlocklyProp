@@ -48,6 +48,8 @@ public class ProjectLinkServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+
         String idProjectString = req.getParameter("id");
         String action = req.getParameter("action");
 
@@ -80,7 +82,7 @@ public class ProjectLinkServlet extends HttpServlet {
             case "share":
                 ProjectSharingRecord projectSharingRecord = projectSharingService.shareProject(idProject);
                 jsonObject.addProperty("success", true);
-                jsonObject.addProperty("key", projectSharingRecord.getSharekey());
+                jsonObject.addProperty("share-key", projectSharingRecord.getSharekey());
                 resp.getWriter().write(jsonObject.toString());
                 break;
             case "revoke":

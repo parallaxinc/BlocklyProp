@@ -10,6 +10,7 @@ import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.db.dao.ProjectSharingDao;
 import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
+import java.util.List;
 import org.jooq.DSLContext;
 
 /**
@@ -39,6 +40,11 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
     @Override
     public int revokeSharing(Long idProject) {
         return create.deleteFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject)).execute();
+    }
+
+    @Override
+    public List<ProjectSharingRecord> getSharingInfo(Long idProject) {
+        return create.selectFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject)).fetch();
     }
 
 }
