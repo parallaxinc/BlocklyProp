@@ -31,6 +31,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/variables.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/procedures.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/serial.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/scribbler.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/control.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/pins.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/logic.js"/>"></script>
@@ -148,6 +149,53 @@
                 </value>
             </block>
             <block type="set_pins"></block>
+        </category>
+        <category name="<fmt:message key="category.scribbler" />">
+            <category name="<fmt:message key="category.scribbler.outputs" />">
+                <block type="move_motors">
+                    <value name="LEFT_MOTOR_POWER">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RIGHT_MOTOR_POWER">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="MOTOR_DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="set_led"></block>
+                <block type="play_tone">
+                    <value name="FREQUENCY_1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="FREQUENCY_2">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="NOTE_DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+            <category name="<fmt:message key="category.scribbler.inputs" />">
+                <block type="line_sensor"></block>
+                <!--<block type="barcode"></block>-->
+                <block type="obstacle_sensor"></block>
+                <block type="stall_sensor"></block>
+                <block type="light_sensor"></block>
+                <block type="reset_button_presses"></block>
+            </category>
         </category>
         <category name="<fmt:message key="category.communicate" />">
             <category name="<fmt:message key="category.communicate.serial-lcd" />">
