@@ -186,6 +186,8 @@
                 <block type="i2c_out"></block>
                 <block type="serial_open"></block>
                 <block type="serial_send_text"></block>
+            </category>
+            <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
                 <block type="xbee_transmit"></block>
                 <block type="xbee_receive"></block>
