@@ -9,6 +9,8 @@ import com.google.common.base.Strings;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.parallax.server.blocklyprop.converter.ProjectConverter;
+import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
@@ -28,8 +30,8 @@ import org.apache.shiro.authz.UnauthorizedException;
 public class ProjectLinkServlet extends HttpServlet {
 
     private ProjectService projectService;
-
     private ProjectSharingService projectSharingService;
+    private ProjectConverter projectConverter;
 
     @Inject
     public void setProjectService(ProjectService projectService) {
@@ -41,9 +43,38 @@ public class ProjectLinkServlet extends HttpServlet {
         this.projectSharingService = projectSharingService;
     }
 
+    @Inject
+    public void setProjectConverter(ProjectConverter projectConverter) {
+        this.projectConverter = projectConverter;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp); //To change body of generated methods, choose Tools | Templates.
+        String idProjectString = req.getParameter("id");
+        String shareKey = req.getParameter("key");
+
+        Long idProject = null;
+        try {
+            idProject = Long.parseLong(idProjectString);
+        } catch (NumberFormatException nfe) {
+            // Show error screen
+            req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+        }
+
+        ProjectRecord project = projectSharingService.getSharedProject(idProject, shareKey);
+        if (project == null) {
+            // Project not found, or invalid share key
+            req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+        } else {
+            JsonObject result = projectConverter.toJson(project);
+            result.addProperty("code", project.getCode());
+            req.setAttribute("project", result.toString());
+            if (ProjectType.PROPC == project.getType()) {
+                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-c.jsp").forward(req, resp);
+            } else if (ProjectType.SPIN == project.getType()) {
+                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
+            }
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@
  */
 package com.parallax.server.blocklyprop.services;
 
+import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface ProjectSharingService {
     int revokeSharing(Long idProject);
 
     List<ProjectSharingRecord> getSharingInfo(Long idProject);
+
+    ProjectRecord getSharedProject(Long idProject, String shareKey);
 
 }
