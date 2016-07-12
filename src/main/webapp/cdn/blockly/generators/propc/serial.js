@@ -89,7 +89,7 @@ Blockly.Blocks.xbee_setup = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Xbee setup")
+                .appendField("XBee setup")
                 .appendField("DO pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN')
                 .appendField("DI pin#")
@@ -105,7 +105,7 @@ Blockly.Blocks.xbee_transmit = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Xbee transmit data")
+                .appendField("XBee transmit data")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
         this.setInputsInline(true);
@@ -126,7 +126,7 @@ Blockly.Blocks.xbee_receive = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Xbee receive data and store in")
+                .appendField("XBee receive data and store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
         this.setInputsInline(true);
