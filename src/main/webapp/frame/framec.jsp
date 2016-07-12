@@ -117,6 +117,7 @@
     <xml id="toolbox" style="display: none">
         <category name="<fmt:message key="category.control" />">
             <block type="controls_if"></block>
+            <block type="controls_if_return"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
