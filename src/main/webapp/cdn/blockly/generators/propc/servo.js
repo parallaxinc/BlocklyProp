@@ -70,7 +70,7 @@ Blockly.Blocks.servo_set_ramp = {
                 .appendField("pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
         this.appendValueInput('RAMPSTEP')
-                .appendField("rampstep")
+                .appendField("rampstep (0 - 100)")
                 .setCheck('Number');
 
         this.setInputsInline(true);
