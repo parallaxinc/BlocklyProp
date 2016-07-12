@@ -30,9 +30,9 @@ Blockly.Blocks.cog_new = {
     init: function() {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-            .appendField("cognew");
+            .appendField("new processor");
         this.appendStatementInput("METHOD")
-            .appendField("method");
+            .appendField("function");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
