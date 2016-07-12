@@ -100,11 +100,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
         <category name="<fmt:message key="category.control" />" colour=205>
-=======
-        <category name="<fmt:message key="category.control" />" colour="220">
->>>>>>> Add category colors for Spin
             <block type="controls_if"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>

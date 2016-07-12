@@ -86,7 +86,6 @@ Blockly.Blocks.controls_if_return = {
                 .appendField("if");
         this.appendDummyInput()
                 .appendField("return");
-
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -94,7 +93,11 @@ Blockly.Blocks.controls_if_return = {
 };
 
 Blockly.propc.controls_if_return = function () {
+<<<<<<< 8cdd97e73a0ddc30120b53cfcb06462c306bc082
     var argument = Blockly.propc.valueToCode(this, 'CONDITION', Blockly.propc.ORDER_NONE) || '0';
 
     return 'if (' + argument + ') {return;}\n';
+=======
+    return 'return;\n';
+>>>>>>> Fix #307
 };
