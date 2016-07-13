@@ -13,19 +13,21 @@ Blockly.Blocks.move_motors = {
     init: function () {
 	this.appendValueInput("LEFT_MOTOR_POWER")
 		.setCheck("Number")
-		.appendField("Set left motor power to");
+		.appendField("Set left motor power to (-100% to 100)%");
 	this.appendValueInput("RIGHT_MOTOR_POWER")
 		.setCheck("Number")
-		.appendField("Set right motor power to");
+		.appendField("Set right motor power to (-100% to 100)%");
 	this.appendValueInput("MOTOR_DURATION")
 		.setCheck("Number")
-		.appendField("For a duration of");
+		.appendField("For a duration of (1 to 15,000) ms");
+	this.appendDummyInput()
+		.appendField("Use 0 ms for continuous operation");
 
 	this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Speeds are a range of -256 (full reverse) to 256 (full forward) with a duration of 1 to 15,000 milliseconds, or a duration of 0 for continuous operation');
+	//this.setTooltip('Speeds are a range of -100 (full reverse) to 100 (full forward) with a duration of 1 to 15,000 milliseconds, or a duration of 0 for continuous operation');
         //this.setHelpUrl('help/block-scribbler.html#motors');
     }
 };
@@ -33,7 +35,6 @@ Blockly.Blocks.move_motors = {
 // Set one of the LEDs ot light red, green, or amber, or turn it off
 Blockly.Blocks.set_led = {
     init: function () {
-        //this.setHelpUrl('help/block-scribbler.html#LEDs');
         this.appendDummyInput()
                 .appendField("Set the")
                 .appendField(new Blockly.FieldDropdown([["Left", "LEFT"], ["Center", "CENTER"], ["Right", "RIGHT"]]), "LED_CHOICE")
@@ -44,6 +45,7 @@ Blockly.Blocks.set_led = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        //this.setHelpUrl('help/block-scribbler.html#LEDs');
     }
 };
 
@@ -51,20 +53,19 @@ Blockly.Blocks.play_tone = {
     init: function () {
 	this.appendValueInput("FREQUENCY_1")
 		.setCheck("Number")
-		.appendField("Play a");
+		.appendField("Play a tone of (1 to 10,000) Hz");
 	this.appendValueInput("FREQUENCY_2")
 		.setCheck("Number")
-		.appendField("Hz tone and a");
+		.appendField("and a tone of (1 to 10,000) Hz");
 	this.appendValueInput("NOTE_DURATION")
 		.setCheck("Number")
-		.appendField("Hz tone for");
-	this.appendDummyInput()
-		.appendField("millisonds");
+		.appendField("For a duration of (1 to 8,000) ms");
 
-        this.setColour(colorPalette.getColor('io'));
+	this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-	this.setTooltip('Frequencies are a range of 1 to 10,000 hertz with a duration of 1 to 8,191 milliseconds');
+        this.setColour(colorPalette.getColor('io'));
+	//this.setTooltip('Frequencies are a range of 1 to 10,000 hertz with a duration of 1 to 8,000 milliseconds');
         //this.setHelpUrl('help/block-scribbler.html#Sound');
     }
 };
@@ -73,11 +74,14 @@ Blockly.Blocks.line_sensor = {
     init: function () {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([["Left", "LEFT"], ["Right", "RIGHT"]]), "LINE_SENSOR_CHOICE")
-                .appendField(" Line Sensor Value");
+                .appendField("line sensor reflectivity");
+        this.appendDummyInput("")
+                .appendField("from 0% to 100% of sensor range");
 
-        this.setOutput(true, 'Boolean');
+	this.setInputsInline(false);
+	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Reads surface reflectivity, in a range of 0 to 255');
+	//this.setTooltip('Reads surface reflectivity, in a range of 0 to 100');
         //this.setHelpUrl('help/block-scribbler.html#Line_Sensor');
     }
 };
@@ -86,11 +90,11 @@ Blockly.Blocks.obstacle_sensor = {
     init: function () {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([["Left", "LEFT"], ["Right", "RIGHT"]]), "OBSTACLE_SENSOR_CHOICE")
-                .appendField(" Obstacle Present");
+                .appendField("obstacle present");
 
-        this.setOutput(true, 'Boolean');
+	this.setOutput(true, "Boolean");
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Returns 0 if there is no obstacle and 1 if there is an obstacle');
+	//this.setTooltip('Returns 0 if there is no obstacle and 1 if there is an obstacle');
         //this.setHelpUrl('help/block-scribbler.html#Obstacle_Sensor');
     }
 };
@@ -98,12 +102,12 @@ Blockly.Blocks.obstacle_sensor = {
 Blockly.Blocks.stall_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("Stalled");
+                .appendField("Wheels currently stalled");
 
-        this.setOutput(true, 'Boolean');
+	this.setOutput(true, "Boolean");
         this.setColour(colorPalette.getColor('io'));
+	//this.setTooltip('Returns 0 if not stalled and 1 if stalled');
         //this.setHelpUrl('help/block-scribbler.html#Stall_Sensor');
-	this.setTooltip('Returns 0 if not stalled and 1 if stalled');
     }
 };
 
@@ -111,11 +115,13 @@ Blockly.Blocks.light_sensor = {
     init: function () {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([["Left", "LEFT"], ["Center", "CENTER"], ["Right", "RIGHT"]]), "LGHT_SENSOR_CHOICE")
-                .appendField(" Light Sensor Value");
+                .appendField("sensor ambient light");
+        this.appendDummyInput("")
+                .appendField("from 0% to 100% of sensor range");
 
-        this.setOutput(true, 'Boolean');
+	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Reads ambient light, in a range of 0 to 255');
+	//this.setTooltip('Reads ambient light, in a range of 0 to 255');
         //this.setHelpUrl('help/block-scribbler.html#Light_Sensor');
     }
 };
@@ -123,11 +129,11 @@ Blockly.Blocks.light_sensor = {
 Blockly.Blocks.reset_button_presses = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("Reset Button Presses");
+                .appendField("Reset button presses during last reset");
 
-        this.setOutput(true, 'Boolean');
+	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Returns the number of reset button presses during the last reset');
+	//this.setTooltip('Returns the number of reset button presses during the last reset');
         //this.setHelpUrl('help/block-scribbler.html#Reset_Button_Presses');
     }
 };
