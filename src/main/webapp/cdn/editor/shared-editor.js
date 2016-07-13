@@ -38,11 +38,15 @@ showInfo = function (data) {
 
 saveProject = function () {
     var code = window.frames["content_blocks"].getXml();
-    projectData['code'] = code
+    projectData['code'] = code;
     $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+        var previousOwner = projectData['yours'];
         projectData = data;
         projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
         utils.showMessage("Project saved", "The project has been saved");
+        if (!previousOwner) {
+            window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+        }
     });
 };
 
