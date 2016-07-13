@@ -115,7 +115,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />">
+        <category name="<fmt:message key="category.control" />" colour="220">
             <block type="controls_if"></block>
             <block type="controls_if_return"></block>
             <block type="controls_repeat">
@@ -131,7 +131,7 @@
             <block type="cog_new">
             </block>
         </category>
-        <category name="<fmt:message key="category.operators" />">
+        <category name="<fmt:message key="category.operators" />" colour="275">
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
@@ -141,14 +141,14 @@
             <block type="logic_compare"></block>
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />">
+        <category name="<fmt:message key="category.values" />" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
         </category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
         <category name="<fmt:message key="category.input-output.pin-states" />" exclude="heb">
             <block type="make_pin"></block>
             <block type="make_pin_input">
@@ -437,7 +437,7 @@
                 <block type="servodiffdrive_library_drive_sleep"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb">
+        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" colour="290">
             <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
                 <block type="heb_toggle_led"></block>
                 <block type="heb_toggle_led_open">
