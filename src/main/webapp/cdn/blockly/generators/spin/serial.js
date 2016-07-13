@@ -110,7 +110,7 @@ Blockly.Spin.serial_send_text = function () {
         Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
     }
 
-    return 'serial.Str(String("' + text + '"))\n';
+    return 'serial.Str(String("' + text + '", serial#NL))\n';
 };
 
 Blockly.Spin.serial_rx_byte = function () {
