@@ -95,7 +95,7 @@ Blockly.Spin.serial_open = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     //  if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-    Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.StartRxTx( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', %1100, ' + baud + ' )';
+    Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.StartRxTx( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ' )';
     // }
 
     return '';
