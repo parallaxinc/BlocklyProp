@@ -37,7 +37,7 @@ Blockly.Blocks.PAM_7Q_Init = {
             .appendField("TX pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput()
-            .appendField("Baud")
+            .appendField("baud")
             .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
 
         this.setNextStatement(true, null);
@@ -49,7 +49,7 @@ Blockly.Blocks.PAM_7Q_Latitude = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get latitude");
+            .appendField("get latitude");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -61,7 +61,7 @@ Blockly.Blocks.PAM_7Q_Longitude = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get longitude");
+            .appendField("get longitude");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -73,7 +73,7 @@ Blockly.Blocks.PAM_7Q_Heading = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get heading");
+            .appendField("get heading");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -85,7 +85,7 @@ Blockly.Blocks.PAM_7Q_Altitude = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get altitude");
+            .appendField("get altitude");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -97,7 +97,7 @@ Blockly.Blocks.PAM_7Q_SatsTracked = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get # of satellites tracked");
+            .appendField("get # of satellites tracked");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -109,8 +109,8 @@ Blockly.Blocks.PAM_7Q_Velocity = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get velocity in units")
-            .appendField(new Blockly.FieldDropdown([["MPH", "MPH"], ["KNOTS", "KNOTS"]]), "VELOCITYUNITS");
+            .appendField("get velocity in units")
+            .appendField(new Blockly.FieldDropdown([["mph", "MPH"], ["knots", "KNOTS"]]), "VELOCITYUNITS");
 
         this.setOutput(true, 'Number');
         this.setNextStatement(false, null);
