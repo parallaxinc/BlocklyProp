@@ -44,6 +44,14 @@
                     </div>
                     <%
                         }
+                        Boolean wrongAuthenticationSource = (Boolean) request.getAttribute("wrongAuthenticationSource");
+                        if (wrongAuthenticationSource != null && wrongAuthenticationSource) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="password_reset.error.wrong_authentication_source" /></p>
+                    </div>
+                    <%
+                        }
                     %>
                     <form name="resetRequestForm" action="" method="post">
                         <div class="form-group">

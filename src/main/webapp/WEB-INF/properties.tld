@@ -14,4 +14,10 @@
         <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
         <function-signature>String getDownloadFilesBaseUrl(java.lang.String)</function-signature>
     </function>
+
+    <function>
+        <name>oauth</name>
+        <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
+        <function-signature>boolean isOauthEnabled(java.lang.String)</function-signature>
+    </function>
 </taglib>

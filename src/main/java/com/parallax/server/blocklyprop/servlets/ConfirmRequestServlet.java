@@ -13,12 +13,15 @@ import com.parallax.client.cloudsession.exceptions.EmailAlreadyConfirmedExceptio
 import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
+import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -26,6 +29,8 @@ import org.apache.commons.configuration.Configuration;
  */
 @Singleton
 public class ConfirmRequestServlet extends HttpServlet {
+
+    private static Logger log = LoggerFactory.getLogger(ConfirmRequestServlet.class);
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
@@ -64,6 +69,10 @@ public class ConfirmRequestServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/already-confirmed.jsp").forward(req, resp);
             } catch (ServerException se) {
                 req.setAttribute("server-exception", "Server exception");
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+            } catch (WrongAuthenticationSourceException ex) {
+                log.info("Trying to request email confirm of non local user!");
+                req.setAttribute("wrongAuthenticationSource", true);
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
             }
         }
