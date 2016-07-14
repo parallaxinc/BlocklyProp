@@ -220,7 +220,7 @@ Blockly.Blocks.colorpal_get_colors = {
 
 Blockly.propc.colorpal_enable = function () {
     Blockly.propc.global_vars_["colorpal"] = 'colorPal *cpal;';
-    Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h";';
+    Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
 
     return '';
 };
@@ -232,7 +232,7 @@ Blockly.propc.colorpal_get_colors = function () {
     var b = Blockly.propc.variableDB_.getName(this.getFieldValue('B_STORAGE'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.global_vars_["colorpal_pin"] = 'int cpSIO = ' + pin + ';';
-    Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h";';
+    Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
     Blockly.propc.setups_["colorpal"] = 'cpal = colorPal_open(cpSIO);';
 
     return 'colorPal_getRGB(cpal, &' + r + ', &' + g + ', &' + b + ');';
