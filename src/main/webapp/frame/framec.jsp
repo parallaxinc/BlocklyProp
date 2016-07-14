@@ -127,8 +127,8 @@
                     </block>
                 </value>
             </block>
-            <block type="cog_new">
-            </block>
+            <block type="cog_new"></block>
+            <block type="comment"></block>
         </category>
         <category name="<fmt:message key="category.operators" />">
             <block type="math_arithmetic"></block>
