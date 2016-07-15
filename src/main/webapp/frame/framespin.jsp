@@ -200,7 +200,7 @@
                 <block type="reset_button_presses"></block>
             </category>
         </category>
-        <category name="Utested Blocks">
+        <category name="Untested Blocks">
             <block type="math_random"></block>
             <block type="cog_new">
             </block>

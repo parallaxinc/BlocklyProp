@@ -73,7 +73,7 @@ Blockly.Spin.controls_if = function () {
         argument = Blockly.Spin.valueToCode(this, 'IF' + n,
                 Blockly.Spin.ORDER_NONE) || 'FALSE';
         branch = Blockly.Spin.statementToCode(this, 'DO' + n);
-        code += ' elseif ' + argument + '\n' + branch + '';
+        code += 'elseif ' + argument + '\n' + branch + '';
     }
     if (this.elseCount_) {
         branch = Blockly.Spin.statementToCode(this, 'ELSE');
