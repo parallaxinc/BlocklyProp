@@ -112,14 +112,11 @@
                     </block>
                 </value>
             </block>
-            <block type="cog_new">
-            </block>
         </category>
         <category name="<fmt:message key="category.operators" />">
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
-            <block type="math_random"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
@@ -130,7 +127,6 @@
             <block type="logic_boolean"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
         <category name="<fmt:message key="category.input-output.pin-states" />">
             <block type="make_pin"></block>
             <block type="make_pin_input">
@@ -149,6 +145,13 @@
                 </value>
             </block>
             <block type="set_pins"></block>
+        </category>
+        <category name="Debug">
+            <block type="serial_open"></block>
+            <block type="serial_send_text"></block>
+            <block type="serial_send_decimal"></block>
+            <block type="serial_send_ctrl"></block>
+            <block type="serial_rx_byte"></block>
         </category>
         <category name="<fmt:message key="category.scribbler" />">
             <category name="<fmt:message key="category.scribbler.outputs" />">
@@ -197,115 +200,114 @@
                 <block type="reset_button_presses"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.communicate" />">
-            <category name="<fmt:message key="category.communicate.serial-lcd" />">
-                <block type="debug_lcd_init"></block>
-                <block type="debug_lcd_clear"></block>
-                <block type="debug_lcd_print"></block>
-                <block type="debug_lcd_number"></block>
-                <block type="debug_lcd_action"></block>
+        <category name="Utested Blocks">
+            <block type="math_random"></block>
+            <block type="cog_new">
+            </block>
+            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
+            <category name="<fmt:message key="category.communicate" />">
+                <category name="<fmt:message key="category.communicate.serial-lcd" />">
+                    <block type="debug_lcd_init"></block>
+                    <block type="debug_lcd_clear"></block>
+                    <block type="debug_lcd_print"></block>
+                    <block type="debug_lcd_number"></block>
+                    <block type="debug_lcd_action"></block>
+                </category>
+                <category name="<fmt:message key="category.communicate.protocols" />">
+                </category>
             </category>
-            <category name="<fmt:message key="category.communicate.serial-terminal" />">
-                <block type="serial_open"></block>
-                <block type="serial_send_text"></block>
-                <block type="serial_send_decimal"></block>
-                <block type="serial_send_ctrl"></block>
-                <block type="serial_rx_byte"></block>
-            </category>
-            <category name="<fmt:message key="category.communicate.protocols" />">
-            </category>
-        </category>
-        <category name="<fmt:message key="category.sensor-input" />">
-            <category name="<fmt:message key="category.sensor-input.etape" />">
+            <category name="<fmt:message key="category.sensor-input" />">
+                <category name="<fmt:message key="category.sensor-input.etape" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.hmc58783" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.hmc58783" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
-                <block type="joystick_input_xaxis"></block>
-                <block type="joystick_input_yaxis"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
+                    <block type="joystick_input_xaxis"></block>
+                    <block type="joystick_input_yaxis"></block>
+                </category>
+                <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.mma7455" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.mma7455" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.ping" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.ping" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.pir" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.pir" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.rfid" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.rfid" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sony-remote" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.sony-remote" />">
 
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
+                </category>
+                <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
 
+                </category>
             </category>
-        </category>
-        <category name="<fmt:message key="category.memory" />">
-            <category name="<fmt:message key="category.memory.eeprom" />">
+            <category name="<fmt:message key="category.memory" />">
+                <category name="<fmt:message key="category.memory.eeprom" />">
 
-            </category>
-            <category name="<fmt:message key="category.memory.sdcard" />">
+                </category>
+                <category name="<fmt:message key="category.memory.sdcard" />">
 
+                </category>
             </category>
-        </category>
-        <category name="<fmt:message key="category.analog-pulses" />">
-            <category name="<fmt:message key="category.analog-pulses.rc" />">
+            <category name="<fmt:message key="category.analog-pulses" />">
+                <category name="<fmt:message key="category.analog-pulses.rc" />">
 
-            </category>
-            <category name="<fmt:message key="category.analog-pulses.voltage" />">
+                </category>
+                <category name="<fmt:message key="category.analog-pulses.voltage" />">
 
-            </category>
-            <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />">
+                </category>
+                <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />">
 
+                </category>
             </category>
-        </category>
-        <category name="<fmt:message key="category.audio" />">
-            <category name="<fmt:message key="category.audio.audio" />">
+            <category name="<fmt:message key="category.audio" />">
+                <category name="<fmt:message key="category.audio.audio" />">
 
+                </category>
+                <category name="<fmt:message key="category.audio.freqout" />">
+                    <block type="base_freqout">
+                        <value name="DURATION">
+                            <block type="math_number">
+                                <field name="NUM">0</field>
+                            </block>
+                        </value>
+                        <value name="FREQUENCY">
+                            <block type="math_number">
+                                <field name="NUM">0</field>
+                            </block>
+                        </value>
+                    </block>
+                </category>
             </category>
-            <category name="<fmt:message key="category.audio.freqout" />">
-                <block type="base_freqout">
-                    <value name="DURATION">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="FREQUENCY">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
-        </category>
-        <category name="<fmt:message key="category.servo" />">
-            <category name="<fmt:message key="category.servo.standard-servo" />">
-                <block type="servo_move"></block>
-            </category>
-            <category name="<fmt:message key="category.servo.cr-servo" />">
+            <category name="<fmt:message key="category.servo" />">
+                <category name="<fmt:message key="category.servo.standard-servo" />">
+                    <block type="servo_move"></block>
+                </category>
+                <category name="<fmt:message key="category.servo.cr-servo" />">
 
+                </category>
             </category>
-        </category>
-        <category name="<fmt:message key="category.robot" />">
-            <category name="<fmt:message key="category.robot.activitybot" />">
+            <category name="<fmt:message key="category.robot" />">
+                <category name="<fmt:message key="category.robot.activitybot" />">
 
-            </category>
-            <category name="<fmt:message key="category.robot.servo-diff-drive" />">
+                </category>
+                <category name="<fmt:message key="category.robot.servo-diff-drive" />">
 
+                </category>
             </category>
         </category>
     </xml>
