@@ -369,6 +369,17 @@
                 <block type="pulse_in"></block>
                 <block type="pulse_out"></block>
             </category>
+            <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb">
+                <block type="pwm_start"></block>
+                <block type="pwm_set">
+                    <value name="DUTY_CYCLE">
+                        <block type="math_number">
+                            <field name="NUM">50</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="pwm_stop"></block>
+            </category>
         </category>
         <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb">
             <category name="<fmt:message key="category.audio.audio" />">
@@ -416,9 +427,6 @@
                         </block>
                     </value>
                 </block>
-                <block type="pwm_start"></block>
-                <block type="pwm_set"></block>
-                <block type="pwm_stop"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.robot" />" exclude="heb,activity-board" >
