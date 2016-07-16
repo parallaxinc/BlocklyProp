@@ -77,10 +77,10 @@ Blockly.Blocks.serial_send_text = {
 };
 
 Blockly.Blocks.serial_send_decimal = {
-    init: function() {
+    init: function () {
         this.appendValueInput("DECIMAL_VALUE")
-            .setCheck("Number")
-            .appendField("Serial transmit number:");
+                .setCheck("Number")
+                .appendField("Serial transmit number:");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -89,10 +89,10 @@ Blockly.Blocks.serial_send_decimal = {
 };
 
 Blockly.Blocks.serial_send_ctrl = {
-    init: function() {
+    init: function () {
         this.appendDummyInput()
-            .appendField("Serial transmit control character:")
-            .appendField(new Blockly.FieldDropdown([["Bell", "serial#BP"], ["Backspace", "serial#BS"], ["Tab", "serial#TB"], ["Line Feed", "serial#LF"], ["Carriage Return", "serial#NL"], ["Escape", "27"], ["Delete", "127"]]), "SERIAL_CHAR");
+                .appendField("Serial transmit control character:")
+                .appendField(new Blockly.FieldDropdown([["Bell", "serial#BP"], ["Backspace", "serial#BS"], ["Tab", "serial#TB"], ["Line Feed", "serial#LF"], ["Carriage Return", "serial#NL"], ["Escape", "27"], ["Delete", "127"]]), "SERIAL_CHAR");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -108,6 +108,36 @@ Blockly.Blocks.serial_rx_byte = {
                 .appendField("Serial read byte");
         this.setOutput(true, 'Number');
 //        this.setInputsInline(true);
+    }
+};
+
+Blockly.Blocks.serial_clear = {
+    helpUrl: '',
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput("")
+                .appendField("Serial clear");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+//        this.setInputsInline(true);
+    }
+};
+
+Blockly.Blocks.serial_cursor_xy = {
+    helpUrl: '',
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput("")
+                .appendField("serial position cursor")
+                .appendField("X");
+        this.appendValueInput("X")
+                .setCheck("Number");
+        this.appendValueInput("Y")
+                .setCheck("Number");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
     }
 };
 
@@ -168,4 +198,27 @@ Blockly.Spin.serial_rx_byte = function () {
     }
 
     return ['serial.CharIn', Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.serial_clear = function () {
+    Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
+    Blockly.Spin.serial_terminal_ = true;
+    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+    }
+
+    return 'serial.Clear\n';
+};
+
+Blockly.Spin.serial_cursor_xy = function () {
+    var pos_x = Blockly.Spin.valueToCode(this, 'X', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var pos_y = Blockly.Spin.valueToCode(this, 'Y', Blockly.Spin.ORDER_ATOMIC) || '0';
+
+    Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
+    Blockly.Spin.serial_terminal_ = true;
+    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+    }
+
+    return 'serial.PositionX(' + pos_x + ')\nserial.PositionY(' + pos_y + ')\n';
 };

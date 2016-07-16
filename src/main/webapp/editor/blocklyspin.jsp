@@ -13,7 +13,7 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/lib/term.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/xterm.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/detect.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blocklypropclient.js"/>"></script>
@@ -23,6 +23,7 @@
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<url:getCdnUrl url="/lib/xterm.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
         <table id="content_table">
