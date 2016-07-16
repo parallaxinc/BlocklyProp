@@ -3046,7 +3046,7 @@
      * Cursor Position [row;column] (default = [1,1]) (CUP).
      */
     Terminal.prototype.cursorPosX = function (x) {
-        var col = x;
+        var col = x - 1;
 
         if (col < 0) {
             col = 0;
@@ -3058,7 +3058,7 @@
     };
 
     Terminal.prototype.cursorPosY = function (y) {
-        var row = y;
+        var row = y - 1;
 
         if (row < 0) {
             row = 0;
