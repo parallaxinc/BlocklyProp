@@ -6,9 +6,12 @@ var projectTypes = {
     "SPIN": "blocklyspin.jsp"
 };
 
+var simplemde = null;
+
 $(document).ready(function () {
     /*  Activate the tooltips      */
     $('[rel="tooltip"]').tooltip();
+    simplemde = new SimpleMDE({element: document.getElementById("project-description")});
 
     $('#project-type').val(utils.getUrlParameters('lang'));
 
@@ -87,13 +90,11 @@ function validateFirstStep() {
     $(".wizard-card form").validate({
         rules: {
             'project-name': "required",
-            'board-type': "required",
-            'project-description': "required"
+            'board-type': "required"
         },
         messages: {
             'project-name': "Please enter a project name",
-            'board-type': "Please select a board type",
-            'project-description': "Please enter a description"
+            'board-type': "Please select a board type"
         }
     });
 
@@ -124,9 +125,29 @@ function validateSecondStep() {
 
 }
 
+$.fn.serializeObject = function ()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function () {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
 $('.btn-finish').on('click', function () {
     if (validateSecondStep()) {
-        $.post('createproject', $(".wizard-card form").serialize(), function (data) {
+        var formData = $(".wizard-card form").serializeObject();
+        formData['project-description'] = simplemde.value();
+        formData['project-description-html'] = simplemde.options.previewRender(simplemde.value());
+        $.post('createproject', formData, function (data) {
             if (data['success']) {
                 window.location = $('#finish').data('editor') + projectTypes[utils.getUrlParameters('lang')] + "?project=" + data['id'];
             } else {

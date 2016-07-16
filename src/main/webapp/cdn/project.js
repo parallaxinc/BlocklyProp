@@ -13,7 +13,11 @@ var projectTypes = {
     }
 };
 
+var simplemde = null;
+
 $(document).ready(function () {
+    simplemde = new SimpleMDE({element: document.getElementById("project-form-description")});
+
     cloneUrl = $('.clone-project').data('href');
     deleteUrl = $('.delete-project').data('href');
     if (window.location.hash && window.location.hash !== "#") {
@@ -31,13 +35,19 @@ $(document).ready(function () {
         }
     });
 
-    $('#project-form').ajaxForm(function () {
-        $(".project-changed:not(.hidden").remove();
-        var projectChanged = $(".project-changed").clone().insertAfter(".project-changed");
-        projectChanged.removeClass("hidden");
-        projectChanged.delay(5000).fadeOut(400, function () {
-            projectChanged.remove();
-        });
+    $('#project-form').ajaxForm({
+        'beforeSerialize': function () {
+            $("#project-form-description").val(simplemde.value());
+            $("#project-form-description-html").val(simplemde.options.previewRender(simplemde.value()));
+        },
+        'success': function () {
+            $(".project-changed:not(.hidden").remove();
+            var projectChanged = $(".project-changed").clone().insertAfter(".project-changed");
+            projectChanged.removeClass("hidden");
+            projectChanged.delay(5000).fadeOut(400, function () {
+                projectChanged.remove();
+            });
+        }
     });
 
     $("#project-delete").click(function (e) {
@@ -84,7 +94,8 @@ function loadProject(idProject) {
             boardTranslation = boards['other'];
         }
         $("#project-form-board").val(boardTranslation);
-        $("#project-form-description").val(project['description']);
+        simplemde.value(project['description']);
+        $("#project-description-html").html(project['description-html']);
         if (project['private']) {
             $("#project-form-private").prop('checked', 'checked').parent().addClass('active');
         } else if (project['shared']) {
