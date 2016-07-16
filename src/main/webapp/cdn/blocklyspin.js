@@ -180,7 +180,7 @@ function serial_console() {
     var newTerminal = false;
     if (term === null) {
         term = new Terminal({
-            cols: 80,
+            cols: 255,
             rows: 24,
             useStyle: true,
             screenKeys: true
