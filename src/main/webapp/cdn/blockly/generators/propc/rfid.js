@@ -89,7 +89,7 @@ Blockly.propc.rfid_get = function() {
 
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    return saveVariable + ' = rfid_get(rfid, 1000)';
+    return saveVariable + ' = rfid_get(rfid, 1000);\n';
 };
 
 Blockly.propc.rfid_disable = function() {
@@ -115,5 +115,5 @@ Blockly.propc.rfid_enable = function() {
 Blockly.propc.rfid_close = function() {
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    return 'rfid_close(rfid);\n';
+    return 'rfidser_close(rfid);\n';
 };
