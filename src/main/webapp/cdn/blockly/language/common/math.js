@@ -57,8 +57,7 @@ Blockly.Blocks['math_arithmetic'] = {
                 [["+", 'ADD'],
                     ["-", 'MINUS'],
                     ["x", 'MULTIPLY'],
-                    ["/", 'DIVIDE'],
-                    ["^", 'POWER']];
+                    ["/", 'DIVIDE']];
         this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
