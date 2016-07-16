@@ -80,7 +80,7 @@ Blockly.propc.wav_play = function() {
     var filename = this.getFieldValue('FILENAME');
 
     Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
-    Blockly.propc.setups_["sd_card"] = 'sd_mount(' + do_pin + ', ' + clk_pin + ', ' + di_pin + ', ' + cs_pin + ');';
+    Blockly.propc.setups_["sd_card"] = 'int DO = 22, CLK = 23, DI = 24, CS = 25;\n\tsd_mount(DO, CLK, DI, CS);\n';
 
     var code = 'wav_play("' + filename + '.wav");\n';
     return code;
