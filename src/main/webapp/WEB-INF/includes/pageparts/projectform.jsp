@@ -53,6 +53,18 @@
                     </div>
                 </div>
 
+                <shiro:authenticated>
+                    <div class="form-group your-project hidden">
+                        <label for="share-link"><fmt:message key="project.share-link" /></label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input type="checkbox" id="project-link-share-enable">
+                            </span>
+                            <input type="text" class="form-control"  name="share-link" id="project-link-share" data-href="<url:getUrl url="/projectlink?id="/>" title="Ctrl/&#8984; + c to copy" readonly="readonly"/>
+                        </div><!-- /input-group -->
+                    </div>
+                </shiro:authenticated>
+
 
                 <shiro:authenticated>
                     <div class="modal-footer">
