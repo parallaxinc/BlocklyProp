@@ -34,20 +34,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectRecord getProjectOwnedByThisUser(Long idProject) {
-        ProjectRecord projectRecord = projectDao.getProject(idProject);
-        if (projectRecord != null) {
-            if (projectRecord.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
-                return projectRecord;
-            } else {
-                throw new UnauthorizedException("Not the current user's project");
-            }
-        } else {
-            return null;
-        }
-    }
-
-    @Override
     public ProjectRecord getProject(Long idProject) {
         ProjectRecord projectRecord = projectDao.getProject(idProject);
         if (projectRecord != null) {
