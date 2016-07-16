@@ -247,5 +247,5 @@ Blockly.propc.HMC5883L_init = function () {
 Blockly.propc.HMC5883L_read = function () {
     var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('HEADING'), Blockly.Variables.NAME_TYPE);
 
-    return 'compass_read(HMC5883L_bus, &compX, &compY, &compZ);\n\tfloat fy = (float) compY;\n\tfloat fx = (float) compX;\n\tfloat heading = atan2(fy, fx) * 180.0/PI;\n\tif(heading < 0.0)\n\t\theading = (360.0 + heading);\n\t' + storage + ' = (int) heading;\n';
+    return 'compass_read(bus, &compX, &compY, &compZ);\n\tfloat fy = (float) compY;\n\tfloat fx = (float) compX;\n\tfloat heading = atan2(fy, fx) * 180.0/PI;\n\tif(heading < 0.0)\n\t\theading = (360.0 + heading);\n\t' + storage + ' = (int) heading;\n';
 };
