@@ -17,10 +17,9 @@
 //--------------------------------------------------------------
 
 CREATE TABLE if not exists `admin` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `db_version' as int NOT NULL.
+  `id` bigint(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `db_version` int NOT NULL,
   `db_script` varchar(255) NOT NULL,
-  'notes' varchar(255),
-  `last_change_date' DATETIME NOT NULL DEFAULT=NOW(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+  `notes` varchar(255),
+  `last_change_date` DATETIME NOT NULL DEFAULT NOW()
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
