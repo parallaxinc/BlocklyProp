@@ -17,8 +17,6 @@ import java.util.List;
  */
 public interface ProjectService {
 
-    ProjectRecord getProjectOwnedByThisUser(Long idProject);
-
     ProjectRecord getProject(Long idProject);
 
     List<ProjectRecord> getUserProjects(Long idUser, TableSort tablesSort, TableOrder order, Integer limit, Integer offset);

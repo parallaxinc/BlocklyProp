@@ -4,8 +4,8 @@
 package com.parallax.server.blocklyprop.db.generated;
 
 
+import com.parallax.server.blocklyprop.db.generated.tables.Authenticationtoken;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
-import com.parallax.server.blocklyprop.db.generated.tables.ProjectSharing;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
 import com.parallax.server.blocklyprop.db.generated.tables.SecUserRole;
@@ -30,14 +30,14 @@ import javax.annotation.Generated;
 public class Tables {
 
 	/**
+	 * The table blocklyprop.authenticationtoken
+	 */
+	public static final Authenticationtoken AUTHENTICATIONTOKEN = com.parallax.server.blocklyprop.db.generated.tables.Authenticationtoken.AUTHENTICATIONTOKEN;
+
+	/**
 	 * The table blocklyprop.project
 	 */
 	public static final Project PROJECT = com.parallax.server.blocklyprop.db.generated.tables.Project.PROJECT;
-
-	/**
-	 * The table blocklyprop.project_sharing
-	 */
-	public static final ProjectSharing PROJECT_SHARING = com.parallax.server.blocklyprop.db.generated.tables.ProjectSharing.PROJECT_SHARING;
 
 	/**
 	 * The table blocklyprop.project_tag
