@@ -173,7 +173,7 @@ Blockly.Blocks.pwm_set = {
         this.appendDummyInput()
                 .appendField("channel")
                 .appendField(new Blockly.FieldDropdown([["A", "0"], ["B", "1"]]), "CHANNEL");
-        this.appendValueInput("HIGH_TIME", Number)
+        this.appendValueInput("DUTY_CYCLE", Number)
                 .setCheck('Number')
                 .appendField("duty cycle (0 - 100)");
 
@@ -265,12 +265,12 @@ Blockly.propc.pwm_start = function () {
 Blockly.propc.pwm_set = function () {
     var pin = this.getFieldValue("PIN");
     var channel = this.getFieldValue("CHANNEL");
-    var duty_cycle = Number(Blockly.propc.valueToCode(this, "DUTY_CYCLE", Blockly.propc.ORDER_NONE));
+    var duty_cycle = Blockly.propc.valueToCode(this, "DUTY_CYCLE", Blockly.propc.ORDER_NONE);
 
-    if (duty_cycle < 0) {
-        duty_cycle = 0;
-    } else if (duty_cycle > 100) {
-        duty_cycle = 100;
+    if (Number(duty_cycle) < 0) {
+        duty_cycle = '0';
+    } else if (Number(duty_cycle) > 100) {
+        duty_cycle = '100';
     }
 
     var code = 'pwm_start(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
