@@ -90,6 +90,7 @@ Blockly.propc.rfid_get = function() {
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
     var code = 'char str* = rfid_get(rfid, 1000);\n\tsscan(&str[2], "%x", &' + saveVariable + ');\n\tif(' + saveVariable + ' == 237) ' + saveVariable + ' = 0;';
+    return code;
 };
 
 Blockly.propc.rfid_disable = function() {
