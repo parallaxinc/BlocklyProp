@@ -151,6 +151,8 @@
             <block type="serial_send_text"></block>
             <block type="serial_send_decimal"></block>
             <block type="serial_send_ctrl"></block>
+            <block type="serial_clear"></block>
+            <block type="serial_cursor_xy"></block>
             <block type="serial_rx_byte"></block>
         </category>
         <category name="<fmt:message key="category.scribbler" />">
