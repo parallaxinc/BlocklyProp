@@ -188,5 +188,5 @@ Blockly.Blocks.comment = {
 Blockly.propc.comment = function() {
     var text = this.getFieldValue("COMMENT_TEXT");
 
-    return '// ' + text;
+    return '// ' + text + '\n';
 };
