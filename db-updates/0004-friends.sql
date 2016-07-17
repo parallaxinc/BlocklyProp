@@ -1,4 +1,4 @@
-CREATE TABLE blocklyprop.friend_request
+CREATE TABLE friend_request
 (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     idRequestUser BIGINT NOT NULL,
@@ -10,9 +10,9 @@ CREATE TABLE blocklyprop.friend_request
     CONSTRAINT friend_request_request_user_id_fk FOREIGN KEY (idRequestUser) REFERENCES user (id),
     CONSTRAINT friend_request_requested_user_id_fk FOREIGN KEY (idRequestedUser) REFERENCES user (id)
 );
-CREATE UNIQUE INDEX friend_request_idRequestUser_idRequestedUser_uindex ON blocklyprop.friend_request (idRequestUser, idRequestedUser);
+CREATE UNIQUE INDEX friend_request_idRequestUser_idRequestedUser_uindex ON friend_request (idRequestUser, idRequestedUser);
 
-CREATE TABLE blocklyprop.friend_request_email
+CREATE TABLE friend_request_email
 (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     idRequestUser BIGINT NOT NULL,
@@ -24,9 +24,9 @@ CREATE TABLE blocklyprop.friend_request_email
     refused BIT DEFAULT 0 NOT NULL,
     CONSTRAINT friend_request_email_request_user_id_fk FOREIGN KEY (idRequestUser) REFERENCES user (id)
 );
-CREATE UNIQUE INDEX friend_request_email_idRequestUser_idRequestedUser_uindex ON blocklyprop.friend_request_email (idRequestUser, email);
+CREATE UNIQUE INDEX friend_request_email_idRequestUser_idRequestedUser_uindex ON friend_request_email (idRequestUser, email);
 
-CREATE TABLE blocklyprop.friend
+CREATE TABLE friend
 (
     id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     idRequestUser BIGINT NOT NULL,
@@ -38,4 +38,4 @@ CREATE TABLE blocklyprop.friend
     CONSTRAINT friend_request_user_id_fk FOREIGN KEY (idRequestUser) REFERENCES user (id),
     CONSTRAINT friend_requested_user_id_fk FOREIGN KEY (idRequestedUser) REFERENCES user (id)
 );
-CREATE UNIQUE INDEX friend_idRequestUser_idRequestedUser_uindex ON blocklyprop.friend (idRequestUser, idRequestedUser);
+CREATE UNIQUE INDEX friend_idRequestUser_idRequestedUser_uindex ON friend (idRequestUser, idRequestedUser);
