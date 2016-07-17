@@ -15,7 +15,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title"><fmt:message key="not_loggedin.title" /></h4>
                 </div>
-                <div class="modal-body"  style="height: 320px;">
+                <div class="modal-body"  style="height: 370px;">
                     <div class="col-md-6">
                         <h2><fmt:message key="not_loggedin.try.title" /></h2>
                         <p><fmt:message key="not_loggedin.try" /></p>

@@ -21,12 +21,14 @@ body {
     background-image: url('images/lang-icons/c.png');
     background-repeat: no-repeat;
     padding-left: 30px;
+    line-height: 22px;
 }
 
 .editor-spin-link.editor-icon {
     background-image: url('images/lang-icons/spin.png');
     background-repeat: no-repeat;
     padding-left: 30px;
+    line-height: 22px;
 }
 
 .navbar-brand#nav-logo {
@@ -48,6 +50,14 @@ body {
     padding-bottom: 20px;
     color: #215C8A;
     border-radius: 0;
+}
+
+ul.latest-projects {
+    padding-left: 0;
+}
+
+li.project {
+    list-style-type: none;
 }
 
 /* Push footer to bottom */
