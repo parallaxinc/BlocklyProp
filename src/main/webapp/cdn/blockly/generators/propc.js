@@ -151,6 +151,7 @@ Blockly.propc.init = function (workspace) {
 // Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
+    Blockly.propc.methods_ = {};
     // Create a dictionary of setups to be printed before the code.
     Blockly.propc.setups_ = {};
     Blockly.propc.global_vars_ = {};
@@ -224,8 +225,6 @@ Blockly.propc.finish = function (code) {
         if (definitions[def].indexOf("{{$var_type_") > -1) {
             definitions[def] = definitions[def].replace(/\{\{\$var_type_.*?\}\}/ig, "int").replace(/\{\{\$var_length_.*?\}\}/ig, '');
         }
-
-        definitions[def] = definitions[def].replace("\n\n", "\n");
     }
 
     for (var stack in Blockly.propc.stacks_) {
@@ -238,6 +237,10 @@ Blockly.propc.finish = function (code) {
         setups.push('  ' + Blockly.propc.setups_[name]);
     }
 
+    for (var method in Blockly.propc.methods_) {
+        methods.push(Blockly.propc.methods_[method]);
+    }
+
     var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
     // Indent every line.
@@ -248,7 +251,7 @@ Blockly.propc.finish = function (code) {
     if (Blockly.propc.serial_terminal_) {
         setup += "/* SERIAL_TERMINAL USED */\n";
     }
-    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
+    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into
