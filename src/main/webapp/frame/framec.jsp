@@ -8,7 +8,6 @@
 
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/polyfill.js"/>"></script>
-
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/toolboxfilter.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>
