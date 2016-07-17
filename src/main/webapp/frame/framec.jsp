@@ -455,7 +455,7 @@
                     </value>
                     <value name="LED_STATE">
                         <block type="high_low_value">
-                            <field name="VALUE">'high'</field>
+                            <field name="VALUE">high</field>
                         </block>
                     </value>
                 </block>
