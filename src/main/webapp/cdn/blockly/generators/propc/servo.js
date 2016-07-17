@@ -154,7 +154,7 @@ Blockly.Blocks.servodiffdrive_library_drive_stop = {
 
 Blockly.Blocks.pwm_start = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM start");
 
@@ -165,7 +165,7 @@ Blockly.Blocks.pwm_start = {
 
 Blockly.Blocks.pwm_set = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM set")
                 .appendField("pin")
@@ -185,7 +185,7 @@ Blockly.Blocks.pwm_set = {
 
 Blockly.Blocks.pwm_stop = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM stop");
 

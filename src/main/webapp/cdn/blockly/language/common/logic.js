@@ -28,7 +28,7 @@ Blockly.Blocks.logic_compare = {
     category: Blockly.LANG_CATEGORY_LOGIC,
     helpUrl: Blockly.LANG_LOGIC_COMPARE_HELPURL,
     init: function () {
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Boolean');
         this.appendValueInput('A');
         this.appendValueInput('B')
@@ -65,7 +65,7 @@ Blockly.Blocks.logic_operation = {
     category: Blockly.LANG_CATEGORY_LOGIC,
     helpUrl: Blockly.LANG_LOGIC_OPERATION_HELPURL,
     init: function () {
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Boolean');
         this.appendValueInput('A')
                 .setCheck('Boolean');
@@ -98,7 +98,7 @@ Blockly.Blocks.logic_negate = {
     category: Blockly.LANG_CATEGORY_LOGIC,
     helpUrl: Blockly.LANG_LOGIC_NEGATE_HELPURL,
     init: function () {
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Boolean');
         this.appendValueInput('BOOL')
                 .setCheck('Boolean')
