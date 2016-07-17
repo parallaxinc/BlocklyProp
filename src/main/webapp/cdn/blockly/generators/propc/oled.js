@@ -28,28 +28,29 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.oled_initialize = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("OLED initialize")
-        .appendField("CS")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "CS")
-        .appendField("D/C")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "DC")
-        .appendField("DIN")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "DIN")
-        .appendField("CLK")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK")
-        .appendField("RES")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "RES");
-    this.appendDummyInput()
-        .appendField("large font")
-        .appendField(new Blockly.FieldDropdown([["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "LARGE_FONT")
-        .appendField("medium font")
-        .appendField(new Blockly.FieldDropdown([["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "MEDIUM_FONT");
+    init: function() {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("OLED initialize")
+            .appendField("CS")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CS")
+            .appendField("D/C")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DC")
+            .appendField("DIN")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DIN")
+            .appendField("CLK")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK")
+            .appendField("RES")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "RES");
+        this.appendDummyInput()
+            .appendField("large font")
+            .appendField(new Blockly.FieldDropdown([["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "LARGE_FONT")
+            .appendField("medium font")
+            .appendField(new Blockly.FieldDropdown([["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "MEDIUM_FONT");
 
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-  }
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
 };
 
 Blockly.propc.oled_initialize = function () {
