@@ -172,7 +172,7 @@ Blockly.propc.init = function (workspace) {
         for (var x = 0; x < variables.length; x++) {
             var varName = Blockly.propc.variableDB_.getName(variables[x],
                     Blockly.Variables.NAME_TYPE);
-            defvars[x] = '{{$var_type_' + varName + '}} ' + varName + '{{$var_length_' + varName + '}};\n';
+            defvars[x] = '{{$var_type_' + varName + '}} ' + varName + '{{$var_length_' + varName + '}};';
         }
         Blockly.propc.definitions_['variables'] = defvars.join('\n');
     }
@@ -188,6 +188,14 @@ Blockly.propc.finish = function (code) {
     var methods = [];
     var objects = [];
     var definitions = [];
+
+    // Gives BlocklyProp developers the ability to add global variables
+    for (var name in Blockly.propc.global_vars_) {
+        var def = Blockly.propc.global_vars_[name];
+
+        definitions.push(def);
+    }
+
     for (var name in Blockly.propc.definitions_) {
         var def = Blockly.propc.definitions_[name];
         if (def.match(/^#include/)) {
@@ -195,13 +203,6 @@ Blockly.propc.finish = function (code) {
         } else {
             definitions.push(def);
         }
-    }
-
-    // Gives BlocklyProp developers the ability to add global variables
-    for (var name in Blockly.propc.global_vars_) {
-        var def = Blockly.propc.global_vars_[name];
-
-        definitions.push(def);
     }
 
     for (var def in definitions) {
