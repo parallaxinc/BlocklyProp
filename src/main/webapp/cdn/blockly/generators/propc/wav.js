@@ -28,7 +28,7 @@ if (!Blockly.Blocks)
 
 Blockly.Blocks.wav_play = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("play file")
             .appendField(new Blockly.FieldTextInput('File_name'), 'FILENAME');
@@ -41,7 +41,7 @@ Blockly.Blocks.wav_play = {
 
 Blockly.Blocks.wav_status = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("status");
 
@@ -53,7 +53,7 @@ Blockly.Blocks.wav_status = {
 
 Blockly.Blocks.wav_volume = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendValueInput('VOLUME')
             .appendField("volume (0 - 10)");
         this.appendValueInput('LENGTH')
@@ -67,7 +67,7 @@ Blockly.Blocks.wav_volume = {
 
 Blockly.Blocks.wav_stop = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("stop");
 
