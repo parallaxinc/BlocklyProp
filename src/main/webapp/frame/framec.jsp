@@ -116,7 +116,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />">
+        <category name="<fmt:message key="category.control" />" colour="220">
             <block type="controls_if"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
@@ -131,7 +131,7 @@
             <block type="cog_new"></block>
             <block type="comment"></block>
         </category>
-        <category name="<fmt:message key="category.operators" />">
+        <category name="<fmt:message key="category.operators" />" colour="275">
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
@@ -141,15 +141,15 @@
             <block type="logic_compare"></block>
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />">
+        <category name="<fmt:message key="category.values" />" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
         </category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="heb">
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="heb" colour="200">
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -168,7 +168,7 @@
             </block>
             <block type="set_pins"></block>
         </category>
-        <category name="<fmt:message key="category.communicate" />" exclude="heb">
+        <category name="<fmt:message key="category.communicate" />" exclude="heb" colour="320">
             <category name="<fmt:message key="category.communicate.serial-lcd" />">
                 <block type="debug_lcd_init"></block>
                 <block type="debug_lcd_clear"></block>
@@ -196,7 +196,7 @@
                 <block type="xbee_receive"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.sensor-input" />" exclude="heb">
+        <category name="<fmt:message key="category.sensor-input" />" exclude="heb" colour="155">
             <category name="<fmt:message key="category.sensor-input.etape" />">
                 <block type="etape_rc_time"></block>
             </category>
@@ -252,7 +252,7 @@
                 <block type="colorpal_get_colors"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.memory" />" include="activity-board">
+        <category name="<fmt:message key="category.memory" />" include="activity-board" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_int_to"></block>
                 <block type="eeprom_int_from"></block>
@@ -358,7 +358,7 @@
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb">
+        <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb" colour="200">
             <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">
                 <block type="rc_charge_discharge"></block>
             </category>
@@ -384,7 +384,7 @@
                 <block type="pwm_stop"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb">
+        <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb" colour="200">
             <category name="<fmt:message key="category.audio.audio" />">
                 <block type="wav_play"></block>
                 <block type="wav_status"></block>
@@ -417,7 +417,7 @@
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.servo" />" exclude="heb">
+        <category name="<fmt:message key="category.servo" />" exclude="heb" colour="180">
             <category name="<fmt:message key="category.servo.standard-servo" />">
                 <block type="servo_move"></block>
             </category>
@@ -448,7 +448,7 @@
                 <block type="servodiffdrive_library_drive_sleep"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb">
+        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" colour="290">
             <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
                 <block type="heb_toggle_led"></block>
                 <block type="heb_toggle_led_open">
