@@ -55,7 +55,7 @@ Blockly.Blocks.wav_volume = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('VOLUME')
-            .appendField("volume");
+            .appendField("volume (0 - 10)");
         this.appendValueInput('LENGTH')
             .appendField("length of file (in milliseconds)");
 
@@ -98,6 +98,12 @@ Blockly.propc.wav_volume = function() {
     var length = Blockly.propc.valueToCode(this, 'LENGTH', Blockly.propc.ORDER_NONE) || '0';
 
     Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+
+    if (Number(volume) < 0) {
+        volume = '0';
+    } else if (Number(volume) > 10) {
+        volume = '10';
+    }
 
     var code = 'wav_volume(' + volume + ');\npause(' + length + ');\n';
     return code;

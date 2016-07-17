@@ -47,7 +47,7 @@ Blockly.Blocks.console_print_variables = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
-                .appendField("Print");
+                .appendField("print");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

@@ -207,3 +207,20 @@ Blockly.propc.comment = function() {
 
     return '// ' + text;
 };
+
+Blockly.Blocks.comment = {
+    init: function() {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldTextInput('comment'), "COMMENT_TEXT");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.comment = function() {
+    var text = this.getFieldValue("COMMENT_TEXT");
+
+    return '// ' + text;
+};
