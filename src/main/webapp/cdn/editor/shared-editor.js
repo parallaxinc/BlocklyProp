@@ -14,20 +14,12 @@ var projectLoaded = false;
 var idProject = 0;
 
 $(document).ready(function () {
-    idProject = getUrlParameters('project', '', false);
-    if (!idProject) {
-        window.location = baseUrl;
-    } else {
-        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
-            console.log(data);
-            projectData = data;
-            showInfo(data);
-            projectLoaded = true;
-            if (ready) {
-                window.frames["content_blocks"].setProfile(data['board']);
-                window.frames["content_blocks"].init(data['board'], []);
-            }
-        });
+    projectData = window.data;
+    showInfo(projectData);
+    projectLoaded = true;
+    if (ready) {
+        window.frames["content_blocks"].setProfile(projectData['board']);
+        window.frames["content_blocks"].init(projectData['board'], []);
     }
 
     $('#save-project').on('click', function () {
@@ -97,36 +89,6 @@ checkLeave = function () {
         }
     }
 };
-
-function getUrlParameters(parameter, staticURL, decode) {
-    /*
-     Function: getUrlParameters
-     Description: Get the value of URL parameters either from
-     current URL or static URL
-     Author: Tirumal
-     URL: www.code-tricks.com
-     */
-    var currLocation = (staticURL.length) ? staticURL : window.location.search;
-
-    var parArr = [];
-    if (currLocation !== undefined && currLocation.split("?")[1] !== undefined) {
-        parArr = currLocation.split("?")[1].split("&");
-    }
-    var returnBool = true;
-
-    for (var i = 0; i < parArr.length; i++) {
-        parr = parArr[i].split("=");
-        if (parr[0] == parameter) {
-            return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-            returnBool = true;
-        } else {
-            returnBool = false;
-        }
-    }
-
-    if (!returnBool)
-        return false;
-}
 
 setInterval(function () {
     $.get(baseUrl + 'ping');
