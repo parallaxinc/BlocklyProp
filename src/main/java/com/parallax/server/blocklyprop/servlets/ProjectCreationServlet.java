@@ -42,6 +42,7 @@ public class ProjectCreationServlet extends HttpServlet {
         String projectName = req.getParameter("project-name");
         String boardType = req.getParameter("board-type");
         String projectDescription = req.getParameter("project-description");
+        String projectDescriptionHtml = req.getParameter("project-description-html");
         String projectTypeString = req.getParameter("project-type");
         String sharing = req.getParameter("sharing");
 
@@ -64,7 +65,7 @@ public class ProjectCreationServlet extends HttpServlet {
             return;
         }
 
-        ProjectRecord project = projectService.createProject(projectName, projectDescription, privateProject, sharedProject, projectType, boardType);
+        ProjectRecord project = projectService.createProject(projectName, projectDescription, projectDescriptionHtml, privateProject, sharedProject, projectType, boardType);
         result.addProperty("success", true);
         result.addProperty("id", project.getId());
         resp.getWriter().write(result.toString());

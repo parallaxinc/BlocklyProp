@@ -90,12 +90,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
+    public ProjectRecord saveProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
         // Check if project is from the current user, if not, unset idProject and create new
         if (idProject != null) {
-            return projectDao.updateProject(idProject, name, description, privateProject, sharedProject);
+            return projectDao.updateProject(idProject, name, description, descriptionHtml, privateProject, sharedProject);
         } else {
-            return projectDao.createProject(name, description, type, board, privateProject, sharedProject);
+            return projectDao.createProject(name, description, descriptionHtml, type, board, privateProject, sharedProject);
         }
     }
 
@@ -105,8 +105,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectRecord createProject(String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
-        return saveProject(null, name, description, privateProject, sharedProject, type, board);
+    public ProjectRecord createProject(String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
+        return saveProject(null, name, description, descriptionHtml, privateProject, sharedProject, type, board);
     }
 
     @Override

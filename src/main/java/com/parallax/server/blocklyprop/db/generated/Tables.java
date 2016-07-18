@@ -4,6 +4,7 @@
 package com.parallax.server.blocklyprop.db.generated;
 
 
+import com.parallax.server.blocklyprop.db.generated.tables.Admin;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectSharing;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
@@ -30,9 +31,14 @@ import javax.annotation.Generated;
 public class Tables {
 
 	/**
-	 * The table blocklyprop.project
+	 * The table blocklyprop.admin
 	 */
-	public static final Project PROJECT = com.parallax.server.blocklyprop.db.generated.tables.Project.PROJECT;
+	public static final Admin ADMIN = com.parallax.server.blocklyprop.db.generated.tables.Admin.ADMIN;
+
+	/**
+	 * The table blocklyprop.project_sharing
+	 */
+	public static final ProjectSharing PROJECT_SHARING = com.parallax.server.blocklyprop.db.generated.tables.ProjectSharing.PROJECT_SHARING;
 
 	/**
 	 * The table blocklyprop.project_sharing
