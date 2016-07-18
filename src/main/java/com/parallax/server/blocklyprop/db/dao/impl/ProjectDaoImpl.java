@@ -55,26 +55,27 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public ProjectRecord createProject(String name, String description, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord createProject(String name, String description, String descriptionHtml, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
-        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.BOARD, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED)
-                .values(idUser, idCloudUser, name, description, code, type, board, privateProject, sharedProject).returning().fetchOne();
+        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.DESCRIPTION_HTML, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.BOARD, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED)
+                .values(idUser, idCloudUser, name, description, descriptionHtml, code, type, board, privateProject, sharedProject).returning().fetchOne();
 
         return record;
     }
 
     @Override
-    public ProjectRecord createProject(String name, String description, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
-        return createProject(name, description, "", type, board, privateProject, sharedProject);
+    public ProjectRecord createProject(String name, String description, String descriptionHtml, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
+        return createProject(name, description, descriptionHtml, "", type, board, privateProject, sharedProject);
     }
 
     @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject) {
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
             record.setDescription(description);
+            record.setDescriptionHtml(descriptionHtml);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
             record.update();
@@ -84,11 +85,12 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, String code, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, String code, boolean privateProject, boolean sharedProject) {
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
             record.setDescription(description);
+            record.setDescriptionHtml(descriptionHtml);
             record.setCode(code);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
@@ -159,7 +161,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     private ProjectRecord doProjectClone(ProjectRecord original) {
-        ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
+        ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getDescriptionHtml(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
         cloned.setBasedOn(original.getId());
         return cloned;
     }

@@ -17,6 +17,8 @@ import java.util.List;
  */
 public interface ProjectService {
 
+    ProjectRecord getProjectOwnedByThisUser(Long idProject);
+
     ProjectRecord getProject(Long idProject);
 
     List<ProjectRecord> getUserProjects(Long idUser, TableSort tablesSort, TableOrder order, Integer limit, Integer offset);
@@ -27,11 +29,11 @@ public interface ProjectService {
 
     int countSharedProjects();
 
-    ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
+    ProjectRecord saveProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
     ProjectRecord cloneProject(Long idProject);
 
-    ProjectRecord createProject(String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
+    ProjectRecord createProject(String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
     boolean deleteProject(Long idProject);
 

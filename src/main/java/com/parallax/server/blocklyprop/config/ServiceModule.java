@@ -14,12 +14,14 @@ import com.parallax.server.blocklyprop.security.oauth.GoogleAuthenticator;
 import com.parallax.server.blocklyprop.security.oauth.OAuthAuthenticator;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import com.parallax.server.blocklyprop.services.ProjectService;
+import com.parallax.server.blocklyprop.services.ProjectSharingService;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import com.parallax.server.blocklyprop.services.SessionService;
 import com.parallax.server.blocklyprop.services.TokenGeneratorService;
 import com.parallax.server.blocklyprop.services.UserService;
 import com.parallax.server.blocklyprop.services.impl.AuthenticationServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.ProjectServiceImpl;
+import com.parallax.server.blocklyprop.services.impl.ProjectSharingServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.SessionServiceImpl;
 import com.parallax.server.blocklyprop.services.impl.UUIDTokenGeneratorServiceImpl;
@@ -39,6 +41,7 @@ public class ServiceModule extends AbstractModule {
         bind(AuthenticationService.class).to(AuthenticationServiceImpl.class).asEagerSingleton();
 
         bind(ProjectService.class).to(ProjectServiceImpl.class);
+        bind(ProjectSharingService.class).to(ProjectSharingServiceImpl.class);
         bind(UserService.class).to(UserServiceImpl.class).asEagerSingleton();
         bind(SecurityService.class).to(SecurityServiceImpl.class).asEagerSingleton();
         bind(SessionService.class).to(SessionServiceImpl.class).asEagerSingleton();
