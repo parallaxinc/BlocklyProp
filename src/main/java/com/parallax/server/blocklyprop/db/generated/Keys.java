@@ -4,6 +4,7 @@
 package com.parallax.server.blocklyprop.db.generated;
 
 
+import com.parallax.server.blocklyprop.db.generated.tables.Admin;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectSharing;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
@@ -11,6 +12,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.SecUserRole;
 import com.parallax.server.blocklyprop.db.generated.tables.Session;
 import com.parallax.server.blocklyprop.db.generated.tables.Tag;
 import com.parallax.server.blocklyprop.db.generated.tables.User;
+import com.parallax.server.blocklyprop.db.generated.tables.records.AdminRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.SecRoleRecord;
@@ -45,6 +47,7 @@ public class Keys {
 	// IDENTITY definitions
 	// -------------------------------------------------------------------------
 
+	public static final Identity<AdminRecord, Long> IDENTITY_ADMIN = Identities0.IDENTITY_ADMIN;
 	public static final Identity<ProjectRecord, Long> IDENTITY_PROJECT = Identities0.IDENTITY_PROJECT;
 	public static final Identity<ProjectSharingRecord, Long> IDENTITY_PROJECT_SHARING = Identities0.IDENTITY_PROJECT_SHARING;
 	public static final Identity<SecRoleRecord, Long> IDENTITY_SEC_ROLE = Identities0.IDENTITY_SEC_ROLE;
@@ -55,6 +58,7 @@ public class Keys {
 	// UNIQUE and PRIMARY KEY definitions
 	// -------------------------------------------------------------------------
 
+	public static final UniqueKey<AdminRecord> KEY_ADMIN_PRIMARY = UniqueKeys0.KEY_ADMIN_PRIMARY;
 	public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = UniqueKeys0.KEY_PROJECT_PRIMARY;
 	public static final UniqueKey<ProjectSharingRecord> KEY_PROJECT_SHARING_PRIMARY = UniqueKeys0.KEY_PROJECT_SHARING_PRIMARY;
 	public static final UniqueKey<ProjectSharingRecord> KEY_PROJECT_SHARING_PROJECT_SHARING_ID_PROJECT_SHAREKEY_UINDEX = UniqueKeys0.KEY_PROJECT_SHARING_PROJECT_SHARING_ID_PROJECT_SHAREKEY_UINDEX;
@@ -78,6 +82,7 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	private static class Identities0 extends AbstractKeys {
+		public static Identity<AdminRecord, Long> IDENTITY_ADMIN = createIdentity(Admin.ADMIN, Admin.ADMIN.ID);
 		public static Identity<ProjectRecord, Long> IDENTITY_PROJECT = createIdentity(Project.PROJECT, Project.PROJECT.ID);
 		public static Identity<ProjectSharingRecord, Long> IDENTITY_PROJECT_SHARING = createIdentity(ProjectSharing.PROJECT_SHARING, ProjectSharing.PROJECT_SHARING.ID);
 		public static Identity<SecRoleRecord, Long> IDENTITY_SEC_ROLE = createIdentity(SecRole.SEC_ROLE, SecRole.SEC_ROLE.ID);
@@ -86,6 +91,7 @@ public class Keys {
 	}
 
 	private static class UniqueKeys0 extends AbstractKeys {
+		public static final UniqueKey<AdminRecord> KEY_ADMIN_PRIMARY = createUniqueKey(Admin.ADMIN, Admin.ADMIN.ID);
 		public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = createUniqueKey(Project.PROJECT, Project.PROJECT.ID);
 		public static final UniqueKey<ProjectSharingRecord> KEY_PROJECT_SHARING_PRIMARY = createUniqueKey(ProjectSharing.PROJECT_SHARING, ProjectSharing.PROJECT_SHARING.ID);
 		public static final UniqueKey<ProjectSharingRecord> KEY_PROJECT_SHARING_PROJECT_SHARING_ID_PROJECT_SHAREKEY_UINDEX = createUniqueKey(ProjectSharing.PROJECT_SHARING, ProjectSharing.PROJECT_SHARING.ID_PROJECT, ProjectSharing.PROJECT_SHARING.SHAREKEY);

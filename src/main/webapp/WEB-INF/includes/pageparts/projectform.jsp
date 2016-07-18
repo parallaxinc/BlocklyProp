@@ -35,7 +35,11 @@
                 </div>
                 <div class="form-group">
                     <label for="description"><fmt:message key="project.description" /></label>
-                    <textarea class="form-control" name="description" id="project-form-description" rows="8" required="required"></textarea>
+                    <div class="your-project hidden">
+                        <textarea class="form-control" name="description" id="project-form-description"></textarea>
+                    </div>
+                    <input type="hidden" name="description-html" id="project-form-description-html" />
+                    <div id="project-description-html" class="not-your-project hidden description-html"></div>
                 </div>
 
                 <div class="form-group">
