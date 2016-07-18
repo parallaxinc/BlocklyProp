@@ -1,1 +1,0 @@
-ALTER TABLE project ADD description_html LONGTEXT NULL AFTER description;
