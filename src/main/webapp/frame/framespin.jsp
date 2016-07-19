@@ -155,8 +155,8 @@
             <block type="serial_cursor_xy"></block>
             <block type="serial_rx_byte"></block>
         </category>
-        <category name="<fmt:message key="category.scribbler" />">
-            <category name="<fmt:message key="category.scribbler.outputs" />">
+        <category name="<fmt:message key="category.scribbler" />" colour=200>
+            <category name="<fmt:message key="category.scribbler.outputs" />" colour=200>
                 <block type="move_motors">
                     <value name="LEFT_MOTOR_POWER">
                         <block type="math_number">
@@ -193,7 +193,7 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.scribbler.inputs" />">
+            <category name="<fmt:message key="category.scribbler.inputs" />" colour=200>
                 <block type="line_sensor"></block>
                 <!--<block type="barcode"></block>-->
                 <block type="obstacle_sensor"></block>
