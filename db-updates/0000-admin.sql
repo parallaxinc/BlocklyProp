@@ -1,4 +1,4 @@
-// Admin table stores system level administrative details
+/* Admin table stores system level administrative details
 //
 // Each row of the table will contain changes from the previous
 // row. This will provide an audit trail for all admin settings.
@@ -15,7 +15,7 @@
 //		System-supplied time stamp to record when the
 //              change was recorded.
 //--------------------------------------------------------------
-
+*/
 CREATE TABLE if not exists `admin` (
   `id` bigint(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `db_version` int NOT NULL,
