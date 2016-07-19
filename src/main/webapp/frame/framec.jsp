@@ -77,7 +77,7 @@
             function init(profileName, peripherals) {
                 filterToolbox(profileName, peripherals);
 
-                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>', comments: false}); // path: '/' ,
 
                 if (window.parent.init) {
                     // Let the top-level application know that Blockly is ready.
