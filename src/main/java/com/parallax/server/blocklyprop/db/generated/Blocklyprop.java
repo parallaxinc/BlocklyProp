@@ -5,6 +5,9 @@ package com.parallax.server.blocklyprop.db.generated;
 
 
 import com.parallax.server.blocklyprop.db.generated.tables.Admin;
+import com.parallax.server.blocklyprop.db.generated.tables.Friend;
+import com.parallax.server.blocklyprop.db.generated.tables.FriendRequest;
+import com.parallax.server.blocklyprop.db.generated.tables.FriendRequestEmail;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectSharing;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
@@ -37,7 +40,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Blocklyprop extends SchemaImpl {
 
-	private static final long serialVersionUID = -1300366423;
+	private static final long serialVersionUID = 1921408057;
 
 	/**
 	 * The reference instance of <code>blocklyprop</code>
@@ -61,6 +64,9 @@ public class Blocklyprop extends SchemaImpl {
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
 			Admin.ADMIN,
+			Friend.FRIEND,
+			FriendRequest.FRIEND_REQUEST,
+			FriendRequestEmail.FRIEND_REQUEST_EMAIL,
 			Project.PROJECT,
 			ProjectSharing.PROJECT_SHARING,
 			ProjectTag.PROJECT_TAG,
