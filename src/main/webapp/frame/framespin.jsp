@@ -100,7 +100,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />">
+        <category name="<fmt:message key="category.control" />" colour=220>
             <block type="controls_if"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
@@ -113,7 +113,7 @@
                 </value>
             </block>
         </category>
-        <category name="<fmt:message key="category.operators" />">
+        <category name="<fmt:message key="category.operators" />" colour=275>
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
@@ -122,12 +122,12 @@
             <block type="logic_compare"></block>
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />">
+        <category name="<fmt:message key="category.values" />" colour=220>
             <block type="math_number"></block>
             <block type="logic_boolean"></block>
         </category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />">
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour=260></category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" colour=200>
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -146,7 +146,7 @@
             </block>
             <block type="set_pins"></block>
         </category>
-        <category name="Debug">
+        <category name="Debug" colour=320>
             <block type="serial_open"></block>
             <block type="serial_send_text"></block>
             <block type="serial_send_decimal"></block>
@@ -206,8 +206,8 @@
             <block type="math_random"></block>
             <block type="cog_new">
             </block>
-            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-            <category name="<fmt:message key="category.communicate" />">
+            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour=240></category>
+            <category name="<fmt:message key="category.communicate" />" colour=320>
                 <category name="<fmt:message key="category.communicate.serial-lcd" />">
                     <block type="debug_lcd_init"></block>
                     <block type="debug_lcd_clear"></block>
@@ -218,7 +218,7 @@
                 <category name="<fmt:message key="category.communicate.protocols" />">
                 </category>
             </category>
-            <category name="<fmt:message key="category.sensor-input" />">
+            <category name="<fmt:message key="category.sensor-input" />" colour=155>
                 <category name="<fmt:message key="category.sensor-input.etape" />">
 
                 </category>
@@ -257,7 +257,7 @@
 
                 </category>
             </category>
-            <category name="<fmt:message key="category.memory" />">
+            <category name="<fmt:message key="category.memory" />" colour=155>
                 <category name="<fmt:message key="category.memory.eeprom" />">
 
                 </category>
@@ -265,7 +265,7 @@
 
                 </category>
             </category>
-            <category name="<fmt:message key="category.analog-pulses" />">
+            <category name="<fmt:message key="category.analog-pulses" />" colour=200>
                 <category name="<fmt:message key="category.analog-pulses.rc" />">
 
                 </category>
@@ -276,7 +276,7 @@
 
                 </category>
             </category>
-            <category name="<fmt:message key="category.audio" />">
+            <category name="<fmt:message key="category.audio" />" colour=200>
                 <category name="<fmt:message key="category.audio.audio" />">
 
                 </category>
@@ -295,7 +295,7 @@
                     </block>
                 </category>
             </category>
-            <category name="<fmt:message key="category.servo" />">
+            <category name="<fmt:message key="category.servo" />" colour=180>
                 <category name="<fmt:message key="category.servo.standard-servo" />">
                     <block type="servo_move"></block>
                 </category>
