@@ -22,7 +22,7 @@ import org.jsoup.select.Elements;
  */
 public class TextileReader {
 
-    public String readFile(String document, String locale) throws IOException {
+    public String readFile(String document, String locale, boolean isSecure) throws IOException {
         InputStreamReader textileStreamReader = getTextileFileReader(document, locale);
 
         if (textileStreamReader != null) {
@@ -36,12 +36,12 @@ public class TextileReader {
             Elements links = doc.select("a.cdn");
             for (Element link : links) {
                 String url = link.attr("href");
-                link.attr("href", ServletUtils.getCdnUrl(url));
+                link.attr("href", ServletUtils.getCdnUrl(url, isSecure));
             }
             Elements images = doc.select("img.cdn");
             for (Element image : images) {
                 String url = image.attr("src");
-                image.attr("src", ServletUtils.getCdnUrl(url));
+                image.attr("src", ServletUtils.getCdnUrl(url, isSecure));
             }
 
             return doc.html();
