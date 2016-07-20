@@ -11,6 +11,10 @@ import java.io.StringWriter;
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  *
@@ -28,7 +32,19 @@ public class TextileReader {
             MarkupParser textileParser = new MarkupParser(new TextileDialect(), documentBuilder);
             textileParser.parse(textileStreamReader);
 
-            return out.toString();
+            Document doc = Jsoup.parse(out.toString());
+            Elements links = doc.select("a.cdn");
+            for (Element link : links) {
+                String url = link.attr("href");
+                link.attr("href", ServletUtils.getCdnUrl(url));
+            }
+            Elements images = doc.select("img.cdn");
+            for (Element image : images) {
+                String url = image.attr("src");
+                image.attr("src", ServletUtils.getCdnUrl(url));
+            }
+
+            return doc.html();
         }
         return null;
     }

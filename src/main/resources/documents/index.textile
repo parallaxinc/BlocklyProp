@@ -1,11 +1,13 @@
- <div class="jumbotron logo">
+ <div class="jumbotron">
+
+ <div class="logo">
 
 h1. BlocklyProp
 
-Visually program the Parallax Propeller microcontroller with BlocklyProp. This web-based programming tool is easy to learn and fun to use. Build entire applications using movable, configurable blocks. Executable Propeller Spin or C language code is automatically generated behind the scenes.
+ </div>
 
-Click "Login/Register":login.jsp to create an account. Then, you can save and share your BlocklyProp programs. Install the BlocklyProp Client to download code to the Propeller microcontroller.
+*Blockly for Propeller Multicore:* Amazing projects and learning to code just became easier
 
-"BlocklyProp":https://github.com/parallaxinc/BlocklyProp is an open-source project based on Google's Blockly library.
+!(cdn full-width)/images/home-banner.png!
 
  </div>
