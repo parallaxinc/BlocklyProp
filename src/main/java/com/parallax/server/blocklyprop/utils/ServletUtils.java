@@ -38,13 +38,15 @@ public class ServletUtils {
         return null;
     }
 
-    public static String getCdnUrl(String url) {
+    public static String getCdnUrl(String url, boolean isSecure) {
         if (!Strings.isNullOrEmpty(url)) {
             // System.out.println("Geturl: " + url);
 
             String cdnUrl = Properties.getConfiguration().getString("cdnfiles.baseurl");
-            cdnUrl = cdnUrl.replaceFirst("http://", "https://");
-            cdnUrl = Properties.getConfiguration().getString("cdnfiles.baseurl.https", cdnUrl);
+            if (isSecure) {
+                cdnUrl = cdnUrl.replaceFirst("http://", "https://");
+                cdnUrl = Properties.getConfiguration().getString("cdnfiles.baseurl.https", cdnUrl);
+            }
 
             return cdnUrl + (url.startsWith("/") ? "" : "/") + url;
         } else {

@@ -25,7 +25,7 @@ public class TextileLicenseServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String html = textileFileReader.readFile("license", ServletUtils.getLocale(req));
+        String html = textileFileReader.readFile("license", ServletUtils.getLocale(req), req.isSecure());
         req.setAttribute("html", html);
         req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
     }

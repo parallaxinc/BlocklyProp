@@ -25,7 +25,7 @@ public class TextileClientInstructionsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String html = textileFileReader.readFile("client-instructions", ServletUtils.getLocale(req));
+        String html = textileFileReader.readFile("client-instructions", ServletUtils.getLocale(req), req.isSecure());
         resp.getWriter().write(html);
     }
 
