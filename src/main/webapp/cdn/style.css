@@ -40,16 +40,24 @@ body {
     margin-left: 0;
 }
 
-.container .jumbotron.logo {
-    background-image: url('images/logo_small.png');
-    background-repeat: no-repeat;
-    background-size: 80px 80px;
-    background-position: 30px 40px;
-    padding-left: 130px;
+.container .jumbotron {
+
     padding-top: 20px;
     padding-bottom: 20px;
     color: #215C8A;
     border-radius: 0;
+}
+
+.container .jumbotron .logo {
+    background-image: url('images/logo_small.png');
+    background-repeat: no-repeat;
+    background-size: 80px 80px;
+    padding-left: 100px;
+    height: 90px;
+}
+
+.full-width {
+    max-width:100%;
 }
 
 ul.latest-projects {
