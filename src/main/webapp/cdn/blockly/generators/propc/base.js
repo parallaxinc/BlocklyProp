@@ -178,7 +178,8 @@ Blockly.Blocks.comment = {
     init: function() {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldTextInput('comment'), "COMMENT_TEXT");
+                .appendField("add comment")
+                .appendField(new Blockly.FieldTextInput(''), "COMMENT_TEXT");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
