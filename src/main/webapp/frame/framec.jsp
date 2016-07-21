@@ -184,9 +184,12 @@
                 <block type="i2c_in"></block>
                 <block type="i2c_out"></block>
                 <block type="serial_open"></block>
-                <block type="serial_tx_byte"></block>
                 <block type="serial_send_text"></block>
-                <block type="serial_rx_byte"></block>
+            </category>
+            <category name="<fmt:message key="category.communicate.xbee" />">
+                <block type="xbee_setup"></block>
+                <block type="xbee_transmit"></block>
+                <block type="xbee_receive"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" exclude="heb">
@@ -281,7 +284,13 @@
                         </block>
                     </value>
                 </block>
-                <block type="sd_card_read_int"></block>
+                <block type="sd_card_read_int">
+                    <value name="INDEX">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="sd_card_float_to">
                     <value name="STARTING_POINT_VALUE">
                         <block type="math_number">
@@ -306,7 +315,13 @@
                         </block>
                     </value>
                 </block>
-                <block type="sd_card_read_float"></block>
+                <block type="sd_card_read_float">
+                    <value name="INDEX">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="sd_card_text_to">
                     <value name="STARTING_POINT_VALUE">
                         <block type="math_number">
@@ -331,7 +346,13 @@
                         </block>
                     </value>
                 </block>
-                <block type="sd_card_read_text"></block>
+                <block type="sd_card_read_text">
+                    <value name="INDEX">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
         </category>
         <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb">
