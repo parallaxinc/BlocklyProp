@@ -233,9 +233,6 @@
                 <block type="rfid_disable"></block>
                 <block type="rfid_close"></block>
             </category>
-            <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
-                <block type="SF02_Laser_Rangefinder"></block>
-            </category>
             <category name="<fmt:message key="category.sensor-input.sony-remote" />">
                 <block type="sirc_get"></block>
             </category>
