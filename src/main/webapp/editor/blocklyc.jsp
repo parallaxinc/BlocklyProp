@@ -26,7 +26,7 @@
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/lib/xterm.css"/>" rel="stylesheet" type="text/css" />
     </head>
-    <body data-challenge="<authentication:challenge />" data-timestamp="<authentication:timestamp />" >
+    <body>
         <div id="editor">
             <table id="content_table">
                 <tr>

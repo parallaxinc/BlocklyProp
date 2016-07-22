@@ -191,6 +191,9 @@ Blockly.Spin.finish = function (code) {
     if (Blockly.Spin.serial_terminal_) {
         setup += "'SERIAL_TERMINAL USED\n";
     }
+    if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
+        setup += "'EMPTY_PROJECT\n";
+    }
     setup += 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
     return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
 };

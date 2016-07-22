@@ -103,30 +103,36 @@ function init(blockly) {
 }
 
 function cloudCompile(text, action, successHandler) {
-    $("#compile-dialog-title").text(text);
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
 
     var spinCode = Blockly.Spin.workspaceToCode(Blockly.mainWorkspace);
-    var terminalNeeded = spinCode.indexOf("SERIAL_TERMINAL USED") > -1;
-    $.ajax({
-        'method': 'POST',
-        'url': baseUrl + 'rest/compile/spin/' + action + '?id=' + idProject,
-        'data': {"code": spinCode}
-    }).done(function (data) {
-        if (data.error) {
-            alert(data['message']);
-        } else {
-            if (data.success) {
-                $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
-                successHandler(data, terminalNeeded);
+    var isEmptyProject = spinCode.indexOf("EMPTY_PROJECT") > -1;
+    if (isEmptyProject) {
+        alert("You can't compile an empty project");
+    } else {
+        $("#compile-dialog-title").text(text);
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
+
+        var terminalNeeded = spinCode.indexOf("SERIAL_TERMINAL USED") > -1;
+        $.ajax({
+            'method': 'POST',
+            'url': baseUrl + 'rest/compile/spin/' + action + '?id=' + idProject,
+            'data': {"code": spinCode}
+        }).done(function (data) {
+            if (data.error) {
+                alert(data['message']);
             } else {
-                $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                if (data.success) {
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                    successHandler(data, terminalNeeded);
+                } else {
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                }
             }
-        }
-    }).fail(function (data) {
-        alert(data);
-    });
+        }).fail(function (data) {
+            alert(data);
+        });
+    }
 }
 
 /**
