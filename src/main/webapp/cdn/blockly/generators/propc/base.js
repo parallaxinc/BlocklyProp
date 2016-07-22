@@ -155,7 +155,8 @@ Blockly.propc.pulse_in = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
 
-    return 'pulse_in(' + pin + ', ' + state + ');\n';
+    var code = 'pulse_in(' + pin + ', ' + state + ');\n';
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.pulse_out = function() {
@@ -169,5 +170,6 @@ Blockly.propc.rc_charge_discharge = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
 
-    return 'rc_time(' + pin + ', ' + state + ');\n';
+    var code = 'rc_time(' + pin + ', ' + state + ');\n';
+    return [code, Blockly.propc.ORDER_NONE];
 };
