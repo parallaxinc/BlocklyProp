@@ -91,10 +91,11 @@ Blockly.propc.oled_draw_line = function () {
     var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
     var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
 
-    var colour_red = (this.getFieldValue('colorName') & 0xFF0000) >> 16;
-    var colour_green = (this.getFieldValue('colorName') & 0x00FF00) >> 8;
-    var colour_blue = (this.getFieldValue('colorName') & 0x0000FF);
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('colorName'));
+    var color_red = parseInt(result[1], 16);
+    var color_green = parseInt(result[2], 16);
+    var color_blue = parseInt(result[3], 16);
 
-    var code = 'oledc_drawLine(int ' + x_one + ', int ' + y_one + ', int ' + x_two + ', int ' + y_two + ', oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));\n';
+    var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));\n';
     return code;
 };
