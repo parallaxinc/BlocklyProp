@@ -178,6 +178,7 @@
             </category>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
+                <block type="oled_draw_line"></block>
             </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
