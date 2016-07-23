@@ -42,12 +42,32 @@ Blockly.Blocks.oled_initialize = {
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK")
             .appendField("RES")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "RES");
-        this.appendDummyInput()
-            .appendField("large font")
-            .appendField(new Blockly.FieldDropdown([["None", ""], ["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "LARGE_FONT")
-            .appendField("medium font")
-            .appendField(new Blockly.FieldDropdown([["None", ""], ["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "MEDIUM_FONT");
 
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Blocks.oled_draw_line = {
+    init: function() {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("X_ONE")
+            .setCheck('Number')
+            .appendField("draw line point one");
+        this.appendValueInput("Y_ONE")
+            .setCheck('Number')
+            .appendField(",");
+        this.appendValueInput("X_TWO")
+            .setCheck('Number')
+            .appendField("point two");
+        this.appendValueInput("Y_TWO")
+            .setCheck('Number')
+            .appendField(",");
+        this.appendDummyInput()
+            .appendField("color")
+            .appendField(new Blockly.FieldColour('#ff0000').setColours(['#f00','#0f0','#00f','#000','#888','#fff']).setColumns(3), "colorName");
+
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -59,18 +79,23 @@ Blockly.propc.oled_initialize = function () {
     var din_pin = this.getFieldValue("DIN");
     var clk_pin = this.getFieldValue("CLK");
     var res_pin = this.getFieldValue("RES");
-    var large_font = this.getFieldValue("LARGE_FONT");
-    var medium_font = this.getFieldValue("MEDIUM_FONT");
-
-    if (large_font !== "") {
-        Blockly.propc.definitions_["oled_large_font"] = '#include "oledc_fontLarge' + large_font + '.h"';
-    }
-
-    if (medium_font !== "") {
-        Blockly.propc.definitions_["oled_medium_font"] = '#include "oledc_fontMedium' + medium_font + '.h"';
-    }
 
     Blockly.propc.setups_["oled"] = 'oledc_init(' + cs_pin + ', ' + dc_pin + ', ' + din_pin + ', ' + clk_pin + ', ' + res_pin + ', 2);';
 
     return '';
+};
+
+Blockly.propc.oled_draw_line = function () {
+    var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
+    var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
+    var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
+    var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('colorName'));
+    var color_red = parseInt(result[1], 16);
+    var color_green = parseInt(result[2], 16);
+    var color_blue = parseInt(result[3], 16);
+
+    var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));\n';
+    return code;
 };
