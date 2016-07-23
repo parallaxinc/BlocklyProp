@@ -86,10 +86,10 @@ Blockly.propc.oled_initialize = function () {
 };
 
 Blockly.propc.oled_draw_line = function () {
-    var x_one = Blockly.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
-    var y_one = Blockly.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
-    var x_two = Blockly.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
-    var y_two = Blockly.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
+    var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
+    var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
+    var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
+    var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
 
     var colour_red = (this.getFieldValue('colorName') & 0xFF0000) >> 16;
     var colour_green = (this.getFieldValue('colorName') & 0x00FF00) >> 8;
