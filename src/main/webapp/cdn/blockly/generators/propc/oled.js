@@ -42,11 +42,6 @@ Blockly.Blocks.oled_initialize = {
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK")
             .appendField("RES")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "RES");
-        this.appendDummyInput()
-            .appendField("large font")
-            .appendField(new Blockly.FieldDropdown([["None", ""], ["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "LARGE_FONT")
-            .appendField("medium font")
-            .appendField(new Blockly.FieldDropdown([["None", ""], ["Sans", "Sans"], ["Serif", "Serif"], ["Script", "Script"], ["Bubble", "Bubble"]]), "MEDIUM_FONT");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -59,16 +54,6 @@ Blockly.propc.oled_initialize = function () {
     var din_pin = this.getFieldValue("DIN");
     var clk_pin = this.getFieldValue("CLK");
     var res_pin = this.getFieldValue("RES");
-    var large_font = this.getFieldValue("LARGE_FONT");
-    var medium_font = this.getFieldValue("MEDIUM_FONT");
-
-    if (large_font !== "") {
-        Blockly.propc.definitions_["oled_large_font"] = '#include "oledc_fontLarge' + large_font + '.h"';
-    }
-
-    if (medium_font !== "") {
-        Blockly.propc.definitions_["oled_medium_font"] = '#include "oledc_fontMedium' + medium_font + '.h"';
-    }
 
     Blockly.propc.setups_["oled"] = 'oledc_init(' + cs_pin + ', ' + dc_pin + ', ' + din_pin + ', ' + clk_pin + ', ' + res_pin + ', 2);';
 
