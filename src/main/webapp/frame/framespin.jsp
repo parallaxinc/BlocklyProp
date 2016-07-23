@@ -158,12 +158,12 @@
         <category name="<fmt:message key="category.scribbler" />" colour=200>
             <category name="<fmt:message key="category.scribbler.outputs" />" colour=200>
                 <block type="move_motors">
-                    <value name="LEFT_MOTOR_POWER">
+                    <value name="LEFT_MOTOR_SPEED">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                    <value name="RIGHT_MOTOR_POWER">
+                    <value name="RIGHT_MOTOR_SPEED">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
@@ -174,14 +174,43 @@
                         </block>
                     </value>
                 </block>
-                <block type="set_led"></block>
-                <block type="play_tone">
-                    <value name="FREQUENCY_1">
+                <block type="move_motors_distance">
+                    <value name="LEFT_MOTOR_DISTANCE">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                    <value name="FREQUENCY_2">
+                    <value name="RIGHT_MOTOR_DISTANCE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="MOTOR_SPEED">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="move_motors_angle">
+                    <value name="ROTATE_ANGLE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ROTATE_RADIUS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ROTATE_SPEED">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="set_led"></block>
+                <block type="play_tone">
+                    <value name="FREQUENCY">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
@@ -192,12 +221,37 @@
                         </block>
                     </value>
                 </block>
+                <block type="play_polyphony">
+                    <value name="FREQUENCY_1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="FREQUENCY_2">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POLYPHONY_DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="set_volume">
+                    <value name="VOLUME">
+                        <block type="math_number">
+                            <field name="NUM">15</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.scribbler.inputs" />" colour=200>
                 <block type="line_sensor"></block>
                 <!--<block type="barcode"></block>-->
                 <block type="obstacle_sensor"></block>
                 <block type="stall_sensor"></block>
+                <block type="spinning_sensor"></block>
                 <block type="light_sensor"></block>
                 <block type="reset_button_presses"></block>
             </category>
