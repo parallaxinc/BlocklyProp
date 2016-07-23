@@ -33,7 +33,7 @@ Blockly.Blocks.console_print = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("Print")
+                .appendField("print")
                 .appendField(quotes.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'TEXT')
                 .appendField(quotes.newQuote_(false));
