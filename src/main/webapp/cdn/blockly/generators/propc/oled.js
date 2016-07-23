@@ -85,7 +85,7 @@ Blockly.propc.oled_initialize = function () {
     return '';
 };
 
-Blockly.propc.oled_draw_line = {
+Blockly.propc.oled_draw_line = function () {
     var x_one = Blockly.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
     var y_one = Blockly.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
     var x_two = Blockly.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
