@@ -61,10 +61,10 @@ Blockly.Blocks.rfid_enable = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("enable RFID in pin")
+            .appendField("enable RFID  enable pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_IN");
         this.appendDummyInput()
-            .appendField("out pin")
+            .appendField("sout pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_OUT");
 
         this.setInputsInline(true);
@@ -107,7 +107,7 @@ Blockly.propc.rfid_enable = function() {
     Blockly.propc.global_vars_["rfidser"] = 'rfidser *rfid;';
     Blockly.propc.global_vars_["rfidser_inpin"] = 'int rfidEn = ' + pin_in + ';';
     Blockly.propc.global_vars_["rfidser_outpin"] = 'int rfidSout = ' + pin_out + ';';
-    Blockly.propc.setups_["rfidser_setup"] = "rfid = rfid_open(rfidEn, rfidSout);"
+    Blockly.propc.setups_["rfidser_setup"] = "rfid = rfid_open(rfidSout,rfidEn);"
 
     return '';
 };
