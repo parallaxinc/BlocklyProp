@@ -233,6 +233,10 @@ Blockly.Blocks.reset_button_presses = {
 
 Blockly.Spin.move_motors = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var left_speed = Blockly.Spin.valueToCode(this, 'LEFT_MOTOR_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
     var right_speed = Blockly.Spin.valueToCode(this, 'RIGHT_MOTOR_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
     var movement_time = Blockly.Spin.valueToCode(this, 'MOTOR_DURATION', Blockly.Spin.ORDER_ATOMIC) || '0';
@@ -241,6 +245,10 @@ Blockly.Spin.move_motors = function () {
 
 Blockly.Spin.move_motors_distance = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var left_distance = Blockly.Spin.valueToCode(this, 'LEFT_MOTOR_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
     var right_distance = Blockly.Spin.valueToCode(this, 'RIGHT_MOTOR_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
     var top_speed = Blockly.Spin.valueToCode(this, 'MOTOR_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
@@ -249,6 +257,10 @@ Blockly.Spin.move_motors_distance = function () {
 
 Blockly.Spin.move_motors_angle = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var angle = Blockly.Spin.valueToCode(this, 'ROTATE_ANGLE', Blockly.Spin.ORDER_ATOMIC) || '0';
     var radius = Blockly.Spin.valueToCode(this, 'ROTATE_RADIUS', Blockly.Spin.ORDER_ATOMIC) || '0';
     var rotate_speed = Blockly.Spin.valueToCode(this, 'ROTATE_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
@@ -257,6 +269,10 @@ Blockly.Spin.move_motors_angle = function () {
 
 Blockly.Spin.set_led = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var set_LED_choice = this.getFieldValue('LED_CHOICE');
     var set_LED_color = this.getFieldValue('LED_COLOR');
     return 'Scribbler.SetLED(Scribbler#' + set_LED_choice + ', Scribbler#' + set_LED_color + ')\n';
@@ -264,6 +280,10 @@ Blockly.Spin.set_led = function () {
 
 Blockly.Spin.play_tone = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var Frequency = Blockly.Spin.valueToCode(this, 'FREQUENCY', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Note_Duration = Blockly.Spin.valueToCode(this, 'NOTE_DURATION', Blockly.Spin.ORDER_ATOMIC) || '0';
     return 'Scribbler.PlayNote(' + Frequency + ', 0, ' + Note_Duration + ')\n';
@@ -271,6 +291,10 @@ Blockly.Spin.play_tone = function () {
 
 Blockly.Spin.play_polyphony = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var Frequency1 = Blockly.Spin.valueToCode(this, 'FREQUENCY_1', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Frequency2 = Blockly.Spin.valueToCode(this, 'FREQUENCY_2', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Polyphony_Duration = Blockly.Spin.valueToCode(this, 'POLYPHONY_DURATION', Blockly.Spin.ORDER_ATOMIC) || '0';
@@ -279,12 +303,20 @@ Blockly.Spin.play_polyphony = function () {
 
 Blockly.Spin.set_volume = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var Volume = Blockly.Spin.valueToCode(this, 'VOLUME', Blockly.Spin.ORDER_ATOMIC) || '0';
     return 'Scribbler.SetVolume(' + Volume + ')\n';
 };
 
 Blockly.Spin.line_sensor = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var line_sensor_choice = this.getFieldValue('LINE_SENSOR_CHOICE');
     var code = 'Scribbler.LineSensor(Scribbler#' + line_sensor_choice + ')';
     return [code, Blockly.Spin.ORDER_ATOMIC];
@@ -292,6 +324,10 @@ Blockly.Spin.line_sensor = function () {
 
 Blockly.Spin.obstacle_sensor = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var obstacle_sensor_choice = this.getFieldValue('OBSTACLE_SENSOR_CHOICE');
     var code = 'Scribbler.ReadObstacle(Scribbler#' + obstacle_sensor_choice + ')';
     return [code, Blockly.Spin.ORDER_ATOMIC];
@@ -299,18 +335,30 @@ Blockly.Spin.obstacle_sensor = function () {
 
 Blockly.Spin.stall_sensor = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var code = 'Scribbler.Stalled';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
 Blockly.Spin.spinning_sensor = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var code = 'Scribbler.MotorsMoving';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
 Blockly.Spin.light_sensor = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var light_sensor_choice = this.getFieldValue('LGHT_SENSOR_CHOICE');
     var code = 'Scribbler.LightSensor(Scribbler#' + light_sensor_choice + ')';
     return [code, Blockly.Spin.ORDER_ATOMIC];
@@ -318,6 +366,10 @@ Blockly.Spin.light_sensor = function () {
 
 Blockly.Spin.reset_button_presses = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
     var code = 'Scribbler.ResetButtonCount';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
