@@ -30,22 +30,37 @@ if (!Blockly.Blocks)
 Blockly.Blocks.oled_initialize = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
+        // Field order DIN, CLK, CS, D/C, RES
         this.appendDummyInput()
             .appendField("OLED initialize")
-            .appendField("CS")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CS")
-            .appendField("D/C")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DC")
             .appendField("DIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "DIN")
             .appendField("CLK")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK")
+            .appendField("CS")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CS")
+            .appendField("D/C")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DC")
             .appendField("RES")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "RES");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
+};
+
+Blockly.Blocks['oled_clear_screen'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("clear screen");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+//    this.setColour(230);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+    this.setHelpUrl('http://www.example.com/');
+  }
 };
 
 Blockly.Blocks.oled_draw_line = {
@@ -79,10 +94,19 @@ Blockly.propc.oled_initialize = function () {
     var din_pin = this.getFieldValue("DIN");
     var clk_pin = this.getFieldValue("CLK");
     var res_pin = this.getFieldValue("RES");
-
+    
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.setups_["oled"] = 'oledc_init(' + cs_pin + ', ' + dc_pin + ', ' + din_pin + ', ' + clk_pin + ', ' + res_pin + ', 2);';
 
     return '';
+};
+
+Blockly.propc.oled_clear_screen = function() {
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );'
+  return code;
+  //var code = '...;\n';
+  //return code;
 };
 
 Blockly.propc.oled_draw_line = function () {
