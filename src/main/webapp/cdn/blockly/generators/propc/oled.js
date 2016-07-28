@@ -102,14 +102,18 @@ Blockly.propc.oled_initialize = function () {
 };
 
 Blockly.propc.oled_clear_screen = function() {
-  // TODO: Assemble JavaScript into code variable.
-  var code = 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );'
-  return code;
-  //var code = '...;\n';
-  //return code;
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Emit code to clear the screen
+    var code = 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );';
+    return code;
 };
 
 Blockly.propc.oled_draw_line = function () {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
     var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
     var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
     var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
