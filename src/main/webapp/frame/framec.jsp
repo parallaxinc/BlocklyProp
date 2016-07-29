@@ -202,6 +202,18 @@
                         </block>
                     </value>
                 </block>
+                <block type="oled_draw_pixel">
+                    <value name="X_AXIS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y_AXIS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>

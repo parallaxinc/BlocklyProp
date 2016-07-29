@@ -56,10 +56,9 @@ Blockly.Blocks['oled_clear_screen'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-//    this.setColour(230);
     this.setColour(colorPalette.getColor('protocols'));
     this.setTooltip('');
-    this.setHelpUrl('http://www.example.com/');
+//    this.setHelpUrl('http://www.example.com/');
   }
 };
 
@@ -80,13 +79,36 @@ Blockly.Blocks.oled_draw_line = {
             .appendField(",");
         this.appendDummyInput()
             .appendField("color")
-            .appendField(new Blockly.FieldColour('#ff0000').setColours(['#f00','#0f0','#00f','#000','#888','#fff']).setColumns(3), "colorName");
+            .appendField(new Blockly.FieldColour('#ff0000'), "colorName");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
+
+
+Blockly.Blocks.oled_draw_pixel = {
+  init: function() {
+    this.appendValueInput("X_AXIS")
+        .setCheck('Number')
+        .appendField("draw pixel at");
+    this.appendValueInput("Y_AXIS")
+        .setCheck('Number')
+        .appendField(",");
+    this.appendDummyInput()
+        .appendField("color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "colorPixelName");
+
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
@@ -125,5 +147,25 @@ Blockly.propc.oled_draw_line = function () {
     var color_blue = parseInt(result[3], 16);
 
     var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));\n';
+    return code;
+};
+
+Blockly.propc.oled_draw_pixel = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    
+    var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
+    var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
+    //var color_name = block.getFieldValue('NAME');
+
+    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('colorPixelName'));
+    var color_red = parseInt(color_mask[1], 16);
+    var color_green = parseInt(color_mask[2], 16);
+    var color_blue = parseInt(color_mask[3], 16);
+
+    // TODO: Assemble JavaScript into code variable.
+    // var code = 'oledc_drawPixel(int x, int y, int color);';
+    var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ' + 
+            'oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));';
     return code;
 };
