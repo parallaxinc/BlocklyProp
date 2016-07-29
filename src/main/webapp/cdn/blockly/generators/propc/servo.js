@@ -154,12 +154,9 @@ Blockly.Blocks.servodiffdrive_library_drive_stop = {
 
 Blockly.Blocks.pwm_start = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM start");
-        this.appendValueInput("CYCLE", Number)
-                .appendField("cycle (microseconds)")
-                .setCheck('Number');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -168,17 +165,17 @@ Blockly.Blocks.pwm_start = {
 
 Blockly.Blocks.pwm_set = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM set")
                 .appendField("pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("channel")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL");
-        this.appendValueInput("HIGH_TIME", Number)
+                .appendField(new Blockly.FieldDropdown([["A", "0"], ["B", "1"]]), "CHANNEL");
+        this.appendValueInput("DUTY_CYCLE", Number)
                 .setCheck('Number')
-                .appendField("high time");
+                .appendField("duty cycle (0 - 100)");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -188,7 +185,7 @@ Blockly.Blocks.pwm_set = {
 
 Blockly.Blocks.pwm_stop = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM stop");
 
@@ -261,19 +258,26 @@ Blockly.propc.servodiffdrive_library_drive_stop = function () {
 };
 
 Blockly.propc.pwm_start = function () {
-    var cycle = Blockly.propc.valueToCode(this, "CYCLE", Blockly.propc.ORDER_NONE);
-
-    return 'pwm_start(' + cycle + ');\n';
+    var code = 'pwm_start(100);\n';
+    return code;
 };
 
 Blockly.propc.pwm_set = function () {
     var pin = this.getFieldValue("PIN");
     var channel = this.getFieldValue("CHANNEL");
-    var high_time = Blockly.propc.valueToCode(this, "HIGH_TIME", Blockly.propc.ORDER_NONE);
+    var duty_cycle = Blockly.propc.valueToCode(this, "DUTY_CYCLE", Blockly.propc.ORDER_NONE);
 
-    return 'pwm_set(' + pin + ', ' + channel + ', ' + high_time + ');\n';
+    if (Number(duty_cycle) < 0) {
+        duty_cycle = '0';
+    } else if (Number(duty_cycle) > 100) {
+        duty_cycle = '100';
+    }
+
+    var code = 'pwm_start(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
+    return code;
 };
 
 Blockly.propc.pwm_stop = function () {
-    return 'pwm_stop();\n';
+    var code = 'pwm_stop();\n';
+    return code;
 };

@@ -37,7 +37,7 @@ Blockly.propc.make_pin = function () {
         case "LOW":
             return 'low(' + dropdown_pin + ');\n';
         case "TOGGLE":
-            return 'toggle(' + dropdown_pin + ');\n\tset_direction(' + dropdown_pin + ', 1)';
+            return 'toggle(' + dropdown_pin + ');\n\tset_direction(' + dropdown_pin + ', 1);\n';
         case "INPUT":
             return 'set_direction(' + dropdown_pin + ', 0);\n';
         case "REVERSE":
@@ -172,4 +172,22 @@ Blockly.propc.rc_charge_discharge = function() {
 
     var code = 'rc_time(' + pin + ', ' + state + ');\n';
     return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.comment = {
+    init: function() {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField("add comment")
+                .appendField(new Blockly.FieldTextInput(''), "COMMENT_TEXT");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.comment = function() {
+    var text = this.getFieldValue("COMMENT_TEXT");
+
+    return '// ' + text + '\n';
 };

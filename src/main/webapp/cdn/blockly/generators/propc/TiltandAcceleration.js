@@ -69,6 +69,32 @@ Blockly.Blocks.MX2125_rotation = {
     }
 };
 
+Blockly.Blocks.MX2125_tilt_xaxis = {
+    init: function () {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("MX2125 tilt x-axis pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX");
+
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks.MX2125_tilt_yaxis = {
+    init: function () {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("MX2125 tilt y-axis pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
+
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.Blocks.MMA7455_acceleration = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
@@ -130,30 +156,19 @@ Blockly.Blocks.HMC5883L_read = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("read")
-                .appendField("store x-coords in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR');
-        this.appendDummyInput()
-                .appendField("store y-coords in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR');
-        this.appendDummyInput()
-                .appendField("store z-coords in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
+                .appendField("read heading and store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HEADING');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
     getVars: function () {
-        return [this.getFieldValue('X_VAR'), this.getFieldValue('Y_VAR'), this.getFieldValue('Z_VAR')];
+        return [this.getFieldValue('HEADING')];
     },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('X_VAR'))) {
-            this.setTitleValue(newName, 'X_VAR');
-        } else if (Blockly.Names.equals(oldName, this.getFieldValue('Y_VAR'))) {
-            this.setTitleValue(newName, 'Y_VAR');
-        } else if (Blockly.Names.equals(oldName, this.getFieldValue('Z_VAR'))) {
-            this.setTitleValue(newName, 'Z_VAR');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('HEADING'))) {
+            this.setTitleValue(newName, 'HEADING');
         }
     }
 };
@@ -172,7 +187,6 @@ Blockly.propc.MX2125_acceleration_yaxis = function () {
 
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
 
-
     var code = 'mx_accel(' + pin + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
@@ -183,8 +197,25 @@ Blockly.propc.MX2125_rotation = function () {
 
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
 
-
     var code = 'mx_rotate(' + pinx + ', ' + piny + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.propc.MX2125_tilt_xaxis = function () {
+    var pin = this.getFieldValue('PINX');
+
+    Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
+
+    var code = 'mx_tilt(' + pin + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.propc.MX2125_tilt_yaxis = function () {
+    var pin = this.getFieldValue('PINY');
+
+    Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
+
+    var code = 'mx_tilt(' + pin + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
@@ -208,15 +239,13 @@ Blockly.propc.HMC5883L_init = function () {
     var sda = this.getFieldValue("SDA");
 
     Blockly.propc.definitions_["HMC5883L"] = '#include "compass3d.h"';
-    Blockly.propc.setups_["HMC5883L"] = 'i2c *HMC5883L_bus = i2c_newbus(' + scl + ', ' + sda + ', 0);\n\tcompass_init(HMC5883L_bus);';
+    Blockly.propc.setups_["HMC5883L"] = 'int compX, compY, compZ;\n\ti2c *bus = i2c_newbus(' + scl + ', ' + sda + ', 0);\n\tcompass_init(bus);';
 
     return '';
 };
 
 Blockly.propc.HMC5883L_read = function () {
-    var x_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('X_VAR'), Blockly.Variables.NAME_TYPE);
-    var y_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('Y_VAR'), Blockly.Variables.NAME_TYPE);
-    var z_storage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
+    var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('HEADING'), Blockly.Variables.NAME_TYPE);
 
-    return 'compass_read(HMC5883L_bus, &' + x_storage + ', &' + y_storage + ', &' + z_storage + ');\n';
+    return 'compass_read(bus, &compX, &compY, &compZ);\n\tfloat fy = (float) compY;\n\tfloat fx = (float) compX;\n\tfloat heading = atan2(fy, fx) * 180.0/PI;\n\tif(heading < 0.0)\n\t\theading = (360.0 + heading);\n\t' + storage + ' = (int) heading;\n';
 };

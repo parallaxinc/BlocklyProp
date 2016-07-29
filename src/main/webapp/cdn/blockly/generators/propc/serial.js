@@ -90,10 +90,10 @@ Blockly.Blocks.xbee_setup = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee setup")
-                .appendField("DO pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN')
                 .appendField("DI pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN');
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN')
+                .appendField("DO pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -196,7 +196,7 @@ Blockly.propc.xbee_setup = function () {
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
 
     Blockly.propc.global_vars_["xbee"] = "fdserial *xbee;";
-    Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + do_pin + ', ' + di_pin + ', 0, 9600);\n';
+    Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + di_pin + ', ' + do_pin + ', 0, 9600);\n';
 
     return '';
 };
