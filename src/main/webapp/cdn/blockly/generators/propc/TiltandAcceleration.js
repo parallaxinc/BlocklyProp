@@ -69,6 +69,32 @@ Blockly.Blocks.MX2125_rotation = {
     }
 };
 
+Blockly.Blocks.MX2125_tilt_xaxis = {
+    init: function () {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("MX2125 tilt x-axis pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX");
+
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks.MX2125_tilt_yaxis = {
+    init: function () {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("MX2125 tilt y-axis pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
+
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.Blocks.MMA7455_acceleration = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
@@ -172,7 +198,6 @@ Blockly.propc.MX2125_acceleration_yaxis = function () {
 
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
 
-
     var code = 'mx_accel(' + pin + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
@@ -183,8 +208,25 @@ Blockly.propc.MX2125_rotation = function () {
 
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
 
-
     var code = 'mx_rotate(' + pinx + ', ' + piny + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.propc.MX2125_tilt_xaxis = function () {
+    var pin = this.getFieldValue('PINX');
+
+    Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
+
+    var code = 'mx_tilt(' + pin + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.propc.MX2125_tilt_yaxis = function () {
+    var pin = this.getFieldValue('PINY');
+
+    Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
+
+    var code = 'mx_tilt(' + pin + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
