@@ -35,12 +35,15 @@ Blockly.Blocks.move_motors = {
 // Move the motors...
 Blockly.Blocks.move_motors_distance = {
     init: function () {
+	this.appendDummyInput()
+		.appendField("In ")
+		.appendField(new Blockly.FieldDropdown([['milimeters', ' * 2_056 / 1_000'], ['centimeters', ' * 2_056 / 100'], ['inches', ' * 5_095 / 100'], ['tenths of an inch', ' * 5_095 / 1_000'], ['native units', '']]), 'MULTIPLIER');
 	this.appendValueInput("LEFT_MOTOR_DISTANCE")
 		.setCheck("Number")
-		.appendField("Move the left motor (-32,000 to 32,000) units");
+		.appendField("Move the left motor");
 	this.appendValueInput("RIGHT_MOTOR_DISTANCE")
 		.setCheck("Number")
-		.appendField("Move the right motor (-32,000 to 32,000) units");
+		.appendField("Move the right motor");
 	this.appendValueInput("MOTOR_SPEED")
 		.setCheck("Number")
 		.appendField("At a top speed of (1 to 100)%");
@@ -49,7 +52,7 @@ Blockly.Blocks.move_motors_distance = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	//this.setTooltip('');
+	this.setTooltip('Maximum milimeters: +/- 15,937, Maximum centimeters: +/- 1,593, Maximum inches: +/- 643\n Maximum tenths of an inch: +/- 6,431, Maximum native units: +/- 32,767');
         //this.setHelpUrl('help/block-scribbler.html#motors');
     }
 };
@@ -62,7 +65,7 @@ Blockly.Blocks.move_motors_angle = {
 		.appendField("Rotate the Scribbler robot (-1,080 to 1,080)°");
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
-		.appendField("Around a radius of (0 to 4_400");
+		.appendField("Around a radius of (0 to 4,400)")
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
 		.appendField("At a top speed of (1 to 100)%");
@@ -249,10 +252,11 @@ Blockly.Spin.move_motors_distance = function () {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
 
+    var distance_multiplier = this.getFieldValue('MULTIPLIER');
     var left_distance = Blockly.Spin.valueToCode(this, 'LEFT_MOTOR_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
     var right_distance = Blockly.Spin.valueToCode(this, 'RIGHT_MOTOR_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
     var top_speed = Blockly.Spin.valueToCode(this, 'MOTOR_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
-    return 'Scribbler.MotorSetDistance(' + left_distance + ', ' + right_distance + ', ' + top_speed + ')\n';
+    return 'Scribbler.MotorSetDistance(' + left_distance + distance_multiplier + ', ' + right_distance + distance_multiplier + ', ' + top_speed + ')\n';
 };
 
 Blockly.Spin.move_motors_angle = function () {

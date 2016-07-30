@@ -100,7 +100,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />" colour=220>
+        <category name="<fmt:message key="category.control" />" colour=205>
             <block type="controls_if"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
@@ -122,12 +122,12 @@
             <block type="logic_compare"></block>
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />" colour=220>
+        <category name="<fmt:message key="category.values" />" colour=205>
             <block type="math_number"></block>
             <block type="logic_boolean"></block>
         </category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour=260></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />" colour=200>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour=250></category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" colour=185>
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -146,7 +146,7 @@
             </block>
             <block type="set_pins"></block>
         </category>
-        <category name="Debug" colour=320>
+        <category name="Debug" colour=340>
             <block type="serial_open"></block>
             <block type="serial_send_text"></block>
             <block type="serial_send_decimal"></block>
@@ -155,8 +155,8 @@
             <block type="serial_cursor_xy"></block>
             <block type="serial_rx_byte"></block>
         </category>
-        <category name="<fmt:message key="category.scribbler" />" colour=200>
-            <category name="<fmt:message key="category.scribbler.outputs" />" colour=200>
+        <category name="<fmt:message key="category.scribbler" />" colour=185>
+            <category name="<fmt:message key="category.scribbler.outputs" />" colour=185>
                 <block type="move_motors">
                     <value name="LEFT_MOTOR_SPEED">
                         <block type="math_number">
@@ -246,7 +246,7 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.scribbler.inputs" />" colour=200>
+            <category name="<fmt:message key="category.scribbler.inputs" />" colour=185>
                 <block type="line_sensor"></block>
                 <!--<block type="barcode"></block>-->
                 <block type="obstacle_sensor"></block>
@@ -260,8 +260,8 @@
             <block type="math_random"></block>
             <block type="cog_new">
             </block>
-            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour=240></category>
-            <category name="<fmt:message key="category.communicate" />" colour=320>
+            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour=225></category>
+            <category name="<fmt:message key="category.communicate" />" colour=340>
                 <category name="<fmt:message key="category.communicate.serial-lcd" />">
                     <block type="debug_lcd_init"></block>
                     <block type="debug_lcd_clear"></block>
@@ -272,7 +272,7 @@
                 <category name="<fmt:message key="category.communicate.protocols" />">
                 </category>
             </category>
-            <category name="<fmt:message key="category.sensor-input" />" colour=155>
+            <category name="<fmt:message key="category.sensor-input" />" colour=140>
                 <category name="<fmt:message key="category.sensor-input.etape" />">
 
                 </category>
@@ -311,7 +311,7 @@
 
                 </category>
             </category>
-            <category name="<fmt:message key="category.memory" />" colour=155>
+            <category name="<fmt:message key="category.memory" />" colour=140>
                 <category name="<fmt:message key="category.memory.eeprom" />">
 
                 </category>
@@ -319,7 +319,7 @@
 
                 </category>
             </category>
-            <category name="<fmt:message key="category.analog-pulses" />" colour=200>
+            <category name="<fmt:message key="category.analog-pulses" />" colour=185>
                 <category name="<fmt:message key="category.analog-pulses.rc" />">
 
                 </category>
@@ -330,7 +330,7 @@
 
                 </category>
             </category>
-            <category name="<fmt:message key="category.audio" />" colour=200>
+            <category name="<fmt:message key="category.audio" />" colour=185>
                 <category name="<fmt:message key="category.audio.audio" />">
 
                 </category>
@@ -349,7 +349,7 @@
                     </block>
                 </category>
             </category>
-            <category name="<fmt:message key="category.servo" />" colour=180>
+            <category name="<fmt:message key="category.servo" />" colour=165>
                 <category name="<fmt:message key="category.servo.standard-servo" />">
                     <block type="servo_move"></block>
                 </category>
