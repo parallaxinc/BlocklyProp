@@ -62,6 +62,36 @@ Blockly.Blocks['oled_clear_screen'] = {
   }
 };
 
+Blockly.Blocks.oled_draw_circle = {
+  init: function() {
+    // First x/y coordinates
+    this.appendValueInput("POINT_X")
+        .setCheck("Number")
+        .appendField("draw circle at");
+    this.appendValueInput("POINT_Y")
+        .setCheck(null)
+        .appendField(",");
+    this.appendValueInput("RADIUS")
+        .setCheck("Number")
+        .appendField("radius");
+    // Color picker control
+    this.appendDummyInput()
+        .appendField("color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "flood")
+        .appendField("fill")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+        
+    // Other details
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('Set coordinates to draw a triangle');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
 Blockly.Blocks.oled_draw_line = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
@@ -207,6 +237,39 @@ Blockly.propc.oled_clear_screen = function() {
     return code;
 };
 
+Blockly.propc.oled_draw_circle = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    
+  var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+  var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+  var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
+
+  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('flood'));
+  
+  var color_red = parseInt(color_mask[1], 16);
+  var color_green = parseInt(color_mask[2], 16);
+  var color_blue = parseInt(color_mask[3], 16);
+    
+  var checkbox = this.getFieldValue('ck_fill');
+  var code;
+
+  if (checkbox === 'TRUE') {
+      code = 'oledc_fillCircle(';
+  } else {
+      code = 'oledc_drawCircle(';
+  }
+  
+  code += point_x0 + ', ' + point_y0 + ', ';
+  code += radius + ', ';
+  code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+  code += ');'; 
+
+  return code;
+};
+
+
+
 Blockly.propc.oled_draw_line = function () {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
@@ -278,8 +341,6 @@ Blockly.propc.oled_draw_triangle = function() {
 
   return code;
 };
-
-
 
 Blockly.propc.oled_draw_rectangle = function() {
     // Ensure header file is included
