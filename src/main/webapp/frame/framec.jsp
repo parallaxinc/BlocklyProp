@@ -180,6 +180,23 @@
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_clear_screen"></block>
+                <block type="oled_draw_circle">
+                    <value name="POINT_X">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RADIUS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="oled_draw_line">
                     <value name="X_ONE">
                         <block type="math_number">
