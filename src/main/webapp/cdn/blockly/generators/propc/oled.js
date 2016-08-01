@@ -148,6 +148,42 @@ Blockly.Blocks.oled_draw_triangle = {
   }
 };
 
+Blockly.Blocks.oled_draw_rectangle = {
+  init: function() {
+      this.appendValueInput("POINT_X")
+        .setCheck("Number")
+        .appendField("draw")
+        .appendField(new Blockly.FieldDropdown([
+            ["rectangle", "REG_RECTANGLE"], 
+            ["round rectangle", "ROUND_RECTANGLE"]
+            ]), "rect_round")
+        .appendField("at");
+    this.appendValueInput("POINT_Y")
+        .setCheck("Number")
+        .appendField(",");
+    this.appendValueInput("RECT_WIDTH")
+        .setCheck(null)
+        .appendField("width");
+    this.appendValueInput("RECT_HEIGHT")
+        .setCheck(null)
+        .appendField("height");
+    // Color picker control
+    this.appendDummyInput()
+        .appendField("color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "flood")
+        .appendField("fill")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+        
+    // Other details
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('Set coordinates to draw a rectangle');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
 
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
@@ -238,6 +274,58 @@ Blockly.propc.oled_draw_triangle = function() {
   code += point_x1 + ', ' + point_y1 + ', ';
   code += point_x2 + ', ' + point_y2 + ', ';
   code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+  code += ');'; 
+
+  return code;
+};
+
+
+
+Blockly.propc.oled_draw_rectangle = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    
+  var corners = this.getFieldValue('rect_round');
+  var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+  var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+  var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
+  var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
+
+  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('flood'));
+  
+  var color_red = parseInt(color_mask[1], 16);
+  var color_green = parseInt(color_mask[2], 16);
+  var color_blue = parseInt(color_mask[3], 16);
+    
+  var checkbox = this.getFieldValue('ck_fill');
+  var code;
+
+  if (corners === 'REG_RECTANGLE') {
+      if (checkbox === 'TRUE') {
+          code = 'oledc_fillRect(';
+          }
+      else {
+          code = 'oledc_drawRect(';
+          }
+      
+      code += point_x + ', ' + point_y + ', ';
+      code += width + ', ' + height + ', ';
+      code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+    }
+  else { // Rounded rectangle
+      if (checkbox === 'TRUE') {
+          code = 'oledc_fillRoundRect(';
+          }
+      else {
+          code = 'oledc_drawRoundRect(';
+          }
+
+      code += point_x + ', ' + point_y + ', ';
+      code += width + ', ' + height + ', ';
+      code += (width + height) / 20 + ', ';
+      code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+    }
+  
   code += ');'; 
 
   return code;

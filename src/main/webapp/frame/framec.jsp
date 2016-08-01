@@ -246,6 +246,28 @@
                         </block>
                     </value>
                 </block>
+                <block type="oled_draw_rectangle">
+                    <value name="POINT_X">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RECT_WIDTH">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RECT_HEIGHT">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
