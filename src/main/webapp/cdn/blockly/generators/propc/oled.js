@@ -87,7 +87,6 @@ Blockly.Blocks.oled_draw_line = {
     }
 };
 
-
 Blockly.Blocks.oled_draw_pixel = {
   init: function() {
     this.appendValueInput("X_AXIS")
@@ -105,6 +104,46 @@ Blockly.Blocks.oled_draw_pixel = {
     this.setNextStatement(true, null);
     this.setColour(colorPalette.getColor('protocols'));
     this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+Blockly.Blocks.oled_draw_triangle = {
+  init: function() {
+    // First x/y coordinates
+    this.appendValueInput("POINT_X0")
+        .setCheck(null)
+        .appendField("draw triangle point one at");
+    this.appendValueInput("POINT_Y0")
+        .setCheck(null)
+        .appendField(",");
+    // Second x/y coordinates
+    this.appendValueInput("POINT_X1")
+        .setCheck(null)
+        .appendField("point two");
+    this.appendValueInput("POINT_Y1")
+        .setCheck(null)
+        .appendField(",");
+    // Third x/y coordinates
+    this.appendValueInput("POINT_X2")
+        .setCheck(null)
+        .appendField("point three");
+    this.appendValueInput("POINT_Y2")
+        .setCheck(null)
+        .appendField(",");
+    // Color picker control
+    this.appendDummyInput()
+        .appendField("color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "flood")
+        .appendField("fill")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+        
+    // Other details
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('Set coordinates to draw a triangle');
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
@@ -164,8 +203,42 @@ Blockly.propc.oled_draw_pixel = function() {
     var color_blue = parseInt(color_mask[3], 16);
 
     // TODO: Assemble JavaScript into code variable.
-    // var code = 'oledc_drawPixel(int x, int y, int color);';
     var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ' + 
             'oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));';
     return code;
+};
+
+Blockly.propc.oled_draw_triangle = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    
+  var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
+  var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
+  var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
+  var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
+  var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
+  var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
+
+  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('flood'));
+  
+  var color_red = parseInt(color_mask[1], 16);
+  var color_green = parseInt(color_mask[2], 16);
+  var color_blue = parseInt(color_mask[3], 16);
+    
+  var checkbox = this.getFieldValue('ck_fill');
+  var code;
+
+  if (checkbox === 'TRUE') {
+      code = 'oledc_fillTriangle(';
+  } else {
+      code = 'oledc_drawTriangle(';
+  }
+  
+  code += point_x0 + ', ' + point_y0 + ', ';
+  code += point_x1 + ', ' + point_y1 + ', ';
+  code += point_x2 + ', ' + point_y2 + ', ';
+  code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+  code += ');'; 
+
+  return code;
 };
