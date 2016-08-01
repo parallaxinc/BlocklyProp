@@ -90,9 +90,9 @@ Blockly.Blocks.xbee_setup = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee setup")
-                .appendField("DI pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN')
                 .appendField("DO pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN')
+                .appendField("DI pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN');
 
         this.setInputsInline(true);
