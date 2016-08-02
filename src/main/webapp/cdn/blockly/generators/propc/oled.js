@@ -229,7 +229,20 @@ Blockly.Blocks.oled_text_size = {
   }
 };
 
-
+Blockly.Blocks.oled_text_color = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("font color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "fg_color")
+        .appendField("background color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "bg_color");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
 
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
@@ -429,5 +442,26 @@ Blockly.propc.oled_text_size = function() {
             code += 'SMALL';
     } 
     code += ');';
+    return code;
+};
+
+
+Blockly.propc.oled_text_color = function() {
+    var code = 'oledc_setTextColor(';
+    
+    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('fg_color'));
+    var color_red = parseInt(color_mask[1], 16);
+    var color_green = parseInt(color_mask[2], 16);
+    var color_blue = parseInt(color_mask[3], 16);
+    
+    code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '), ';
+    
+    color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.getFieldValue('bg_color'));
+    color_red = parseInt(color_mask[1], 16);
+    color_green = parseInt(color_mask[2], 16);
+    color_blue = parseInt(color_mask[3], 16);
+    
+    code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '));';
+
     return code;
 };
