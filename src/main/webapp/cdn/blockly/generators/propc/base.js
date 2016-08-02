@@ -170,7 +170,7 @@ Blockly.propc.rc_charge_discharge = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
 
-    var code = 'rc_time(' + pin + ', ' + state + ');\n';
+    var code = 'rc_time(' + pin + ', ' + state + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
