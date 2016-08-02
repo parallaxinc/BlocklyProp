@@ -49,7 +49,7 @@ Blockly.Blocks.oled_initialize = {
     }
 };
 
-Blockly.Blocks['oled_clear_screen'] = {
+Blockly.Blocks.oled_clear_screen = {
   init: function() {
     this.appendDummyInput()
         .appendField("clear screen");
@@ -90,7 +90,6 @@ Blockly.Blocks.oled_draw_circle = {
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
-
 
 Blockly.Blocks.oled_draw_line = {
     init: function() {
@@ -214,6 +213,23 @@ Blockly.Blocks.oled_draw_rectangle = {
   }
 };
 
+Blockly.Blocks.oled_text_size = {
+    init: function() {
+        this.appendDummyInput()
+            .appendField("text size")
+            .appendField(new Blockly.FieldDropdown([
+                ["small", "TEXT_SMALL"], 
+                ["medium", "TEXT_MEDIUM"], 
+                ["large", "TEXT_LARGE"]]), "size_select");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
 
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
@@ -267,8 +283,6 @@ Blockly.propc.oled_draw_circle = function() {
 
   return code;
 };
-
-
 
 Blockly.propc.oled_draw_line = function () {
     // Ensure header file is included
@@ -390,4 +404,30 @@ Blockly.propc.oled_draw_rectangle = function() {
   code += ');'; 
 
   return code;
+};
+
+Blockly.propc.oled_text_size = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    var dropdown_size_select = this.getFieldValue('size_select');
+    
+    // TODO: Update constants when new oledc library is published
+    var code = 'oledc_setTextSize(';
+
+    switch(dropdown_size_select) {
+        case 'TEXT_SMALL':
+            code += 'SMALL';
+            break;
+        case 'TEXT_MEDIUM':
+            code+= 'MEDIUM';
+            break;
+        case 'TEXT_LARGE':
+            code += 'LARGE';
+            break;
+        default:
+            code += 'SMALL';
+    } 
+    code += ');';
+    return code;
 };
