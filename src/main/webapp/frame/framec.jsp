@@ -181,6 +181,7 @@
                 <block type="oled_initialize"></block>
                 <block type="oled_clear_screen"></block>
                 <block type="oled_text_size"></block>
+                <block type="oled_text_color"></block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
                         <block type="math_number">
