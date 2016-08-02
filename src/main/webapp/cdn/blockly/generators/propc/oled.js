@@ -49,6 +49,20 @@ Blockly.Blocks.oled_initialize = {
     }
 };
 
+Blockly.Blocks.oled_font_loader = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("OLED font loader (EEPROM only)");
+//    this.setInputsInline(true);
+//    this.setPreviousStatement(true, null);
+//    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
 Blockly.Blocks.oled_clear_screen = {
   init: function() {
     this.appendDummyInput()
@@ -256,6 +270,15 @@ Blockly.propc.oled_initialize = function () {
 
     return '';
 };
+
+
+Blockly.propc.oled_font_loader = function () {
+    Blockly.propc.definitions_["oledfonts"] = '#include "oledc_fontloader.h"';
+
+    var code = 'oledc_fontLoader();';
+    return code;
+};
+
 
 Blockly.propc.oled_clear_screen = function() {
     // Ensure header file is included
