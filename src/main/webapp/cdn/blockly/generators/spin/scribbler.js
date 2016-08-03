@@ -57,15 +57,11 @@ Blockly.Blocks.scribbler_if_line = {
             .appendField("If a")
             .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
             .appendField("line")
-            .appendField(new Blockly.FieldDropdown([['is', 'TRUE'], ['was', 'FALSE']]), 'LINE_READ')
-            .appendField(new Blockly.FieldDropdown([['directly under', 'UNDER'], ['on the left edge of', 'LEFT'], ['on the right edge of', 'RIGHT'], ['not detectable by', 'NOT_UNDER']]), 'LINE_DIRECTION')
-            .appendField("the Scribbler robot");
+            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LINE_READ')
+            .appendField(new Blockly.FieldDropdown([['directly under', 'UNDER'], ['on the left edge of', 'LEFT'], ['on the right edge of', 'RIGHT'], ['not under', 'NOT_UNDER']]), 'LINE_DIRECTION')
+            .appendField("the Scribbler robot line sensor");
         this.appendStatementInput("IF_LINE")
             .appendField()
-        this.appendDummyInput()
-            .appendField("If not");
-        this.appendStatementInput("ELSE_LINE")
-            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
@@ -77,15 +73,11 @@ Blockly.Blocks.scribbler_if_obstacle = {
     init: function () {
         this.appendDummyInput()
             .appendField("If an obstacle")
-            .appendField(new Blockly.FieldDropdown([['is', 'TRUE'], ['was', 'FALSE']]), 'OBSTACLE_READ')
+            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'OBSTACLE_READ')
             .appendField(new Blockly.FieldDropdown([['in front of', 'FRONT'], ['to the left of', 'LEFT'], ['to the right of', 'RIGHT'], ['not detectable', 'UNDETECTABLE']]), 'OBSTACLE_DIRECTION')
             .appendField("the Scribbler robot");
         this.appendStatementInput("IF_OBSTACLE")
             .appendField()
-        this.appendDummyInput()
-            .appendField("If not");
-        this.appendStatementInput("ELSE_OBSTACLE")
-            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
@@ -97,15 +89,11 @@ Blockly.Blocks.scribbler_if_light = {
     init: function () {
         this.appendDummyInput()
             .appendField("If the brightest light")
-            .appendField(new Blockly.FieldDropdown([['is', 'TRUE'], ['was', 'FALSE']]), 'LIGHT_READ')
+            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LIGHT_READ')
             .appendField(new Blockly.FieldDropdown([['in front', 'FRONT'], ['to the left', 'LEFT'], ['to the right', 'RIGHT'], ['on all sides', 'UNDETECTABLE']]), 'LIGHT_DIRECTION')
             .appendField("of the Scribbler robot");
         this.appendStatementInput("IF_LIGHT")
             .appendField()
-        this.appendDummyInput()
-            .appendField("If not");
-        this.appendStatementInput("ELSE_LIGHT")
-            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
@@ -121,10 +109,6 @@ Blockly.Blocks.scribbler_if_stalled = {
             .appendField("stuck")
         this.appendStatementInput("IF_LIGHT")
             .appendField()
-        this.appendDummyInput()
-            .appendField("If not");
-        this.appendStatementInput("ELSE_LIGHT")
-            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
