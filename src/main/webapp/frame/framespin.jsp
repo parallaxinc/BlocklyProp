@@ -100,20 +100,6 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="Simple Scribbler" colour=205>
-            <block type="scribbler_loop"></block>
-            <block type="scribbler_exit_loop"></block>
-            <block type="scribbler_wait"></block>
-            <block type="scribbler_if_line"></block>
-            <block type="scribbler_if_obstacle"></block>
-            <block type="scribbler_if_light"></block>
-            <block type="scribbler_if_stalled"></block>
-            <block type="scribbler_drive"></block>
-            <block type="scribbler_spin"></block>
-            <block type="scribbler_stop"></block>
-            <block type="scribbler_LED"></block>
-            <block type="scribbler_play"></block>
-        </category>
         <category name="<fmt:message key="category.control" />" colour=205>
             <block type="controls_if"></block>
             <block type="controls_repeat">
@@ -168,6 +154,29 @@
             <block type="serial_clear"></block>
             <block type="serial_cursor_xy"></block>
             <block type="serial_rx_byte"></block>
+        </category>
+        <category name="Simplified Scribbler" colour=120>
+            <category name="Process" colour=205>
+                <block type="scribbler_warning"></block>
+                <block type="scribbler_loop"></block>
+                <block type="scribbler_exit_loop"></block>
+                <block type="scribbler_wait"></block>
+            </category>
+            <category name="Sense" colour=140>
+                <block type="scribbler_warning"></block>
+                <block type="scribbler_if_line"></block>
+                <block type="scribbler_if_obstacle"></block>
+                <block type="scribbler_if_light"></block>
+                <block type="scribbler_if_stalled"></block>
+            </category>
+            <category name="Do" colour=165>
+                <block type="scribbler_warning"></block>
+                <block type="scribbler_drive"></block>
+                <block type="scribbler_spin"></block>
+                <block type="scribbler_stop"></block>
+                <block type="scribbler_LED"></block>
+                <block type="scribbler_play"></block>
+            </category>
         </category>
         <category name="<fmt:message key="category.scribbler" />" colour=185>
             <category name="<fmt:message key="category.scribbler.outputs" />" colour=185>
