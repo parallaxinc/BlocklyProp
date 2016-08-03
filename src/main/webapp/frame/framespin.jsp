@@ -100,6 +100,20 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
+        <category name="Simple Scribbler" colour=205>
+            <block type="scribbler_loop"></block>
+            <block type="scribbler_exit_loop"></block>
+            <block type="scribbler_wait"></block>
+            <block type="scribbler_if_line"></block>
+            <block type="scribbler_if_obstacle"></block>
+            <block type="scribbler_if_light"></block>
+            <block type="scribbler_if_stalled"></block>
+            <block type="scribbler_drive"></block>
+            <block type="scribbler_spin"></block>
+            <block type="scribbler_stop"></block>
+            <block type="scribbler_LED"></block>
+            <block type="scribbler_play"></block>
+        </category>
         <category name="<fmt:message key="category.control" />" colour=205>
             <block type="controls_if"></block>
             <block type="controls_repeat">
