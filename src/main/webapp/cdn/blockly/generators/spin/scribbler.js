@@ -54,12 +54,12 @@ Blockly.Blocks.scribbler_wait = {
 Blockly.Blocks.scribbler_if_line = {
     init: function () {
         this.appendDummyInput()
-            .appendField("If a")
-            .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
-            .appendField("line")
+            .appendField("If the Scribbler robot line sensor")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LINE_READ')
-            .appendField(new Blockly.FieldDropdown([['directly under', 'UNDER'], ['on the left edge of', 'LEFT'], ['on the right edge of', 'RIGHT'], ['not under', 'NOT_UNDER']]), 'LINE_DIRECTION')
-            .appendField("the Scribbler robot line sensor");
+            .appendField(new Blockly.FieldDropdown([['directly over', 'OVER'], ['on the left edge of', 'LEFT'], ['on the right edge of', 'RIGHT'], ['not over', 'NOT_OVER']]), 'LINE_DIRECTION')
+            .appendField("of a")
+            .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
+            .appendField("line");
         this.appendStatementInput("IF_LINE")
             .appendField()
         this.setPreviousStatement(true);
@@ -105,7 +105,7 @@ Blockly.Blocks.scribbler_if_stalled = {
     init: function () {
         this.appendDummyInput()
             .appendField("If the Scribbler robot")
-            .appendField(new Blockly.FieldDropdown([['is', 'TRUE'], ['was', 'FALS']]), 'STALL_READ')
+            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'STALL_READ')
             .appendField("stuck")
         this.appendStatementInput("IF_LIGHT")
             .appendField()
