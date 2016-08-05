@@ -140,6 +140,7 @@
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
+            <block type="cast"></block>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />" colour="220">
