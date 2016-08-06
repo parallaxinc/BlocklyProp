@@ -128,7 +128,19 @@ Blockly.propc.variables_set = function () {
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
-         if (argument0.indexOf("\"") > -1) {
+         if (argument0.indexOf("int") > -1) {
+           Blockly.propc.vartype_[varName] = 'int';
+           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+         } else if (argument0.indexOf("float") > -1) {
+           Blockly.propc.vartype_[varName] = 'float';
+           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+         } else if (argument0.indexOf("char") > -1) {
+           Blockly.propc.vartype_[varName] = 'char';
+           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+         } else if (argument0.indexOf("char\[\]") > -1) {
+           Blockly.propc.vartype_[varName] = 'char';
+           Blockly.propc.varlength_[varName] = '128';
+         } else if (argument0.indexOf("\"") > -1) {
            Blockly.propc.vartype_[varName] = 'char';
            Blockly.propc.varlength_[varName] = '128';
          } else if (argument0.indexOf(".") > -1) {
@@ -138,6 +150,19 @@ Blockly.propc.variables_set = function () {
          } else {
            Blockly.propc.vartype_[varName] = 'int';
          }
+    } else if (argument0.indexOf("int") > -1) {
+      Blockly.propc.vartype_[varName] = 'int';
+      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+    } else if (argument0.indexOf("float") > -1) {
+      Blockly.propc.vartype_[varName] = 'float';
+      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+    } else if (argument0.indexOf("char") > -1) {
+      Blockly.propc.vartype_[varName] = 'char';
+      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+    } else if (argument0.indexOf("char\[\]") > -1) {
+      Blockly.propc.vartype_[varName] = 'char';
+      Blockly.propc.varlength_[varName] = '128';
     }
+
     return varName + ' = ' + argument0 + ';\n';
 };
