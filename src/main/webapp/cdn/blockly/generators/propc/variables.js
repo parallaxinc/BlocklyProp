@@ -130,10 +130,13 @@ Blockly.propc.variables_set = function () {
     if (Blockly.propc.vartype_[varName] === undefined) {
          if (argument0.indexOf("int") > -1) {
            Blockly.propc.vartype_[varName] = 'int';
+           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
          } else if (argument0.indexOf("float") > -1) {
            Blockly.propc.vartype_[varName] = 'float';
+           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
          } else if (argument0.indexOf("char") > -1) {
            Blockly.propc.vartype_[varName] = 'char';
+           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
          } else if (argument0.indexOf("char\[\]") > -1) {
            Blockly.propc.vartype_[varName] = 'char';
            Blockly.propc.varlength_[varName] = '128';
@@ -149,10 +152,13 @@ Blockly.propc.variables_set = function () {
          }
     } else if (argument0.indexOf("int") > -1) {
       Blockly.propc.vartype_[varName] = 'int';
+      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
     } else if (argument0.indexOf("float") > -1) {
       Blockly.propc.vartype_[varName] = 'float';
+      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
     } else if (argument0.indexOf("char") > -1) {
       Blockly.propc.vartype_[varName] = 'char';
+      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
     } else if (argument0.indexOf("char\[\]") > -1) {
       Blockly.propc.vartype_[varName] = 'char';
       Blockly.propc.varlength_[varName] = '128';
