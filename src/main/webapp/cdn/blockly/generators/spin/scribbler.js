@@ -11,7 +11,7 @@
 Blockly.Blocks.scribbler_warning = {
     init: function () {
         this.appendDummyInput()
-            .appendField("These blocks do not currently generate code");
+            .appendField("These blocks generate code, but the Spin library is not yet implemented");
         this.setColour(0);
     }
 };
@@ -177,6 +177,9 @@ Blockly.Blocks.scribbler_LED = {
     init: function () {
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(Checkboxes currently do not function)")
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("Change these LEDs:   ")
             .appendField(new Blockly.FieldCheckbox("TRUE"), "LEFT_LED")
             .appendField("  ")
@@ -184,12 +187,12 @@ Blockly.Blocks.scribbler_LED = {
             .appendField("  ")
             .appendField(new Blockly.FieldCheckbox("TRUE"), "RIGHT_LED")
             .appendField("  ");
-	var left_led_colors = new Blockly.FieldColour("#000");
-	var center_led_colors = new Blockly.FieldColour("#000");
-	var right_led_colors = new Blockly.FieldColour("#000");
-	left_led_colors.setColours(['#f00','#0f0','#ff0','#000']).setColumns(2);
-	center_led_colors.setColours(['#f00','#0f0','#ff0','#000']).setColumns(2);
-	right_led_colors.setColours(['#f00','#0f0','#ff0','#000']).setColumns(2);
+	var left_led_colors = new Blockly.FieldColour("#000000");
+	var center_led_colors = new Blockly.FieldColour("#000000");
+	var right_led_colors = new Blockly.FieldColour("#000000");
+	left_led_colors.setColours(['#FF0000','#00FF00','#FFFF00','#000000']).setColumns(2);
+	center_led_colors.setColours(['#FF0000','#00FF00','#FFFF00','#000000']).setColumns(2);
+	right_led_colors.setColours(['#FF0000','#00FF00','#FFFF00','#000000']).setColumns(2);
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("To these colors:  ")
@@ -207,10 +210,10 @@ Blockly.Blocks.scribbler_play = {
     init: function () {
         this.appendDummyInput()
             .appendField("Play")
-            .appendField(new Blockly.FieldDropdown([['\uD834\uDD61', '62.5'], ['\uD834\uDD61.', '93.75'], ['\u266A', '125'], ['\u266A.', '187.5'], ['\u2669', '250'], ['\u2669.', '375'], ['\uD834\uDD5E', '500'], ['\uD834\uDD5E.', '750'], ['\uD834\uDD5D', '1000'], ['\uD834\uDD5D.', '1500']]), 'NOTE_DURATION')
+            .appendField(new Blockly.FieldDropdown([['\uD834\uDD61', '62500'], ['\uD834\uDD61.', '93750'], ['\u266A', '125000'], ['\u266A.', '187500'], ['\u2669', '250000'], ['\u2669.', '375000'], ['\uD834\uDD5E', '500000'], ['\uD834\uDD5E.', '750000'], ['\uD834\uDD5D', '1000000'], ['\uD834\uDD5D.', '1500000']]), 'NOTE_DURATION')
             .appendField(new Blockly.FieldDropdown([['A\u266D', '3322'], ['A', '3520'], ['A\u266F/B\u266D', '3729'], ['B', '3951'], ['C', '4186'], ['C\u266F/D\u266D', '4435'], ['D', '4699'], ['D\u266F/E\u266D', '4978'], ['E', '5274'], ['F', '5588'], ['F\u266F/G\u266D', '5920'], ['G', '6272'], ['G\u266F', '6645']]), 'NOTE_FREQUENCY')
             .appendField("in the")
-            .appendField(new Blockly.FieldDropdown([['Eighth', ''], ['Double high', '~> 1'], ['Soprano', '~> 2'], ['Tenor', '~> 3'], ['Middle', '~> 4'], ['Low', '~> 5'], ['Deep', '~> 6'], ['Pedal', '~> 7']]), 'NOTE_OCTAVE')
+            .appendField(new Blockly.FieldDropdown([['Eighth', ''], ['Double high', ' ~> 1'], ['Soprano', ' ~> 2'], ['Tenor', ' ~> 3'], ['Middle', ' ~> 4'], ['Low', ' ~> 5'], ['Deep', ' ~> 6'], ['Pedal', ' ~> 7']]), 'NOTE_OCTAVE')
             .appendField("octave at a")
             .appendField(new Blockly.FieldDropdown([['Loud', '15'], ['Medium', '7'], ['Quiet', '3']]), 'NOTE_VOLUME')
             .appendField("volume");
@@ -524,7 +527,7 @@ Blockly.Spin.scribbler_drive = function () {
     var drive_direction = this.getFieldValue('DRIVE_DIRECTION');
     var drive_angle = this.getFieldValue('DRIVE_ANGLE');
     var drive_speed = this.getFieldValue('DRIVE_SPEED');
-    return 'Scribbler.SimpleDrive(' + drive_direction + drive_angle + ', ' + drive_speed + ')\n';
+    return 'Scribbler.SimpleDrive(' + drive_angle + ', ' + drive_direction + drive_speed + ')\n';
 };
 
 Blockly.Spin.scribbler_spin = function () {
@@ -554,13 +557,35 @@ Blockly.Spin.scribbler_LED = function () {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
 
+    var left_color = this.getFieldValue('LEFT_COLOR')
+    var center_color = this.getFieldValue('CENTER_COLOR')
+    var right_color = this.getFieldValue('RIGHT_COLOR')
     var code = '';
-    if (block.getFieldValue('LEFT_LED')) {
-        code = 'TRUE';
-    } else {
-        code = 'FALSE';
+
+    if (this.getFieldValue('LEFT_LED') == 'TRUE') {
+        code = code + 'Scribbler.SetLED(Scribbler#LEFT, COLOR_' + left_color.substr(1,6) + ')\n';
     }
+    if (this.getFieldValue('CENTER_LED') == 'TRUE') {
+        code = code + 'Scribbler.SetLED(Scribbler#CENTER, COLOR_' + center_color.substr(1,6) + ')\n';
+    }
+    if (this.getFieldValue('RIGHT_LED') == 'TRUE') {
+        code = code + 'Scribbler.SetLED(Scribbler#RIGHT, COLOR_' + right_color.substr(1,6) + ')\n';
+    }
+
     return code;
+};
+
+Blockly.Spin.scribbler_play = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
+    var note_duration = this.getFieldValue('NOTE_DURATION')
+    var note_frequency = this.getFieldValue('NOTE_FREQUENCY')
+    var note_octave = this.getFieldValue('NOTE_OCTAVE')
+    var note_volume = this.getFieldValue('NOTE_VOLUME')
+    return 'SimplePlay(' + note_frequency + note_octave + ', ' + note_duration + ', ' + note_volume + ')\n'
 };
 
 Blockly.Spin.move_motors = function () {
