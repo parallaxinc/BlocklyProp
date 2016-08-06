@@ -11,7 +11,9 @@
 Blockly.Blocks.scribbler_warning = {
     init: function () {
         this.appendDummyInput()
-            .appendField("These blocks generate code, but the Spin library is not yet implemented");
+            .appendField("These blocks generate code,");
+        this.appendDummyInput()
+            .appendField("but the Spin library is not yet implemented");
         this.setColour(0);
     }
 };
@@ -175,9 +177,6 @@ Blockly.Blocks.scribbler_stop = {
 
 Blockly.Blocks.scribbler_LED = {
     init: function () {
-        this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("(Checkboxes currently do not function)")
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("Change these LEDs:   ")
