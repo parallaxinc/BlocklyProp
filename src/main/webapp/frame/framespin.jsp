@@ -159,6 +159,7 @@
             <category name="Process" colour=205>
                 <block type="scribbler_warning"></block>
                 <block type="scribbler_loop"></block>
+                <block type="scribbler_limited_loop"></block>
                 <block type="scribbler_exit_loop"></block>
                 <block type="scribbler_wait"></block>
             </category>
