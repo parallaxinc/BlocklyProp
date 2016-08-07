@@ -75,7 +75,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="console-dialog-title">Console</h4>
                     </div>
-                    <div class="modal-body" style="height: 400px;">
+                    <div class="modal-body" style="height: 430px;">
                         <div id="serial_console" class="console"></div>
                     </div>
                     <div class="modal-footer">
