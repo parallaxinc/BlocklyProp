@@ -1367,6 +1367,13 @@
             switch (this.state) {
                 case normal:
                     switch (ch) {
+                        case '\x02':
+                            // PARALLAX: ASCII 2: set x,y
+                            var x = data.charCodeAt(++i);
+                            var y = data.charCodeAt(++i);
+                            console.log("Set X-Y location: " + x + "-" + y);
+                            this.cursorPosX([x, y]);
+                            break;
                         case '\x07':
                             this.bell();
                             break;
@@ -1382,6 +1389,8 @@
                                 this.y--;
                                 this.scroll();
                             }
+                            // PARALLAX: carriage return included in newline
+                            this.x = 0;
                             break;
                         // '\r'
                         case '\r':
@@ -1399,6 +1408,7 @@
                             break;
                         // shift out
                         case '\x0e':
+                            // PARALLAX: ASCII e: set x
                             // this.setgLevel(1);
                             var x = data.charCodeAt(++i);
                             console.log("Set X location: " + x);
@@ -1406,12 +1416,14 @@
                             break;
                         // shift in
                         case '\x0f':
+                            // PARALLAX: ASCII f: set y
                             // this.setgLevel(0);
                             var y = data.charCodeAt(++i);
                             console.log("Set Y location: " + y);
                             this.cursorPosY(y);
                             break;
                         case '\x10':
+                            // PARALLAX: ASCII 10: clear
                             this.erase();
                             this.cursorPos([1,1]);
                             break;
