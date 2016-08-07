@@ -154,7 +154,7 @@ public class ProjectDaoImpl implements ProjectDao {
             throw new NullPointerException("Project doesn't exist");
         }
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        if (original.getIdUser().equals(idUser) || original.getShared()) {
+        if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
             return doProjectClone(original);
         }
         return null;
@@ -163,6 +163,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private ProjectRecord doProjectClone(ProjectRecord original) {
         ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getDescriptionHtml(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
         cloned.setBasedOn(original.getId());
+        cloned.update();
         return cloned;
     }
 
@@ -194,6 +195,15 @@ public class ProjectDaoImpl implements ProjectDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+        ProjectRecord newProject = cloneProject(idProject);
+        newProject.setCode(code);
+        newProject.setName(newName);
+        newProject.update();
+        return newProject;
     }
 
 }

@@ -43,4 +43,6 @@ public interface ProjectDao {
 
     ProjectRecord updateProjectCode(Long idProject, String code);
 
+    ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName);
+
 }

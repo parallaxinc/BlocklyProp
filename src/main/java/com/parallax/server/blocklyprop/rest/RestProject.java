@@ -114,6 +114,24 @@ public class RestProject {
     }
 
     @POST
+    @Path("/code-as")
+    @Detail("Save project code")
+    @Name("Save project code")
+    @Produces("application/json")
+    public Response saveProjectCodeAs(@FormParam("id") Long idProject, @FormParam("code") String code, @FormParam("name") String newName) {
+        try {
+            ProjectRecord savedProject = projectService.saveProjectCodeAs(idProject, code, newName);
+            JsonObject result = projectConverter.toJson(savedProject);
+
+            result.addProperty("success", true);
+
+            return Response.ok(result.toString()).build();
+        } catch (AuthorizationException ae) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
+    @POST
     @Path("/")
     @Detail("Save project")
     @Name("Save project")

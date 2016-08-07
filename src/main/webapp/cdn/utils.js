@@ -11,6 +11,27 @@ var utils = {
             }
         });
     },
+    prompt: function (title, message, defaultValue, callback) {
+        bootbox.prompt({
+            title: title,
+            value: defaultValue,
+            message: message,
+            callback: callback,
+            buttons: {
+                cancel: {
+                    label: "Cancel",
+                    className: "btn-default",
+                    callback: callback
+                },
+                confirm: {
+                    lable: "Confirm",
+                    className: "btn-primary",
+                    callback: callback
+                }
+            }
+
+        });
+    },
     confirm: function (title, message, callback) {
         bootbox.dialog({
             title: title,
