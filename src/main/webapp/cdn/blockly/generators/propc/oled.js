@@ -287,14 +287,13 @@ Blockly.Blocks.oled_get_max_width = {
 
 
 Blockly.propc.oled_initialize = function () {
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-
     var cs_pin = this.getFieldValue("CS");
     var dc_pin = this.getFieldValue("DC");
     var din_pin = this.getFieldValue("DIN");
     var clk_pin = this.getFieldValue("CLK");
     var res_pin = this.getFieldValue("RES");
     
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.setups_["oled"] = 'oledc_init(' + din_pin + ', ' + clk_pin + ', ' + cs_pin + ', ' + dc_pin + ', ' + res_pin + ', 2);';
 
     return '';
@@ -547,5 +546,5 @@ Blockly.propc.oled_get_max_width = function() {
 
     // Emit code to clear the screen
     var code = 'oledc_getWidth()';
-    return [code, Blockly.propc.ORDER_NONE];
+return [code, Blockly.propc.ORDER_NONE];
 };
