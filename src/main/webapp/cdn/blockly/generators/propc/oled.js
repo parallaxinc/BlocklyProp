@@ -80,7 +80,7 @@ Blockly.propc.oled_initialize = function () {
     var clk_pin = this.getFieldValue("CLK");
     var res_pin = this.getFieldValue("RES");
 
-    Blockly.propc.setups_["oled"] = 'oledc_init(' + cs_pin + ', ' + dc_pin + ', ' + din_pin + ', ' + clk_pin + ', ' + res_pin + ', 2);';
+    Blockly.propc.setups_["oled"] = 'oledc_init(' + din_pin + ', ' + clk_pin + ', ' + cs_pin + ', ' + dc_pin + ', ' + res_pin + ', 2);';
 
     return '';
 };
