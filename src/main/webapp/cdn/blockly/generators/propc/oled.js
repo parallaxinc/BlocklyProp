@@ -258,6 +258,34 @@ Blockly.Blocks.oled_text_color = {
   }
 };
 
+Blockly.Blocks.oled_get_max_height = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("getHeight")
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, "Number");
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
+Blockly.Blocks.oled_get_max_width = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("getWidth")
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, "Number");
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
     var dc_pin = this.getFieldValue("DC");
@@ -487,4 +515,35 @@ Blockly.propc.oled_text_color = function() {
     code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '));';
 
     return code;
+};
+
+Blockly.propc.oled_get_max_height = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Emit code to clear the screen
+    var code = 'oledc_getHeight()';
+    
+    // This line causes a zero to be embedded in the resulting 'C' code:
+    // Note the lack of square braces.
+    // return code;
+    
+    // Return function call without surrounding parens:
+    //   oledc_drawPixel(oledc_getHeight(), ..., ...);
+    //return [code];
+    
+    // Return function call with surrounding parens:
+    //    oledc_drawPixel(..., (oledc_getWidth()), ...);
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+// oledc_drawPixel(oledc_getHeight(), (oledc_getWidth()), oledc_color565(255, 255, 102));
+
+Blockly.propc.oled_get_max_width = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Emit code to clear the screen
+    var code = 'oledc_getWidth()';
+    return [code, Blockly.propc.ORDER_NONE];
 };
