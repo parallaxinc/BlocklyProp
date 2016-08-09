@@ -214,7 +214,7 @@ Blockly.Blocks.scribbler_play = {
             .appendField("in the")
             .appendField(new Blockly.FieldDropdown([['Eighth', ''], ['Double high', ' ~> 1'], ['Soprano', ' ~> 2'], ['Tenor', ' ~> 3'], ['Middle', ' ~> 4'], ['Low', ' ~> 5'], ['Deep', ' ~> 6'], ['Pedal', ' ~> 7']]), 'NOTE_OCTAVE')
             .appendField("octave at a")
-            .appendField(new Blockly.FieldDropdown([['Loud', '15'], ['Medium', '7'], ['Quiet', '3']]), 'NOTE_VOLUME')
+            .appendField(new Blockly.FieldDropdown([['Loud', '100'], ['Medium', '50'], ['Quiet', '25']]), 'NOTE_VOLUME')
             .appendField("volume");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
