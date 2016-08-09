@@ -164,6 +164,7 @@ public class ProjectDaoImpl implements ProjectDao {
         ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getDescriptionHtml(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
         cloned.setBasedOn(original.getId());
         cloned.update();
+        create.update(Tables.PROJECT).set(Tables.PROJECT.BASED_ON, original.getId()).where(Tables.PROJECT.ID.equal(cloned.getId()));
         return cloned;
     }
 
@@ -202,7 +203,8 @@ public class ProjectDaoImpl implements ProjectDao {
         ProjectRecord newProject = cloneProject(idProject);
         newProject.setCode(code);
         newProject.setName(newName);
-        newProject.update();
+        // newProject.update();
+        create.update(Tables.PROJECT).set(Tables.PROJECT.CODE, code).set(Tables.PROJECT.NAME, newName).where(Tables.PROJECT.ID.equal(newProject.getId()));
         return newProject;
     }
 
