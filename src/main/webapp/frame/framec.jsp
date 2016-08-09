@@ -49,6 +49,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/oled.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>
@@ -115,8 +116,9 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />">
+        <category name="<fmt:message key="category.control" />" colour="220">
             <block type="controls_if"></block>
+            <block type="controls_if_return"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
@@ -127,67 +129,166 @@
                     </block>
                 </value>
             </block>
-            <block type="cog_new">
-            </block>
+            <block type="cog_new"></block>
+            <block type="comment"></block>
         </category>
-        <category name="<fmt:message key="category.operators" />">
+        <category name="<fmt:message key="category.operators" />" colour="275">
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
-            <block type="bit_math_shift"></block>
             <block type="math_random"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />">
+        <category name="<fmt:message key="category.values" />" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
         </category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE"></category>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE"></category>
-        <category name="<fmt:message key="category.input-output" />" exclude="heb">
-            <category name="<fmt:message key="category.input-output.pin-states" />">
-                <block type="make_pin"></block>
-                <block type="make_pin_input">
-                    <value name="PIN">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="check_pin"></block>
-                <block type="check_pin_input">
-                    <value name="PIN">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="set_pins"></block>
-            </category>
-            <category name="<fmt:message key="category.input-output.timing" />">
-                <block type="base_freqout">
-                    <value name="DURATION">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="FREQUENCY">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="pulse_in"></block>
-                <block type="pulse_out"></block>
-                <block type="rc_charge_discharge"></block>
-            </category>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="heb" colour="200">
+            <block type="make_pin"></block>
+            <block type="make_pin_input">
+                <value name="PIN">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="check_pin"></block>
+            <block type="check_pin_input">
+                <value name="PIN">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="set_pins"></block>
         </category>
-        <category name="<fmt:message key="category.communicate" />" exclude="heb">
+        <category name="<fmt:message key="category.communicate" />" exclude="heb" colour="320">
+            <category name="<fmt:message key="category.communicate.serial-lcd" />">
+                <block type="debug_lcd_init"></block>
+                <block type="debug_lcd_clear"></block>
+                <block type="debug_lcd_print"></block>
+                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_action"></block>
+            </category>
+            <category name="<fmt:message key="category.communicate.oled" />">
+                <block type="oled_initialize"></block>
+                <block type="oled_clear_screen"></block>
+                <block type="oled_font_loader"></block>
+                <block type="oled_text_size"></block>
+                <block type="oled_text_color"></block>
+                <block type="oled_draw_circle">
+                    <value name="POINT_X">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RADIUS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="oled_draw_line">
+                    <value name="X_ONE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y_ONE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="X_TWO">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y_TWO">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="oled_draw_pixel">
+                    <value name="X_AXIS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y_AXIS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="oled_draw_triangle">
+                    <value name="POINT_X0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_X1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_X2">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y2">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="oled_draw_rectangle">
+                    <value name="POINT_X">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RECT_WIDTH">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RECT_HEIGHT">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
                 <block type="console_print_variables"></block>
@@ -197,125 +298,19 @@
                 <block type="i2c_in"></block>
                 <block type="i2c_out"></block>
                 <block type="serial_open"></block>
-                <block type="serial_tx_byte"></block>
                 <block type="serial_send_text"></block>
-                <block type="serial_rx_byte"></block>
+            </category>
+            <category name="<fmt:message key="category.communicate.xbee" />">
+                <block type="xbee_setup"></block>
+                <block type="xbee_transmit"></block>
+                <block type="xbee_receive"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.activity-board" />" include="activity-board" exclude="heb">
-            <category name="<fmt:message key="category.activity-board.voltage" />">
-                <block type="ab_volt_v_in"></block>
-                <block type="ab_volt_v_out"></block>
-                <block type="ab_volt_in"></block>
-                <block type="ab_volt_out"></block>
-            </category>
-            <category name="<fmt:message key="category.activity-board.memory" />">
-                <block type="eeprom_int_to"></block>
-                <block type="eeprom_int_from"></block>
-                <block type="eeprom_float_to"></block>
-                <block type="eeprom_float_from"></block>
-                <block type="eeprom_text_to"></block>
-                <block type="eeprom_text_from"></block>
-                <block type="sd_card_mount"></block>
-                <block type="sd_card_int_to">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_int_from">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_read_int"></block>
-                <block type="sd_card_float_to">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_float_from">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_read_float"></block>
-                <block type="sd_card_text_to">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_text_from">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_read_text"></block>
-            </category>
-            <category name="<fmt:message key="category.activity-board.audio" />">
-                <block type="wav_play"></block>
-                <block type="wav_status"></block>
-                <block type="wav_volume">
-                    <value name="VOLUME">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="LENGTH">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="wav_stop"></block>
-            </category>
-        </category>
-        <category name="<fmt:message key="category.sensor-input" />" exclude="heb" >
+        <category name="<fmt:message key="category.sensor-input" />" exclude="heb" colour="155">
             <category name="<fmt:message key="category.sensor-input.etape" />">
                 <block type="etape_rc_time"></block>
             </category>
-            <category name="<fmt:message key="category.sensor-input.hmc58783" />">
+            <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
             </category>
@@ -326,6 +321,9 @@
             <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
                 <block type="MX2125_acceleration_xaxis"></block>
                 <block type="MX2125_acceleration_yaxis"></block>
+                <block type="MX2125_rotation"></block>
+                <block type="MX2125_tilt_xaxis"></block>
+                <block type="MX2125_tilt_yaxis"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
                 <block type="MMA7455_acceleration"></block>
@@ -351,9 +349,6 @@
                 <block type="rfid_disable"></block>
                 <block type="rfid_close"></block>
             </category>
-            <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
-                <block type="SF02_Laser_Rangefinder"></block>
-            </category>
             <category name="<fmt:message key="category.sensor-input.sony-remote" />">
                 <block type="sirc_get"></block>
             </category>
@@ -362,24 +357,189 @@
                 <block type="sound_impact_get"></block>
                 <block type="sound_impact_end"></block>
             </category>
-        </category>
-        <category name="<fmt:message key="category.actuator-output" />" exclude="heb" >
-            <category name="<fmt:message key="category.actuator-output.standard-senvo" />">
-                <block type="servo_move"></block>
+            <category name="<fmt:message key="category.sensor-input.colorpal" />">
+                <block type="colorpal_enable"></block>
+                <block type="colorpal_get_colors"></block>
             </category>
-            <category name="<fmt:message key="category.actuator-output.cr-servo" />">
-                <block type="servo_speed"></block>
-                <block type="servo_set_ramp"></block>
+        </category>
+        <category name="<fmt:message key="category.memory" />" include="activity-board" colour="155">
+            <category name="<fmt:message key="category.memory.eeprom" />">
+                <block type="eeprom_int_to"></block>
+                <block type="eeprom_int_from"></block>
+                <block type="eeprom_float_to"></block>
+                <block type="eeprom_float_from"></block>
+                <block type="eeprom_text_to"></block>
+                <block type="eeprom_text_from"></block>
+            </category>
+            <category name="<fmt:message key="category.memory.sdcard" />">
+                <block type="sd_card_mount"></block>
+                <block type="sd_card_int_to">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_int_from">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_read_int">
+                    <value name="INDEX">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_float_to">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_float_from">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_read_float">
+                    <value name="INDEX">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_text_to">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_text_from">
+                    <value name="STARTING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ENDING_POINT_VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="sd_card_read_text">
+                    <value name="INDEX">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb" colour="200">
+            <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">
+                <block type="rc_charge_discharge"></block>
+            </category>
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb">
+                <block type="ab_volt_v_in"></block>
+                <block type="ab_volt_v_out"></block>
+                <block type="ab_volt_in"></block>
+                <block type="ab_volt_out"></block>
+            </category>
+            <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb">
+                <block type="pulse_in"></block>
+                <block type="pulse_out"></block>
+            </category>
+            <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb">
                 <block type="pwm_start"></block>
-                <block type="pwm_set"></block>
+                <block type="pwm_set">
+                    <value name="DUTY_CYCLE">
+                        <block type="math_number">
+                            <field name="NUM">50</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="pwm_stop"></block>
             </category>
-            <category name="<fmt:message key="category.actuator-output.serial-lcd" />">
-                <block type="debug_lcd_init"></block>
-                <block type="debug_lcd_clear"></block>
-                <block type="debug_lcd_print"></block>
-                <block type="debug_lcd_number"></block>
-                <block type="debug_lcd_action"></block>
+        </category>
+        <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb" colour="200">
+            <category name="<fmt:message key="category.audio.audio" />">
+                <block type="wav_play"></block>
+                <block type="wav_status"></block>
+                <block type="wav_volume">
+                    <value name="VOLUME">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="LENGTH">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="wav_stop"></block>
+            </category>
+            <category name="<fmt:message key="category.audio.freqout" />">
+                <block type="base_freqout">
+                    <value name="DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="FREQUENCY">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.servo" />" exclude="heb" colour="180">
+            <category name="<fmt:message key="category.servo.standard-servo" />">
+                <block type="servo_move"></block>
+            </category>
+            <category name="<fmt:message key="category.servo.cr-servo" />">
+                <block type="servo_speed"></block>
+                <block type="servo_set_ramp">
+                    <value name="RAMPSTEP">
+                        <block type="math_number">
+                            <field name="NUM">50</field>
+                        </block>
+                    </value>
+                </block>
             </category>
         </category>
         <category name="<fmt:message key="category.robot" />" exclude="heb,activity-board" >
@@ -398,7 +558,7 @@
                 <block type="servodiffdrive_library_drive_sleep"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb">
+        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" colour="290">
             <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
                 <block type="heb_toggle_led"></block>
                 <block type="heb_toggle_led_open">
@@ -409,7 +569,7 @@
                     </value>
                     <value name="LED_STATE">
                         <block type="high_low_value">
-                            <field name="VALUE">'HIGH'</field>
+                            <field name="VALUE">high</field>
                         </block>
                     </value>
                 </block>

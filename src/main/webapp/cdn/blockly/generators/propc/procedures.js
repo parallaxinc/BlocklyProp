@@ -52,7 +52,7 @@ Blockly.propc.procedures_defreturn = function() {
     var code = returnType + ' ' + funcName + '(' + args.join(', ') + ') {\n' +
             branch + returnValue + '}\n';
     code = Blockly.propc.scrub_(this, code);
-    Blockly.propc.definitions_[funcName] = code;
+    Blockly.propc.methods_[funcName] = code;
     return null;
 };
 

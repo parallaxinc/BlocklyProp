@@ -38,7 +38,7 @@ Blockly.Blocks['math_number'] = {
      */
     init: function () {
         this.setHelpUrl(Blockly.Msg.MATH_NUMBER_HELPURL);
-        this.setColour(colorPalette.getColor('math'));
+        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), 'NUM');
@@ -57,8 +57,7 @@ Blockly.Blocks['math_arithmetic'] = {
                 [["+", 'ADD'],
                     ["-", 'MINUS'],
                     ["x", 'MULTIPLY'],
-                    ["/", 'DIVIDE'],
-                    ["^", 'POWER']];
+                    ["/", 'DIVIDE']];
         this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');

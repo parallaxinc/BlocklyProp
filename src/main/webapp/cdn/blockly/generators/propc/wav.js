@@ -28,9 +28,9 @@ if (!Blockly.Blocks)
 
 Blockly.Blocks.wav_play = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("Play file")
+            .appendField("play file")
             .appendField(new Blockly.FieldTextInput('File_name'), 'FILENAME');
 
         this.setInputsInline(true);
@@ -41,9 +41,9 @@ Blockly.Blocks.wav_play = {
 
 Blockly.Blocks.wav_status = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("Status");
+            .appendField("status");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -53,11 +53,11 @@ Blockly.Blocks.wav_status = {
 
 Blockly.Blocks.wav_volume = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendValueInput('VOLUME')
-            .appendField("Volume");
+            .appendField("volume (0 - 10)");
         this.appendValueInput('LENGTH')
-            .appendField("Length of file (in milliseconds)");
+            .appendField("length of file (in milliseconds)");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -67,9 +67,9 @@ Blockly.Blocks.wav_volume = {
 
 Blockly.Blocks.wav_stop = {
     init: function() {
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("Stop");
+            .appendField("stop");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -79,24 +79,31 @@ Blockly.Blocks.wav_stop = {
 Blockly.propc.wav_play = function() {
     var filename = this.getFieldValue('FILENAME');
 
-    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.setups_["sd_card"] = 'int DO = 22, CLK = 23, DI = 24, CS = 25;\n\tsd_mount(DO, CLK, DI, CS);\n';
 
-    var code = 'const char file' + filename + '[] = {"' + filename + '"};\nwav_play(' + filename + ');\n';
+    var code = 'wav_play("' + filename + '.wav");\n';
     return code;
 };
 
 Blockly.propc.wav_status = function() {
-    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
 
     var code = 'wav_playing()';
-    return code;
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.wav_volume = function() {
     var volume = Blockly.propc.valueToCode(this, 'VOLUME', Blockly.propc.ORDER_NONE) || '0';
     var length = Blockly.propc.valueToCode(this, 'LENGTH', Blockly.propc.ORDER_NONE) || '0';
 
-    Blockly.propc.definitions_["wavplayer"] = '#include "wavplayer.h"';
+    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+
+    if (Number(volume) < 0) {
+        volume = '0';
+    } else if (Number(volume) > 10) {
+        volume = '10';
+    }
 
     var code = 'wav_volume(' + volume + ');\npause(' + length + ');\n';
     return code;

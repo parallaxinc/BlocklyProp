@@ -30,17 +30,17 @@ Blockly.Blocks.sd_card_mount = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Mount a SD Card")
-            .appendField("DO pin")
+            .appendField("mount a SD Card")
+            .appendField("do pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN');
         this.appendDummyInput()
-            .appendField("CLK pin")
+            .appendField("clk pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'CLK_PIN');
         this.appendDummyInput()
-            .appendField("DI pin")
+            .appendField("di pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN');
         this.appendDummyInput()
-            .appendField("CS pin")
+            .appendField("cs pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), 'CS_PIN');
 
         this.setInputsInline(true);
@@ -53,17 +53,17 @@ Blockly.Blocks.sd_card_int_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save an int to the SD Card")
-            .appendField("Filename")
+            .appendField("save an int to the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
             .appendField("value");
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -75,15 +75,15 @@ Blockly.Blocks.sd_card_int_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get an int from the SD Card")
-            .appendField("Filename")
+            .appendField("store an int from the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -94,8 +94,10 @@ Blockly.Blocks.sd_card_int_from = {
 Blockly.Blocks.sd_card_read_int = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
+        this.appendValueInput('INDEX')
+            .appendField("get index #");
         this.appendDummyInput()
-            .appendField("Get the stored SD Card int");
+            .appendField("of the stored integers");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -107,17 +109,17 @@ Blockly.Blocks.sd_card_float_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save a float to the SD Card")
-            .appendField("Filename")
+            .appendField("save a float to the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
-            .appendField("Value");
+            .appendField("value");
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -129,15 +131,15 @@ Blockly.Blocks.sd_card_float_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get a float from the SD Card")
-            .appendField("Filename")
+            .appendField("store a float from the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -148,8 +150,10 @@ Blockly.Blocks.sd_card_float_from = {
 Blockly.Blocks.sd_card_read_float = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
+        this.appendValueInput('INDEX')
+            .appendField("get index #");
         this.appendDummyInput()
-            .appendField( "Get the stored SD Card float" );
+            .appendField("of the stored floats");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -161,22 +165,22 @@ Blockly.Blocks.sd_card_text_to = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Save text to the SD Card")
-            .appendField("Filename")
+            .appendField("save text to the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT_FILENAME')
             .appendField(quotes.newQuote_(false));
         this.appendDummyInput()
-            .appendField("Text")
+            .appendField("text")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT_INPUT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('VALUE')
-            .appendField("Value");
+            .appendField("value");
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -188,15 +192,15 @@ Blockly.Blocks.sd_card_text_from = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Get text from the SD Card")
-            .appendField("Filename")
+            .appendField("store text from the SD Card")
+            .appendField("filename")
             .appendField(quotes.newQuote_(true))
             .appendField(new Blockly.FieldTextInput(''), 'TEXT')
             .appendField(quotes.newQuote_(false));
         this.appendValueInput('STARTING_POINT_VALUE')
-            .appendField("Starting read location");
+            .appendField("starting read location");
         this.appendValueInput('ENDING_POINT_VALUE')
-            .appendField("Ending read location");
+            .appendField("ending read location");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -207,8 +211,10 @@ Blockly.Blocks.sd_card_text_from = {
 Blockly.Blocks.sd_card_read_text = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
+        this.appendValueInput('INDEX')
+            .appendField("get index #");
         this.appendDummyInput()
-            .appendField("Get the stored SD Card text");
+            .appendField("of the stored text");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -236,11 +242,6 @@ Blockly.propc.sd_card_int_to = function() {
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    if (Blockly.propc.setups_["file" + filename] === undefined)
-    {
-        return '//Missing file declaration for: ' + filename;
-    }
-
     return 'fwrite("' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
 };
 
@@ -249,18 +250,17 @@ Blockly.propc.sd_card_int_from = function() {
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    if (Blockly.propc.setups_["file" + filename] === undefined)
-    {
-        return '//Missing file declaration for: ' + filename;
-    }
-
-    Blockly.propc.setups_["int_array_reading"] = 'int file_reading_array_int[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
+    Blockly.propc.global_vars_["int_array_reading"] = 'int file_reading_array_int[128];';
+    Blockly.propc.setups_["int_array_reading"] = 'file_reading_array_int = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
 
     return 'fread(file_reading_array_int, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
 };
 
 Blockly.propc.sd_card_read_int = function() {
-    return 'file_reading_array_int';
+    var index = Blockly.propc.valueToCode(this, 'INDEX', Blockly.propc.ORDER_ATOMIC) || '0';
+
+    var code = 'file_reading_array_int[' + index + ']';
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.sd_card_float_to = function() {
@@ -268,11 +268,6 @@ Blockly.propc.sd_card_float_to = function() {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
-
-    if (Blockly.propc.setups_["file" + filename] === undefined)
-    {
-        return '//Missing file declaration for: ' + filename;
-    }
 
     return 'fwrite("' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
 };
@@ -282,18 +277,17 @@ Blockly.propc.sd_card_float_from = function() {
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    if (Blockly.propc.setups_["file" + filename] === undefined)
-    {
-        return '// Missing file declaration for: ' + filename;
-    }
-
-    Blockly.propc.setups_["float_array_reading"] = 'float file_reading_array_float[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
+    Blockly.propc.global_vars_["float_array_reading"] = 'float file_reading_array_float[128];\n';
+    Blockly.propc.setups_["float_array_reading"] = 'file_reading_array_float = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
 
     return 'fread(file_reading_array_float, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
 };
 
 Blockly.propc.sd_card_read_float = function() {
-    return 'file_reading_array_float';
+    var index = Blockly.propc.valueToCode(this, 'INDEX', Blockly.propc.ORDER_ATOMIC) || '0';
+
+    var code = 'file_reading_array_float[' + index + ']';
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.propc.sd_card_text_to = function() {
@@ -301,11 +295,6 @@ Blockly.propc.sd_card_text_to = function() {
     var value = this.getFieldValue('TEXT_INPUT');
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
-
-    if (Blockly.propc.setups_["file" + filename] === undefined)
-    {
-        return '//Missing file declaration for: ' + filename;
-    }
 
     return 'fwrite("' + value + '", ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
 };
@@ -315,12 +304,8 @@ Blockly.propc.sd_card_text_from = function() {
     var starting_value = Blockly.propc.valueToCode(this, 'STARTING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     var ending_value = Blockly.propc.valueToCode(this, 'ENDING_POINT_VALUE', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    if (Blockly.propc.setups_["file" + filename] === undefined)
-    {
-        return '//Missing file declaration for: ' + filename;
-    }
-
-    Blockly.propc.setups_["text_array_reading"] = 'char file_reading_array_text[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
+    Blockly.propc.global_vars_["text_array_reading"] = 'char file_reading_array_int[128];\n';
+    Blockly.propc.setups_["text_array_reading"] = 'file_reading_array_text = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n';
 
 
     var code = 'fread(file_reading_array_text, ' + starting_value + ', ' + ending_value + ', fp_' + filename + ');\n';
@@ -328,5 +313,8 @@ Blockly.propc.sd_card_text_from = function() {
 };
 
 Blockly.propc.sd_card_read_text = function() {
-    return 'file_reading_array_text';
+    var index = Blockly.propc.valueToCode(this, 'INDEX', Blockly.propc.ORDER_ATOMIC) || '0';
+
+    var code = 'file_reading_array_text[' + index + ']';
+    return [code, Blockly.propc.ORDER_NONE];
 };

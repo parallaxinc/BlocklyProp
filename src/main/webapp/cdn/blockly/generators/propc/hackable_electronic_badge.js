@@ -34,7 +34,7 @@ Blockly.Blocks.heb_toggle_led = {
         this.appendDummyInput()
                 .appendField('Set LED state')
                 .appendField('LED #')
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"]]), "LED_#")
+                .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"]]), "LED_#")
                 .appendField('LED state')
                 .appendField(new Blockly.FieldDropdown([["ON", "1"], ["OFF", "0"]]), "STATE");
 
@@ -79,7 +79,7 @@ Blockly.propc.heb_toggle_led_open = function () {
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'led(' + led_number + ', ' + led_state + ');\n';
-    return [code, Blockly.propc.ORDERN_NONE];
+    return code;
 };
 
 Blockly.Blocks.heb_set_led_rgb = {
@@ -129,7 +129,7 @@ Blockly.propc.heb_print_numeric_var = function () {
     if (value.startsWith('"') && value.endsWith('"')) {
         return 'oledprint(' + value + ');\n';
     } else {
-        var code = 'oledprint("' + value + ' = %d", ' + value + ');\n';
+        var code = 'oledprint("%d", ' + value + ');\n';
         return code;
     }
 };
@@ -485,7 +485,7 @@ Blockly.Blocks.heb_touchpad_status = {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
                 .appendField("Is-touchpad-pressed?")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"]]), "TOUCHPAD");
+                .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"], ["6 - Center Button", "6"]]), "TOUCHPAD");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);

@@ -32,12 +32,12 @@ Blockly.Blocks.servo_move = {
     init: function () {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("Servo")
-                .appendField("PIN#")
+                .appendField("servo")
+                .appendField("pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.servo), "PIN");
         this.appendDummyInput()
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("Degrees (0 - 180°)")
+                .appendField("degrees (0 - 180°)")
                 .appendField(new Blockly.FieldAngle(180), "DEGREES");
 
         this.setPreviousStatement(true, null);
@@ -49,11 +49,11 @@ Blockly.Blocks.servo_speed = {
     init: function () {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("Servo speed")
-                .appendField("Pin")
+                .appendField("servo speed")
+                .appendField("pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
         this.appendDummyInput()
-                .appendField("Speed")
+                .appendField("speed")
                 .appendField(new Blockly.FieldDropdown([["-1", "-1"], ["-2", "-2"], ["-3", "-3"], ["-4", "-4"], ["-5", "-5"], ["-6", "-6"], ["-7", "-7"], ["-8", "-8"], ["-9", "-9"], ["-10", "-10"], ["-11", "-11"], ["-12", "-12"], ["-13", "-13"], ["-14", "-14"], ["-15", "-15"], ["-16", "-16"], ["-17", "-17"], ["-18", "-18"], ["-19", "-19"], ["-20", "-20"], ["-21", "-21"], ["-22", "-22"], ["-23", "-23"], ["-24", "-24"], ["-25", "-25"], ["-26", "-26"], ["-27", "-27"], ["-28", "-28"], ["-29", "-29"], ["-30", "-30"], ["-31", "-31"], ["-32", "-32"], ["-33", "-33"], ["-34", "-34"], ["-35", "-35"], ["-36", "-36"], ["-37", "-37"], ["-38", "-38"], ["-39", "-39"], ["-40", "-40"], ["-41", "-41"], ["-42", "-42"], ["-43", "-43"], ["-44", "-44"], ["-45", "-45"], ["-46", "-46"], ["-47", "-47"], ["-48", "-48"], ["-49", "-49"], ["-50", "-50"], ["-51", "-51"], ["-52", "-52"], ["-53", "-53"], ["-54", "-54"], ["-55", "-55"], ["-56", "-56"], ["-57", "-57"], ["-58", "-58"], ["-59", "-59"], ["-60", "-60"], ["-61", "-61"], ["-62", "-62"], ["-63", "-63"], ["-64", "-64"], ["-65", "-65"], ["-66", "-66"], ["-67", "-67"], ["-68", "-68"], ["-69", "-69"], ["-70", "-70"], ["-71", "-71"], ["-72", "-72"], ["-73", "-73"], ["-74", "-74"], ["-75", "-75"], ["-76", "-76"], ["-77", "-77"], ["-78", "-78"], ["-79", "-79"], ["-80", "-80"], ["-81", "-81"], ["-82", "-82"], ["-83", "-83"], ["-84", "-84"], ["-85", "-85"], ["-86", "-86"], ["-87", "-87"], ["-88", "-88"], ["-89", "-89"], ["-90", "-90"], ["-91", "-91"], ["-92", "-92"], ["-93", "-93"], ["-94", "-94"], ["-95", "-95"], ["-96", "-96"], ["-97", "-97"], ["-98", "-98"], ["-99", "-99"], ["-100", "-100"], ["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"], ["32", "32"], ["33", "33"], ["34", "34"], ["35", "35"], ["36", "36"], ["37", "37"], ["38", "38"], ["39", "39"], ["40", "40"], ["41", "41"], ["42", "42"], ["43", "43"], ["44", "44"], ["45", "45"], ["46", "46"], ["47", "47"], ["48", "48"], ["49", "49"], ["50", "50"], ["51", "51"], ["52", "52"], ["53", "53"], ["54", "54"], ["55", "55"], ["56", "56"], ["57", "57"], ["58", "58"], ["59", "59"], ["60", "60"], ["61", "61"], ["62", "62"], ["63", "63"], ["64", "64"], ["65", "65"], ["66", "66"], ["67", "67"], ["68", "68"], ["69", "69"], ["70", "70"], ["71", "71"], ["72", "72"], ["73", "73"], ["74", "74"], ["75", "75"], ["76", "76"], ["77", "77"], ["78", "78"], ["79", "79"], ["80", "80"], ["81", "81"], ["82", "82"], ["83", "83"], ["84", "84"], ["85", "85"], ["86", "86"], ["87", "87"], ["88", "88"], ["89", "89"], ["90", "90"], ["91", "91"], ["92", "92"], ["93", "93"], ["94", "94"], ["95", "95"], ["96", "96"], ["97", "97"], ["98", "98"], ["99", "99"], ["100", "100"]]), 'SPEED');
 
         this.setInputsInline(true);
@@ -66,12 +66,12 @@ Blockly.Blocks.servo_set_ramp = {
     init: function () {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("Servo set ramp")
-                .appendField("Pin")
+                .appendField("servo set ramp")
+                .appendField("pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
-        this.appendDummyInput()
-                .appendField("Rampstep")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"]]), 'RAMP_STEP');
+        this.appendValueInput('RAMPSTEP')
+                .appendField("rampstep (0 - 100)")
+                .setCheck('Number');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -154,12 +154,9 @@ Blockly.Blocks.servodiffdrive_library_drive_stop = {
 
 Blockly.Blocks.pwm_start = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM start");
-        this.appendValueInput("CYCLE", Number)
-                .appendField("cycle (microseconds)")
-                .setCheck('Number');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -168,17 +165,17 @@ Blockly.Blocks.pwm_start = {
 
 Blockly.Blocks.pwm_set = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM set")
                 .appendField("pin")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("channel")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL");
-        this.appendValueInput("HIGH_TIME", Number)
+                .appendField(new Blockly.FieldDropdown([["A", "0"], ["B", "1"]]), "CHANNEL");
+        this.appendValueInput("DUTY_CYCLE", Number)
                 .setCheck('Number')
-                .appendField("high time");
+                .appendField("duty cycle (0 - 100)");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -188,7 +185,7 @@ Blockly.Blocks.pwm_set = {
 
 Blockly.Blocks.pwm_stop = {
     init: function () {
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM stop");
 
@@ -201,7 +198,7 @@ Blockly.propc.servo_move = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var degrees = Blockly.propc.valueToCode(this, 'DEGREES', Blockly.propc.ORDER_NONE);
 
-    Blockly.propc.definitions_['define_servo'] = '#include "servo.h"';
+    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
 
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
     return code;
@@ -211,14 +208,22 @@ Blockly.propc.servo_speed = function () {
     var pin = this.getFieldValue('PIN');
     var speed = this.getFieldValue('SPEED');
 
-    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
 
-    return 'drive_speed(' + pin + ', ' + speed + ');\n';
+    return 'servo_speed(' + pin + ', ' + speed + ');\n';
 };
 
 Blockly.propc.servo_set_ramp = function () {
     var pin = this.getFieldValue('PIN');
-    var ramp_step = this.getFieldValue('RAMP_STEP');
+    var ramp_step = Blockly.propc.valueToCode(this, 'RAMPSTEP', Blockly.propc.ORDER_NONE);
+
+    if (Number(ramp_step) < 0) {
+      ramp_step = "0"
+    } else if (Number(ramp_step) > 100) {
+      ramp_step = "100"
+    }
+
+    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
 
     return 'servo_setramp(' + pin + ', ' + ramp_step + ');\n';
 };
@@ -253,19 +258,26 @@ Blockly.propc.servodiffdrive_library_drive_stop = function () {
 };
 
 Blockly.propc.pwm_start = function () {
-    var cycle = Blockly.propc.valueToCode(this, "CYCLE", Blockly.propc.ORDER_NONE);
-
-    return 'pwm_start(' + cycle + ');\n';
+    var code = 'pwm_start(100);\n';
+    return code;
 };
 
 Blockly.propc.pwm_set = function () {
     var pin = this.getFieldValue("PIN");
     var channel = this.getFieldValue("CHANNEL");
-    var high_time = Blockly.propc.valueToCode(this, "HIGH_TIME", Blockly.propc.ORDER_NONE);
+    var duty_cycle = Blockly.propc.valueToCode(this, "DUTY_CYCLE", Blockly.propc.ORDER_NONE);
 
-    return 'pwm_set(' + pin + ', ' + channel + ', ' + high_time + ');\n';
+    if (Number(duty_cycle) < 0) {
+        duty_cycle = '0';
+    } else if (Number(duty_cycle) > 100) {
+        duty_cycle = '100';
+    }
+
+    var code = 'pwm_start(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
+    return code;
 };
 
 Blockly.propc.pwm_stop = function () {
-    return 'pwm_stop();\n';
+    var code = 'pwm_stop();\n';
+    return code;
 };

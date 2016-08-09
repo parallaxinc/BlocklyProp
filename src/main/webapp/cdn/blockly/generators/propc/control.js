@@ -78,3 +78,23 @@ Blockly.propc.controls_if = function() {
     }
     return code + '\n';
 };
+
+Blockly.Blocks.controls_if_return = {
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendValueInput('CONDITION')
+                .appendField("if");
+        this.appendDummyInput()
+                .appendField("return");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.controls_if_return = function () {
+    var argument = Blockly.propc.valueToCode(this, 'CONDITION', Blockly.propc.ORDER_NONE) || '0';
+
+    return 'if (' + argument + ') {return;}\n';
+};

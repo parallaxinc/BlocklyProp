@@ -46,27 +46,35 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         try {
+            if (token instanceof OAuthToken) {
+                log.info("AUTHENTICATION using oauth");
 
-            log.info("AUTHENTICATION using login and password");
-
-            // Principal = login
-            String principal = (String) token.getPrincipal();
-
-            // Credentials = password
-            String credentials = new String((char[]) token.getCredentials());
-
-            User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
-            if (user != null) {
-                // System.out.println("USER = " + user);
-            } else {
-                log.info("No exception but user object is null");
-                return null;
-            }
-
-            try {
+                // Principal = email
+                // Credentials = authenticator
                 return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
-            } catch (Throwable t) {
-                log.error("Unexpected exception creating account object", t);
+            } else {
+
+                log.info("AUTHENTICATION using login and password");
+
+                // Principal = login
+                String principal = (String) token.getPrincipal();
+
+                // Credentials = password
+                String credentials = new String((char[]) token.getCredentials());
+
+                User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
+                if (user != null) {
+                    // System.out.println("USER = " + user);
+                } else {
+                    log.info("No exception but user object is null");
+                    return null;
+                }
+
+                try {
+                    return new SimpleAccount(token.getPrincipal(), token.getCredentials(), "CloudSession");
+                } catch (Throwable t) {
+                    log.error("Unexpected exception creating account object", t);
+                }
             }
             return null;
         } catch (UnknownUserException ex) {

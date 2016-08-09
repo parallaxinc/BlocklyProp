@@ -48,7 +48,7 @@ Blockly.Blocks.base_delay = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput("DELAY_TIME", 'Number')
-                .appendField("Delay (ms)")
+                .appendField("delay (ms)")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -62,10 +62,10 @@ Blockly.Blocks.base_freqout = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("Freq PIN#")
+                .appendField("frequency pin#")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("DURATION", 'Number')
-                .appendField("Duration (ms)")
+                .appendField("duration (ms)")
                 .setCheck('Number');
         this.appendValueInput("FREQUENCY", 'Number')
                 .appendField("frequecy (hz)")
@@ -83,14 +83,15 @@ Blockly.Blocks.rc_charge_discharge = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
             .appendField("RC")
-            .appendField(new Blockly.FieldDropdown([["Charge", "0"], ["Discharge", "1"]]), "STATE");
+            .appendField(new Blockly.FieldDropdown([["charge", "0"], ["discharge", "1"]]), "STATE");
         this.appendDummyInput("")
-            .appendField("PIN#")
+            .appendField("pin#")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
         this.setTooltip('RC Output');
     }
 };
