@@ -119,4 +119,9 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.updateProjectCode(idProject, code);
     }
 
+    @Override
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+        return projectDao.saveProjectCodeAs(idProject, code, newName);
+    }
+
 }

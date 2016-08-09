@@ -80,9 +80,21 @@
                 </li>
              <!--   <li><a href="#" onclick="project()"><fmt:message key="editor.project" /></a></li> -->
                 <c:if test="${!param.demo}">
-                    <li><a href="#" id="save-project"><fmt:message key="editor.save" /></a></li>
-                    </c:if>
-                    <c:if test="${param.demo}">
+                    <li>
+                        <div class="btn-group navbar-btn">
+                            <button id="save-project" type="button" class="btn btn-default"><fmt:message key="editor.save" /></button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                &nbsp;
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a id="save-project-as" href="#"><fmt:message key="editor.save-as" /></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </c:if>
+                <c:if test="${param.demo}">
                     <li><a href="#" class="demo-function" ><fmt:message key="editor.save" /></a></li>
                     </c:if>
             </ul>
