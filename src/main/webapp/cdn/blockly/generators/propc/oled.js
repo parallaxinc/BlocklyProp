@@ -451,18 +451,19 @@ Blockly.propc.oled_draw_rectangle = function() {
       code += width + ', ' + height + ', ';
       code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
     }
-  else { // Rounded rectangle
-      if (checkbox === 'TRUE') {
-          code = 'oledc_fillRoundRect(';
-          }
-      else {
-          code = 'oledc_drawRoundRect(';
-          }
+    else { // Rounded rectangle
+        if (checkbox === 'TRUE') {
+            code = 'oledc_fillRoundRect(';
+        }
+        else {
+            code = 'oledc_drawRoundRect(';
+        }
 
-      code += point_x + ', ' + point_y + ', ';
-      code += width + ', ' + height + ', ';
-      code += (width + height) / 20 + ', ';
-      code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+        code += point_x + ', ' + point_y + ', ';
+        code += width + ', ' + height + ', ';
+        code += ((Number(width) + Number(height)) / 20);
+//        code += '((' + width + ' + ' + height + ') / 20)' + ', ';
+        code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
     }
   
   code += ');'; 
