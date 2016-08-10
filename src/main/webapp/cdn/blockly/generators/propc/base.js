@@ -215,7 +215,7 @@ Blockly.propc.cast = function() {
     return [code, Blockly.propc.ORDER_NONE];
 };
 
-Blockly.propc.color_picker = {
+Blockly.Blocks.color_picker = {
     init: function() {
         this.setColour(colorPalette.getColor('math'));
         this.appendDummyInput()
