@@ -170,9 +170,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public boolean deleteProject(Long idProject) {
-        ProjectRecord project = getProject(idProject);
-        project.delete();
-        return true;
+        return create.deleteFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).execute() > 0;
     }
 
     @Override
