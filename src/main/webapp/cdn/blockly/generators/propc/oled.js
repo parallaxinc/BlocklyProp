@@ -26,7 +26,6 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-
 Blockly.Blocks.oled_initialize = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
@@ -61,7 +60,6 @@ Blockly.Blocks.oled_font_loader = {
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
-
 
 Blockly.Blocks.oled_clear_screen = {
   init: function() {
@@ -261,7 +259,7 @@ Blockly.Blocks.oled_text_color = {
 Blockly.Blocks.oled_get_max_height = {
   init: function() {
     this.appendDummyInput()
-        .appendField("getHeight")
+        .appendField("max height")
     this.setPreviousStatement(false, null);
     this.setNextStatement(false, null);
     this.setOutput(true, "Number");
@@ -274,7 +272,7 @@ Blockly.Blocks.oled_get_max_height = {
 Blockly.Blocks.oled_get_max_width = {
   init: function() {
     this.appendDummyInput()
-        .appendField("getWidth")
+        .appendField("max width")
     this.setPreviousStatement(false, null);
     this.setNextStatement(false, null);
     this.setOutput(true, "Number");
