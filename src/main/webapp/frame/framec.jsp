@@ -181,6 +181,8 @@
                 <block type="oled_initialize"></block>
                 <block type="oled_clear_screen"></block>
                 <block type="oled_font_loader"></block>
+                <block type="oled_get_max_height"></block>
+                <block type="oled_get_max_width"></block>
                 <block type="oled_text_size"></block>
                 <block type="oled_text_color"></block>
                 <block type="oled_get_max_height"></block>

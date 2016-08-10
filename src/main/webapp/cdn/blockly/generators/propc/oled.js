@@ -271,7 +271,6 @@ Blockly.Blocks.oled_get_max_height = {
   }
 };
 
-
 Blockly.Blocks.oled_get_max_width = {
   init: function() {
     this.appendDummyInput()
@@ -284,7 +283,6 @@ Blockly.Blocks.oled_get_max_width = {
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
-
 
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
@@ -546,5 +544,5 @@ Blockly.propc.oled_get_max_width = function() {
 
     // Emit code to clear the screen
     var code = 'oledc_getWidth()';
-return [code, Blockly.propc.ORDER_NONE];
+    return [code, Blockly.propc.ORDER_NONE];
 };
