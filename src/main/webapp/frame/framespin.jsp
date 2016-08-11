@@ -113,7 +113,11 @@
                 </value>
             </block>
         </category>
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
         <category name="<fmt:message key="category.operators" />" colour=275>
+=======
+        <category name="<fmt:message key="category.operators" />" colour="275">
+>>>>>>> Add category colors for Spin
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
@@ -122,12 +126,22 @@
             <block type="logic_compare"></block>
         </category>
         <sep></sep>
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
         <category name="<fmt:message key="category.values" />" colour=205>
             <block type="math_number"></block>
             <block type="logic_boolean"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour=250></category>
         <category name="<fmt:message key="category.input-output.pin-states" />" colour=185>
+=======
+        <category name="<fmt:message key="category.values" />" colour="220">
+            <block type="math_number"></block>
+            <block type="logic_boolean"></block>
+        </category>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" colour="200">
+>>>>>>> Add category colors for Spin
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -146,6 +160,7 @@
             </block>
             <block type="set_pins"></block>
         </category>
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
         <category name="Debug" colour=340>
             <block type="serial_open"></block>
             <block type="serial_send_text"></block>
@@ -160,6 +175,15 @@
                 <block type="scribbler_loop"></block>
                 <block type="scribbler_limited_loop"></block>
                 <block type="scribbler_exit_loop"></block>
+=======
+        <category name="<fmt:message key="category.communicate" />" colour="320">
+            <category name="<fmt:message key="category.communicate.serial-lcd" />">
+                <block type="debug_lcd_init"></block>
+                <block type="debug_lcd_clear"></block>
+                <block type="debug_lcd_print"></block>
+                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_action"></block>
+>>>>>>> Add category colors for Spin
             </category>
             <category name="Sense" colour=140>
                 <block type="scribbler_if_line"></block>
@@ -176,6 +200,7 @@
                 <block type="scribbler_play"></block>
             </category>
         </category>
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
         <category name="<fmt:message key="category.scribbler" />" colour=185>
             <category name="<fmt:message key="category.scribbler.outputs" />" colour=185>
                 <block type="move_motors">
@@ -266,6 +291,11 @@
                         </block>
                     </value>
                 </block>
+=======
+        <category name="<fmt:message key="category.sensor-input" />" colour="155">
+            <category name="<fmt:message key="category.sensor-input.etape" />">
+
+>>>>>>> Add category colors for Spin
             </category>
             <category name="<fmt:message key="category.scribbler.inputs" />" colour=185>
                 <block type="line_sensor"></block>
@@ -324,16 +354,29 @@
                 </category>
                 <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
 
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
                 </category>
                 <category name="<fmt:message key="category.sensor-input.sony-remote" />">
+=======
+            </category>
+        </category>
+        <category name="<fmt:message key="category.memory" />" colour="155">
+            <category name="<fmt:message key="category.memory.eeprom" />">
+>>>>>>> Add category colors for Spin
 
                 </category>
                 <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
 
                 </category>
             </category>
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
             <category name="<fmt:message key="category.memory" />" colour=140>
                 <category name="<fmt:message key="category.memory.eeprom" />">
+=======
+        </category>
+        <category name="<fmt:message key="category.analog-pulses" />" colour="200">
+            <category name="<fmt:message key="category.analog-pulses.rc" />">
+>>>>>>> Add category colors for Spin
 
                 </category>
                 <category name="<fmt:message key="category.memory.sdcard" />">
@@ -343,16 +386,46 @@
             <category name="<fmt:message key="category.analog-pulses" />" colour=185>
                 <category name="<fmt:message key="category.analog-pulses.rc" />">
 
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
                 </category>
                 <category name="<fmt:message key="category.analog-pulses.voltage" />">
+=======
+            </category>
+        </category>
+        <category name="<fmt:message key="category.audio" />" colour="200">
+            <category name="<fmt:message key="category.audio.audio" />">
+>>>>>>> Add category colors for Spin
 
                 </category>
                 <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />">
 
                 </category>
             </category>
+<<<<<<< 4d391cd31b3b623ebec82df9e4c9993e7ac9dbd3
             <category name="<fmt:message key="category.audio" />" colour=185>
                 <category name="<fmt:message key="category.audio.audio" />">
+=======
+            <category name="<fmt:message key="category.audio.freqout" />">
+                <block type="base_freqout">
+                    <value name="DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="FREQUENCY">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.servo" />" colour="180">
+            <category name="<fmt:message key="category.servo.standard-servo" />">
+                <block type="servo_move"></block>
+            </category>
+            <category name="<fmt:message key="category.servo.cr-servo" />">
+>>>>>>> Add category colors for Spin
 
                 </category>
                 <category name="<fmt:message key="category.audio.freqout" />">
