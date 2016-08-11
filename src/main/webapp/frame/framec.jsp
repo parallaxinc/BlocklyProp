@@ -184,6 +184,8 @@
                 <block type="oled_font_loader"></block>
                 <block type="oled_text_size"></block>
                 <block type="oled_text_color"></block>
+                <block type="oled_get_max_height"></block>
+                <block type="oled_get_max_width"></block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
                         <block type="math_number">

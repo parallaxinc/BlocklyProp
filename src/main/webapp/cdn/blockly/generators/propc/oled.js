@@ -258,6 +258,34 @@ Blockly.Blocks.oled_text_color = {
   }
 };
 
+Blockly.Blocks.oled_get_max_height = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("max height")
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, "Number");
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
+Blockly.Blocks.oled_get_max_width = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("max width")
+    this.setPreviousStatement(false, null);
+    this.setNextStatement(false, null);
+    this.setOutput(true, "Number");
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('');
+//    this.setHelpUrl('http://www.example.com/');
+  }
+};
+
+
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
     var dc_pin = this.getFieldValue("DC");
