@@ -150,43 +150,50 @@ Blockly.Blocks.oled_draw_pixel = {
 };
 
 Blockly.Blocks.oled_draw_triangle = {
-  init: function() {
-    // First x/y coordinates
-    this.appendValueInput("POINT_X0")
-        .setCheck(null)
-        .appendField("draw triangle point one at");
-    this.appendValueInput("POINT_Y0")
-        .setCheck(null)
-        .appendField(",");
-    // Second x/y coordinates
-    this.appendValueInput("POINT_X1")
-        .setCheck(null)
-        .appendField("point two");
-    this.appendValueInput("POINT_Y1")
-        .setCheck(null)
-        .appendField(",");
-    // Third x/y coordinates
-    this.appendValueInput("POINT_X2")
-        .setCheck(null)
-        .appendField("point three");
-    this.appendValueInput("POINT_Y2")
-        .setCheck(null)
-        .appendField(",");
-    // Color picker control
-    this.appendDummyInput()
-        .appendField("color")
-        .appendField(new Blockly.FieldColour("#ff0000"), "flood")
-        .appendField("fill")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
-        
-    // Other details
-    this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(colorPalette.getColor('protocols'));
-    this.setTooltip('Set coordinates to draw a triangle');
+    init: function() {
+        // First x/y coordinates
+        this.appendValueInput("POINT_X0")
+            .setCheck(null)
+            .appendField("draw triangle at 1(x)");
+        this.appendValueInput("POINT_Y0")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        // Second x/y coordinates
+        this.appendValueInput("POINT_X1")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("2(x)");
+        this.appendValueInput("POINT_Y1")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        // Third x/y coordinates
+        this.appendValueInput("POINT_X2")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("3(x)");
+        this.appendValueInput("POINT_Y2")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        // Color picker control
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_LEFT)
+            .appendField("color")
+            .appendField(new Blockly.FieldColour("#ff0000"), "flood")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("fill")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+
+        // Other details
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.setTooltip('Set coordinates to draw a triangle');
 //    this.setHelpUrl('http://www.example.com/');
-  }
+    }
 };
 
 Blockly.Blocks.oled_draw_rectangle = {
