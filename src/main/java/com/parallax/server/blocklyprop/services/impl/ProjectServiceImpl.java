@@ -15,6 +15,7 @@ import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.ProjectService;
+import com.parallax.server.blocklyprop.services.ProjectSharingService;
 import java.util.List;
 import org.apache.shiro.authz.UnauthorizedException;
 
@@ -27,10 +28,16 @@ import org.apache.shiro.authz.UnauthorizedException;
 public class ProjectServiceImpl implements ProjectService {
 
     private ProjectDao projectDao;
+    private ProjectSharingService projectSharingService;
 
     @Inject
     public void setProjectDao(ProjectDao projectDao) {
         this.projectDao = projectDao;
+    }
+
+    @Inject
+    public void setProjectSharingService(ProjectSharingService projectSharingService) {
+        this.projectSharingService = projectSharingService;
     }
 
     @Override
@@ -111,12 +118,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean deleteProject(Long idProject) {
+        projectSharingService.revokeSharing(idProject);
         return projectDao.deleteProject(idProject);
     }
 
     @Override
     public ProjectRecord saveProjectCode(Long idProject, String code) {
         return projectDao.updateProjectCode(idProject, code);
+    }
+
+    @Override
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+        return projectDao.saveProjectCodeAs(idProject, code, newName);
     }
 
 }

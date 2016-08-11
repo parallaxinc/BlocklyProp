@@ -154,7 +154,7 @@ public class ProjectDaoImpl implements ProjectDao {
             throw new NullPointerException("Project doesn't exist");
         }
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        if (original.getIdUser().equals(idUser) || original.getShared()) {
+        if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
             return doProjectClone(original);
         }
         return null;
@@ -163,14 +163,14 @@ public class ProjectDaoImpl implements ProjectDao {
     private ProjectRecord doProjectClone(ProjectRecord original) {
         ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getDescriptionHtml(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
         cloned.setBasedOn(original.getId());
+        cloned.update();
+        create.update(Tables.PROJECT).set(Tables.PROJECT.BASED_ON, original.getId()).where(Tables.PROJECT.ID.equal(cloned.getId()));
         return cloned;
     }
 
     @Override
     public boolean deleteProject(Long idProject) {
-        ProjectRecord project = getProject(idProject);
-        project.delete();
-        return true;
+        return create.deleteFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).execute() > 0;
     }
 
     @Override
@@ -194,6 +194,16 @@ public class ProjectDaoImpl implements ProjectDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+        ProjectRecord newProject = cloneProject(idProject);
+        newProject.setCode(code);
+        newProject.setName(newName);
+        // newProject.update();
+        create.update(Tables.PROJECT).set(Tables.PROJECT.CODE, code).set(Tables.PROJECT.NAME, newName).where(Tables.PROJECT.ID.equal(newProject.getId()));
+        return newProject;
     }
 
 }

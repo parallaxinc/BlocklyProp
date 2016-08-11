@@ -97,7 +97,8 @@
                     <h4 class="modal-title"><fmt:message key="project.delete.confirm.title" /></h4>
                 </div>
                 <div class="modal-body">
-                    <p><fmt:message key="project.delete.confirm" /></p>
+                    <p class="not-shared-project hidden"><fmt:message key="project.delete.confirm" /></p>
+                    <p class="shared-project hidden"><fmt:message key="project.delete.confirm.shared" /></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

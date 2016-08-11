@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.shiro.authz.UnauthorizedException;
 
 /**
  *
@@ -58,9 +59,14 @@ public class ProjectServlet extends HttpServlet {
 
     private void delete(Long idProject, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            if (projectService.deleteProject(idProject)) {
+            try {
+                ProjectRecord project = projectService.getProjectOwnedByThisUser(idProject);
+                if (project == null) {
+                    req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+                }
+                projectService.deleteProject(idProject);
                 resp.sendRedirect("my/projects.jsp");
-            } else {
+            } catch (UnauthorizedException ue) {
                 req.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(req, resp);
             }
         } catch (NullPointerException npe) {

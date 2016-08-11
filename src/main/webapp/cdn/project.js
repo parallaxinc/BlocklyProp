@@ -73,6 +73,9 @@ $(document).ready(function () {
                     linkShareInput[0].setSelectionRange(0, linkShareInput.val().length);
                     linkShareInput.tooltip();
                     linkShareInput.tooltip('show');
+
+                    $('.not-shared-project').addClass('hidden');
+                    $('.shared-project').removeClass('hidden');
                 }
             });
 
@@ -82,6 +85,9 @@ $(document).ready(function () {
                 if (response['success']) {
                     linkShareInput.tooltip('destroy');
                     linkShareInput.val('');
+
+                    $('.not-shared-project').removeClass('hidden');
+                    $('.shared-project').addClass('hidden');
                 }
             });
         }
@@ -104,6 +110,8 @@ function showProject(idProject) {
     $(".sharing").removeProp('checked').parent().removeClass('active');
     $('.your-project').addClass('hidden');
     $('.not-your-project').addClass('hidden');
+    $('.not-shared-project').addClass('hidden');
+    $('.shared-project').addClass('hidden');
 
     loadProject(idProject);
     $("#project-table-container").collapse('hide');
@@ -127,6 +135,10 @@ function loadProject(idProject) {
                 $("#project-link-share-enable").prop('checked', true);
                 linkShareInput.val(window.location.origin + linkShareUrl + idProject + "&key=" + project['share-key']);
                 linkShareInput.tooltip();
+
+                $('.shared-project').removeClass('hidden');
+            } else {
+                $('.not-shared-project').removeClass('hidden');
             }
         } else {
             $('.not-your-project').removeClass('hidden');

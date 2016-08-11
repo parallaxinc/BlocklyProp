@@ -26,7 +26,6 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-
 Blockly.Blocks.oled_initialize = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
@@ -61,7 +60,6 @@ Blockly.Blocks.oled_font_loader = {
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
-
 
 Blockly.Blocks.oled_clear_screen = {
   init: function() {
@@ -271,7 +269,6 @@ Blockly.Blocks.oled_get_max_height = {
   }
 };
 
-
 Blockly.Blocks.oled_get_max_width = {
   init: function() {
     this.appendDummyInput()
@@ -284,7 +281,6 @@ Blockly.Blocks.oled_get_max_width = {
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
-
 
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
@@ -516,4 +512,34 @@ Blockly.propc.oled_text_color = function() {
     code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '));';
 
     return code;
+};
+
+Blockly.propc.oled_get_max_height = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Emit code to clear the screen
+    var code = 'oledc_getHeight()';
+    
+    // This line causes a zero to be embedded in the resulting 'C' code:
+    // Note the lack of square braces.
+    // return code;
+    
+    // Return function call without surrounding parens:
+    //   oledc_drawPixel(oledc_getHeight(), ..., ...);
+    //return [code];
+    
+    // Return function call with surrounding parens:
+    //    oledc_drawPixel(..., (oledc_getWidth()), ...);
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+
+Blockly.propc.oled_get_max_width = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Emit code to clear the screen
+    var code = 'oledc_getWidth()';
+    return [code, Blockly.propc.ORDER_NONE];
 };
