@@ -534,7 +534,6 @@ Blockly.propc.oled_get_max_height = function() {
     return [code, Blockly.propc.ORDER_NONE];
 };
 
-// oledc_drawPixel(oledc_getHeight(), (oledc_getWidth()), oledc_color565(255, 255, 102));
 
 Blockly.propc.oled_get_max_width = function() {
     // Ensure header file is included
