@@ -91,9 +91,9 @@ Blockly.Blocks.xbee_setup = {
         this.appendDummyInput()
                 .appendField("XBee setup")
                 .appendField("DI pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN')
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN')
                 .appendField("DO pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN');
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
