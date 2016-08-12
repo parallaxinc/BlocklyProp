@@ -31,6 +31,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/variables.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/procedures.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/serial.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/scribbler.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/control.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/pins.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/logic.js"/>"></script>
@@ -60,7 +61,7 @@
             function init(profileName, peripherals) {
                 filterToolbox(profileName, peripherals);
 
-                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>', comments: false}); // path: '/' ,
 
                 if (window.parent.init) {
                     // Let the top-level application know that Blockly is ready.
@@ -99,7 +100,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />" colour="220">
+        <category name="<fmt:message key="category.control" />" colour=205>
             <block type="controls_if"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
@@ -111,26 +112,22 @@
                     </block>
                 </value>
             </block>
-            <block type="cog_new">
-            </block>
         </category>
-        <category name="<fmt:message key="category.operators" />" colour="275">
+        <category name="<fmt:message key="category.operators" />" colour=275>
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
-            <block type="math_random"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />" colour="220">
+        <category name="<fmt:message key="category.values" />" colour=205>
             <block type="math_number"></block>
             <block type="logic_boolean"></block>
         </category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />" colour="200">
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour=250></category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" colour=185>
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -149,113 +146,245 @@
             </block>
             <block type="set_pins"></block>
         </category>
-        <category name="<fmt:message key="category.communicate" />" colour="320">
-            <category name="<fmt:message key="category.communicate.serial-lcd" />">
-                <block type="debug_lcd_init"></block>
-                <block type="debug_lcd_clear"></block>
-                <block type="debug_lcd_print"></block>
-                <block type="debug_lcd_number"></block>
-                <block type="debug_lcd_action"></block>
+        <category name="Debug" colour=340>
+            <block type="serial_open"></block>
+            <block type="serial_send_text"></block>
+            <block type="serial_send_decimal"></block>
+            <block type="serial_send_ctrl"></block>
+            <block type="serial_clear"></block>
+            <block type="serial_cursor_xy"></block>
+            <block type="serial_rx_byte"></block>
+        </category>
+        <category name="Simplified Scribbler" colour=120>
+            <category name="Process" colour=205>
+                <block type="scribbler_loop"></block>
+                <block type="scribbler_limited_loop"></block>
+                <block type="scribbler_exit_loop"></block>
             </category>
-            <category name="<fmt:message key="category.communicate.serial-terminal" />">
-                <block type="serial_open"></block>
-                <block type="serial_send_text"></block>
-                <block type="serial_rx_byte"></block>
+            <category name="Sense" colour=140>
+                <block type="scribbler_if_line"></block>
+                <block type="scribbler_if_obstacle"></block>
+                <block type="scribbler_if_light"></block>
+                <block type="scribbler_if_stalled"></block>
             </category>
-            <category name="<fmt:message key="category.communicate.protocols" />">
+            <category name="Do" colour=165>
+                <block type="scribbler_drive"></block>
+                <block type="scribbler_spin"></block>
+                <block type="scribbler_stop"></block>
+                <block type="scribbler_wait"></block>
+                <block type="scribbler_LED"></block>
+                <block type="scribbler_play"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.sensor-input" />" colour="155">
-            <category name="<fmt:message key="category.sensor-input.etape" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.hmc58783" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
-                <block type="joystick_input_xaxis"></block>
-                <block type="joystick_input_yaxis"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.mma7455" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.ping" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.pir" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.rfid" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sony-remote" />">
-
-            </category>
-            <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
-
-            </category>
-        </category>
-        <category name="<fmt:message key="category.memory" />" colour="155">
-            <category name="<fmt:message key="category.memory.eeprom" />">
-
-            </category>
-            <category name="<fmt:message key="category.memory.sdcard" />">
-
-            </category>
-        </category>
-        <category name="<fmt:message key="category.analog-pulses" />" colour="200">
-            <category name="<fmt:message key="category.analog-pulses.rc" />">
-
-            </category>
-            <category name="<fmt:message key="category.analog-pulses.voltage" />">
-
-            </category>
-            <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />">
-
-            </category>
-        </category>
-        <category name="<fmt:message key="category.audio" />" colour="200">
-            <category name="<fmt:message key="category.audio.audio" />">
-
-            </category>
-            <category name="<fmt:message key="category.audio.freqout" />">
-                <block type="base_freqout">
-                    <value name="DURATION">
+        <category name="<fmt:message key="category.scribbler" />" colour=185>
+            <category name="<fmt:message key="category.scribbler.outputs" />" colour=185>
+                <block type="move_motors">
+                    <value name="LEFT_MOTOR_SPEED">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                    <value name="FREQUENCY">
+                    <value name="RIGHT_MOTOR_SPEED">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="MOTOR_DURATION">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
+                <block type="move_motors_distance">
+                    <value name="LEFT_MOTOR_DISTANCE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RIGHT_MOTOR_DISTANCE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="MOTOR_SPEED">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="move_motors_angle">
+                    <value name="ROTATE_ANGLE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ROTATE_RADIUS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ROTATE_SPEED">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="set_led"></block>
+                <block type="play_tone">
+                    <value name="FREQUENCY">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="NOTE_DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="play_polyphony">
+                    <value name="FREQUENCY_1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="FREQUENCY_2">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POLYPHONY_DURATION">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="set_volume">
+                    <value name="VOLUME">
+                        <block type="math_number">
+                            <field name="NUM">15</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+            <category name="<fmt:message key="category.scribbler.inputs" />" colour=185>
+                <block type="line_sensor"></block>
+                <!--<block type="barcode"></block>-->
+                <block type="obstacle_sensor"></block>
+                <block type="stall_sensor"></block>
+                <block type="spinning_sensor"></block>
+                <block type="light_sensor"></block>
+                <block type="reset_button_presses"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.servo" />" colour="180">
-            <category name="<fmt:message key="category.servo.standard-servo" />">
-                <block type="servo_move"></block>
+        <category name="Untested Blocks">
+            <block type="math_random"></block>
+            <block type="cog_new">
+            </block>
+            <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour=225></category>
+            <category name="<fmt:message key="category.communicate" />" colour=340>
+                <category name="<fmt:message key="category.communicate.serial-lcd" />">
+                    <block type="debug_lcd_init"></block>
+                    <block type="debug_lcd_clear"></block>
+                    <block type="debug_lcd_print"></block>
+                    <block type="debug_lcd_number"></block>
+                    <block type="debug_lcd_action"></block>
+                </category>
+                <category name="<fmt:message key="category.communicate.protocols" />">
+                </category>
             </category>
-            <category name="<fmt:message key="category.servo.cr-servo" />">
+            <category name="<fmt:message key="category.sensor-input" />" colour=140>
+                <category name="<fmt:message key="category.sensor-input.etape" />">
 
+                </category>
+                <category name="<fmt:message key="category.sensor-input.hmc58783" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
+                    <block type="joystick_input_xaxis"></block>
+                    <block type="joystick_input_yaxis"></block>
+                </category>
+                <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.mma7455" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.ping" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.pir" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.rfid" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.sf02-laser" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.sony-remote" />">
+
+                </category>
+                <category name="<fmt:message key="category.sensor-input.sound-impact-sensor" />">
+
+                </category>
             </category>
-        </category>
-        <category name="<fmt:message key="category.robot" />">
-            <category name="<fmt:message key="category.robot.activitybot" />">
+            <category name="<fmt:message key="category.memory" />" colour=140>
+                <category name="<fmt:message key="category.memory.eeprom" />">
 
+                </category>
+                <category name="<fmt:message key="category.memory.sdcard" />">
+
+                </category>
             </category>
-            <category name="<fmt:message key="category.robot.servo-diff-drive" />">
+            <category name="<fmt:message key="category.analog-pulses" />" colour=185>
+                <category name="<fmt:message key="category.analog-pulses.rc" />">
 
+                </category>
+                <category name="<fmt:message key="category.analog-pulses.voltage" />">
+
+                </category>
+                <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />">
+
+                </category>
+            </category>
+            <category name="<fmt:message key="category.audio" />" colour=185>
+                <category name="<fmt:message key="category.audio.audio" />">
+
+                </category>
+                <category name="<fmt:message key="category.audio.freqout" />">
+                    <block type="base_freqout">
+                        <value name="DURATION">
+                            <block type="math_number">
+                                <field name="NUM">0</field>
+                            </block>
+                        </value>
+                        <value name="FREQUENCY">
+                            <block type="math_number">
+                                <field name="NUM">0</field>
+                            </block>
+                        </value>
+                    </block>
+                </category>
+            </category>
+            <category name="<fmt:message key="category.servo" />" colour=165>
+                <category name="<fmt:message key="category.servo.standard-servo" />">
+                    <block type="servo_move"></block>
+                </category>
+                <category name="<fmt:message key="category.servo.cr-servo" />">
+
+                </category>
+            </category>
+            <category name="<fmt:message key="category.robot" />">
+                <category name="<fmt:message key="category.robot.activitybot" />">
+
+                </category>
+                <category name="<fmt:message key="category.robot.servo-diff-drive" />">
+
+                </category>
             </category>
         </category>
     </xml>
