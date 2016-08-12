@@ -31,6 +31,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/console.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/control.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/cog.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/xbee.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/variables.js"/>"></script>
         <!--<script type="text/javascript" src="blockly/generators/propc/pointers.js"></script>-->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/procedures.js"/>"></script>
@@ -77,7 +78,7 @@
             function init(profileName, peripherals) {
                 filterToolbox(profileName, peripherals);
 
-                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>', comments: false}); // path: '/' ,
 
                 if (window.parent.init) {
                     // Let the top-level application know that Blockly is ready.
@@ -140,6 +141,7 @@
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
+            <block type="cast"></block>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />" colour="220">
@@ -185,6 +187,8 @@
                 <block type="oled_get_max_width"></block>
                 <block type="oled_text_size"></block>
                 <block type="oled_text_color"></block>
+                <block type="oled_get_max_height"></block>
+                <block type="oled_get_max_width"></block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
                         <block type="math_number">

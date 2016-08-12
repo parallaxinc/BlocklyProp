@@ -26,7 +26,6 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-
 Blockly.Blocks.oled_initialize = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
@@ -61,7 +60,6 @@ Blockly.Blocks.oled_font_loader = {
 //    this.setHelpUrl('http://www.example.com/');
     }
 };
-
 
 Blockly.Blocks.oled_clear_screen = {
     init: function() {
@@ -156,33 +154,40 @@ Blockly.Blocks.oled_draw_triangle = {
         // First x/y coordinates
         this.appendValueInput("POINT_X0")
             .setCheck(null)
-            .appendField("draw triangle point one at");
+            .appendField("draw triangle at 1(x)");
         this.appendValueInput("POINT_Y0")
             .setCheck(null)
-            .appendField(",");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
         // Second x/y coordinates
         this.appendValueInput("POINT_X1")
             .setCheck(null)
-            .appendField("point two");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("2(x)");
         this.appendValueInput("POINT_Y1")
             .setCheck(null)
-            .appendField(",");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
         // Third x/y coordinates
         this.appendValueInput("POINT_X2")
             .setCheck(null)
-            .appendField("point three");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("3(x)");
         this.appendValueInput("POINT_Y2")
             .setCheck(null)
-            .appendField(",");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
         // Color picker control
         this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_LEFT)
             .appendField("color")
             .appendField(new Blockly.FieldColour("#ff0000"), "flood")
+            .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("fill")
             .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
 
         // Other details
-        this.setInputsInline(true);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
@@ -261,7 +266,7 @@ Blockly.Blocks.oled_text_color = {
 Blockly.Blocks.oled_get_max_height = {
   init: function() {
     this.appendDummyInput()
-        .appendField("getHeight")
+        .appendField("max height")
     this.setPreviousStatement(false, null);
     this.setNextStatement(false, null);
     this.setOutput(true, "Number");
@@ -270,12 +275,11 @@ Blockly.Blocks.oled_get_max_height = {
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
-
 
 Blockly.Blocks.oled_get_max_width = {
   init: function() {
     this.appendDummyInput()
-        .appendField("getWidth")
+        .appendField("max width")
     this.setPreviousStatement(false, null);
     this.setNextStatement(false, null);
     this.setOutput(true, "Number");
@@ -284,8 +288,6 @@ Blockly.Blocks.oled_get_max_width = {
 //    this.setHelpUrl('http://www.example.com/');
   }
 };
-
-
 
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
@@ -302,7 +304,7 @@ Blockly.propc.oled_initialize = function () {
 
 
 Blockly.propc.oled_font_loader = function () {
-    Blockly.propc.definitions_["oledfonts"] = '#include "oledc_fontloader.h"';
+    Blockly.propc.definitions_["oledfonts"] = '#include "oledc_fontLoader.h"';
 
     var code = 'oledc_fontLoader();';
     return code;
@@ -462,8 +464,7 @@ Blockly.propc.oled_draw_rectangle = function() {
 
         code += point_x + ', ' + point_y + ', ';
         code += width + ', ' + height + ', ';
-        code += ((Number(width) + Number(height)) / 20);
-//        code += '((' + width + ' + ' + height + ') / 20)' + ', ';
+        code += '((' + width + ') + (' + height + ') / 20),';
         code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
     }
 
@@ -519,7 +520,6 @@ Blockly.propc.oled_text_color = function() {
     return code;
 };
 
-
 Blockly.propc.oled_get_max_height = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
@@ -539,8 +539,6 @@ Blockly.propc.oled_get_max_height = function() {
     //    oledc_drawPixel(..., (oledc_getWidth()), ...);
     return [code, Blockly.propc.ORDER_NONE];
 };
-
-// oledc_drawPixel(oledc_getHeight(), (oledc_getWidth()), oledc_color565(255, 255, 102));
 
 Blockly.propc.oled_get_max_width = function() {
     // Ensure header file is included
