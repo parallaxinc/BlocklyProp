@@ -112,7 +112,7 @@ Blockly.Blocks.logic_boolean = {
     category: Blockly.LANG_CATEGORY_LOGIC,
     helpUrl: Blockly.LANG_LOGIC_BOOLEAN_HELPURL,
     init: function () {
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'BOOL');

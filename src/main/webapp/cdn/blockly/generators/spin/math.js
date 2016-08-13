@@ -40,6 +40,16 @@ Blockly.Spin.math_number = function () {
 };
 
 
+Blockly.Spin.math_integer = function () {
+    // Numeric value.
+    var code = window.parseInt(this.getFieldValue('INT_VALUE'));
+    // -4.abs() returns -4 in Dart due to strange order of operation choices.
+    // -4 is actually an operator and a number.  Reflect this in the order.
+    var order = code < 0 ?
+            Blockly.Spin.ORDER_UNARY_PREFIX : Blockly.Spin.ORDER_ATOMIC;
+    return [code, order];
+};
+
 Blockly.Spin.math_arithmetic = function () {
     // Basic arithmetic operators, and power.
     var mode = this.getFieldValue('OP');

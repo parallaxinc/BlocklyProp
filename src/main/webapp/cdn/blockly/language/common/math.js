@@ -38,12 +38,22 @@ Blockly.Blocks['math_number'] = {
      */
     init: function () {
         this.setHelpUrl(Blockly.Msg.MATH_NUMBER_HELPURL);
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('math'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), 'NUM');
         this.setOutput(true, 'Number');
         this.setTooltip(""); //Blockly.Msg.MATH_NUMBER_TOOLTIP);
+    }
+};
+
+Blockly.Blocks.math_integer = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
+
+        this.setOutput(true, 'Number');
+        this.setColour(colorPalette.getColor('math'));
     }
 };
 
