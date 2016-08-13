@@ -188,5 +188,6 @@ nav .nav > li > a:first-child {
 
 .xterm-rows {
     overflow: scroll;
+    overflow-y: hidden;
 }
 
