@@ -7,6 +7,7 @@ package com.parallax.server.blocklyprop.converter;
 
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.generated.tables.pojos.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
@@ -23,9 +24,15 @@ import java.util.List;
  */
 public class ProjectConverter {
 
+    private ProjectDao projectDao;
     private UserService userService;
     private ProjectService projectService;
     private ProjectSharingService projectSharingService;
+
+    @Inject
+    public void setProjectDao(ProjectDao projectDao) {
+        this.projectDao = projectDao;
+    }
 
     @Inject
     public void setUserService(UserService userService) {
@@ -89,7 +96,7 @@ public class ProjectConverter {
 
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
-            ProjectRecord basedOnProject = projectService.getProject(project.getBasedOn());
+            ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
             basedOn.addProperty("id", basedOnProject.getId());
             basedOn.addProperty("name", basedOnProject.getName());
             boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
@@ -122,7 +129,7 @@ public class ProjectConverter {
 
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
-            ProjectRecord basedOnProject = projectService.getProject(project.getBasedOn());
+            ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
             basedOn.addProperty("id", basedOnProject.getId());
             basedOn.addProperty("name", basedOnProject.getName());
             boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
