@@ -261,3 +261,60 @@ Blockly.propc.color_value_from = function() {
     output = ((Number(red) & 0xFF) << 16) | ((Number(green) & 0xFF) << 8) | (Number(blue) & 0xFF);
     return [output];
 };
+
+Blockly.Blocks.get_channel_from = {
+    init: function() {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+            .appendField("get")
+            .appendField(new Blockly.FieldDropdown([["Red", "0"], ["Green", "1"], ["Blue", "2"]]), "CHANNEL");
+        this.appendValueInput('VALUE')
+            .appendField("value from:");
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.get_channel_from = function() {
+    var channel = this.getFieldValue("CHANNEL");
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
+
+    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
+    var color_red = parseInt(color_mask[1], 16);
+    var color_green = parseInt(color_mask[2], 16);
+    var color_blue = parseInt(color_mask[3], 16);
+
+    if (Number(channel) === 0) {
+        return [color_red];
+    } else if (Number(channel) === 1) {
+        return [color_green];
+    } else if (Number(channel) === 2) {
+        return [color_blue];
+    }
+};
+
+Blockly.Blocks.compare_colors = {
+    init: function() {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+            .appendField("compare");
+        this.appendValueInput('COLOR1')
+            .appendField("color 1:");
+        this.appendValueInput('COLOR2')
+            .appendField("color 2:");
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.compare_colors = function() {
+    var color1 = Blockly.propc.valueToCode(this, 'COLOR1', Blockly.propc.ORDER_NONE);
+    var color2 = Blockly.propc.valueToCode(this, 'COLOR2', Blockly.propc.ORDER_NONE);
+
+    var output = 255 - ((abs((color1 & 0xFF0000) >> 16 - (color2 & 0xFF0000) >> 16) + abs((color1 & 0xFF00) >> 8 - (color2 & 0xFF00) >> 8) + abs(color1 & 0xFF - color2 & 0xFF)) / 3);
+    return [output];
+};

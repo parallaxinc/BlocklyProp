@@ -148,6 +148,9 @@
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
             <block type="color_picker"></block>
+            <block type="color_value_from"></block>
+            <block type="get_channel_from"></block>
+            <block type="compare_colors"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
