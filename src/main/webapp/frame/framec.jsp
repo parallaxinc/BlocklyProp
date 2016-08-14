@@ -483,8 +483,6 @@
                 <block type="rc_charge_discharge"></block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb">
-                <block type="ab_volt_v_in"></block>
-                <block type="ab_volt_v_out"></block>
                 <block type="ab_volt_in"></block>
                 <block type="ab_volt_out"></block>
             </category>
