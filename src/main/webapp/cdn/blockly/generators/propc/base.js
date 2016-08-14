@@ -233,3 +233,31 @@ Blockly.propc.color_picker = function() {
 
     return [color];
 };
+
+Blockly.Blocks.color_value_from = {
+    init: function() {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+            .appendField("Color Value From:");
+        this.appendValueInput("RED_VALUE")
+            .appendField("Red");
+        this.appendValueInput("GREEN_VALUE")
+            .appendField("Green");
+        this.appendValueInput("BLUE_VALUE")
+            .appendField("Blue");
+
+        this.setOutput(true, "Number");
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.color_value_from = function() {
+    var red = Blockly.propc.valueToCode(this, 'RED_VALUE', Blockly.propc.ORDER_NONE);
+    var green = Blockly.propc.valueToCode(this, 'GREEN_VALUE', Blockly.propc.ORDER_NONE);
+    var blue = Blockly.propc.valueToCode(this, 'BLUE_VALUE', Blockly.propc.ORDER_NONE);
+
+    output = ((Number(red) & 0xFF) << 16) | ((Number(green) & 0xFF) << 8) | (Number(blue) & 0xFF);
+    return [output];
+};
