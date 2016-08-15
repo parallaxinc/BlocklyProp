@@ -18,7 +18,7 @@
  */
 
 /**
- * @fileoverview Generating Spin for servo blocks.
+ * @fileoverview Generating C for servo blocks.
  * @author michel@creatingfuture.eu  (Michel Lampo)
  * @author valetolpegin@gmail.com (Vale Tolpegin)
  */
@@ -32,16 +32,21 @@ Blockly.Blocks.servo_move = {
     init: function () {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("servo")
-                .appendField("pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.servo), "PIN");
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("degrees (0 - 180°)")
-                .appendField(new Blockly.FieldAngle(180), "DEGREES");
-
+            .appendField("servo")
+            .appendField("pin#")
+            .appendField(new Blockly.FieldDropdown(profile.default.servo), "PIN");
+        this.appendValueInput("ANGLE")
+            .setCheck("Number");
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    onchange: function(event) {
+        if (event.type == Blockly.Events.CHANGE && event.element == 'field') {
+            if ((event.newValue < 0) || (event.newValue > 180)) {
+                alert("WARNING: The value for the angle must be between 0 and 180 degrees.");
+            }
+        }
     }
 };
 
@@ -196,13 +201,20 @@ Blockly.Blocks.pwm_stop = {
 
 Blockly.propc.servo_move = function () {
     var dropdown_pin = this.getFieldValue('PIN');
-    var degrees = Blockly.propc.valueToCode(this, 'DEGREES', Blockly.propc.ORDER_NONE);
+//    var degrees = Blockly.propc.valueToCode(this, 'DEGREES', Blockly.propc.ORDER_NONE);
+    var degrees = Blockly.propc.valueToCode(this, 'ANGLE', Blockly.propc.ORDER_NONE);
 
     Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
-
+    if (degrees < 0) {
+        degrees = 0;
+    }
+    if (degrees > 180) {
+        degrees = 180;
+    }
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
     return code;
 };
+
 
 Blockly.propc.servo_speed = function () {
     var pin = this.getFieldValue('PIN');
