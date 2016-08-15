@@ -535,7 +535,13 @@
         </category>
         <category name="<fmt:message key="category.servo" />" exclude="heb" colour="180">
             <category name="<fmt:message key="category.servo.standard-servo" />">
-                <block type="servo_move"></block>
+                <block type="servo_move">
+                    <value name="ANGLE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.servo.cr-servo" />">
                 <block type="servo_speed"></block>

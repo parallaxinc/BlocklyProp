@@ -32,12 +32,16 @@ Blockly.Blocks.servo_move = {
     init: function () {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-            .appendField("servo")
-            .appendField("pin#")
+            .appendField("servo pin#")
+            .setAlign(Blockly.ALIGN_RIGHT)
             .appendField(new Blockly.FieldDropdown(profile.default.servo), "PIN");
         this.appendValueInput("ANGLE")
+            .appendField("degrees (0-180\u00B0)")
             .setCheck("Number");
-        this.setInputsInline(true);
+//        this.appendDummyInput()
+//            .appendField(new Blockly.FieldAngle(90), 'ANGLE')
+//            .setCheck("Number");
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
