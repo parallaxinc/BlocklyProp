@@ -136,6 +136,7 @@
             <block type="math_limit"></block>
             <block type="math_crement"></block>
             <block type="math_random"></block>
+            <block type="math_bitwise"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>

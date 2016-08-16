@@ -161,3 +161,26 @@ Blockly.propc.math_random = function() {
     var code = 'rand() % 100';
     return [code, Blockly.propc.ORDER_NONE];
 };
+
+Blockly.Blocks.math_bitwise = {
+    init: function() {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput('VAL1');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["& (bitwise AND)", "&"], ["| (bitwise OR)", "|"], ["^ (bitwise XOR)", "^"], [">> (bitwise right shift)", ">>"], ["<< (bitwise left shift)", "<<"]]), "OPERATION");
+        this.appendValueInput('VAL2');
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.math_bitwise = function() {
+    var value1 = Blockly.propc.valueToCode(this, 'VAL1', Blockly.propc.ORDER_NONE);
+    var value2 = Blockly.propc.valueToCode(this, 'VAL2', Blockly.propc.ORDER_NONE);
+    var operation = this.getFieldValue('OPERATION');
+
+    var code = value1 + ' ' + operation + ' ' + value2;
+    return [code, Blockly.propc.ORDER_NONE];
+};
