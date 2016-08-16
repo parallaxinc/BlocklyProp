@@ -11,7 +11,7 @@
 Blockly.Blocks.scribbler_loop = {
     init: function () {
         this.appendDummyInput()
-                .appendField("Loop");
+                .appendField("loop");
         this.appendStatementInput("LOOP");
 
         this.setPreviousStatement(true);
@@ -23,14 +23,12 @@ Blockly.Blocks.scribbler_loop = {
 
 Blockly.Blocks.scribbler_limited_loop = {
     init: function () {
-        this.appendValueInput("LOOP_COUNT", 'Number')
-            .appendField("Loop")
-            .setCheck('Number');
         this.appendDummyInput()
+            .appendField("loop")
+            .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'LOOP_COUNT')
             .appendField("times");
         this.appendStatementInput("LOOP")
 
-        this.setInputsInline(true);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
@@ -41,7 +39,19 @@ Blockly.Blocks.scribbler_limited_loop = {
 Blockly.Blocks.scribbler_exit_loop = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Exit loop")
+            .appendField("exit loop")
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('programming'));
+    }
+};
+
+Blockly.Blocks.scribbler_simple_wait = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("wait")
+            .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'WAITTIME')
+            .appendField(new Blockly.FieldDropdown([['second(s)', '1'], ['tenth(s) of a second', '10'], ['millisecond(s)', '1000']]), 'TIMESCALE');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
@@ -54,7 +64,7 @@ Blockly.Blocks.scribbler_wait = {
                 .appendField("wait")
                 .setCheck('Number');
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([['seconds', '1'], ['\u2152 of a second', '10'], ['milliseconds', '1000']]), 'TIMESCALE');
+            .appendField(new Blockly.FieldDropdown([['second(s)', '1'], ['tenth(s) of a second', '10'], ['millisecond(s)', '1000']]), 'TIMESCALE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -65,12 +75,13 @@ Blockly.Blocks.scribbler_wait = {
 Blockly.Blocks.scribbler_if_line = {
     init: function () {
         this.appendDummyInput()
-            .appendField("If a")
-            .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
-            .appendField("line")
+            .appendField("if the Scribbler robot")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LINE_CONDITION')
-            .appendField(new Blockly.FieldDropdown([['directly under', 'OVER'], ['on the left edge of', 'LEFT'], ['on the right edge of', 'RIGHT'], ['undetected by', 'NOT_OVER']]), 'LINE_POSITION')
-            .appendField("the Scribbler robot ");
+            .appendField("over")
+            .appendField(new Blockly.FieldDropdown([['the center', 'CENTER'], ['the left edge', 'LEFT'], ['the right edge', 'RIGHT'], ['any part', 'DETECTED']]), 'LINE_POSITION')
+            .appendField("of a")
+            .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
+            .appendField("line");
         this.appendStatementInput("IF_LINE")
             .appendField()
         this.setPreviousStatement(true);
@@ -83,9 +94,9 @@ Blockly.Blocks.scribbler_if_line = {
 Blockly.Blocks.scribbler_if_obstacle = {
     init: function () {
         this.appendDummyInput()
-            .appendField("If an obstacle")
+            .appendField("if an obstacle")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'OBSTACLE_CONDITION')
-            .appendField(new Blockly.FieldDropdown([['in front of', 'CENTER'], ['to the left of', 'LEFT'], ['to the right of', 'RIGHT'], ['undetected by', 'UNDETECTABLE']]), 'OBSTACLE_POSITION')
+            .appendField(new Blockly.FieldDropdown([['in front of', 'CENTER'], ['to the left of', 'LEFT'], ['to the right of', 'RIGHT'], ['detected by', 'DETECTED']]), 'OBSTACLE_POSITION')
             .appendField("the Scribbler robot");
         this.appendStatementInput("IF_OBSTACLE")
             .appendField()
@@ -99,9 +110,9 @@ Blockly.Blocks.scribbler_if_obstacle = {
 Blockly.Blocks.scribbler_if_light = {
     init: function () {
         this.appendDummyInput()
-            .appendField("If the most light")
+            .appendField("if the most light")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LIGHT_CONDITION')
-            .appendField(new Blockly.FieldDropdown([['in front', 'CENTER'], ['to the left', 'LEFT'], ['to the right', 'RIGHT'], ['on all sides', 'UNDETECTABLE']]), 'LIGHT_POSITION')
+            .appendField(new Blockly.FieldDropdown([['in front', 'CENTER'], ['to the left', 'LEFT'], ['to the right', 'RIGHT'], ['on all sides', 'DETECTED']]), 'LIGHT_POSITION')
             .appendField("of the Scribbler robot");
         this.appendStatementInput("IF_LIGHT")
             .appendField()
@@ -115,7 +126,7 @@ Blockly.Blocks.scribbler_if_light = {
 Blockly.Blocks.scribbler_if_stalled = {
     init: function () {
         this.appendDummyInput()
-            .appendField("If the Scribbler robot")
+            .appendField("if the Scribbler robot")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'STALLED_CONDITION')
             .appendField("stuck")
         this.appendStatementInput("IF_STALLED")
@@ -130,7 +141,7 @@ Blockly.Blocks.scribbler_if_stalled = {
 Blockly.Blocks.scribbler_if_button = {
     init: function () {
         this.appendDummyInput()
-            .appendField("If the red button")
+            .appendField("if the red button")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'BUTTON_CONDITION')
             .appendField("pressed")
         this.appendStatementInput("IF_BUTTON")
@@ -144,44 +155,42 @@ Blockly.Blocks.scribbler_if_button = {
 Blockly.Blocks.scribbler_drive = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Drive")
+            .appendField("drive")
             .appendField(new Blockly.FieldDropdown([['forward', ''], ['backward', '-']]), 'DRIVE_DIRECTION')
-            .appendField("and go")
+            .appendField("and")
             .appendField(new Blockly.FieldDropdown([['straight', 'STRAIGHT'], ['slightly to the right', 'SLIGHT_RIGHT'], ['gently to the right', 'GENTLE_RIGHT'], ['sharply to the right', 'SHARP_RIGHT'], ['slightly to the left', 'SLIGHT_LEFT'], ['gently to the left', 'GENTLE_LEFT'], ['sharply to the left', 'SHARP_LEFT']]), 'DRIVE_ANGLE')
-            .appendField("at a")
-            .appendField(new Blockly.FieldDropdown([['full', '255'], ['quick', '191'], ['gentle', '127'], ['slow', '63']]), 'DRIVE_SPEED')
+            .appendField("at")
+            .appendField(new Blockly.FieldDropdown([['full', '255'], ['a quick', '191'], ['a gentle', '127'], ['a slow', '63']]), 'DRIVE_SPEED')
             .appendField("speed");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
     }
 };
 
 Blockly.Blocks.scribbler_spin = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Spin in place")
+            .appendField("rotate")
             .appendField(new Blockly.FieldDropdown([['\u21BB', ''], ['\u21BA', '-']]), 'SPIN_DIRECTION')
             .appendField("for")
 	    .appendField(new Blockly.FieldAngle(90), "SPIN_ANGLE")
-            .appendField("at a")
-            .appendField(new Blockly.FieldDropdown([['full', '15'], ['quick', '7'], ['gentle', '3'], ['slow', '1']]), 'SPIN_SPEED')
-            .appendField("speed, then")
-            .appendField(new Blockly.FieldDropdown([['stop', 'FALSE'], ['continue', 'TRUE']]), 'SPIN_RESUME')
-            .appendField("driving");
+            .appendField("at")
+            .appendField(new Blockly.FieldDropdown([['full', '15'], ['a quick', '7'], ['a gentle', '3'], ['a slow', '1']]), 'SPIN_SPEED')
+            .appendField("speed");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
     }
 };
 
 Blockly.Blocks.scribbler_stop = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Stop driving")
+            .appendField("stop driving")
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
     }
 };
 
@@ -189,7 +198,7 @@ Blockly.Blocks.scribbler_LED = {
     init: function () {
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("Change these LEDs:   ")
+            .appendField("change these LEDs:   ")
             .appendField(new Blockly.FieldCheckbox("TRUE"), "LEFT_LED")
             .appendField("  ")
             .appendField(new Blockly.FieldCheckbox("TRUE"), "CENTER_LED")
@@ -199,36 +208,37 @@ Blockly.Blocks.scribbler_LED = {
 	var left_led_colors = new Blockly.FieldColour("#000000");
 	var center_led_colors = new Blockly.FieldColour("#000000");
 	var right_led_colors = new Blockly.FieldColour("#000000");
-	left_led_colors.setColours(['#FF0000','#00FF00','#FFFF00','#000000']).setColumns(2);
-	center_led_colors.setColours(['#FF0000','#00FF00','#FFFF00','#000000']).setColumns(2);
-	right_led_colors.setColours(['#FF0000','#00FF00','#FFFF00','#000000']).setColumns(2);
+	left_led_colors.setColours(['#FF0000','#00FF00','#FF7F00','#000000']).setColumns(2);
+	center_led_colors.setColours(['#FF0000','#00FF00','#FF7F00','#000000']).setColumns(2);
+	right_led_colors.setColours(['#FF0000','#00FF00','#FF7F00','#000000']).setColumns(2);
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("To these colors:  ")
+            .appendField("to these colors:  ")
             .appendField(left_led_colors, "LEFT_COLOR")
             .appendField(center_led_colors, "CENTER_COLOR")
             .appendField(right_led_colors, "RIGHT_COLOR")
             .appendField(" ");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
     }
 };
 
 Blockly.Blocks.scribbler_play = {
     init: function () {
         this.appendDummyInput()
-            .appendField("Play")
-            .appendField(new Blockly.FieldDropdown([['\uD834\uDD61', '125'], ['\uD834\uDD61.', '188'], ['\u266A', '250'], ['\u266A.', '375'], ['\u2669', '500'], ['\u2669.', '750'], ['\uD834\uDD5E', '1000'], ['\uD834\uDD5E.', '1500'], ['\uD834\uDD5D', '1000000'], ['\uD834\uDD5D.', '1500000']]), 'NOTE_DURATION')
+            .appendField("play a")
+            .appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
+            //.appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
             .appendField(new Blockly.FieldDropdown([['A\u266D', '3322'], ['A', '3520'], ['A\u266F/B\u266D', '3729'], ['B', '3951'], ['C', '4186'], ['C\u266F/D\u266D', '4435'], ['D', '4699'], ['D\u266F/E\u266D', '4978'], ['E', '5274'], ['F', '5588'], ['F\u266F/G\u266D', '5920'], ['G', '6272'], ['G\u266F', '6645']]), 'NOTE_FREQUENCY')
-            .appendField("in the")
-            .appendField(new Blockly.FieldDropdown([['double high', ' ~> 1'], ['soprano', ' ~> 2'], ['tenor', ' ~> 3'], ['middle', ' ~> 4'], ['low', ' ~> 5'], ['deep', ' ~> 6'], ['pedal', ' ~> 7']]), 'NOTE_OCTAVE')
-            .appendField("octave at a")
+            .appendField("for a")
+            .appendField(new Blockly.FieldDropdown([['sixteenth', '63'], ['dotted sixteenth', '94'], ['eighth', '125'], ['dotted eighth', '188'], ['quarter', '250'], ['dotted quarter', '375'], ['half', '500'], ['dotted half', '750'], ['whole', '1000'], ['dotted whole', '1500']]), 'NOTE_DURATION')
+            .appendField("note at a")
             .appendField(new Blockly.FieldDropdown([['loud', '100'], ['medium', '50'], ['quiet', '25']]), 'NOTE_VOLUME')
             .appendField("volume");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('output'));
+        this.setColour(colorPalette.getColor('io'));
     }
 };
 
@@ -238,28 +248,22 @@ Blockly.Blocks.move_motors = {
     init: function () {
 	this.appendValueInput("LEFT_MOTOR_SPEED")
 		.setCheck("Number")
-		.appendField("Set left motor speed to (-100 to 100)%");
+		.appendField("set left motor speed to (-100 to 100)%");
 	this.appendValueInput("RIGHT_MOTOR_SPEED")
 		.setCheck("Number")
-		.appendField("and set right motor speed to (-100 to 100)%,");
+		.appendField("set right motor speed to (-100 to 100)%");
 	this.appendValueInput("MOTOR_DURATION")
 		.setCheck("Number")
-		.appendField("for a duration of (1 to ?) ms,");
+		.appendField("for a duration of (1 to 65,535) ms");
 		// TODO: Find duration
 	this.appendDummyInput()
-		.appendField("using 0 ms to operate continuously and keep");
-	this.appendDummyInput()
-		.appendField("running more blocks, otherwise");
-	this.appendDummyInput()
-		.appendField("wait until the motors stop moving,");
-	this.appendDummyInput()
-		.appendField("before continuing to run blocks.");
+		.appendField("use 0 ms for continuous operation");
 
 	this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	//this.setTooltip('Speeds are a range of -100 (full reverse) to 100 (full forward) with a duration of 1 to 15,000 milliseconds, or a duration of 0 for continuous operation');
+	this.setTooltip('Speeds are a range of -100 (full reverse) to 100 (full forward) with a duration of 1 to 15,000 milliseconds, or a duration of 0 for continuous operation');
         //this.setHelpUrl('help/block-scribbler.html#motors');
     }
 };
@@ -268,28 +272,23 @@ Blockly.Blocks.move_motors = {
 Blockly.Blocks.move_motors_distance = {
     init: function () {
 	this.appendDummyInput()
-		.appendField("In ")
-		.appendField(new Blockly.FieldDropdown([['milimeters (\u00B115,937)', ' * 2_056 / 1_000'], ['centimeters (\u00B11,593)', ' * 2_056 / 100'], ['inches (\u00B1643)', ' * 5_095 / 100'], ['tenths of an inch (\u00B16,431)', ' * 5_095 / 1_000'], ['native units (\u00B132,767)', '']]), 'MULTIPLIER')
-		.appendField(",");
+		.appendField("in ")
+		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B1643)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B16,431)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B11,593)', ' * 2_056 / 100'], ['milimeters (up to \u00B115,937)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B132,767)', '']]), 'MULTIPLIER');
 	this.appendValueInput("LEFT_MOTOR_DISTANCE")
 		.setCheck("Number")
 		.appendField("move the left motor");
 	this.appendValueInput("RIGHT_MOTOR_DISTANCE")
 		.setCheck("Number")
-		.appendField("and move the right motor");
+		.appendField("move the right motor");
 	this.appendValueInput("MOTOR_SPEED")
 		.setCheck("Number")
-		.appendField("at a top speed of (1 to 100)%,");
-	this.appendDummyInput()
-		.appendField("and wait until the motors stop moving,");
-	this.appendDummyInput()
-		.appendField("before continuing to run blocks.");
+		.appendField("at a top speed of (1 to 100)%");
 
 	this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Maximum milimeters: +/- 15,937, Maximum centimeters: +/- 1,593, Maximum inches: +/- 643\n Maximum tenths of an inch: +/- 6,431, Maximum native units: +/- 32,767');
+	this.setTooltip('Maximum milimeters: +/- 15,937, Maximum centimeters: +/- 1,593, Maximum inches: +/- 643\n Maximum tenths of an inch: +/- 6,431, Maximum encoder counts: +/- 32,767');
         //this.setHelpUrl('help/block-scribbler.html#motors');
     }
 };
@@ -299,25 +298,14 @@ Blockly.Blocks.move_motors_angle = {
     init: function () {
 	this.appendValueInput("ROTATE_ANGLE")
 		.setCheck("Number")
-		.appendField("Rotate the Scribbler robot (-1,080 to 1,080)\u00B0,");
-	this.appendDummyInput()
-		.appendField("using negative angles for");
-	this.appendDummyInput()
-		.appendField("counterclockwise rotation,");
+		.appendField("rotate the Scribbler robot (-1,080 to 1,080)\u00B0");
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
-		.appendField("around a radius, in")
-		.appendField(new Blockly.FieldDropdown([['milimeters (\u00B12,140)', ' * 2_056 / 1_000'], ['centimeters (\u00B1214)', ' * 2_056 / 100'], ['inches (\u00B186)', ' * 5_095 / 100'], ['tenths of an inch (\u00B1863)', ' * 5_095 / 1_000'], ['native units (\u00B14,400)', '']]), 'RADIUS_MULTIPLIER')
-		.appendField("of");
-	this.appendDummyInput()
-		.appendField("usinging zero to rotate in place,");
+		.appendField("around a radius in")
+		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B186)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B1863)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B1214)', ' * 2_056 / 100'], ['milimeters (up to \u00B12,140)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B14,400)', '']]), 'RADIUS_MULTIPLIER');
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
-		.appendField("at a top speed of (1 to 100)%,");
-	this.appendDummyInput()
-		.appendField("and wait until the motors stop moving,");
-	this.appendDummyInput()
-		.appendField("before continuing to run blocks.");
+		.appendField("at a top speed of (1 to 100)%");
 
 	this.setInputsInline(false);
         this.setPreviousStatement(true, null);
@@ -332,20 +320,16 @@ Blockly.Blocks.play_polyphony = {
     init: function () {
 	this.appendValueInput("FREQUENCY_1")
 		.setCheck("Number")
-		.appendField("Play a tone of (1 to 10,000) Hz");
+		.appendField("play a tone of (1 to 10,000) Hz");
 	this.appendValueInput("FREQUENCY_2")
 		.setCheck("Number")
-		.appendField("and a tone of (1 to 10,000) Hz,");
+		.appendField("and a tone of (1 to 10,000) Hz");
 	this.appendValueInput("POLYPHONY_DURATION")
 		.setCheck("Number")
-		.appendField("for a duration of (1 to 8,000) ms,");
+		.appendField("for a duration of (1 to 8,000) ms");
 	this.appendValueInput("POLYPHONY_VOLUME")
 		.setCheck("Number")
-		.appendField("at a volume of ((0 to 100)%,");
-	this.appendDummyInput()
-		.appendField("and wait until the tone finishes,");
-	this.appendDummyInput()
-		.appendField("before continuing to run blocks.");
+		.appendField("at a volume of (0 to 100)%");
 
 	this.setInputsInline(false);
         this.setPreviousStatement(true, null);
@@ -359,15 +343,12 @@ Blockly.Blocks.play_polyphony = {
 Blockly.Blocks.line_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("the")
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["right", "RIGHT"]]), "LINE_SENSOR_CHOICE")
-                .appendField("line sensor reflectivity,");
-        this.appendDummyInput("")
-                .appendField("in a range of 0% to 100%");
+                .appendField("line sensor reflectivity (0% to 100%)");
 
 	this.setInputsInline(false);
 	this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
 	//this.setTooltip('Reads surface reflectivity, in a range of 0 to 100');
         //this.setHelpUrl('help/block-scribbler.html#Line_Sensor');
     }
@@ -376,14 +357,12 @@ Blockly.Blocks.line_sensor = {
 Blockly.Blocks.obstacle_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("an obstacle is present, to the")
+                .appendField("an obstacle is present to the")
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["right", "RIGHT"]]), "OBSTACLE_SENSOR_CHOICE")
-                .appendField(",");
-        this.appendDummyInput("")
-                .appendField("as a true or false condition");
+                .appendField("(true or false)");
 
 	this.setOutput(true, "Boolean");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
 	//this.setTooltip('Returns 0 if there is no obstacle and 1 if there is an obstacle');
         //this.setHelpUrl('help/block-scribbler.html#Obstacle_Sensor');
     }
@@ -392,12 +371,10 @@ Blockly.Blocks.obstacle_sensor = {
 Blockly.Blocks.stall_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("the scribbler robot is currently stalled,");
-        this.appendDummyInput("")
-                .appendField("as a true or false condition");
+                .appendField("tail wheel is currently stalled (true or false)");
 
 	this.setOutput(true, "Boolean");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
 	//this.setTooltip('Returns 0 if not stalled and 1 if stalled');
         //this.setHelpUrl('help/block-scribbler.html#Stall_Sensor');
     }
@@ -406,12 +383,12 @@ Blockly.Blocks.stall_sensor = {
 Blockly.Blocks.button_pressed = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("the red botton is currently pressed,");
+                .appendField("the red botton is currently pressed");
         this.appendDummyInput("")
-                .appendField("as a true or false condition");
+                .appendField("(true or false)");
 
 	this.setOutput(true, "Boolean");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
 	//this.setTooltip('Returns 0 if not stalled and 1 if stalled');
         //this.setHelpUrl('help/block-scribbler.html#Stall_Sensor');
     }
@@ -420,12 +397,10 @@ Blockly.Blocks.button_pressed = {
 Blockly.Blocks.spinning_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("the Scribbler wheels are currently moving,");
-        this.appendDummyInput("")
-                .appendField("as a true or false condition");
+                .appendField("drive wheels are currently stalled (true or false)");
 
 	this.setOutput(true, "Boolean");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
 	//this.setTooltip('Returns 0 if not stalled and 1 if stalled');
         //this.setHelpUrl('help/block-scribbler.html#Stall_Sensor');
     }
@@ -434,14 +409,11 @@ Blockly.Blocks.spinning_sensor = {
 Blockly.Blocks.light_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("the")
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["center", "CENTER"], ["right", "RIGHT"]]), "LGHT_SENSOR_CHOICE")
-                .appendField("ambient light sensor reading,");
-        this.appendDummyInput("")
-                .appendField("in a range of 0% to 100%");
+                .appendField("light sensor reading (0% to 100%)");
 
 	this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
 	//this.setTooltip('Reads ambient light, in a range of 0 to 255');
         //this.setHelpUrl('help/block-scribbler.html#Light_Sensor');
     }
@@ -450,12 +422,12 @@ Blockly.Blocks.light_sensor = {
 Blockly.Blocks.reset_button_presses = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("the number of reset button presses, during the");
+                .appendField("reset button presses during the last reset");
         this.appendDummyInput("")
-                .appendField("last reset, in a range of 0 to 8");
+                .appendField("(0 to 8)");
 
 	this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
     }
 };
 
@@ -464,10 +436,10 @@ Blockly.Blocks.button_presses = {
         this.appendDummyInput("")
                 .appendField("the number of red button presses, since the");
         this.appendDummyInput("")
-                .appendField("last reading, in a range of 0 to 255");
+                .appendField("last reading \u2013 in a range of 0 to 255");
 
 	this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('input'));
     }
 };
 
@@ -479,8 +451,7 @@ Blockly.Spin.scribbler_loop = function () {
 };
 
 Blockly.Spin.scribbler_limited_loop = function () {
-    //var number_time = window.parseInt(this.getFieldValue('LOOP_COUNT'));
-    var number_time = Blockly.Spin.valueToCode(this, 'LOOP_COUNT', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var number_time = window.parseInt(this.getFieldValue('LOOP_COUNT'));
     return 'repeat ' + number_time + '\n' + Blockly.Spin.statementToCode(this, 'LOOP');
 };
 
@@ -488,10 +459,19 @@ Blockly.Spin.scribbler_exit_loop = function () {
     return 'quit\n';
 };
 
+Blockly.Spin.scribbler_simple_wait = function () {
+    var number_time = window.parseInt(this.getFieldValue('WAITTIME'));
+    var time_scale = this.getFieldValue('TIMESCALE');
+    //TODO: catch short wait periods
+    var code = 'waitcnt(clkfreq / ' + time_scale + ' * ' + number_time + ' + 1000 + cnt)\n';
+    return code;
+};
+
 Blockly.Spin.scribbler_wait = function () {
     var number_time = Blockly.Spin.valueToCode(this, 'WAITTIME', Blockly.Spin.ORDER_ATOMIC) || '0';
     var time_scale = this.getFieldValue('TIMESCALE');
-    var code = 'waitcnt(clkfreq / ' + time_scale + ' * ' + number_time + ' + 1000 + cnt) {TODO: catch short wait periods} \n';
+    //TODO: catch short wait periods
+    var code = 'waitcnt(clkfreq / ' + time_scale + ' * ' + number_time + ' + 1000 + cnt)\n';
     return code;
 };
 
@@ -573,8 +553,7 @@ Blockly.Spin.scribbler_spin = function () {
     var spin_direction = this.getFieldValue('SPIN_DIRECTION');
     var spin_angle = this.getFieldValue('SPIN_ANGLE');
     var spin_speed = this.getFieldValue('SPIN_SPEED');
-    var spin_resume = this.getFieldValue('SPIN_RESUME');
-    return 'Scribbler.SimpleSpin(' + spin_direction + spin_angle + ', ' + spin_speed + ', ' + spin_resume + ')\n';
+    return 'Scribbler.SimpleSpin(' + spin_direction + spin_angle + ', ' + spin_speed + ', 0)\n';
 };
 
 Blockly.Spin.scribbler_stop = function () {
@@ -616,11 +595,11 @@ Blockly.Spin.scribbler_play = function () {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
 
-    var note_duration = this.getFieldValue('NOTE_DURATION')
-    var note_frequency = this.getFieldValue('NOTE_FREQUENCY')
     var note_octave = this.getFieldValue('NOTE_OCTAVE')
+    var note_frequency = this.getFieldValue('NOTE_FREQUENCY')
+    var note_duration = this.getFieldValue('NOTE_DURATION')
     var note_volume = this.getFieldValue('NOTE_VOLUME')
-    return 'Scribbler.SimplePlay(' + note_frequency + note_octave + ', ' + note_duration + ', ' + note_volume + ')\n'
+    return 'Scribbler.SimplePlay(' + note_frequency + ' ~> ' + note_octave + ', ' + note_duration + ', ' + note_volume + ')\n'
 };
 
 Blockly.Spin.move_motors = function () {
@@ -744,7 +723,7 @@ Blockly.Spin.spinning_sensor = function () {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
 
-    var code = 'Scribbler.MotorsMoving';
+    var code = 'not Scribbler.MotorsMoving';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 

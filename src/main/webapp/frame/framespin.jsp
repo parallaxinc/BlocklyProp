@@ -100,28 +100,58 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
+        <category name="Simple Scribbler">
+            <category name="Simple Control" colour=205>
+                <block type="scribbler_loop"></block>
+                <block type="scribbler_limited_loop">
+                    <value name="LOOP_COUNT">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">10</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="scribbler_exit_loop"></block>
+                <block type="scribbler_simple_wait">
+                    <field name="WAITTIME">5</field>
+                    <field name="TIMESCALE">10</field>
+                </block>
+            </category>
+            <category name="Simple Sensors" colour=140>
+                <block type="scribbler_if_line"></block>
+                <block type="scribbler_if_obstacle"></block>
+                <block type="scribbler_if_light"></block>
+                <block type="scribbler_if_stalled"></block>
+            </category>
+            <category name="Simple Actions" colour=185>
+                <block type="scribbler_drive"></block>
+                <block type="scribbler_spin"></block>
+                <block type="scribbler_stop"></block>
+                <block type="scribbler_play">
+                    <field name="NOTE_DURATION">250</field>
+                    <field name="NOTE_OCTAVE">4</field>
+                    <field name="NOTE_FREQUENCY">4186</field>
+                    <field name="NOTE_VOLUME">50</field>
+                </block>
+                <block type="scribbler_LED"></block>
+            </category>
+        </category>
         <category name="Control" colour=205>
-            <block type="scribbler_loop"></block>
-            <block type="scribbler_limited_loop">
-                <value name="LOOP_COUNT">
-                    <block type="math_integer">
-                        <field name="INT_VALUE">10</field>
-                    </block>
-                </value>
+            <block type="controls_repeat">
+                <mutation TYPE="FOREVER"></mutation>
             </block>
-            <block type="scribbler_exit_loop"></block>
             <block type="controls_if"></block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
                     <block type="math_integer">
-                        <field name="INT_VALUE">5</field>
+                        <field name="INT_VALUE">500</field>
                     </block>
                 </value>
-                <field name="TIMESCALE">10</field>
+                <field name="TIMESCALE">1000</field>
             </block>
         </category>
-        <category name="Math" colour=205>
-	    <category name="Variables" custom="VARIABLE" colour=250></category>
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour=225></category>
+	<category name="Variables" custom="VARIABLE" colour=250></category>
+        <category name="Math" colour=275>
             <block type="math_integer"></block>
             <block type="logic_boolean"></block>
             <block type="math_arithmetic"></block>
@@ -131,30 +161,30 @@
             <block type="logic_compare"></block>
         </category>
         <category name="Sensors" colour=140>
-            <category name="Line" colour=185>
+            <category name="Line" colour=140>
                 <block type="scribbler_if_line"></block>
                 <block type="line_sensor"></block>
             </category>
-            <category name="Obstacle" colour=185>
+            <category name="Obstacle" colour=140>
                 <block type="scribbler_if_obstacle"></block>
                 <block type="obstacle_sensor"></block>
             </category>
-            <category name="Light" colour=185>
+            <category name="Light" colour=140>
                 <block type="scribbler_if_light"></block>
                 <block type="light_sensor"></block>
             </category>
-            <category name="Stall" colour=185>
+            <category name="Stall" colour=140>
                 <block type="scribbler_if_stalled"></block>
                 <block type="stall_sensor"></block>
                 <block type="spinning_sensor"></block>
             </category>
-            <category name="Button" colour=185>
+            <category name="Button" colour=140>
                 <block type="reset_button_presses"></block>
             </category>
-            <category name="Ping" colour=185>
+            <category name="Ping" colour=140>
             </category>
         </category>
-        <category name="Actions" colour=165>
+        <category name="Actions" colour=185>
             <category name="Motors" colour=185>
                 <block type="scribbler_drive"></block>
                 <block type="scribbler_spin"></block>
@@ -213,8 +243,8 @@
             </category>
             <category name="Sound" colour=185>
                 <block type="scribbler_play">
-                    <field name="NOTE_DURATION">500</field>
-                    <field name="NOTE_OCTAVE">middle</field>
+                    <field name="NOTE_DURATION">250</field>
+                    <field name="NOTE_OCTAVE">4</field>
                     <field name="NOTE_FREQUENCY">4186</field>
                     <field name="NOTE_VOLUME">50</field>
                 </block>
