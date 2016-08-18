@@ -136,6 +136,7 @@
             <block type="math_limit"></block>
             <block type="math_crement"></block>
             <block type="math_random"></block>
+            <block type="math_bitwise"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
@@ -147,6 +148,10 @@
             <block type="string_type_block"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
+            <block type="color_picker"></block>
+            <block type="color_value_from"></block>
+            <block type="get_channel_from"></block>
+            <block type="compare_colors"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
@@ -479,8 +484,6 @@
                 <block type="rc_charge_discharge"></block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb">
-                <block type="ab_volt_v_in"></block>
-                <block type="ab_volt_v_out"></block>
                 <block type="ab_volt_in"></block>
                 <block type="ab_volt_out"></block>
             </category>
