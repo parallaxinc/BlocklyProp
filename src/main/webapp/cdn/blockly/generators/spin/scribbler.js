@@ -273,7 +273,7 @@ Blockly.Blocks.move_motors_distance = {
     init: function () {
 	this.appendDummyInput()
 		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B1643)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B16,431)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B11,593)', ' * 2_056 / 100'], ['milimeters (up to \u00B115,937)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B132,767)', '']]), 'MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B1643)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B16,431)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B11,593)', ' * 2_056 / 100'], ['millimeters (up to \u00B115,937)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B132,767)', '']]), 'MULTIPLIER');
 	this.appendValueInput("LEFT_MOTOR_DISTANCE")
 		.setCheck("Number")
 		.appendField("move the left motor");
@@ -288,7 +288,7 @@ Blockly.Blocks.move_motors_distance = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Maximum milimeters: +/- 15,937, Maximum centimeters: +/- 1,593, Maximum inches: +/- 643\n Maximum tenths of an inch: +/- 6,431, Maximum encoder counts: +/- 32,767');
+	this.setTooltip('Maximum millimeters: +/- 15,937, Maximum centimeters: +/- 1,593, Maximum inches: +/- 643\n Maximum tenths of an inch: +/- 6,431, Maximum encoder counts: +/- 32,767');
         //this.setHelpUrl('help/block-scribbler.html#motors');
     }
 };
@@ -302,7 +302,7 @@ Blockly.Blocks.move_motors_angle = {
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
 		.appendField("around a radius in")
-		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B186)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B1863)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B1214)', ' * 2_056 / 100'], ['milimeters (up to \u00B12,140)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B14,400)', '']]), 'RADIUS_MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B186)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B1863)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B1214)', ' * 2_056 / 100'], ['millimeters (up to \u00B12,140)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B14,400)', '']]), 'RADIUS_MULTIPLIER');
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
 		.appendField("at a top speed of (1 to 100)%");
@@ -440,6 +440,36 @@ Blockly.Blocks.button_presses = {
 
 	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
+    }
+};
+
+Blockly.Blocks.scribbler_servo = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("rotate servo on")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN");
+	this.appendValueInput("SERVO_ANGLE")
+		.setCheck("Number")
+		.appendField("to an angle of (0 to 180)\u00B0");
+	this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('io'));
+    }
+};
+
+Blockly.Blocks.scribbler_ping = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("distance in")
+                .appendField(new Blockly.FieldDropdown([['inches (1 to 125)', '11848'], ['tenths of an inch (8 to 1,249)', '1185'], ['centimeters (4 to 635)', '2_332'], ['millimeters (39 to 6352)', '233']]), "PING_RANGE")
+                .appendField("from PING))) sensor on")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PING_PIN");
+
+	this.setOutput(true, "Number");
+        this.setColour(colorPalette.getColor('input'));
+	//this.setTooltip('Reads ambient light, in a range of 0 to 255');
+        //this.setHelpUrl('help/block-scribbler.html#Light_Sensor');
     }
 };
 
@@ -756,4 +786,27 @@ Blockly.Spin.button_presses = function () {
 
     var code = 'Scribbler.ButtonCount';
     return [code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.scribbler_ping = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
+    var Range = window.parseInt(this.getFieldValue('PING_RANGE'));
+    var Pin = window.parseInt(this.getFieldValue('PING_PIN'));
+    var code = 'Scribbler.Ping(' + Pin + ') /' + Range;
+    return [code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.scribbler_servo = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
+    var Angle = Blockly.Spin.valueToCode(this, 'SERVO_ANGLE', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var Pin = window.parseInt(this.getFieldValue('SERVO_PIN'));
+    return 'Scribbler.Servo(' + Pin + ', ' + Angle + ')\n';
 };

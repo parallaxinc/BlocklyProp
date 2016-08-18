@@ -199,12 +199,12 @@ Blockly.Spin.finish = function (code) {
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into
- * anything.  A trailing semicolon is needed to make this legal.
+ * anything.  It is fed through an empty function to make it legal.
  * @param {string} line Line of generated code.
  * @return {string} Legal line of code.
  */
 Blockly.Spin.scrubNakedValue = function (line) {
-    return line + ';\n';
+    return 'Scribbler.RunWithoutResult(' + line + ')\n';
 };
 /**
  * Encode a string as a properly escaped Spin string, complete with quotes.

@@ -182,6 +182,7 @@
                 <block type="reset_button_presses"></block>
             </category>
             <category name="Ping" colour=140>
+                <block type="scribbler_ping"></block>
             </category>
         </category>
         <category name="Actions" colour=185>
@@ -240,6 +241,13 @@
                         </block>
                     </value>
                 </block>
+                <block type="scribbler_servo">
+                    <value name="SERVO_ANGLE">
+                        <block type="math_int_angle">
+                            <field name="ANGLE_VALUE">90</field>
+                        </block>
+                    </value>
+		</block>
             </category>
             <category name="Sound" colour=185>
                 <block type="scribbler_play">
@@ -275,12 +283,24 @@
                 <block type="scribbler_LED"></block>
             </category>
             <category name="Communicate" colour=185>
-                <block type="serial_open"></block>
                 <block type="serial_send_text"></block>
                 <block type="serial_send_decimal"></block>
-                <block type="serial_send_ctrl"></block>
-                <block type="serial_clear"></block>
-                <block type="serial_cursor_xy"></block>
+                <block type="serial_send_char"></block>
+                <block type="serial_send_ctrl">
+                    <field name="SERIAL_CHAR">serial#NL</field>
+                </block>
+                <block type="serial_cursor_xy">
+                    <value name="X">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                    <value name="Y">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="serial_rx_byte"></block>
             </category>
         </category>
