@@ -29,12 +29,12 @@
                         <div class="alert alert-danger" id="unlock-error">
                             <p><fmt:message key="login.failed" /><%-- : < %=errorDescription%> --%></p>
                         </div>
-                        <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
-                        <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
                     </div>
                     <%
                         }
                     %>
+                    <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
+                    <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
                     <form id="loginform" name="loginform" action="<url:getUrl url="/login.jsp" />" method="post">
                         <div class="form-group">
                             <label for="username" ><fmt:message key="login.email" /></label>

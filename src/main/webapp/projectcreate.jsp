@@ -13,8 +13,10 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
         <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
+        <link href="<url:getCdnUrl url="/lib/simplemde.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>

@@ -33,6 +33,9 @@ $(document).ready(function () {
     $('#save-project').on('click', function () {
         saveProject();
     });
+    $('#save-project-as').on('click', function () {
+        saveProjectAs();
+    });
 
 });
 
@@ -46,11 +49,33 @@ showInfo = function (data) {
 
 saveProject = function () {
     var code = window.frames["content_blocks"].getXml();
-    projectData['code'] = code
+    projectData['code'] = code;
     $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+        var previousOwner = projectData['yours'];
         projectData = data;
         projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
         utils.showMessage("Project saved", "The project has been saved");
+        if (!previousOwner) {
+            window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+        }
+    });
+};
+
+saveProjectAs = function () {
+    utils.prompt("Save as", "Save project as", projectData['name'], function (value) {
+        if (value) {
+            var code = window.frames["content_blocks"].getXml();
+            projectData['code'] = code;
+            projectData['name'] = value;
+            $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
+                var previousOwner = projectData['yours'];
+                projectData = data;
+                projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                utils.showMessage("Project saved", "The project has been saved");
+                // Reloading project with new id
+                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+            });
+        }
     });
 };
 

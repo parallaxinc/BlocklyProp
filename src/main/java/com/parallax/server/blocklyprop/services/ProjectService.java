@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.services;
 
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import java.util.List;
@@ -16,24 +17,28 @@ import java.util.List;
  */
 public interface ProjectService {
 
+    ProjectRecord getProjectOwnedByThisUser(Long idProject);
+
     ProjectRecord getProject(Long idProject);
 
-    List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset);
+    List<ProjectRecord> getUserProjects(Long idUser, TableSort tablesSort, TableOrder order, Integer limit, Integer offset);
 
-    List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset);
+    List<ProjectRecord> getSharedProjects(TableSort tablesSort, TableOrder order, Integer limit, Integer offset);
 
     int countUserProjects(Long idUser);
 
     int countSharedProjects();
 
-    ProjectRecord saveProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
+    ProjectRecord saveProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
     ProjectRecord cloneProject(Long idProject);
 
-    ProjectRecord createProject(String name, String description, boolean privateProject, boolean sharedProject, ProjectType type, String board);
+    ProjectRecord createProject(String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
     boolean deleteProject(Long idProject);
 
     ProjectRecord saveProjectCode(Long idProject, String code);
+
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName);
 
 }

@@ -186,3 +186,8 @@ nav .nav > li > a:first-child {
     background-color: transparent;
 }
 
+.xterm-rows {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+

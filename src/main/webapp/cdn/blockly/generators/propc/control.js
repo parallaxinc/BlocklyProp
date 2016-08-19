@@ -42,7 +42,7 @@ Blockly.propc.controls_repeat = function() {
             break;
         case "TIMES":
             var repeats = Blockly.propc.valueToCode(this, 'TIMES', order) || '0';
-            code = 'for (int n = 0; n < ' + repeats + '; n++) {\n' +
+            code = 'for (int __n = 0; __n < ' + repeats + '; __n++) {\n' +
                     branch + '}\n';
             break;
         case "WHILE":
@@ -86,7 +86,6 @@ Blockly.Blocks.controls_if_return = {
                 .appendField("if");
         this.appendDummyInput()
                 .appendField("return");
-
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

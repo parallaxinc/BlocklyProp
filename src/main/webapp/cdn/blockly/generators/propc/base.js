@@ -170,7 +170,7 @@ Blockly.propc.rc_charge_discharge = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
 
-    var code = 'rc_time(' + pin + ', ' + state + ');\n';
+    var code = 'rc_time(' + pin + ', ' + state + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
@@ -189,5 +189,132 @@ Blockly.Blocks.comment = {
 Blockly.propc.comment = function() {
     var text = this.getFieldValue("COMMENT_TEXT");
 
-    return '// ' + text + '\n';
+    return '// ' + text;
+};
+
+Blockly.Blocks.cast = {
+    init: function() {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput('ITEM_TO_CAST')
+                .appendField("cast");
+        this.appendDummyInput()
+                .appendField("to")
+                .appendField(new Blockly.FieldDropdown([["int", "(int) "], ["float", "(float) "], ["char", "(char) "], ["char[128]", "(char[]) "]]), "CAST_TYPE");
+
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.cast = function() {
+    var type = this.getFieldValue("CAST_TYPE");
+    var item = Blockly.propc.valueToCode(this, 'ITEM_TO_CAST', Blockly.propc.ORDER_NONE);
+
+    var code = "" + type + item;
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.color_picker = {
+    init: function() {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField("color")
+                .appendField(new Blockly.FieldColour('#FFFFFF').setColours(["#FFFFFF", "#CCCCCC", "#C0C0C0", "#999999", "#666666", "#333333", "#000000", "#FFCCCC", "#FF6666", "#FF0000", "#CC0000", "#990000", "#660000", "#330000", "#FFCC99", "#FF9966", "#FF9900", "#FF6600", "#CC6600", "#993300", "#663300", "#FFFF99", "#FFFF66", "#FFCC66", "#FFCC33", "#CC9933", "#996633", "#663333", "#FFFFCC", "#FFFF33", "#FFFF00", "#FFCC00", "#999900", "#666600", "#333300", "#99FF99", "#66FF99", "#33FF33", "#33CC00", "#009900", "#006600", "#003300", "#99FFFF", "#33FFFF", "#66CCCC", "#00CCCC", "#339999", "#336666", "#003333", "#CCFFFF", "#66FFFF", "#33CCFF", "#3366FF", "#3333FF", "#000099", "#000066", "#CCCCFF", "#9999FF", "#6666CC", "#6633FF", "#6600CC", "#333399", "#330099", "#FFCCFF", "#FF66FF", "#CC66CC", "#CC33CC", "#993399", "#663366", "#330033"]).setColumns(7), "COLOR");
+
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.color_picker = function() {
+    var color = this.getFieldValue('COLOR');
+
+    return [color];
+};
+
+Blockly.Blocks.color_value_from = {
+    init: function() {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField("Color Value From:");
+        this.appendValueInput("RED_VALUE")
+            .appendField("Red");
+        this.appendValueInput("GREEN_VALUE")
+            .appendField("Green");
+        this.appendValueInput("BLUE_VALUE")
+            .appendField("Blue");
+
+        this.setOutput(true, "Number");
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.color_value_from = function() {
+    var red = Blockly.propc.valueToCode(this, 'RED_VALUE', Blockly.propc.ORDER_NONE);
+    var green = Blockly.propc.valueToCode(this, 'GREEN_VALUE', Blockly.propc.ORDER_NONE);
+    var blue = Blockly.propc.valueToCode(this, 'BLUE_VALUE', Blockly.propc.ORDER_NONE);
+
+    var output = ((Number(red) & 0xFF) << 16) | ((Number(green) & 0xFF) << 8) | (Number(blue) & 0xFF);
+    return [output];
+};
+
+Blockly.Blocks.get_channel_from = {
+    init: function() {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField("get")
+            .appendField(new Blockly.FieldDropdown([["Red", "0"], ["Green", "1"], ["Blue", "2"]]), "CHANNEL");
+        this.appendValueInput('VALUE')
+            .appendField("value from:");
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.get_channel_from = function() {
+    var channel = this.getFieldValue("CHANNEL");
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
+
+    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
+    var color_red = parseInt(color_mask[1], 16);
+    var color_green = parseInt(color_mask[2], 16);
+    var color_blue = parseInt(color_mask[3], 16);
+
+    if (Number(channel) === 0) {
+        return [color_red];
+    } else if (Number(channel) === 1) {
+        return [color_green];
+    } else if (Number(channel) === 2) {
+        return [color_blue];
+    }
+};
+
+Blockly.Blocks.compare_colors = {
+    init: function() {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField("compare");
+        this.appendValueInput('COLOR1')
+            .appendField("color 1:");
+        this.appendValueInput('COLOR2')
+            .appendField("color 2:");
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.compare_colors = function() {
+    var color1 = Blockly.propc.valueToCode(this, 'COLOR1', Blockly.propc.ORDER_NONE);
+    var color2 = Blockly.propc.valueToCode(this, 'COLOR2', Blockly.propc.ORDER_NONE);
+
+    var output = 255 - ((Math.abs((color1 & 0xFF0000) >> 16 - (color2 & 0xFF0000) >> 16) + Math.abs((color1 & 0xFF00) >> 8 - (color2 & 0xFF00) >> 8) + Math.abs(color1 & 0xFF - color2 & 0xFF)) / 3);
+    return [output];
 };

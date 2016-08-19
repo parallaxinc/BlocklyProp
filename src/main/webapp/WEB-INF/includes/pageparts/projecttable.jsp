@@ -10,10 +10,10 @@
 <table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="${param.url}"/>"  data-toolbar="#toolbar" data-search="true" data-side-pagination="server" data-pagination="true">
     <thead>
         <tr>
-            <th data-field="type" data-formatter="formatType" data-width="30px" data-align="center"></th>
-            <th data-field="name" data-formatter="formatProject"><fmt:message key="project.table.name" /></th>
-            <th data-field="board" data-formatter="formatBoard"><fmt:message key="project.table.board" /></th>
-            <th data-field="description"  data-formatter="formatDescription"><fmt:message key="project.table.description" /></th>
+            <th data-field="type" data-sortable="true" data-formatter="formatType" data-width="30px" data-align="center">&nbsp;</th>
+            <th data-field="name" data-sortable="true" data-formatter="formatProject"><fmt:message key="project.table.name" /></th>
+            <th data-field="board" data-sortable="true" data-formatter="formatBoard"><fmt:message key="project.table.board" /></th>
+            <th data-field="description" data-formatter="formatDescription"><fmt:message key="project.table.description" /></th>
                 <c:if test="${param.showuser}">
                 <th data-field="user" data-formatter="formatUser"><fmt:message key="project.table.user" /></th>
                 </c:if>

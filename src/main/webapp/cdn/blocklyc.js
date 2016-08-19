@@ -108,33 +108,40 @@ function init(blockly) {
 }
 
 function cloudCompile(text, action, successHandler) {
-    $("#compile-dialog-title").text(text);
-    $("#compile-console").val('');
-    $('#compile-dialog').modal('show');
 
     var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
-    propcCode = js_beautify(propcCode, {
-        'brace_style': 'expand'
-    });
-    var terminalNeeded = propcCode.indexOf("SERIAL_TERMINAL USED") > -1;
-    $.ajax({
-        'method': 'POST',
-        'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
-        'data': {"code": propcCode}
-    }).done(function (data) {
-        if (data.error) {
-            alert(data['message']);
-        } else {
-            if (data.success) {
-                $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
-                successHandler(data, terminalNeeded);
+    var isEmptyProject = propcCode.indexOf("EMPTY_PROJECT") > -1;
+    if (isEmptyProject) {
+        alert("You can't compile an empty project");
+    } else {
+        $("#compile-dialog-title").text(text);
+        $("#compile-console").val('');
+        $('#compile-dialog').modal('show');
+
+
+        propcCode = js_beautify(propcCode, {
+            'brace_style': 'expand'
+        });
+        var terminalNeeded = propcCode.indexOf("SERIAL_TERMINAL USED") > -1;
+        $.ajax({
+            'method': 'POST',
+            'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
+            'data': {"code": propcCode}
+        }).done(function (data) {
+            if (data.error) {
+                alert(data['message']);
             } else {
-                $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                if (data.success) {
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                    successHandler(data, terminalNeeded);
+                } else {
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                }
             }
-        }
-    }).fail(function (data) {
-        alert(data);
-    });
+        }).fail(function (data) {
+            alert(data);
+        });
+    }
 }
 
 /**
@@ -188,7 +195,7 @@ function serial_console() {
     var newTerminal = false;
     if (term === null) {
         term = new Terminal({
-            cols: 80,
+            cols: 256,
             rows: 24,
             useStyle: true,
             screenKeys: true

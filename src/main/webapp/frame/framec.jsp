@@ -8,7 +8,6 @@
 
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/polyfill.js"/>"></script>
-
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/toolboxfilter.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>
@@ -31,8 +30,8 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/console.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/control.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/cog.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/xbee.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/variables.js"/>"></script>
-        <!--<script type="text/javascript" src="blockly/generators/propc/pointers.js"></script>-->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/procedures.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/logic.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>
@@ -77,7 +76,7 @@
             function init(profileName, peripherals) {
                 filterToolbox(profileName, peripherals);
 
-                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>'}); // path: '/' ,
+                Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>', comments: false}); // path: '/' ,
 
                 if (window.parent.init) {
                     // Let the top-level application know that Blockly is ready.
@@ -137,9 +136,11 @@
             <block type="math_limit"></block>
             <block type="math_crement"></block>
             <block type="math_random"></block>
+            <block type="math_bitwise"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
+            <block type="cast"></block>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />" colour="220">
@@ -147,6 +148,10 @@
             <block type="string_type_block"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
+            <block type="color_picker"></block>
+            <block type="color_value_from"></block>
+            <block type="get_channel_from"></block>
+            <block type="compare_colors"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
@@ -185,6 +190,8 @@
                 <block type="oled_get_max_width"></block>
                 <block type="oled_text_size"></block>
                 <block type="oled_text_color"></block>
+                <block type="oled_get_max_height"></block>
+                <block type="oled_get_max_width"></block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
                         <block type="math_number">
@@ -364,6 +371,7 @@
                 <block type="colorpal_get_colors"></block>
             </category>
         </category>
+ <%--
         <category name="<fmt:message key="category.memory" />" include="activity-board" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_int_to"></block>
@@ -470,13 +478,12 @@
                 </block>
             </category>
         </category>
+--%>
         <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb" colour="200">
             <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">
                 <block type="rc_charge_discharge"></block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb">
-                <block type="ab_volt_v_in"></block>
-                <block type="ab_volt_v_out"></block>
                 <block type="ab_volt_in"></block>
                 <block type="ab_volt_out"></block>
             </category>
@@ -531,7 +538,13 @@
         </category>
         <category name="<fmt:message key="category.servo" />" exclude="heb" colour="180">
             <category name="<fmt:message key="category.servo.standard-servo" />">
-                <block type="servo_move"></block>
+                <block type="servo_move">
+                    <value name="ANGLE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.servo.cr-servo" />">
                 <block type="servo_speed"></block>
