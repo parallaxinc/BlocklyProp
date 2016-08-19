@@ -36,8 +36,8 @@ References
 ----------
 
 * Blockly http://code.google.com/p/blockly/
-* BlocklyDuino https://github.com/gasolin/BlocklyDuino
-* Parallax Propeller http://www.parallax.com/microcontrollers/propeller
+* BlocklyDuino https://github.com/gasolin/BlocklyDuino/
+* Parallax Propeller http://www.parallax.com/microcontrollers/propeller/
 * OpenSpin cross platform Spin/PASM Compiler https://code.google.com/p/open-source-spin-compiler/
 * Compiler https://sites.google.com/site/propellergcc/
 
