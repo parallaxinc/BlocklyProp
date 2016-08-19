@@ -48,7 +48,7 @@ Blockly.Blocks.ab_volt_out = {
                 .appendField("0-3.3V DAC output in Volts x 100")
                 .appendField("channel")
                 .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL");
-        this.appendValueInput("VALUE", Number)
+        this.appendValueInput("VALUE")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("Value");
@@ -72,7 +72,7 @@ Blockly.propc.ab_volt_in = function() {
 
 Blockly.propc.ab_volt_out = function() {
     var dropdown_channel = this.getFieldValue('CHANNEL');
-    var value = this.getFieldValue('VALUE') || '0';
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
 
     Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
     if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {
