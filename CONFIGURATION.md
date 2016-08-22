@@ -24,7 +24,7 @@ CDN and download files can be provided by the tomcat, or they can be served by a
 BlocklyProp can not work without its backend server.
 
 - Cloud session: **cloudsession.baseurl**. Defaults to: *http://localhost:5011*
-- Cloud compiler: **cloudcompiler.baseurl**. Defaults to: *http://localhost:5000*
+- Cloud compiler: **cloudcompiler.baseurl**. Defaults to: *http://localhost:5001*
 
 ## OAuth authentication providers
 The different oauth authentication providers can be enabled individually. Also the key, secret and callback url need to be configured.
