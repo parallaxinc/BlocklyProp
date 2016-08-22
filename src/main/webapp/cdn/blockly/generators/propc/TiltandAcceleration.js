@@ -117,7 +117,7 @@ Blockly.Blocks.MMA7455_acceleration = {
                 .appendField("store z-axis value")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
 
-        this.setInputsInline(true);
+        this.setInputsInline(false);
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
     },
