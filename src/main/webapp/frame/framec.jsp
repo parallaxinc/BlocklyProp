@@ -335,15 +335,6 @@
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
                 <block type="MMA7455_acceleration"></block>
             </category>
-            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
-                <block type="PAM_7Q_Init"></block>
-                <block type="PAM_7Q_Latitude"></block>
-                <block type="PAM_7Q_Longitude"></block>
-                <block type="PAM_7Q_Velocity"></block>
-                <block type="PAM_7Q_Heading"></block>
-                <block type="PAM_7Q_Altitude"></block>
-                <block type="PAM_7Q_SatsTracked"></block>
-            </category>
             <category name="<fmt:message key="category.sensor-input.ping" />">
                 <block type="sensor_ping"></block>
             </category>
