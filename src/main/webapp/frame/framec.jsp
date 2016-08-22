@@ -121,6 +121,23 @@
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
+            <block type="control_repeat_for_loop">
+                <value name="START">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+                <value name="END">
+                    <block type="math_number">
+                        <field name="NUM">10</field>
+                    </block>
+                </value>
+                <value name="STEP">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+            </block>
             <block type="base_delay">
                 <value name="DELAY_TIME">
                     <block type="math_number">
