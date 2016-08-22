@@ -74,7 +74,7 @@ Blockly.Blocks.math_limit = {
             .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
 
         this.setInputsInline(true);
-        this.setTooltip("Limit");
+        this.setTooltip("limit");
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
