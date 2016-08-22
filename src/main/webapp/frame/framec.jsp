@@ -218,6 +218,9 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
                 <block type="oled_draw_line">
                     <value name="X_ONE">
