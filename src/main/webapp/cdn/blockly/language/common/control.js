@@ -292,6 +292,7 @@ Blockly.Blocks.control_repeat_for_loop = {
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setInputsInline(true);
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
