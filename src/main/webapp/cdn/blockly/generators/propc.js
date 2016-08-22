@@ -251,6 +251,9 @@ Blockly.propc.finish = function (code) {
     if (Blockly.propc.serial_terminal_) {
         setup += "/* SERIAL_TERMINAL USED */\n";
     }
+    if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
+        setup += "/* EMPTY_PROJECT */\n";
+    }
     return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
 };
 /**

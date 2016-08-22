@@ -4,18 +4,18 @@
 
 var colorPalette = {
     defaultColors: {
-        'programming': 220,
+        'programming': 205,
         'math': 275,
         'binary': 275,
-        'io': 200,
-        'protocols': 320,
-        'ab': 305,
-        'input': 155,
-        'output': 180,
-        'robot': 290,
-        'heb': 290,
-        'functions': 240,
-        'variables': 260,
+        'io': 185,
+        'protocols': 340,
+        'ab': 320,
+        'input': 140,
+        'output': 165,
+        'robot': 295,
+        'heb': 295,
+        'functions': 225,
+        'variables': 250,
     },
     activePalette: null,
     getColor: function (type) {

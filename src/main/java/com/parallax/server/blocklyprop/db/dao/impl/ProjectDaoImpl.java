@@ -8,6 +8,7 @@ package com.parallax.server.blocklyprop.db.dao.impl;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.Tables;
@@ -54,26 +55,27 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public ProjectRecord createProject(String name, String description, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord createProject(String name, String description, String descriptionHtml, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
-        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.BOARD, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED)
-                .values(idUser, idCloudUser, name, description, code, type, board, privateProject, sharedProject).returning().fetchOne();
+        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.DESCRIPTION_HTML, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.BOARD, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED)
+                .values(idUser, idCloudUser, name, description, descriptionHtml, code, type, board, privateProject, sharedProject).returning().fetchOne();
 
         return record;
     }
 
     @Override
-    public ProjectRecord createProject(String name, String description, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
-        return createProject(name, description, "", type, board, privateProject, sharedProject);
+    public ProjectRecord createProject(String name, String description, String descriptionHtml, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
+        return createProject(name, description, descriptionHtml, "", type, board, privateProject, sharedProject);
     }
 
     @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject) {
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
             record.setDescription(description);
+            record.setDescriptionHtml(descriptionHtml);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
             record.update();
@@ -83,11 +85,12 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, String code, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, String code, boolean privateProject, boolean sharedProject) {
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
             record.setDescription(description);
+            record.setDescriptionHtml(descriptionHtml);
             record.setCode(code);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
@@ -109,7 +112,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset) {
+    public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
         if (TableOrder.desc == order) {
             orderField = Tables.PROJECT.NAME.desc();
@@ -118,10 +121,10 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset, Long idUser) {
-        SortField<String> orderField = Tables.PROJECT.NAME.asc();
+    public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
+        SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
         if (TableOrder.desc == order) {
-            orderField = Tables.PROJECT.NAME.desc();
+            orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
         }
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
         if (idUser != null) {
@@ -151,23 +154,23 @@ public class ProjectDaoImpl implements ProjectDao {
             throw new NullPointerException("Project doesn't exist");
         }
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        if (original.getIdUser().equals(idUser) || original.getShared()) {
+        if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
             return doProjectClone(original);
         }
         return null;
     }
 
     private ProjectRecord doProjectClone(ProjectRecord original) {
-        ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
+        ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getDescriptionHtml(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
         cloned.setBasedOn(original.getId());
+        cloned.update();
+        create.update(Tables.PROJECT).set(Tables.PROJECT.BASED_ON, original.getId()).where(Tables.PROJECT.ID.equal(cloned.getId()));
         return cloned;
     }
 
     @Override
     public boolean deleteProject(Long idProject) {
-        ProjectRecord project = getProject(idProject);
-        project.delete();
-        return true;
+        return create.deleteFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).execute() > 0;
     }
 
     @Override
@@ -191,6 +194,16 @@ public class ProjectDaoImpl implements ProjectDao {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+        ProjectRecord newProject = cloneProject(idProject);
+        newProject.setCode(code);
+        newProject.setName(newName);
+        // newProject.update();
+        create.update(Tables.PROJECT).set(Tables.PROJECT.CODE, code).set(Tables.PROJECT.NAME, newName).where(Tables.PROJECT.ID.equal(newProject.getId()));
+        return newProject;
     }
 
 }

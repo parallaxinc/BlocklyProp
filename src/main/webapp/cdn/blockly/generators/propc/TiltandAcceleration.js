@@ -183,11 +183,11 @@ Blockly.propc.MX2125_acceleration_xaxis = function () {
 };
 
 Blockly.propc.MX2125_acceleration_yaxis = function () {
-    var pin = this.getFieldValue('PINY');
-
     Blockly.propc.definitions_["include_mx2125"] = '#include "mx2125.h"';
 
+    var pin = this.getFieldValue('PINY');
     var code = 'mx_accel(' + pin + ')';
+
     return [code, Blockly.propc.ORDER_NONE];
 };
 

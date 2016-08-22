@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.31, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: blocklyprop
 -- ------------------------------------------------------
--- Server version	5.6.26-log
+-- Server version	5.6.31-0ubuntu0.14.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,92 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `admin` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `db_version` int(11) NOT NULL,
+  `db_script` varchar(255) NOT NULL,
+  `notes` varchar(255) DEFAULT NULL,
+  `last_change_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `friend`
+--
+
+DROP TABLE IF EXISTS `friend`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `friend` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idRequestUser` bigint(20) NOT NULL,
+  `idRequestedUser` bigint(20) NOT NULL,
+  `requested` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `accepted` datetime NOT NULL,
+  `request_sent_count` int(11) NOT NULL DEFAULT '0',
+  `request_last_sent` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `friend_idRequestUser_idRequestedUser_uindex` (`idRequestUser`,`idRequestedUser`),
+  KEY `friend_requested_user_id_fk` (`idRequestedUser`),
+  CONSTRAINT `friend_request_user_id_fk` FOREIGN KEY (`idRequestUser`) REFERENCES `user` (`id`),
+  CONSTRAINT `friend_requested_user_id_fk` FOREIGN KEY (`idRequestedUser`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `friend_request`
+--
+
+DROP TABLE IF EXISTS `friend_request`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `friend_request` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idRequestUser` bigint(20) NOT NULL,
+  `idRequestedUser` bigint(20) NOT NULL,
+  `requested` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `request_sent_count` int(11) NOT NULL DEFAULT '0',
+  `request_last_sent` datetime DEFAULT CURRENT_TIMESTAMP,
+  `refused` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `friend_request_idRequestUser_idRequestedUser_uindex` (`idRequestUser`,`idRequestedUser`),
+  KEY `friend_request_requested_user_id_fk` (`idRequestedUser`),
+  CONSTRAINT `friend_request_request_user_id_fk` FOREIGN KEY (`idRequestUser`) REFERENCES `user` (`id`),
+  CONSTRAINT `friend_request_requested_user_id_fk` FOREIGN KEY (`idRequestedUser`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `friend_request_email`
+--
+
+DROP TABLE IF EXISTS `friend_request_email`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `friend_request_email` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `idRequestUser` bigint(20) NOT NULL,
+  `email` bigint(20) NOT NULL,
+  `accept_Key` varchar(255) NOT NULL,
+  `requested` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `request_sent_count` int(11) NOT NULL DEFAULT '0',
+  `request_last_sent` datetime DEFAULT CURRENT_TIMESTAMP,
+  `refused` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `accept_Key` (`accept_Key`),
+  UNIQUE KEY `friend_request_email_idRequestUser_idRequestedUser_uindex` (`idRequestUser`,`email`),
+  CONSTRAINT `friend_request_email_request_user_id_fk` FOREIGN KEY (`idRequestUser`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `project`
@@ -28,6 +114,7 @@ CREATE TABLE `project` (
   `id_clouduser` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` longtext,
+  `description_html` longtext,
   `code` longtext,
   `type` varchar(45) NOT NULL,
   `board` varchar(45) NOT NULL,
@@ -37,7 +124,27 @@ CREATE TABLE `project` (
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `based_on` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_sharing`
+--
+
+DROP TABLE IF EXISTS `project_sharing`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_sharing` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_project` bigint(20) NOT NULL,
+  `sharekey` varchar(255) NOT NULL,
+  `expires` bit(1) DEFAULT b'0',
+  `exprire_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `project_sharing_id_project_sharekey_uindex` (`id_project`,`sharekey`),
+  KEY `project_sharing_sharekey_index` (`sharekey`),
+  CONSTRAINT `project_sharing_project_id_fk` FOREIGN KEY (`id_project`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +172,7 @@ CREATE TABLE `sec_role` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +236,7 @@ CREATE TABLE `user` (
   `idCloudSession` bigint(20) NOT NULL,
   `screenname` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -141,4 +248,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-27 22:51:01
+-- Dump completed on 2016-08-10 18:31:37

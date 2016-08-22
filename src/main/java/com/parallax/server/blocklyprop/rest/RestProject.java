@@ -13,6 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
@@ -56,9 +57,9 @@ public class RestProject {
     @Detail("Get all projects for the authenticated user")
     @Name("Get all projects for the authenticated user")
     @Produces("application/json")
-    public Response get(@QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        List<ProjectRecord> userProjects = projectService.getUserProjects(idUser, order, limit, offset);
+        List<ProjectRecord> userProjects = projectService.getUserProjects(idUser, sort, order, limit, offset);
         int projectCount = projectService.countUserProjects(idUser);
 
         JsonObject result = new JsonObject();
@@ -113,11 +114,29 @@ public class RestProject {
     }
 
     @POST
+    @Path("/code-as")
+    @Detail("Save project code")
+    @Name("Save project code")
+    @Produces("application/json")
+    public Response saveProjectCodeAs(@FormParam("id") Long idProject, @FormParam("code") String code, @FormParam("name") String newName) {
+        try {
+            ProjectRecord savedProject = projectService.saveProjectCodeAs(idProject, code, newName);
+            JsonObject result = projectConverter.toJson(savedProject);
+
+            result.addProperty("success", true);
+
+            return Response.ok(result.toString()).build();
+        } catch (AuthorizationException ae) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
+    @POST
     @Path("/")
     @Detail("Save project")
     @Name("Save project")
     @Produces("application/json")
-    public Response saveProject(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("sharing") String projectSharing, @FormParam("type") ProjectType type, @FormParam("board") String board) {
+    public Response saveProject(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("description-html") String descriptionHtml, @FormParam("sharing") String projectSharing, @FormParam("type") ProjectType type, @FormParam("board") String board) {
         try {
             boolean privateProject = false;
             boolean sharedProject = false;
@@ -126,7 +145,7 @@ public class RestProject {
             } else if ("shared".equalsIgnoreCase(projectSharing)) {
                 sharedProject = true;
             }
-            ProjectRecord savedProject = projectService.saveProject(idProject, name, description, privateProject, sharedProject, type, board);
+            ProjectRecord savedProject = projectService.saveProject(idProject, name, description, descriptionHtml, privateProject, sharedProject, type, board);
             JsonObject result = projectConverter.toJson(savedProject);
 
             result.addProperty("success", true);

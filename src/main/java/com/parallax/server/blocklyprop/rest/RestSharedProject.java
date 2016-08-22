@@ -13,6 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
@@ -53,8 +54,10 @@ public class RestSharedProject {
     @Detail("Get all shared projects")
     @Name("Get all shared projects")
     @Produces("application/json")
-    public Response get(@QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
-        List<ProjectRecord> projects = projectService.getSharedProjects(order, limit, offset);
+    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+        System.out.println("Sort: " + sort);
+
+        List<ProjectRecord> projects = projectService.getSharedProjects(sort, order, limit, offset);
         int projectCount = projectService.countSharedProjects();
 
         JsonObject result = new JsonObject();

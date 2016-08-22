@@ -7,12 +7,16 @@ package com.parallax.server.blocklyprop.converter;
 
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.generated.tables.pojos.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
+import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.ProjectService;
+import com.parallax.server.blocklyprop.services.ProjectSharingService;
 import com.parallax.server.blocklyprop.services.UserService;
 import com.parallax.server.blocklyprop.utils.DateConversion;
+import java.util.List;
 
 /**
  *
@@ -20,8 +24,15 @@ import com.parallax.server.blocklyprop.utils.DateConversion;
  */
 public class ProjectConverter {
 
+    private ProjectDao projectDao;
     private UserService userService;
     private ProjectService projectService;
+    private ProjectSharingService projectSharingService;
+
+    @Inject
+    public void setProjectDao(ProjectDao projectDao) {
+        this.projectDao = projectDao;
+    }
 
     @Inject
     public void setUserService(UserService userService) {
@@ -31,6 +42,11 @@ public class ProjectConverter {
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @Inject
+    public void setProjectSharingService(ProjectSharingService projectSharingService) {
+        this.projectSharingService = projectSharingService;
     }
 
     public JsonObject toListJson(ProjectRecord project) {
@@ -59,6 +75,7 @@ public class ProjectConverter {
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
         result.addProperty("description", project.getDescription());
+        result.addProperty("description-html", project.getDescriptionHtml());
         result.addProperty("type", project.getType().name());
         result.addProperty("board", project.getBoard());
         result.addProperty("private", project.getPrivate());
@@ -69,11 +86,17 @@ public class ProjectConverter {
         result.addProperty("yours", isYours);
         if (!isYours) {
             result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+
+        } else {
+            List<ProjectSharingRecord> projectSharingRecords = projectSharingService.getSharingInfo(project.getId());
+            if (projectSharingRecords != null && !projectSharingRecords.isEmpty()) {
+                result.addProperty("share-key", projectSharingRecords.get(0).getSharekey());
+            }
         }
 
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
-            ProjectRecord basedOnProject = projectService.getProject(project.getBasedOn());
+            ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
             basedOn.addProperty("id", basedOnProject.getId());
             basedOn.addProperty("name", basedOnProject.getName());
             boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
@@ -92,6 +115,7 @@ public class ProjectConverter {
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
         result.addProperty("description", project.getDescription());
+        result.addProperty("description-html", project.getDescriptionHtml());
         result.addProperty("type", project.getType().name());
         result.addProperty("board", project.getBoard());
         result.addProperty("private", project.getPrivate());
@@ -105,7 +129,7 @@ public class ProjectConverter {
 
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
-            ProjectRecord basedOnProject = projectService.getProject(project.getBasedOn());
+            ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
             basedOn.addProperty("id", basedOnProject.getId());
             basedOn.addProperty("name", basedOnProject.getName());
             boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());

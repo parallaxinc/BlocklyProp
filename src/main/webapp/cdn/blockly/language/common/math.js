@@ -47,6 +47,26 @@ Blockly.Blocks['math_number'] = {
     }
 };
 
+Blockly.Blocks.math_integer = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
+
+        this.setOutput(true, 'Number');
+        this.setColour(colorPalette.getColor('math'));
+    }
+};
+
+Blockly.Blocks.math_int_angle = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldAngle('90', Blockly.FieldTextInput.numberValidator), 'ANGLE_VALUE');
+
+        this.setOutput(true, 'Number');
+        this.setColour(colorPalette.getColor('math'));
+    }
+};
+
 Blockly.Blocks['math_arithmetic'] = {
     /**
      * Block for basic arithmetic operator.

@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.db.dao;
 
 import com.parallax.server.blocklyprop.TableOrder;
+import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import java.util.List;
@@ -18,19 +19,19 @@ public interface ProjectDao {
 
     ProjectRecord getProject(Long idProject);
 
-    ProjectRecord createProject(String name, String description, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject);
+    ProjectRecord createProject(String name, String description, String descriptionHtml, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject);
 
-    ProjectRecord createProject(String name, String description, ProjectType type, String board, boolean privateProject, boolean sharedProject);
+    ProjectRecord createProject(String name, String description, String descriptionHtml, ProjectType type, String board, boolean privateProject, boolean sharedProject);
 
-    ProjectRecord updateProject(Long idProject, String name, String description, boolean privateProject, boolean sharedProject);
+    ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject);
 
-    ProjectRecord updateProject(Long idProject, String name, String description, String code, boolean privateProject, boolean sharedProject);
+    ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, String code, boolean privateProject, boolean sharedProject);
 
     ProjectRecord saveCode(Long idProject, String code);
 
-    List<ProjectRecord> getUserProjects(Long idUser, TableOrder order, Integer limit, Integer offset);
+    List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset);
 
-    List<ProjectRecord> getSharedProjects(TableOrder order, Integer limit, Integer offset, Long idUser);
+    List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser);
 
     int countUserProjects(Long idUser);
 
@@ -41,5 +42,7 @@ public interface ProjectDao {
     boolean deleteProject(Long idProject);
 
     ProjectRecord updateProjectCode(Long idProject, String code);
+
+    ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName);
 
 }

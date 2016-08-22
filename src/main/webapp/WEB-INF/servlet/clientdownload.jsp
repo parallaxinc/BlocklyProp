@@ -42,11 +42,19 @@
                     <div class="clients">
                         <div class="client MacOS">
                             <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
+                            <a href="${properties:downloadfiles('/BlocklyPropClient-installer.dmg')}"><fmt:message key="clientdownload.client.macos.installer" /></a>
+                        </div>
+                        <div class="client MacOS">
+                            <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
                             <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}"><fmt:message key="clientdownload.client.macos" /></a>
                         </div>
                         <!--<div class="client Windows">
                             Windows 32bit client
                         </div>-->
+                        <div class="client Windows">
+                            <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
+                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup.exe')}"><fmt:message key="clientdownload.client.windows64.installer" /></a>
+                        </div>
                         <div class="client Windows">
                             <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
                             <a href="${properties:downloadfiles('/blocklyprop-client-win64.zip')}"><fmt:message key="clientdownload.client.windows64" /></a>

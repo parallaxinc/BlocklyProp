@@ -68,18 +68,18 @@ Blockly.Spin.controls_if = function () {
     var argument = Blockly.Spin.valueToCode(this, 'IF' + n,
             Blockly.Spin.ORDER_NONE) || 'FALSE';
     var branch = Blockly.Spin.statementToCode(this, 'DO' + n);
-    var code = 'if ' + argument + '\n' + branch + '\n';
+    var code = 'if ' + argument + '\n' + branch;
     for (n = 1; n <= this.elseifCount_; n++) {
         argument = Blockly.Spin.valueToCode(this, 'IF' + n,
                 Blockly.Spin.ORDER_NONE) || 'FALSE';
         branch = Blockly.Spin.statementToCode(this, 'DO' + n);
-        code += ' elseif ' + argument + '\n' + branch + '';
+        code += 'elseif ' + argument + '\n' + branch + '';
     }
     if (this.elseCount_) {
         branch = Blockly.Spin.statementToCode(this, 'ELSE');
-        code += 'else\n' + branch + '\n';
+        code += 'else\n' + branch;
     }
-    return code + '\n';
+    return code;
 };
 
 

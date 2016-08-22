@@ -61,7 +61,7 @@ Blockly.Blocks.rfid_enable = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("enable RFID enable pin")
+            .appendField("enable RFID  enable pin")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_IN");
         this.appendDummyInput()
             .appendField("sout pin")

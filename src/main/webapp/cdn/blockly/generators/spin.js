@@ -42,7 +42,7 @@ if (!Blockly.Spin.RESERVED_WORDS_) {
 
 Blockly.Spin.RESERVED_WORDS_ +=
         // http://arduino.cc/en/Reference/HomePage
-        'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,interger, constants,floating,point,void,bookean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
+        'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,integer,constants,floating,point,void,boolean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
         ;
 /**
  * Order of operation ENUMs.
@@ -191,17 +191,20 @@ Blockly.Spin.finish = function (code) {
     if (Blockly.Spin.serial_terminal_) {
         setup += "'SERIAL_TERMINAL USED\n";
     }
+    if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
+        setup += "'EMPTY_PROJECT\n";
+    }
     setup += 'CON\n  _clkmode = xtal1 + pll16x\n  _xinfreq = 5_000_000\n\n';
     return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code + '\n\n' + methods.join('\n');
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into
- * anything.  A trailing semicolon is needed to make this legal.
+ * anything.  It is fed through an empty function to make it legal.
  * @param {string} line Line of generated code.
  * @return {string} Legal line of code.
  */
 Blockly.Spin.scrubNakedValue = function (line) {
-    return line + ';\n';
+    return 'Scribbler.RunWithoutResult(' + line + ')\n';
 };
 /**
  * Encode a string as a properly escaped Spin string, complete with quotes.

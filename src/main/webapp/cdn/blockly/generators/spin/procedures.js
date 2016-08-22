@@ -37,18 +37,7 @@ Blockly.Spin.procedures_defreturn = function () {
     if (returnValue) {
         returnValue = '  return ' + returnValue + '\n';
     }
-    var args = [];
-    for (var x = 0; x < this.arguments_.length; x++) {
-//        args[x] = this.arguments_[x];
-//        console.log("argument", this.arguments_[x]);
-        var varName = Blockly.Spin.variableDB_.getName(this.arguments_[x],
-                Blockly.Variables.NAME_TYPE);
-        args.push(varName);
-        if (Blockly.Spin.vartype_[varName] === undefined) {
-            Blockly.Spin.vartype_[varName] = 'LOCAL';
-        }
-    }
-    var code = 'PUB' + ' ' + funcName + '(' + args.join(', ') + ') \n' +
+    var code = 'PUB' + ' ' + funcName + '\n' + branch + returnValue + '\n';
             branch + returnValue + '\n';
     code = Blockly.Spin.scrub_(this, code);
     Blockly.Spin.definitions_[funcName] = code;
@@ -63,12 +52,7 @@ Blockly.Spin.procedures_callreturn = function () {
     // Call a procedure with a return value.
     var funcName = Blockly.Spin.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
-    var args = [];
-    for (var x = 0; x < this.arguments_.length; x++) {
-        args[x] = Blockly.Spin.valueToCode(this, 'ARG' + x,
-                Blockly.Spin.ORDER_NONE) || 'null';
-    }
-    var code = funcName + '(' + args.join(', ') + ')';
+    var code = funcName;
     return [code, Blockly.Spin.ORDER_UNARY_POSTFIX];
 };
 
@@ -76,12 +60,7 @@ Blockly.Spin.procedures_callnoreturn = function () {
     // Call a procedure with no return value.
     var funcName = Blockly.Spin.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
-    var args = [];
-    for (var x = 0; x < this.arguments_.length; x++) {
-        args[x] = Blockly.Spin.valueToCode(this, 'ARG' + x,
-                Blockly.Spin.ORDER_NONE) || 'null';
-    }
-    var code = funcName + '(' + args.join(', ') + ')\n';
+    var code = funcName + '\n';
     return code;
 };
 

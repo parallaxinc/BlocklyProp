@@ -4,8 +4,12 @@
 package com.parallax.server.blocklyprop.db.generated;
 
 
-import com.parallax.server.blocklyprop.db.generated.tables.Authenticationtoken;
+import com.parallax.server.blocklyprop.db.generated.tables.Admin;
+import com.parallax.server.blocklyprop.db.generated.tables.Friend;
+import com.parallax.server.blocklyprop.db.generated.tables.FriendRequest;
+import com.parallax.server.blocklyprop.db.generated.tables.FriendRequestEmail;
 import com.parallax.server.blocklyprop.db.generated.tables.Project;
+import com.parallax.server.blocklyprop.db.generated.tables.ProjectSharing;
 import com.parallax.server.blocklyprop.db.generated.tables.ProjectTag;
 import com.parallax.server.blocklyprop.db.generated.tables.SecRole;
 import com.parallax.server.blocklyprop.db.generated.tables.SecUserRole;
@@ -36,7 +40,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Blocklyprop extends SchemaImpl {
 
-	private static final long serialVersionUID = 1874177776;
+	private static final long serialVersionUID = 1921408057;
 
 	/**
 	 * The reference instance of <code>blocklyprop</code>
@@ -59,8 +63,12 @@ public class Blocklyprop extends SchemaImpl {
 
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
-			Authenticationtoken.AUTHENTICATIONTOKEN,
+			Admin.ADMIN,
+			Friend.FRIEND,
+			FriendRequest.FRIEND_REQUEST,
+			FriendRequestEmail.FRIEND_REQUEST_EMAIL,
 			Project.PROJECT,
+			ProjectSharing.PROJECT_SHARING,
 			ProjectTag.PROJECT_TAG,
 			SecRole.SEC_ROLE,
 			SecUserRole.SEC_USER_ROLE,

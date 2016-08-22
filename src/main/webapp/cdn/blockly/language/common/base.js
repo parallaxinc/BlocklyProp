@@ -86,8 +86,25 @@ Blockly.Blocks.rc_charge_discharge = {
             .appendField(new Blockly.FieldDropdown([["charge", "0"], ["discharge", "1"]]), "STATE");
         this.appendDummyInput("")
             .appendField("pin#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-
+            .appendField(new Blockly.FieldDropdown(
+                [
+                    ["0","0"],
+                    ["1","1"],
+                    ["2","2"],
+                    ["3","3"],
+                    ["4","4"],
+                    ["5","5"],
+                    ["6","6"],
+                    ["7","7"],
+                    ["8","8"],
+                    ["9","9"],
+                    ["10","10"],
+                    ["11","11"],
+                    ["12","12"],
+                    ["13","13"],
+                    ["14","14"],
+                    ["15","15"]
+                ]), "PIN");
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);

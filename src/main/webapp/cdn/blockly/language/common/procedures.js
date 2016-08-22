@@ -30,7 +30,6 @@
 
 
 
-
 Blockly.Blocks['procedures_defnoreturn'] = {
     /**
      * Block for defining a procedure with no return value.
@@ -46,9 +45,9 @@ Blockly.Blocks['procedures_defnoreturn'] = {
                 .appendField(nameField, 'NAME')
                 .appendField('', 'PARAMS');
         this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
-        if (Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT) {
-            this.setCommentText(Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT);
-        }
+        /* if (Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT) {
+         this.setCommentText(Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT);
+         }*/
         this.setColour(colorPalette.getColor('functions'));
         this.setTooltip(Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP);
         this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
@@ -339,58 +338,6 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     callType_: 'procedures_callnoreturn'
 };
 
-Blockly.Blocks['procedures_defreturn'] = {
-    /**
-     * Block for defining a procedure with a return value.
-     * @this Blockly.Block
-     */
-    init: function () {
-        var nameField = new Blockly.FieldTextInput(
-                Blockly.Msg.PROCEDURES_DEFRETURN_PROCEDURE,
-                Blockly.Procedures.rename);
-        nameField.setSpellcheck(false);
-        this.appendDummyInput()
-                .appendField(Blockly.Msg.PROCEDURES_DEFRETURN_TITLE)
-                .appendField(nameField, 'NAME')
-                .appendField('', 'PARAMS');
-        this.appendValueInput('RETURN')
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
-        this.setMutator(new Blockly.Mutator(['procedures_mutatorarg']));
-        if (Blockly.Msg.PROCEDURES_DEFRETURN_COMMENT) {
-            this.setCommentText(Blockly.Msg.PROCEDURES_DEFRETURN_COMMENT);
-        }
-        this.setColour(colorPalette.getColor('functions'));
-        this.setTooltip(Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP);
-        this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFRETURN_HELPURL);
-        this.arguments_ = [];
-        this.setStatements_(true);
-        this.statementConnection_ = null;
-    },
-    setStatements_: Blockly.Blocks['procedures_defnoreturn'].setStatements_,
-    validate: Blockly.Blocks['procedures_defnoreturn'].validate,
-    updateParams_: Blockly.Blocks['procedures_defnoreturn'].updateParams_,
-    mutationToDom: Blockly.Blocks['procedures_defnoreturn'].mutationToDom,
-    domToMutation: Blockly.Blocks['procedures_defnoreturn'].domToMutation,
-    decompose: Blockly.Blocks['procedures_defnoreturn'].decompose,
-    compose: Blockly.Blocks['procedures_defnoreturn'].compose,
-    dispose: Blockly.Blocks['procedures_defnoreturn'].dispose,
-    /**
-     * Return the signature of this procedure definition.
-     * @return {!Array} Tuple containing three elements:
-     *     - the name of the defined procedure,
-     *     - a list of all its arguments,
-     *     - that it DOES have a return value.
-     * @this Blockly.Block
-     */
-    getProcedureDef: function () {
-        return [this.getFieldValue('NAME'), this.arguments_, true];
-    },
-    getVars: Blockly.Blocks['procedures_defnoreturn'].getVars,
-    renameVar: Blockly.Blocks['procedures_defnoreturn'].renameVar,
-    customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
-    callType_: 'procedures_callreturn'
-};
 
 Blockly.Blocks['procedures_mutatorcontainer'] = {
     /**
@@ -708,91 +655,4 @@ Blockly.Blocks['procedures_callreturn'] = {
     domToMutation: Blockly.Blocks['procedures_callnoreturn'].domToMutation,
     renameVar: Blockly.Blocks['procedures_callnoreturn'].renameVar,
     customContextMenu: Blockly.Blocks['procedures_callnoreturn'].customContextMenu
-};
-
-Blockly.Blocks['procedures_ifreturn'] = {
-    /**
-     * Block for conditionally returning a value from a procedure.
-     * @this Blockly.Block
-     */
-    init: function () {
-        this.appendValueInput('CONDITION')
-                .setCheck('Boolean')
-                .appendField(Blockly.Msg.CONTROLS_IF_MSG_IF);
-        this.appendValueInput('VALUE')
-                .appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
-        this.setInputsInline(true);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(colorPalette.getColor('functions'));
-        this.setTooltip(Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP);
-        this.setHelpUrl(Blockly.Msg.PROCEDURES_IFRETURN_HELPURL);
-        this.hasReturnValue_ = true;
-    },
-    /**
-     * Create XML to represent whether this block has a return value.
-     * @return {!Element} XML storage element.
-     * @this Blockly.Block
-     */
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
-        container.setAttribute('value', Number(this.hasReturnValue_));
-        return container;
-    },
-    /**
-     * Parse XML to restore whether this block has a return value.
-     * @param {!Element} xmlElement XML storage element.
-     * @this Blockly.Block
-     */
-    domToMutation: function (xmlElement) {
-        var value = xmlElement.getAttribute('value');
-        this.hasReturnValue_ = (value == 1);
-        if (!this.hasReturnValue_) {
-            this.removeInput('VALUE');
-            this.appendDummyInput('VALUE')
-                    .appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
-        }
-    },
-    /**
-     * Called whenever anything on the workspace changes.
-     * Add warning if this flow block is not nested inside a loop.
-     * @param {!Blockly.Events.Abstract} e Change event.
-     * @this Blockly.Block
-     */
-    onchange: function (e) {
-        var legal = false;
-        // Is the block nested in a procedure?
-        var block = this;
-        do {
-            if (this.FUNCTION_TYPES.indexOf(block.type) != -1) {
-                legal = true;
-                break;
-            }
-            block = block.getSurroundParent();
-        } while (block);
-        if (legal) {
-            // If needed, toggle whether this block has a return value.
-            if (block.type == 'procedures_defnoreturn' && this.hasReturnValue_) {
-                this.removeInput('VALUE');
-                this.appendDummyInput('VALUE')
-                        .appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
-                this.hasReturnValue_ = false;
-            } else if (block.type == 'procedures_defreturn' &&
-                    !this.hasReturnValue_) {
-                this.removeInput('VALUE');
-                this.appendValueInput('VALUE')
-                        .appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
-                this.hasReturnValue_ = true;
-            }
-            this.setWarningText(null);
-        } else {
-            this.setWarningText(Blockly.Msg.PROCEDURES_IFRETURN_WARNING);
-        }
-    },
-    /**
-     * List of block types that are functions and thus do not need warnings.
-     * To add a new function type add this to your code:
-     * Blockly.Blocks['procedures_ifreturn'].FUNCTION_TYPES.push('custom_func');
-     */
-    FUNCTION_TYPES: ['procedures_defnoreturn', 'procedures_defreturn']
 };

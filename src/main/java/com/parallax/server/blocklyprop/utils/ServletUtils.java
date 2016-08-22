@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.utils;
 
 import com.google.common.base.Strings;
+import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +36,23 @@ public class ServletUtils {
             return language;
         }
         return null;
+    }
+
+    public static String getCdnUrl(String url, boolean isSecure) {
+        if (!Strings.isNullOrEmpty(url)) {
+            // System.out.println("Geturl: " + url);
+
+            String cdnUrl = Properties.getConfiguration().getString("cdnfiles.baseurl");
+            if (isSecure) {
+                cdnUrl = cdnUrl.replaceFirst("http://", "https://");
+                cdnUrl = Properties.getConfiguration().getString("cdnfiles.baseurl.https", cdnUrl);
+            }
+
+            return cdnUrl + (url.startsWith("/") ? "" : "/") + url;
+        } else {
+            System.out.println("Url = null or empty");
+            return "";
+        }
     }
 
 }
