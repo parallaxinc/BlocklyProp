@@ -314,9 +314,6 @@
             </category>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" exclude="heb" colour="155">
-            <category name="<fmt:message key="category.sensor-input.etape" />">
-                <block type="etape_rc_time"></block>
-            </category>
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
