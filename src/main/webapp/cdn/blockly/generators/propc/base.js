@@ -238,13 +238,13 @@ Blockly.Blocks.color_value_from = {
     init: function() {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-            .appendField("Color Value From:");
+            .appendField("color value from:");
         this.appendValueInput("RED_VALUE")
-            .appendField("Red");
+            .appendField("red");
         this.appendValueInput("GREEN_VALUE")
-            .appendField("Green");
+            .appendField("green");
         this.appendValueInput("BLUE_VALUE")
-            .appendField("Blue");
+            .appendField("blue");
 
         this.setOutput(true, "Number");
         this.setInputsInline(true);
@@ -254,11 +254,11 @@ Blockly.Blocks.color_value_from = {
 };
 
 Blockly.propc.color_value_from = function() {
-    var red = Blockly.propc.valueToCode(this, 'RED_VALUE', Blockly.propc.ORDER_NONE);
-    var green = Blockly.propc.valueToCode(this, 'GREEN_VALUE', Blockly.propc.ORDER_NONE);
-    var blue = Blockly.propc.valueToCode(this, 'BLUE_VALUE', Blockly.propc.ORDER_NONE);
+    var red = Blockly.propc.valueToCode(this, 'RED_VALUE', Blockly.propc.ORDER_NONE) || '0';
+    var green = Blockly.propc.valueToCode(this, 'GREEN_VALUE', Blockly.propc.ORDER_NONE) || '0';
+    var blue = Blockly.propc.valueToCode(this, 'BLUE_VALUE', Blockly.propc.ORDER_NONE) || '0';
 
-    var output = ((Number(red) & 0xFF) << 16) | ((Number(green) & 0xFF) << 8) | (Number(blue) & 0xFF);
+    var output = Number(((1 << 24) + (Number(red) << 16) + (Number(green) << 8) + Number(blue)).toString(16).slice(1));
     return [output];
 };
 
@@ -312,9 +312,9 @@ Blockly.Blocks.compare_colors = {
 };
 
 Blockly.propc.compare_colors = function() {
-    var color1 = Blockly.propc.valueToCode(this, 'COLOR1', Blockly.propc.ORDER_NONE);
-    var color2 = Blockly.propc.valueToCode(this, 'COLOR2', Blockly.propc.ORDER_NONE);
+    var color1 = Blockly.propc.valueToCode(this, 'COLOR1', Blockly.propc.ORDER_NONE) || '0';
+    var color2 = Blockly.propc.valueToCode(this, 'COLOR2', Blockly.propc.ORDER_NONE) || '0';
 
-    var output = 255 - ((Math.abs((color1 & 0xFF0000) >> 16 - (color2 & 0xFF0000) >> 16) + Math.abs((color1 & 0xFF00) >> 8 - (color2 & 0xFF00) >> 8) + Math.abs(color1 & 0xFF - color2 & 0xFF)) / 3);
+    var output = 255 - ((Math.abs((Number(color1) & 0xFF0000) >> 16 - (Number(color2) & 0xFF0000) >> 16) + Math.abs((Number(color1) & 0xFF00) >> 8 - (Number(color2) & 0xFF00) >> 8) + Math.abs(Number(color1) & 0xFF - Number(color2) & 0xFF)) / 3);
     return [output];
 };
