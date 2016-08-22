@@ -121,6 +121,23 @@
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
+            <block type="control_repeat_for_loop">
+                <value name="START">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+                <value name="END">
+                    <block type="math_number">
+                        <field name="NUM">10</field>
+                    </block>
+                </value>
+                <value name="STEP">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+            </block>
             <block type="base_delay">
                 <value name="DELAY_TIME">
                     <block type="math_number">
@@ -188,7 +205,14 @@
                 <block type="oled_get_max_height"></block>
                 <block type="oled_get_max_width"></block>
                 <block type="oled_clear_screen"></block>
-                <block type="oled_text_color"></block>
+                <block type="oled_text_color">
+                    <value name="FONT_COLOR">
+                        <block type="color_picker"></block>
+                    </value>
+                    <value name="BACKGROUND_COLOR">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="oled_text_size"></block>
                 <block type="oled_draw_pixel">
                     <value name="X_AXIS">
@@ -200,6 +224,9 @@
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
                     </value>
                 </block>
                 <block type="oled_draw_line">
@@ -222,6 +249,9 @@
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
                     </value>
                 </block>
                 <block type="oled_draw_triangle">
@@ -255,6 +285,9 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
                 <block type="oled_draw_rectangle">
                     <value name="POINT_X">
@@ -277,6 +310,9 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
@@ -293,6 +329,9 @@
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
                     </value>
                 </block>
             </category>
@@ -314,9 +353,6 @@
             </category>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" exclude="heb" colour="155">
-            <category name="<fmt:message key="category.sensor-input.etape" />">
-                <block type="etape_rc_time"></block>
-            </category>
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
@@ -334,15 +370,6 @@
             </category>
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
                 <block type="MMA7455_acceleration"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
-                <block type="PAM_7Q_Init"></block>
-                <block type="PAM_7Q_Latitude"></block>
-                <block type="PAM_7Q_Longitude"></block>
-                <block type="PAM_7Q_Velocity"></block>
-                <block type="PAM_7Q_Heading"></block>
-                <block type="PAM_7Q_Altitude"></block>
-                <block type="PAM_7Q_SatsTracked"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.ping" />">
                 <block type="sensor_ping"></block>
