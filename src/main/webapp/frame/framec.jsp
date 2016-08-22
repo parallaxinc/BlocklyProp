@@ -205,7 +205,14 @@
                 <block type="oled_get_max_height"></block>
                 <block type="oled_get_max_width"></block>
                 <block type="oled_clear_screen"></block>
-                <block type="oled_text_color"></block>
+                <block type="oled_text_color">
+                    <value name="FONT_COLOR">
+                        <block type="color_picker"></block>
+                    </value>
+                    <value name="BACKGROUND_COLOR">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="oled_text_size"></block>
                 <block type="oled_draw_pixel">
                     <value name="X_AXIS">
@@ -243,6 +250,9 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
                 <block type="oled_draw_triangle">
                     <value name="POINT_X0">
@@ -275,6 +285,9 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
                 <block type="oled_draw_rectangle">
                     <value name="POINT_X">
@@ -297,6 +310,9 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
@@ -313,6 +329,9 @@
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
                     </value>
                 </block>
             </category>
