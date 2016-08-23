@@ -393,6 +393,7 @@
             </category>
             <category name="<fmt:message key="category.sensor-input.colorpal" />">
                 <block type="colorpal_enable"></block>
+                <block type="colorpal_get_colors_raw"></block>
                 <block type="colorpal_get_colors"></block>
             </category>
         </category>
