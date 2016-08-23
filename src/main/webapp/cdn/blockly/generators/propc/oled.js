@@ -205,30 +205,33 @@ Blockly.Blocks.oled_draw_rectangle = {
             ["rectangle", "REG_RECTANGLE"], 
             ["round rectangle", "ROUND_RECTANGLE"]
             ]), "rect_round")
-        .appendField("at");
+        .appendField("at x");
     this.appendValueInput("POINT_Y")
         .setCheck("Number")
-        .appendField(",");
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("y");
     this.appendValueInput("RECT_WIDTH")
         .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("width");
     this.appendValueInput("RECT_HEIGHT")
         .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("height");
     // Color picker control
     this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("color")
         .appendField(new Blockly.FieldColour("#ff0000"), "flood")
         .appendField("fill")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
         
     // Other details
-    this.setInputsInline(true);
+    this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(colorPalette.getColor('protocols'));
     this.setTooltip('Set coordinates to draw a rectangle');
-//    this.setHelpUrl('http://www.example.com/');
   }
 };
 
