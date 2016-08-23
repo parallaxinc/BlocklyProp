@@ -174,7 +174,7 @@ Blockly.Spin.serial_send_text = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
     }
 
     return 'serial.Str(String("' + text + '"))\n';
@@ -185,7 +185,7 @@ Blockly.Spin.serial_send_char = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
     }
 
     return 'serial.Char(' + dec_value + ')\n';
@@ -196,7 +196,7 @@ Blockly.Spin.serial_send_decimal = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
     }
 
     return 'serial.Dec(' + dec_value + ')\n';
@@ -207,7 +207,7 @@ Blockly.Spin.serial_send_ctrl = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
     }
 
     return 'serial.Char(' + ctrl_char + ')\n';
@@ -218,7 +218,7 @@ Blockly.Spin.serial_rx_byte = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
     }
 
     return ['serial.CharIn', Blockly.Spin.ORDER_ATOMIC];
@@ -228,7 +228,7 @@ Blockly.Spin.serial_clear = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
     }
 
     return 'serial.Clear\n';
@@ -241,7 +241,7 @@ Blockly.Spin.serial_cursor_xy = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + 115200 + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
     }
 
     return 'serial.PositionX(' + pos_x + ')\nserial.PositionY(' + pos_y + ')\n';
