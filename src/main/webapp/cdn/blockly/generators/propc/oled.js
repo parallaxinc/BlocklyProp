@@ -108,21 +108,25 @@ Blockly.Blocks.oled_draw_line = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X_ONE")
             .setCheck('Number')
-            .appendField("draw line point one");
+            .appendField("draw line point 1(x)");
         this.appendValueInput("Y_ONE")
             .setCheck('Number')
-            .appendField(",");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
         this.appendValueInput("X_TWO")
             .setCheck('Number')
-            .appendField("point two");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("point 2(x)");
         this.appendValueInput("Y_TWO")
             .setCheck('Number')
-            .appendField(",");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
         this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("color")
             .appendField(new Blockly.FieldColour('#ff0000'), "colorName");
 
-        this.setInputsInline(true);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
