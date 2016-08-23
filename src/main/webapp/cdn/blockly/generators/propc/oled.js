@@ -79,22 +79,25 @@ Blockly.Blocks.oled_draw_circle = {
     // First x/y coordinates
     this.appendValueInput("POINT_X")
         .setCheck("Number")
-        .appendField("draw circle at");
+        .appendField("draw circle at (x)");
     this.appendValueInput("POINT_Y")
         .setCheck(null)
-        .appendField(",");
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("(y)");
     this.appendValueInput("RADIUS")
         .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("radius");
     // Color picker control
     this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("color")
         .appendField(new Blockly.FieldColour("#ff0000"), "flood")
         .appendField("fill")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
         
     // Other details
-    this.setInputsInline(true);
+    this.setInputsInline(false);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(colorPalette.getColor('protocols'));
