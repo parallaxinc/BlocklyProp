@@ -212,11 +212,11 @@ Blockly.Blocks.oled_draw_rectangle = {
             ["rectangle", "REG_RECTANGLE"], 
             ["round rectangle", "ROUND_RECTANGLE"]
             ]), "rect_round")
-        .appendField("at x");
+        .appendField("at (x)");
     this.appendValueInput("POINT_Y")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("y");
+        .appendField("(y)");
     this.appendValueInput("RECT_WIDTH")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
