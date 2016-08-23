@@ -97,3 +97,19 @@ Blockly.propc.controls_if_return = function () {
 
     return 'if (' + argument + ') {return;}\n';
 };
+
+Blockly.Blocks.controls_return = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("return");
+
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+//    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('programming'));
+  }
+};
+
+Blockly.propc.controls_return = function() {
+    return 'return;\n';
+};
