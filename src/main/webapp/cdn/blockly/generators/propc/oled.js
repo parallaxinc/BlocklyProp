@@ -69,29 +69,35 @@ Blockly.Blocks.oled_clear_screen = {
 };
 
 Blockly.Blocks.oled_draw_circle = {
-    init: function() {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendValueInput("POINT_X")
-            .setCheck("Number")
-            .appendField("draw circle at");
-        this.appendValueInput("POINT_Y")
-            .setCheck(null)
-            .appendField(",");
-        this.appendValueInput("RADIUS")
-            .setCheck("Number")
-            .appendField("radius");
-        this.appendDummyInput()
-        this.appendValueInput('COLOR')
-            .setCheck('Number')
-            .appendField("color");
-        this.appendDummyInput()
-            .appendField("fill")
-            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
-
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-    }
+  init: function() {
+    // First x/y coordinates
+    this.appendValueInput("POINT_X")
+        .setCheck("Number")
+        .appendField("draw circle at (x)");
+    this.appendValueInput("POINT_Y")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("(y)");
+    this.appendValueInput("RADIUS")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("radius");
+    // Color picker control
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "flood")
+        .appendField("fill")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+        
+    // Other details
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('Set coordinates to draw a triangle');
+//    this.setHelpUrl('http://www.example.com/');
+  }
 };
 
 Blockly.Blocks.oled_draw_line = {
@@ -99,21 +105,25 @@ Blockly.Blocks.oled_draw_line = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X_ONE")
             .setCheck('Number')
-            .appendField("draw line point one");
+            .appendField("draw line point 1(x)");
         this.appendValueInput("Y_ONE")
             .setCheck('Number')
-            .appendField(",");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
         this.appendValueInput("X_TWO")
             .setCheck('Number')
-            .appendField("point two");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("point 2(x)");
         this.appendValueInput("Y_TWO")
             .setCheck('Number')
-            .appendField(",");
-        this.appendValueInput('COLOR')
-            .setCheck('Number')
-            .appendField("color");
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("color")
+            .appendField(new Blockly.FieldColour('#ff0000'), "colorName");
 
-        this.setInputsInline(true);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -186,39 +196,42 @@ Blockly.Blocks.oled_draw_triangle = {
 };
 
 Blockly.Blocks.oled_draw_rectangle = {
-    init: function() {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendValueInput("POINT_X")
-            .setCheck("Number")
-            .appendField("draw")
-            .appendField(new Blockly.FieldDropdown([
-                ["rectangle", "REG_RECTANGLE"],
-                ["round rectangle", "ROUND_RECTANGLE"]
-                ]), "rect_round")
-            .appendField("at");
-        this.appendValueInput("POINT_Y")
-            .setCheck("Number")
-            .appendField(",");
-        this.appendValueInput("RECT_WIDTH")
-            .setCheck(null)
-            .appendField("width");
-        this.appendValueInput("RECT_HEIGHT")
-            .setCheck(null)
-            .appendField("height");
-        // Color picker control
-        this.appendValueInput('COLOR')
-            .setCheck('Number')
-            .appendField("color");
-        this.appendDummyInput()
-            .appendField("fill")
-            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
-
-        // Other details
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setTooltip('set coordinates to draw a rectangle');
-    }
+  init: function() {
+      this.appendValueInput("POINT_X")
+        .setCheck("Number")
+        .appendField("draw")
+        .appendField(new Blockly.FieldDropdown([
+            ["rectangle", "REG_RECTANGLE"], 
+            ["round rectangle", "ROUND_RECTANGLE"]
+            ]), "rect_round")
+        .appendField("at (x)");
+    this.appendValueInput("POINT_Y")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("(y)");
+    this.appendValueInput("RECT_WIDTH")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("width");
+    this.appendValueInput("RECT_HEIGHT")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("height");
+    // Color picker control
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "flood")
+        .appendField("fill")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+        
+    // Other details
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('protocols'));
+    this.setTooltip('Set coordinates to draw a rectangle');
+  }
 };
 
 Blockly.Blocks.oled_text_size = {
