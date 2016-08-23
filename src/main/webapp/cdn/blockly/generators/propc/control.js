@@ -98,6 +98,7 @@ Blockly.propc.controls_if_return = function () {
     return 'if (' + argument + ') {return;}\n';
 };
 
+<<<<<<< HEAD
 Blockly.propc.control_repeat_for_loop = function () {
     var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE) || '1';
     var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE) || '10';
@@ -113,3 +114,20 @@ Blockly.propc.control_repeat_for_loop = function () {
       return code;
     }
 };
+=======
+Blockly.Blocks.controls_return = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("return");
+
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+//    this.setNextStatement(true, null);
+    this.setColour(colorPalette.getColor('programming'));
+  }
+};
+
+Blockly.propc.controls_return = function() {
+    return 'return;\n';
+};
+>>>>>>> cc53f212705ad531fe37fbb608c92d10ffa8234d
