@@ -230,7 +230,7 @@ Blockly.Blocks.color_picker = {
 
 Blockly.propc.color_picker = function() {
     var color = this.getFieldValue('COLOR');
-    color = color.substr(1);
+    color = "0x" + color.substr(1);
 
     return [color];
 };
@@ -259,7 +259,7 @@ Blockly.propc.color_value_from = function() {
     var green = Blockly.propc.valueToCode(this, 'GREEN_VALUE', Blockly.propc.ORDER_NONE) || '0';
     var blue = Blockly.propc.valueToCode(this, 'BLUE_VALUE', Blockly.propc.ORDER_NONE) || '0';
 
-    var output = ((Number(red) & 0xFF) << 16) | ((Number(green) & 0xFF) << 8) | (Number(blue) & 0xFF);
+    var output = 'getColorRRGGBB(' + red + ', ' + green + ', ' + blue + ')';
     return [output];
 };
 
@@ -281,18 +281,14 @@ Blockly.Blocks.get_channel_from = {
 
 Blockly.propc.get_channel_from = function() {
     var channel = this.getFieldValue("CHANNEL");
-
-    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE));
-    var color_red = parseInt(color_mask[1], 16);
-    var color_green = parseInt(color_mask[2], 16);
-    var color_blue = parseInt(color_mask[3], 16);
+    var color = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
 
     if (Number(channel) === 0) {
-        return [color_red];
+        return ['getRedValue(' + color + ')'];
     } else if (Number(channel) === 1) {
-        return [color_green];
+        return ['getGreenValue(' + color + ')'];
     } else if (Number(channel) === 2) {
-        return [color_blue];
+        return ['getBlueValue(' + color + ')'];
     }
 };
 
@@ -307,6 +303,7 @@ Blockly.Blocks.compare_colors = {
             .appendField("color 2:");
 
         this.setOutput(true, 'Number');
+        this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
     }
@@ -316,6 +313,6 @@ Blockly.propc.compare_colors = function() {
     var color1 = Blockly.propc.valueToCode(this, 'COLOR1', Blockly.propc.ORDER_NONE) || '0';
     var color2 = Blockly.propc.valueToCode(this, 'COLOR2', Blockly.propc.ORDER_NONE) || '0';
 
-    var output = 255 - ((Math.abs((Number(color1) & 0xFF0000) >> 16 - (Number(color2) & 0xFF0000) >> 16) + Math.abs((Number(color1) & 0xFF00) >> 8 - (Number(color2) & 0xFF00) >> 8) + Math.abs(Number(color1) & 0xFF - Number(color2) & 0xFF)) / 3);
-    return [output];
+    var code = 'colorCompare(' + color1 + ', ' + color2 + ')';
+    return [code];
 };
