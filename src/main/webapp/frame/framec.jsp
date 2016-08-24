@@ -116,7 +116,7 @@
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
         <category name="<fmt:message key="category.control" />" colour="220">
-            <block type="controls_return"></block> 
+            <block type="controls_return"></block>
             <block type="controls_if"></block>
             <block type="controls_if_return"></block>
             <block type="controls_repeat">
@@ -339,6 +339,22 @@
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
                 <block type="console_print_variables"></block>
+                <block type="console_newline"></block>
+                <block type="console_clear"></block>
+                <block type="console_move_to_column">
+                    <value name="COLUMNS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="console_move_to_row">
+                    <value name="ROWS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="i2c_new_bus"></block>
