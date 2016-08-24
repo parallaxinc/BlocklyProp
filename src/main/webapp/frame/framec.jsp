@@ -184,8 +184,19 @@
                     </block>
                 </value>
             </block>
-            <block type="get_channel_from"></block>
-            <block type="compare_colors"></block>
+            <block type="get_channel_from">
+                <value name="COLOR">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
+            <block type="compare_colors">
+                <value name="COLOR1">
+                    <block type="color_picker"></block>
+                </value>
+                <value name="COLOR2">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>

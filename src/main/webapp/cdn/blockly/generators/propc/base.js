@@ -269,7 +269,7 @@ Blockly.Blocks.get_channel_from = {
         this.appendDummyInput()
             .appendField("get")
             .appendField(new Blockly.FieldDropdown([["Red", "0"], ["Green", "1"], ["Blue", "2"]]), "CHANNEL");
-        this.appendValueInput('VALUE')
+        this.appendValueInput('COLOR')
             .appendField("value from");
 
         this.setOutput(true, 'Number');
@@ -281,7 +281,7 @@ Blockly.Blocks.get_channel_from = {
 
 Blockly.propc.get_channel_from = function() {
     var channel = this.getFieldValue("CHANNEL");
-    var color = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
     if (Number(channel) === 0) {
         return ['getRedValue(' + color + ')'];
