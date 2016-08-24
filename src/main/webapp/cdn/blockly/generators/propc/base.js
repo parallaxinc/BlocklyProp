@@ -230,6 +230,7 @@ Blockly.Blocks.color_picker = {
 
 Blockly.propc.color_picker = function() {
     var color = this.getFieldValue('COLOR');
+    color = '"' + color + '"';
 
     return [color];
 };
