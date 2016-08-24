@@ -341,8 +341,20 @@
                 <block type="console_print_variables"></block>
                 <block type="console_newline"></block>
                 <block type="console_clear"></block>
-                <block type="console_move_to_column"></block>
-                <block type="console_move_to_row"></block>
+                <block type="console_move_to_column">
+                    <value name="COLUMNS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="console_move_to_row">
+                    <value name="ROWS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="i2c_new_bus"></block>

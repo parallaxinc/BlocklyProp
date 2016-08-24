@@ -99,6 +99,7 @@ Blockly.Blocks.console_move_to_column = {
         this.appendValueInput('COLUMNS')
             .setCheck('Number');
 
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -112,6 +113,7 @@ Blockly.Blocks.console_move_to_row = {
         this.appendValueInput('ROWS')
             .setCheck('Number');
 
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -146,5 +148,5 @@ Blockly.propc.console_move_to_row = function () {
         row = 255;
     }
 
-    return 'print("\x0F%c", ' + row + ');';
+    return 'print("\\x0F%c", ' + row + ');';
 };
