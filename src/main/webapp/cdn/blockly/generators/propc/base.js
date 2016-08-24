@@ -230,7 +230,7 @@ Blockly.Blocks.color_picker = {
 
 Blockly.propc.color_picker = function() {
     var color = this.getFieldValue('COLOR');
-    color = '"' + color + '"';
+    color = color.substr(1);
 
     return [color];
 };
@@ -259,7 +259,7 @@ Blockly.propc.color_value_from = function() {
     var green = Blockly.propc.valueToCode(this, 'GREEN_VALUE', Blockly.propc.ORDER_NONE) || '0';
     var blue = Blockly.propc.valueToCode(this, 'BLUE_VALUE', Blockly.propc.ORDER_NONE) || '0';
 
-    var output = Number(((1 << 24) + (Number(red) << 16) + (Number(green) << 8) + Number(blue)).toString(16).slice(1));
+    var output = ((Number(red) & 0xFF) << 16) | ((Number(green) & 0xFF) << 8) | (Number(blue) & 0xFF);
     return [output];
 };
 
@@ -270,9 +270,10 @@ Blockly.Blocks.get_channel_from = {
             .appendField("get")
             .appendField(new Blockly.FieldDropdown([["Red", "0"], ["Green", "1"], ["Blue", "2"]]), "CHANNEL");
         this.appendValueInput('VALUE')
-            .appendField("value from:");
+            .appendField("value from");
 
         this.setOutput(true, 'Number');
+        this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
     }
@@ -280,9 +281,8 @@ Blockly.Blocks.get_channel_from = {
 
 Blockly.propc.get_channel_from = function() {
     var channel = this.getFieldValue("CHANNEL");
-    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
 
-    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
+    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE));
     var color_red = parseInt(color_mask[1], 16);
     var color_green = parseInt(color_mask[2], 16);
     var color_blue = parseInt(color_mask[3], 16);
