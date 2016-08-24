@@ -167,7 +167,23 @@
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
             <block type="color_picker"></block>
-            <block type="color_value_from"></block>
+            <block type="color_value_from">
+                <value name="RED_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="GREEN_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="BLUE_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
             <block type="get_channel_from"></block>
             <block type="compare_colors"></block>
         </category>
