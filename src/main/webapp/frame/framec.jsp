@@ -167,9 +167,36 @@
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
             <block type="color_picker"></block>
-            <block type="color_value_from"></block>
-            <block type="get_channel_from"></block>
-            <block type="compare_colors"></block>
+            <block type="color_value_from">
+                <value name="RED_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="GREEN_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="BLUE_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="get_channel_from">
+                <value name="COLOR">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
+            <block type="compare_colors">
+                <value name="COLOR1">
+                    <block type="color_picker"></block>
+                </value>
+                <value name="COLOR2">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
