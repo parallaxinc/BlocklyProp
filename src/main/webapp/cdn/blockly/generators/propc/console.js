@@ -67,7 +67,7 @@ Blockly.propc.console_print_variables = function () {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1000';
     Blockly.propc.serial_terminal_ = true;
 
-    return 'print("' + value + '");\n';
+    return 'print("%d", ' + value + ');\n';
 };
 
 Blockly.Blocks.console_newline = {
