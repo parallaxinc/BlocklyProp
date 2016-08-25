@@ -320,7 +320,7 @@ Blockly.Blocks.oled_print_text = {
 Blockly.Blocks.oled_print_number = {
     init: function() {
         this.appendValueInput('NUMBER')
-            .setCheck('String')
+            .setCheck('Number')
             .appendField("print number [ ]")
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
