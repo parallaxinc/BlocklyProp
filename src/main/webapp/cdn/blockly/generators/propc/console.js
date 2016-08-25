@@ -32,7 +32,7 @@ if (!Blockly.Blocks)
 Blockly.Blocks.console_print = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput("")
+        this.appendDummyInput()
                 .appendField("print")
                 .appendField(quotes.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'TEXT')
@@ -59,14 +59,15 @@ Blockly.Blocks.console_print_variables = {
 Blockly.propc.console_print = function () {
     var text = this.getFieldValue('TEXT');
     Blockly.propc.serial_terminal_ = true;
-    return 'print("' + text + '\\r");\n';
+
+    return 'print("' + text + '");\n';
 };
 
 Blockly.propc.console_print_variables = function () {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1000';
     Blockly.propc.serial_terminal_ = true;
 
-    return 'print("' + value + ' = %d\\n",' + value + ');\n';
+    return 'print("' + value + '");\n';
 };
 
 Blockly.Blocks.console_newline = {
