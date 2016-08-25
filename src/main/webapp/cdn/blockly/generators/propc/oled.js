@@ -288,6 +288,54 @@ Blockly.Blocks.oled_get_max_width = {
     }
 };
 
+Blockly.Blocks.oled_set_cursor = {
+    init: function() {
+        this.appendValueInput('X_POS')
+            .setCheck('Number')
+            .appendField("set cursor at (X, 0 to 95)");
+        this.appendValueInput('Y_POS')
+            .setCheck('Number')
+            .appendField("(Y, 0 to 63)");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+Blockly.Blocks.oled_print_text = {
+    init: function() {
+        this.appendValueInput('MESSAGE')
+            .setCheck('String')
+            .appendField("print text \"[ ]\"");
+ 
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+Blockly.Blocks.oled_print_number = {
+    init: function() {
+        this.appendValueInput('NUMBER')
+            .setCheck('Number')
+            .appendField("print number [ ]");
+ 
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+
+
+// set cursor - Position cursor at (x,y) where x=0 to 95 and y=0 to 63
+// draw text -  Print a string (up to 64 bytes)
+// draw number - Print a number (up to 64 digits) 
+
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
     var dc_pin = this.getFieldValue("DC");
@@ -538,5 +586,25 @@ Blockly.propc.oled_get_max_width = function() {
 
     // Emit code to clear the screen
     var code = 'oledc_getWidth()';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.propc.oled_set_cursor = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Get user input
+    var x = Blockly.propc.valueToCode(this, 'X_POS', Blockly.propc.ORDER_NONE);
+    var y = Blockly.propc.valueToCode(this, 'Y_POS', Blockly.propc.ORDER_NONE);
+
+    // Do range checks
+    if (x < 0)  { x = 0; }
+    if (x > 95) { x = 95; }
+    if (y < 0)  { y = 0; }
+    if (y > 63) { y = 63; }
+    
+    var code = 'oledc_setCursor(' + x + ', ' + y + ',0);';
+//    code += this.getFieldValue('X_POS') + ', ';
+//    code += this.getFieldValue('Y_POS') + ', 0);';
     return [code, Blockly.propc.ORDER_NONE];
 };
