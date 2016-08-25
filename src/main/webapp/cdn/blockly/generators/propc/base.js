@@ -259,6 +259,8 @@ Blockly.propc.color_value_from = function() {
     var green = Blockly.propc.valueToCode(this, 'GREEN_VALUE', Blockly.propc.ORDER_NONE) || '0';
     var blue = Blockly.propc.valueToCode(this, 'BLUE_VALUE', Blockly.propc.ORDER_NONE) || '0';
 
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
     var output = 'getColorRRGGBB(' + red + ', ' + green + ', ' + blue + ')';
     return [output];
 };
@@ -268,7 +270,7 @@ Blockly.Blocks.get_channel_from = {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("get")
-            .appendField(new Blockly.FieldDropdown([["Red", "0"], ["Green", "1"], ["Blue", "2"]]), "CHANNEL");
+            .appendField(new Blockly.FieldDropdown([["Red", "R"], ["Green", "G"], ["Blue", "B"]]), "CHANNEL");
         this.appendValueInput('COLOR')
             .appendField("value from");
 
@@ -283,13 +285,9 @@ Blockly.propc.get_channel_from = function() {
     var channel = this.getFieldValue("CHANNEL");
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
-    if (Number(channel) === 0) {
-        return ['getRedValue(' + color + ')'];
-    } else if (Number(channel) === 1) {
-        return ['getGreenValue(' + color + ')'];
-    } else if (Number(channel) === 2) {
-        return ['getBlueValue(' + color + ')'];
-    }
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+    return ['get8bitcolor(' + color + ', "' + channel + '")'];
 };
 
 Blockly.Blocks.compare_colors = {
@@ -313,6 +311,8 @@ Blockly.propc.compare_colors = function() {
     var color1 = Blockly.propc.valueToCode(this, 'COLOR1', Blockly.propc.ORDER_NONE) || '0';
     var color2 = Blockly.propc.valueToCode(this, 'COLOR2', Blockly.propc.ORDER_NONE) || '0';
 
-    var code = 'colorCompare(' + color1 + ', ' + color2 + ')';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+    var code = 'compareRRGGBB(' + color1 + ', ' + color2 + ')';
     return [code];
 };
