@@ -240,10 +240,15 @@ Blockly.Blocks.oled_text_size = {
         this.appendDummyInput()
             .appendField("text size")
             .appendField(new Blockly.FieldDropdown([
-                ["small", "TEXT_SMALL"],
-                ["medium", "TEXT_MEDIUM"],
-                ["large", "TEXT_LARGE"]]), "size_select");
-
+                ["small", "SMALL"],
+                ["medium", "MEDIUM"],
+                ["large", "LARGE"]]), "size_select")
+            .appendField("font")
+            .appendField(new Blockly.FieldDropdown([
+                ["sans", "FONT_SANS"],
+                ["serif", "FONT_SERIF"],
+                ["script", "FONT_SCRIPT"],
+                ["bubble", "FONT_BUBBLE"]]), "font_select");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -324,10 +329,10 @@ Blockly.Blocks.oled_print_number = {
             .appendField("print number [ ]")
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
-                ["DEC", "DEC"],
-                ["BIN", "BIN"],
-                ["OCT", "OCT"],
-                ["HEX", "HEX"]
+                ["dec", "DEC"],
+                ["bin", "BIN"],
+                ["oct", "OCT"],
+                ["hex", "HEX"]
             ]), "type");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -526,25 +531,12 @@ Blockly.propc.oled_text_size = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-    var dropdown_size_select = this.getFieldValue('size_select');
+    var size = this.getFieldValue('size_select');
+    var font = this.getFieldValue('font_select');
 
     // TODO: Update constants when new oledc library is published
-    var code = 'oledc_setTextSize(';
-
-    switch(dropdown_size_select) {
-        case 'TEXT_SMALL':
-            code += 'SMALL';
-            break;
-        case 'TEXT_MEDIUM':
-            code+= 'MEDIUM';
-            break;
-        case 'TEXT_LARGE':
-            code += 'LARGE';
-            break;
-        default:
-            code += 'SMALL';
-    }
-    code += ');';
+    var code = 'oledc_setTextSize(' + size + ');\n';
+    code +=  'oledc_setTextFont(' + font + ');\n';
     return code;
 };
 
