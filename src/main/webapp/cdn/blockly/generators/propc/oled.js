@@ -338,10 +338,6 @@ Blockly.Blocks.oled_print_number = {
 
 
 
-// set cursor - Position cursor at (x,y) where x=0 to 95 and y=0 to 63
-// draw text -  Print a string (up to 64 bytes)
-// draw number - Print a number (up to 64 digits) 
-
 Blockly.propc.oled_initialize = function () {
     var cs_pin = this.getFieldValue("CS");
     var dc_pin = this.getFieldValue("DC");
