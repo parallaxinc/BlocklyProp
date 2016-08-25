@@ -229,11 +229,12 @@
                 </block>
                 <block type="oled_print_text"></block>
                 <block type="oled_print_number">
-                    <value name="NUMBER">
-                        <block type="math_number">
+<%--                    <value name="NUMBER">
+                        <block type="string">
                             <field name="NUM">0</field>
                         </block>
                     </value>
+--%>
                 </block>
                 <block type="oled_draw_pixel">
                     <value name="X_AXIS">

@@ -320,9 +320,15 @@ Blockly.Blocks.oled_print_text = {
 Blockly.Blocks.oled_print_number = {
     init: function() {
         this.appendValueInput('NUMBER')
-            .setCheck('Number')
-            .appendField("print number [ ]");
- 
+            .setCheck('String')
+            .appendField("print number [ ]")
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ["DEC", "DEC"],
+                ["BIN", "BIN"],
+                ["OCT", "OCT"],
+                ["HEX", "HEX"]
+            ]), "type");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -617,3 +623,12 @@ Blockly.propc.oled_print_text = function() {
     return code;
 };
 
+Blockly.propc.oled_print_number = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    var num = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_NONE);
+    var type = this.getFieldValue('type');
+    var code = 'oledc_drawNumber(' + num + ', ' + type + ');';
+    return code;
+};
