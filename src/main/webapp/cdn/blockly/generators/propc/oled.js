@@ -604,7 +604,16 @@ Blockly.propc.oled_set_cursor = function() {
     if (y > 63) { y = 63; }
     
     var code = 'oledc_setCursor(' + x + ', ' + y + ',0);';
-//    code += this.getFieldValue('X_POS') + ', ';
-//    code += this.getFieldValue('Y_POS') + ', 0);';
-    return [code, Blockly.propc.ORDER_NONE];
+    return code;
+//    return [code, Blockly.propc.ORDER_NONE];
 };
+
+Blockly.propc.oled_print_text = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
+    var code = 'oledc_drawText(' + msg + ');';
+    return code;
+};
+
