@@ -137,7 +137,7 @@ Blockly.propc.console_move_to_column = function () {
         column = 255;
     }
 
-    return 'print("\\x0F%c", ' + column + ');';
+    return 'print("\\x0E%c", ' + column + ');';
 };
 
 Blockly.propc.console_move_to_row = function () {
