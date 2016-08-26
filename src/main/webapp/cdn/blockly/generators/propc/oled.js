@@ -180,7 +180,7 @@ Blockly.Blocks.oled_draw_triangle = {
         // Color picker control
         this.appendValueInput('COLOR')
             .setCheck('Number')
-            .setAlign(Blockly.ALIGN_LEFT)
+            .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("color");
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -378,31 +378,31 @@ Blockly.propc.oled_draw_circle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-  var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
-  var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
-  var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
+    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+    var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
+    var color_mask = this.getFieldValue('flood');
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '), ';
 
-  var color_red = parseInt(color_mask[1], 16);
-  var color_green = parseInt(color_mask[2], 16);
-  var color_blue = parseInt(color_mask[3], 16);
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
 
-  var checkbox = this.getFieldValue('ck_fill');
-  var code;
-
-  if (checkbox === 'TRUE') {
-      code = 'oledc_fillCircle(';
-  } else {
+    if (checkbox === 'TRUE') {
+        code = 'oledc_fillCircle(';
+    } else {
       code = 'oledc_drawCircle(';
-  }
+    }
 
-  code += point_x0 + ', ' + point_y0 + ', ';
-  code += radius + ', ';
-  code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
-  code += ');';
+    code += point_x0 + ', ' + point_y0 + ', ';
+    code += radius + ', ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')';
+    code += ');';
 
-  return code;
+    return code;
 };
 
 Blockly.propc.oled_draw_line = function () {
@@ -414,12 +414,15 @@ Blockly.propc.oled_draw_line = function () {
     var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
     var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
 
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
-    var color_red = parseInt(result[1], 16);
-    var color_green = parseInt(result[2], 16);
-    var color_blue = parseInt(result[3], 16);
+    // This returns a value in the form '#FF33CC', not '0xFF33CC'
+    var color_mask = this.getFieldValue('colorName');
+    var color_red = color_mask.substring(1,3);
+    var color_green = color_mask.substring(3,5);
+    var color_blue = color_mask.substring(5);
 
-    var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));\n';
+    var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '));';
+
     return code;
 };
 
@@ -429,16 +432,16 @@ Blockly.propc.oled_draw_pixel = function() {
 
     var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
     var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
-    //var color_name = block.getFieldValue('NAME');
 
-    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
-    var color_red = parseInt(color_mask[1], 16);
-    var color_green = parseInt(color_mask[2], 16);
-    var color_blue = parseInt(color_mask[3], 16);
+    // This returns a value in the form '0xFF33CC'
+    var color_mask = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-    // TODO: Assemble JavaScript into code variable.
-    var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ' +
-            'oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));';
+    var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '));';
+    
     return code;
 };
 
@@ -446,69 +449,66 @@ Blockly.propc.oled_draw_triangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-  var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
-  var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
-  var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
-  var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
-  var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
-  var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
+    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
+    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
+    var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
+    var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
+    var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
+    var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
 
-  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
+    // This returns a value in the form '0xFF33CC'
+    var color_mask = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-  var color_red = parseInt(color_mask[1], 16);
-  var color_green = parseInt(color_mask[2], 16);
-  var color_blue = parseInt(color_mask[3], 16);
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
 
-  var checkbox = this.getFieldValue('ck_fill');
-  var code;
+    if (checkbox === 'TRUE') {
+        code = 'oledc_fillTriangle(';
+    } else {
+        code = 'oledc_drawTriangle(';
+    }
 
-  if (checkbox === 'TRUE') {
-      code = 'oledc_fillTriangle(';
-  } else {
-      code = 'oledc_drawTriangle(';
-  }
+    code += point_x0 + ', ' + point_y0 + ', ';
+    code += point_x1 + ', ' + point_y1 + ', ';
+    code += point_x2 + ', ' + point_y2 + ', ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '));';
 
-  code += point_x0 + ', ' + point_y0 + ', ';
-  code += point_x1 + ', ' + point_y1 + ', ';
-  code += point_x2 + ', ' + point_y2 + ', ';
-  code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
-  code += ');';
-
-  return code;
+    return code;
 };
 
 Blockly.propc.oled_draw_rectangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-  var corners = this.getFieldValue('rect_round');
-  var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
-  var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
-  var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
-  var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
+    var corners = this.getFieldValue('rect_round');
+    var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+    var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+    var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
+    var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
 
-  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
+    // This returns a value in the form '#FF33CC', not '0xFF33CC'
+    var color_mask = this.getFieldValue('flood');
+    var color_red = color_mask.substring(1,3);
+    var color_green = color_mask.substring(3,5);
+    var color_blue = color_mask.substring(5);
 
-  var color_red = parseInt(color_mask[1], 16);
-  var color_green = parseInt(color_mask[2], 16);
-  var color_blue = parseInt(color_mask[3], 16);
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
 
-  var checkbox = this.getFieldValue('ck_fill');
-  var code;
+    if (corners === 'REG_RECTANGLE') {
+        if (checkbox === 'TRUE') {
+            code = 'oledc_fillRect(';
+        } else {
+            code = 'oledc_drawRect(';
+        }
 
-  if (corners === 'REG_RECTANGLE') {
-      if (checkbox === 'TRUE') {
-          code = 'oledc_fillRect(';
-          }
-      else {
-          code = 'oledc_drawRect(';
-          }
-
-      code += point_x + ', ' + point_y + ', ';
-      code += width + ', ' + height + ', ';
-      code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
-    }
-    else { // Rounded rectangle
+        code += point_x + ', ' + point_y + ', ';
+        code += width + ', ' + height + ', ';
+        code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')';
+    } else { // Rounded rectangle
         if (checkbox === 'TRUE') {
             code = 'oledc_fillRoundRect(';
         }
@@ -519,7 +519,7 @@ Blockly.propc.oled_draw_rectangle = function() {
         code += point_x + ', ' + point_y + ', ';
         code += width + ', ' + height + ', ';
         code += '((' + width + ') + (' + height + ') / 20),';
-        code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+        code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')';
     }
 
   code += ');';
@@ -544,20 +544,20 @@ Blockly.propc.oled_text_size = function() {
 Blockly.propc.oled_text_color = function() {
     var code = 'oledc_setTextColor(';
 
-    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE));
-    var color_red = parseInt(color_mask[1], 16);
-    var color_green = parseInt(color_mask[2], 16);
-    var color_blue = parseInt(color_mask[3], 16);
+    var color_mask = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-    code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '), ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '), ';
 
-    color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE));
-    color_red = parseInt(color_mask[1], 16);
-    color_green = parseInt(color_mask[2], 16);
-    color_blue = parseInt(color_mask[3], 16);
+    var color_mask = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-    code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '));';
-
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')); ';
+    
     return code;
 };
 
