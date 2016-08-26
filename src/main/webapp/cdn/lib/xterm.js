@@ -1392,11 +1392,19 @@
                                 this.y--;
                                 this.scroll();
                             }
-                            // PARALLAX: carriage return included in newline
-                            this.x = 0;
                             break;
                         // '\r'
                         case '\r':
+                            // PARALLAX: newline included in carriage return
+                            if (this.convertEol) {
+                                this.x = 0;
+                            }
+                            this.y++;
+                            if (this.y > this.scrollBottom) {
+                                this.y--;
+                                this.scroll();
+                            }
+
                             this.x = 0;
                             break;
                         // '\b'
@@ -1426,7 +1434,7 @@
                             this.cursorPosY(y);
                             break;
                         case '\x10':
-                            // PARALLAX: ASCII 10: clear
+                            // PARALLAX: ASCII x10: clear
                             this.erase();
                             this.cursorPos([0,0]);
                             break;
