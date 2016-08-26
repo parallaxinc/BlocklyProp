@@ -483,34 +483,32 @@ Blockly.propc.oled_draw_rectangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-  var corners = this.getFieldValue('rect_round');
-  var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
-  var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
-  var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
-  var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
+    var corners = this.getFieldValue('rect_round');
+    var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+    var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+    var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
+    var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
 
-  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
+    // This returns a value in the form '#FF33CC', not '0xFF33CC'
+    var color_mask = this.getFieldValue('flood');
+    var color_red = color_mask.substring(1,3);
+    var color_green = color_mask.substring(3,5);
+    var color_blue = color_mask.substring(5);
 
-  var color_red = parseInt(color_mask[1], 16);
-  var color_green = parseInt(color_mask[2], 16);
-  var color_blue = parseInt(color_mask[3], 16);
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
 
-  var checkbox = this.getFieldValue('ck_fill');
-  var code;
+    if (corners === 'REG_RECTANGLE') {
+        if (checkbox === 'TRUE') {
+            code = 'oledc_fillRect(';
+        } else {
+            code = 'oledc_drawRect(';
+        }
 
-  if (corners === 'REG_RECTANGLE') {
-      if (checkbox === 'TRUE') {
-          code = 'oledc_fillRect(';
-          }
-      else {
-          code = 'oledc_drawRect(';
-          }
-
-      code += point_x + ', ' + point_y + ', ';
-      code += width + ', ' + height + ', ';
-      code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
-    }
-    else { // Rounded rectangle
+        code += point_x + ', ' + point_y + ', ';
+        code += width + ', ' + height + ', ';
+        code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')';
+    } else { // Rounded rectangle
         if (checkbox === 'TRUE') {
             code = 'oledc_fillRoundRect(';
         }
@@ -521,7 +519,7 @@ Blockly.propc.oled_draw_rectangle = function() {
         code += point_x + ', ' + point_y + ', ';
         code += width + ', ' + height + ', ';
         code += '((' + width + ') + (' + height + ') / 20),';
-        code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
+        code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')';
     }
 
   code += ');';
