@@ -544,20 +544,20 @@ Blockly.propc.oled_text_size = function() {
 Blockly.propc.oled_text_color = function() {
     var code = 'oledc_setTextColor(';
 
-    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE));
-    var color_red = parseInt(color_mask[1], 16);
-    var color_green = parseInt(color_mask[2], 16);
-    var color_blue = parseInt(color_mask[3], 16);
+    var color_mask = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-    code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '), ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '), ';
 
-    color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE));
-    color_red = parseInt(color_mask[1], 16);
-    color_green = parseInt(color_mask[2], 16);
-    color_blue = parseInt(color_mask[3], 16);
+    var color_mask = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-    code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + '));';
-
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')); ';
+    
     return code;
 };
 
