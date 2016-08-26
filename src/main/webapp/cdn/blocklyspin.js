@@ -217,9 +217,9 @@ function serial_console() {
         };
         // Log errors
         connection.onerror = function (error) {
-            console.log('WebSocket Error ' + error);
+            console.log('WebSocket Error');
             console.log(error);
-            term.destroy();
+            // term.destroy();
         };
         // Log messages from the server
         connection.onmessage = function (e) {
