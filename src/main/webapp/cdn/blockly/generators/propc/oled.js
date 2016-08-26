@@ -432,16 +432,16 @@ Blockly.propc.oled_draw_pixel = function() {
 
     var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
     var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
-    //var color_name = block.getFieldValue('NAME');
 
-    var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
-    var color_red = parseInt(color_mask[1], 16);
-    var color_green = parseInt(color_mask[2], 16);
-    var color_blue = parseInt(color_mask[3], 16);
+    // This returns a value in the form '0xFF33CC'
+    var color_mask = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-    // TODO: Assemble JavaScript into code variable.
-    var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ' +
-            'oledc_color565(' + color_red + ', ' + color_green + ', ' + color_blue + '));';
+    var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '));';
+    
     return code;
 };
 
