@@ -180,7 +180,7 @@ Blockly.Blocks.oled_draw_triangle = {
         // Color picker control
         this.appendValueInput('COLOR')
             .setCheck('Number')
-            .setAlign(Blockly.ALIGN_LEFT)
+            .setAlign(Blockly.ALIGN_RIGHT)
             .appendField("color");
         this.appendDummyInput()
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -449,35 +449,34 @@ Blockly.propc.oled_draw_triangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-  var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
-  var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
-  var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
-  var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
-  var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
-  var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
+    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
+    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
+    var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
+    var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
+    var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
+    var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
 
-  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
+    // This returns a value in the form '0xFF33CC'
+    var color_mask = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-  var color_red = parseInt(color_mask[1], 16);
-  var color_green = parseInt(color_mask[2], 16);
-  var color_blue = parseInt(color_mask[3], 16);
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
 
-  var checkbox = this.getFieldValue('ck_fill');
-  var code;
+    if (checkbox === 'TRUE') {
+        code = 'oledc_fillTriangle(';
+    } else {
+        code = 'oledc_drawTriangle(';
+    }
 
-  if (checkbox === 'TRUE') {
-      code = 'oledc_fillTriangle(';
-  } else {
-      code = 'oledc_drawTriangle(';
-  }
+    code += point_x0 + ', ' + point_y0 + ', ';
+    code += point_x1 + ', ' + point_y1 + ', ';
+    code += point_x2 + ', ' + point_y2 + ', ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '));';
 
-  code += point_x0 + ', ' + point_y0 + ', ';
-  code += point_x1 + ', ' + point_y1 + ', ';
-  code += point_x2 + ', ' + point_y2 + ', ';
-  code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
-  code += ');';
-
-  return code;
+    return code;
 };
 
 Blockly.propc.oled_draw_rectangle = function() {
