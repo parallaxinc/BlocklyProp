@@ -378,31 +378,31 @@ Blockly.propc.oled_draw_circle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-  var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
-  var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
-  var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
+    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+    var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
+    var color_mask = this.getFieldValue('flood');
+    var color_red = color_mask.substring(2,4);
+    var color_green = color_mask.substring(4,6);
+    var color_blue = color_mask.substring(6);
 
-  var color_mask = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE));
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + '), ';
 
-  var color_red = parseInt(color_mask[1], 16);
-  var color_green = parseInt(color_mask[2], 16);
-  var color_blue = parseInt(color_mask[3], 16);
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
 
-  var checkbox = this.getFieldValue('ck_fill');
-  var code;
-
-  if (checkbox === 'TRUE') {
-      code = 'oledc_fillCircle(';
-  } else {
+    if (checkbox === 'TRUE') {
+        code = 'oledc_fillCircle(';
+    } else {
       code = 'oledc_drawCircle(';
-  }
+    }
 
-  code += point_x0 + ', ' + point_y0 + ', ';
-  code += radius + ', ';
-  code += 'oledc_color565('+ color_red + ', ' + color_green + ', ' + color_blue + ')';
-  code += ');';
+    code += point_x0 + ', ' + point_y0 + ', ';
+    code += radius + ', ';
+    code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')';
+    code += ');';
 
-  return code;
+    return code;
 };
 
 Blockly.propc.oled_draw_line = function () {
