@@ -415,7 +415,7 @@ Blockly.propc.oled_draw_line = function () {
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
     var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', ';
-    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE"));';
+    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE")));';
 
     return code;
 };
@@ -430,7 +430,7 @@ Blockly.propc.oled_draw_pixel = function() {
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
     var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
-    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE"));';
+    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE")));';
 
     return code;
 };
@@ -460,7 +460,7 @@ Blockly.propc.oled_draw_triangle = function() {
     code += point_x0 + ', ' + point_y0 + ', ';
     code += point_x1 + ', ' + point_y1 + ', ';
     code += point_x2 + ', ' + point_y2 + ', ';
-    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE"));';
+    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE")));';
 
     return code;
 };
