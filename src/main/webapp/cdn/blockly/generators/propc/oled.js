@@ -313,8 +313,7 @@ Blockly.Blocks.oled_print_text = {
     init: function() {
         this.appendValueInput('MESSAGE')
             .setCheck('String')
-            .appendField("print text \"[ ]\"");
- 
+            .appendField("print text ");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -324,15 +323,15 @@ Blockly.Blocks.oled_print_text = {
 
 Blockly.Blocks.oled_print_number = {
     init: function() {
-        this.appendValueInput('NUMBER')
+        this.appendValueInput('NUMIN')
             .setCheck('Number')
-            .appendField("print number [ ]")
+            .appendField("print number ")
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
-                ["dec", "DEC"],
-                ["bin", "BIN"],
-                ["oct", "OCT"],
-                ["hex", "HEX"]
+                ["DEC", "DEC"],
+                ["BIN", "BIN"],
+                ["OCT", "OCT"],
+                ["HEX", "HEX"]
             ]), "type");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -340,7 +339,6 @@ Blockly.Blocks.oled_print_number = {
         this.setColour(colorPalette.getColor('protocols'));
     }
 };
-
 
 
 Blockly.propc.oled_initialize = function () {
@@ -615,7 +613,7 @@ Blockly.propc.oled_print_number = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-    var num = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_NONE);
+    var num = Blockly.propc.valueToCode(this, 'NUMIN', Blockly.propc.ORDER_NONE);
     var type = this.getFieldValue('type');
     var code = 'oledc_drawNumber(' + num + ', ' + type + ');';
     return code;
