@@ -379,7 +379,7 @@ Blockly.propc.oled_clear_screen = function() {
 Blockly.propc.oled_draw_circle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
 
     var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
     var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
@@ -397,7 +397,7 @@ Blockly.propc.oled_draw_circle = function() {
 
     code += point_x0 + ', ' + point_y0 + ', ';
     code += radius + ', ';
-    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE")), ';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")), ';
     code += ');';
 
     return code;
@@ -406,7 +406,7 @@ Blockly.propc.oled_draw_circle = function() {
 Blockly.propc.oled_draw_line = function () {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
 
     var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
     var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
@@ -415,7 +415,7 @@ Blockly.propc.oled_draw_line = function () {
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
     var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', ';
-    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE")));';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
 
     return code;
 };
@@ -423,14 +423,14 @@ Blockly.propc.oled_draw_line = function () {
 Blockly.propc.oled_draw_pixel = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
 
     var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
     var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
     var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
-    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE")));';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
 
     return code;
 };
@@ -438,7 +438,7 @@ Blockly.propc.oled_draw_pixel = function() {
 Blockly.propc.oled_draw_triangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
 
     var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
     var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
@@ -460,7 +460,7 @@ Blockly.propc.oled_draw_triangle = function() {
     code += point_x0 + ', ' + point_y0 + ', ';
     code += point_x1 + ', ' + point_y1 + ', ';
     code += point_x2 + ', ' + point_y2 + ', ';
-    code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE")));';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
 
     return code;
 };
@@ -468,7 +468,7 @@ Blockly.propc.oled_draw_triangle = function() {
 Blockly.propc.oled_draw_rectangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
 
     var corners = this.getFieldValue('rect_round');
     var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
@@ -489,7 +489,7 @@ Blockly.propc.oled_draw_rectangle = function() {
 
         code += point_x + ', ' + point_y + ', ';
         code += width + ', ' + height + ', ';
-        code += 'oledc_color565(0x'+ color_red + ', 0x' + color_green + ', 0x' + color_blue + ')';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
     } else { // Rounded rectangle
         if (checkbox === 'TRUE') {
             code = 'oledc_fillRoundRect(';
@@ -501,7 +501,7 @@ Blockly.propc.oled_draw_rectangle = function() {
         code += point_x + ', ' + point_y + ', ';
         code += width + ', ' + height + ', ';
         code += '((' + width + ') + (' + height + ') / 20),';
-        code += 'oledc_color565(get8bitcolor(' + color + ', "RED"), get8bitcolor(' + color + ', "GREEN"), get8bitcolor(' + color + ', "BLUE"))';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
     }
 
   code += ');';
@@ -525,14 +525,14 @@ Blockly.propc.oled_text_size = function() {
 
 Blockly.propc.oled_text_color = function() {
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
 
     var font_color = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
     var background_color = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
 
     var code = 'oledc_setTextColor(';
-    code += 'oledc_color565(get8bitcolor(' + font_color + ', "RED"), get8bitcolor(' + font_color + ', "GREEN"), get8bitcolor(' + font_color + ', "BLUE")), ';
-    code += 'oledc_color565(get8bitcolor(' + background_color + ', "RED"), get8bitcolor(' + background_color + ', "GREEN"), get8bitcolor(' + background_color + ', "BLUE")));';
+    code += 'oledc_color565(get8bitColor(' + font_color + ', "RED"), get8bitColor(' + font_color + ', "GREEN"), get8bitColor(' + font_color + ', "BLUE")), ';
+    code += 'oledc_color565(get8bitColor(' + background_color + ', "RED"), get8bitColor(' + background_color + ', "GREEN"), get8bitColor(' + background_color + ', "BLUE")));';
 
     return code;
 };
@@ -540,7 +540,6 @@ Blockly.propc.oled_text_color = function() {
 Blockly.propc.oled_get_max_height = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     // Emit code to clear the screen
     var code = 'oledc_getHeight()';
