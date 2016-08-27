@@ -138,11 +138,9 @@ Blockly.propc.variables_set = function () {
            Blockly.propc.vartype_[varName] = 'char';
            Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
          } else if (argument0.indexOf("char\[\]") > -1) {
-           Blockly.propc.vartype_[varName] = 'char';
-           Blockly.propc.varlength_[varName] = '128';
+           Blockly.propc.vartype_[varName] = 'char *';
          } else if (argument0.indexOf("\"") > -1) {
-           Blockly.propc.vartype_[varName] = 'char';
-           Blockly.propc.varlength_[varName] = '128';
+           Blockly.propc.vartype_[varName] = 'char *';
          } else if (argument0.indexOf(".") > -1) {
            Blockly.propc.vartype_[varName] = 'float';
          } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false") > -1) {
@@ -160,8 +158,7 @@ Blockly.propc.variables_set = function () {
       Blockly.propc.vartype_[varName] = 'char';
       Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
     } else if (argument0.indexOf("char\[\]") > -1) {
-      Blockly.propc.vartype_[varName] = 'char';
-      Blockly.propc.varlength_[varName] = '128';
+      Blockly.propc.vartype_[varName] = 'char *';
     }
 
     return varName + ' = ' + argument0 + ';\n';
