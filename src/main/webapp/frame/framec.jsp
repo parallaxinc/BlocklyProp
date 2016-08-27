@@ -254,11 +254,15 @@
                         </block>
                     </value>
                 </block>
-                <block type="oled_print_text"></block>
+                <block type="oled_print_text">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
                 <block type="oled_print_number">
-                    <value name="NUMBER">
+                    <value name="NUMIN">
                         <block type="math_number">
-                            <field name="NUM">0</field>
+                            <field name="NUM">1</field>
                         </block>
                     </value>
                 </block>
