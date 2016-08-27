@@ -12,6 +12,9 @@ var client_domain_name = "localhost";
 var client_domain_port = 6009;
 
 var client_min_version = 0.2;
+var client_baud_rate_min_version = 0.4;
+
+var baud_rate_compatible = false;
 
 $(document).ready(function () {
     check_client();
@@ -30,6 +33,10 @@ check_client = function () {
                 // wrong server
             } else if (data.version < client_min_version) {
                 bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
+            }
+
+            if (data.version >= client_baud_rate_min_version) {
+                baud_rate_compatible = true;
             }
 
             client_available = true;

@@ -1349,6 +1349,7 @@
             // FIXME: higher chars than 0xa0 are not allowed in escape sequences
             //        --> maybe move to default
             code = data.charCodeAt(i);
+            /*
             if (0xD800 <= code && code <= 0xDBFF) {
                 // we got a surrogate high
                 // get surrogate low (next 2 bytes)
@@ -1364,6 +1365,7 @@
             // surrogate low - already handled above
             if (0xDC00 <= code && code <= 0xDFFF)
                 continue;
+                */
             switch (this.state) {
                 case normal:
                     switch (ch) {
@@ -1372,11 +1374,12 @@
                             var x = data.charCodeAt(++i);
                             var y = data.charCodeAt(++i);
                             console.log("Set X-Y location: " + x + "-" + y);
-                            this.cursorPosX([x, y]);
+                            this.cursorPosX(x);
+                            this.cursorPosY(y);
                             break;
-                        case '\x07':
+                        /*case '\x07':
                             this.bell();
-                            break;
+                            break; */
                         // '\n', '\v', '\f'
                         case '\n':
                         case '\x0b':
@@ -1389,11 +1392,19 @@
                                 this.y--;
                                 this.scroll();
                             }
-                            // PARALLAX: carriage return included in newline
-                            this.x = 0;
                             break;
                         // '\r'
                         case '\r':
+                            // PARALLAX: newline included in carriage return
+                            if (this.convertEol) {
+                                this.x = 0;
+                            }
+                            this.y++;
+                            if (this.y > this.scrollBottom) {
+                                this.y--;
+                                this.scroll();
+                            }
+
                             this.x = 0;
                             break;
                         // '\b'
@@ -1423,23 +1434,26 @@
                             this.cursorPosY(y);
                             break;
                         case '\x10':
-                            // PARALLAX: ASCII 10: clear
+                            // PARALLAX: ASCII x10: clear
                             this.erase();
-                            this.cursorPos([1,1]);
+                            this.cursorPos([0,0]);
                             break;
                         // '\e'
-                        case '\x1b':
+                        /*case '\x1b':
                             this.state = escaped;
-                            break;
+                            break; */
                         default:
                             // ' '
                             // calculate print space
                             // expensive call, therefore we save width in line buffer
                             ch_width = wcwidth(code);
                             if (ch >= ' ') {
+                                // #524 ?
+                                /*
                                 if (this.charset && this.charset[ch]) {
                                     ch = this.charset[ch];
                                 }
+                                */
 
                                 row = this.y + this.ybase;
                                 // insert combining char in last cell
@@ -2719,7 +2733,7 @@
                         // There is room above the buffer and there are no empty elements below the line,
                         // scroll up
                         this.ybase--;
-                        addToY++
+                        addToY++;
                         if (this.ydisp > 0) {
                             // Viewport is at the top of the buffer, must increase downwards
                             this.ydisp--;
@@ -2876,6 +2890,9 @@
         for (var y = 0; y < this.rows; y++) {
             this.eraseRight(0, y);
         }
+        this.scrollTop = 0;
+        this.scrollBottom = y - 1;
+        this.refresh(0, this.rows - 1);
     };
     /**
      * Return the data array of a blank line/
@@ -3053,12 +3070,8 @@
         this.y = row;
     };
 
-    /**
-     * CSI Ps ; Ps H
-     * Cursor Position [row;column] (default = [1,1]) (CUP).
-     */
     Terminal.prototype.cursorPosX = function (x) {
-        var col = x - 1;
+        var col = x; // - 1;
 
         if (col < 0) {
             col = 0;
@@ -3070,7 +3083,7 @@
     };
 
     Terminal.prototype.cursorPosY = function (y) {
-        var row = y - 1;
+        var row = y; // - 1;
 
         if (row < 0) {
             row = 0;

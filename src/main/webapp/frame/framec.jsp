@@ -116,10 +116,28 @@
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
         <category name="<fmt:message key="category.control" />" colour="220">
+            <block type="controls_return"></block>
             <block type="controls_if"></block>
             <block type="controls_if_return"></block>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
+            </block>
+            <block type="control_repeat_for_loop">
+                <value name="START">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+                <value name="END">
+                    <block type="math_number">
+                        <field name="NUM">10</field>
+                    </block>
+                </value>
+                <value name="STEP">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
             </block>
             <block type="base_delay">
                 <value name="DELAY_TIME">
@@ -149,9 +167,36 @@
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
             <block type="color_picker"></block>
-            <block type="color_value_from"></block>
-            <block type="get_channel_from"></block>
-            <block type="compare_colors"></block>
+            <block type="color_value_from">
+                <value name="RED_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="GREEN_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="BLUE_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="get_channel_from">
+                <value name="COLOR">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
+            <block type="compare_colors">
+                <value name="COLOR1">
+                    <block type="color_picker"></block>
+                </value>
+                <value name="COLOR2">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
@@ -184,29 +229,56 @@
             </category>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
-                <block type="oled_clear_screen"></block>
                 <block type="oled_font_loader"></block>
                 <block type="oled_get_max_height"></block>
                 <block type="oled_get_max_width"></block>
+                <block type="oled_clear_screen"></block>
+                <block type="oled_text_color">
+                    <value name="FONT_COLOR">
+                        <block type="color_picker"></block>
+                    </value>
+                    <value name="BACKGROUND_COLOR">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="oled_text_size"></block>
-                <block type="oled_text_color"></block>
-                <block type="oled_get_max_height"></block>
-                <block type="oled_get_max_width"></block>
-                <block type="oled_draw_circle">
-                    <value name="POINT_X">
+                <block type="oled_set_cursor">
+                    <value name="X_POS">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                    <value name="POINT_Y">
+                    <value name="Y_POS">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                    <value name="RADIUS">
+                </block>
+                <block type="oled_print_text">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
+                <block type="oled_print_number">
+                    <value name="NUMIN">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="oled_draw_pixel">
+                    <value name="X_AXIS">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
+                    </value>
+                    <value name="Y_AXIS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
                     </value>
                 </block>
                 <block type="oled_draw_line">
@@ -230,17 +302,8 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                </block>
-                <block type="oled_draw_pixel">
-                    <value name="X_AXIS">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="Y_AXIS">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
                     </value>
                 </block>
                 <block type="oled_draw_triangle">
@@ -274,6 +337,9 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
                 <block type="oled_draw_rectangle">
                     <value name="POINT_X">
@@ -296,11 +362,50 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
+                <block type="oled_draw_circle">
+                    <value name="POINT_X">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="POINT_Y">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="RADIUS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
+                    </value>
                 </block>
             </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
                 <block type="console_print_variables"></block>
+                <block type="console_newline"></block>
+                <block type="console_clear"></block>
+                <block type="console_move_to_column">
+                    <value name="COLUMNS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="console_move_to_row">
+                    <value name="ROWS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="i2c_new_bus"></block>
@@ -316,9 +421,6 @@
             </category>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" exclude="heb" colour="155">
-            <category name="<fmt:message key="category.sensor-input.etape" />">
-                <block type="etape_rc_time"></block>
-            </category>
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
@@ -336,15 +438,6 @@
             </category>
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
                 <block type="MMA7455_acceleration"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.gps_pam7q" />">
-                <block type="PAM_7Q_Init"></block>
-                <block type="PAM_7Q_Latitude"></block>
-                <block type="PAM_7Q_Longitude"></block>
-                <block type="PAM_7Q_Velocity"></block>
-                <block type="PAM_7Q_Heading"></block>
-                <block type="PAM_7Q_Altitude"></block>
-                <block type="PAM_7Q_SatsTracked"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.ping" />">
                 <block type="sensor_ping"></block>
@@ -368,6 +461,7 @@
             </category>
             <category name="<fmt:message key="category.sensor-input.colorpal" />">
                 <block type="colorpal_enable"></block>
+                <block type="colorpal_get_colors_raw"></block>
                 <block type="colorpal_get_colors"></block>
             </category>
         </category>
