@@ -499,7 +499,7 @@ Blockly.propc.oled_draw_rectangle = function() {
 
         code += point_x + ', ' + point_y + ', ';
         code += width + ', ' + height + ', ';
-        code += '((' + width + ') + (' + height + ') / (' + corners + '),';
+        code += '((' + width + ') + (' + height + ') / (' + corners + ')),';
         code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
     }
 
