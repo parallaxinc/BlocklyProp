@@ -121,13 +121,13 @@ Blockly.Blocks.console_move_to_row = {
 };
 
 Blockly.propc.console_newline = function () {
-    return 'print("\\r");';
     Blockly.propc.serial_terminal_ = true;
+    return 'print("\\r");';
 };
 
 Blockly.propc.console_clear = function () {
-    return 'print("\\x10");';
     Blockly.propc.serial_terminal_ = true;
+    return 'print("\\x10");';
 };
 
 Blockly.propc.console_move_to_column = function () {
