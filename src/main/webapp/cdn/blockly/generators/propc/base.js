@@ -287,7 +287,7 @@ Blockly.propc.get_channel_from = function() {
 
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
-    return ['get8bitcolor(' + color + ', "' + channel + '")'];
+    return ['get8bitColor(' + color + ', "' + channel + '")'];
 };
 
 Blockly.Blocks.compare_colors = {
