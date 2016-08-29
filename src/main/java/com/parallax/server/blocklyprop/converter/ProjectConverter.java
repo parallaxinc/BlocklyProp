@@ -97,16 +97,19 @@ public class ProjectConverter {
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
             ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
-            basedOn.addProperty("id", basedOnProject.getId());
-            basedOn.addProperty("name", basedOnProject.getName());
-            boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
-            basedOn.addProperty("yours", basedOnProjectisYours);
-            if (!isYours) {
-                basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+            if (basedOnProject != null) {
+                basedOn.addProperty("id", basedOnProject.getId());
+                basedOn.addProperty("name", basedOnProject.getName());
+                boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+                basedOn.addProperty("yours", basedOnProjectisYours);
+                if (!isYours) {
+                    basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+                }
+                result.add("basedOn", basedOn);
             }
-            result.add("basedOn", basedOn);
         }
 
+        System.out.println("project to json" + result.get("name").getAsString());
         return result;
     }
 
@@ -130,14 +133,16 @@ public class ProjectConverter {
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
             ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
-            basedOn.addProperty("id", basedOnProject.getId());
-            basedOn.addProperty("name", basedOnProject.getName());
-            boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
-            basedOn.addProperty("yours", basedOnProjectisYours);
-            if (!isYours) {
-                basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+            if (basedOnProject != null) {
+                basedOn.addProperty("id", basedOnProject.getId());
+                basedOn.addProperty("name", basedOnProject.getName());
+                boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+                basedOn.addProperty("yours", basedOnProjectisYours);
+                if (!isYours) {
+                    basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+                }
+                result.add("basedOn", basedOn);
             }
-            result.add("basedOn", basedOn);
         }
         return result;
     }
