@@ -121,15 +121,18 @@ Blockly.Blocks.console_move_to_row = {
 };
 
 Blockly.propc.console_newline = function () {
+    Blockly.propc.serial_terminal_ = true;
     return 'print("\\r");';
 };
 
 Blockly.propc.console_clear = function () {
+    Blockly.propc.serial_terminal_ = true;
     return 'print("\\x10");';
 };
 
 Blockly.propc.console_move_to_column = function () {
     var column = Blockly.propc.valueToCode(this, 'COLUMNS', Blockly.propc.ORDER_NONE);
+    Blockly.propc.serial_terminal_ = true;
 
     if (Number(column) < 0) {
         column = 0;
@@ -142,6 +145,7 @@ Blockly.propc.console_move_to_column = function () {
 
 Blockly.propc.console_move_to_row = function () {
     var row = Blockly.propc.valueToCode(this, 'ROWS', Blockly.propc.ORDER_NONE);
+    Blockly.propc.serial_terminal_ = true;
 
     if (Number(row) < 0) {
         row = 0;
