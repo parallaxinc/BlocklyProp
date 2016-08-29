@@ -266,6 +266,9 @@ Blockly.propc.colorpal_get_colors = function () {
     var pin = this.getFieldValue('IO_PIN');
     var color_var = Blockly.propc.variableDB_.getName(this.getFieldValue('COLOR'), Blockly.Variables.NAME_TYPE);
 
+    Blockly.propc.global_vars_["colorpal_pin"] = 'int cpSIO = ' + pin + ';';
+    Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
+    Blockly.propc.setups_["colorpal"] = 'cpal = colorPal_open(cpSIO);';
     Blockly.propc.global_vars_["colorpal_rr"] = 'int cpRR = 0;';
     Blockly.propc.global_vars_["colorpal_gg"] = 'int cpGG = 0;';
     Blockly.propc.global_vars_["colorpal_bb"] = 'int cpBB = 0;';
