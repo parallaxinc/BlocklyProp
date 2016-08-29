@@ -379,7 +379,7 @@ Blockly.propc.oled_clear_screen = function() {
 Blockly.propc.oled_draw_circle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
     var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
@@ -406,7 +406,7 @@ Blockly.propc.oled_draw_circle = function() {
 Blockly.propc.oled_draw_line = function () {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
     var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
@@ -423,7 +423,7 @@ Blockly.propc.oled_draw_line = function () {
 Blockly.propc.oled_draw_pixel = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
     var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
@@ -438,7 +438,7 @@ Blockly.propc.oled_draw_pixel = function() {
 Blockly.propc.oled_draw_triangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
     var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
@@ -468,7 +468,7 @@ Blockly.propc.oled_draw_triangle = function() {
 Blockly.propc.oled_draw_rectangle = function() {
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var corners = this.getFieldValue('rect_round');
     var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
@@ -525,7 +525,7 @@ Blockly.propc.oled_text_size = function() {
 
 Blockly.propc.oled_text_color = function() {
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.definitions_["colormath"] = '#include "colorMath.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var font_color = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
     var background_color = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
