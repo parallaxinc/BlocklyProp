@@ -109,7 +109,7 @@ Blockly.propc.control_repeat_for_loop = function () {
         var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += ' + step + ') {\n' + repeat_code + '\n}';
         return code;
     } else {
-      var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' += ' + step + ') {\n' + repeat_code + '\n}';
+      var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' -= ' + step + ') {\n' + repeat_code + '\n}';
       return code;
     }
 };
