@@ -361,6 +361,11 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
+                    <value name="RECT_ROUND">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
                     <value name="COLOR">
                         <block type="color_picker"></block>
                     </value>
