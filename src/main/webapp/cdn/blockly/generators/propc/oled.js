@@ -198,14 +198,9 @@ Blockly.Blocks.oled_draw_triangle = {
 
 Blockly.Blocks.oled_draw_rectangle = {
   init: function() {
-      this.appendValueInput("POINT_X")
+    this.appendValueInput("POINT_X")
         .setCheck("Number")
-        .appendField("draw")
-        .appendField(new Blockly.FieldDropdown([
-            ["rectangle", "REG_RECTANGLE"],
-            ["round rectangle", "ROUND_RECTANGLE"]
-            ]), "rect_round")
-        .appendField("at (x)");
+        .appendField("draw rectangle at (x)")
     this.appendValueInput("POINT_Y")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -218,6 +213,10 @@ Blockly.Blocks.oled_draw_rectangle = {
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("height");
+    this.appendValueInput("RECT_ROUND")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("% rounded");
     // Color picker control
     this.appendValueInput('COLOR')
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -470,17 +469,17 @@ Blockly.propc.oled_draw_rectangle = function() {
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
-    var corners = this.getFieldValue('rect_round');
     var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
     var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
     var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
     var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
+    var corners = Blockly.propc.valueToCode(this, 'RECT_ROUND', Blockly.propc.ORDER_NONE);
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
     var checkbox = this.getFieldValue('ck_fill');
     var code;
 
-    if (corners === 'REG_RECTANGLE') {
+    if (corners === 0) {
         if (checkbox === 'TRUE') {
             code = 'oledc_fillRect(';
         } else {
@@ -500,7 +499,7 @@ Blockly.propc.oled_draw_rectangle = function() {
 
         code += point_x + ', ' + point_y + ', ';
         code += width + ', ' + height + ', ';
-        code += '((' + width + ') + (' + height + ') / 20),';
+        code += '((' + width + ') + (' + height + ') / (' + corners + ')),';
         code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
     }
 
