@@ -43,16 +43,16 @@ Blockly.Blocks.debug_lcd_init = {
     }
 };
 
-Blockly.Blocks.debug_lcd_clear = {
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("LCD clear");
-
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-    }
-};
+//Blockly.Blocks.debug_lcd_clear = {
+//    init: function () {
+//        this.setColour(colorPalette.getColor('protocols'));
+//        this.appendDummyInput()
+//                .appendField("LCD clear");
+//
+//        this.setPreviousStatement(true, null);
+//        this.setNextStatement(true, null);
+//    }
+//};
 
 Blockly.Blocks.debug_lcd_print = {
     init: function () {
@@ -85,8 +85,21 @@ Blockly.Blocks.debug_lcd_action = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("LCD action")
-                .appendField(new Blockly.FieldDropdown([["newline", "13"]]), "ACTION");
+                .appendField("LCD command")
+                .appendField(new Blockly.FieldDropdown([
+                    ["clear screen", "12"],
+                    ["move cursor right", "9"],
+                    ["move cursor left", "8"],
+                    ["move cursor down", "10"],
+                    ["carriage return", "13"],
+                    ["backlight on", "17"],
+                    ["backlight off", "18"],
+                    ["display off", "21"],
+                    ["display on, cursor off", "22"],
+                    ["display on, cursor off, blink", "23"],
+                    ["display on, cursor on", "24"],
+                    ["display on, cursor on, blink", "25"]
+                ]), "ACTION");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -103,9 +116,9 @@ Blockly.propc.debug_lcd_init = function () {
     return code;
 };
 
-Blockly.propc.debug_lcd_clear = function () {
-    return 'writeChar(debug_lcd, 12);\npause(5);\n';
-};
+//Blockly.propc.debug_lcd_clear = function () {
+//    return 'writeChar(debug_lcd, 12);\npause(5);\n';
+//};
 
 Blockly.propc.debug_lcd_print = function () {
     var text = this.getFieldValue('TEXT');
