@@ -271,3 +271,35 @@ Blockly.Blocks.controls_repeat = {
         }
     }
 };
+
+Blockly.Blocks.control_repeat_for_loop = {
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField("repeat")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+        this.appendValueInput('START')
+            .setCheck('Number')
+            .appendField("from");
+        this.appendValueInput('END')
+            .setCheck('Number')
+            .appendField("to");
+        this.appendValueInput('STEP')
+            .setCheck('Number')
+            .appendField("by");
+        this.appendStatementInput("DO")
+            .appendField("do");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setInputsInline(true);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VAR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
+        }
+    }
+};

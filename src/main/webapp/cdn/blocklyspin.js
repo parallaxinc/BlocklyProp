@@ -10,6 +10,8 @@ var term = null;
 
 var codeXml = null;
 
+var baudrate = 115200;
+
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -100,6 +102,10 @@ function init(blockly) {
         }, 1);
     }
     loadProject();
+}
+
+function setBaudrate(_baudrate) {
+    baudrate = _baudrate;
 }
 
 function cloudCompile(text, action, successHandler) {
@@ -202,14 +208,18 @@ function serial_console() {
 
         // When the connection is open, open com port
         connection.onopen = function () {
-            connection.send('+++ open port ' + getComPort());
+            if (baud_rate_compatible && baudrate) {
+                connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
+            } else {
+                connection.send('+++ open port ' + getComPort());
+            }
 
         };
         // Log errors
         connection.onerror = function (error) {
-            console.log('WebSocket Error ' + error);
+            console.log('WebSocket Error');
             console.log(error);
-            term.destroy();
+            // term.destroy();
         };
         // Log messages from the server
         connection.onmessage = function (e) {

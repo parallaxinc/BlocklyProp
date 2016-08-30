@@ -21,7 +21,9 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <jsp:useBean id="date" class="java.util.Date" />
-                    <li><a href="http://www.parallax.com" target="_blank">Parallax &copy; 2015 - <fmt:formatDate value="${date}" pattern="yyyy" /></a></li>
+                    <li><a href="http://www.parallax.com" target="_blank">
+                                <fmt:message key="footer.appversion" />.<fmt:message key="footer.buildversion" />
+                                Parallax &copy; 2015 - <fmt:formatDate value="${date}" pattern="yyyy" /></a></li>
                 </ul>
             </div>
         </div>

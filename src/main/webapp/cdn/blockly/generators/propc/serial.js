@@ -32,10 +32,9 @@ Blockly.Blocks.serial_open = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("serial init")
-                .appendField("rxPIN#")
+                .appendField("Serial init RX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
-                .appendField("txPIN#")
+                .appendField("TX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput()
                 .appendField("baud")
@@ -50,7 +49,7 @@ Blockly.Blocks.serial_tx_byte = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("serial transmit");
+                .appendField("Serial transmit");
         this.appendValueInput('VALUE', Number)
                 .setCheck('Number');
 
@@ -64,7 +63,7 @@ Blockly.Blocks.serial_send_text = {
         this.setColour(colorPalette.getColor('protocols'));
 
         this.appendDummyInput("")
-                .appendField("serial transmit")
+                .appendField("Serial transmit")
                 .appendField(quotes.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'TEXT')
                 .appendField(quotes.newQuote_(false));
@@ -77,7 +76,7 @@ Blockly.Blocks.serial_rx_byte = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("serial read byte");
+                .appendField("Serial read byte");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
