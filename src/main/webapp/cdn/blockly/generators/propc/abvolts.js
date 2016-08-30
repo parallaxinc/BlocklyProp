@@ -46,7 +46,7 @@ Blockly.Blocks.ab_volt_out = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("DAC channel")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL");
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL")
                 .appendField("output (0-3.3V)");
                 this.appendValueInput("VALUE")
                 .setCheck('Number')
