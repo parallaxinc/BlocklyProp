@@ -62,7 +62,7 @@ Blockly.Blocks.base_freqout = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("frequency pin#")
+                .appendField("frequency PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("DURATION", 'Number')
                 .appendField("duration (ms)")
@@ -85,7 +85,7 @@ Blockly.Blocks.rc_charge_discharge = {
             .appendField("RC")
             .appendField(new Blockly.FieldDropdown([["charge", "0"], ["discharge", "1"]]), "STATE");
         this.appendDummyInput("")
-            .appendField("pin#")
+            .appendField("PIN")
             .appendField(new Blockly.FieldDropdown(
                 [
                     ["0","0"],
