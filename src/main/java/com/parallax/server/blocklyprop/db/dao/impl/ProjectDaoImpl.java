@@ -64,6 +64,15 @@ public class ProjectDaoImpl implements ProjectDao {
         return record;
     }
 
+    public ProjectRecord createProject(String name, String description, String descriptionHtml, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject, Long idProjectBasedOn) {
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
+        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.DESCRIPTION_HTML, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.BOARD, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED, Tables.PROJECT.BASED_ON)
+                .values(idUser, idCloudUser, name, description, descriptionHtml, code, type, board, privateProject, sharedProject, idProjectBasedOn).returning().fetchOne();
+        System.out.println("Save as: " + record.getName());
+        return record;
+    }
+
     @Override
     public ProjectRecord createProject(String name, String description, String descriptionHtml, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
         return createProject(name, description, descriptionHtml, "", type, board, privateProject, sharedProject);
@@ -198,12 +207,17 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
-        ProjectRecord newProject = cloneProject(idProject);
-        newProject.setCode(code);
-        newProject.setName(newName);
-        // newProject.update();
-        create.update(Tables.PROJECT).set(Tables.PROJECT.CODE, code).set(Tables.PROJECT.NAME, newName).where(Tables.PROJECT.ID.equal(newProject.getId()));
-        return newProject;
+        ProjectRecord original = getProject(idProject);
+        if (original == null) {
+            throw new NullPointerException("Project doesn't exist");
+        }
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
+            ProjectRecord cloned = createProject(newName, original.getDescription(), original.getDescriptionHtml(), code, original.getType(), original.getBoard(), original.getPrivate(), original.getShared(), original.getId());
+
+            return cloned;
+        }
+        return null;
     }
 
 }

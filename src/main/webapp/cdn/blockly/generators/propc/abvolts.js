@@ -31,7 +31,7 @@ Blockly.Blocks.ab_volt_in = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("0-5V ADC reading in Volts x 100")
+            .appendField("ADC read (0-5V) in volt-100ths")
             .appendField("channel")
             .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
 
@@ -45,13 +45,13 @@ Blockly.Blocks.ab_volt_out = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-                .appendField("0-3.3V DAC output in Volts x 100")
-                .appendField("channel")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL");
-        this.appendValueInput("VALUE")
+                .appendField("DAC channel")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL")
+                .appendField("output (0-3.3V)");
+                this.appendValueInput("VALUE")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("Value");
+                .appendField("volt-100ths");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

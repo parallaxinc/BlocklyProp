@@ -97,3 +97,34 @@ Blockly.propc.controls_if_return = function () {
 
     return 'if (' + argument + ') {return;}\n';
 };
+
+Blockly.propc.control_repeat_for_loop = function () {
+    var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE) || '1';
+    var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE) || '10';
+    var step = Blockly.propc.valueToCode(this, 'STEP', Blockly.propc.ORDER_NONE) || '1';
+    var repeat_code = Blockly.propc.statementToCode(this, 'DO');
+    var loop_counter = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+
+    if (Number(start) < Number(end)) {
+        var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
+        return code;
+    } else {
+      var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' -= abs(' + step + ')) {\n' + repeat_code + '\n}';
+      return code;
+    }
+};
+
+Blockly.Blocks.controls_return = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("return");
+
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setColour(colorPalette.getColor('programming'));
+  }
+};
+
+Blockly.propc.controls_return = function() {
+    return 'return;';
+};
