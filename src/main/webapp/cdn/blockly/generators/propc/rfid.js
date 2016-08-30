@@ -30,7 +30,7 @@ Blockly.Blocks.rfid_get = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get RFID's sensor value and store it:")
+            .appendField("RFID store reading in")
             .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
         this.setPreviousStatement(true, null);
@@ -50,7 +50,7 @@ Blockly.Blocks.rfid_disable = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendTitle("disable RFID");
+            .appendTitle("RFID disable");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -61,10 +61,10 @@ Blockly.Blocks.rfid_enable = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("enable RFID  enable pin")
+            .appendField("RFID initialize EN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_IN");
         this.appendDummyInput()
-            .appendField("sout pin")
+            .appendField("SOUT")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_OUT");
 
         this.setInputsInline(true);
@@ -77,7 +77,7 @@ Blockly.Blocks.rfid_close = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("close RFID");
+            .appendField("RFID close");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

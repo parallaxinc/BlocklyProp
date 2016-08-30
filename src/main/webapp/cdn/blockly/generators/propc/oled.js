@@ -60,7 +60,7 @@ Blockly.Blocks.oled_clear_screen = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("clear screen");
+            .appendField("OLED clear screen");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -73,7 +73,7 @@ Blockly.Blocks.oled_draw_circle = {
     // First x/y coordinates
     this.appendValueInput("POINT_X")
         .setCheck("Number")
-        .appendField("draw circle at (x)");
+        .appendField("OLED draw circle at (x)");
     this.appendValueInput("POINT_Y")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -97,7 +97,7 @@ Blockly.Blocks.oled_draw_circle = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(colorPalette.getColor('protocols'));
-    this.setTooltip('Set coordinates to draw a triangle');
+    this.setTooltip('Set coordinates to draw a circle');
   }
 };
 
@@ -106,7 +106,7 @@ Blockly.Blocks.oled_draw_line = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X_ONE")
             .setCheck('Number')
-            .appendField("draw line point 1(x)");
+            .appendField("OLED draw line from 1 (x)");
         this.appendValueInput("Y_ONE")
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -114,7 +114,7 @@ Blockly.Blocks.oled_draw_line = {
         this.appendValueInput("X_TWO")
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("point 2(x)");
+            .appendField("to 2 (x)");
         this.appendValueInput("Y_TWO")
             .setCheck('Number')
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -135,7 +135,7 @@ Blockly.Blocks.oled_draw_pixel = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X_AXIS")
             .setCheck('Number')
-            .appendField("draw pixel at");
+            .appendField("OLED draw pixel at");
         this.appendValueInput("Y_AXIS")
             .setCheck('Number')
             .appendField(",");
@@ -155,7 +155,7 @@ Blockly.Blocks.oled_draw_triangle = {
         // First x/y coordinates
         this.appendValueInput("POINT_X0")
             .setCheck(null)
-            .appendField("draw triangle at 1(x)");
+            .appendField("OLED draw triangle at 1 (x)");
         this.appendValueInput("POINT_Y0")
             .setCheck(null)
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -164,7 +164,7 @@ Blockly.Blocks.oled_draw_triangle = {
         this.appendValueInput("POINT_X1")
             .setCheck(null)
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("2(x)");
+            .appendField("2 (x)");
         this.appendValueInput("POINT_Y1")
             .setCheck(null)
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -173,7 +173,7 @@ Blockly.Blocks.oled_draw_triangle = {
         this.appendValueInput("POINT_X2")
             .setCheck(null)
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("3(x)");
+            .appendField("3 (x)");
         this.appendValueInput("POINT_Y2")
             .setCheck(null)
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -206,7 +206,7 @@ Blockly.Blocks.oled_draw_rectangle = {
 //            ["round rectangle", "ROUND_RECTANGLE"]
 //            ]), "rect_round")
 //        .appendField("at (x)");
-        .appendField("draw rectangle at (x)")
+        .appendField("OLED draw rectangle at (x)")
     this.appendValueInput("POINT_Y")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -222,7 +222,7 @@ Blockly.Blocks.oled_draw_rectangle = {
     this.appendValueInput("RECT_ROUND")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("% rounded");
+        .appendField("roundness");
     // Color picker control
     this.appendValueInput('COLOR')
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -246,7 +246,7 @@ Blockly.Blocks.oled_text_size = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("text size")
+            .appendField("OLED text size")
             .appendField(new Blockly.FieldDropdown([
                 ["small", "SMALL"],
                 ["medium", "MEDIUM"],
@@ -267,10 +267,10 @@ Blockly.Blocks.oled_text_color = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('FONT_COLOR')
             .setCheck('Number')
-            .appendField("font color");
+            .appendField("OLED font color");
         this.appendValueInput('BACKGROUND_COLOR')
             .setCheck('Number')
-            .appendField("background color");
+            .appendField("font background color");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -305,10 +305,10 @@ Blockly.Blocks.oled_set_cursor = {
     init: function() {
         this.appendValueInput('X_POS')
             .setCheck('Number')
-            .appendField("set cursor at (X, 0 to 95)");
+            .appendField("OLED set cursor at (x)");
         this.appendValueInput('Y_POS')
             .setCheck('Number')
-            .appendField("(Y, 0 to 63)");
+            .appendField("(y)");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -321,7 +321,7 @@ Blockly.Blocks.oled_print_text = {
     init: function() {
         this.appendValueInput('MESSAGE')
             .setCheck('String')
-            .appendField("print text ");
+            .appendField("OLED print text ");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -334,7 +334,7 @@ Blockly.Blocks.oled_print_number = {
     init: function() {
         this.appendValueInput('NUMIN')
             .setCheck('Number')
-            .appendField("print number ")
+            .appendField("OLED print number ")
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
                 ["DEC", "DEC"],

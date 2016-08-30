@@ -33,7 +33,7 @@ Blockly.Blocks.console_print = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("print")
+                .appendField("Terminal print text")
                 .appendField(quotes.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'TEXT')
                 .appendField(quotes.newQuote_(false));
@@ -47,7 +47,7 @@ Blockly.Blocks.console_print_variables = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
-                .appendField("print");
+                .appendField("Terminal print number");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -74,7 +74,7 @@ Blockly.Blocks.console_newline = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("new line");
+            .appendField("Terminal new line");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -85,7 +85,7 @@ Blockly.Blocks.console_clear = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("clear screen");
+            .appendField("Terminal clear screen");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -96,7 +96,7 @@ Blockly.Blocks.console_move_to_column = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("move to column");
+            .appendField("Terminal move to column");
         this.appendValueInput('COLUMNS')
             .setCheck('Number');
 
@@ -110,7 +110,7 @@ Blockly.Blocks.console_move_to_row = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("move to row");
+            .appendField("Terminal move to row");
         this.appendValueInput('ROWS')
             .setCheck('Number');
 
