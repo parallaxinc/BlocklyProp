@@ -42,7 +42,7 @@ if (!Blockly.Spin.RESERVED_WORDS_) {
 
 Blockly.Spin.RESERVED_WORDS_ +=
         // http://arduino.cc/en/Reference/HomePage
-        'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,integer,constants,floating,point,void,boolean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts'
+        'cogid,if,else,elseif,repeat,switch,case,while,do,break,continue,return,goto,define,include,HIGH,LOW,INPUT,OUTPUT,INPUT_PULLUP,true,false,integer,constants,floating,point,void,boolean,char,unsigned,byte,int,word,long,float,double,string,String,array,static, volatile,const,sizeof,pinMode,digitalWrite,digitalRead,analogReference,analogRead,analogWrite,tone,noTone,shiftOut,shitIn,pulseIn,millis,micros,delay,delayMicroseconds,min,max,abs,constrain,map,pow,sqrt,sin,cos,tan,randomSeed,random,lowByte,highByte,bitRead,bitWrite,bitSet,bitClear,bit,attachInterrupt,detachInterrupt,interrupts,noInterrupts,_clkfreq,_clkmode,_free,_stack,_xinfreq,abort,abs,absneg,add,addabs,adds,addsx,addx,and,andn,byte,bytefill,bytemove,call,case,chipver,clkfreq,clkmode,clkset,cmp,cmps,cmpsub,cmpsx,cmpx,cnt,cogid,coginit,cognew,cogstop,con,constant,if_nc_and_nz,min,pll4x,if_nc_and_z,mins,ctra,pll8x,ctrb,if_nc_or_nz,mov,pll16x,dat,if_nc_or_z,movd,posx,dira,if_ne,movi,pri,dirb,if_never,movs,pub,djnz,if_nz,mul,quit,else,if_nz_and_c,muls,rcfast,elseif,if_nz_and_nc,muxc,rcl,if_nz_or_c,elseifnot,muxnc,rcr,enc,if_nz_or_nc,muxnz,rcslow,false,if_z,muxz,rdbyte,file,if_z_and_c,neg,rdlong,fit,if_z_and_nc,negc,rdword,float,if_z_eq_c,negnc,reboot,from,if_z_ne_c,negnz,repeat,frqa,if_z_or_c,negx,res,frqb,if_z_or_nc,negz,result,hubop,ina,next,ret,if,inb,nop,return,ifnot,jmp,not,rev,if_a,jmpret,nr,rol,if_ae,lockclr,obj,ror,if_always,locknew,ones,round,if_b,lockret,or,sar,if_be,lockset,org,shl,if_c,long,other,shr,if_c_and_nz,longfill,outa,spr,if_c_and_z,longmove,outb,step,par,if_c_eq_z,lookdown,strcomp,if_c_ne_z,lookdownz,phsa,string,if_c_or_nz,lookup,phsb,strsize,if_c_or_z,lookupz,pi,sub,if_e,max,pll1x,subabs,pll2x,if_nc,maxs,subs,subsx,subx,sumc,sumnc,sumnz,sumz,test,testn,tjnz,tjz,to,true,trunc,until,var,vcfg,vscl,waitcnt,waitpeq,waitpne,waitvid,wc,while,word,wordfill,wordmove,wr,wrbyte,wrlong,wrword,wz,xinput,xor,xtal1,xtal2,xtal3'
         ;
 /**
  * Order of operation ENUMs.
@@ -75,10 +75,10 @@ var profile = {
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["26", "26"], ["27", "27"]],
         servo: [["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
-        baudrate: 115200
+        baudrate: 9600
     },
     "s3": {
-        description: "Parallax propeller C3",
+        description: "Parallax propeller S3",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],

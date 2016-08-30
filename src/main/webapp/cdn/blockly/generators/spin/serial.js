@@ -104,7 +104,7 @@ Blockly.Blocks.serial_send_ctrl = {
     init: function () {
         this.appendDummyInput()
                 .appendField("send control character")
-                .appendField(new Blockly.FieldDropdown([["Bell", "serial#BP"], ["Backspace", "serial#BS"], ["Tab", "serial#TB"], ["Line Feed", "serial#LF"], ["Carriage Return", "serial#NL"], ["Escape", "27"], ["Delete", "127"]]), "SERIAL_CHAR");
+                .appendField(new Blockly.FieldDropdown([["position cursor (x,y)", "Serial#PC"], ["backspace", "Serial#BS"], ["line feed", "Serial#LF"], ["carriage return", "Serial#NL"], ["position cursor (x)", "Serial#PX"], ["position cursor (y)", "Serial#PY"], ["clear screen", "Serial#CS"], ]), "SERIAL_CHAR");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -140,13 +140,13 @@ Blockly.Blocks.serial_cursor_xy = {
     helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput("")
-                .appendField("set cursor position")
-                .appendField("X");
         this.appendValueInput("X")
-                .setCheck("Number");
+                .setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("set cursor position  X");
         this.appendValueInput("Y")
                 .setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("Y");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -162,7 +162,7 @@ Blockly.Spin.serial_open = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     //  if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-    Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.StartRxTx( ' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ' )';
+    Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStartRxTx(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ')';
     // }
 
     return '';
@@ -174,10 +174,10 @@ Blockly.Spin.serial_send_text = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStart(' + profile["default"]["baudrate"] + ')';
     }
 
-    return 'serial.Str(String("' + text + '"))\n';
+    return 'Scribbler.SerialStr(String("' + text + '"))\n';
 };
 
 Blockly.Spin.serial_send_char = function () {
@@ -185,10 +185,10 @@ Blockly.Spin.serial_send_char = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStart(' + profile["default"]["baudrate"] + ')';
     }
 
-    return 'serial.Char(' + dec_value + ')\n';
+    return 'Scribbler.SerialChar(' + dec_value + ')\n';
 };
 
 Blockly.Spin.serial_send_decimal = function () {
@@ -196,10 +196,10 @@ Blockly.Spin.serial_send_decimal = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStart(' + profile["default"]["baudrate"] + ')';
     }
 
-    return 'serial.Dec(' + dec_value + ')\n';
+    return 'Scribbler.SerialDec(' + dec_value + ')\n';
 };
 
 Blockly.Spin.serial_send_ctrl = function () {
@@ -207,10 +207,10 @@ Blockly.Spin.serial_send_ctrl = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStart(' + profile["default"]["baudrate"] + ')';
     }
 
-    return 'serial.Char(' + ctrl_char + ')\n';
+    return 'Scribbler.SerialChar(' + ctrl_char + ')\n';
 };
 
 Blockly.Spin.serial_rx_byte = function () {
@@ -218,20 +218,21 @@ Blockly.Spin.serial_rx_byte = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStart(' + profile["default"]["baudrate"] + ')';
     }
 
-    return ['serial.CharIn', Blockly.Spin.ORDER_ATOMIC];
+    var code = 'Scribbler.SerialCharIn'
+    return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
 Blockly.Spin.serial_clear = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStart(' + profile["default"]["baudrate"] + ')';
     }
 
-    return 'serial.Clear\n';
+    return 'Scribbler.SerialClear\n';
 };
 
 Blockly.Spin.serial_cursor_xy = function () {
@@ -241,8 +242,8 @@ Blockly.Spin.serial_cursor_xy = function () {
     Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
     Blockly.Spin.serial_terminal_ = true;
     if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
+        Blockly.Spin.setups_[ 'setup_serial' ] = 'Scribbler.SerialStart( ' + profile["default"]["baudrate"] + ' )';
     }
 
-    return 'serial.PositionX(' + pos_x + ')\nserial.PositionY(' + pos_y + ')\n';
+    return 'Scribbler.SerialPositionX(' + pos_x + ')\nScribbler.SerialPositionY(' + pos_y + ')\n';
 };
