@@ -135,7 +135,7 @@ Blockly.Blocks.oled_draw_pixel = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X_AXIS")
             .setCheck('Number')
-            .appendField("draw pixel at");
+            .appendField("OLED draw pixel at");
         this.appendValueInput("Y_AXIS")
             .setCheck('Number')
             .appendField(",");
