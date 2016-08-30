@@ -221,7 +221,7 @@
         <category name="<fmt:message key="category.communicate" />" exclude="heb" colour="320">
             <category name="<fmt:message key="category.communicate.serial-lcd" />">
                 <block type="debug_lcd_init"></block>
-                <block type="debug_lcd_clear"></block>
+ <%--                <block type="debug_lcd_clear"></block> --%>
                 <block type="debug_lcd_print"></block>
                 <block type="debug_lcd_number"></block>
                 <block type="debug_lcd_action"></block>
