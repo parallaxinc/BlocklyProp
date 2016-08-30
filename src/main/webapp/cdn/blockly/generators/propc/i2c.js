@@ -29,14 +29,13 @@ Blockly.Blocks.i2c_new_bus = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("I2C new bus")
-                .appendField("sclPin")
+                .appendField("I2C new bus SCL")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL_PIN");
         this.appendDummyInput()
-                .appendField("sdaPin")
+                .appendField("SDA")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SDA_PIN");
         this.appendDummyInput()
-                .appendField("sclDrive")
+                .appendField("SCL Drive mode")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL_DRIVE");
 
         this.setInputsInline(true);
