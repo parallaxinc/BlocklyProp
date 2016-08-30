@@ -34,7 +34,7 @@ Blockly.Blocks.make_pin = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
-                .appendField("make pin#")
+                .appendField("make PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
     }
@@ -47,7 +47,7 @@ Blockly.Blocks.make_pin_input = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.appendDummyInput("")
-                .appendField("make pin#");
+                .appendField("make PIN");
         this.appendValueInput('PIN')
                 .setCheck('Number');
         this.appendDummyInput("")
@@ -60,7 +60,7 @@ Blockly.Blocks.check_pin = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("check pin#")
+                .appendField("check PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.setOutput(true, 'Boolean');
         this.setTooltip('');
@@ -72,7 +72,7 @@ Blockly.Blocks.check_pin_input = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("check pin#");
+                .appendField("check PIN");
         this.appendValueInput('PIN')
                 .setCheck('Number');
         this.setOutput(true, 'Boolean');
@@ -104,13 +104,13 @@ Blockly.Blocks.set_pins = {
                 .appendField(new Blockly.FieldDropdown(pin_count, function (pinCount) {
                     this.sourceBlock_.updateShape_({"PIN_COUNT": pinCount});
                 }), "PIN_COUNT")
-                .appendField("pins starting at #")
+                .appendField("pins starting at PIN")
                 .appendField(new Blockly.FieldDropdown(start_pin, function (startPin) {
                     this.sourceBlock_.updateShape_({"START_PIN": startPin});
                 }), "START_PIN");
         this.appendDummyInput("PINS")
                 .appendField("values:")
-                .appendField("p0:")
+                .appendField("P0:")
                 .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "P0");
     },
     mutationToDom: function () {
@@ -158,10 +158,10 @@ Blockly.Blocks.set_pins = {
         for (var i = 0; i < pinCount; i++) {
             var pin = startPin + i;
             if (action === 'STATE') {
-                inputPins.appendField("p" + pin + ":")
+                inputPins.appendField("P" + pin + ":")
                         .appendField(new Blockly.FieldDropdown([["HIGH", "1"], ["LOW", "0"]]), "P" + pin);
             } else if (action === 'DIRECTION') {
-                inputPins.appendField("p" + pin + ":")
+                inputPins.appendField("P" + pin + ":")
                         .appendField(new Blockly.FieldDropdown([["OUT", "1"], ["IN", "0"]]), "P" + pin);
             }
         }
@@ -178,7 +178,7 @@ Blockly.Blocks.pulse_in = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("pulse-in pin#")
+            .appendField("pulse-in PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
@@ -194,7 +194,7 @@ Blockly.Blocks.pulse_out = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("pulse-out pin#")
+            .appendField("pulse-out PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
             .appendField("pulse length");
