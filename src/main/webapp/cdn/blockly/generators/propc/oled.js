@@ -281,7 +281,7 @@ Blockly.Blocks.oled_get_max_height = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("max height")
+            .appendField("OLED max height")
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -293,7 +293,7 @@ Blockly.Blocks.oled_get_max_width = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("max width")
+            .appendField("OLED max width")
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
