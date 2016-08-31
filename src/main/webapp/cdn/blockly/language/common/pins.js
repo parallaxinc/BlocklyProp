@@ -190,6 +190,7 @@ Blockly.Blocks.pulse_in = {
     }
 };
 
+// Code generator is located in base.js
 Blockly.Blocks.pulse_out = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
@@ -197,8 +198,7 @@ Blockly.Blocks.pulse_out = {
             .appendField("pulse-out PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
-            .appendField("pulse length");
-
+            .appendField("pulse length " + "\u00B5");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

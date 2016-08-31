@@ -587,7 +587,14 @@
             </category>
             <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb">
                 <block type="pulse_in"></block>
-                <block type="pulse_out"></block>
+                <block type="pulse_out">
+                    <value name="PULSE_LENGTH">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+
+                </block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb">
                 <block type="pwm_start"></block>
