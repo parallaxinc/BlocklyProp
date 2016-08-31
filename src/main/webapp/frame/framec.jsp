@@ -412,9 +412,6 @@
                 </block>
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
-                <block type="i2c_new_bus"></block>
-                <block type="i2c_in"></block>
-                <block type="i2c_out"></block>
                 <block type="serial_open"></block>
                 <block type="serial_send_text"></block>
             </category>
