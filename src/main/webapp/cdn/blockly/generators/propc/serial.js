@@ -32,7 +32,7 @@ Blockly.Blocks.serial_open = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Serial init RX")
+                .appendField("Serial initialize RX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
                 .appendField("TX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
