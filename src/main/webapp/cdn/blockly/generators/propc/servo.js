@@ -36,7 +36,7 @@ Blockly.Blocks.servo_move = {
             .setAlign(Blockly.ALIGN_RIGHT)
             .appendField(new Blockly.FieldDropdown(profile.default.servo), "PIN");
         this.appendValueInput("ANGLE")
-            .appendField("angle (0-180\u00B0)")
+            .appendField("set angle (0-180\u00B0)")
             .setCheck("Number");
 //        this.appendDummyInput()
 //            .appendField(new Blockly.FieldAngle(90), 'ANGLE')
@@ -74,8 +74,7 @@ Blockly.Blocks.servo_set_ramp = {
     init: function () {
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("CR Servo set ramp")
-                .appendField("pin")
+                .appendField("CR Servo set ramp PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
         this.appendValueInput('RAMPSTEP')
                 .appendField("rampstep (0 - 100)")
