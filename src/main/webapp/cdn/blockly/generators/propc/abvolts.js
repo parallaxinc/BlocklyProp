@@ -32,7 +32,7 @@ Blockly.Blocks.ab_volt_in = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("ADC channel")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
+            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL")
             .appendField("read (0-5V) in volt-100ths")
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
