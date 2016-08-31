@@ -9,6 +9,7 @@
 
 
 <div class="container">
+    <!--
     <div class="navbar navbar-default">
         <p class="navbar-text"><strong><a href="<url:getUrl url="/public/help"/>"><fmt:message key="help.title" /></a></strong></p>
         <ul class="nav navbar-nav">
@@ -23,4 +24,5 @@
             <button type="submit" class="btn btn-default"><fmt:message key="help.search.submit" /></button>
         </form>
     </div>
+    -->
 </div>
