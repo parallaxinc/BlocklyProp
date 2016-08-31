@@ -32,7 +32,7 @@ Blockly.Blocks.debug_lcd_init = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("LCD init PIN")
+                .appendField("LCD initialize PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("baud")
