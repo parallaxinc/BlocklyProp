@@ -122,12 +122,12 @@ Blockly.Blocks.console_move_to_row = {
 
 Blockly.propc.console_newline = function () {
     Blockly.propc.serial_terminal_ = true;
-    return 'print("\\r");';
+    return 'term_cmd(CR);';
 };
 
 Blockly.propc.console_clear = function () {
     Blockly.propc.serial_terminal_ = true;
-    return 'print("\\x10");';
+    return 'term_cmd(CLS);';
 };
 
 Blockly.propc.console_move_to_column = function () {
@@ -140,7 +140,7 @@ Blockly.propc.console_move_to_column = function () {
         column = 255;
     }
 
-    return 'print("\\x0E%c", ' + column + ');';
+    return 'term_cmd(CRSRX, ' + column + ');';
 };
 
 Blockly.propc.console_move_to_row = function () {
@@ -153,5 +153,5 @@ Blockly.propc.console_move_to_row = function () {
         row = 255;
     }
 
-    return 'print("\\x0F%c", ' + row + ');';
+    return 'term_cmd(CRSRY, ' + row + ');';
 };
