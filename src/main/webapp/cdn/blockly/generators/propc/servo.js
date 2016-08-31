@@ -175,8 +175,7 @@ Blockly.Blocks.pwm_set = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-                .appendField("PWM set")
-                .appendField("PIN")
+                .appendField("PWM set PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("channel")
