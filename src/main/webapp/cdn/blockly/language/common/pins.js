@@ -199,7 +199,7 @@ Blockly.Blocks.pulse_out = {
             .appendField("pulse-out PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
-            .appendField("pulse length " + "\u00B5");
+            .appendField("pulse length (" + "\u00B5" + "s)");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
