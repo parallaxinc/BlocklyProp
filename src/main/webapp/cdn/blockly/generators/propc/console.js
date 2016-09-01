@@ -179,5 +179,5 @@ Blockly.propc.console_move_to_position = function () {
         column = 255;
     }
 
-    return 'term_cmd(CRSRXY, ' + row + ', ' + column + ');';
+    return 'term_cmd(CRSRXY, ' + column + ', ' + row + ');';
 };
