@@ -339,7 +339,7 @@ Blockly.Blocks.oled_print_number = {
             .appendField(new Blockly.FieldDropdown([
                 ["Decimal", "DEC"],
                 ["Hexadecimal", "HEX"],
-                ["Binary", "BIN"],
+                ["Binary", "BIN"]
                 //["OCT", "OCT"],
             ]), "type");
         this.setInputsInline(true);
