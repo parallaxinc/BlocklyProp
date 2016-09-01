@@ -35,6 +35,7 @@ Blockly.Blocks.console_print = {
         this.appendValueInput('MESSAGE')
             .setCheck('String')
             .appendField("Terminal print text");
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
