@@ -37,11 +37,11 @@ Blockly.Spin.logic_compare = function () {
 
 Blockly.Spin.logic_compare.OPERATORS = {
     EQ: '==',
-    NEQ: '!=',
+    NEQ: '<>',
     LT: '<',
-    LTE: '<=',
+    LTE: '=<',
     GT: '>',
-    GTE: '>='
+    GTE: '=>'
 };
 
 Blockly.Spin.logic_operation = function () {
