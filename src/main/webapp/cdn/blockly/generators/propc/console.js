@@ -47,7 +47,15 @@ Blockly.Blocks.console_print_variables = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
-                .appendField("Terminal print number");
+            .appendField("Terminal print number");
+        this.appendDummyInput()
+            .appendField("as")
+            .appendField(new Blockly.FieldDropdown([
+                ['Decimal','DEC'],
+                ['Hexadecimal','HEX'],
+                ['Binary', 'BIN']
+            ]), "FORMAT");
+//        this.appendValueInput('PULSE_LENGTH');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -64,10 +72,22 @@ Blockly.propc.console_print = function () {
 };
 
 Blockly.propc.console_print_variables = function () {
-    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1000';
+//    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1000';
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
+    var format = this.getFieldValue('FORMAT');
     Blockly.propc.serial_terminal_ = true;
 
-    return 'print("%d", ' + value + ');\n';
+    var code = 'print(';
+    if (format === 'BIN') {
+        code += '"%b"';
+    }else if (format === 'HEX') {
+        code += '"%x"';                
+    }else {
+        code += '"%d"';
+    } 
+    
+    code += ', ' + value + ');';
+    return code;
 };
 
 Blockly.Blocks.console_newline = {
