@@ -76,7 +76,7 @@ Blockly.Blocks['math_arithmetic'] = {
         var OPERATORS =
                 [["+", 'ADD'],
                     ["-", 'MINUS'],
-                    ["x", 'MULTIPLY'],
+                    ["\u00D7", 'MULTIPLY'],
                     ["/", 'DIVIDE']];
         this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
         this.setColour(colorPalette.getColor('math'));

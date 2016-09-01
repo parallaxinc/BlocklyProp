@@ -32,7 +32,7 @@ Blockly.Blocks.debug_lcd_init = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("LCD init PIN")
+                .appendField("LCD initialize PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("baud")
@@ -133,7 +133,11 @@ Blockly.propc.debug_lcd_number = function () {
 };
 
 Blockly.propc.debug_lcd_action = function () {
-    var action = this.getFieldValue('ACTION');
-
-    return 'dprint(debug_lcd, ' + action + ');\n';
+var action = this.getFieldValue('ACTION');
+var code = '';
+if(action === '12') {
+    code = 'pause(5);\n';
+}
+code += 'writeChar(debug_lcd, ' + action + ');\n';
+return code;
 };

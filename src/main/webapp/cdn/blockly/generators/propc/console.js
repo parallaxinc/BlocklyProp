@@ -32,12 +32,9 @@ if (!Blockly.Blocks)
 Blockly.Blocks.console_print = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("Terminal print text")
-                .appendField(quotes.newQuote_(true))
-                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendField(quotes.newQuote_(false));
-
+        this.appendValueInput('MESSAGE')
+            .setCheck('String')
+            .appendField("Terminal print text");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -47,27 +44,44 @@ Blockly.Blocks.console_print_variables = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
-                .appendField("Terminal print number");
-
+            .appendField("Terminal print number");
+        this.appendDummyInput()
+            .appendField("as")
+            .appendField(new Blockly.FieldDropdown([
+                ['Decimal','DEC'],
+                ['Hexadecimal','HEX'],
+                ['Binary', 'BIN']
+            ]), "FORMAT");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-
+// Terminal print text
 Blockly.propc.console_print = function () {
-    var text = this.getFieldValue('TEXT');
+    var text = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_ATOMIC);
     Blockly.propc.serial_terminal_ = true;
-
-    return 'print("' + text + '");\n';
+    return 'print(' + text + ');';
 };
 
 Blockly.propc.console_print_variables = function () {
-    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1000';
+//    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '1000';
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
+    var format = this.getFieldValue('FORMAT');
     Blockly.propc.serial_terminal_ = true;
 
-    return 'print("%d", ' + value + ');\n';
+    var code = 'print(';
+    if (format === 'BIN') {
+        code += '"%b"';
+    }else if (format === 'HEX') {
+        code += '"%x"';                
+    }else {
+        code += '"%d"';
+    } 
+    
+    code += ', ' + value + ');';
+    return code;
 };
 
 Blockly.Blocks.console_newline = {
@@ -120,32 +134,38 @@ Blockly.Blocks.console_move_to_row = {
     }
 };
 
+Blockly.Blocks.console_move_to_position = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("Terminal move to row");
+        this.appendValueInput('ROW')
+            .setCheck('Number');
+        this.appendDummyInput()
+            .appendField("column");
+        this.appendValueInput('COLUMN')
+            .setCheck('Number');
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
 Blockly.propc.console_newline = function () {
     Blockly.propc.serial_terminal_ = true;
-    return 'print("\\r");';
+    return 'term_cmd(CR);';
 };
 
 Blockly.propc.console_clear = function () {
     Blockly.propc.serial_terminal_ = true;
-    return 'print("\\x10");';
+    return 'term_cmd(CLS);';
 };
 
-Blockly.propc.console_move_to_column = function () {
-    var column = Blockly.propc.valueToCode(this, 'COLUMNS', Blockly.propc.ORDER_NONE);
+Blockly.propc.console_move_to_position = function () {
     Blockly.propc.serial_terminal_ = true;
-
-    if (Number(column) < 0) {
-        column = 0;
-    } else if (Number(column) > 255) {
-        column = 255;
-    }
-
-    return 'print("\\x0E%c", ' + column + ');';
-};
-
-Blockly.propc.console_move_to_row = function () {
-    var row = Blockly.propc.valueToCode(this, 'ROWS', Blockly.propc.ORDER_NONE);
-    Blockly.propc.serial_terminal_ = true;
+    var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
+    var column = Blockly.propc.valueToCode(this, 'COLUMN', Blockly.propc.ORDER_NONE);
 
     if (Number(row) < 0) {
         row = 0;
@@ -153,5 +173,11 @@ Blockly.propc.console_move_to_row = function () {
         row = 255;
     }
 
-    return 'print("\\x0F%c", ' + row + ');';
+    if (Number(column) < 0) {
+        column = 0;
+    } else if (Number(column) > 255) {
+        column = 255;
+    }
+
+    return 'term_cmd(CRSRXY, ' + column + ', ' + row + ');';
 };
