@@ -393,7 +393,13 @@
             </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print"></block>
-                <block type="console_print_variables"></block>
+                <block type="console_print_variables">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="console_newline"></block>
                 <block type="console_clear"></block>
                 <block type="console_move_to_column">
