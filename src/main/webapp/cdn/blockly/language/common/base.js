@@ -48,7 +48,7 @@ Blockly.Blocks.base_delay = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput("DELAY_TIME", 'Number')
-                .appendField("delay (ms)")
+                .appendField("pause (ms)")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

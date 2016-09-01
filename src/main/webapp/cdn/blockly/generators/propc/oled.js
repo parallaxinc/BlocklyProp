@@ -281,7 +281,7 @@ Blockly.Blocks.oled_get_max_height = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("max height")
+            .appendField("OLED max height")
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -293,7 +293,7 @@ Blockly.Blocks.oled_get_max_width = {
     init: function() {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("max width")
+            .appendField("OLED max width")
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -337,10 +337,10 @@ Blockly.Blocks.oled_print_number = {
             .appendField("OLED print number ")
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
-                ["DEC", "DEC"],
-                ["BIN", "BIN"],
-                ["OCT", "OCT"],
-                ["HEX", "HEX"]
+                ["Decimal", "DEC"],
+                ["Hexadecimal", "HEX"],
+                ["Binary", "BIN"],
+                //["OCT", "OCT"],
             ]), "type");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

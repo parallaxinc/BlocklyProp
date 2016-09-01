@@ -155,7 +155,7 @@ Blockly.propc.pulse_in = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
 
-    var code = 'pulse_in(' + pin + ', ' + state + ');\n';
+    var code = 'pulse_in(' + pin + ', ' + state + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 

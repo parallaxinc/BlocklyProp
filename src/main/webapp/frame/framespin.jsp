@@ -121,9 +121,12 @@
                 <block type="scribbler_if_obstacle"></block>
                 <block type="scribbler_if_light"></block>
                 <block type="scribbler_if_stalled"></block>
+                <block type="scribbler_if_random"></block>
             </category>
             <category name="Simple Actions" colour=185>
-                <block type="scribbler_drive"></block>
+                <block type="scribbler_drive">
+                    <field name="DRIVE_ANGLE">STRAIGHT</field>
+                </block>
                 <block type="scribbler_spin"></block>
                 <block type="scribbler_stop"></block>
                 <block type="scribbler_play">
@@ -148,12 +151,27 @@
                 </value>
                 <field name="TIMESCALE">1000</field>
             </block>
+            <block type="spin_comment"></block>
         </category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour=225></category>
 	<category name="Variables" custom="VARIABLE" colour=250></category>
         <category name="Math" colour=275>
-            <block type="math_integer"></block>
-            <block type="logic_boolean"></block>
+            <block type="spin_integer"></block>
+            <block type="math_int_angle"></block>
+            <block type="scribbler_boolean"></block>
+            <block type="scribbler_random_boolean"></block>
+            <block type="scribbler_random_number">
+                <value name="LOW">
+                    <block type="math_integer">
+                        <field name="INT_VALUE">1</field>
+                    </block>
+                </value>
+                <value name="HIGH">
+                    <block type="math_integer">
+                        <field name="INT_VALUE">10</field>
+                    </block>
+                </value>
+            </block>
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="logic_operation"></block>
@@ -181,13 +199,15 @@
             <category name="Button" colour=140>
                 <block type="reset_button_presses"></block>
             </category>
-            <category name="Ping" colour=140>
+            <category name="Ping)))" colour=140>
                 <block type="scribbler_ping"></block>
             </category>
         </category>
         <category name="Actions" colour=185>
             <category name="Motors" colour=185>
-                <block type="scribbler_drive"></block>
+                <block type="scribbler_drive">
+                    <field name="DRIVE_ANGLE">STRAIGHT</field>
+                </block>
                 <block type="scribbler_spin"></block>
                 <block type="scribbler_stop"></block>
                 <block type="move_motors">
@@ -248,6 +268,7 @@
                         </block>
                     </value>
 		</block>
+                <block type="scribbler_stop_servo"></block>
             </category>
             <category name="Sound" colour=185>
                 <block type="scribbler_play">
@@ -287,7 +308,7 @@
                 <block type="serial_send_decimal"></block>
                 <block type="serial_send_char"></block>
                 <block type="serial_send_ctrl">
-                    <field name="SERIAL_CHAR">serial#NL</field>
+                    <field name="SERIAL_CHAR">Scribbler#NL</field>
                 </block>
                 <block type="serial_cursor_xy">
                     <value name="X">

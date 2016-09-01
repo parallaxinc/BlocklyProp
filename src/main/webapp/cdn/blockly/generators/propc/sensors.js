@@ -31,7 +31,7 @@ Blockly.Blocks.sensor_ping = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Ping)))")
+            .appendField("Ping))) distance in")
             .appendField(new Blockly.FieldDropdown([["inches", "INCHES"], ["cm", "CM"]]), "UNIT")
             .appendField("PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
@@ -107,8 +107,7 @@ Blockly.Blocks.sound_impact_run = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound Impact")
-            .appendField("run in processor")
+            .appendField("Sound Impact run in processor")
             .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COG");
 
         this.setInputsInline(true);
@@ -176,7 +175,7 @@ Blockly.Blocks.colorpal_enable = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("ColorPal enable");
+                .appendField("ColorPal initialize");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

@@ -57,7 +57,7 @@ Blockly.Blocks.wav_volume = {
         this.appendValueInput('VOLUME')
             .appendField("WAV volume (0 - 10)");
         this.appendValueInput('LENGTH')
-            .appendField("length of file (in milliseconds)");
+            .appendField("length of file (ms)");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

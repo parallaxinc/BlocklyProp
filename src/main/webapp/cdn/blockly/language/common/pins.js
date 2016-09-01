@@ -181,6 +181,7 @@ Blockly.Blocks.pulse_in = {
             .appendField("pulse-in PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
+            .appendField("read")
             .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
 
         this.setInputsInline(true);
@@ -197,8 +198,7 @@ Blockly.Blocks.pulse_out = {
             .appendField("pulse-out PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
-            .appendField("pulse length");
-
+            .appendField("pulse length (" + "\u00B5" + "s)");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
