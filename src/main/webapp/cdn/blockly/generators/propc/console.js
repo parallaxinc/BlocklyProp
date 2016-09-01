@@ -32,12 +32,9 @@ if (!Blockly.Blocks)
 Blockly.Blocks.console_print = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("Terminal print text")
-                .appendField(quotes.newQuote_(true))
-                .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-                .appendField(quotes.newQuote_(false));
-
+        this.appendValueInput('MESSAGE')
+            .setCheck('String')
+            .appendField("Terminal print text");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -55,8 +52,6 @@ Blockly.Blocks.console_print_variables = {
                 ['Hexadecimal','HEX'],
                 ['Binary', 'BIN']
             ]), "FORMAT");
-//        this.appendValueInput('PULSE_LENGTH');
-
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -65,10 +60,10 @@ Blockly.Blocks.console_print_variables = {
 
 
 Blockly.propc.console_print = function () {
-    var text = this.getFieldValue('TEXT');
+    var text = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_ATOMIC);
     Blockly.propc.serial_terminal_ = true;
 
-    return 'print("' + text + '");\n';
+    return 'print("' + text + '");';
 };
 
 Blockly.propc.console_print_variables = function () {
