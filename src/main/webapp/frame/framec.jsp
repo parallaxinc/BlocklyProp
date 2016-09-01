@@ -162,7 +162,6 @@
         <sep></sep>
         <category name="<fmt:message key="category.values" />" colour="220">
             <block type="math_number"></block>
-            <block type="string_block"></block>
             <block type="string_type_block"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
@@ -395,7 +394,7 @@
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print">
                     <value name="MESSAGE">
-                        <block type="string_block"></block>
+                        <block type="string_type_block"></block>
                     </value>
                 </block>
                 <block type="console_print_variables">
@@ -407,15 +406,13 @@
                 </block>
                 <block type="console_newline"></block>
                 <block type="console_clear"></block>
-                <block type="console_move_to_column">
-                    <value name="COLUMNS">
+                <block type="console_move_to_position">
+                    <value name="ROW">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                </block>
-                <block type="console_move_to_row">
-                    <value name="ROWS">
+                    <value name="COLUMN">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>

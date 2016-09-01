@@ -115,22 +115,6 @@ Blockly.propc.base_freqout = function () {
     return code;
 };
 
-Blockly.Blocks.string_block = {
-    init: function () {
-        this.setColour(colorPalette.getColor('programming'));
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
-        this.setPreviousStatement(false, null);
-        this.setNextStatement(false, null);
-        this.setOutput(true, 'String');
-    }
-};
-
-Blockly.propc.string_block = function() {
-    var text = this.getFieldValue("TEXT");
-    return [text];
-};
-
 Blockly.Blocks.string_type_block = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
