@@ -133,7 +133,11 @@ Blockly.propc.debug_lcd_number = function () {
 };
 
 Blockly.propc.debug_lcd_action = function () {
-    var action = this.getFieldValue('ACTION');
-
-    return 'writeChar(debug_lcd, ' + action + ');\n';
+var action = this.getFieldValue('ACTION');
+var code = '';
+if(action === '12') {
+    code = 'pause(5);\n';
+}
+code += 'writeChar(debug_lcd, ' + action + ');\n';
+return code;
 };
