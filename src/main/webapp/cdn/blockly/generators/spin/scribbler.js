@@ -287,7 +287,7 @@ Blockly.Blocks.move_motors_distance = {
     init: function () {
 	this.appendDummyInput()
 		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B1643)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B16,431)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B11,593)', ' * 2_056 / 100'], ['millimeters (up to \u00B115,937)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B132,767)', '']]), 'MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B1633)', ' * 100_000 / 1933'], ['tenths of an inch (up to \u00B16,333)', ' * 10_000 / 1933'], ['centimeters (up to \u00B11,608)', ' * 10_000 / 491'], ['millimeters (up to \u00B116,088)', ' * 1_000 / 491'], ['encoder counts (up to \u00B132,767)', '']]), 'MULTIPLIER');
 	this.appendValueInput("LEFT_MOTOR_DISTANCE")
 		.setCheck("Number")
 		.appendField("move the left motor");
@@ -316,7 +316,7 @@ Blockly.Blocks.move_motors_angle = {
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
 		.appendField("around a radius in")
-		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B186)', ' * 5_095 / 100'], ['tenths of an inch (up to \u00B1863)', ' * 5_095 / 1_000'], ['centimeters (up to \u00B1214)', ' * 2_056 / 100'], ['millimeters (up to \u00B12,140)', ' * 2_056 / 1_000'], ['encoder counts (up to \u00B14,400)', '']]), 'RADIUS_MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B185)', ' * 100_000 / 1933'], ['tenths of an inch (up to \u00B1850)', ' * 10_000 / 1933'], ['centimeters (up to \u00B1216)', ' * 10_000 / 491'], ['millimeters (up to \u00B12,160)', ' * 1_000 / 491'], ['encoder counts (up to \u00B14,400)', '']]), 'RADIUS_MULTIPLIER');
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
 		.appendField("at a top speed of (1 to 100)%");
@@ -753,11 +753,11 @@ Blockly.Spin.move_motors_angle = function () {
     if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
-
+    var radius_multiplier = this.getFieldValue('RADIUS_MULTIPLIER');
     var angle = Blockly.Spin.valueToCode(this, 'ROTATE_ANGLE', Blockly.Spin.ORDER_ATOMIC);
     var radius = Blockly.Spin.valueToCode(this, 'ROTATE_RADIUS', Blockly.Spin.ORDER_ATOMIC);
     var rotate_speed = Blockly.Spin.valueToCode(this, 'ROTATE_SPEED', Blockly.Spin.ORDER_ATOMIC);
-    return 'Scribbler.MotorSetRotate(' + angle + ', ' + radius + ', ' + rotate_speed + ')\n';
+    return 'Scribbler.MotorSetRotate(' + angle + ', ' + radius + radius_multiplier + ', ' + rotate_speed + ')\n';
 };
 
 Blockly.Spin.set_led = function () {
@@ -891,19 +891,17 @@ Blockly.Spin.scribbler_random_boolean = function () {
 
 Blockly.Spin.scribbler_ping = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
-    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
-    }
 
     var Range = window.parseInt(this.getFieldValue('PING_RANGE'));
     var Pin = window.parseInt(this.getFieldValue('PING_PIN'));
-    var code = 'Scribbler.Ping(' + Pin + ') /' + Range;
+    var code = 'Scribbler.Ping(' + Pin + ') / ' + Range;
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
 Blockly.Spin.scribbler_servo = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
     if (Blockly.Spin.setups_[ 'setup_scribbler_servo' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_scribbler_servo' ] = 'ScribblerServo.Start';
+        Blockly.Spin.setups_[ 'setup_scribbler_servo' ] = 'Scribbler.ServoStart';
     }
 
     var Angle = Blockly.Spin.valueToCode(this, 'SERVO_ANGLE', Blockly.Spin.ORDER_ATOMIC) || '0';
@@ -940,16 +938,10 @@ Blockly.Spin.scribbler_random_number = function () {
     var low_number = Blockly.Spin.valueToCode(this, 'LOW', Blockly.Spin.ORDER_ATOMIC) || '0';
     var high_number = Blockly.Spin.valueToCode(this, 'HIGH', Blockly.Spin.ORDER_ATOMIC) || '0';
 
-    Blockly.Spin.definitions_[ "include_serial" ] = 'OBJserial    : "Parallax Serial Terminal"';
-    Blockly.Spin.serial_terminal_ = true;
-    if (Blockly.Spin.setups_[ 'setup_serial' ] === undefined) {
-        Blockly.Spin.setups_[ 'setup_serial' ] = 'serial.Start( ' + profile["default"]["baudrate"] + ' )';
-    }
-
-    var code = 'serial.RandomRange(' + low_number + ', ' + high_number + ')';
+    var code = 'Scribbler.RandomRange(' + low_number + ', ' + high_number + ')';
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
 Blockly.Spin.spin_comment = function () {
-    return "' " + this.getFieldValue('COMMENT');
+    return "' " + this.getFieldValue('COMMENT') + '\n';
 };

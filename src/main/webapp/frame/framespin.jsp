@@ -308,7 +308,7 @@
                 <block type="serial_send_decimal"></block>
                 <block type="serial_send_char"></block>
                 <block type="serial_send_ctrl">
-                    <field name="SERIAL_CHAR">Serial#NL</field>
+                    <field name="SERIAL_CHAR">Scribbler#NL</field>
                 </block>
                 <block type="serial_cursor_xy">
                     <value name="X">
