@@ -156,8 +156,8 @@ Blockly.Blocks.scribbler_if_random = {
     init: function () {
         this.appendDummyInput()
             .appendField("if a virtual coin flip")
-            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'RANDOM_CONDITION')
-            .appendField("heads")
+            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['was', 'WAS']]), 'RANDOM_CONDITION')
+            .appendField(new Blockly.FieldDropdown([['heads', ''], ['tails', '_NOT']]), 'RANDOM_INVERT')
         this.appendStatementInput("IF_RANDOM")
         this.setPreviousStatement(true);
         this.setNextStatement(true);
@@ -488,7 +488,7 @@ Blockly.Blocks.scribbler_ping = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("distance in")
-                .appendField(new Blockly.FieldDropdown([['inches (1 to 125)', '11848'], ['tenths of an inch (8 to 1,249)', '1185'], ['centimeters (4 to 635)', '2_332'], ['millimeters (39 to 6352)', '233']]), "PING_RANGE")
+                .appendField(new Blockly.FieldDropdown([['inches (1 to 125)', '11848'], ['tenths of an inch (8 to 1,249)', '1185'], ['centimeters (4 to 635)', '2332'], ['millimeters (39 to 6352)', '233']]), "PING_RANGE")
                 .appendField("from Ping))) sensor on")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PING_PIN");
 
@@ -639,7 +639,7 @@ Blockly.Spin.scribbler_if_random = function () {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
 
-    var code = 'if Scribbler.SimpleRandom(Scribbler#' + this.getFieldValue('RANDOM_CONDITION') + ')\n';
+    var code = 'if Scribbler.SimpleRandom(Scribbler#' + this.getFieldValue('RANDOM_CONDITION') + this.getFieldValue('RANDOM_INVERT') + ')\n';
     return code + Blockly.Spin.statementToCode(this, 'IF_RANDOM');
 };
 
