@@ -58,12 +58,11 @@ Blockly.Blocks.console_print_variables = {
     }
 };
 
-
+// Terminal print text
 Blockly.propc.console_print = function () {
     var text = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_ATOMIC);
     Blockly.propc.serial_terminal_ = true;
-
-    return 'print("' + text + '");';
+    return 'print(' + text + ');';
 };
 
 Blockly.propc.console_print_variables = function () {
@@ -135,6 +134,24 @@ Blockly.Blocks.console_move_to_row = {
     }
 };
 
+Blockly.Blocks.console_move_to_position = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("Terminal move to row");
+        this.appendValueInput('ROW')
+            .setCheck('Number');
+        this.appendDummyInput()
+            .appendField("column");
+        this.appendValueInput('COLUMN')
+            .setCheck('Number');
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
 Blockly.propc.console_newline = function () {
     Blockly.propc.serial_terminal_ = true;
     return 'term_cmd(CR);';
@@ -145,22 +162,10 @@ Blockly.propc.console_clear = function () {
     return 'term_cmd(CLS);';
 };
 
-Blockly.propc.console_move_to_column = function () {
-    var column = Blockly.propc.valueToCode(this, 'COLUMNS', Blockly.propc.ORDER_NONE);
+Blockly.propc.console_move_to_position = function () {
     Blockly.propc.serial_terminal_ = true;
-
-    if (Number(column) < 0) {
-        column = 0;
-    } else if (Number(column) > 255) {
-        column = 255;
-    }
-
-    return 'term_cmd(CRSRX, ' + column + ');';
-};
-
-Blockly.propc.console_move_to_row = function () {
-    var row = Blockly.propc.valueToCode(this, 'ROWS', Blockly.propc.ORDER_NONE);
-    Blockly.propc.serial_terminal_ = true;
+    var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
+    var column = Blockly.propc.valueToCode(this, 'COLUMN', Blockly.propc.ORDER_NONE);
 
     if (Number(row) < 0) {
         row = 0;
@@ -168,5 +173,11 @@ Blockly.propc.console_move_to_row = function () {
         row = 255;
     }
 
-    return 'term_cmd(CRSRY, ' + row + ');';
+    if (Number(column) < 0) {
+        column = 0;
+    } else if (Number(column) > 255) {
+        column = 255;
+    }
+
+    return 'term_cmd(CRSRXY, ' + row + ', ' + column + ');';
 };
