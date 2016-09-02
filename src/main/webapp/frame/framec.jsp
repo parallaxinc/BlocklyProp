@@ -222,9 +222,20 @@
             <category name="<fmt:message key="category.communicate.serial-lcd" />">
                 <block type="debug_lcd_init"></block>
  <%--                <block type="debug_lcd_clear"></block> --%>
-                <block type="debug_lcd_print"></block>
-                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_print">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
+                <block type="debug_lcd_number">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="debug_lcd_action"></block>
+                <block type="debug_lcd_music_note"></block>
             </category>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
@@ -261,7 +272,7 @@
                 <block type="oled_print_number">
                     <value name="NUMIN">
                         <block type="math_number">
-                            <field name="NUM">1</field>
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
@@ -598,7 +609,6 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
-
                 </block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb">
