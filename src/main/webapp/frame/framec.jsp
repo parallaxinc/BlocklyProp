@@ -433,6 +433,42 @@
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="serial_open"></block>
                 <block type="serial_send_text"></block>
+                <block type="i2c_new_bus"></block>
+                <block type="i2c_in">
+                    <value name="SIZE">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                    <value name="DEVICE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="REGISTER">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="i2c_out">
+                    <value name="DATA">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="DEVICE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ADDRESS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                
             </category>
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
