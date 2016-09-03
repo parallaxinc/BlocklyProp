@@ -29,7 +29,7 @@ Blockly.Blocks.i2c_new_bus = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("I2C new bus SCL")
+                .appendField("I2C initialize SCL")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL_PIN");
         this.appendDummyInput()
                 .appendField("SDA")
@@ -102,7 +102,7 @@ Blockly.propc.i2c_in = function () {
     var device = Blockly.propc.valueToCode(this, 'DEVICE', Blockly.propc.ORDER_ATOMIC);
     var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.ORDER_ATOMIC);
     var address = Blockly.propc.valueToCode(this, 'REGISTER', Blockly.propc.ORDER_ATOMIC);
-    var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_NONE);
+    var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_NONE) || '';
 
     if (Blockly.propc.setups_["i2c_newbus"] === undefined)
     {
@@ -112,12 +112,16 @@ Blockly.propc.i2c_in = function () {
     Blockly.propc.global_vars_["i2c_new_bus"] = 'i2c *i2cBusUD;';
     Blockly.propc.global_vars_["i2c_address_size"] = 'int __addrSize = 4;';
     
-    var code = '__addrSize = 4;\n';
-    code += 'if(' + address + ' <= 0xFFFFFF) __addrSize = 3;\n';
-    code += 'if(' + address + ' <= 0xFFFF) __addrSize = 2;\n';
-    code += 'if(' + address + ' <= 0xFF) __addrSize = 1;\n';
-    code += 'i2c_in(i2cBusUD, (' + device + ' & 127), ' + address + ', __addrSize, ' + data + ', ' + size + ');';
-
+    var code = '';
+    
+    if(data !== '') {
+        code += '__addrSize = 4;\n';
+        code += 'if(' + address + ' <= 0xFFFFFF) __addrSize = 3;\n';
+        code += 'if(' + address + ' <= 0xFFFF) __addrSize = 2;\n';
+        code += 'if(' + address + ' <= 0xFF) __addrSize = 1;\n';
+        code += 'i2c_in(i2cBusUD, (' + device + ' & 127), ' + address + ', __addrSize, ' + data + ', ' + size + ');';
+    }
+    
     return code;
 };
 
