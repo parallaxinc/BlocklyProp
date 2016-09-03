@@ -432,7 +432,8 @@
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="serial_open"></block>
-                <block type="serial_send_text"></block>
+                <block type="serial_tx"></block>
+                <block type="serial_rx"></block>
                 <block type="i2c_new_bus"></block>
                 <block type="i2c_in">
                     <value name="SIZE">

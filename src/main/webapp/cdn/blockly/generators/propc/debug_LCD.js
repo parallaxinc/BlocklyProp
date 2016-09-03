@@ -38,6 +38,7 @@ Blockly.Blocks.debug_lcd_init = {
                 .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
 
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
