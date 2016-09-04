@@ -151,7 +151,6 @@ Blockly.propc.debug_lcd_print = function () {
 Blockly.propc.debug_lcd_number = function () {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
     var format = this.getFieldValue('FORMAT');
-    Blockly.propc.serial_terminal_ = true;
 
     var code = 'dprint(debug_lcd, ';
     if (format === 'BIN') {
