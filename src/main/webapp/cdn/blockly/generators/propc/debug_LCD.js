@@ -1,5 +1,3 @@
-/* global colorPalette, profile */
-
 /**
  * Visual Blocks Language
  *
