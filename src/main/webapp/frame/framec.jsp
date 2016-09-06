@@ -416,6 +416,8 @@
                         </block>
                     </value>
                 </block>
+                <block type="console_scan_text"></block>
+                <block type="console_scan_number"></block>
                 <block type="console_newline"></block>
                 <block type="console_clear"></block>
                 <block type="console_move_to_position">
