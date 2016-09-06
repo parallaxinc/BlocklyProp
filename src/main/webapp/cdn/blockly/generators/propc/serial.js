@@ -97,7 +97,7 @@ Blockly.Blocks.serial_receive_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Serial receive text store in")
+                .appendField("Serial receive text store in");
         this.appendValueInput('VALUE')
                 .setCheck('String');
         this.setInputsInline(true);
