@@ -59,6 +59,60 @@ Blockly.Blocks.console_print_variables = {
     }
 };
 
+Blockly.Blocks.console_scan_text = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Terminal receive text store in");
+        this.appendValueInput('VALUE')
+                .setCheck('String');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.console_scan_text = function () {
+    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';    
+    Blockly.propc.vartype_[data] = 'char *';   
+    Blockly.propc.serial_terminal_ = true;
+
+    if(data !== '') {
+        var code = 'getStr(' + data + ', 64);\n';
+
+        return code;
+    } else {
+        return '';
+    }
+};
+
+Blockly.Blocks.console_scan_number = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Terminal receive number store in");
+        this.appendValueInput('VALUE')
+                .setCheck('Number');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.console_scan_number = function () {
+    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';    
+    //Blockly.propc.vartype_[data] = 'int';   
+    Blockly.propc.serial_terminal_ = true;
+
+    if(data !== '') {
+        var code = 'scan("%d/n", &' + data + ');\n';
+
+        return code;
+    } else {
+        return '';
+    }
+};
+
 // Terminal print text
 Blockly.propc.console_print = function () {
     var text = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_ATOMIC);
