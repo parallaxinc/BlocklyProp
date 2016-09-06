@@ -402,7 +402,7 @@ Blockly.propc.oled_draw_circle = function() {
 
     code += point_x0 + ', ' + point_y0 + ', ';
     code += radius + ', ';
-    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")), ';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")) ';
     code += ');';
 
     return code;
