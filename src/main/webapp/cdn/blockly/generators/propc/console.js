@@ -111,7 +111,7 @@ Blockly.propc.console_scan_number = function () {
     Blockly.propc.serial_terminal_ = true;
 
     if(data !== '') {
-        var code = 'scan("%d\n", &' + data + ');\n';
+        var code = 'scan("%d\\n", &' + data + ');\n';
 
         return code;
     } else {
