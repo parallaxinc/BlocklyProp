@@ -127,7 +127,7 @@ Blockly.propc.console_print = function () {
     Blockly.propc.serial_terminal_ = true;
     
     var code = 'print(' + text + ');\n';
-    if (checkbox === 'TRUE') { code += 'print("\\n");\n'; }
+    if (checkbox === 'TRUE') { code += 'print("\\r");\n'; }
     return code;
 };
 
@@ -148,11 +148,11 @@ Blockly.propc.console_print_variables = function () {
         } 
     } else {
         if (format === 'BIN') {
-            code += '"%b\\n"';
+            code += '"%b\\r"';
         } else if (format === 'HEX') {
-            code += '"%x\\n"';                
+            code += '"%x\\r"';                
         } else {
-            code += '"%d\\n"';
+            code += '"%d\\r"';
         } 
     }
     code += ', ' + value + ');\n';
