@@ -138,7 +138,7 @@ Blockly.propc.console_print_variables = function () {
     Blockly.propc.serial_terminal_ = true;
 
     var code = 'print(';
-    if (checkbox === 'TRUE') {
+    if (checkbox !== 'TRUE') {
         if (format === 'BIN') {
             code += '"%b"';
         } else if (format === 'HEX') {
