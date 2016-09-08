@@ -365,6 +365,7 @@ Blockly.propc.oled_initialize = function () {
 
 
 Blockly.propc.oled_font_loader = function () {
+    Blockly.propc.serial_terminal_ = true;
     Blockly.propc.definitions_["oledfonts"] = '#include "oledc_fontLoader.h"';
 
     var code = 'oledc_fontLoader();';
@@ -402,7 +403,7 @@ Blockly.propc.oled_draw_circle = function() {
 
     code += point_x0 + ', ' + point_y0 + ', ';
     code += radius + ', ';
-    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")), ';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")) ';
     code += ');';
 
     return code;

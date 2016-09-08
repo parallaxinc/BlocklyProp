@@ -165,6 +165,7 @@
             <block type="string_type_block"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
+            <block type="string_length"></block>
             <block type="color_picker"></block>
             <block type="color_value_from">
                 <value name="RED_VALUE">
@@ -222,9 +223,20 @@
             <category name="<fmt:message key="category.communicate.serial-lcd" />">
                 <block type="debug_lcd_init"></block>
  <%--                <block type="debug_lcd_clear"></block> --%>
-                <block type="debug_lcd_print"></block>
-                <block type="debug_lcd_number"></block>
+                <block type="debug_lcd_print">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
+                <block type="debug_lcd_number">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="debug_lcd_action"></block>
+                <block type="debug_lcd_music_note"></block>
             </category>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
@@ -261,7 +273,7 @@
                 <block type="oled_print_number">
                     <value name="NUMIN">
                         <block type="math_number">
-                            <field name="NUM">1</field>
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
@@ -404,6 +416,8 @@
                         </block>
                     </value>
                 </block>
+                <block type="console_scan_text"></block>
+                <block type="console_scan_number"></block>
                 <block type="console_newline"></block>
                 <block type="console_clear"></block>
                 <block type="console_move_to_position">
@@ -421,7 +435,46 @@
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="serial_open"></block>
+                <block type="serial_tx"></block>
                 <block type="serial_send_text"></block>
+                <block type="serial_rx"></block>
+                <block type="serial_receive_text"></block>
+                <block type="i2c_new_bus"></block>
+                <block type="i2c_in">
+                    <value name="SIZE">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                    <value name="DEVICE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="REGISTER">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="i2c_out">
+                    <value name="DATA">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="DEVICE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="ADDRESS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                
             </category>
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
@@ -592,7 +645,13 @@
             </category>
             <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb">
                 <block type="pulse_in"></block>
-                <block type="pulse_out"></block>
+                <block type="pulse_out">
+                    <value name="PULSE_LENGTH">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb">
                 <block type="pwm_start"></block>
