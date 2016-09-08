@@ -191,6 +191,7 @@ Blockly.Blocks.pulse_in = {
     }
 };
 
+// Code generator is located in base.js
 Blockly.Blocks.pulse_out = {
     init: function() {
         this.setColour(colorPalette.getColor('io'));
