@@ -474,7 +474,7 @@
                         </block>
                     </value>
                 </block>
-                
+
             </category>
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
@@ -527,7 +527,6 @@
                 <block type="colorpal_get_colors"></block>
             </category>
         </category>
- <%--
         <category name="<fmt:message key="category.memory" />" include="activity-board" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_int_to"></block>
@@ -634,7 +633,6 @@
                 </block>
             </category>
         </category>
---%>
         <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb" colour="200">
             <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">
                 <block type="rc_charge_discharge"></block>
