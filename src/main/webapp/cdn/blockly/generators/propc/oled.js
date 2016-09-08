@@ -365,6 +365,7 @@ Blockly.propc.oled_initialize = function () {
 
 
 Blockly.propc.oled_font_loader = function () {
+    Blockly.propc.serial_terminal_ = true;
     Blockly.propc.definitions_["oledfonts"] = '#include "oledc_fontLoader.h"';
 
     var code = 'oledc_fontLoader();';
