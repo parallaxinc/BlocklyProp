@@ -30,6 +30,8 @@
             <h2><fmt:message key="html.content_missing" /></h2>
             <% }%>
 
+            <br>
+
             <h2><fmt:message key="home.latest_projects.title" /></h2>
             <hr>
             <ul class="latest-projects"></ul>
