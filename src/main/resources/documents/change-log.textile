@@ -3,6 +3,7 @@ h2. Change log
 h4. 2016/9/11
 
 * Fix grammatical error on homepage
+* Update homepage layout
 
 h4. 2016/9/10
 
