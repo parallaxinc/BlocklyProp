@@ -1,5 +1,13 @@
 h2. Change log
 
+h4. 2016/9/11
+
+* Fix grammatical error on homepage
+
+h4. 2016/9/10
+
+* Add terminal blocks for the Hackable Electronic Badge
+
 h4. 2016/06/27
 
 * Fix bugs introduced in build 2016/06/24
