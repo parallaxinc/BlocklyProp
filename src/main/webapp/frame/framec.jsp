@@ -536,8 +536,20 @@
                 <block type="eeprom_text_to"></block>
                 <block type="eeprom_text_from"></block>
 --%>
-                <block type="eeprom_read"></block>
-                <block type="eeprom_write"></block>
+                <block type="eeprom_read">
+                    <value name="ADDRESS">
+                        <block type="math_number">
+                                <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="eeprom_write">
+                    <value name="ADDRESS">
+                        <block type="math_number">
+                                <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.memory.sdcard" />">
                 <block type="sd_card_mount"></block>
