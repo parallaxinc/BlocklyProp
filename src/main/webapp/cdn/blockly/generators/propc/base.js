@@ -134,6 +134,24 @@ Blockly.propc.string_type_block = function() {
     return [code, Blockly.propc.ORDER_NONE];
 };
 
+Blockly.Blocks.string_length = {
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendValueInput('VALUE')
+                .setCheck('String')
+                .appendField("length of text");
+        this.setInputsInline(true);
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.string_length = function() {
+  var text = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
+  return ['strlen(' + text + ')', Blockly.propc.ORDER_NONE];
+};
+
 Blockly.Blocks.high_low_value = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));

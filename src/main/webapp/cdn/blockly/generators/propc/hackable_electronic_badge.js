@@ -32,11 +32,10 @@ Blockly.Blocks.heb_toggle_led = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Set LED state')
-                .appendField('LED #')
+                .appendField('LED set state of')
                 .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"]]), "LED_#")
-                .appendField('LED state')
-                .appendField(new Blockly.FieldDropdown([["ON", "1"], ["OFF", "0"]]), "STATE");
+                .appendField('state')
+                .appendField(new Blockly.FieldDropdown([["on/high", "1"], ["off/low", "0"]]), "STATE");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -58,12 +57,11 @@ Blockly.Blocks.heb_toggle_led_open = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Set LED state');
+                .appendField('LED set state of');
         this.appendValueInput('LED_NUM')
-                .appendField('LED #')
                 .setCheck('Number');
         this.appendValueInput('LED_STATE')
-                .appendField('LED state');
+                .appendField('state');
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -86,10 +84,9 @@ Blockly.Blocks.heb_set_led_rgb = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Set LED' + "'" + 's RGB')
-                .appendField('LED side')
-                .appendField(new Blockly.FieldDropdown([["L", "L"], ["R", "R"]]), "SIDE")
-                .appendField('RGB value')
+                .appendField('RGB LED set state of')
+                .appendField(new Blockly.FieldDropdown([["left LED", "L"], ["right LED", "R"]]), "SIDE")
+                .appendField('color')
                 .appendField(new Blockly.FieldDropdown([["BLUE", "BLUE"], ["GREEN", "GREEN"], ["CYAN", "CYAN"], ["RED", "RED"], ["MAGENTA", "MAGENTA"], ["YELLOW", "YELLOW"], ["WHITE", "WHITE"], ["OFF", "OFF"]]), "RGB");
 
         this.setPreviousStatement(true, null);
@@ -112,7 +109,7 @@ Blockly.Blocks.heb_print_numeric_var = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendValueInput('VALUE')
-                .appendField("Print number");
+                .appendField("OLED print number");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -138,7 +135,7 @@ Blockly.Blocks.heb_print_string_var = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendValueInput('VALUE')
-                .appendField("Print");
+                .appendField("OLED print text");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -211,7 +208,7 @@ Blockly.Blocks.heb_clear_screen = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Clear screen');
+                .appendField('OLED Clear screen');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -230,7 +227,7 @@ Blockly.Blocks.heb_rotate = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Rotate 180');
+                .appendField('OLED Rotate 180');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -249,7 +246,7 @@ Blockly.Blocks.heb_ir_send_signal = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField('Send a message')
+                .appendField('IR send text')
                 .appendField(new Blockly.FieldTextInput(''), "MESSAGE");
 
         this.setPreviousStatement(true, null);
@@ -310,7 +307,7 @@ Blockly.Blocks.heb_ir_clear_buffer = {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
                 // @TODO : Should the title be something else? This might be confusing for beginners...
-                .appendField("Clear IR buffer");
+                .appendField("IR clear buffer");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -329,7 +326,7 @@ Blockly.Blocks.heb_badge_eeprom_store = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Store a contact")
+                .appendField("EEPROM store a contact")
                 .appendField(new Blockly.FieldTextInput(''), "CONTACT");
 
         this.setPreviousStatement(true, null);
@@ -351,9 +348,9 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Already stored?")
-                .appendField("Info")
-                .appendField(new Blockly.FieldTextInput(''), "CONTACT");
+                .appendField("EEPROM is")
+                .appendField(new Blockly.FieldTextInput(''), "CONTACT")
+                .appendField("already stored?");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -375,12 +372,12 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Retrieve an EEPROM value")
-                .appendField("EEPROM Index")
+                .appendField("EEPROM retrieve value from index")
                 // @TODO : Get proper EEPROM index values ( THESE ARE  FOR TESTING PURPOSES ONLY )
                 .appendField(new Blockly.FieldDropdown([["1", "0"], ["2", "1"], ["3", "2"]]), "INDEX");
         this.appendValueInput("BUFFER")
-                .appendField('Variable');
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField('store in');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -402,7 +399,7 @@ Blockly.Blocks.heb_count_contacts = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Count contacts");
+                .appendField("EEPROM count contacts");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -422,7 +419,7 @@ Blockly.Blocks.heb_erase_all_contacts = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Erase all contacts");
+                .appendField("EEPROM erase all contacts");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -441,8 +438,8 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Get axis acceleration")
-                .appendField(new Blockly.FieldDropdown([["X", "AX"], ["Y", "AY"], ["Z", "AZ"]]), "AXIS");
+                .appendField("Accelerometer get")
+                .appendField(new Blockly.FieldDropdown([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -464,7 +461,7 @@ Blockly.Blocks.heb_badge_was_shaken = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Was shaken?");
+                .appendField("Accelerometer was shaken?");
 
         this.setOutput(true, 'Boolean');
         this.setPreviousStatement(false, null);
@@ -484,9 +481,9 @@ Blockly.Blocks.heb_touchpad_status = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
-                .appendField("Is-touchpad-pressed?")
-                .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"], ["6 - Center Button", "6"]]), "TOUCHPAD");
-
+                .appendField("Touchpad is")
+                .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"], ["6 - Center Button", "6"]]), "TOUCHPAD")
+                .appendField("pressed?");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Boolean');
