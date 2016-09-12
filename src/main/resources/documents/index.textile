@@ -6,7 +6,7 @@ h1. BlocklyProp
 
  </div>
 
-*Blockly for Propeller Multicore:* Amazing projects and learning to code just became easier
+*Blockly for Propeller Multicore:* Making amazing projects and learning to code just became easier
 
 !(cdn full-width)/images/home-banner.png!
 
