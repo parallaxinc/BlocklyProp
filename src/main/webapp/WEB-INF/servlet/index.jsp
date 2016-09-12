@@ -30,22 +30,11 @@
             <h2><fmt:message key="html.content_missing" /></h2>
             <% }%>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <h2><fmt:message key="home.latest_projects.title" /></h2>
-                    <ul class="latest-projects"></ul>
-                </div>
+            <br>
 
-                <div class="col-md-4">
-                    <h2><fmt:message key="home.c_project.title" /></h2>
-                    <a class="editor-new-link editor-c-link editor-icon" href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>" data-href="<url:getUrl url="/editor/blocklyc.jsp"/>"><fmt:message key="home.c_project.newlink" /></a>
-                </div>
-
-                <div class="col-md-4">
-                    <h2><fmt:message key="home.spin_project.title" /></h2>
-                    <a class="editor-new-link editor-spin-link editor-icon" href="<url:getUrl url="/projectcreate.jsp?lang=SPIN"/>" data-href="<url:getUrl url="/editor/blocklyspin.jsp"/>"><fmt:message key="home.spin_project.newlink" /></a>
-                </div>
-            </div>
+            <h2><fmt:message key="home.latest_projects.title" /></h2>
+            <hr>
+            <ul class="latest-projects"></ul>
         </div>
 
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
