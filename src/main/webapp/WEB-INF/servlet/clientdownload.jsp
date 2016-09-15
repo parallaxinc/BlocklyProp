@@ -42,28 +42,36 @@
                     <div class="clients">
                         <div class="client MacOS">
                             <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-installer.dmg')}"><fmt:message key="clientdownload.client.macos.installer" /></a>
+                            <a href="${properties:downloadfiles('/BlocklyPropClient-installer.dmg')}">
+                                <fmt:message key="clientdownload.client.macos.installer" /></a>
                         </div>
-                        <div class="client MacOS">
+<%--                        <div class="client MacOS">
                             <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
-                            <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}"><fmt:message key="clientdownload.client.macos" /></a>
+                            <a href="${properties:downloadfiles('/blocklyprop-client-macos.zip')}">
+                                <fmt:message key="clientdownload.client.macos" /></a>
                         </div>
+--%>
                         <!--<div class="client Windows">
                             Windows 32bit client
                         </div>-->
+<%--
                         <div class="client Windows">
                             <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup.exe')}"><fmt:message key="clientdownload.client.windows64.installer" /></a>
+                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup.exe')}">
+                                <fmt:message key="clientdownload.client.windows64.installer" /></a>
                         </div>
+--%>
                         <div class="client Windows">
                             <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                            <a href="${properties:downloadfiles('/blocklyprop-client-win64.zip')}"><fmt:message key="clientdownload.client.windows64" /></a>
+                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
+                                <fmt:message key="clientdownload.client.windows64.installer" /></a>
                         </div>
                         <!--    <div class="client Windows">
                                 Windows service
                             </div>-->
                     </div>
-                    <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');"><fmt:message key="clientdownload.showall" /></button>
+                    <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');">
+                        <fmt:message key="clientdownload.showall" /></button>
                 </div>
             </div>
         </div>
