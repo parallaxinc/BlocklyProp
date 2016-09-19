@@ -439,7 +439,7 @@
                 <block type="serial_send_text"></block>
                 <block type="serial_rx"></block>
                 <block type="serial_receive_text"></block>
-                <block type="i2c_new_bus"></block>
+ <%--           <block type="i2c_new_bus"></block>
                 <block type="i2c_in">
                     <value name="SIZE">
                         <block type="math_number">
@@ -473,8 +473,8 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                </block>
-
+                </block>   --%>
+                
             </category>
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
@@ -529,12 +529,27 @@
         </category>
         <category name="<fmt:message key="category.memory" />" include="activity-board" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
-                <block type="eeprom_int_to"></block>
+<%--            <block type="eeprom_int_to"></block>
                 <block type="eeprom_int_from"></block>
                 <block type="eeprom_float_to"></block>
                 <block type="eeprom_float_from"></block>
                 <block type="eeprom_text_to"></block>
                 <block type="eeprom_text_from"></block>
+--%>
+                <block type="eeprom_read">
+                    <value name="ADDRESS">
+                        <block type="math_number">
+                                <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="eeprom_write">
+                    <value name="ADDRESS">
+                        <block type="math_number">
+                                <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.memory.sdcard" />">
                 <block type="sd_card_mount"></block>

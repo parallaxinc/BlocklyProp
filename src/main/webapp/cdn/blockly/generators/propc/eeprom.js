@@ -164,3 +164,97 @@ Blockly.propc.eeprom_text_from = function() {
 
   return 'ee_getStr(' + address + ')';
 };
+
+Blockly.Blocks.eeprom_write = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("DATA")
+            .setCheck(null)
+            .appendField("EEPROM write")
+            .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE");
+        this.appendValueInput("ADDRESS")
+            .setCheck("Number")
+            .appendField("to address");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.eeprom_write = function () {
+    var type = this.getFieldValue('TYPE');
+    var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC);
+    var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_ATOMIC) || '';
+    
+    Blockly.propc.global_vars_["i2c_eepromAddr"] = 'int __eeAddr;';
+    //Blockly.propc.global_vars_["i2c_new_eebus"] = 'i2c *eeBus;';
+    //Blockly.propc.setups_["i2c_eebus"] = 'eeBus = i2c_newbus(28, 29, 0);\n';
+    
+    var code = '// Make sure that the eeprom address does not overwrite the program memory.\n';
+    code += '__eeAddr = (32768 + ' + address + ');\n';
+    code += 'if(__eeAddr < 32768) __eeAddr = 32768;\n';
+    code += 'if(__eeAddr > 40447) __eeAddr = 40447;\n';
+        
+    if(data !== '') {
+    
+        if (type === 'BYTE') {
+            code += 'ee_putByte((' + data + ' & 255), __eeAddr );\n';
+        } else if (type === 'NUMBER') {
+            code += 'ee_putInt(' + data + ', __eeAddr );\n';
+        } else {
+            code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), __eeAddr );\n';        
+        }
+    }
+    
+    return code;
+};
+
+Blockly.Blocks.eeprom_read = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("ADDRESS")
+            .setCheck("Number")
+            .appendField("EEPROM Read")
+            .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE")
+            .appendField("from address");
+        this.appendValueInput("DATA")
+            .setCheck(null)
+            .appendField("store in");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.eeprom_read = function () {
+    var type = this.getFieldValue('TYPE');
+    var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC);
+    var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_ATOMIC) || '';
+
+    Blockly.propc.global_vars_["i2c_eepromAddr"] = 'int __eeAddr;';
+    
+    var code = '// Make sure that the EEPROM address does not overwrite the program memory.\n';
+    code += '__eeAddr = (32768 + ' + address + ');\n';
+    code += 'if(__eeAddr < 32768) __eeAddr = 32768;\n';
+    code += 'if(__eeAddr > 40447) __eeAddr = 40447;\n';
+        
+    if(data !== '') {
+        if (type === 'BYTE') {
+            code += 'ee_getByte((' + data + ' & 255), __eeAddr );\n';
+        } else if (type === 'NUMBER') {
+            code += 'ee_getInt(' + data + ', __eeAddr );\n';
+        } else {
+            Blockly.propc.global_vars_["i2c_eeBffr"] = 'char __eeBffr[1];';
+            Blockly.propc.global_vars_["i2c_eeIdx"] = 'int __eeIdx = 0;';
+            Blockly.propc.vartype_[data] = 'char *';   
+            code += '// Get the string from EEPROM one character at a time until it finds the end of the string.\n';
+            code += '__eeIdx = 0;\n';
+            code += 'while(__eeIdx < 128) {\n  ee_getStr(__eeBffr, 1, __eeAddr + __eeIdx);\n';
+            code += '  ' + data + '[__eeIdx] = __eeBffr[0];\n';
+            code += '  if(' + data + '[__eeIdx] == 0) break;\n  __eeIdx++;\n}\n';
+            code += '  if(__eeIdx >= 128) ' + data + '[127] = 0;\n';
+        }
+    }
+    
+    return code;
+};
