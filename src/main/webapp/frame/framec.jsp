@@ -749,6 +749,36 @@
             </category>
         </category>
         <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" colour="290">
+            <category name="<fmt:message key="category.communicate.serial-terminal" />">
+                <block type="console_print">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
+                <block type="console_print_variables">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="console_scan_text"></block>
+                <block type="console_scan_number"></block>
+                <block type="console_newline"></block>
+                <block type="console_clear"></block>
+                <block type="console_move_to_position">
+                    <value name="ROW">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLUMN">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
                 <block type="heb_toggle_led"></block>
                 <block type="heb_toggle_led_open">
