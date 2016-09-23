@@ -116,9 +116,9 @@
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
         <category name="<fmt:message key="category.control" />" colour="220">
-            <block type="controls_return"></block>
+            <block type="comment"></block>
             <block type="controls_if"></block>
-            <block type="controls_if_return"></block>
+<%--        <block type="controls_if_return"></block>       --%>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
@@ -147,7 +147,7 @@
                 </value>
             </block>
             <block type="cog_new"></block>
-            <block type="comment"></block>
+            <block type="controls_return"></block>
         </category>
         <category name="<fmt:message key="category.operators" />" colour="275">
             <block type="math_arithmetic"></block>
@@ -197,6 +197,7 @@
                     <block type="color_picker"></block>
                 </value>
             </block>
+            <block type="system_counter"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
