@@ -134,6 +134,21 @@ Blockly.propc.string_type_block = function() {
     return [code, Blockly.propc.ORDER_NONE];
 };
 
+Blockly.Blocks.system_counter = {
+  init: function() {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField("system counter");
+        this.setOutput(true, "Number");
+        this.setTooltip('');
+  }
+};
+
+Blockly.propc.system_counter = function() {
+  var code = 'CNT';
+  return [code, Blockly.propc.ORDER_NONE];
+};
+
 Blockly.Blocks.string_length = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
