@@ -67,7 +67,6 @@
                 height: 100%;
                 width: 100%;
             }
-
             .blocklyMinimalBody {
                 height: 64px;
             }
@@ -75,9 +74,7 @@
         <script>
             function init(profileName, peripherals) {
                 filterToolbox(profileName, peripherals);
-
                 Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), trashcan: true, media: '<url:getUrl url="/cdn/blockly/media/"/>', path: '<url:getUrl url="/cdn/blockly/"/>', comments: false}); // path: '/' ,
-
                 if (window.parent.init) {
                     // Let the top-level application know that Blockly is ready.
                     window.parent.init(Blockly);
@@ -94,19 +91,16 @@
                     alert(msg);
                 }
             }
-
             function load(xmlText) {
                 var xmlDom = Blockly.Xml.textToDom(xmlText)
                 Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
             }
-
             function ready() {
                 if (window.parent.blocklyReady) {
                     // Let the top-level application know that the frame is ready.
                     window.parent.blocklyReady();
                 }
             }
-
             function getXml() {
                 var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
                 return Blockly.Xml.domToText(xml);
@@ -237,6 +231,7 @@
                     </value>
                 </block>
                 <block type="debug_lcd_action"></block>
+                <block type="debug_lcd_set_cursor"></block>
                 <block type="debug_lcd_music_note"></block>
             </category>
             <category name="<fmt:message key="category.communicate.oled" />">
@@ -552,7 +547,7 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.memory.sdcard" />">
+<%--        <category name="<fmt:message key="category.memory.sdcard" />">
                 <block type="sd_card_mount"></block>
                 <block type="sd_card_int_to">
                     <value name="STARTING_POINT_VALUE">
@@ -647,7 +642,7 @@
                         </block>
                     </value>
                 </block>
-            </category>
+            </category>                   --%>
         </category>
         <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb" colour="200">
             <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">
