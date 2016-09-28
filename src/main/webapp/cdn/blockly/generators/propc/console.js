@@ -69,30 +69,22 @@ Blockly.Blocks.console_scan_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Terminal receive text store in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+                .appendField("Terminal receive text store in");
+        this.appendValueInput('VALUE')
+                .setCheck('String');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-    },
-    getVars: function () {
-        return [this.getFieldValue('VALUE')];
-    },
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
-        }
     }
-
 };
 
 Blockly.propc.console_scan_text = function () {
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
+    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';    
     Blockly.propc.vartype_[data] = 'char *';   
     Blockly.propc.serial_terminal_ = true;
 
     if(data !== '') {
-        var code = 'getStr(' + data + ', 128);\n';
+        var code = 'getStr(' + data + ', 64);\n';
 
         return code;
     } else {
@@ -104,25 +96,17 @@ Blockly.Blocks.console_scan_number = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Terminal receive number store in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+                .appendField("Terminal receive number store in");
+        this.appendValueInput('VALUE')
+                .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-    },
-    getVars: function () {
-        return [this.getFieldValue('VALUE')];
-    },
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
-        }
     }
-
 };
 
 Blockly.propc.console_scan_number = function () {
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
+    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';    
 
     Blockly.propc.serial_terminal_ = true;
 
