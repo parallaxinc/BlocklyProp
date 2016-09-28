@@ -159,7 +159,7 @@ Blockly.Blocks.HMC5883L_read = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("Compass store heading in")
+                .appendField("Compass heading store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HEADING');
 
         this.setInputsInline(true);
