@@ -229,7 +229,7 @@ Blockly.Blocks.console_move_to_position = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("Terminal move to row");
+            .appendField("Terminal set cursor to row");
         this.appendValueInput('ROW')
             .setCheck('Number');
         this.appendDummyInput()
