@@ -718,7 +718,13 @@
                 </block>
             </category>
             <category name="<fmt:message key="category.servo.cr-servo" />">
-                <block type="servo_speed"></block>
+                <block type="servo_speed">
+                    <value name="SPEED">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="servo_set_ramp">
                     <value name="RAMPSTEP">
                         <block type="math_number">
