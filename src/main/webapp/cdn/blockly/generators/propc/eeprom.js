@@ -164,7 +164,7 @@ Blockly.propc.eeprom_text_from = function() {
 
 Blockly.Blocks.eeprom_write = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        this.setColour(colorPalette.getColor('input'));
         this.appendValueInput("DATA")
             .setCheck(null)
             .appendField("EEPROM write")
@@ -208,7 +208,7 @@ Blockly.propc.eeprom_write = function () {
 
 Blockly.Blocks.eeprom_read = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        this.setColour(colorPalette.getColor('input'));
         this.appendValueInput("ADDRESS")
             .setCheck("Number")
             .appendField("EEPROM read")
