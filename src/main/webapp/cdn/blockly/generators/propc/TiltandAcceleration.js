@@ -98,27 +98,19 @@ Blockly.Blocks.MMA7455_acceleration = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("Accelerometer x-axis PIN")
+                .appendField("Accelerometer DATA")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX")
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("store x value in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR');
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("y-axis PIN")
+                .appendField("CLK")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY")
+                .appendField("CS")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINZ");
         this.appendDummyInput()
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("store y value in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR');
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("z-axis PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINZ")
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("store z value in")
+                .appendField("store x-axis in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR')
+                .appendField(" y-axis in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR')
+                .appendField(" z-axis in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
 
         this.setInputsInline(false);
