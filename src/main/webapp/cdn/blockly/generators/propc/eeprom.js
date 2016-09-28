@@ -197,9 +197,9 @@ Blockly.propc.eeprom_write = function () {
         if (type === 'BYTE') {
             code += 'ee_putByte((' + data + ' & 255), (32768 + __eeAddr) );\n';
         } else if (type === 'NUMBER') {
-            code += 'ee_putInt(' + data + ', __eeAddr );\n';
+            code += 'ee_putInt(' + data + ', (32768 + __eeAddr) );\n';
         } else {
-            code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), __eeAddr );\n';        
+            code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + __eeAddr) );\n';        
         }
     }
     
@@ -246,7 +246,7 @@ Blockly.propc.eeprom_read = function () {
         if (type === 'BYTE') {
             code += 'ee_getByte((' + data + ' & 255), (32768 + __eeAddr) );\n';
         } else if (type === 'NUMBER') {
-            code += 'ee_getInt(' + data + ', __eeAddr );\n';
+            code += 'ee_getInt(' + data + ', (32768 + __eeAddr) );\n';
         } else {
             Blockly.propc.global_vars_["i2c_eeBffr"] = 'char __eeBffr[1];';
             Blockly.propc.global_vars_["i2c_eeIdx"] = 'int __eeIdx = 0;';
