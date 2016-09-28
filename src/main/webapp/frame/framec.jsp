@@ -495,6 +495,7 @@
                 <block type="MX2125_tilt_yaxis"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
+                <block type="MMA7455_init"></block>
                 <block type="MMA7455_acceleration"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.ping" />">
