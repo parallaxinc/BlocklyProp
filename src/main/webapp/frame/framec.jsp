@@ -231,6 +231,7 @@
                     </value>
                 </block>
                 <block type="debug_lcd_action"></block>
+                <block type="debug_lcd_set_cursor"></block>
                 <block type="debug_lcd_music_note"></block>
             </category>
             <category name="<fmt:message key="category.communicate.oled" />">
