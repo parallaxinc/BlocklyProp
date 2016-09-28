@@ -77,7 +77,8 @@ Blockly.Blocks['math_arithmetic'] = {
                 [["+", 'ADD'],
                     ["-", 'MINUS'],
                     ["\u00D7", 'MULTIPLY'],
-                    ["/", 'DIVIDE']];
+                    ["/", 'DIVIDE'],
+                    ["% (remainder after division)", 'MODULUS']];
         this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
