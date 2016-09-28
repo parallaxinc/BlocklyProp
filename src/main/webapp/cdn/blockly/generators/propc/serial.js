@@ -84,12 +84,19 @@ Blockly.Blocks.serial_rx = {
                     ["byte (ASCII character)", "BYTE"], 
                     ["number (32-bit integer)", "INT"] 
                     ]), "TYPE")
-                .appendField("store in");
-        this.appendValueInput('VALUE')
-                .setCheck(null);
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -97,12 +104,19 @@ Blockly.Blocks.serial_receive_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Serial receive text store in");
-        this.appendValueInput('VALUE')
-                .setCheck('String');
+                .appendField("Serial receive text store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -156,7 +170,7 @@ Blockly.propc.serial_send_text = function () {
 
 Blockly.propc.serial_rx = function () {
     var type = this.getFieldValue('TYPE');
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
 
     if (Blockly.propc.setups_["setup_fdserial"] === undefined)
     {
@@ -175,7 +189,7 @@ Blockly.propc.serial_rx = function () {
 };
 
 Blockly.propc.serial_receive_text = function () {
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
     Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
 
     //var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'),
