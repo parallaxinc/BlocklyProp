@@ -104,7 +104,9 @@ Blockly.Blocks.console_scan_number = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Terminal receive number store in")
+                .appendField("Terminal receive")
+                .appendField(new Blockly.FieldDropdown([["number (32-bit integer)", "NUMBER"], ["byte (ASCII character)", "BYTE"]]), "TYPE")
+                .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -122,13 +124,18 @@ Blockly.Blocks.console_scan_number = {
 };
 
 Blockly.propc.console_scan_number = function () {
+    var type = this.getFieldValue('TYPE');
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
 
     Blockly.propc.serial_terminal_ = true;
+    var code = '';
 
     if(data !== '') {
-        var code = 'scan("%d\\n", &' + data + ');\n';
-
+        if (type === 'NUMBER') {
+            code += 'scan("%d\\n", &' + data + ');\n';
+        } else {
+            code += data + ' = getChar();\n';
+        }
         return code;
     } else {
         return '';
