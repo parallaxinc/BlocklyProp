@@ -97,7 +97,7 @@ Blockly.Blocks.oled_draw_circle = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(colorPalette.getColor('protocols'));
-    this.setTooltip('Set coordinates to draw a circle');
+    this.setTooltip('<b>Set</b> coordinates to draw a circle');
   }
 };
 
