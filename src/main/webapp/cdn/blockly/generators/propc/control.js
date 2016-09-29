@@ -127,4 +127,32 @@ Blockly.Blocks.controls_return = {
 
 Blockly.propc.controls_return = function() {
     return 'return;';
+};Blockly.Blocks.controls_return = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("return");
+
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setColour(colorPalette.getColor('programming'));
+  }
+};
+
+Blockly.propc.controls_return = function() {
+    return 'return;';
+};
+
+Blockly.Blocks.controls_break = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("break");
+
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setColour(colorPalette.getColor('programming'));
+  }
+};
+
+Blockly.propc.controls_return = function() {
+    return 'break;';
 };
