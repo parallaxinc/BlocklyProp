@@ -26,7 +26,7 @@
                     <!-- Windows 32bit client -->
                     <div class="client Windows">
                         <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                        <a href="${properties:downloadfiles('BlocklyPropClient-setup-32.exe')}">
+                        <a href="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
                             <fmt:message key="clientdownload.client.windows32.installer" /></a>
                     </div>
                     <div class="client Windows">
