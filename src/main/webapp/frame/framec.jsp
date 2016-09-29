@@ -495,6 +495,7 @@
                 <block type="MX2125_tilt_yaxis"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
+                <block type="MMA7455_init"></block>
                 <block type="MMA7455_acceleration"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.ping" />">
@@ -650,7 +651,13 @@
             </category>
             <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb">
                 <block type="ab_volt_in"></block>
-                <block type="ab_volt_out"></block>
+                <block type="ab_volt_out">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb">
                 <block type="pulse_in"></block>
@@ -684,11 +691,11 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                    <value name="LENGTH">
+<%--                <value name="LENGTH">
                         <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
-                    </value>
+                    </value>                    --%>
                 </block>
                 <block type="wav_stop"></block>
             </category>

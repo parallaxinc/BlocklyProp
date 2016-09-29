@@ -52,8 +52,8 @@ Blockly.Blocks.serial_tx = {
         this.appendDummyInput()
                 .appendField("Serial transmit")
                 .appendField(new Blockly.FieldDropdown([
-                    ["byte (ASCII character)", "BYTE"], 
-                    ["number (32-bit integer)", "INT"] 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
                     ]), "TYPE");
         this.appendValueInput('VALUE', Number)
                 .setCheck(null);
@@ -81,8 +81,8 @@ Blockly.Blocks.serial_rx = {
         this.appendDummyInput()
                 .appendField("Serial receive")
                 .appendField(new Blockly.FieldDropdown([
-                    ["byte (ASCII character)", "BYTE"], 
-                    ["number (32-bit integer)", "INT"] 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
                     ]), "TYPE")
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');

@@ -59,7 +59,7 @@ Blockly.propc.math_arithmetic.OPERATORS = {
     MINUS: [' - ', Blockly.propc.ORDER_ADDITIVE],
     MULTIPLY: [' * ', Blockly.propc.ORDER_MULTIPLICATIVE],
     DIVIDE: [' / ', Blockly.propc.ORDER_MULTIPLICATIVE],
-    MODULUS: [' % ', Blockly.propc.ORDER_MULTIPLICATIVE],
+    MODULUS: [' % ', Blockly.propc.ORDER_MULTIPLICATIVE]
 };
 
 // Limit

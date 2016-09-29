@@ -211,7 +211,7 @@ Blockly.Blocks.eeprom_read = {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput("ADDRESS")
             .setCheck("Number")
-            .appendField("EEPROM Read")
+            .appendField("EEPROM read")
             .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE")
             .appendField("from address");
         this.appendDummyInput()
