@@ -958,7 +958,6 @@ Blockly.Spin.factory_reset = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
 
     var code = 'scribbler.RestoreS3Demo';
-    return code;
-//    return [code, Blockly.Spin.ORDER_ATOMIC];
+    return [code, Blockly.Spin.ORDER_ATOMIC];
     
 };
