@@ -133,6 +133,7 @@
                     </block>
                 </value>
             </block>
+            <block type="controls_break"></block>
             <block type="base_delay">
                 <value name="DELAY_TIME">
                     <block type="math_number">
