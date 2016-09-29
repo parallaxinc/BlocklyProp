@@ -16,23 +16,19 @@
                 <h4 class="modal-title"><fmt:message key="editor.client.title" /></h4>
             </div>
             <div class="modal-body">
-                <div id="client-instructions" data-url="<url:getUrl url="/public/clientinstructions"/>">
-                </div>
-
+                <div id="client-instructions" data-url="<url:getUrl url="/public/clientinstructions"/>" />
                 <div class="clients">
                     <div class="client MacOS">
                         <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
                         <a href="${properties:downloadfiles('/BlocklyPropClient-installer.dmg')}">
                             <fmt:message key="clientdownload.client.macos.installer" /></a>
                     </div>
-                    <%--
                     <!-- Windows 32bit client -->
                     <div class="client Windows">
                         <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                        <a href="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
+                        <a href="${properties:downloadfiles('BlocklyPropClient-setup-32.exe')}">
                             <fmt:message key="clientdownload.client.windows32.installer" /></a>
                     </div>
-                    --%>
                     <div class="client Windows">
                         <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
                         <a href="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
