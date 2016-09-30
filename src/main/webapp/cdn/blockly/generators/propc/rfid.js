@@ -91,9 +91,10 @@ Blockly.Blocks.rfid_close = {
 Blockly.propc.rfid_get = function() {
     var saveVariable = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
+    Blockly.propc.global_vars_["rfid_buffer"] = "char *rfidBfr;";
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    var code = 'char str* = rfid_get(rfid, 1000);\n\tsscan(&str[2], "%x", &' + saveVariable + ');\n\tif(' + saveVariable + ' == 237) ' + saveVariable + ' = 0;';
+    var code = 'rfidBfr = rfid_get(rfid, 500);\n\tsscan(&rfidBfr[2], "%x", &' + saveVariable + ');\n\tif(' + saveVariable + ' == 237) ' + saveVariable + ' = 0;';
     return code;
 };
 
@@ -114,9 +115,7 @@ Blockly.propc.rfid_enable = function() {
 
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
     Blockly.propc.global_vars_["rfidser"] = 'rfidser *rfid;';
-    Blockly.propc.global_vars_["rfidser_inpin"] = 'int rfidEn = ' + pin_in + ';';
-    Blockly.propc.global_vars_["rfidser_outpin"] = 'int rfidSout = ' + pin_out + ';';
-    Blockly.propc.setups_["rfidser_setup"] = "rfid = rfid_open(rfidSout,rfidEn);"
+    Blockly.propc.setups_["rfidser_setup"] = 'rfid = rfid_open(' + pin_out + ',' + pin_in + ');';
 
     return '';
 };
