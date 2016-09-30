@@ -50,7 +50,11 @@ Blockly.Blocks.rfid_disable = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendTitle("RFID disable");
+            .appendField("RFID")
+            .appendField(new Blockly.FieldDropdown([
+                    ["disable", "DISABLE"], 
+                    ["enable", ""] 
+                    ]), "ACTION");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -94,9 +98,14 @@ Blockly.propc.rfid_get = function() {
 };
 
 Blockly.propc.rfid_disable = function() {
+    var data = Blockly.propc.valueToCode(this, 'ACTION', Blockly.propc.ORDER_ATOMIC) || '';
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    return 'rfid_disable(rfid);\n';
+    if(data === "ENABLE") {
+        return 'rfid_enable(rfid);\n';
+    } else {
+        return 'rfid_disable(rfid);\n';    
+    }
 };
 
 Blockly.propc.rfid_enable = function() {
