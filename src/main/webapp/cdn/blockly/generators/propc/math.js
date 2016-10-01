@@ -31,7 +31,8 @@ if (!Blockly.Blocks)
 
 Blockly.propc['math_number'] = function() {
     // Numeric value.
-    var code = window.parseInt(this.getFieldValue('NUM'));
+    var code = window.parseFloat(this.getFieldValue('NUM'));
+    code = parseInt(code);
     // -4.abs() returns -4 in Dart due to strange order of operation choices.
     // -4 is actually an operator and a number.  Reflect this in the order.
     var order = code < 0 ?
@@ -146,9 +147,13 @@ Blockly.Blocks.math_random = {
     // Rounding functions.
     init: function() {
         this.setColour(colorPalette.getColor('math'));
-        this.appendDummyInput()
-            .appendField("random");
-
+        this.appendValueInput("A")
+            .setCheck("Number")
+            .appendField("random number from");
+        this.appendValueInput("B")
+            .setCheck("Number")
+            .appendField("to");
+        this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
@@ -156,9 +161,11 @@ Blockly.Blocks.math_random = {
 };
 
 Blockly.propc.math_random = function() {
-    Blockly.propc.setups_["random_seed"] = "srand(23);\n";
+    Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
+    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
+    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
 
-    var code = 'rand() % 100';
+    var code = '(' + arg1 + ' + rand() % (' + arg2 + ' - ' + arg1 + ' + 1))';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
