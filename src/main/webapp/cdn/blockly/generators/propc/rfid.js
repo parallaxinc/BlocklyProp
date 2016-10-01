@@ -53,7 +53,7 @@ Blockly.Blocks.rfid_disable = {
             .appendField("RFID")
             .appendField(new Blockly.FieldDropdown([
                     ["disable", "DISABLE"], 
-                    ["enable", ""] 
+                    ["enable", "ENABLE"] 
                     ]), "ACTION");
 
         this.setPreviousStatement(true, null);
