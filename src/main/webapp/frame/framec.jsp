@@ -148,7 +148,18 @@
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="math_crement"></block>
-            <block type="math_random"></block>
+            <block type="math_random">
+                <value name="A">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+                <value name="B">
+                     <block type="math_number">
+                        <field name="NUM">100</field>
+                    </block>
+                </value> 
+            </block>
             <block type="math_bitwise"></block>
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
