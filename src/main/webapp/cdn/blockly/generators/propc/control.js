@@ -140,6 +140,6 @@ Blockly.Blocks.controls_break = {
   }
 };
 
-Blockly.propc.controls_return = function() {
+Blockly.propc.controls_break = function() {
     return 'break;';
 };
