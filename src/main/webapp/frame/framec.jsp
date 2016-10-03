@@ -145,33 +145,67 @@
             <block type="controls_return"></block>
         </category>
         <category name="<fmt:message key="category.operators" />" colour="275">
-            <block type="math_arithmetic"></block>
-            <block type="math_limit"></block>
-            <block type="math_crement"></block>
-            <block type="math_random">
-                <value name="A">
-                    <block type="math_number">
-                        <field name="NUM">1</field>
-                    </block>
-                </value>
-                <value name="B">
-                     <block type="math_number">
-                        <field name="NUM">100</field>
-                    </block>
-                </value> 
-            </block>
-            <block type="math_bitwise"></block>
-            <block type="logic_operation"></block>
-            <block type="logic_negate"></block>
-            <block type="logic_compare"></block>
+            <category name="<fmt:message key="category.operators.numbers" />" >
+                <block type="math_arithmetic"></block>
+                <block type="math_limit"></block>
+                <block type="math_crement"></block>
+                <block type="math_random">
+                    <value name="A">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                    <value name="B">
+                         <block type="math_number">
+                            <field name="NUM">100</field>
+                        </block>
+                    </value> 
+                </block>
+                <block type="math_bitwise"></block>
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+                <block type="logic_compare"></block>
+            </category>
+            <category name="<fmt:message key="category.operators.strings" />" >
+                <block type="string_compare"></block>
+                <block type="string_length"></block>
+                <block type="combine_strings"></block>
+                <block type="find_substring"></block>
+                <block type="get_char_at_position">
+                    <value name="POSITION">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="set_char_at_position">
+                    <value name="POSITION">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="get_substring">
+                    <value name="START">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                    <value name="END">
+                        <block type="math_number">
+                            <field name="NUM">3</field>
+                        </block>
+                    </value>
+                </block>
+            </category>            
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
+            <block type="char_type_block"></block>            
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
-            <block type="string_length"></block>
             <block type="color_picker"></block>
             <block type="color_value_from">
                 <value name="RED_VALUE">
