@@ -178,9 +178,9 @@ Blockly.propc.console_print_variables = function () {
         } else if (format === 'HEX') {
             code += '"%x\\r"';                
         } else if (format === 'DEC') {
-            code += '"%d"';
+            code += '"%d\\r"';
         } else {
-            code += '"%c"';
+            code += '"%c\\r"';
         }
     }
     if (format === 'CHAR') {
