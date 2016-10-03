@@ -11,6 +11,7 @@ import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.jsp.Properties;
+import com.parallax.server.blocklyprop.monitoring.Monitor;
 import com.parallax.server.blocklyprop.utils.HelpFileInitializer;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -43,6 +44,7 @@ public class SetupConfig extends GuiceServletContextListener {
                 bind(Properties.class).asEagerSingleton();
 
                 bind(HelpFileInitializer.class).asEagerSingleton();
+                bind(Monitor.class).asEagerSingleton();
 
                 install(new PersistenceModule(configuration));
                 install(new DaoModule());
