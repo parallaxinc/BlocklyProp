@@ -38,7 +38,7 @@ Blockly.Blocks.serial_open = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput()
                 .appendField("baud")
-                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["4800", "4800"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);

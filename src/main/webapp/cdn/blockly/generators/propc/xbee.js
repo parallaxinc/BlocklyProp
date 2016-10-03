@@ -35,7 +35,9 @@ Blockly.Blocks.xbee_setup = {
                 .appendField("XBee initialize DI")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN')
                 .appendField("DO")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN');
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN')
+                .appendField("baud")
+                .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -47,20 +49,17 @@ Blockly.Blocks.xbee_transmit = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("XBee transmit data")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
-
+                .appendField("XBee transmit")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"], 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
+                    ]), "TYPE");
+        this.appendValueInput('VALUE', Number)
+                .setCheck(null);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-    },
-    getVars: function () {
-        return [this.getFieldValue('BUFFER')];
-    },
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
-            this.setTitleValue(newName, 'BUFFER');
-        }
     }
 };
 
@@ -68,19 +67,24 @@ Blockly.Blocks.xbee_receive = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("XBee receive data and store in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
-
+                .appendField("XBee receive")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"], 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
+                    ]), "TYPE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
     getVars: function () {
-        return [this.getFieldValue('BUFFER')];
+        return [this.getFieldValue('VALUE')];
     },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
-            this.setTitleValue(newName, 'BUFFER');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
         }
     }
 };
@@ -88,29 +92,62 @@ Blockly.Blocks.xbee_receive = {
 Blockly.propc.xbee_setup = function () {
     var do_pin = this.getFieldValue('DO_PIN');
     var di_pin = this.getFieldValue('DI_PIN');
+    var baud = this.getFieldValue('BAUD');
 
     Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
 
     Blockly.propc.global_vars_["xbee"] = "fdserial *xbee;";
-    Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + di_pin + ', ' + do_pin + ', 0, 9600);\n';
+    Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + di_pin + ', ' + do_pin + ', 0, ' + baud + ');\n';
 
     return '';
 };
 
 Blockly.propc.xbee_transmit = function () {
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
+    var type = this.getFieldValue('TYPE');
+    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
 
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+    if (Blockly.propc.setups_["xbee"] === undefined)
+    {
+        return '//Missing xbee initialization\n';
+    }
 
-    var code = 'dprint(xbee, "%d\\n", ' + data + ');\n';
-    return code;
+    if(type === "BYTE") {
+        return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
+    } else if(type === "INT") {
+        return 'dprint(xbee, "%d", ' + data + ');\n';
+    } else {   
+        var code = 'dprint(xbee, "%s", ' + text + ');\n';
+        //code += 'fdserial_txChar(xbee, 0 );\n';
+        code += 'while(!fdserial_txEmpty(xbee));\n';
+        code += 'pause(5);\n';
+
+        return code;
+    }
 };
 
 Blockly.propc.xbee_receive = function () {
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+    var type = this.getFieldValue('TYPE');
 
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+    if (Blockly.propc.setups_["xbee"] === undefined)
+    {
+        return '//Missing xbee initialization\n';
+    }
 
-    var code = 'dscan(xbee, "%d", &' + data + ');\n';
-    return code;
+    if(type === "BYTE") {
+        return  data + ' = fdserial_rxChar(xbee);\n';
+    } else if(type === "INT") {
+        return 'dscan(xbee, "%d", &' + data + ');\n';
+    } else {  
+        Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
+        Blockly.propc.vartype_[data] = 'char *';
+           
+        var code = '__idx = 0;\n';
+        code += 'do {\n';
+        code += '  ' + data + '[__idx] = fdserial_rxChar(xbee);\n';
+        code += '  __idx++;\n';
+        code += '} while(fdserial_rxPeek(xbee) != 0);\n';    
+        code += data + '[__idx] = 0;\nfdserial_rxFlush(xbee);\n';
+        return code;
+    }
 };
