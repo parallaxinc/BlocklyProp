@@ -54,7 +54,8 @@ Blockly.Blocks.console_print_variables = {
             .appendField(new Blockly.FieldDropdown([
                 ['Decimal','DEC'],
                 ['Hexadecimal','HEX'],
-                ['Binary', 'BIN']
+                ['Binary', 'BIN'],
+                ['ASCII Character', 'CHAR']
             ]), "FORMAT");
         this.appendDummyInput()
             .appendField("then a new line")
@@ -166,19 +167,27 @@ Blockly.propc.console_print_variables = function () {
             code += '"%b"';
         } else if (format === 'HEX') {
             code += '"%x"';                
-        } else {
+        } else if (format === 'DEC') {
             code += '"%d"';
-        } 
+        } else {
+            code += '"%c"';
+        }
     } else {
         if (format === 'BIN') {
             code += '"%b\\r"';
         } else if (format === 'HEX') {
             code += '"%x\\r"';                
-        } else {
+        } else if (format === 'DEC') {
             code += '"%d\\r"';
-        } 
+        } else {
+            code += '"%c\\r"';
+        }
     }
-    code += ', ' + value + ');\n';
+    if (format === 'CHAR') {
+        code += ', (' + value + ' & 0xFF));\n';
+    } else {
+        code += ', ' + value + ');\n';        
+    }
     return code;
 };
 
