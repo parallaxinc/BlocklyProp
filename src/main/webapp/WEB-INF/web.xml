@@ -64,6 +64,21 @@
         <url-pattern>/apidoc</url-pattern>
     </servlet-mapping>
 
+    <!-- Monitor -->
+    <listener>
+        <description>Add Metrics to context</description>
+        <listener-class>com.parallax.server.blocklyprop.monitoring.BlocklyPropInstrumentedFilterContextListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>instrumentedFilter</filter-name>
+        <filter-class>com.codahale.metrics.servlet.InstrumentedFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>instrumentedFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!-- Other servlets -->
 
     <welcome-file-list>

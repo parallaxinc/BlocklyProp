@@ -324,6 +324,9 @@
                 </block>
                 <block type="serial_rx_byte"></block>
             </category>
+            <category name="Reset" colour=185>
+                <block type="factory_reset"></block>
+            </category>
         </category>
     </xml>
 </body>

@@ -54,7 +54,8 @@ Blockly.Blocks.console_print_variables = {
             .appendField(new Blockly.FieldDropdown([
                 ['Decimal','DEC'],
                 ['Hexadecimal','HEX'],
-                ['Binary', 'BIN']
+                ['Binary', 'BIN'],
+                ['ASCII Character', 'CHAR']
             ]), "FORMAT");
         this.appendDummyInput()
             .appendField("then a new line")
@@ -69,22 +70,30 @@ Blockly.Blocks.console_scan_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Terminal receive text store in");
-        this.appendValueInput('VALUE')
-                .setCheck('String');
+                .appendField("Terminal receive text store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
+
 };
 
 Blockly.propc.console_scan_text = function () {
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';    
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
     Blockly.propc.vartype_[data] = 'char *';   
     Blockly.propc.serial_terminal_ = true;
 
     if(data !== '') {
-        var code = 'getStr(' + data + ', 64);\n';
+        var code = 'getStr(' + data + ', 128);\n';
 
         return code;
     } else {
@@ -96,23 +105,38 @@ Blockly.Blocks.console_scan_number = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Terminal receive number store in");
-        this.appendValueInput('VALUE')
-                .setCheck('Number');
+                .appendField("Terminal receive")
+                .appendField(new Blockly.FieldDropdown([["number (32-bit integer)", "NUMBER"], ["byte (ASCII character)", "BYTE"]]), "TYPE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
+
 };
 
 Blockly.propc.console_scan_number = function () {
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';    
+    var type = this.getFieldValue('TYPE');
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
 
     Blockly.propc.serial_terminal_ = true;
+    var code = '';
 
     if(data !== '') {
-        var code = 'scan("%d\\n", &' + data + ');\n';
-
+        if (type === 'NUMBER') {
+            code += 'scan("%d\\n", &' + data + ');\n';
+        } else {
+            code += data + ' = getChar();\n';
+        }
         return code;
     } else {
         return '';
@@ -143,19 +167,27 @@ Blockly.propc.console_print_variables = function () {
             code += '"%b"';
         } else if (format === 'HEX') {
             code += '"%x"';                
-        } else {
+        } else if (format === 'DEC') {
             code += '"%d"';
-        } 
+        } else {
+            code += '"%c"';
+        }
     } else {
         if (format === 'BIN') {
             code += '"%b\\r"';
         } else if (format === 'HEX') {
             code += '"%x\\r"';                
-        } else {
+        } else if (format === 'DEC') {
             code += '"%d\\r"';
-        } 
+        } else {
+            code += '"%c\\r"';
+        }
     }
-    code += ', ' + value + ');\n';
+    if (format === 'CHAR') {
+        code += ', (' + value + ' & 0xFF));\n';
+    } else {
+        code += ', ' + value + ');\n';        
+    }
     return code;
 };
 
@@ -213,7 +245,7 @@ Blockly.Blocks.console_move_to_position = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("Terminal move to row");
+            .appendField("Terminal set cursor to row");
         this.appendValueInput('ROW')
             .setCheck('Number');
         this.appendDummyInput()

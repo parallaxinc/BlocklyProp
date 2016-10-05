@@ -554,6 +554,14 @@ Blockly.Blocks.spin_comment = {
     }
 };
 
+Blockly.Blocks.factory_reset = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField("restore_s3_demo");
+        this.setColour(colorPalette.getColor('programming'));
+    }
+};
+
 //==============================================================================
 
 
@@ -944,4 +952,12 @@ Blockly.Spin.scribbler_random_number = function () {
 
 Blockly.Spin.spin_comment = function () {
     return "' " + this.getFieldValue('COMMENT') + '\n';
+};
+
+Blockly.Spin.factory_reset = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+
+    var code = 'scribbler.RestoreS3Demo';
+    return [code, Blockly.Spin.ORDER_ATOMIC];
+    
 };

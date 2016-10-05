@@ -68,6 +68,10 @@ li.project {
     list-style-type: none;
 }
 
+.pad-latest-projects {
+    padding-top: 2rem;
+}
+
 /* Push footer to bottom */
 .footer {
     position: absolute;

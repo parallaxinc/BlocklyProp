@@ -107,8 +107,8 @@ Blockly.Blocks.sound_impact_run = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound Impact run in processor")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"]]), "COG");
+            .appendField("Sound Impact initialize PIN")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -120,11 +120,10 @@ Blockly.Blocks.sound_impact_get = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound Impact get data");
+            .appendField("Sound Impact get count");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
-        this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
         this.setOutput(true, 'Number');
     }
 };
@@ -133,19 +132,18 @@ Blockly.Blocks.sound_impact_end = {
     init: function() {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound Impact turn off");
+            .appendField("Sound Impact close");
 
-        this.setTooltip('Ensure the sound impact sensor has been initialized before using this block');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.sound_impact_run = function() {
-    var cog = this.getTitleValue('COG');
+    var pin = this.getTitleValue('PIN');
 
     Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
-    Blockly.propc.setups_["sound_impact"] = 'int *soundimpactcog = soundImpact_run(' + cog + ');\n';
+    Blockly.propc.setups_["sound_impact"] = 'int *__soundimpactcog = soundImpact_run(' + pin + ');\n';
 
     return '';
 };
@@ -155,28 +153,29 @@ Blockly.propc.sound_impact_get = function() {
 
     if (Blockly.propc.setups_["sound_impact"] === undefined)
     {
-        return '-1 /*Missing sound impact sensor declaration statement*/';
+        return '// Missing sound impact sensor declaration statement';
     }
 
-    return 'soundImpact_getCount()';
+    var code = 'soundImpact_getCount()';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.propc.sound_impact_end = function() {
     Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
     if (Blockly.propc.setups_["sound_impact"] === undefined)
     {
-        return '//Missing sound impact sensor declaration statement';
+        return '// Missing sound impact sensor declaration statement';
     }
 
-    return 'soundImpact_end(soundimpactcog);\n';
+    return 'soundImpact_end(__soundimpactcog);\n';
 };
 
 Blockly.Blocks.colorpal_enable = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("ColorPal initialize");
-
+                .appendField("ColorPal initialize PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'IO_PIN');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -186,16 +185,13 @@ Blockly.Blocks.colorpal_get_colors_raw = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("ColorPal get raw colors PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'IO_PIN');
-        this.appendDummyInput()
-                .appendField("R")
+                .appendField("ColorPal raw colors store R in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'R_STORAGE');
         this.appendDummyInput()
-                .appendField("G")
+                .appendField("G in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'G_STORAGE');
         this.appendDummyInput()
-                .appendField("B")
+                .appendField("B in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'B_STORAGE');
 
         this.setInputsInline(true);
@@ -220,10 +216,7 @@ Blockly.Blocks.colorpal_get_colors = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("ColorPal get colors PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'IO_PIN');
-        this.appendDummyInput()
-                .appendField("store color in")
+                .appendField("ColorPal store color in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'COLOR');
 
         this.setInputsInline(true);
@@ -244,29 +237,25 @@ Blockly.propc.colorpal_enable = function () {
     Blockly.propc.global_vars_["colorpal"] = 'colorPal *cpal;';
     Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
 
+    var pin = this.getFieldValue('IO_PIN');    
+    
+    //Blockly.propc.global_vars_["colorpal_pin"] = 'int cpSIO = ' + pin + ';';
+    Blockly.propc.setups_["colorpal"] = 'cpal = colorPal_open(' + pin + ');';
+
     return '';
 };
 
 Blockly.propc.colorpal_get_colors_raw = function () {
-    var pin = this.getFieldValue('IO_PIN');
     var r = Blockly.propc.variableDB_.getName(this.getFieldValue('R_STORAGE'), Blockly.Variables.NAME_TYPE);
     var g = Blockly.propc.variableDB_.getName(this.getFieldValue('G_STORAGE'), Blockly.Variables.NAME_TYPE);
     var b = Blockly.propc.variableDB_.getName(this.getFieldValue('B_STORAGE'), Blockly.Variables.NAME_TYPE);
-
-    Blockly.propc.global_vars_["colorpal_pin"] = 'int cpSIO = ' + pin + ';';
-    Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
-    Blockly.propc.setups_["colorpal"] = 'cpal = colorPal_open(cpSIO);';
 
     return 'colorPal_getRGB(cpal, &' + r + ', &' + g + ', &' + b + ');';
 };
 
 Blockly.propc.colorpal_get_colors = function () {
-    var pin = this.getFieldValue('IO_PIN');
     var color_var = Blockly.propc.variableDB_.getName(this.getFieldValue('COLOR'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.global_vars_["colorpal_pin"] = 'int cpSIO = ' + pin + ';';
-    Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
-    Blockly.propc.setups_["colorpal"] = 'cpal = colorPal_open(cpSIO);';
     Blockly.propc.global_vars_["colorpal_rr"] = 'int cpRR = 0;';
     Blockly.propc.global_vars_["colorpal_gg"] = 'int cpGG = 0;';
     Blockly.propc.global_vars_["colorpal_bb"] = 'int cpBB = 0;';

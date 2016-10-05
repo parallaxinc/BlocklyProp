@@ -390,7 +390,10 @@ Blockly.Blocks['procedures_callnoreturn'] = {
      */
     init: function () {
         this.appendDummyInput('TOPROW')
-                .appendField(this.id, 'NAME');
+                .appendField("run function ")
+                .appendField(quotes.newQuote_(this.RTL))
+                .appendField(this.id, 'NAME')
+                .appendField(quotes.newQuote_(this.LTR));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(colorPalette.getColor('functions'));

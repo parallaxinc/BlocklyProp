@@ -115,6 +115,19 @@ Blockly.Blocks.debug_lcd_action = {
     }
 };
 
+Blockly.Blocks.debug_lcd_set_cursor = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("LCD set cursor row")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "ROW")
+                .appendField("column")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"]]), "COLUMN");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
 Blockly.propc.debug_lcd_init = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var baud = this.getFieldValue('BAUD');
@@ -173,4 +186,12 @@ if(action === '12') {
 }
 code += 'writeChar(debug_lcd, ' + action + ');\n';
 return code;
+};
+
+
+Blockly.propc.debug_lcd_set_cursor = function () {
+var row = this.getFieldValue('ROW');
+var column = this.getFieldValue('COLUMN');
+
+return 'writeChar(debug_lcd, (128 + (' + row + ' * 20) + ' + column + '));\n';
 };
