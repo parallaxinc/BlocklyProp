@@ -36,14 +36,16 @@ Blockly.Blocks['math_number'] = {
      * Block for numeric value.
      * @this Blockly.Block
      */
-    init: function () {
-        this.setHelpUrl(Blockly.Msg.MATH_NUMBER_HELPURL);
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
+        //this.setHelpUrl(Blockly.Msg.MATH_NUMBER_HELPURL);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), 'NUM');
         this.setOutput(true, 'Number');
-        this.setTooltip(""); //Blockly.Msg.MATH_NUMBER_TOOLTIP);
+        //this.setTooltip(""); //Blockly.Msg.MATH_NUMBER_TOOLTIP);
     }
 };
 
@@ -72,14 +74,16 @@ Blockly.Blocks['math_arithmetic'] = {
      * Block for basic arithmetic operator.
      * @this Blockly.Block
      */
-    init: function () {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_ARITHMETIC_TOOLTIP);
         var OPERATORS =
                 [["+", 'ADD'],
                     ["-", 'MINUS'],
                     ["\u00D7", 'MULTIPLY'],
                     ["/", 'DIVIDE'],
                     ["% (remainder after division)", 'MODULUS']];
-        this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
+        //this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
         this.appendValueInput('A')
@@ -90,7 +94,7 @@ Blockly.Blocks['math_arithmetic'] = {
         this.setInputsInline(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
-        this.setTooltip("");
+        //this.setTooltip("");
         /*    this.setTooltip(function() {
          var mode = thisBlock.getFieldValue('OP');
          var TOOLTIPS = {
@@ -183,7 +187,7 @@ Blockly.Blocks['math_number_property'] = {
         this.appendValueInput('NUMBER_TO_CHECK')
                 .setCheck('Number');
         var dropdown = new Blockly.FieldDropdown(PROPERTIES, function (option) {
-            var divisorInput = (option == 'DIVISIBLE_BY');
+            var divisorInput = (option === 'DIVISIBLE_BY');
             this.sourceBlock_.updateShape_(divisorInput);
         });
         this.appendDummyInput()
@@ -200,7 +204,7 @@ Blockly.Blocks['math_number_property'] = {
      */
     mutationToDom: function () {
         var container = document.createElement('mutation');
-        var divisorInput = (this.getFieldValue('PROPERTY') == 'DIVISIBLE_BY');
+        var divisorInput = (this.getFieldValue('PROPERTY') === 'DIVISIBLE_BY');
         container.setAttribute('divisor_input', divisorInput);
         return container;
     },
@@ -210,7 +214,7 @@ Blockly.Blocks['math_number_property'] = {
      * @this Blockly.Block
      */
     domToMutation: function (xmlElement) {
-        var divisorInput = (xmlElement.getAttribute('divisor_input') == 'true');
+        var divisorInput = (xmlElement.getAttribute('divisor_input') === 'true');
         this.updateShape_(divisorInput);
     },
     /**
@@ -323,7 +327,7 @@ Blockly.Blocks['math_on_list'] = {
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
         var dropdown = new Blockly.FieldDropdown(OPERATORS, function (newOp) {
-            if (newOp == 'MODE') {
+            if (newOp === 'MODE') {
                 thisBlock.outputConnection.setCheck('Array');
             } else {
                 thisBlock.outputConnection.setCheck('Number');
