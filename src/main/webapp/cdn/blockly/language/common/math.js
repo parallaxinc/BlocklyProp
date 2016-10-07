@@ -61,6 +61,8 @@ Blockly.Blocks.math_integer = {
 
 Blockly.Blocks.math_int_angle = {
     init: function () {
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP);
         this.appendDummyInput()
             .appendField(new Blockly.FieldAngle('90', Blockly.FieldTextInput.numberValidator), 'ANGLE_VALUE');
 
@@ -74,8 +76,12 @@ Blockly.Blocks['math_arithmetic'] = {
      * Block for basic arithmetic operator.
      * @this Blockly.Block
      */
-    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_MATH_ARITHMETIC_TOOLTIP);
         var OPERATORS =
                 [["+", 'ADD'],
@@ -83,7 +89,6 @@ Blockly.Blocks['math_arithmetic'] = {
                     ["\u00D7", 'MULTIPLY'],
                     ["/", 'DIVIDE'],
                     ["% (remainder after division)", 'MODULUS']];
-        //this.setHelpUrl(Blockly.Msg.MATH_ARITHMETIC_HELPURL);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
         this.appendValueInput('A')

@@ -26,8 +26,12 @@
 Blockly.Blocks.variables_get = {
     // Variable getter.
     category: null, // Variables are handled specially.
-    helpUrl: Blockly.MSG_VARIABLES_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_VARIABLES_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_VARIABLES_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_VARIABLES_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput()
@@ -49,8 +53,12 @@ Blockly.Blocks.variables_get = {
 Blockly.Blocks.variables_set = {
     // Variable setter.
     category: null, // Variables are handled specially.
-    helpUrl: Blockly.MSG_VARIABLES_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_VARIABLES_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_VARIABLES_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_VARIABLES_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE')

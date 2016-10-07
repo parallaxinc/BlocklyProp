@@ -26,8 +26,12 @@
 Blockly.Blocks.controls_if = {
     // If/elseif/else condition.
     category: Blockly.LANG_CATEGORY_CONTROLS,
-    helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_CONTROLS_IF_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput('IF0')
@@ -215,8 +219,12 @@ Blockly.Blocks.controls_if_else = {
 };
 
 Blockly.Blocks.controls_repeat = {
-    helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         // ["with", "WITH"]

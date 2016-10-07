@@ -79,7 +79,7 @@ Blockly.Blocks.base_freqout = {
 };
 
 Blockly.Blocks.rc_charge_discharge = {
-    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    helpUrl: Blockly.MSG_ANALOG_RC_TIME_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_RC_CHARGE_DISCHARGE_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));

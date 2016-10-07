@@ -180,7 +180,7 @@ Blockly.Blocks.set_pins = {
 };
 
 Blockly.Blocks.pulse_in = {
-    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_PULSE_IN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
@@ -200,7 +200,7 @@ Blockly.Blocks.pulse_in = {
 
 // Code generator is located in base.js
 Blockly.Blocks.pulse_out = {
-    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_PULSE_OUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));

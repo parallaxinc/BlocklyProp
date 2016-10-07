@@ -26,8 +26,12 @@
 Blockly.Blocks.logic_compare = {
     // Comparison operator.
     category: Blockly.LANG_CATEGORY_LOGIC,
-    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_LOGIC_COMPARE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
@@ -66,8 +70,12 @@ Blockly.Blocks.logic_compare.OPERATORS =
 Blockly.Blocks.logic_operation = {
     // Logical operations: 'and', 'or'.
     category: Blockly.LANG_CATEGORY_LOGIC,
-    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_LOGIC_OPERATION_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
@@ -100,8 +108,12 @@ Blockly.Blocks.logic_operation.TOOLTIPS = {
 Blockly.Blocks.logic_negate = {
     // Negation.
     category: Blockly.LANG_CATEGORY_LOGIC,
-    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_LOGIC_NEGATE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');

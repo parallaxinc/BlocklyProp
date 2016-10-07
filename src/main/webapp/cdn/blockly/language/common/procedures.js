@@ -35,8 +35,12 @@ Blockly.Blocks['procedures_defnoreturn'] = {
      * Block for defining a procedure with no return value.
      * @this Blockly.Block
      */
-    helpUrl: Blockly.MSG_FUNCTIONS_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_FUNCTIONS_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_FUNCTIONS_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP);
         var nameField = new Blockly.FieldTextInput(
                 Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE,
@@ -390,8 +394,12 @@ Blockly.Blocks['procedures_callnoreturn'] = {
      * Block for calling a procedure with no return value.
      * @this Blockly.Block
      */
-    helpUrl: Blockly.MSG_FUNCTIONS_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_FUNCTIONS_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_FUNCTIONS_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP);
         this.appendDummyInput('TOPROW')
                 .appendField("run function ")
