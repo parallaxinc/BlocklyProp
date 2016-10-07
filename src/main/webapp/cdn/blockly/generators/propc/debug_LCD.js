@@ -29,7 +29,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.debug_lcd_init = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD initialize PIN")
@@ -45,7 +47,9 @@ Blockly.Blocks.debug_lcd_init = {
 };
 
 Blockly.Blocks.debug_lcd_music_note = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_MUSIC_NOTE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("LCD play note")
@@ -61,7 +65,9 @@ Blockly.Blocks.debug_lcd_music_note = {
 };
 
 Blockly.Blocks.debug_lcd_print = {
-     init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('MESSAGE')
             .setCheck('String')
@@ -73,7 +79,9 @@ Blockly.Blocks.debug_lcd_print = {
 };
 
 Blockly.Blocks.debug_lcd_number = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
             .appendField("LCD print number");
@@ -91,7 +99,9 @@ Blockly.Blocks.debug_lcd_number = {
 };
 
 Blockly.Blocks.debug_lcd_action = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_ACTION_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD command")
@@ -116,7 +126,9 @@ Blockly.Blocks.debug_lcd_action = {
 };
 
 Blockly.Blocks.debug_lcd_set_cursor = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD set cursor row")

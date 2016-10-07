@@ -27,7 +27,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.joystick_input_yaxis = {
+    helpUrl: Blockly.MSG_JOYSTICK_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_JOYSTICK_INPUT_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Joystick y-axis A/D")
@@ -40,7 +42,9 @@ Blockly.Blocks.joystick_input_yaxis = {
 };
 
 Blockly.Blocks.joystick_input_xaxis = {
+    helpUrl: Blockly.MSG_JOYSTICK_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_JOYSTICK_INPUT_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Joystick x-axis A/D")

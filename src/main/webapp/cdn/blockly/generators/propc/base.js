@@ -116,7 +116,9 @@ Blockly.propc.base_freqout = function () {
 };
 
 Blockly.Blocks.string_type_block = {
-    init: function () {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_STRING_TYPE_BLOCK_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
@@ -135,7 +137,9 @@ Blockly.propc.string_type_block = function() {
 };
 
 Blockly.Blocks.char_type_block = {
-    init: function () {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CHAR_TYPE_BLOCK_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField("character")
@@ -248,7 +252,9 @@ Blockly.propc.char_type_block = function() {
 };
 
 Blockly.Blocks.system_counter = {
-  init: function() {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SYSTEM_COUNTER_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("system counter");
@@ -263,7 +269,9 @@ Blockly.propc.system_counter = function() {
 };
 
 Blockly.Blocks.string_length = {
-    init: function () {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_STRING_LENGTH_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('VALUE')
                 .setCheck('String')
@@ -281,7 +289,9 @@ Blockly.propc.string_length = function() {
 };
 
 Blockly.Blocks.high_low_value = {
-    init: function () {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_HIGH_LOW_VALUE_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([["high", "1"], ["low", "0"]]), 'VALUE');
@@ -321,7 +331,9 @@ Blockly.propc.rc_charge_discharge = function() {
 };
 
 Blockly.Blocks.comment = {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_COMMENT_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField("add comment")
@@ -362,7 +374,9 @@ Blockly.propc.cast = function() {
 };
 
 Blockly.Blocks.color_picker = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_COLOR_PICKER_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField("color")
@@ -382,7 +396,9 @@ Blockly.propc.color_picker = function() {
 };
 
 Blockly.Blocks.color_value_from = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_COLOR_VALUE_FROM_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("color value from:");
@@ -412,7 +428,9 @@ Blockly.propc.color_value_from = function() {
 };
 
 Blockly.Blocks.get_channel_from = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_GET_CHANNEL_FROM_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("get")
@@ -437,7 +455,9 @@ Blockly.propc.get_channel_from = function() {
 };
 
 Blockly.Blocks.compare_colors = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_COMPARE_COLORS_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("compare");

@@ -26,11 +26,12 @@
 Blockly.Blocks.controls_if = {
     // If/elseif/else condition.
     category: Blockly.LANG_CATEGORY_CONTROLS,
-    helpUrl: Blockly.LANG_CONTROLS_IF_HELPURL,
-    init: function () {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONTROLS_IF_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput('IF0')
-                .setCheck('Boolean')
+                .setCheck('Number')
                 .appendField(Blockly.LANG_CONTROLS_IF_MSG_IF);
         this.appendStatementInput('DO0')
                 .appendField(Blockly.LANG_CONTROLS_IF_MSG_THEN);
@@ -39,19 +40,19 @@ Blockly.Blocks.controls_if = {
         this.setMutator(new Blockly.Mutator(['controls_if_elseif',
             'controls_if_else']));
         // Assign 'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip(function () {
-            if (!thisBlock.elseifCount_ && !thisBlock.elseCount_) {
-                return Blockly.LANG_CONTROLS_IF_TOOLTIP_1;
-            } else if (!thisBlock.elseifCount_ && thisBlock.elseCount_) {
-                return Blockly.LANG_CONTROLS_IF_TOOLTIP_2;
-            } else if (thisBlock.elseifCount_ && !thisBlock.elseCount_) {
-                return Blockly.LANG_CONTROLS_IF_TOOLTIP_3;
-            } else if (thisBlock.elseifCount_ && thisBlock.elseCount_) {
-                return Blockly.LANG_CONTROLS_IF_TOOLTIP_4;
-            }
-            return '';
-        });
+        //var thisBlock = this;
+        //this.setTooltip(function () {
+        //    if (!thisBlock.elseifCount_ && !thisBlock.elseCount_) {
+        //        return Blockly.LANG_CONTROLS_IF_TOOLTIP_1;
+        //    } else if (!thisBlock.elseifCount_ && thisBlock.elseCount_) {
+        //        return Blockly.LANG_CONTROLS_IF_TOOLTIP_2;
+        //    } else if (thisBlock.elseifCount_ && !thisBlock.elseCount_) {
+        //        return Blockly.LANG_CONTROLS_IF_TOOLTIP_3;
+        //    } else if (thisBlock.elseifCount_ && thisBlock.elseCount_) {
+        //        return Blockly.LANG_CONTROLS_IF_TOOLTIP_4;
+        //    }
+        //    return '';
+        //});
         this.elseifCount_ = 0;
         this.elseCount_ = 0;
     },
@@ -73,7 +74,7 @@ Blockly.Blocks.controls_if = {
         this.elseCount_ = window.parseInt(xmlElement.getAttribute('else'), 10);
         for (var x = 1; x <= this.elseifCount_; x++) {
             this.appendValueInput('IF' + x)
-                    .setCheck('Boolean')
+                    .setCheck('Number')
                     .appendField(Blockly.LANG_CONTROLS_IF_MSG_ELSEIF);
             this.appendStatementInput('DO' + x)
                     .appendField(Blockly.LANG_CONTROLS_IF_MSG_THEN);
@@ -119,7 +120,7 @@ Blockly.Blocks.controls_if = {
                 case 'controls_if_elseif':
                     this.elseifCount_++;
                     var ifInput = this.appendValueInput('IF' + this.elseifCount_)
-                            .setCheck('Boolean')
+                            .setCheck('Number')
                             .appendField(Blockly.LANG_CONTROLS_IF_MSG_ELSEIF);
                     var doInput = this.appendStatementInput('DO' + this.elseifCount_);
                     doInput.appendField(Blockly.LANG_CONTROLS_IF_MSG_THEN);
@@ -214,8 +215,9 @@ Blockly.Blocks.controls_if_else = {
 };
 
 Blockly.Blocks.controls_repeat = {
-    helpUrl: Blockly.LANG_CONTROLS_REPEAT_HELPURL,
-    init: function () {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         // ["with", "WITH"]
         var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
@@ -229,7 +231,7 @@ Blockly.Blocks.controls_repeat = {
                 .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
+        //this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
         this.setInputsInline(true);
     },
     mutationToDom: function () {
@@ -261,7 +263,7 @@ Blockly.Blocks.controls_repeat = {
         if (type === 'WHILE' || type === 'UNTIL') {
             if (!inputCondition) {
                 this.appendValueInput('REPEAT_CONDITION')
-                        .setCheck('Boolean');
+                        .setCheck('Number');
                 this.moveInputBefore('REPEAT_CONDITION', 'DO');
             }
         } else {
@@ -273,7 +275,9 @@ Blockly.Blocks.controls_repeat = {
 };
 
 Blockly.Blocks.control_repeat_for_loop = {
-    init: function () {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("repeat")

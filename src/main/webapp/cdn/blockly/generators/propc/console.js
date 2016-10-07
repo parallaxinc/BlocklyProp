@@ -30,7 +30,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.console_print = {
-    init: function () {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSOLE_PRINT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('MESSAGE')
             .setCheck('String')
@@ -45,7 +47,9 @@ Blockly.Blocks.console_print = {
 };
 
 Blockly.Blocks.console_print_variables = {
-    init: function () {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSOLE_PRINT_VARIABLES_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
             .appendField("Terminal print number");
@@ -67,7 +71,9 @@ Blockly.Blocks.console_print_variables = {
 };
 
 Blockly.Blocks.console_scan_text = {
-    init: function () {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSOLE_SCAN_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Terminal receive text store in")
@@ -102,7 +108,9 @@ Blockly.propc.console_scan_text = function () {
 };
 
 Blockly.Blocks.console_scan_number = {
-    init: function () {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSOLE_SCAN_NUMBER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Terminal receive")
@@ -192,7 +200,9 @@ Blockly.propc.console_print_variables = function () {
 };
 
 Blockly.Blocks.console_newline = {
-    init: function () {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSOLE_NEWLINE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("Terminal new line");
@@ -203,7 +213,9 @@ Blockly.Blocks.console_newline = {
 };
 
 Blockly.Blocks.console_clear = {
-    init: function () {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSOLE_CLEAR_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("Terminal clear screen");
@@ -242,7 +254,9 @@ Blockly.Blocks.console_move_to_row = {
 };
 
 Blockly.Blocks.console_move_to_position = {
-    init: function () {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSOLE_MOVE_TO_POSITION_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("Terminal set cursor to row");

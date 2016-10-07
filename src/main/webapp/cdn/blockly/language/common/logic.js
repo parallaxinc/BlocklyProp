@@ -26,10 +26,11 @@
 Blockly.Blocks.logic_compare = {
     // Comparison operator.
     category: Blockly.LANG_CATEGORY_LOGIC,
-    helpUrl: Blockly.LANG_LOGIC_COMPARE_HELPURL,
-    init: function () {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_LOGIC_COMPARE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.appendValueInput('A')
             .setCheck("Number");
         this.appendValueInput('B')
@@ -37,11 +38,11 @@ Blockly.Blocks.logic_compare = {
             .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip(function () {
-            var op = thisBlock.getFieldValue('OP');
-            return Blockly.Language.logic_compare.TOOLTIPS[op];
-        });
+        //var thisBlock = this;
+        //this.setTooltip(function () {
+        //    var op = thisBlock.getFieldValue('OP');
+        //    return Blockly.Language.logic_compare.TOOLTIPS[op];
+        //});
     }
 };
 
@@ -53,26 +54,27 @@ Blockly.Blocks.logic_compare.OPERATORS =
             ['>', 'GT'],
             ['\u2265', 'GTE']];
 
-Blockly.Blocks.logic_compare.TOOLTIPS = {
-    EQ: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_EQ,
-    NEQ: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_NEQ,
-    LT: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LT,
-    LTE: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LTE,
-    GT: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GT,
-    GTE: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GTE
-};
+//Blockly.Blocks.logic_compare.TOOLTIPS = {
+//    EQ: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_EQ,
+//    NEQ: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_NEQ,
+//    LT: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LT,
+//    LTE: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LTE,
+//    GT: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GT,
+//    GTE: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GTE
+//};
 
 Blockly.Blocks.logic_operation = {
     // Logical operations: 'and', 'or'.
     category: Blockly.LANG_CATEGORY_LOGIC,
-    helpUrl: Blockly.LANG_LOGIC_OPERATION_HELPURL,
-    init: function () {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_LOGIC_OPERATION_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.appendValueInput('A')
-                .setCheck('Boolean');
+                .setCheck('Number');
         this.appendValueInput('B')
-                .setCheck('Boolean')
+                .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
@@ -98,27 +100,29 @@ Blockly.Blocks.logic_operation.TOOLTIPS = {
 Blockly.Blocks.logic_negate = {
     // Negation.
     category: Blockly.LANG_CATEGORY_LOGIC,
-    helpUrl: Blockly.LANG_LOGIC_NEGATE_HELPURL,
-    init: function () {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_LOGIC_NEGATE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.appendValueInput('BOOL')
-                .setCheck('Boolean')
+                .setCheck('Number')
                 .appendField(Blockly.LANG_LOGIC_NEGATE_INPUT_NOT);
-        this.setTooltip(Blockly.LANG_LOGIC_NEGATE_TOOLTIP);
+    //    this.setTooltip(Blockly.LANG_LOGIC_NEGATE_TOOLTIP);
     }
 };
 
 Blockly.Blocks.logic_boolean = {
     // Boolean data type: true and false.
     category: Blockly.LANG_CATEGORY_LOGIC,
-    helpUrl: Blockly.LANG_LOGIC_BOOLEAN_HELPURL,
-    init: function () {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_LOGIC_BOOLEAN_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'BOOL');
-        this.setTooltip(Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP);
+    //    this.setTooltip(Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP);
     }
 };
 
@@ -140,7 +144,9 @@ Blockly.Blocks.logic_null = {
 };
 
 Blockly.Blocks.combine_strings = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_COMBINE_STRINGS_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput("STRA")
             .setCheck("String")
@@ -191,7 +197,9 @@ Blockly.propc.combine_strings = function () {
 };
 
 Blockly.Blocks.find_substring = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_FIND_SUBSTRING_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput("SUBSTR")
             .setCheck("String")
@@ -222,26 +230,28 @@ Blockly.propc.find_substring = function () {
 };
 
 Blockly.Blocks.get_char_at_position = {
-  init: function() {
-    this.setColour(colorPalette.getColor('math'));
-    this.appendValueInput("POSITION")
-        .setCheck("Number")
-        .appendField("get character at position");
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
-    this.setInputsInline(true);
-    this.setOutput(true, "Number");
-    },
-    
-    getVars: function () {
-        return [this.getFieldValue('VALUE')];
-    },
-    
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
-        }
-    }
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_GET_CHAR_AT_POSITION_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("POSITION")
+            .setCheck("Number")
+            .appendField("get character at position");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        },
+
+        getVars: function () {
+            return [this.getFieldValue('VALUE')];
+        },
+
+        renameVar: function (oldName, newName) {
+            if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+                this.setTitleValue(newName, 'VALUE');
+            }
+      }
 };
 
 Blockly.propc.get_char_at_position = function () {
@@ -259,21 +269,23 @@ Blockly.propc.get_char_at_position = function () {
 };
 
 Blockly.Blocks.set_char_at_position = {
-  init: function() {
-    this.setColour(colorPalette.getColor('math'));
-    this.appendValueInput("POSITION")
-        .setCheck("Number")
-        .appendField("set character at position");
-    this.appendDummyInput()
-        .appendField("of string")
-        .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
-    this.appendValueInput("CHAR")
-        .setCheck("Number")
-        .appendField("to");
-    this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-  }
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SET_CHAR_AT_POSITION_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("POSITION")
+            .setCheck("Number")
+            .appendField("set character at position");
+        this.appendDummyInput()
+            .appendField("of string")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.appendValueInput("CHAR")
+            .setCheck("Number")
+            .appendField("to");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
 };
 
 Blockly.propc.set_char_at_position = function () {
@@ -285,24 +297,26 @@ Blockly.propc.set_char_at_position = function () {
 };
 
 Blockly.Blocks.get_substring = {
-  init: function() {
-    this.setColour(colorPalette.getColor('math'));
-    this.appendDummyInput()
-        .appendField("get part of string")
-        .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'FROM_STR');
-    this.appendValueInput("START")
-        .setCheck("Number")
-        .appendField("from position");
-    this.appendValueInput("END")
-        .setCheck("Number")
-        .appendField("to position");
-    this.appendDummyInput()
-        .appendField("store in")
-        .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'TO_STR');
-    this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-  }
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_GET_SUBSTRING_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+            .appendField("get part of string")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'FROM_STR');
+        this.appendValueInput("START")
+            .setCheck("Number")
+            .appendField("from position");
+        this.appendValueInput("END")
+            .setCheck("Number")
+            .appendField("to position");
+        this.appendDummyInput()
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'TO_STR');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
 };
 
 Blockly.propc.get_substring = function () {
@@ -328,17 +342,19 @@ Blockly.propc.get_substring = function () {
 };
 
 Blockly.Blocks.string_compare = {
-  init: function() {
-    this.setColour(colorPalette.getColor('math'));
-    this.appendValueInput("STRA")
-        .setCheck("String")
-        .appendField("string");
-    this.appendValueInput("STRB")
-        .setCheck("String")
-        .appendField(new Blockly.FieldDropdown([["is the same as", "EQUAL"], ["is not the same as", "NOT"], ["is alphabetically before", "BEFORE"], ["is alphabetically after", "AFTER"]]), "COMP");
-    this.setInputsInline(true);
-    this.setOutput(true, "Number");
-  }
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_STRING_COMPARE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("STRA")
+            .setCheck("String")
+            .appendField("string");
+        this.appendValueInput("STRB")
+            .setCheck("String")
+            .appendField(new Blockly.FieldDropdown([["is the same as", "EQUAL"], ["is not the same as", "NOT"], ["is alphabetically before", "BEFORE"], ["is alphabetically after", "AFTER"]]), "COMP");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+    }
 };
 
 Blockly.propc.string_compare = function () {

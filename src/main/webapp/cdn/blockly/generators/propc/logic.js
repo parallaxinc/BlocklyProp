@@ -27,7 +27,7 @@ Blockly.propc.logic_compare = function() {
     // Comparison operator.
     var mode = this.getFieldValue('OP');
     var operator = Blockly.propc.logic_compare.OPERATORS[mode];
-    var order = (operator == '==' || operator == '!=') ?
+    var order = (operator === '==' || operator === '!=') ?
             Blockly.propc.ORDER_EQUALITY : Blockly.propc.ORDER_RELATIONAL;
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
@@ -80,6 +80,6 @@ Blockly.propc.logic_negate = function() {
 
 Blockly.propc.logic_boolean = function() {
     // Boolean values true and false.
-    var code = (this.getFieldValue('BOOL') == 'TRUE') ? '1' : '0';
+    var code = (this.getFieldValue('BOOL') === 'TRUE') ? '1' : '0';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };

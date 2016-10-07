@@ -160,7 +160,7 @@
                             <field name="NUM">100</field>
                         </block>
                     </value> 
-                </block>
+                </block>  
                 <block type="math_bitwise"></block>
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>

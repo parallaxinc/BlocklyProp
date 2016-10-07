@@ -65,7 +65,9 @@ Blockly.propc.math_arithmetic.OPERATORS = {
 // Limit
 Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_LIMIT_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('A')
             .setCheck('Number');
@@ -108,7 +110,9 @@ Blockly.propc.math_limit.OPERATORS = {
 // Increment/decrement
 Blockly.Blocks.math_crement = {
     // Rounding functions.
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_CREMENT_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('VAR')
             .setCheck('Number')
@@ -144,7 +148,9 @@ Blockly.propc.math_crement.OPERATORS = {
 
 Blockly.Blocks.math_random = {
     // Rounding functions.
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_RANDOM_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput("A")
             .setCheck("Number")
@@ -169,7 +175,9 @@ Blockly.propc.math_random = function() {
 };
 
 Blockly.Blocks.math_bitwise = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_BITWISE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('VAL1');
         this.appendDummyInput()
