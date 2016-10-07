@@ -27,7 +27,9 @@ if ( !Blockly.Blocks )
 
 
 Blockly.Blocks.rfid_get = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("RFID store reading in")
@@ -47,7 +49,9 @@ Blockly.Blocks.rfid_get = {
 };
 
 Blockly.Blocks.rfid_disable = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_DISABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("RFID")
@@ -62,7 +66,9 @@ Blockly.Blocks.rfid_disable = {
 };
 
 Blockly.Blocks.rfid_enable = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_ENABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("RFID initialize EN")
@@ -78,7 +84,9 @@ Blockly.Blocks.rfid_enable = {
 };
 
 Blockly.Blocks.rfid_close = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_CLOSE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("RFID close");

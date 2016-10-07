@@ -27,7 +27,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.MX2125_acceleration_xaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+        this.setTooltip(Blockly.MSG_MX2125_ACCELERATION_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic acceleration x-axis PIN")
@@ -40,7 +42,9 @@ Blockly.Blocks.MX2125_acceleration_xaxis = {
 };
 
 Blockly.Blocks.MX2125_acceleration_yaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+        this.setTooltip(Blockly.MSG_MX2125_ACCELERATION_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic acceleration y-axis PIN")
@@ -53,7 +57,9 @@ Blockly.Blocks.MX2125_acceleration_yaxis = {
 };
 
 Blockly.Blocks.MX2125_rotation = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+        this.setTooltip(Blockly.MSG_MX2125_ROTATION_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic rotation x-axis PIN")
@@ -69,7 +75,9 @@ Blockly.Blocks.MX2125_rotation = {
 };
 
 Blockly.Blocks.MX2125_tilt_xaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic tilt x-axis PIN")
@@ -82,7 +90,9 @@ Blockly.Blocks.MX2125_tilt_xaxis = {
 };
 
 Blockly.Blocks.MX2125_tilt_yaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic tilt y-axis PIN")
@@ -95,7 +105,9 @@ Blockly.Blocks.MX2125_tilt_yaxis = {
 };
 
 Blockly.Blocks.MMA7455_init = {
-    init: function () {
+    helpUrl: Blockly.MSG_ACCELEROMETER_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MMA7455_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Accelerometer initialize CS")
@@ -112,7 +124,9 @@ Blockly.Blocks.MMA7455_init = {
 };
 
 Blockly.Blocks.MMA7455_acceleration = {
-    init: function () {
+    helpUrl: Blockly.MSG_ACCELEROMETER_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Accelerometer store x-axis in")
@@ -141,7 +155,9 @@ Blockly.Blocks.MMA7455_acceleration = {
 };
 
 Blockly.Blocks.HMC5883L_init = {
-    init: function () {
+    helpUrl: Blockly.MSG_COMPASS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_HMC5883L_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Compass initialize SCL")
@@ -157,7 +173,9 @@ Blockly.Blocks.HMC5883L_init = {
 };
 
 Blockly.Blocks.HMC5883L_read = {
-    init: function () {
+    helpUrl: Blockly.MSG_COMPASS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_HMC5883L_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Compass heading store in")

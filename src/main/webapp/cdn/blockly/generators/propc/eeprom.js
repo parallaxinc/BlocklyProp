@@ -163,7 +163,9 @@ Blockly.propc.eeprom_text_from = function() {
 };
 
 Blockly.Blocks.eeprom_write = {
-    init: function () {
+    helpUrl: Blockly.MSG_EEPROM_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_EEPROM_WRITE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput("DATA")
             .setCheck(null)
@@ -207,7 +209,9 @@ Blockly.propc.eeprom_write = function () {
 };
 
 Blockly.Blocks.eeprom_read = {
-    init: function () {
+    helpUrl: Blockly.MSG_EEPROM_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_EEPROM_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput("ADDRESS")
             .setCheck("Number")

@@ -29,7 +29,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.servo_move = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERVO_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERVO_MOVE_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
             .appendField("Servo PIN")
@@ -46,7 +48,7 @@ Blockly.Blocks.servo_move = {
         this.setNextStatement(true, null);
     },
     onchange: function(event) {
-        if (event.type == Blockly.Events.CHANGE && event.element == 'field') {
+        if (event.type === Blockly.Events.CHANGE && event.element === 'field') {
             if ((event.newValue < 0) || (event.newValue > 180)) {
                 alert("WARNING: The value for the angle must be between 0 and 180 degrees.");
             }
@@ -55,7 +57,9 @@ Blockly.Blocks.servo_move = {
 };
 
 Blockly.Blocks.servo_speed = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERVO_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERVO_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
                 .appendField("CR Servo PIN")
@@ -71,7 +75,9 @@ Blockly.Blocks.servo_speed = {
 };
 
 Blockly.Blocks.servo_set_ramp = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERVO_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERVO_SET_RAMP_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
                 .appendField("CR Servo set ramp PIN")
@@ -160,7 +166,9 @@ Blockly.Blocks.servodiffdrive_library_drive_stop = {
 };
 
 Blockly.Blocks.pwm_start = {
-    init: function () {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_PWM_START_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM initialize");
@@ -171,7 +179,9 @@ Blockly.Blocks.pwm_start = {
 };
 
 Blockly.Blocks.pwm_set = {
-    init: function () {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_PWM_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM set PIN")
@@ -190,7 +200,9 @@ Blockly.Blocks.pwm_set = {
 };
 
 Blockly.Blocks.pwm_stop = {
-    init: function () {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_PWM_STOP_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM stop");
