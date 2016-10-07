@@ -48,7 +48,6 @@ Blockly.Blocks.serial_open = {
 };
 
 Blockly.Blocks.serial_send_text = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
@@ -58,6 +57,8 @@ Blockly.Blocks.serial_send_text = {
                 .appendField(this.newQuote_(false));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP);
     },
     /**
      * Create an image of an open or closed quote.
@@ -67,7 +68,7 @@ Blockly.Blocks.serial_send_text = {
      * @private
      */
     newQuote_: function (open) {
-        if (open == this.RTL) {
+        if (open === this.RTL) {
             var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAqUlEQVQI1z3KvUpCcRiA8ef9E4JNHhI0aFEacm1o0BsI0Slx8wa8gLauoDnoBhq7DcfWhggONDmJJgqCPA7neJ7p934EOOKOnM8Q7PDElo/4x4lFb2DmuUjcUzS3URnGib9qaPNbuXvBO3sGPHJDRG6fGVdMSeWDP2q99FQdFrz26Gu5Tq7dFMzUvbXy8KXeAj57cOklgA+u1B5AoslLtGIHQMaCVnwDnADZIFIrXsoXrgAAAABJRU5ErkJggg==';
         } else {
             var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAn0lEQVQI1z3OMa5BURSF4f/cQhAKjUQhuQmFNwGJEUi0RKN5rU7FHKhpjEH3TEMtkdBSCY1EIv8r7nFX9e29V7EBAOvu7RPjwmWGH/VuF8CyN9/OAdvqIXYLvtRaNjx9mMTDyo+NjAN1HNcl9ZQ5oQMM3dgDUqDo1l8DzvwmtZN7mnD+PkmLa+4mhrxVA9fRowBWmVBhFy5gYEjKMfz9AylsaRRgGzvZAAAAAElFTkSuQmCC';
@@ -85,6 +86,8 @@ Blockly.Blocks.serial_send_char = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP);
     }
 };
 
@@ -97,6 +100,8 @@ Blockly.Blocks.serial_send_decimal = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP);
     }
 };
 
@@ -104,22 +109,25 @@ Blockly.Blocks.serial_send_ctrl = {
     init: function () {
         this.appendDummyInput()
                 .appendField("send control character")
-                .appendField(new Blockly.FieldDropdown([["position cursor (x,y)", "Scribbler#PC"], ["backspace", "Scribbler#BS"], ["line feed", "Scribbler#LF"], ["carriage return", "Scribbler#NL"], ["position cursor (x)", "Scribbler#PX"], ["position cursor (y)", "Scribbler#PY"], ["clear screen", "Scribbler#CS"], ]), "SERIAL_CHAR");
+                .appendField(new Blockly.FieldDropdown([["position cursor (x,y)", "Scribbler#PC"], ["backspace", "Scribbler#BS"], ["line feed", "Scribbler#LF"], ["carriage return", "Scribbler#NL"], ["position cursor (x)", "Scribbler#PX"], ["position cursor (y)", "Scribbler#PY"], ["clear screen", "Scribbler#CS"] ]), "SERIAL_CHAR");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP);
     }
 };
 
 Blockly.Blocks.serial_rx_byte = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
                 .appendField("Read character (0 to 255)");
         this.setOutput(true, 'Number');
 //        this.setInputsInline(true);
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP);
     }
 };
 
@@ -137,7 +145,6 @@ Blockly.Blocks.serial_clear = {
 };
 
 Blockly.Blocks.serial_cursor_xy = {
-    helpUrl: '',
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X")
@@ -151,6 +158,8 @@ Blockly.Blocks.serial_cursor_xy = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP);
     }
 };
 

@@ -18,7 +18,9 @@ Blockly.Blocks.scribbler_loop = {
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('programming'));
-    },
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP);
+    }
 };
 
 Blockly.Blocks.scribbler_limited_loop = {
@@ -27,22 +29,26 @@ Blockly.Blocks.scribbler_limited_loop = {
             .appendField("loop")
             .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'LOOP_COUNT')
             .appendField("times");
-        this.appendStatementInput("LOOP")
+        this.appendStatementInput("LOOP");
 
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('programming'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP);
     }
 };
 
 Blockly.Blocks.scribbler_exit_loop = {
     init: function () {
         this.appendDummyInput()
-            .appendField("exit loop")
+            .appendField("exit loop");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP);
     }
 };
 
@@ -55,6 +61,8 @@ Blockly.Blocks.scribbler_simple_wait = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP);
     }
 };
 
@@ -69,6 +77,8 @@ Blockly.Blocks.scribbler_wait = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
+        this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP);
     }
 };
 
@@ -83,11 +93,13 @@ Blockly.Blocks.scribbler_if_line = {
             .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
             .appendField("line");
         this.appendStatementInput("IF_LINE")
-            .appendField()
+            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP);
     }
 };
 
@@ -99,11 +111,13 @@ Blockly.Blocks.scribbler_if_obstacle = {
             .appendField(new Blockly.FieldDropdown([['in front of', 'CENTER'], ['to the left of', 'LEFT'], ['to the right of', 'RIGHT'], ['detected by', 'DETECTED']]), 'OBSTACLE_POSITION')
             .appendField("the Scribbler robot");
         this.appendStatementInput("IF_OBSTACLE")
-            .appendField()
+            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP);
     }
 };
 
@@ -115,11 +129,13 @@ Blockly.Blocks.scribbler_if_light = {
             .appendField(new Blockly.FieldDropdown([['in front', 'CENTER'], ['to the left', 'LEFT'], ['to the right', 'RIGHT'], ['on all sides', 'DETECTED']]), 'LIGHT_POSITION')
             .appendField("of the Scribbler robot");
         this.appendStatementInput("IF_LIGHT")
-            .appendField()
+            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP);
     }
 };
 
@@ -128,13 +144,15 @@ Blockly.Blocks.scribbler_if_stalled = {
         this.appendDummyInput()
             .appendField("if the Scribbler robot")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'STALLED_CONDITION')
-            .appendField("stuck")
+            .appendField("stuck");
         this.appendStatementInput("IF_STALLED")
-            .appendField()
+            .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP);
     }
 };
 
@@ -143,8 +161,8 @@ Blockly.Blocks.scribbler_if_button = {
         this.appendDummyInput()
             .appendField("if the red button")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'BUTTON_CONDITION')
-            .appendField("pressed")
-        this.appendStatementInput("IF_BUTTON")
+            .appendField("pressed");
+        this.appendStatementInput("IF_BUTTON");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
@@ -157,12 +175,14 @@ Blockly.Blocks.scribbler_if_random = {
         this.appendDummyInput()
             .appendField("if a virtual coin flip")
             .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['was', 'WAS']]), 'RANDOM_CONDITION')
-            .appendField(new Blockly.FieldDropdown([['heads', ''], ['tails', '_NOT']]), 'RANDOM_INVERT')
-        this.appendStatementInput("IF_RANDOM")
+            .appendField(new Blockly.FieldDropdown([['heads', ''], ['tails', '_NOT']]), 'RANDOM_INVERT');
+        this.appendStatementInput("IF_RANDOM");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_RANDOM_TOOLTIP);
     }
 };
 
@@ -179,6 +199,8 @@ Blockly.Blocks.scribbler_drive = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP);
     }
 };
 
@@ -195,16 +217,20 @@ Blockly.Blocks.scribbler_spin = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP);
     }
 };
 
 Blockly.Blocks.scribbler_stop = {
     init: function () {
         this.appendDummyInput()
-            .appendField("stop driving")
+            .appendField("stop driving");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP);
     }
 };
 
@@ -235,6 +261,8 @@ Blockly.Blocks.scribbler_LED = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP);
     }
 };
 
@@ -253,6 +281,8 @@ Blockly.Blocks.scribbler_play = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP);
     }
 };
 
@@ -278,7 +308,8 @@ Blockly.Blocks.move_motors = {
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
 	this.setTooltip('Speeds are a range of -100 (full reverse) to 100 (full forward) with a duration of 1 to 15,000 milliseconds, or a duration of 0 for continuous operation');
-        //this.setHelpUrl('help/block-scribbler.html#motors');
+        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_TOOLTIP);
     }
 };
 
@@ -303,7 +334,8 @@ Blockly.Blocks.move_motors_distance = {
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
 	this.setTooltip('Maximum millimeters: +/- 15,937, Maximum centimeters: +/- 1,593, Maximum inches: +/- 643\n Maximum tenths of an inch: +/- 6,431, Maximum encoder counts: +/- 32,767');
-        //this.setHelpUrl('help/block-scribbler.html#motors');
+        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_DISTANCE_TOOLTIP);
     }
 };
 
@@ -325,8 +357,8 @@ Blockly.Blocks.move_motors_angle = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	//this.setTooltip('');
-        //this.setHelpUrl('help/block-scribbler.html#motors');
+	this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_ANGLE_TOOLTIP);
     }
 };
 
@@ -349,8 +381,8 @@ Blockly.Blocks.play_polyphony = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	//this.setTooltip('Frequencies are a range of 1 to 10,000 hertz with a duration of 1 to 8,000 milliseconds');
-        //this.setHelpUrl('help/block-scribbler.html#Sound');
+	this.setHelpUrl(Blockly.MSG_S3_SOUND_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_PLAY_POLYPHONY_TOOLTIP);
     }
 };
 
@@ -363,8 +395,8 @@ Blockly.Blocks.line_sensor = {
 	this.setInputsInline(false);
 	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	//this.setTooltip('Reads surface reflectivity, in a range of 0 to 100');
-        //this.setHelpUrl('help/block-scribbler.html#Line_Sensor');
+	this.setHelpUrl(Blockly.MSG_S3_LINE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_LINE_SENSOR_TOOLTIP);
     }
 };
 
@@ -377,8 +409,8 @@ Blockly.Blocks.obstacle_sensor = {
 
 	this.setOutput(true, "Boolean");
         this.setColour(colorPalette.getColor('input'));
-	//this.setTooltip('Returns 0 if there is no obstacle and 1 if there is an obstacle');
-        //this.setHelpUrl('help/block-scribbler.html#Obstacle_Sensor');
+	this.setHelpUrl(Blockly.MSG_S3_OBSTACLE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP);
     }
 };
 
@@ -389,8 +421,8 @@ Blockly.Blocks.stall_sensor = {
 
 	this.setOutput(true, "Boolean");
         this.setColour(colorPalette.getColor('input'));
-	//this.setTooltip('Returns 0 if not stalled and 1 if stalled');
-        //this.setHelpUrl('help/block-scribbler.html#Stall_Sensor');
+	this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_STALL_SENSOR_TOOLTIP);
     }
 };
 
@@ -415,8 +447,8 @@ Blockly.Blocks.spinning_sensor = {
 
 	this.setOutput(true, "Boolean");
         this.setColour(colorPalette.getColor('input'));
-	//this.setTooltip('Returns 0 if not stalled and 1 if stalled');
-        //this.setHelpUrl('help/block-scribbler.html#Stall_Sensor');
+	this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SPINNING_SENSOR_TOOLTIP);
     }
 };
 
@@ -428,8 +460,8 @@ Blockly.Blocks.light_sensor = {
 
 	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	//this.setTooltip('Reads ambient light, in a range of 0 to 255');
-        //this.setHelpUrl('help/block-scribbler.html#Light_Sensor');
+	this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP);
     }
 };
 
@@ -442,6 +474,8 @@ Blockly.Blocks.reset_button_presses = {
 
 	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
+        this.setHelpUrl(Blockly.MSG_S3_RESET_BUTTON_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_RESET_BUTTON_PRESSES_TOOLTIP);
     }
 };
 
@@ -469,6 +503,8 @@ Blockly.Blocks.scribbler_servo = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP);
     }
 };
 
@@ -481,6 +517,8 @@ Blockly.Blocks.scribbler_stop_servo = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
     }
 };
 
@@ -494,8 +532,8 @@ Blockly.Blocks.scribbler_ping = {
 
 	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	//this.setTooltip('Reads ambient light, in a range of 0 to 255');
-        //this.setHelpUrl('help/block-scribbler.html#Light_Sensor');
+	this.setHelpUrl(Blockly.MSG_S3_PING_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP);
     }
 };
 
@@ -506,6 +544,8 @@ Blockly.Blocks.spin_integer = {
 
         this.setOutput(true, 'Number');
         this.setColour(colorPalette.getColor('math'));
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP);
     }
 };
 
@@ -515,6 +555,8 @@ Blockly.Blocks.scribbler_boolean = {
                 .appendField(new Blockly.FieldDropdown([['true', 'TRUE'], ['false', 'FALSE']]), 'BOOL');
 	this.setOutput(true, "Boolean");
         this.setColour(colorPalette.getColor('math'));
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_BOOLEAN_TOOLTIP);
     }
 };
 
@@ -524,6 +566,8 @@ Blockly.Blocks.scribbler_random_boolean = {
                 .appendField("random true/false");
 	this.setOutput(true, "Boolean");
         this.setColour(colorPalette.getColor('math'));
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_RANDOM_BOOLEAN_TOOLTIP);
     }
 };
 
@@ -540,6 +584,8 @@ Blockly.Blocks.scribbler_random_number = {
         this.setInputsInline(true);
 	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('math'));
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP);
     }
 };
 
@@ -551,6 +597,8 @@ Blockly.Blocks.spin_comment = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
+        this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP);
     }
 };
 
@@ -559,6 +607,8 @@ Blockly.Blocks.factory_reset = {
         this.appendDummyInput()
             .appendField("restore_s3_demo");
         this.setColour(colorPalette.getColor('programming'));
+        this.setHelpUrl(Blockly.MSG_S3_FACTORY_RESET_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_FACTORY_RESET_TOOLTIP);
     }
 };
 
@@ -700,18 +750,18 @@ Blockly.Spin.scribbler_LED = function () {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
 
-    var left_color = this.getFieldValue('LEFT_COLOR')
-    var center_color = this.getFieldValue('CENTER_COLOR')
-    var right_color = this.getFieldValue('RIGHT_COLOR')
+    var left_color = this.getFieldValue('LEFT_COLOR');
+    var center_color = this.getFieldValue('CENTER_COLOR');
+    var right_color = this.getFieldValue('RIGHT_COLOR');
     var code = '';
 
-    if (this.getFieldValue('LEFT_LED') == 'TRUE') {
+    if (this.getFieldValue('LEFT_LED') === 'TRUE') {
         code = code + 'Scribbler.SetLED(Scribbler#LEFT, Scribbler#COLOR_' + left_color.substr(1,6) + ')\n';
     }
-    if (this.getFieldValue('CENTER_LED') == 'TRUE') {
+    if (this.getFieldValue('CENTER_LED') === 'TRUE') {
         code = code + 'Scribbler.SetLED(Scribbler#CENTER, Scribbler#COLOR_' + center_color.substr(1,6) + ')\n';
     }
-    if (this.getFieldValue('RIGHT_LED') == 'TRUE') {
+    if (this.getFieldValue('RIGHT_LED') === 'TRUE') {
         code = code + 'Scribbler.SetLED(Scribbler#RIGHT, Scribbler#COLOR_' + right_color.substr(1,6) + ')\n';
     }
 
@@ -724,11 +774,11 @@ Blockly.Spin.scribbler_play = function () {
         Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
     }
 
-    var note_octave = this.getFieldValue('NOTE_OCTAVE')
-    var note_frequency = this.getFieldValue('NOTE_FREQUENCY')
-    var note_duration = this.getFieldValue('NOTE_DURATION')
-    var note_volume = this.getFieldValue('NOTE_VOLUME')
-    return 'Scribbler.SimplePlay(' + note_frequency + ' ~> ' + note_octave + ', ' + note_duration + ', ' + note_volume + ')\n'
+    var note_octave = this.getFieldValue('NOTE_OCTAVE');
+    var note_frequency = this.getFieldValue('NOTE_FREQUENCY');
+    var note_duration = this.getFieldValue('NOTE_DURATION');
+    var note_volume = this.getFieldValue('NOTE_VOLUME');
+    return 'Scribbler.SimplePlay(' + note_frequency + ' ~> ' + note_octave + ', ' + note_duration + ', ' + note_volume + ')\n';
 };
 
 Blockly.Spin.move_motors = function () {

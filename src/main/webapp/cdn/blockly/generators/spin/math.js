@@ -133,7 +133,6 @@ Blockly.Spin.math_single = function () {
 
 Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
-    helpUrl: "",
     init: function () {
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
@@ -143,7 +142,8 @@ Blockly.Blocks.math_limit = {
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.setInputsInline(true);
-        this.setTooltip("Limit");
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MATH_LIMIT_TOOLTIP);
     }
 };
 
