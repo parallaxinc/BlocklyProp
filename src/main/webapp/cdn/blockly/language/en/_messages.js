@@ -834,7 +834,7 @@ Blockly.Msg.LISTS_INDEX_OF_INPUT_IN_LIST = Blockly.Msg.LISTS_INLIST;
 Blockly.Msg.PROCEDURES_DEFRETURN_COMMENT = Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT;
 
 
-
+//--------------ActivityBoard Help URLs -----------------------
 Blockly.MSG_CONTROL_HELPURL = "http://learn.parallax.com/ab-blocks/control";
 Blockly.MSG_NUMBERS_HELPURL = "http://learn.parallax.com/ab-blocks/numbers";
 Blockly.MSG_STRINGS_HELPURL = "http://learn.parallax.com/ab-blocks/strings";
@@ -857,14 +857,16 @@ Blockly.MSG_RFID_HELPURL = "http://learn.parallax.com/ab-blocks/rfid";
 Blockly.MSG_SONY_REMOTE_HELPURL = "http://learn.parallax.com/ab-blocks/sony-remote";
 Blockly.MSG_SOUND_IMPACT_HELPURL = "http://learn.parallax.com/ab-blocks/sound-impact";
 Blockly.MSG_COLORPAL_HELPURL = "http://learn.parallax.com/ab-blocks/colorpal";
-Blockly.MSG_EEPROM_HELPURL = "http://learn.parallax.com/ab-blocks/eeprom";
-Blockly.MSG_ANALOG_PULSES_HELPURL = "http://learn.parallax.com/ab-blocks/analog-pulses";
+Blockly.MSG_EEPROM_HELPURL = "http://learn.parallax.com/ab-blocks/memory";
+Blockly.MSG_ANALOG_PINS_HELPURL = "http://learn.parallax.com/ab-blocks/analog-pins";
+Blockly.MSG_ANALOG_PWM_HELPURL = "http://learn.parallax.com/ab-blocks/pwm";
+Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL = "http://learn.parallax.com/ab-blocks/pulsein-out";
+Blockly.MSG_ANALOG_RC_TIME_HELPURL = "http://learn.parallax.com/ab-blocks/rc-time";
 Blockly.MSG_AUDIO_HELPURL = "http://learn.parallax.com/ab-blocks/audio";
 Blockly.MSG_SERVO_HELPURL = "http://learn.parallax.com/ab-blocks/servo";
 
 
-
-
+//----------Activity Board (Propeller C) block tooltips ----------------------------
 Blockly.MSG_COMMENT_TOOLTIP = "";
 Blockly.MSG_CONTROLS_IF_TOOLTIP = "";
 Blockly.MSG_CONTROLS_REPEAT_TOOLTIP = "";
@@ -1015,3 +1017,106 @@ Blockly.MSG_SERVO_MOVE_TOOLTIP = "";
 
 Blockly.MSG_SERVO_SPEED_TOOLTIP = "";
 Blockly.MSG_SERVO_SET_RAMP_TOOLTIP = "";
+
+//-------Scribbler 3 help URLs ---------------------------------------------
+Blockly.MSG_S3_COMMUNICATE_HELPURL = "http://learn.parallax.com/s3-blocks/communicate";
+Blockly.MSG_S3_CONTROL_HELPURL = "http://learn.parallax.com/s3-blocks/control";
+Blockly.MSG_S3_FACTORY_RESET_HELPURL = "http://learn.parallax.com/s3-blocks/factory-reset";
+Blockly.MSG_S3_FUNCTIONS_HELPURL = "http://learn.parallax.com/s3-blocks/functions";
+Blockly.MSG_S3_LEDS_HELPURL = "http://learn.parallax.com/s3-blocks/leds";
+Blockly.MSG_S3_LIGHT_HELPURL = "http://learn.parallax.com/s3-blocks/light";
+Blockly.MSG_S3_LINE_HELPURL = "http://learn.parallax.com/s3-blocks/line";
+Blockly.MSG_S3_MATH_HELPURL = "http://learn.parallax.com/s3-blocks/math";
+Blockly.MSG_S3_MOTORS_HELPURL = "http://learn.parallax.com/s3-blocks/motors";
+Blockly.MSG_S3_OBSTACLE_HELPURL = "http://learn.parallax.com/s3-blocks/obstacle";
+Blockly.MSG_S3_PING_HELPURL = "http://learn.parallax.com/s3-blocks/ping";
+Blockly.MSG_S3_RESET_BUTTON_HELPURL = "http://learn.parallax.com/s3-blocks/reset-button";
+Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL = "http://learn.parallax.com/s3-blocks/simple-actions";
+Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL = "http://learn.parallax.com/s3-blocks/simple-control";
+Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL = "http://learn.parallax.com/s3-blocks/simple-sensors";
+Blockly.MSG_S3_SOUND_HELPURL = "http://learn.parallax.com/s3-blocks/sound";
+Blockly.MSG_S3_STALL_HELPURL = "http://learn.parallax.com/s3-blocks/stall";
+Blockly.MSG_S3_VARIABLES_HELPURL = "http://learn.parallax.com/s3-blocks/variables";
+
+
+//-------Scribbler 3 block tooltips --------------------------
+Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_RANDOM_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP = "";
+
+Blockly.MSG_S3_CONTROLS_REPEAT_TOOLTIP = "";
+Blockly.MSG_S3_CONTROLS_IF_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP = "";
+Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP = "";
+
+Blockly.MSG_S3_PROCEDURES_DEFNORETURN_TOOLTIP = "";
+Blockly.MSG_S3_PROCEDURES_CALLNORETURN_TOOLTIP = "";
+
+Blockly.MSG_S3_VARIABLES_SET_TOOLTIP = "";
+Blockly.MSG_S3_VARIABLES_GET_TOOLTIP = "";
+
+Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP = "";
+Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_BOOLEAN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_RANDOM_BOOLEAN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP = "";
+Blockly.MSG_S3_MATH_ARITHMETIC_TOOLTIP = "";
+Blockly.MSG_S3_MATH_LIMIT_TOOLTIP = "";
+Blockly.MSG_S3_LOGIC_OPERATION_TOOLTIP = "";
+Blockly.MSG_S3_LOGIC_NEGATE_TOOLTIP = "";
+Blockly.MSG_S3_LOGIC_COMPARE_TOOLTIP = "";
+
+
+Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP = "";
+Blockly.MSG_S3_LINE_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP = "";
+Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP = "";
+Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP = "";
+Blockly.MSG_S3_STALL_SENSOR_TOOLTIP = "";
+Blockly.MSG_S3_SPINNING_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_RESET_BUTTON_PRESSES_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP = "";
+
+
+Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP = "";
+Blockly.MSG_S3_MOVE_MOTORS_TOOLTIP = "";
+Blockly.MSG_S3_MOVE_MOTORS_DISTANCE_TOOLTIP = "";
+Blockly.MSG_S3_MOVE_MOTORS_ANGLE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP = "";
+Blockly.MSG_S3_PLAY_POLYPHONY_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP = "";
+
+Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP = "";
+
+Blockly.MSG_S3_FACTORY_RESET_TOOLTIP = "";
