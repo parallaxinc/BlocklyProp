@@ -123,7 +123,7 @@ Blockly.Blocks.serial_rx_byte = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("Read character (0 to 255)");
+                .appendField("receive character (0 to 255)");
         this.setOutput(true, 'Number');
 //        this.setInputsInline(true);
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);

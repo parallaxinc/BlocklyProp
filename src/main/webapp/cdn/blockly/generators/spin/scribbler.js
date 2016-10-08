@@ -261,7 +261,7 @@ Blockly.Blocks.scribbler_LED = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_LEDS_HELPURL);
 	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP);
     }
 };
@@ -281,7 +281,7 @@ Blockly.Blocks.scribbler_play = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_SOUND_HELPURL);
 	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP);
     }
 };
