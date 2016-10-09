@@ -28,8 +28,9 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 Blockly.Blocks.make_pin = {
-    init: function () {
-        this.setHelpUrl('help/block-digitalpin.html#write');
+    helpUrl: Blockly.MSG_PINS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MAKE_PIN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -41,8 +42,9 @@ Blockly.Blocks.make_pin = {
 };
 
 Blockly.Blocks.make_pin_input = {
-    init: function () {
-        this.setHelpUrl('help/block-digitalpin.html#write');
+    helpUrl: Blockly.MSG_PINS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -56,34 +58,37 @@ Blockly.Blocks.make_pin_input = {
 };
 
 Blockly.Blocks.check_pin = {
-    helpUrl: 'help/block-digitalpin.html#read',
-    init: function () {
+    helpUrl: Blockly.MSG_PINS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CHECK_PIN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
                 .appendField("check PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.setTooltip('');
     }
 };
 
 Blockly.Blocks.check_pin_input = {
-    helpUrl: 'help/block-digitalpin.html#read',
-    init: function () {
+    helpUrl: Blockly.MSG_PINS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
                 .appendField("check PIN");
         this.appendValueInput('PIN')
                 .setCheck('Number');
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.setInputsInline(true);
         this.setTooltip('');
     }
 };
 
 Blockly.Blocks.set_pins = {
-    init: function () {
-        this.setHelpUrl('help/block-digitalpin.html#write');
+    helpUrl: Blockly.MSG_PINS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SET_PINS_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -175,7 +180,9 @@ Blockly.Blocks.set_pins = {
 };
 
 Blockly.Blocks.pulse_in = {
+    helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_PULSE_IN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("pulse-in PIN")
@@ -193,7 +200,9 @@ Blockly.Blocks.pulse_in = {
 
 // Code generator is located in base.js
 Blockly.Blocks.pulse_out = {
+    helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_PULSE_OUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("pulse-out PIN")
@@ -204,4 +213,4 @@ Blockly.Blocks.pulse_out = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
-}
+};

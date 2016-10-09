@@ -27,7 +27,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.wav_play = {
+    helpUrl: Blockly.MSG_AUDIO_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_WAV_PLAY_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("WAV play file")
@@ -40,7 +42,9 @@ Blockly.Blocks.wav_play = {
 };
 
 Blockly.Blocks.wav_status = {
+    helpUrl: Blockly.MSG_AUDIO_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_WAV_STATUS_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("WAV status");
@@ -52,7 +56,9 @@ Blockly.Blocks.wav_status = {
 };
 
 Blockly.Blocks.wav_volume = {
+    helpUrl: Blockly.MSG_AUDIO_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_WAV_VOLUME_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendValueInput('VOLUME')
             .appendField("WAV volume (0 - 10)");
@@ -66,7 +72,9 @@ Blockly.Blocks.wav_volume = {
 };
 
 Blockly.Blocks.wav_stop = {
+    helpUrl: Blockly.MSG_AUDIO_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_WAV_STOP_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("WAV stop");

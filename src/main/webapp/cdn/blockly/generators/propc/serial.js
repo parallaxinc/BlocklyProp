@@ -29,7 +29,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.serial_open = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_OPEN_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial initialize RX")
@@ -47,7 +49,9 @@ Blockly.Blocks.serial_open = {
 };
 
 Blockly.Blocks.serial_tx = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_TX_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial transmit")
@@ -64,7 +68,9 @@ Blockly.Blocks.serial_tx = {
 };
 
 Blockly.Blocks.serial_send_text = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
                 .appendField("Serial transmit text")
@@ -76,7 +82,9 @@ Blockly.Blocks.serial_send_text = {
 };
 
 Blockly.Blocks.serial_rx = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_RX_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial receive")
@@ -101,7 +109,9 @@ Blockly.Blocks.serial_rx = {
 };
 
 Blockly.Blocks.serial_receive_text = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial receive text store in")

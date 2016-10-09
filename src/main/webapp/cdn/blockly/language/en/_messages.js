@@ -81,15 +81,15 @@ Blockly.LANG_COLOUR_BLEND_TOOLTIP = 'Blends two colours together with a given ra
 
 // Control Blocks.
 Blockly.LANG_CATEGORY_CONTROLS = 'Control';
-Blockly.LANG_CONTROLS_IF_HELPURL = 'http://code.google.com/p/blockly/wiki/If_Then';
-Blockly.LANG_CONTROLS_IF_TOOLTIP_1 = 'If a value is true, then do some statements.';
-Blockly.LANG_CONTROLS_IF_TOOLTIP_2 = 'If a value is true, then do the first block of statements.\n' +
-        'Otherwise, do the second block of statements.';
-Blockly.LANG_CONTROLS_IF_TOOLTIP_3 = 'If the first value is true, then do the first block of statements.\n' +
-        'Otherwise, if the second value is true, do the second block of statements.';
-Blockly.LANG_CONTROLS_IF_TOOLTIP_4 = 'If the first value is true, then do the first block of statements.\n' +
-        'Otherwise, if the second value is true, do the second block of statements.\n' +
-        'If none of the values are true, do the last block of statements.';
+//Blockly.LANG_CONTROLS_IF_HELPURL = 'http://code.google.com/p/blockly/wiki/If_Then';
+//Blockly.LANG_CONTROLS_IF_TOOLTIP_1 = 'If a value is true, then do some statements.';
+//Blockly.LANG_CONTROLS_IF_TOOLTIP_2 = 'If a value is true, then do the first block of statements.\n' +
+//        'Otherwise, do the second block of statements.';
+//Blockly.LANG_CONTROLS_IF_TOOLTIP_3 = 'If the first value is true, then do the first block of statements.\n' +
+//        'Otherwise, if the second value is true, do the second block of statements.';
+//Blockly.LANG_CONTROLS_IF_TOOLTIP_4 = 'If the first value is true, then do the first block of statements.\n' +
+//        'Otherwise, if the second value is true, do the second block of statements.\n' +
+//        'If none of the values are true, do the last block of statements.';
 Blockly.LANG_CONTROLS_IF_MSG_IF = 'if';
 Blockly.LANG_CONTROLS_IF_MSG_ELSEIF = 'else if';
 Blockly.LANG_CONTROLS_IF_MSG_ELSE = 'else';
@@ -105,11 +105,11 @@ Blockly.LANG_CONTROLS_IF_ELSEIF_TOOLTIP = 'Add a condition to the if block.';
 Blockly.LANG_CONTROLS_IF_ELSE_TITLE_ELSE = 'else';
 Blockly.LANG_CONTROLS_IF_ELSE_TOOLTIP = 'Add a final, catch-all condition to the if block.';
 
-Blockly.LANG_CONTROLS_REPEAT_HELPURL = 'http://en.wikipedia.org/wiki/For_loop';
+//Blockly.LANG_CONTROLS_REPEAT_HELPURL = 'http://en.wikipedia.org/wiki/For_loop';
 Blockly.LANG_CONTROLS_REPEAT_TITLE_REPEAT = 'repeat';
 Blockly.LANG_CONTROLS_REPEAT_TITLE_TIMES = 'times';
 Blockly.LANG_CONTROLS_REPEAT_INPUT_DO = 'do';
-Blockly.LANG_CONTROLS_REPEAT_TOOLTIP = 'Do some statements several times.';
+//Blockly.LANG_CONTROLS_REPEAT_TOOLTIP = 'Do some statements several times.';
 
 Blockly.LANG_CONTROLS_WHILEUNTIL_HELPURL = 'http://code.google.com/p/blockly/wiki/Repeat';
 Blockly.LANG_CONTROLS_WHILEUNTIL_TITLE_REPEAT = 'repeat';
@@ -150,33 +150,33 @@ Blockly.LANG_CONTROLS_FLOW_STATEMENTS_WARNING = 'Warning:\n' +
 
 // Logic Blocks.
 Blockly.LANG_CATEGORY_LOGIC = 'Logic';
-Blockly.LANG_LOGIC_COMPARE_HELPURL = 'http://en.wikipedia.org/wiki/Inequality_(mathematics)';
-Blockly.LANG_LOGIC_COMPARE_TOOLTIP_EQ = 'Return true if both inputs equal each other.';
-Blockly.LANG_LOGIC_COMPARE_TOOLTIP_NEQ = 'Return true if both inputs are not equal to each other.';
-Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LT = 'Return true if the first input is smaller\n' +
-        'than the second input.';
-Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LTE = 'Return true if the first input is smaller\n' +
-        'than or equal to the second input.';
-Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GT = 'Return true if the first input is greater\n' +
-        'than the second input.';
-Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GTE = 'Return true if the first input is greater\n' +
-        'than or equal to the second input.';
+//Blockly.LANG_LOGIC_COMPARE_HELPURL = 'http://en.wikipedia.org/wiki/Inequality_(mathematics)';
+//Blockly.LANG_LOGIC_COMPARE_TOOLTIP_EQ = 'Return true if both inputs equal each other.';
+//Blockly.LANG_LOGIC_COMPARE_TOOLTIP_NEQ = 'Return true if both inputs are not equal to each other.';
+//Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LT = 'Return true if the first input is smaller\n' +
+//        'than the second input.';
+//Blockly.LANG_LOGIC_COMPARE_TOOLTIP_LTE = 'Return true if the first input is smaller\n' +
+//        'than or equal to the second input.';
+//Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GT = 'Return true if the first input is greater\n' +
+//        'than the second input.';
+//Blockly.LANG_LOGIC_COMPARE_TOOLTIP_GTE = 'Return true if the first input is greater\n' +
+//        'than or equal to the second input.';
 
-Blockly.LANG_LOGIC_OPERATION_HELPURL = 'http://code.google.com/p/blockly/wiki/And_Or';
+//Blockly.LANG_LOGIC_OPERATION_HELPURL = 'http://code.google.com/p/blockly/wiki/And_Or';
 Blockly.LANG_LOGIC_OPERATION_AND = 'and';
 Blockly.LANG_LOGIC_OPERATION_OR = 'or';
-Blockly.LANG_LOGIC_OPERATION_TOOLTIP_AND = 'Return true if both inputs are true.';
-Blockly.LANG_LOGIC_OPERATION_TOOLTIP_OR = 'Return true if either inputs are true.';
+//Blockly.LANG_LOGIC_OPERATION_TOOLTIP_AND = 'Return true if both inputs are true.';
+//Blockly.LANG_LOGIC_OPERATION_TOOLTIP_OR = 'Return true if either inputs are true.';
 
-Blockly.LANG_LOGIC_NEGATE_HELPURL = 'http://code.google.com/p/blockly/wiki/Not';
+//Blockly.LANG_LOGIC_NEGATE_HELPURL = 'http://code.google.com/p/blockly/wiki/Not';
 Blockly.LANG_LOGIC_NEGATE_INPUT_NOT = 'not';
-Blockly.LANG_LOGIC_NEGATE_TOOLTIP = 'Returns true if the input is false.\n' +
-        'Returns false if the input is true.';
+//Blockly.LANG_LOGIC_NEGATE_TOOLTIP = 'Returns true if the input is false.\n' +
+//        'Returns false if the input is true.';
 
-Blockly.LANG_LOGIC_BOOLEAN_HELPURL = 'http://code.google.com/p/blockly/wiki/True_False';
+//Blockly.LANG_LOGIC_BOOLEAN_HELPURL = 'http://code.google.com/p/blockly/wiki/True_False';
 Blockly.LANG_LOGIC_BOOLEAN_TRUE = 'true';
 Blockly.LANG_LOGIC_BOOLEAN_FALSE = 'false';
-Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP = 'Returns either true or false.';
+//Blockly.LANG_LOGIC_BOOLEAN_TOOLTIP = 'Returns either true or false.';
 
 Blockly.LANG_LOGIC_NULL_HELPURL = 'http://en.wikipedia.org/wiki/Nullable_type';
 Blockly.LANG_LOGIC_NULL = 'null';
@@ -184,16 +184,16 @@ Blockly.LANG_LOGIC_NULL_TOOLTIP = 'Returns null.';
 
 // Math Blocks.
 Blockly.LANG_CATEGORY_MATH = 'Math';
-Blockly.LANG_MATH_NUMBER_HELPURL = 'http://en.wikipedia.org/wiki/Number';
-Blockly.LANG_MATH_NUMBER_TOOLTIP = 'A number.';
+//Blockly.LANG_MATH_NUMBER_HELPURL = 'http://en.wikipedia.org/wiki/Number';
+//Blockly.LANG_MATH_NUMBER_TOOLTIP = 'A number.';
 
-Blockly.LANG_MATH_ARITHMETIC_HELPURL = 'http://en.wikipedia.org/wiki/Arithmetic';
-Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_ADD = 'Return the sum of the two numbers.';
-Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_MINUS = 'Return the difference of the two numbers.';
-Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_MULTIPLY = 'Return the product of the two numbers.';
-Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_DIVIDE = 'Return the quotient of the two numbers.';
-Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_POWER = 'Return the first number raised to\n' +
-        'the power of the second number.';
+//Blockly.LANG_MATH_ARITHMETIC_HELPURL = 'http://en.wikipedia.org/wiki/Arithmetic';
+//Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_ADD = 'Return the sum of the two numbers.';
+//Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_MINUS = 'Return the difference of the two numbers.';
+//Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_MULTIPLY = 'Return the product of the two numbers.';
+//Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_DIVIDE = 'Return the quotient of the two numbers.';
+//Blockly.LANG_MATH_ARITHMETIC_TOOLTIP_POWER = 'Return the first number raised to\n' +
+//        'the power of the second number.';
 
 Blockly.LANG_MATH_CHANGE_HELPURL = 'http://en.wikipedia.org/wiki/Negation';
 Blockly.LANG_MATH_CHANGE_TITLE_CHANGE = 'change';
@@ -721,10 +721,10 @@ Blockly.Msg.PROCEDURES_CALL_BEFORE_PARAMS = "with:";
 Blockly.Msg.PROCEDURES_CREATE_DO = "Create '%1'";
 Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT = "Describe this function...";
 Blockly.Msg.PROCEDURES_DEFNORETURN_DO = "";
-Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL = "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29";
+//Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL = "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29";
 Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE = "my function";
 Blockly.Msg.PROCEDURES_DEFNORETURN_TITLE = "function";
-Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP = "Creates a function with no output.";
+//Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP = "Creates a function with no output.";
 Blockly.Msg.PROCEDURES_DEFRETURN_HELPURL = "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29";
 Blockly.Msg.PROCEDURES_DEFRETURN_RETURN = "return";
 Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Creates a function with an output.";
@@ -832,3 +832,291 @@ Blockly.Msg.TEXT_APPEND_VARIABLE = Blockly.Msg.VARIABLES_DEFAULT_NAME;
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TITLE_ITEM = Blockly.Msg.VARIABLES_DEFAULT_NAME;
 Blockly.Msg.LISTS_INDEX_OF_INPUT_IN_LIST = Blockly.Msg.LISTS_INLIST;
 Blockly.Msg.PROCEDURES_DEFRETURN_COMMENT = Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT;
+
+
+//--------------ActivityBoard Help URLs -----------------------
+Blockly.MSG_CONTROL_HELPURL = "http://learn.parallax.com/ab-blocks/control";
+Blockly.MSG_NUMBERS_HELPURL = "http://learn.parallax.com/ab-blocks/numbers";
+Blockly.MSG_STRINGS_HELPURL = "http://learn.parallax.com/ab-blocks/strings";
+Blockly.MSG_VALUES_HELPURL = "http://learn.parallax.com/ab-blocks/values";
+Blockly.MSG_VARIABLES_HELPURL = "http://learn.parallax.com/ab-blocks/variables";
+Blockly.MSG_FUNCTIONS_HELPURL = "http://learn.parallax.com/ab-blocks/functions";
+Blockly.MSG_PINS_HELPURL = "http://learn.parallax.com/ab-blocks/pins";
+Blockly.MSG_SERIAL_LCD_HELPURL = "http://learn.parallax.com/ab-blocks/serial-lcd";
+Blockly.MSG_OLED_HELPURL = "http://learn.parallax.com/ab-blocks/oled";
+Blockly.MSG_TERMINAL_HELPURL = "http://learn.parallax.com/ab-blocks/terminal";
+Blockly.MSG_PROTOCOLS_HELPURL = "http://learn.parallax.com/ab-blocks/protocols";
+Blockly.MSG_XBEE_HELPURL = "http://learn.parallax.com/ab-blocks/xbee";
+Blockly.MSG_COMPASS_HELPURL = "http://learn.parallax.com/ab-blocks/compass";
+Blockly.MSG_JOYSTICK_HELPURL = "http://learn.parallax.com/ab-blocks/joystick";
+Blockly.MSG_MEMSIC_HELPURL = "http://learn.parallax.com/ab-blocks/memsic";
+Blockly.MSG_ACCELEROMETER_HELPURL = "http://learn.parallax.com/ab-blocks/accelerometer";
+Blockly.MSG_PING_HELPURL = "http://learn.parallax.com/ab-blocks/ping";
+Blockly.MSG_PIR_HELPURL = "http://learn.parallax.com/ab-blocks/pir";
+Blockly.MSG_RFID_HELPURL = "http://learn.parallax.com/ab-blocks/rfid";
+Blockly.MSG_SONY_REMOTE_HELPURL = "http://learn.parallax.com/ab-blocks/sony-remote";
+Blockly.MSG_SOUND_IMPACT_HELPURL = "http://learn.parallax.com/ab-blocks/sound-impact";
+Blockly.MSG_COLORPAL_HELPURL = "http://learn.parallax.com/ab-blocks/colorpal";
+Blockly.MSG_EEPROM_HELPURL = "http://learn.parallax.com/ab-blocks/memory";
+Blockly.MSG_ANALOG_PINS_HELPURL = "http://learn.parallax.com/ab-blocks/analog-pins";
+Blockly.MSG_ANALOG_PWM_HELPURL = "http://learn.parallax.com/ab-blocks/pwm";
+Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL = "http://learn.parallax.com/ab-blocks/pulsein-out";
+Blockly.MSG_ANALOG_RC_TIME_HELPURL = "http://learn.parallax.com/ab-blocks/rc-time";
+Blockly.MSG_AUDIO_HELPURL = "http://learn.parallax.com/ab-blocks/audio";
+Blockly.MSG_SERVO_HELPURL = "http://learn.parallax.com/ab-blocks/servo";
+
+
+//----------Activity Board (Propeller C) block tooltips ----------------------------
+Blockly.MSG_COMMENT_TOOLTIP = "";
+Blockly.MSG_CONTROLS_IF_TOOLTIP = "";
+Blockly.MSG_CONTROLS_REPEAT_TOOLTIP = "";
+Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP = "";
+Blockly.MSG_CONTROLS_BREAK_TOOLTIP = "";
+Blockly.MSG_BASE_DELAY_TOOLTIP = "";
+Blockly.MSG_COG_NEW_TOOLTIP = "";
+Blockly.MSG_CONTROLS_RETURN_TOOLTIP = "";
+
+Blockly.MSG_MATH_ARITHMETIC_TOOLTIP = "";
+Blockly.MSG_MATH_LIMIT_TOOLTIP = "";
+Blockly.MSG_MATH_CREMENT_TOOLTIP = "";
+Blockly.MSG_MATH_RANDOM_TOOLTIP = "";
+Blockly.MSG_MATH_BITWISE_TOOLTIP = "";
+Blockly.MSG_LOGIC_OPERATION_TOOLTIP = "";
+Blockly.MSG_LOGIC_NEGATE_TOOLTIP = "";
+Blockly.MSG_LOGIC_COMPARE_TOOLTIP = "";
+
+Blockly.MSG_STRING_COMPARE_TOOLTIP = "";
+Blockly.MSG_STRING_LENGTH_TOOLTIP = "";
+Blockly.MSG_COMBINE_STRINGS_TOOLTIP = "";
+Blockly.MSG_FIND_SUBSTRING_TOOLTIP = "";
+Blockly.MSG_GET_CHAR_AT_POSITION_TOOLTIP = "";
+Blockly.MSG_SET_CHAR_AT_POSITION_TOOLTIP = "";
+Blockly.MSG_GET_SUBSTRING_TOOLTIP = "";
+
+Blockly.MSG_MATH_NUMBER_TOOLTIP = "";
+Blockly.MSG_STRING_TYPE_BLOCK_TOOLTIP = "";
+Blockly.MSG_CHAR_TYPE_BLOCK_TOOLTIP = "";
+Blockly.MSG_LOGIC_BOOLEAN_TOOLTIP = "";
+Blockly.MSG_HIGH_LOW_VALUE_TOOLTIP = "";
+Blockly.MSG_COLOR_PICKER_TOOLTIP = "";
+Blockly.MSG_COLOR_VALUE_FROM_TOOLTIP = "";
+Blockly.MSG_GET_CHANNEL_FROM_TOOLTIP = "";
+Blockly.MSG_COMPARE_COLORS_TOOLTIP = "";
+Blockly.MSG_SYSTEM_COUNTER_TOOLTIP = "";
+
+Blockly.MSG_VARIABLES_SET_TOOLTIP = "";
+Blockly.MSG_VARIABLES_GET_TOOLTIP = "";
+
+Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP = "";
+Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP = "";
+
+Blockly.MSG_MAKE_PIN_TOOLTIP = "";
+Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP = "";
+Blockly.MSG_CHECK_PIN_TOOLTIP = "";
+Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP = "";
+Blockly.MSG_SET_PINS_TOOLTIP = "";
+
+Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP = "";
+Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP = "";
+Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP = "";
+Blockly.MSG_DEBUG_LCD_ACTION_TOOLTIP = "";
+Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP = "";
+Blockly.MSG_DEBUG_LCD_MUSIC_NOTE_TOOLTIP = "";
+
+Blockly.MSG_OLED_INITIALIZE_TOOLTIP = "";
+Blockly.MSG_OLED_FONT_LOADER_TOOLTIP = "";
+Blockly.MSG_OLED_GET_MAX_HEIGHT_TOOLTIP = "";
+Blockly.MSG_OLED_GET_MAX_WIDTH_TOOLTIP = "";
+Blockly.MSG_OLED_CLEAR_SCREEN_TOOLTIP = "";
+Blockly.MSG_OLED_TEXT_COLOR_TOOLTIP = "";
+Blockly.MSG_OLED_TEXT_SIZE_TOOLTIP = "";
+Blockly.MSG_OLED_SET_CURSOR_TOOLTIP = "";
+Blockly.MSG_OLED_PRINT_TEXT_TOOLTIP = "";
+Blockly.MSG_OLED_PRINT_NUMBER_TOOLTIP = "";
+Blockly.MSG_OLED_DRAW_PIXEL_TOOLTIP = "";
+Blockly.MSG_OLED_DRAW_LINE_TOOLTIP = "";
+Blockly.MSG_OLED_DRAW_TRIANGLE_TOOLTIP = "";
+Blockly.MSG_OLED_DRAW_RECTANGLE_TOOLTIP = "";
+Blockly.MSG_OLED_DRAW_CIRCLE_TOOLTIP = "";
+
+Blockly.MSG_CONSOLE_PRINT_TOOLTIP = "";
+Blockly.MSG_CONSOLE_PRINT_VARIABLES_TOOLTIP = "";
+Blockly.MSG_CONSOLE_SCAN_TEXT_TOOLTIP = "";
+Blockly.MSG_CONSOLE_SCAN_NUMBER_TOOLTIP = "";
+Blockly.MSG_CONSOLE_NEWLINE_TOOLTIP = "";
+Blockly.MSG_CONSOLE_CLEAR_TOOLTIP = "";
+Blockly.MSG_CONSOLE_MOVE_TO_POSITION_TOOLTIP = "";
+
+Blockly.MSG_SERIAL_OPEN_TOOLTIP = "";
+Blockly.MSG_SERIAL_TX_TOOLTIP = "";
+Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP = "";
+Blockly.MSG_SERIAL_RX_TOOLTIP = "";
+Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP = "";
+
+Blockly.MSG_XBEE_SETUP_TOOLTIP = "";
+Blockly.MSG_XBEE_TRANSMIT_TOOLTIP = "";
+Blockly.MSG_XBEE_RECEIVE_TOOLTIP = "";
+
+Blockly.MSG_HMC5883L_INIT_TOOLTIP = "";
+Blockly.MSG_HMC5883L_READ_TOOLTIP = "";
+
+Blockly.MSG_JOYSTICK_INPUT_XAXIS_TOOLTIP = "";
+Blockly.MSG_JOYSTICK_INPUT_YAXIS_TOOLTIP = "";
+
+Blockly.MSG_MX2125_ACCELERATION_XAXIS_TOOLTIP = "Returns the acceleration measured on the sensor's x-axis";
+Blockly.MSG_MX2125_ACCELERATION_YAXIS_TOOLTIP = "";
+Blockly.MSG_MX2125_ROTATION_TOOLTIP = "";
+Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP = "";
+Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP = "";
+
+Blockly.MSG_MMA7455_INIT_TOOLTIP = "";
+Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP = "";
+
+Blockly.MSG_SENSOR_PING_TOOLTIP = "";
+
+Blockly.MSG_PIR_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_RFID_ENABLE_TOOLTIP = "";
+Blockly.MSG_RFID_GET_TOOLTIP = "";
+Blockly.MSG_RFID_DISABLE_TOOLTIP = "";
+Blockly.MSG_RFID_CLOSE_TOOLTIP = "";
+
+Blockly.MSG_SIRC_GET_TOOLTIP = "";
+
+Blockly.MSG_SOUND_IMPACT_RUN_TOOLTIP = "";
+Blockly.MSG_SOUND_IMPACT_GET_TOOLTIP = "";
+Blockly.MSG_SOUND_IMPACT_END_TOOLTIP = "";
+
+Blockly.MSG_COLORPAL_ENABLE_TOOLTIP = "";
+Blockly.MSG_COLORPAL_GET_COLORS_RAW_TOOLTIP = "";
+Blockly.MSG_COLORPAL_GET_COLORS_TOOLTIP = "";
+
+Blockly.MSG_EEPROM_READ_TOOLTIP = "";
+Blockly.MSG_EEPROM_WRITE_TOOLTIP = "";
+
+Blockly.MSG_RC_CHARGE_DISCHARGE_TOOLTIP = "";
+
+Blockly.MSG_AB_VOLT_IN_TOOLTIP = "";
+Blockly.MSG_AB_VOLT_OUT_TOOLTIP = "";
+
+Blockly.MSG_PULSE_IN_TOOLTIP = "";
+Blockly.MSG_PULSE_OUT_TOOLTIP = "";
+
+Blockly.MSG_PWM_START_TOOLTIP = "";
+Blockly.MSG_PWM_SET_TOOLTIP = "";
+Blockly.MSG_PWM_STOP_TOOLTIP = "";
+
+Blockly.MSG_WAV_PLAY_TOOLTIP = "";
+Blockly.MSG_WAV_STATUS_TOOLTIP = "";
+Blockly.MSG_WAV_VOLUME_TOOLTIP = "";
+Blockly.MSG_WAV_STOP_TOOLTIP = "";
+
+Blockly.MSG_BASE_FREQOUT_TOOLTIP = "";
+
+Blockly.MSG_SERVO_MOVE_TOOLTIP = "";
+
+Blockly.MSG_SERVO_SPEED_TOOLTIP = "";
+Blockly.MSG_SERVO_SET_RAMP_TOOLTIP = "";
+
+//-------Scribbler 3 help URLs ---------------------------------------------
+Blockly.MSG_S3_COMMUNICATE_HELPURL = "http://learn.parallax.com/s3-blocks/communicate";
+Blockly.MSG_S3_CONTROL_HELPURL = "http://learn.parallax.com/s3-blocks/control";
+Blockly.MSG_S3_FACTORY_RESET_HELPURL = "http://learn.parallax.com/s3-blocks/factory-reset";
+Blockly.MSG_S3_FUNCTIONS_HELPURL = "http://learn.parallax.com/s3-blocks/functions";
+Blockly.MSG_S3_LEDS_HELPURL = "http://learn.parallax.com/s3-blocks/leds";
+Blockly.MSG_S3_LIGHT_HELPURL = "http://learn.parallax.com/s3-blocks/light";
+Blockly.MSG_S3_LINE_HELPURL = "http://learn.parallax.com/s3-blocks/line";
+Blockly.MSG_S3_MATH_HELPURL = "http://learn.parallax.com/s3-blocks/math";
+Blockly.MSG_S3_MOTORS_HELPURL = "http://learn.parallax.com/s3-blocks/motors";
+Blockly.MSG_S3_OBSTACLE_HELPURL = "http://learn.parallax.com/s3-blocks/obstacle";
+Blockly.MSG_S3_PING_HELPURL = "http://learn.parallax.com/s3-blocks/ping";
+Blockly.MSG_S3_RESET_BUTTON_HELPURL = "http://learn.parallax.com/s3-blocks/reset-button";
+Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL = "http://learn.parallax.com/s3-blocks/simple-actions";
+Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL = "http://learn.parallax.com/s3-blocks/simple-control";
+Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL = "http://learn.parallax.com/s3-blocks/simple-sensors";
+Blockly.MSG_S3_SOUND_HELPURL = "http://learn.parallax.com/s3-blocks/sound";
+Blockly.MSG_S3_STALL_HELPURL = "http://learn.parallax.com/s3-blocks/stall";
+Blockly.MSG_S3_VARIABLES_HELPURL = "http://learn.parallax.com/s3-blocks/variables";
+
+
+//-------Scribbler 3 block tooltips --------------------------
+Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_IF_RANDOM_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP = "";
+
+Blockly.MSG_S3_CONTROLS_REPEAT_TOOLTIP = "";
+Blockly.MSG_S3_CONTROLS_IF_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP = "";
+Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP = "";
+
+Blockly.MSG_S3_PROCEDURES_DEFNORETURN_TOOLTIP = "";
+Blockly.MSG_S3_PROCEDURES_CALLNORETURN_TOOLTIP = "";
+
+Blockly.MSG_S3_VARIABLES_SET_TOOLTIP = "";
+Blockly.MSG_S3_VARIABLES_GET_TOOLTIP = "";
+
+Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP = "";
+Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_BOOLEAN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_RANDOM_BOOLEAN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP = "";
+Blockly.MSG_S3_MATH_ARITHMETIC_TOOLTIP = "";
+Blockly.MSG_S3_MATH_LIMIT_TOOLTIP = "";
+Blockly.MSG_S3_LOGIC_OPERATION_TOOLTIP = "";
+Blockly.MSG_S3_LOGIC_NEGATE_TOOLTIP = "";
+Blockly.MSG_S3_LOGIC_COMPARE_TOOLTIP = "";
+
+
+Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP = "";
+Blockly.MSG_S3_LINE_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP = "";
+Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP = "";
+Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP = "";
+Blockly.MSG_S3_STALL_SENSOR_TOOLTIP = "";
+Blockly.MSG_S3_SPINNING_SENSOR_TOOLTIP = "";
+
+Blockly.MSG_S3_RESET_BUTTON_PRESSES_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP = "";
+
+
+Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP = "";
+Blockly.MSG_S3_MOVE_MOTORS_TOOLTIP = "";
+Blockly.MSG_S3_MOVE_MOTORS_DISTANCE_TOOLTIP = "";
+Blockly.MSG_S3_MOVE_MOTORS_ANGLE_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP = "";
+Blockly.MSG_S3_PLAY_POLYPHONY_TOOLTIP = "";
+
+Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP = "";
+
+Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP = "";
+Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP = "";
+
+Blockly.MSG_S3_FACTORY_RESET_TOOLTIP = "";

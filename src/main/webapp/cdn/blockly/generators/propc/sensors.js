@@ -28,7 +28,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.sensor_ping = {
-    init: function () {
+    helpUrl: Blockly.MSG_PING_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SENSOR_PING_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Ping))) distance in")
@@ -61,7 +63,9 @@ Blockly.propc.sensor_ping.UNITS = {
 };
 
 Blockly.Blocks.PIR_Sensor = {
-    init: function () {
+    helpUrl: Blockly.MSG_PIR_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_PIR_SENSOR_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("PIR Sensor PIN")
@@ -104,7 +108,9 @@ Blockly.propc.SF02_Laser_Rangefinder = function() {
 };
 
 Blockly.Blocks.sound_impact_run = {
+    helpUrl: Blockly.MSG_SOUND_IMPACT_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_SOUND_IMPACT_RUN_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Sound Impact initialize PIN")
@@ -117,7 +123,9 @@ Blockly.Blocks.sound_impact_run = {
 };
 
 Blockly.Blocks.sound_impact_get = {
+    helpUrl: Blockly.MSG_SOUND_IMPACT_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_SOUND_IMPACT_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Sound Impact get count");
@@ -129,7 +137,9 @@ Blockly.Blocks.sound_impact_get = {
 };
 
 Blockly.Blocks.sound_impact_end = {
+    helpUrl: Blockly.MSG_SOUND_IMPACT_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_SOUND_IMPACT_END_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("Sound Impact close");
@@ -171,7 +181,9 @@ Blockly.propc.sound_impact_end = function() {
 };
 
 Blockly.Blocks.colorpal_enable = {
-    init: function () {
+    helpUrl: Blockly.MSG_COLORPAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_COLORPAL_ENABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("ColorPal initialize PIN")
@@ -182,7 +194,9 @@ Blockly.Blocks.colorpal_enable = {
 };
 
 Blockly.Blocks.colorpal_get_colors_raw = {
-    init: function () {
+    helpUrl: Blockly.MSG_COLORPAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_COLORPAL_GET_COLORS_RAW_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("ColorPal raw colors store R in")
@@ -213,7 +227,9 @@ Blockly.Blocks.colorpal_get_colors_raw = {
 };
 
 Blockly.Blocks.colorpal_get_colors = {
-    init: function () {
+    helpUrl: Blockly.MSG_COLORPAL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_COLORPAL_GET_COLORS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("ColorPal store color in")

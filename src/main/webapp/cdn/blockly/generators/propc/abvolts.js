@@ -28,7 +28,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.ab_volt_in = {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_AB_VOLT_IN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
             .appendField("A/D channel")
@@ -41,7 +43,9 @@ Blockly.Blocks.ab_volt_in = {
 };
 
 Blockly.Blocks.ab_volt_out = {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_AB_VOLT_OUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("D/A channel")

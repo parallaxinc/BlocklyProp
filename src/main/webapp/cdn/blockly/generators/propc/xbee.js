@@ -29,7 +29,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.xbee_setup = {
-    init: function () {
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_XBEE_SETUP_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee initialize DI")
@@ -46,7 +48,9 @@ Blockly.Blocks.xbee_setup = {
 };
 
 Blockly.Blocks.xbee_transmit = {
-    init: function () {
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_XBEE_TRANSMIT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee transmit")
@@ -64,7 +68,9 @@ Blockly.Blocks.xbee_transmit = {
 };
 
 Blockly.Blocks.xbee_receive = {
-    init: function () {
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_XBEE_RECEIVE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee receive")
