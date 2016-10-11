@@ -250,6 +250,7 @@ Blockly.Blocks.get_char_at_position = {
             .setCheck("Number")
             .appendField("get character at position");
         this.appendDummyInput()
+            .appendField("of")
             .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setOutput(true, "Number");
@@ -347,6 +348,7 @@ Blockly.propc.get_substring = function () {
         Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
 
         code += '__stIdx = 0;\nfor(__ssIdx = (' + sst + '-1); __ssIdx <= (' + snd +' <= strlen(' + frStr + ')?' + snd +':strlen(' + frStr + '))-1; __ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+        code += '__scBfr[__stIdx] = 0;\n';
         code += 'strcpy(' + toStr + ', __scBfr);\n';
     }
     
