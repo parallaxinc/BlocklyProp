@@ -1,0 +1,9 @@
+h2. Reset requested
+
+ <div class="alert alert-success">
+
+Please check your email
+
+ </div>
+
+"Go to home":/blockly/index

@@ -1,0 +1,3 @@
+h2. Email already confirmed
+
+"Go to home":/blockly/index
