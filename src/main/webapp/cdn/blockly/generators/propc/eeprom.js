@@ -248,9 +248,9 @@ Blockly.propc.eeprom_read = function () {
         
     if(data !== '') {
         if (type === 'BYTE') {
-            code += 'ee_getByte((' + data + ' & 255), (32768 + __eeAddr) );\n';
+            code += data + ' = ee_getByte( 32768 + __eeAddr ) & 255;\n';
         } else if (type === 'NUMBER') {
-            code += 'ee_getInt(' + data + ', (32768 + __eeAddr) );\n';
+            code += data + ' = ee_getInt( 32768 + __eeAddr );\n';
         } else {
             Blockly.propc.global_vars_["i2c_eeBffr"] = 'char __eeBffr[1];';
             Blockly.propc.global_vars_["i2c_eeIdx"] = 'int __eeIdx = 0;';
