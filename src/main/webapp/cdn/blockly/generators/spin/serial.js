@@ -95,7 +95,7 @@ Blockly.Blocks.serial_send_decimal = {
     init: function () {
         this.appendValueInput("DECIMAL_VALUE")
                 .setCheck("Number")
-                .appendField("send number");
+                .appendField("send number (32-bit signed)");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -147,14 +147,14 @@ Blockly.Blocks.serial_clear = {
 Blockly.Blocks.serial_cursor_xy = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendValueInput("X")
-                .setCheck("Number")
-		.setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("set cursor position to column");
         this.appendValueInput("Y")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("row");
+                .appendField("set cursor position to row");
+        this.appendValueInput("X")
+                .setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("column");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
