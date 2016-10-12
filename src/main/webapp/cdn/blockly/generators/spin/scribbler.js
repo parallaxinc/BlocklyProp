@@ -45,7 +45,6 @@ Blockly.Blocks.scribbler_exit_loop = {
         this.appendDummyInput()
             .appendField("exit loop");
         this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
 	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP);
@@ -57,7 +56,7 @@ Blockly.Blocks.scribbler_simple_wait = {
         this.appendDummyInput()
             .appendField("wait")
             .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'WAITTIME')
-            .appendField(new Blockly.FieldDropdown([['second(s)', '1'], ['tenth(s) of a second', '10'], ['millisecond(s)', '1000']]), 'TIMESCALE');
+            .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1'], ['tenth(s) of a second (1 to 535)', '10'], ['millisecond(s) (1 to 53,500)', '1000']]), 'TIMESCALE');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
@@ -72,7 +71,7 @@ Blockly.Blocks.scribbler_wait = {
                 .appendField("wait")
                 .setCheck('Number');
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([['second(s)', '1'], ['tenth(s) of a second', '10'], ['millisecond(s)', '1000']]), 'TIMESCALE');
+            .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1'], ['tenth(s) of a second (1 to 535)', '10'], ['millisecond(s) (1 to 53,500)', '1000']]), 'TIMESCALE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -318,7 +317,7 @@ Blockly.Blocks.move_motors_distance = {
     init: function () {
 	this.appendDummyInput()
 		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B1633)', ' * 100_000 / 1933'], ['tenths of an inch (up to \u00B16,333)', ' * 10_000 / 1933'], ['centimeters (up to \u00B11,608)', ' * 10_000 / 491'], ['millimeters (up to \u00B116,088)', ' * 1_000 / 491'], ['encoder counts (up to \u00B132,767)', '']]), 'MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (-633 to 633)', ' * 100_000 / 1933'], ['tenths of an inch (-6,333 to 6,333)', ' * 10_000 / 1933'], ['centimeters (-1,608 to 1,608)', ' * 10_000 / 491'], ['millimeters (-16,088 to 16,088)', ' * 1_000 / 491'], ['encoder counts (-32,767 to 32,767)', '']]), 'MULTIPLIER');
 	this.appendValueInput("LEFT_MOTOR_DISTANCE")
 		.setCheck("Number")
 		.appendField("move the left motor");
@@ -348,7 +347,7 @@ Blockly.Blocks.move_motors_angle = {
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
 		.appendField("around a radius in")
-		.appendField(new Blockly.FieldDropdown([['inches (up to \u00B185)', ' * 100_000 / 1933'], ['tenths of an inch (up to \u00B1850)', ' * 10_000 / 1933'], ['centimeters (up to \u00B1216)', ' * 10_000 / 491'], ['millimeters (up to \u00B12,160)', ' * 1_000 / 491'], ['encoder counts (up to \u00B14,400)', '']]), 'RADIUS_MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (-85 to 85) of', ' * 100_000 / 1933'], ['tenths of an inch (-850 to 850) of', ' * 10_000 / 1933'], ['centimeters (-216 to 216) of', ' * 10_000 / 491'], ['millimeters (-2,160 to 2,160) of', ' * 1_000 / 491'], ['encoder counts (-4,400 to 4,400) of', '']]), 'RADIUS_MULTIPLIER');
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
 		.appendField("at a top speed of (1 to 100)%");
@@ -625,7 +624,7 @@ Blockly.Spin.scribbler_limited_loop = function () {
 };
 
 Blockly.Spin.scribbler_exit_loop = function () {
-    return 'quit\n';
+    return 'quit \'	The \"exit loop\" block must be placed inside a loop block!\n';
 };
 
 Blockly.Spin.scribbler_simple_wait = function () {
