@@ -92,7 +92,7 @@ Blockly.Blocks.serial_send_decimal = {
     init: function () {
         this.appendValueInput("DECIMAL_VALUE")
                 .setCheck("Number")
-                .appendField("send number");
+                .appendField("send number (32-bit signed)");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -117,7 +117,7 @@ Blockly.Blocks.serial_rx_byte = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("Read character (0 to 255)");
+                .appendField("receive character (0 to 255)");
         this.setOutput(true, 'Number');
 //        this.setInputsInline(true);
     }
