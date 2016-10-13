@@ -867,156 +867,126 @@ Blockly.MSG_SERVO_HELPURL = "http://learn.parallax.com/ab-blocks/servo";
 
 
 //----------Activity Board (Propeller C) block tooltips ----------------------------
-Blockly.MSG_COMMENT_TOOLTIP = "";
-Blockly.MSG_CONTROLS_IF_TOOLTIP = "";
-Blockly.MSG_CONTROLS_REPEAT_TOOLTIP = "";
-Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP = "";
-Blockly.MSG_CONTROLS_BREAK_TOOLTIP = "";
-Blockly.MSG_BASE_DELAY_TOOLTIP = "";
-Blockly.MSG_COG_NEW_TOOLTIP = "";
-Blockly.MSG_CONTROLS_RETURN_TOOLTIP = "";
-
-Blockly.MSG_MATH_ARITHMETIC_TOOLTIP = "";
-Blockly.MSG_MATH_LIMIT_TOOLTIP = "";
-Blockly.MSG_MATH_CREMENT_TOOLTIP = "";
-Blockly.MSG_MATH_RANDOM_TOOLTIP = "";
-Blockly.MSG_MATH_BITWISE_TOOLTIP = "";
-Blockly.MSG_LOGIC_OPERATION_TOOLTIP = "";
-Blockly.MSG_LOGIC_NEGATE_TOOLTIP = "";
-Blockly.MSG_LOGIC_COMPARE_TOOLTIP = "";
-
-Blockly.MSG_STRING_COMPARE_TOOLTIP = "";
-Blockly.MSG_STRING_LENGTH_TOOLTIP = "";
-Blockly.MSG_COMBINE_STRINGS_TOOLTIP = "";
-Blockly.MSG_FIND_SUBSTRING_TOOLTIP = "";
-Blockly.MSG_GET_CHAR_AT_POSITION_TOOLTIP = "";
-Blockly.MSG_SET_CHAR_AT_POSITION_TOOLTIP = "";
-Blockly.MSG_GET_SUBSTRING_TOOLTIP = "";
-
-Blockly.MSG_MATH_NUMBER_TOOLTIP = "";
-Blockly.MSG_STRING_TYPE_BLOCK_TOOLTIP = "";
-Blockly.MSG_CHAR_TYPE_BLOCK_TOOLTIP = "";
-Blockly.MSG_LOGIC_BOOLEAN_TOOLTIP = "";
-Blockly.MSG_HIGH_LOW_VALUE_TOOLTIP = "";
-Blockly.MSG_COLOR_PICKER_TOOLTIP = "";
-Blockly.MSG_COLOR_VALUE_FROM_TOOLTIP = "";
-Blockly.MSG_GET_CHANNEL_FROM_TOOLTIP = "";
-Blockly.MSG_COMPARE_COLORS_TOOLTIP = "";
-Blockly.MSG_SYSTEM_COUNTER_TOOLTIP = "";
-
-Blockly.MSG_VARIABLES_SET_TOOLTIP = "";
-Blockly.MSG_VARIABLES_GET_TOOLTIP = "";
-
-Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP = "";
-Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP = "";
-
-Blockly.MSG_MAKE_PIN_TOOLTIP = "";
-Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP = "";
-Blockly.MSG_CHECK_PIN_TOOLTIP = "";
-Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP = "";
-Blockly.MSG_SET_PINS_TOOLTIP = "";
-
-Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP = "";
-Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP = "";
-Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP = "";
-Blockly.MSG_DEBUG_LCD_ACTION_TOOLTIP = "";
-Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP = "";
-Blockly.MSG_DEBUG_LCD_MUSIC_NOTE_TOOLTIP = "";
-
-Blockly.MSG_OLED_INITIALIZE_TOOLTIP = "";
-Blockly.MSG_OLED_FONT_LOADER_TOOLTIP = "";
-Blockly.MSG_OLED_GET_MAX_HEIGHT_TOOLTIP = "";
-Blockly.MSG_OLED_GET_MAX_WIDTH_TOOLTIP = "";
-Blockly.MSG_OLED_CLEAR_SCREEN_TOOLTIP = "";
-Blockly.MSG_OLED_TEXT_COLOR_TOOLTIP = "";
-Blockly.MSG_OLED_TEXT_SIZE_TOOLTIP = "";
-Blockly.MSG_OLED_SET_CURSOR_TOOLTIP = "";
-Blockly.MSG_OLED_PRINT_TEXT_TOOLTIP = "";
-Blockly.MSG_OLED_PRINT_NUMBER_TOOLTIP = "";
-Blockly.MSG_OLED_DRAW_PIXEL_TOOLTIP = "";
-Blockly.MSG_OLED_DRAW_LINE_TOOLTIP = "";
-Blockly.MSG_OLED_DRAW_TRIANGLE_TOOLTIP = "";
-Blockly.MSG_OLED_DRAW_RECTANGLE_TOOLTIP = "";
-Blockly.MSG_OLED_DRAW_CIRCLE_TOOLTIP = "";
-
-Blockly.MSG_CONSOLE_PRINT_TOOLTIP = "";
-Blockly.MSG_CONSOLE_PRINT_VARIABLES_TOOLTIP = "";
-Blockly.MSG_CONSOLE_SCAN_TEXT_TOOLTIP = "";
-Blockly.MSG_CONSOLE_SCAN_NUMBER_TOOLTIP = "";
-Blockly.MSG_CONSOLE_NEWLINE_TOOLTIP = "";
-Blockly.MSG_CONSOLE_CLEAR_TOOLTIP = "";
-Blockly.MSG_CONSOLE_MOVE_TO_POSITION_TOOLTIP = "";
-
-Blockly.MSG_SERIAL_OPEN_TOOLTIP = "";
-Blockly.MSG_SERIAL_TX_TOOLTIP = "";
-Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP = "";
-Blockly.MSG_SERIAL_RX_TOOLTIP = "";
-Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP = "";
-
-Blockly.MSG_XBEE_SETUP_TOOLTIP = "";
-Blockly.MSG_XBEE_TRANSMIT_TOOLTIP = "";
-Blockly.MSG_XBEE_RECEIVE_TOOLTIP = "";
-
-Blockly.MSG_HMC5883L_INIT_TOOLTIP = "";
-Blockly.MSG_HMC5883L_READ_TOOLTIP = "";
-
-Blockly.MSG_JOYSTICK_INPUT_XAXIS_TOOLTIP = "";
-Blockly.MSG_JOYSTICK_INPUT_YAXIS_TOOLTIP = "";
-
-Blockly.MSG_MX2125_ACCELERATION_XAXIS_TOOLTIP = "Returns the acceleration measured on the sensor's x-axis";
-Blockly.MSG_MX2125_ACCELERATION_YAXIS_TOOLTIP = "";
-Blockly.MSG_MX2125_ROTATION_TOOLTIP = "";
-Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP = "";
-Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP = "";
-
-Blockly.MSG_MMA7455_INIT_TOOLTIP = "";
-Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP = "";
-
-Blockly.MSG_SENSOR_PING_TOOLTIP = "";
-
-Blockly.MSG_PIR_SENSOR_TOOLTIP = "";
-
-Blockly.MSG_RFID_ENABLE_TOOLTIP = "";
-Blockly.MSG_RFID_GET_TOOLTIP = "";
-Blockly.MSG_RFID_DISABLE_TOOLTIP = "";
-Blockly.MSG_RFID_CLOSE_TOOLTIP = "";
-
-Blockly.MSG_SIRC_GET_TOOLTIP = "";
-
-Blockly.MSG_SOUND_IMPACT_RUN_TOOLTIP = "";
-Blockly.MSG_SOUND_IMPACT_GET_TOOLTIP = "";
-Blockly.MSG_SOUND_IMPACT_END_TOOLTIP = "";
-
-Blockly.MSG_COLORPAL_ENABLE_TOOLTIP = "";
-Blockly.MSG_COLORPAL_GET_COLORS_RAW_TOOLTIP = "";
-Blockly.MSG_COLORPAL_GET_COLORS_TOOLTIP = "";
-
-Blockly.MSG_EEPROM_READ_TOOLTIP = "";
-Blockly.MSG_EEPROM_WRITE_TOOLTIP = "";
-
-Blockly.MSG_RC_CHARGE_DISCHARGE_TOOLTIP = "";
-
-Blockly.MSG_AB_VOLT_IN_TOOLTIP = "";
-Blockly.MSG_AB_VOLT_OUT_TOOLTIP = "";
-
-Blockly.MSG_PULSE_IN_TOOLTIP = "";
-Blockly.MSG_PULSE_OUT_TOOLTIP = "";
-
-Blockly.MSG_PWM_START_TOOLTIP = "";
-Blockly.MSG_PWM_SET_TOOLTIP = "";
-Blockly.MSG_PWM_STOP_TOOLTIP = "";
-
-Blockly.MSG_WAV_PLAY_TOOLTIP = "";
-Blockly.MSG_WAV_STATUS_TOOLTIP = "";
-Blockly.MSG_WAV_VOLUME_TOOLTIP = "";
-Blockly.MSG_WAV_STOP_TOOLTIP = "";
-
-Blockly.MSG_BASE_FREQOUT_TOOLTIP = "";
-
-Blockly.MSG_SERVO_MOVE_TOOLTIP = "";
-
-Blockly.MSG_SERVO_SPEED_TOOLTIP = "";
-Blockly.MSG_SERVO_SET_RAMP_TOOLTIP = "";
+Blockly.MSG_COMMENT_TOOLTIP = "add comment: Leave a note for people that will not affect the program.";
+Blockly.MSG_CONTROLS_IF_TOOLTIP = "If...do: when condition attached is true. Click the gear to add conditions.";
+Blockly.MSG_CONTROLS_REPEAT_TOOLTIP = "conditional repeat: forever, x times , until, or while attached condition is true.";
+Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP = "repeat item: use variable and value blocks for counted loop.";
+Blockly.MSG_CONTROLS_BREAK_TOOLTIP = "break: Exit loop and skip to the next block.";
+Blockly.MSG_BASE_DELAY_TOOLTIP = "pause: wait for specified time (in milliseconds) then continue.";
+Blockly.MSG_COG_NEW_TOOLTIP = "new processor: launch attached “run function” block if processor is available.";
+Blockly.MSG_CONTROLS_RETURN_TOOLTIP = "return: Required at the end of code enclosed in a “define function” block.";
+Blockly.MSG_MATH_ARITHMETIC_TOOLTIP = "math operation: + addition, - subtraction, x multiplication, / division, or % modulus.";
+Blockly.MSG_MATH_LIMIT_TOOLTIP = "limit: use first value, but if it's outside of second value, use second value instead.";
+Blockly.MSG_MATH_CREMENT_TOOLTIP = "de/increment: increase or decrease attached variable by 1.";
+Blockly.MSG_MATH_RANDOM_TOOLTIP = "random: Pick random number between the low “from” and high “to” values.";
+Blockly.MSG_MATH_BITWISE_TOOLTIP = "bitwise:& AND, | OR, ^ XOR, >> right shift, << left shift.";
+Blockly.MSG_LOGIC_OPERATION_TOOLTIP = "boolean comparison: and, or, and not, or not; return 1/true or 0/false.";
+Blockly.MSG_LOGIC_NEGATE_TOOLTIP = "not: Get boolean (1/true or 0/false) opposite of attached value.";
+Blockly.MSG_LOGIC_COMPARE_TOOLTIP = "compare values: boolean comparison returns 1/true or 0/false.";
+Blockly.MSG_STRING_COMPARE_TOOLTIP = "compare strings: returns 1/true or 0/false. Case sensitive.";
+Blockly.MSG_STRING_LENGTH_TOOLTIP = "length of string: number of characters in string or string variable.";
+Blockly.MSG_COMBINE_STRINGS_TOOLTIP = "combine strings: join inserted strings and store in chosen variable.";
+Blockly.MSG_FIND_SUBSTRING_TOOLTIP = "find string location: of first character in substring from larger string.";
+Blockly.MSG_GET_CHAR_AT_POSITION_TOOLTIP = "get character at position: ASCII value (0 to 255) for nth character in string.";
+Blockly.MSG_SET_CHAR_AT_POSITION_TOOLTIP = "set character at position: nth in string, set with ASCII value (0 to 255).";
+Blockly.MSG_GET_SUBSTRING_TOOLTIP = "get part of string: in range of positions; store in variable item.";
+Blockly.MSG_MATH_NUMBER_TOOLTIP = "number value: positive or negative; truncates to integers.";
+Blockly.MSG_STRING_TYPE_BLOCK_TOOLTIP = "text string: up to 128 characters.";
+Blockly.MSG_CHAR_TYPE_BLOCK_TOOLTIP = "character value: Get value (32 to 126) of printable ASCII character selected.";
+Blockly.MSG_LOGIC_BOOLEAN_TOOLTIP = "true/false: Choose a value of 1 (true) or 0 (false).";
+Blockly.MSG_HIGH_LOW_VALUE_TOOLTIP = "high/low: Choose a value of 1 (high) or 0 (low).";
+Blockly.MSG_COLOR_PICKER_TOOLTIP = "color: Get 24-bit integer for color selected in box.";
+Blockly.MSG_COLOR_VALUE_FROM_TOOLTIP = "color value from: inserted red, green, and blue values (0 to 255).";
+Blockly.MSG_GET_CHANNEL_FROM_TOOLTIP = "get red/green/blue: value (0 to 255) for chosen component of color.";
+Blockly.MSG_COMPARE_COLORS_TOOLTIP = "compare colors: returns value from 0 (opposite) to 255 (identical).";
+Blockly.MSG_SYSTEM_COUNTER_TOOLTIP = "system counter: 0 to 4,294,967,295 before rolling over.";
+Blockly.MSG_VARIABLES_SET_TOOLTIP = "set variable: name and attach initial value block.";
+Blockly.MSG_VARIABLES_GET_TOOLTIP = "use variable: choose set variables from dropdown.";
+Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP = "define function: group blocks to re-use ending with return; name group.";
+Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP = "return: Required at the end of code enclosed in a “define function” block.";
+Blockly.MSG_MAKE_PIN_TOOLTIP = "make PIN (dropdown): Select I/O pin and setting with menus.";
+Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP = "make PIN (programmable): Select I/O pin with value and setting with menu.";
+Blockly.MSG_CHECK_PIN_TOOLTIP = "check PIN (dropdown): Get the state of I/O pin; high = 1, low = 0.";
+Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP = "check PIN (programmable): Get state of I/O pin at inserted value; high = 1, low = 0.";
+Blockly.MSG_SET_PINS_TOOLTIP = "set multiple pins: define group then set each pin. Do not use on P29-P31.";
+Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP = "LCD initialize: set I/O pin to LCD; match baud to LCD switches.";
+Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP = "LCD print text: display on serial LCD.";
+Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP = "LCD print number: display on serial LCD.";
+Blockly.MSG_DEBUG_LCD_ACTION_TOOLTIP = "LCD command: select from dropdown.";
+Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP = "LCD set cursor: row and column.";
+Blockly.MSG_DEBUG_LCD_MUSIC_NOTE_TOOLTIP = "LCD play note: at octave for time set.";
+Blockly.MSG_OLED_INITIALIZE_TOOLTIP = "OLED initialize: match to Propeller I/O pin connections.";
+Blockly.MSG_OLED_FONT_LOADER_TOOLTIP = "OLED font loader: run alone to add fonts to EEPROM.";
+Blockly.MSG_OLED_GET_MAX_HEIGHT_TOOLTIP = "OLED max height ";
+Blockly.MSG_OLED_GET_MAX_WIDTH_TOOLTIP = "OLED max width";
+Blockly.MSG_OLED_CLEAR_SCREEN_TOOLTIP = "OLED clear screen: all pixels go black.";
+Blockly.MSG_OLED_TEXT_COLOR_TOOLTIP = "OLED font color: background is transparent if matched to font.";
+Blockly.MSG_OLED_TEXT_SIZE_TOOLTIP = "OLED set text: Med, large, script and bubble require font loader.";
+Blockly.MSG_OLED_SET_CURSOR_TOOLTIP = "OLED set cursor: 0,0 is top-left corner of display.";
+Blockly.MSG_OLED_PRINT_TEXT_TOOLTIP = "OLED print text: send string to display.";
+Blockly.MSG_OLED_PRINT_NUMBER_TOOLTIP = "OLED print number: display value as decimal, hex, or binary.";
+Blockly.MSG_OLED_DRAW_PIXEL_TOOLTIP = "OLED draw pixel: at x, y from top-left corner.";
+Blockly.MSG_OLED_DRAW_LINE_TOOLTIP = "OLED draw line: set start and end points; 0,0 is top-left.";
+Blockly.MSG_OLED_DRAW_TRIANGLE_TOOLTIP = "OLED draw triangle: set x,y position of each corner.";
+Blockly.MSG_OLED_DRAW_RECTANGLE_TOOLTIP = "OLED draw rectangle: set x,y position of each corner.";
+Blockly.MSG_OLED_DRAW_CIRCLE_TOOLTIP = "OLED draw circle: x,y of center point, radius, color, fill. ";
+Blockly.MSG_CONSOLE_PRINT_TOOLTIP = "Terminal print text: display contents of string block.";
+Blockly.MSG_CONSOLE_PRINT_VARIABLES_TOOLTIP = "Terminal print number: display value as decimal, hex, binary, or ASCII.";
+Blockly.MSG_CONSOLE_SCAN_TEXT_TOOLTIP = "Terminal receive text: up to 128-character string in variable.";
+Blockly.MSG_CONSOLE_SCAN_NUMBER_TOOLTIP = "Terminal receive number: as integer in variable.";
+Blockly.MSG_CONSOLE_NEWLINE_TOOLTIP = "Terminal new line: move cursor to far left of the next line.";
+Blockly.MSG_CONSOLE_CLEAR_TOOLTIP = "Terminal clear screen: then move cursor to 0,0 top left.";
+Blockly.MSG_CONSOLE_MOVE_TO_POSITION_TOOLTIP = "Terminal set cursor: at position x,y. Use Clear screen block first.";
+Blockly.MSG_SERIAL_OPEN_TOOLTIP = "Serial initialize: match to Propeller I/O pin connections and device Baud rate.";
+Blockly.MSG_SERIAL_TX_TOOLTIP = "Serial transmit number: sends 32-bit integer as 4 bytes MSB-first.";
+Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP = "Serial transmit text: sends text as characters terminated by a 0 (NULL).";
+Blockly.MSG_SERIAL_RX_TOOLTIP = "Serial receive number: receives 4 bytes MSB first and stores a a 32-bit integer.";
+Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP = "Serial receive text: receives and stores characters into a variable until a 0 (NULL).";
+Blockly.MSG_XBEE_SETUP_TOOLTIP = "XBee initialize: match to Propeller I/O pin connections and XBee Baud rate.";
+Blockly.MSG_XBEE_TRANSMIT_TOOLTIP = "XBee transmit: sends information to an XBee.  Strings and numbers are terminated with an ASCII 13";
+Blockly.MSG_XBEE_RECEIVE_TOOLTIP = "XBee receive: receives information from an XBee.  Expects strings and numbers to be terminated with an ASCII 13";
+Blockly.MSG_HMC5883L_INIT_TOOLTIP = "Compass initialize: match to Propeller I/O pin connections.";
+Blockly.MSG_HMC5883L_READ_TOOLTIP = "Compass heading: get current heading in degrees.";
+Blockly.MSG_JOYSTICK_INPUT_XAXIS_TOOLTIP = "Joystick x-axis: gets horizontal position of Joystick, match to A/D socket.";
+Blockly.MSG_JOYSTICK_INPUT_YAXIS_TOOLTIP = "Joystick y axis: gets vertical position of Joystick, match to A/D socket.";
+Blockly.MSG_MX2125_ACCELERATION_XAXIS_TOOLTIP = "Memsic x acceleration: gets side-to-side acceleration, match to Propeller I/O pin.";
+Blockly.MSG_MX2125_ACCELERATION_YAXIS_TOOLTIP = "Memsic y acceleration: gets front to back acceleration, match to Propeller I/O pin.";
+Blockly.MSG_MX2125_ROTATION_TOOLTIP = "Memsic rotation: gets rotation in degress when held like a steering wheel, match to Propeller I/O pins.";
+Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP = "Memsic x tilt: gets x-\tilt in degrees from level with horizon, match to Propeller I/O pin.";
+Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP = "Memsic y tilt: gets y-tilt in degrees from level with horizon, match to Propeller I/O pin.";
+Blockly.MSG_MMA7455_INIT_TOOLTIP = "Accelerometer initialize: match to Propeller I/O pin connections.";
+Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP = "Accelerometer store values: stores measured x, y, & z acceleration in specified variables.";
+Blockly.MSG_SENSOR_PING_TOOLTIP = "Ping))) distance: gets distance measured in the specified units, match to Propeller I/O pin.";
+Blockly.MSG_PIR_SENSOR_TOOLTIP = "PIR sensor: returns 1/true if motion is detected, match to Propeller I/O pin.";
+Blockly.MSG_RFID_ENABLE_TOOLTIP = "RFID initialize: match to Propeller I/O pin connections.";
+Blockly.MSG_RFID_GET_TOOLTIP = "RFID read: gets ID from RFID tag near sensor, returns 0 if no tag detected.";
+Blockly.MSG_RFID_DISABLE_TOOLTIP = "RFID disable/enable: enables or disables the RFID reader.";
+Blockly.MSG_RFID_CLOSE_TOOLTIP = "RFID close: Closes RFID object, frees resources used.";
+Blockly.MSG_SIRC_GET_TOOLTIP = "Sony Remote value: returns button pressed on remote, returns -1 if none, match to Propeller I/O pin.";
+Blockly.MSG_SOUND_IMPACT_RUN_TOOLTIP = "Sound Impact initialize: match to Propeller I/O pin connections.";
+Blockly.MSG_SOUND_IMPACT_GET_TOOLTIP = "Sound Impact get count: gets number of sound impacts since last block was used last.";
+Blockly.MSG_SOUND_IMPACT_END_TOOLTIP = "Sound Impact close: Closes Sound Impact sensor object, frees resources used.";
+Blockly.MSG_COLORPAL_ENABLE_TOOLTIP = "ColorPal initialize: match to Propeller I/O pin connections.";
+Blockly.MSG_COLORPAL_GET_COLORS_RAW_TOOLTIP = "ColorPal raw colors: stores raw (uncalibrated) color measurments in specified variables.";
+Blockly.MSG_COLORPAL_GET_COLORS_TOOLTIP = "ColorPal get color: stores approximate color as a single integer into the specified varaible.";
+Blockly.MSG_EEPROM_READ_TOOLTIP = "EEPROM read: reads information from EEPROM memory starting at the specified address.";
+Blockly.MSG_EEPROM_WRITE_TOOLTIP = "EEPROM write: writes information to EEPROM memory starting at the specified address.";
+Blockly.MSG_RC_CHARGE_DISCHARGE_TOOLTIP = "RC charge/discharge: returns the charge/discharge time of an RC circuit connected to the specified I/O pin.";
+Blockly.MSG_AB_VOLT_IN_TOOLTIP = "A/D read: returns the value measured by the connected A/D channel in volt-100ths.";
+Blockly.MSG_AB_VOLT_OUT_TOOLTIP = "D/A output: outputs voltage on the connected D/A channel in volt-100ths.";
+Blockly.MSG_PULSE_IN_TOOLTIP = "Pulse-in: measures the duration a high or low pulse received by the connected I/O pin.";
+Blockly.MSG_PULSE_OUT_TOOLTIP = "Pulse-out: outputs a high or low pulse to the specified I/O pin for the specificed duration.";
+Blockly.MSG_PWM_START_TOOLTIP = "PWM initialize: sets up PWM object in the Propeller.";
+Blockly.MSG_PWM_SET_TOOLTIP = "PWM set: sends the specified PWM pulses out the Propeller I/O pin specified. Set duty cycle to 0 to stop sending pulses.";
+Blockly.MSG_PWM_STOP_TOOLTIP = "PWM stop: Stops PWM object, frees up resources used on the Propeller.";
+Blockly.MSG_WAV_PLAY_TOOLTIP = "WAV play: Plays the specified .WAV file stored on the SD card.";
+Blockly.MSG_WAV_STATUS_TOOLTIP = "WAV status: returns 1/true if a .WAV file is playing, returns 0/false if not.";
+Blockly.MSG_WAV_VOLUME_TOOLTIP = "WAV volume: sets the volume of the WAV player - 0 (quietest) to 10 (loudest).";
+Blockly.MSG_WAV_STOP_TOOLTIP = "WAV stop: Stops the WAV player object, frees up resources on the Propeller.";
+Blockly.MSG_BASE_FREQOUT_TOOLTIP = "frequency out: sends pulses to the I/O pin at the specified frequency.";
+Blockly.MSG_SERVO_MOVE_TOOLTIP = "Standard servo: sets the position of a standard servo connected to the I/O pin.";
+Blockly.MSG_SERVO_SPEED_TOOLTIP = "CR servo speed: sets the speed of a continuous rotation servo connected to the I/O pin.";
+Blockly.MSG_SERVO_SET_RAMP_TOOLTIP = "CR servo set ramp: sets the amount a servo's speed can change each update cycle.";
 
 //-------Scribbler 3 help URLs ---------------------------------------------
 Blockly.MSG_S3_COMMUNICATE_HELPURL = "http://learn.parallax.com/s3-blocks/communicate";
