@@ -120,9 +120,9 @@ Blockly.propc.xbee_transmit = function () {
     if(type === "BYTE") {
         return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
     } else if(type === "INT") {
-        return 'dprint(xbee, "%d", ' + data + ');\n';
+        return 'dprint(xbee, "%d\r", ' + data + ');\n';
     } else {   
-        var code = 'dprint(xbee, "%s", ' + text + ');\n';
+        var code = 'dprint(xbee, "%s\r", ' + text + ');\n';
         //code += 'fdserial_txChar(xbee, 0 );\n';
         code += 'while(!fdserial_txEmpty(xbee));\n';
         code += 'pause(5);\n';
@@ -152,7 +152,7 @@ Blockly.propc.xbee_receive = function () {
         code += 'do {\n';
         code += '  ' + data + '[__idx] = fdserial_rxChar(xbee);\n';
         code += '  __idx++;\n';
-        code += '} while(fdserial_rxPeek(xbee) != 0);\n';    
+        code += '} while(fdserial_rxPeek(xbee) != 13);\n';    
         code += data + '[__idx] = 0;\nfdserial_rxFlush(xbee);\n';
         return code;
     }

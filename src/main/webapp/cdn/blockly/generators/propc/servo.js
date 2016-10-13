@@ -46,13 +46,13 @@ Blockly.Blocks.servo_move = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-    },
-    onchange: function(event) {
-        if (event.type === Blockly.Events.CHANGE && event.element === 'field') {
-            if ((event.newValue < 0) || (event.newValue > 180)) {
-                alert("WARNING: The value for the angle must be between 0 and 180 degrees.");
-            }
-        }
+    //},
+    //onchange: function(event) {
+    //    if (event.type === Blockly.Events.CHANGE && event.element === 'field') {
+    //        if ((event.newValue < 0) || (event.newValue > 180)) {
+    //            alert("WARNING: The value for the angle must be between 0 and 180 degrees.");
+    //        }
+    //    }
     }
 };
 
@@ -166,7 +166,7 @@ Blockly.Blocks.servodiffdrive_library_drive_stop = {
 };
 
 Blockly.Blocks.pwm_start = {
-    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    helpUrl: Blockly.MSG_ANALOG_PWM_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_PWM_START_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
@@ -179,7 +179,7 @@ Blockly.Blocks.pwm_start = {
 };
 
 Blockly.Blocks.pwm_set = {
-    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    helpUrl: Blockly.MSG_ANALOG_PWM_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_PWM_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
@@ -200,7 +200,7 @@ Blockly.Blocks.pwm_set = {
 };
 
 Blockly.Blocks.pwm_stop = {
-    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    helpUrl: Blockly.MSG_ANALOG_PWM_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_PWM_STOP_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
