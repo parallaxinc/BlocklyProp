@@ -24,8 +24,9 @@
 'use strict';
 
 Blockly.Blocks.cog_new = {
-    helpUrl: 'help/block-cognew.html',
-    init: function () {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_COG_NEW_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField('Cognew ');
@@ -44,25 +45,26 @@ Blockly.Blocks.cog_new = {
 
 
 Blockly.Blocks.base_delay = {
-    helpUrl: 'help/block-delay.html',
-    init: function () {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_BASE_DELAY_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput("DELAY_TIME", 'Number')
-                .appendField("delay (ms)")
+                .appendField("pause (ms)")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setTooltip('Delay specific time');
     }
 };
 
 Blockly.Blocks.base_freqout = {
-    helpUrl: '',
-    init: function () {
+    helpUrl: Blockly.MSG_AUDIO_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_BASE_FREQOUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("frequency pin#")
+                .appendField("frequency PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("DURATION", 'Number')
                 .appendField("duration (ms)")
@@ -73,19 +75,19 @@ Blockly.Blocks.base_freqout = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setTooltip('Frequency output');
     }
 };
 
 Blockly.Blocks.rc_charge_discharge = {
-    helpUrl: '',
+    helpUrl: Blockly.MSG_ANALOG_RC_TIME_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RC_CHARGE_DISCHARGE_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
             .appendField("RC")
             .appendField(new Blockly.FieldDropdown([["charge", "0"], ["discharge", "1"]]), "STATE");
         this.appendDummyInput("")
-            .appendField("pin#")
+            .appendField("PIN")
             .appendField(new Blockly.FieldDropdown(
                 [
                     ["0","0"],
@@ -109,6 +111,5 @@ Blockly.Blocks.rc_charge_discharge = {
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
-        this.setTooltip('RC Output');
     }
 };

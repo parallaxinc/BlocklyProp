@@ -27,10 +27,12 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.sirc_get = {
+    helpUrl: Blockly.MSG_SONY_REMOTE_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_SIRC_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sony remote value received at pin#")
+            .appendField("Sony Remote value received from PIN")
             .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setInputsInline(true);

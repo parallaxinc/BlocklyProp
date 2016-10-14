@@ -28,13 +28,14 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.ab_volt_in = {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_AB_VOLT_IN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-            .appendField("0-5V ADC reading in Volts x 100")
-            .appendField("channel")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL");
-
+            .appendField("A/D channel")
+            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "CHANNEL")
+            .appendField("read (0-5V) in volt-100ths");
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -42,17 +43,19 @@ Blockly.Blocks.ab_volt_in = {
 };
 
 Blockly.Blocks.ab_volt_out = {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_AB_VOLT_OUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-                .appendField("0-3.3V DAC output in Volts x 100")
-                .appendField("channel")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL");
-        this.appendValueInput("VALUE")
+                .appendField("D/A channel")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHANNEL")
+                .appendField("output (0-3.3V)");
+                this.appendValueInput("VALUE")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("Value");
-
+                .appendField("volt-100ths");
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -66,7 +69,7 @@ Blockly.propc.ab_volt_in = function() {
         Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
     }
 
-    var code = 'ad_in(' + dropdown_channel + ') * 500 / 4096';
+    var code = '(ad_in(' + dropdown_channel + ') * 500 / 4096)';
     return [code, Blockly.propc.ORDER_NONE];
 };
 

@@ -133,23 +133,28 @@ Blockly.Spin.math_single = function () {
 
 Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
-    helpUrl: "",
     init: function () {
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
         this.appendValueInput('A')
-                .setCheck('Number');
-        this.appendValueInput('B')
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+        this.appendValueInput('B')
+                .setCheck('Number')
+                .appendField("and");
+
         this.setInputsInline(true);
-        this.setTooltip("Limit");
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MATH_LIMIT_TOOLTIP);
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
     }
 };
 
 Blockly.Blocks.math_limit.OPERATORS =
-        [["limit min", 'LIMIT_MIN'],
-            ["limit max", 'LIMIT_MAX']];
+        [["highest of", 'LIMIT_MIN'],
+        ["lowest of", 'LIMIT_MAX']];
 
 Blockly.Spin.math_limit = function () {
     // Basic arithmetic operators, and power.

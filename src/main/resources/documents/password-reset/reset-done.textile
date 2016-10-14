@@ -1,0 +1,3 @@
+h2. Password is reset
+
+"Go to home":/blockly/index
