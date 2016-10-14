@@ -93,26 +93,26 @@ Blockly.Blocks.set_pins = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         var start_pin = [];
-        for (var i = 0; i < 32; i++) {
+        for (var i = 0; i < 14; i++) {
             start_pin.push([i.toString(), i.toString()]);
         }
         var pin_count = [];
-        for (var i = 1; i <= 32; i++) {
+        for (var i = 0; i < 14; i++) {
             pin_count.push([i.toString(), i.toString()]);
         }
         this.appendDummyInput("")
                 .appendField("set the")
-                .appendField(new Blockly.FieldDropdown([["state", "STATE"], ["direction", "DIRECTION"]], function (action) {
+                .appendField(new Blockly.FieldDropdown([["states", "STATE"], ["directions", "DIRECTION"]], function (action) {
                     this.sourceBlock_.updateShape_({"ACTION": action});
                 }), "ACTION")
-                .appendField("of")
-                .appendField(new Blockly.FieldDropdown(pin_count, function (pinCount) {
-                    this.sourceBlock_.updateShape_({"PIN_COUNT": pinCount});
-                }), "PIN_COUNT")
-                .appendField("pins starting at PIN")
-                .appendField(new Blockly.FieldDropdown(start_pin, function (startPin) {
+                .appendField("from PIN")
+                .appendField(new Blockly.FieldDropdown(pin_count, function (startPin) {
                     this.sourceBlock_.updateShape_({"START_PIN": startPin});
-                }), "START_PIN");
+                }), "START_PIN")
+                .appendField("to PIN")
+                .appendField(new Blockly.FieldDropdown(start_pin, function (pinCount) {
+                    this.sourceBlock_.updateShape_({"PIN_COUNT": pinCount});
+                }), "PIN_COUNT");
         this.appendDummyInput("PINS")
                 .appendField("values:")
                 .appendField("P0:")
@@ -160,7 +160,7 @@ Blockly.Blocks.set_pins = {
         this.appendDummyInput("PINS")
                 .appendField("Values:");
         var inputPins = this.getInput('PINS');
-        for (var i = 0; i < pinCount; i++) {
+        for (var i = 0; i < (pinCount - startPin + 1); i++) {
             var pin = startPin + i;
             if (action === 'STATE') {
                 inputPins.appendField("P" + pin + ":")
