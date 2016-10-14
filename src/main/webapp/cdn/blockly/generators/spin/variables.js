@@ -30,15 +30,19 @@ if (!Blockly.Blocks)
 Blockly.Blocks.variables_get = {
     // Variable getter.
     category: null, // Variables are handled specially.
-    helpUrl: Blockly.LANG_VARIABLES_GET_HELPURL,
     init: function () {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_VARIABLES_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_VARIABLES_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_VARIABLES_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput("")
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         this.setOutput(true, null);
-        //      this.setTooltip(Blockly.LANG_VARIABLES_GET_TOOLTIP_1);
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
@@ -80,8 +84,13 @@ Blockly.Blocks.variables_declare = {
 Blockly.Blocks.variables_set = {
     // Variable setter.
     category: null, // Variables are handled specially.
-    helpUrl: Blockly.LANG_VARIABLES_SET_HELPURL,
     init: function () {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_VARIABLES_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_VARIABLES_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_VARIABLES_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE')
                 .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
