@@ -159,7 +159,8 @@ function loadProject(idProject) {
         } else if (project['shared']) {
             $("#project-form-shared").prop('checked', 'checked').parent().addClass('active');
         } else {
-            $("#project-form-friends").prop('checked', 'checked').parent().addClass('active');
+            $("#project-form-private").prop('checked', 'checked').parent().addClass('active');
+            //$("#project-form-friends").prop('checked', 'checked').parent().addClass('active');
         }
 
 
