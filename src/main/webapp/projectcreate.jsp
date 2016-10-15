@@ -9,17 +9,6 @@
 
 <html><!-- manifest=node.manifest> -->
     <head>
-        <meta name="application-name" content="&nbsp;"/>
-        <meta name="msapplication-TileColor" content="#FFFFFF" />
-        <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />
-        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="57x57" href="<url:getCdnUrl url="/images/apple-touch-icon-57x57.png"/>" />
-        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="114x114" href="<url:getCdnUrl url="/images/apple-touch-icon-114x114.png"/>" />
-        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="72x72" href="<url:getCdnUrl url="/images/apple-touch-icon-72x72.png"/>" />
-        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="144x144" href="<url:getCdnUrl url="/images/apple-touch-icon-144x144.png"/>" />
-        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="120x120" href="<url:getCdnUrl url="/images/apple-touch-icon-120x120.png"/>" />
-        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="152x152" href="<url:getCdnUrl url="/images/apple-touch-icon-152x152.png"/>" />
-        <link type="image/png" rel="icon" sizes="32x32" href="<url:getCdnUrl url="/images/favicon-32x32.png"/>" />
-        <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
@@ -96,15 +85,15 @@
                                                     <div class="form-group">
                                                         <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
                                                         <div class="btn-group" data-toggle="buttons">
-                                                            <label class="btn btn-default active">
-                                                                <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/><fmt:message key="project.sharing.private" />
+                                                            <label class="btn btn-default">
+                                                                <input type="radio" name="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
                                                             </label>
                                                             <label class="btn btn-default">
                                                                 <input type="radio" name="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
                                                             </label>
-                                                            <!--    <label class="btn btn-default active">
-                                                                    <input type="radio" name="sharing" value="friends" id="project-form-friends" checked="checked"/><fmt:message key="project.sharing.friends" />
-                                                                </label> -->
+                                                            <label class="btn btn-default active">
+                                                                <input type="radio" name="sharing" value="friends" id="project-form-friends" checked="checked"/><fmt:message key="project.sharing.friends" />
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>

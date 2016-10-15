@@ -14,9 +14,6 @@ import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensExcep
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
-import com.parallax.server.blocklyprop.enums.ConfirmPage;
-import com.parallax.server.blocklyprop.utils.ServletUtils;
-import com.parallax.server.blocklyprop.utils.TextileReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,8 +31,6 @@ import org.slf4j.LoggerFactory;
 public class ConfirmRequestServlet extends HttpServlet {
 
     private static Logger log = LoggerFactory.getLogger(ConfirmRequestServlet.class);
-
-    private final TextileReader textileFileReader = new TextileReader();
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
@@ -59,8 +54,7 @@ public class ConfirmRequestServlet extends HttpServlet {
         } else {
             try {
                 if (cloudSessionLocalUserService.requestNewConfirmEmail(email)) {
-                    showTextilePage(req, resp, ConfirmPage.CONFIRM_REQUESTED);
-                    //req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-requested.jsp").forward(req, resp);
+                    req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-requested.jsp").forward(req, resp);
                 } else {
                     req.setAttribute("error", true);
                     req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
@@ -72,8 +66,7 @@ public class ConfirmRequestServlet extends HttpServlet {
                 req.setAttribute("insufficientTokens", true);
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
             } catch (EmailAlreadyConfirmedException ex) {
-                showTextilePage(req, resp, ConfirmPage.ALREADY_CONFIRMED);
-                //req.getRequestDispatcher("WEB-INF/servlet/confirm/already-confirmed.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/already-confirmed.jsp").forward(req, resp);
             } catch (ServerException se) {
                 req.setAttribute("server-exception", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
@@ -83,12 +76,6 @@ public class ConfirmRequestServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
             }
         }
-    }
-
-    public void showTextilePage(HttpServletRequest req, HttpServletResponse resp, ConfirmPage confirmPage) throws ServletException, IOException {
-        String html = textileFileReader.readFile("confirm/" + confirmPage.getPage(), ServletUtils.getLocale(req), req.isSecure());
-        req.setAttribute("html", html);
-        req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
     }
 
 }

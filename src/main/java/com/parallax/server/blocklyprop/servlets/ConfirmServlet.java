@@ -13,9 +13,6 @@ import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
-import com.parallax.server.blocklyprop.enums.ConfirmPage;
-import com.parallax.server.blocklyprop.utils.ServletUtils;
-import com.parallax.server.blocklyprop.utils.TextileReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,8 +30,6 @@ import org.slf4j.LoggerFactory;
 public class ConfirmServlet extends HttpServlet {
 
     private static Logger log = LoggerFactory.getLogger(ConfirmServlet.class);
-
-    private final TextileReader textileFileReader = new TextileReader();
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
@@ -72,9 +67,7 @@ public class ConfirmServlet extends HttpServlet {
         } else {
             try {
                 if (cloudSessionLocalUserService.doConfirm(email, token)) {
-                    // req.getRequestDispatcher("WEB-INF/servlet/confirm/confirmed.jsp").forward(req, resp);
-
-                    showTextilePage(req, resp, ConfirmPage.CONFIRMED);
+                    req.getRequestDispatcher("WEB-INF/servlet/confirm/confirmed.jsp").forward(req, resp);
                 } else {
                     req.setAttribute("invalidToken", "Invalid token");
                     req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
@@ -91,12 +84,6 @@ public class ConfirmServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
             }
         }
-    }
-
-    public void showTextilePage(HttpServletRequest req, HttpServletResponse resp, ConfirmPage confirmPage) throws ServletException, IOException {
-        String html = textileFileReader.readFile("confirm/" + confirmPage.getPage(), ServletUtils.getLocale(req), req.isSecure());
-        req.setAttribute("html", html);
-        req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
     }
 
 }

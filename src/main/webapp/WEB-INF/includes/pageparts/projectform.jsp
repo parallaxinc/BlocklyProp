@@ -51,9 +51,9 @@
                         <label class="btn btn-default">
                             <input type="radio" name="sharing" class="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
                         </label>
-                        <!--        <label class="btn btn-default">
-                                    <input type="radio" name="sharing" class="sharing" value="friends" id="project-form-friends"/><fmt:message key="project.sharing.friends" />
-                                </label> -->
+                        <label class="btn btn-default">
+                            <input type="radio" name="sharing" class="sharing" value="friends" id="project-form-friends"/><fmt:message key="project.sharing.friends" />
+                        </label>
                     </div>
                 </div>
 
