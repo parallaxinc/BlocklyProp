@@ -1,3 +1,0 @@
-h2. Email confirm requested
-
-"Go to home":/blockly/index

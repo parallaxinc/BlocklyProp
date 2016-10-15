@@ -34,6 +34,9 @@ Blockly.Spin.controls_repeat = function () {
         branch = Blockly.Spin.INFINITE_LOOP_TRAP.replace(/%1/g,
                 '\'' + this.id + '\'') + branch;
     }
+    if (branch === '') {
+        branch = '  waitcnt(0)';
+    }
     var order = Blockly.Spin.ORDER_UNARY_PREFIX;
     var code = '';
     switch (type) {
@@ -42,15 +45,18 @@ Blockly.Spin.controls_repeat = function () {
             break;
         case "TIMES":
             var repeats = Blockly.Spin.valueToCode(this, 'TIMES', order) || '0';
-            code = 'repeat ' + repeats + '\n' + branch;
+            code = 'repeat ' + repeats + '\n' +
+                    branch + '\n';
             break;
         case "WHILE":
             var repeatCondition = Blockly.Spin.valueToCode(this, 'REPEAT_CONDITION', order) || 'TRUE';
-            code = 'repeat while ' + repeatCondition + '\n' + branch;
+            code = 'repeat while ' + repeatCondition + '\n' +
+                    branch + '\n';
             break;
         case "UNTIL":
             var repeatCondition = Blockly.Spin.valueToCode(this, 'REPEAT_CONDITION', order) || 'TRUE';
-            code = 'repeat until ' + repeatCondition + '\n' + branch;
+            code = 'repeat until ' + repeatCondition + '\n' +
+                    branch + '\n';
             break;
     }
     return code;

@@ -70,11 +70,10 @@ Blockly.Blocks.math_limit = {
 	this.setTooltip(Blockly.MSG_MATH_LIMIT_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('A')
-                .setCheck('Number')
-                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+            .setCheck('Number');
         this.appendValueInput('B')
-                .setCheck('Number')
-                .appendField("and");
+            .setCheck('Number')
+            .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
 
         this.setInputsInline(true);
         this.setTooltip("limit");
@@ -85,8 +84,8 @@ Blockly.Blocks.math_limit = {
 };
 
 Blockly.Blocks.math_limit.OPERATORS = [
-    ["highest of", 'LIMIT_MIN'],
-    ["lowest of", 'LIMIT_MAX']
+    ["limit min", 'LIMIT_MIN'],
+    ["limit max", 'LIMIT_MAX']
 ];
 
 Blockly.propc.math_limit = function() {
