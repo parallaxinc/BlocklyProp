@@ -231,7 +231,7 @@ Blockly.propc.servo_move = function () {
 
 Blockly.propc.servo_speed = function () {
     var pin = this.getFieldValue('PIN');
-    var speed = this.getFieldValue('SPEED');
+    var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE);
 
     Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
 

@@ -86,12 +86,13 @@ Blockly.propc.set_pins = function () {
     } else if (action === 'DIRECTION') {
         code = 'set_directions(';
     }
-    var highestPin = dropdown_start_pin + dropdown_pin_count - 1;
-    code += highestPin;
-    code += ', ';
+    //var highestPin = dropdown_start_pin + dropdown_pin_count - 1;
+    
     code += dropdown_pin_count;
+    code += ', ';
+    code += dropdown_start_pin;
     code += ', 0b';
-    for (var i = highestPin; i >= dropdown_start_pin; i--) {
+    for (var i = dropdown_pin_count; i >= dropdown_start_pin; i--) {
         code += this.getFieldValue('P' + i);
     }
     return code + ');\n';

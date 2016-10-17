@@ -100,7 +100,12 @@ li.project {
 
 /* Markdown editor */
 .CodeMirror {
-    height: 300px;
+    height: 200px;
+    min-height: 200px;
+}
+
+div#project div.wizard-container {
+    padding-top: 70px;
 }
 
 .description-html {

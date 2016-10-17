@@ -96,15 +96,15 @@
                                                     <div class="form-group">
                                                         <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
                                                         <div class="btn-group" data-toggle="buttons">
-                                                            <label class="btn btn-default">
-                                                                <input type="radio" name="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
+                                                            <label class="btn btn-default active">
+                                                                <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/><fmt:message key="project.sharing.private" />
                                                             </label>
                                                             <label class="btn btn-default">
                                                                 <input type="radio" name="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
                                                             </label>
-                                                            <label class="btn btn-default active">
-                                                                <input type="radio" name="sharing" value="friends" id="project-form-friends" checked="checked"/><fmt:message key="project.sharing.friends" />
-                                                            </label>
+                                                            <!--    <label class="btn btn-default active">
+                                                                    <input type="radio" name="sharing" value="friends" id="project-form-friends" checked="checked"/><fmt:message key="project.sharing.friends" />
+                                                                </label> -->
                                                         </div>
                                                     </div>
                                                 </div>
