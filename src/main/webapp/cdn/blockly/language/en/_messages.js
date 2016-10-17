@@ -917,7 +917,7 @@ Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP = "LCD set cursor: row and column.";
 Blockly.MSG_DEBUG_LCD_MUSIC_NOTE_TOOLTIP = "LCD play note: at octave for time set.";
 Blockly.MSG_OLED_INITIALIZE_TOOLTIP = "OLED initialize: match to Propeller I/O pin connections.";
 Blockly.MSG_OLED_FONT_LOADER_TOOLTIP = "OLED font loader: run alone to add fonts to EEPROM.";
-Blockly.MSG_OLED_GET_MAX_HEIGHT_TOOLTIP = "OLED max height ";
+Blockly.MSG_OLED_GET_MAX_HEIGHT_TOOLTIP = "OLED max height";
 Blockly.MSG_OLED_GET_MAX_WIDTH_TOOLTIP = "OLED max width";
 Blockly.MSG_OLED_CLEAR_SCREEN_TOOLTIP = "OLED clear screen: all pixels go black.";
 Blockly.MSG_OLED_TEXT_COLOR_TOOLTIP = "OLED font color: background is transparent if matched to font.";
@@ -1010,83 +1010,55 @@ Blockly.MSG_S3_VARIABLES_HELPURL = "http://learn.parallax.com/s3-blocks/variable
 
 
 //-------Scribbler 3 block tooltips --------------------------
-Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_IF_RANDOM_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP = "";
-
-Blockly.MSG_S3_CONTROLS_REPEAT_TOOLTIP = "";
-Blockly.MSG_S3_CONTROLS_IF_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP = "";
-Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP = "";
-
-Blockly.MSG_S3_PROCEDURES_DEFNORETURN_TOOLTIP = "";
-Blockly.MSG_S3_PROCEDURES_CALLNORETURN_TOOLTIP = "";
-
-Blockly.MSG_S3_VARIABLES_SET_TOOLTIP = "";
-Blockly.MSG_S3_VARIABLES_GET_TOOLTIP = "";
-
-Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP = "";
-Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_BOOLEAN_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_RANDOM_BOOLEAN_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP = "";
-Blockly.MSG_S3_MATH_ARITHMETIC_TOOLTIP = "";
-Blockly.MSG_S3_MATH_LIMIT_TOOLTIP = "";
-Blockly.MSG_S3_LOGIC_OPERATION_TOOLTIP = "";
-Blockly.MSG_S3_LOGIC_NEGATE_TOOLTIP = "";
-Blockly.MSG_S3_LOGIC_COMPARE_TOOLTIP = "";
-
-
-Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP = "";
-Blockly.MSG_S3_LINE_SENSOR_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP = "";
-Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP = "";
-Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP = "";
-Blockly.MSG_S3_STALL_SENSOR_TOOLTIP = "";
-Blockly.MSG_S3_SPINNING_SENSOR_TOOLTIP = "";
-
-Blockly.MSG_S3_RESET_BUTTON_PRESSES_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP = "";
-
-
-Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP = "";
-Blockly.MSG_S3_MOVE_MOTORS_TOOLTIP = "";
-Blockly.MSG_S3_MOVE_MOTORS_DISTANCE_TOOLTIP = "";
-Blockly.MSG_S3_MOVE_MOTORS_ANGLE_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP = "";
-Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP = "";
-Blockly.MSG_S3_PLAY_POLYPHONY_TOOLTIP = "";
-
-Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP = "";
-
-Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP = "";
-Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP = "";
-Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP = "";
-Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP = "";
-Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP = "";
-Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP = "";
-
-Blockly.MSG_S3_FACTORY_RESET_TOOLTIP = "";
+Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP = "simple loop: repeats code inside the loop until an exit loop block is used.";
+Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP = "counted loop: repeats code a number of times";
+Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP = "exit loop: exits out of a loop that is repeating code";
+Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP = "simple wait: waits a set amount of time before moving on the to the next block";
+Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP = "detect line: detects a line underneath the Scribbler";
+Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP = "detect obstacle: detects if something is in front of the Scribbler";
+Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP = "detect ambient light: detects a light in front of the Scribbler";
+Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP = "detect stall: detects if the Scribbler's wheels are stuck";
+Blockly.MSG_S3_SCRIBBLER_IF_RANDOM_TOOLTIP = "flip a coin: randomly returns a true or false";
+Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP = "drive: used to move the Scribbler";
+Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP = "rotate: used to rotate the Scribbler";
+Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP = "stop driving: stops the Scribbler's motors";
+Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP = "play note: plays a note using the Scribbler's speaker";
+Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP = "change LEDs: used to change the LED's on the Scribbler";
+Blockly.MSG_S3_CONTROLS_REPEAT_TOOLTIP = "conditional repeat: forever, x times , until, or while attached condition is true.";
+Blockly.MSG_S3_CONTROLS_IF_TOOLTIP = "if...do: when condition attached is true. Click the gear to add conditions.";
+Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP = "wait: waits a set amount of time before moving on the to the next block";
+Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP = "note: use to add a note to your program.  Does not affect the program.";
+Blockly.MSG_S3_PROCEDURES_DEFNORETURN_TOOLTIP = "define function: group blocks to re-use ending with return; name group.";
+Blockly.MSG_S3_PROCEDURES_CALLNORETURN_TOOLTIP = "return: Required at the end of code enclosed in a “define function” block.";
+Blockly.MSG_S3_VARIABLES_SET_TOOLTIP = "set variable: name and attach initial value block.";
+Blockly.MSG_S3_VARIABLES_GET_TOOLTIP = "use variable: choose set variables from dropdown.";
+Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP = "number value: positive or negative; truncates to integers.";
+Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP = "number of degrees: indicate how many degrees (rotation) to turn or move.";
+Blockly.MSG_S3_SCRIBBLER_BOOLEAN_TOOLTIP = "true/false: choose a true or false value";
+Blockly.MSG_S3_SCRIBBLER_RANDOM_BOOLEAN_TOOLTIP = "random true/false: randomly returns a true or false";
+Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP = "random number: pick random number between the low “from” and high “to” values.";
+Blockly.MSG_S3_MATH_ARITHMETIC_TOOLTIP = "math operation: + addition, - subtraction, x multiplication, / division, or % modulus.";
+Blockly.MSG_S3_MATH_LIMIT_TOOLTIP = "highest/lowest: returns the highest or lowest of the two values inputted";
+Blockly.MSG_S3_LOGIC_OPERATION_TOOLTIP = "boolean comparison: and, or, and not, or not; returns true or false.";
+Blockly.MSG_S3_LOGIC_NEGATE_TOOLTIP = "not: returns false if input is true and true if input is false";
+Blockly.MSG_S3_LOGIC_COMPARE_TOOLTIP = "compare values: boolean comparison returns true or false";
+Blockly.MSG_S3_LINE_SENSOR_TOOLTIP = "line sensor reading: detection of a line by the sensors under the Scribbler";
+Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP = "obstacle sensor reading: detection of obstacles from the front sensors";
+Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP = "light sensor reading: measurements of light from the front sensors";
+Blockly.MSG_S3_STALL_SENSOR_TOOLTIP = "tail wheel stall: returns true of tail wheel is not spinning";
+Blockly.MSG_S3_SPINNING_SENSOR_TOOLTIP = "drive wheel stall: returns true if drive wheels are not spinning but should be";
+Blockly.MSG_S3_RESET_BUTTON_PRESSES_TOOLTIP = "button sensor: returns how many times the reset button was pressed";
+Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP = "Ping))) distance: measures distances using a Ping))) sensor attached to the hacker port";
+Blockly.MSG_S3_MOVE_MOTORS_TOOLTIP = "motor speed: use to move the Scribbler at specific speeds";
+Blockly.MSG_S3_MOVE_MOTORS_DISTANCE_TOOLTIP = "move distance: use to move the Scribbler specific distances";
+Blockly.MSG_S3_MOVE_MOTORS_ANGLE_TOOLTIP = "rotate by radius: rotates the scribbler by driving it";
+Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP = "rotate Servo: turns a servo connected to the hacker port to a position";
+Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP = "disable Servo: disables a servo connected to the hacker port";
+Blockly.MSG_S3_PLAY_POLYPHONY_TOOLTIP = "play tone: mix two frequencies set in Hz.";
+Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP = "send message: send text out from the serial port";
+Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP = "send number: send a number out from the serial port";
+Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP = "send character: send a character out from the serial port";
+Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP = "send control character: send a special character out from the serial port";
+Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP = "set cursor position: set the cursor position in the terminal";
+Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP = "receive character: receieve a character from the serial port";
+Blockly.MSG_S3_FACTORY_RESET_TOOLTIP = "factory reset: use to reload the factory default demo program back onto the Scribbler"; 
