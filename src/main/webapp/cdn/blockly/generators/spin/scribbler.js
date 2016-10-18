@@ -1004,9 +1004,11 @@ Blockly.Spin.spin_comment = function () {
 };
 
 Blockly.Spin.factory_reset = function () {
-    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    Blockly.Spin.definitions_[ "include_scribbler_default" ] = 'OBJScribbler_Default    : "scribbler_default"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler_default' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler_default' ] = 'Scribbler_Default.Start';
+    }
 
-    var code = 'scribbler.RestoreS3Demo';
-    return [code, Blockly.Spin.ORDER_ATOMIC];
+    return
     
 };
