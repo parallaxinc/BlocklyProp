@@ -463,7 +463,7 @@ Blockly.Blocks.heb_badge_was_shaken = {
         this.appendDummyInput()
                 .appendField("Accelerometer was shaken?");
 
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
     }
@@ -482,11 +482,11 @@ Blockly.Blocks.heb_touchpad_status = {
         this.setColour(colorPalette.getColor('heb'));
         this.appendDummyInput()
                 .appendField("Touchpad is")
-                .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"], ["6 - Center Button", "6"]]), "TOUCHPAD")
+                .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"], ["6 - Center Button", "6"], ["Any button", "-1"]]), "TOUCHPAD")
                 .appendField("pressed?");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
-        this.setOutput(true, 'Boolean');
+        this.setOutput(true, 'Number');
     }
 };
 
@@ -496,6 +496,11 @@ Blockly.propc.heb_touchpad_status = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'button(' + touchpad + ')';
+    var code = '';
+    if(touchpad === "-1") {
+        code += 'buttons()';
+    } else {
+        code += 'button(' + touchpad + ')';
+    }
     return [code, Blockly.propc.ORDER_NONE];
 };
