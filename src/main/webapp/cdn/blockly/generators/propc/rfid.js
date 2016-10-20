@@ -107,7 +107,7 @@ Blockly.propc.rfid_get = function() {
 };
 
 Blockly.propc.rfid_disable = function() {
-    var data = Blockly.propc.valueToCode(this, 'ACTION', Blockly.propc.ORDER_ATOMIC) || '';
+    var data = this.getFieldValue('ACTION');
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
     if(data === "ENABLE") {
