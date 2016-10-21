@@ -120,9 +120,9 @@ Blockly.propc.xbee_transmit = function () {
     if(type === "BYTE") {
         return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
     } else if(type === "INT") {
-        return 'dprint(xbee, "%d\r", ' + data + ');\n';
+        return 'dprint(xbee, "%d\\r", ' + data + ');\n';
     } else {   
-        var code = 'dprint(xbee, "%s\r", ' + text + ');\n';
+        var code = 'dprint(xbee, "%s\\r", ' + data + ');\n';
         //code += 'fdserial_txChar(xbee, 0 );\n';
         code += 'while(!fdserial_txEmpty(xbee));\n';
         code += 'pause(5);\n';
