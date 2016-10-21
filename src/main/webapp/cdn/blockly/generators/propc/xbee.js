@@ -145,15 +145,16 @@ Blockly.propc.xbee_receive = function () {
     } else if(type === "INT") {
         return 'dscan(xbee, "%d", &' + data + ');\n';
     } else {  
-        Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
+        Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
         Blockly.propc.vartype_[data] = 'char *';
            
-        var code = '__idx = 0;\n';
-        code += 'do {\n';
-        code += '  ' + data + '[__idx] = fdserial_rxChar(xbee);\n';
-        code += '  __idx++;\n';
-        code += '} while(fdserial_rxPeek(xbee) != 13);\n';    
-        code += data + '[__idx] = 0;\nfdserial_rxFlush(xbee);\n';
+        var code = '__XBidx = 0;\n';
+        code += 'while(1) {\n';
+        code += '  ' + data + '[__XBidx] = fdserial_rxChar(xbee);\n';
+        code += '  if(' + data + '[__XBidx] == 13 || ' + data + '[__XBidx] == 10) break;\n';
+        code += '  __XBidx++;\n';
+        code += '}\n';    
+        code += data + '[__XBidx] = 0;\nfdserial_rxFlush(xbee);\n';
         return code;
     }
 };
