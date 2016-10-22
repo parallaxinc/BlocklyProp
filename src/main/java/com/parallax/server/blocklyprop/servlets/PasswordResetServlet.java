@@ -14,6 +14,9 @@ import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
+import com.parallax.server.blocklyprop.enums.PasswordResetPage;
+import com.parallax.server.blocklyprop.utils.ServletUtils;
+import com.parallax.server.blocklyprop.utils.TextileReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +34,8 @@ import org.slf4j.LoggerFactory;
 public class PasswordResetServlet extends HttpServlet {
 
     private static Logger log = LoggerFactory.getLogger(PasswordResetServlet.class);
+
+    private final TextileReader textileFileReader = new TextileReader();
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
@@ -63,7 +68,8 @@ public class PasswordResetServlet extends HttpServlet {
         } else {
             try {
                 if (cloudSessionLocalUserService.doPasswordReset(token, email, password, confirmPassword)) {
-                    req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-done.jsp").forward(req, resp);
+                    showTextilePage(req, resp, PasswordResetPage.RESET_DONE);
+                    //req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-done.jsp").forward(req, resp);
                 } else {
                     req.setAttribute("invalidToken", "Invalid token");
                     req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
@@ -86,6 +92,12 @@ public class PasswordResetServlet extends HttpServlet {
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             }
         }
+    }
+
+    public void showTextilePage(HttpServletRequest req, HttpServletResponse resp, PasswordResetPage passwordResetPage) throws ServletException, IOException {
+        String html = textileFileReader.readFile("password-reset/" + passwordResetPage.getPage(), ServletUtils.getLocale(req), req.isSecure());
+        req.setAttribute("html", html);
+        req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
     }
 
 }

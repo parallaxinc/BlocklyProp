@@ -115,7 +115,9 @@ Blockly.propc.control_repeat_for_loop = function () {
 };
 
 Blockly.Blocks.controls_return = {
+  helpUrl: Blockly.MSG_CONTROL_HELPURL,
   init: function() {
+    this.setTooltip(Blockly.MSG_CONTROLS_RETURN_TOOLTIP);
     this.appendDummyInput()
         .appendField("return");
 
@@ -127,4 +129,21 @@ Blockly.Blocks.controls_return = {
 
 Blockly.propc.controls_return = function() {
     return 'return;';
+};
+
+Blockly.Blocks.controls_break = {
+  helpUrl: Blockly.MSG_CONTROL_HELPURL,
+  init: function() {
+    this.setTooltip(Blockly.MSG_CONTROLS_BREAK_TOOLTIP);
+    this.appendDummyInput()
+        .appendField("break");
+
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setColour(colorPalette.getColor('programming'));
+  }
+};
+
+Blockly.propc.controls_break = function() {
+    return 'break;';
 };

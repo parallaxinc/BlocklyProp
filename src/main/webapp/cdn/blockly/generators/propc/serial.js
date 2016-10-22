@@ -29,7 +29,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.serial_open = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_OPEN_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial initialize RX")
@@ -38,7 +40,7 @@ Blockly.Blocks.serial_open = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput()
                 .appendField("baud")
-                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["4800", "4800"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -47,13 +49,15 @@ Blockly.Blocks.serial_open = {
 };
 
 Blockly.Blocks.serial_tx = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_TX_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial transmit")
                 .appendField(new Blockly.FieldDropdown([
-                    ["byte (ASCII character)", "BYTE"], 
-                    ["number (32-bit integer)", "INT"] 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
                     ]), "TYPE");
         this.appendValueInput('VALUE', Number)
                 .setCheck(null);
@@ -64,7 +68,9 @@ Blockly.Blocks.serial_tx = {
 };
 
 Blockly.Blocks.serial_send_text = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
                 .appendField("Serial transmit text")
@@ -76,33 +82,51 @@ Blockly.Blocks.serial_send_text = {
 };
 
 Blockly.Blocks.serial_rx = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_RX_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial receive")
                 .appendField(new Blockly.FieldDropdown([
-                    ["byte (ASCII character)", "BYTE"], 
-                    ["number (32-bit integer)", "INT"] 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
                     ]), "TYPE")
-                .appendField("store in");
-        this.appendValueInput('VALUE')
-                .setCheck(null);
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
 Blockly.Blocks.serial_receive_text = {
-    init: function () {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Serial receive text store in");
-        this.appendValueInput('VALUE')
-                .setCheck('String');
+                .appendField("Serial receive text store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -156,7 +180,7 @@ Blockly.propc.serial_send_text = function () {
 
 Blockly.propc.serial_rx = function () {
     var type = this.getFieldValue('TYPE');
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
 
     if (Blockly.propc.setups_["setup_fdserial"] === undefined)
     {
@@ -175,7 +199,7 @@ Blockly.propc.serial_rx = function () {
 };
 
 Blockly.propc.serial_receive_text = function () {
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '';
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
     Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
 
     //var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'),
