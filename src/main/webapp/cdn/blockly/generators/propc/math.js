@@ -31,7 +31,7 @@ if (!Blockly.Blocks)
 
 Blockly.propc['math_number'] = function() {
     // Numeric value.
-    var code = window.parseFloat(this.getFieldValue('NUM'));
+    var code = window.parseInt(this.getFieldValue('NUM'));
     // -4.abs() returns -4 in Dart due to strange order of operation choices.
     // -4 is actually an operator and a number.  Reflect this in the order.
     var order = code < 0 ?
@@ -59,19 +59,22 @@ Blockly.propc.math_arithmetic.OPERATORS = {
     MINUS: [' - ', Blockly.propc.ORDER_ADDITIVE],
     MULTIPLY: [' * ', Blockly.propc.ORDER_MULTIPLICATIVE],
     DIVIDE: [' / ', Blockly.propc.ORDER_MULTIPLICATIVE],
-    MODULUS: [' % ', Blockly.propc.ORDER_MULTIPLICATIVE],
+    MODULUS: [' % ', Blockly.propc.ORDER_MULTIPLICATIVE]
 };
 
 // Limit
 Blockly.Blocks.math_limit = {
     // Basic arithmetic operator.
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_LIMIT_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('A')
-            .setCheck('Number');
+                .setCheck('Number')
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
         this.appendValueInput('B')
-            .setCheck('Number')
-            .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+                .setCheck('Number')
+                .appendField("and");
 
         this.setInputsInline(true);
         this.setTooltip("limit");
@@ -82,8 +85,8 @@ Blockly.Blocks.math_limit = {
 };
 
 Blockly.Blocks.math_limit.OPERATORS = [
-    ["limit min", 'LIMIT_MIN'],
-    ["limit max", 'LIMIT_MAX']
+    ["highest of", 'LIMIT_MIN'],
+    ["lowest of", 'LIMIT_MAX']
 ];
 
 Blockly.propc.math_limit = function() {
@@ -108,7 +111,9 @@ Blockly.propc.math_limit.OPERATORS = {
 // Increment/decrement
 Blockly.Blocks.math_crement = {
     // Rounding functions.
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_CREMENT_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('VAR')
             .setCheck('Number')
@@ -144,11 +149,17 @@ Blockly.propc.math_crement.OPERATORS = {
 
 Blockly.Blocks.math_random = {
     // Rounding functions.
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_RANDOM_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
-        this.appendDummyInput()
-            .appendField("random");
-
+        this.appendValueInput("A")
+            .setCheck("Number")
+            .appendField("random number from");
+        this.appendValueInput("B")
+            .setCheck("Number")
+            .appendField("to");
+        this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
@@ -156,14 +167,18 @@ Blockly.Blocks.math_random = {
 };
 
 Blockly.propc.math_random = function() {
-    Blockly.propc.setups_["random_seed"] = "srand(23);\n";
+    Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
+    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
+    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
 
-    var code = 'rand() % 100';
+    var code = '(' + arg1 + ' + rand() % (' + arg2 + ' - ' + arg1 + ' + 1))';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.math_bitwise = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_MATH_BITWISE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('VAL1');
         this.appendDummyInput()

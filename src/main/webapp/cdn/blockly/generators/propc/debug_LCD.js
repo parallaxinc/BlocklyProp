@@ -29,7 +29,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.debug_lcd_init = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD initialize PIN")
@@ -45,7 +47,9 @@ Blockly.Blocks.debug_lcd_init = {
 };
 
 Blockly.Blocks.debug_lcd_music_note = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_MUSIC_NOTE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("LCD play note")
@@ -61,7 +65,9 @@ Blockly.Blocks.debug_lcd_music_note = {
 };
 
 Blockly.Blocks.debug_lcd_print = {
-     init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('MESSAGE')
             .setCheck('String')
@@ -73,7 +79,9 @@ Blockly.Blocks.debug_lcd_print = {
 };
 
 Blockly.Blocks.debug_lcd_number = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
             .appendField("LCD print number");
@@ -91,7 +99,9 @@ Blockly.Blocks.debug_lcd_number = {
 };
 
 Blockly.Blocks.debug_lcd_action = {
-    init: function () {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_ACTION_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("LCD command")
@@ -110,6 +120,21 @@ Blockly.Blocks.debug_lcd_action = {
                     ["display on, cursor on, blink", "25"]
                 ]), "ACTION");
 
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Blocks.debug_lcd_set_cursor = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("LCD set cursor row")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "ROW")
+                .appendField("column")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"]]), "COLUMN");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -173,4 +198,12 @@ if(action === '12') {
 }
 code += 'writeChar(debug_lcd, ' + action + ');\n';
 return code;
+};
+
+
+Blockly.propc.debug_lcd_set_cursor = function () {
+var row = this.getFieldValue('ROW');
+var column = this.getFieldValue('COLUMN');
+
+return 'writeChar(debug_lcd, (128 + (' + row + ' * 20) + ' + column + '));\n';
 };

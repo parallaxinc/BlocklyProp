@@ -35,7 +35,13 @@ Blockly.Blocks['procedures_defnoreturn'] = {
      * Block for defining a procedure with no return value.
      * @this Blockly.Block
      */
-    init: function () {
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_FUNCTIONS_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_FUNCTIONS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP);
         var nameField = new Blockly.FieldTextInput(
                 Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE,
                 Blockly.Procedures.rename);
@@ -45,8 +51,8 @@ Blockly.Blocks['procedures_defnoreturn'] = {
                 .appendField(nameField, 'NAME')
                 .appendField('', 'PARAMS');
         this.setColour(colorPalette.getColor('functions'));
-        this.setTooltip(Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP);
-        this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
+        //this.setTooltip(Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP);
+        //this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
         this.arguments_ = [];
         this.setStatements_(true);
         this.statementConnection_ = null;
@@ -150,7 +156,7 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     domToMutation: function (xmlElement) {
         this.arguments_ = [];
         for (var i = 0, childNode; childNode = xmlElement.childNodes[i]; i++) {
-            if (childNode.nodeName.toLowerCase() == 'arg') {
+            if (childNode.nodeName.toLowerCase() === 'arg') {
                 this.arguments_.push(childNode.getAttribute('name'));
             }
         }
@@ -215,8 +221,8 @@ Blockly.Blocks['procedures_defnoreturn'] = {
         // Show/hide the statement input.
         var hasStatements = containerBlock.getFieldValue('STATEMENTS');
         if (hasStatements !== null) {
-            hasStatements = hasStatements == 'TRUE';
-            if (this.hasStatements_ != hasStatements) {
+            hasStatements = hasStatements === 'TRUE';
+            if (this.hasStatements_ !== hasStatements) {
                 if (hasStatements) {
                     this.setStatements_(true);
                     // Restore the stack, if one was saved.
@@ -388,14 +394,23 @@ Blockly.Blocks['procedures_callnoreturn'] = {
      * Block for calling a procedure with no return value.
      * @this Blockly.Block
      */
-    init: function () {
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_FUNCTIONS_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_FUNCTIONS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP);
         this.appendDummyInput('TOPROW')
-                .appendField(this.id, 'NAME');
+                .appendField("run function ")
+                .appendField(quotes.newQuote_(this.RTL))
+                .appendField(this.id, 'NAME')
+                .appendField(quotes.newQuote_(this.LTR));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(colorPalette.getColor('functions'));
         // Tooltip is set in renameProcedure.
-        this.setHelpUrl(Blockly.Msg.PROCEDURES_CALLNORETURN_HELPURL);
+        //this.setHelpUrl(Blockly.Msg.PROCEDURES_CALLNORETURN_HELPURL);
         this.arguments_ = [];
         this.quarkConnections_ = {};
         this.quarkIds_ = null;
@@ -419,10 +434,10 @@ Blockly.Blocks['procedures_callnoreturn'] = {
     renameProcedure: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getProcedureCall())) {
             this.setFieldValue(newName, 'NAME');
-            this.setTooltip(
-                    (this.outputConnection ? Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP :
-                            Blockly.Msg.PROCEDURES_CALLNORETURN_TOOLTIP)
-                    .replace('%1', newName));
+            //this.setTooltip(
+            //        (this.outputConnection ? Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP :
+            //                Blockly.Msg.PROCEDURES_CALLNORETURN_TOOLTIP)
+            //        .replace('%1', newName));
         }
     },
     /**
@@ -486,7 +501,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
                 var connection = input.connection.targetConnection;
                 this.quarkConnections_[this.quarkIds_[i]] = connection;
                 if (mutatorOpen && connection &&
-                        paramIds.indexOf(this.quarkIds_[i]) == -1) {
+                        paramIds.indexOf(this.quarkIds_[i]) === -1) {
                     // This connection should no longer be attached to this block.
                     connection.disconnect();
                     connection.getSourceBlock().bumpNeighbours_();
@@ -586,7 +601,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
         var args = [];
         var paramIds = [];
         for (var i = 0, childNode; childNode = xmlElement.childNodes[i]; i++) {
-            if (childNode.nodeName.toLowerCase() == 'arg') {
+            if (childNode.nodeName.toLowerCase() === 'arg') {
                 args.push(childNode.getAttribute('name'));
                 paramIds.push(childNode.getAttribute('paramId'));
             }

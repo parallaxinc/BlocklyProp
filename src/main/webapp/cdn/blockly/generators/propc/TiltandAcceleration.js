@@ -27,7 +27,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.MX2125_acceleration_xaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+        this.setTooltip(Blockly.MSG_MX2125_ACCELERATION_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic acceleration x-axis PIN")
@@ -40,7 +42,9 @@ Blockly.Blocks.MX2125_acceleration_xaxis = {
 };
 
 Blockly.Blocks.MX2125_acceleration_yaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+        this.setTooltip(Blockly.MSG_MX2125_ACCELERATION_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic acceleration y-axis PIN")
@@ -53,7 +57,9 @@ Blockly.Blocks.MX2125_acceleration_yaxis = {
 };
 
 Blockly.Blocks.MX2125_rotation = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+        this.setTooltip(Blockly.MSG_MX2125_ROTATION_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic rotation x-axis PIN")
@@ -69,7 +75,9 @@ Blockly.Blocks.MX2125_rotation = {
 };
 
 Blockly.Blocks.MX2125_tilt_xaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic tilt x-axis PIN")
@@ -82,7 +90,9 @@ Blockly.Blocks.MX2125_tilt_xaxis = {
 };
 
 Blockly.Blocks.MX2125_tilt_yaxis = {
-    init: function () {
+    helpUrl: Blockly.MSG_MEMSIC_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic tilt y-axis PIN")
@@ -94,31 +104,36 @@ Blockly.Blocks.MX2125_tilt_yaxis = {
     }
 };
 
-Blockly.Blocks.MMA7455_acceleration = {
-    init: function () {
+Blockly.Blocks.MMA7455_init = {
+    helpUrl: Blockly.MSG_ACCELEROMETER_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MMA7455_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("Accelerometer x-axis PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX")
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("store x value in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR');
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("y-axis PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY")
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("store y value in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR');
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("z-axis PIN")
+                .appendField("Accelerometer initialize CS")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINZ")
+                .appendField("DATA")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINX")
+                .appendField("CLK")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINY");
+
+        this.setInputsInline(false);
+        this.setNextStatement(true, null);
+        this.setPreviousStatement(true, null);
+    }
+};
+
+Blockly.Blocks.MMA7455_acceleration = {
+    helpUrl: Blockly.MSG_ACCELEROMETER_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("store z value in")
+                .appendField("Accelerometer store x-axis in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR')
+                .appendField(" y-axis in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Y_VAR')
+                .appendField(" z-axis in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
 
         this.setInputsInline(false);
@@ -140,7 +155,9 @@ Blockly.Blocks.MMA7455_acceleration = {
 };
 
 Blockly.Blocks.HMC5883L_init = {
-    init: function () {
+    helpUrl: Blockly.MSG_COMPASS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_HMC5883L_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Compass initialize SCL")
@@ -156,10 +173,12 @@ Blockly.Blocks.HMC5883L_init = {
 };
 
 Blockly.Blocks.HMC5883L_read = {
-    init: function () {
+    helpUrl: Blockly.MSG_COMPASS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_HMC5883L_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("Compass store heading in")
+                .appendField("Compass heading store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HEADING');
 
         this.setInputsInline(true);
@@ -223,18 +242,23 @@ Blockly.propc.MX2125_tilt_yaxis = function () {
 };
 
 Blockly.propc.MMA7455_acceleration = function () {
-    var pinx = this.getFieldValue('PINX');
-    var piny = this.getFieldValue('PINY');
-    var pinz = this.getFieldValue('PINZ');
 
     var xstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('X_VAR'), Blockly.Variables.NAME_TYPE);
     var ystorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Y_VAR'), Blockly.Variables.NAME_TYPE);
     var zstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
 
+    return 'MMA7455_getxyz10(&' + xstorage + ', &' + ystorage + ', &' + zstorage + ');\n';
+};
+
+Blockly.propc.MMA7455_init = function () {
+    var pinx = this.getFieldValue('PINX');
+    var piny = this.getFieldValue('PINY');
+    var pinz = this.getFieldValue('PINZ');
+
     Blockly.propc.definitions_["include_mma7455"] = '#include "mma7455.h"';
     Blockly.propc.setups_["mma_7455"] = 'MMA7455_init(' + pinx + ', ' + piny + ', ' + pinz + ');\n';
 
-    return 'MMA7455_getxyz10(&' + xstorage + ', &' + ystorage + ', &' + zstorage + ');\n';
+    return '';
 };
 
 Blockly.propc.HMC5883L_init = function () {

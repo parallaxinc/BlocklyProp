@@ -9,6 +9,17 @@
 
 <html>
     <head>
+        <meta name="application-name" content="&nbsp;"/>
+        <meta name="msapplication-TileColor" content="#FFFFFF" />
+        <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />
+        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="57x57" href="<url:getCdnUrl url="/images/apple-touch-icon-57x57.png"/>" />
+        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="114x114" href="<url:getCdnUrl url="/images/apple-touch-icon-114x114.png"/>" />
+        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="72x72" href="<url:getCdnUrl url="/images/apple-touch-icon-72x72.png"/>" />
+        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="144x144" href="<url:getCdnUrl url="/images/apple-touch-icon-144x144.png"/>" />
+        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="120x120" href="<url:getCdnUrl url="/images/apple-touch-icon-120x120.png"/>" />
+        <link type="image/png" rel="apple-touch-icon-precomposed" sizes="152x152" href="<url:getCdnUrl url="/images/apple-touch-icon-152x152.png"/>" />
+        <link type="image/png" rel="icon" sizes="32x32" href="<url:getCdnUrl url="/images/favicon-32x32.png"/>" />
+        <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
         <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
@@ -21,7 +32,7 @@
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
-            <%
+                <%
                 String html = (String) request.getAttribute("html");
                 if (html != null) {
             %>
@@ -30,22 +41,9 @@
             <h2><fmt:message key="html.content_missing" /></h2>
             <% }%>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <h2><fmt:message key="home.latest_projects.title" /></h2>
-                    <ul class="latest-projects"></ul>
-                </div>
-
-                <div class="col-md-4">
-                    <h2><fmt:message key="home.c_project.title" /></h2>
-                    <a class="editor-new-link editor-c-link editor-icon" href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>" data-href="<url:getUrl url="/editor/blocklyc.jsp"/>"><fmt:message key="home.c_project.newlink" /></a>
-                </div>
-
-                <div class="col-md-4">
-                    <h2><fmt:message key="home.spin_project.title" /></h2>
-                    <a class="editor-new-link editor-spin-link editor-icon" href="<url:getUrl url="/projectcreate.jsp?lang=SPIN"/>" data-href="<url:getUrl url="/editor/blocklyspin.jsp"/>"><fmt:message key="home.spin_project.newlink" /></a>
-                </div>
-            </div>
+            <h2 class="pad-latest-projects"><fmt:message key="home.latest_projects.title" /></h2>
+            <hr>
+            <ul class="latest-projects"></ul>
         </div>
 
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>

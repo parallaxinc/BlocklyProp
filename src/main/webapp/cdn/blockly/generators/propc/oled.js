@@ -27,7 +27,9 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 Blockly.Blocks.oled_initialize = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_INITIALIZE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         // Field order DIN, CLK, CS, D/C, RES
         this.appendDummyInput()
@@ -49,7 +51,9 @@ Blockly.Blocks.oled_initialize = {
 };
 
 Blockly.Blocks.oled_font_loader = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_FONT_LOADER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("OLED font loader (EEPROM only)");
@@ -57,7 +61,9 @@ Blockly.Blocks.oled_font_loader = {
 };
 
 Blockly.Blocks.oled_clear_screen = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_CLEAR_SCREEN_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("OLED clear screen");
@@ -69,40 +75,43 @@ Blockly.Blocks.oled_clear_screen = {
 };
 
 Blockly.Blocks.oled_draw_circle = {
-  init: function() {
-    // First x/y coordinates
-    this.appendValueInput("POINT_X")
-        .setCheck("Number")
-        .appendField("OLED draw circle at (x)");
-    this.appendValueInput("POINT_Y")
-        .setCheck(null)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("(y)");
-    this.appendValueInput("RADIUS")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("radius");
-    // Color picker control
-    this.appendValueInput('COLOR')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .setCheck('Number')
-        .appendField("color");
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("fill")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_CIRCLE_TOOLTIP);
+        // First x/y coordinates
+        this.appendValueInput("POINT_X")
+            .setCheck("Number")
+            .appendField("OLED draw circle at (x)");
+        this.appendValueInput("POINT_Y")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        this.appendValueInput("RADIUS")
+            .setCheck("Number")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("radius");
+        // Color picker control
+        this.appendValueInput('COLOR')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .setCheck('Number')
+            .appendField("color");
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("fill")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
 
-    // Other details
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(colorPalette.getColor('protocols'));
-    this.setTooltip('Set coordinates to draw a circle');
-  }
+        // Other details
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
 };
 
 Blockly.Blocks.oled_draw_line = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_LINE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X_ONE")
             .setCheck('Number')
@@ -131,7 +140,9 @@ Blockly.Blocks.oled_draw_line = {
 };
 
 Blockly.Blocks.oled_draw_pixel = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_PIXEL_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("X_AXIS")
             .setCheck('Number')
@@ -150,7 +161,9 @@ Blockly.Blocks.oled_draw_pixel = {
 };
 
 Blockly.Blocks.oled_draw_triangle = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_TRIANGLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         // First x/y coordinates
         this.appendValueInput("POINT_X0")
@@ -192,58 +205,60 @@ Blockly.Blocks.oled_draw_triangle = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setTooltip('set coordinates to draw a triangle');
     }
 };
 
 Blockly.Blocks.oled_draw_rectangle = {
-  init: function() {
-    this.appendValueInput("POINT_X")
-        .setCheck("Number")
-//        .appendField("draw")
-//        .appendField(new Blockly.FieldDropdown([
-//            ["rectangle", "REG_RECTANGLE"],
-//            ["round rectangle", "ROUND_RECTANGLE"]
-//            ]), "rect_round")
-//        .appendField("at (x)");
-        .appendField("OLED draw rectangle at (x)")
-    this.appendValueInput("POINT_Y")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("(y)");
-    this.appendValueInput("RECT_WIDTH")
-        .setCheck(null)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("width");
-    this.appendValueInput("RECT_HEIGHT")
-        .setCheck(null)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("height");
-    this.appendValueInput("RECT_ROUND")
-        .setCheck(null)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("roundness");
-    // Color picker control
-    this.appendValueInput('COLOR')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .setCheck('Number')
-        .appendField("color");
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("fill")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_RECTANGLE_TOOLTIP);
+        this.appendValueInput("POINT_X")
+            .setCheck("Number")
+    //        .appendField("draw")
+    //        .appendField(new Blockly.FieldDropdown([
+    //            ["rectangle", "REG_RECTANGLE"],
+    //            ["round rectangle", "ROUND_RECTANGLE"]
+    //            ]), "rect_round")
+    //        .appendField("at (x)");
+            .appendField("OLED draw rectangle at (x)")
+        this.appendValueInput("POINT_Y")
+            .setCheck("Number")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        this.appendValueInput("RECT_WIDTH")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("width");
+        this.appendValueInput("RECT_HEIGHT")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("height");
+        this.appendValueInput("RECT_ROUND")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("roundness");
+        // Color picker control
+        this.appendValueInput('COLOR')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .setCheck('Number')
+            .appendField("color");
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("fill")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
 
-    // Other details
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(colorPalette.getColor('protocols'));
-    this.setTooltip('Set coordinates to draw a rectangle');
-  }
+        // Other details
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
 };
 
 Blockly.Blocks.oled_text_size = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_TEXT_SIZE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("OLED text size")
@@ -263,7 +278,9 @@ Blockly.Blocks.oled_text_size = {
 };
 
 Blockly.Blocks.oled_text_color = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_TEXT_COLOR_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('FONT_COLOR')
             .setCheck('Number')
@@ -278,10 +295,12 @@ Blockly.Blocks.oled_text_color = {
 };
 
 Blockly.Blocks.oled_get_max_height = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_GET_MAX_HEIGHT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("OLED max height")
+            .appendField("OLED max height");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -290,10 +309,12 @@ Blockly.Blocks.oled_get_max_height = {
 };
 
 Blockly.Blocks.oled_get_max_width = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_GET_MAX_WIDTH_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("OLED max width")
+            .appendField("OLED max width");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -302,7 +323,9 @@ Blockly.Blocks.oled_get_max_width = {
 };
 
 Blockly.Blocks.oled_set_cursor = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_SET_CURSOR_TOOLTIP);
         this.appendValueInput('X_POS')
             .setCheck('Number')
             .appendField("OLED set cursor at (x)");
@@ -318,7 +341,9 @@ Blockly.Blocks.oled_set_cursor = {
 };
 
 Blockly.Blocks.oled_print_text = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_PRINT_TEXT_TOOLTIP);
         this.appendValueInput('MESSAGE')
             .setCheck('String')
             .appendField("OLED print text ");
@@ -331,10 +356,12 @@ Blockly.Blocks.oled_print_text = {
 };
 
 Blockly.Blocks.oled_print_number = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_OLED_PRINT_NUMBER_TOOLTIP);
         this.appendValueInput('NUMIN')
             .setCheck('Number')
-            .appendField("OLED print number ")
+            .appendField("OLED print number ");
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
                 ["Decimal", "DEC"],

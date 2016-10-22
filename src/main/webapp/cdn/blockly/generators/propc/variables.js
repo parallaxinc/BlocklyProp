@@ -29,7 +29,9 @@ if (!Blockly.Blocks)
 
 Blockly.Blocks.variables_get = {
     // Variable getter.
-    init: function () {
+    helpUrl: Blockly.MSG_VARIABLES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_VARIABLES_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput("")
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
@@ -75,7 +77,9 @@ Blockly.Blocks.variables_declare = {
 
 Blockly.Blocks.variables_set = {
     // Variable setter.
-    init: function () {
+    helpUrl: Blockly.MSG_VARIABLES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_VARIABLES_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE')
                 .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)

@@ -27,7 +27,9 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.cog_new = {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_COG_NEW_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
             .appendField("new processor");

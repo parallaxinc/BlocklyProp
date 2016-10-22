@@ -27,7 +27,9 @@ if ( !Blockly.Blocks )
 
 
 Blockly.Blocks.rfid_get = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("RFID store reading in")
@@ -47,10 +49,16 @@ Blockly.Blocks.rfid_get = {
 };
 
 Blockly.Blocks.rfid_disable = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_DISABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendTitle("RFID disable");
+            .appendField("RFID")
+            .appendField(new Blockly.FieldDropdown([
+                    ["disable", "DISABLE"], 
+                    ["enable", "ENABLE"] 
+                    ]), "ACTION");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -58,7 +66,9 @@ Blockly.Blocks.rfid_disable = {
 };
 
 Blockly.Blocks.rfid_enable = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_ENABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("RFID initialize EN")
@@ -74,7 +84,9 @@ Blockly.Blocks.rfid_enable = {
 };
 
 Blockly.Blocks.rfid_close = {
+    helpUrl: Blockly.MSG_RFID_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_RFID_CLOSE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
             .appendField("RFID close");
@@ -87,16 +99,22 @@ Blockly.Blocks.rfid_close = {
 Blockly.propc.rfid_get = function() {
     var saveVariable = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
+    Blockly.propc.global_vars_["rfid_buffer"] = "char *rfidBfr;";
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    var code = 'char str* = rfid_get(rfid, 1000);\n\tsscan(&str[2], "%x", &' + saveVariable + ');\n\tif(' + saveVariable + ' == 237) ' + saveVariable + ' = 0;';
+    var code = 'rfidBfr = rfid_get(rfid, 500);\n\tsscan(&rfidBfr[2], "%x", &' + saveVariable + ');\n\tif(' + saveVariable + ' == 237) ' + saveVariable + ' = 0;';
     return code;
 };
 
 Blockly.propc.rfid_disable = function() {
+    var data = this.getFieldValue('ACTION');
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    return 'rfid_disable(rfid);\n';
+    if(data === "ENABLE") {
+        return 'rfid_enable(rfid);\n';
+    } else {
+        return 'rfid_disable(rfid);\n';    
+    }
 };
 
 Blockly.propc.rfid_enable = function() {
@@ -105,9 +123,7 @@ Blockly.propc.rfid_enable = function() {
 
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
     Blockly.propc.global_vars_["rfidser"] = 'rfidser *rfid;';
-    Blockly.propc.global_vars_["rfidser_inpin"] = 'int rfidEn = ' + pin_in + ';';
-    Blockly.propc.global_vars_["rfidser_outpin"] = 'int rfidSout = ' + pin_out + ';';
-    Blockly.propc.setups_["rfidser_setup"] = "rfid = rfid_open(rfidSout,rfidEn);"
+    Blockly.propc.setups_["rfidser_setup"] = 'rfid = rfid_open(' + pin_out + ',' + pin_in + ');';
 
     return '';
 };
