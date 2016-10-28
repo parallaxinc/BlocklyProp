@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="${param.url}"/>"  data-toolbar="#toolbar" data-search="true" data-side-pagination="server" data-pagination="true">
+<table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="${param.url}"/>"  data-toolbar="#toolbar" data-search="false" data-side-pagination="server" data-pagination="true">
     <thead>
         <tr>
             <th data-field="type" data-sortable="true" data-formatter="formatType" data-width="30px" data-align="center">&nbsp;</th>
