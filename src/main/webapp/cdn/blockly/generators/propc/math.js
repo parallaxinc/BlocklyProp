@@ -77,7 +77,6 @@ Blockly.Blocks.math_limit = {
                 .appendField("and");
 
         this.setInputsInline(true);
-        this.setTooltip("limit");
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -110,7 +109,6 @@ Blockly.propc.math_limit.OPERATORS = {
 
 // Increment/decrement
 Blockly.Blocks.math_crement = {
-    // Rounding functions.
     helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_MATH_CREMENT_TOOLTIP);
@@ -118,8 +116,6 @@ Blockly.Blocks.math_crement = {
         this.appendValueInput('VAR')
             .setCheck('Number')
             .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
-
-        this.setTooltip("");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
     }
@@ -182,7 +178,12 @@ Blockly.Blocks.math_bitwise = {
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('VAL1');
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["& (bitwise AND)", "&"], ["| (bitwise OR)", "|"], ["^ (bitwise XOR)", "^"], [">> (bitwise right shift)", ">>"], ["<< (bitwise left shift)", "<<"]]), "OPERATION");
+            .appendField(new Blockly.FieldDropdown([
+                ["& (bitwise AND)", "&"], 
+                ["| (bitwise OR)", "|"], 
+                ["^ (bitwise XOR)", "^"], 
+                [">> (bitwise right shift)", ">>"], 
+                ["<< (bitwise left shift)", "<<"]]), "OPERATION");
         this.appendValueInput('VAL2');
 
         this.setOutput(true, 'Number');
