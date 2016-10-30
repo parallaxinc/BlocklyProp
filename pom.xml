@@ -90,7 +90,7 @@
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.35</version>
+                        <version>5.1.40</version>
                     </dependency>
                 </dependencies>
 
@@ -224,15 +224,16 @@
         </dependency>
 
         <!-- Dependencies for logging -->
+        <!-- sl4fj is a facade for various logging frameworks -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.6</version>
+            <version>1.7.21</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.6</version>
+            <version>1.7.21</version>
         </dependency>
         <!-- END Logging Dependencies -->
 
@@ -457,7 +458,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.6</version>
+            <version>5.1.40</version>
         </dependency>
 
         <dependency>
@@ -472,8 +473,6 @@
             <version>1.8.3</version>
         </dependency>
 
-
-
         <!-- Clients for other Parallax servers -->
         <dependency>
             <groupId>com.parallax.client</groupId>
@@ -486,7 +485,6 @@
             <artifactId>Cloud-Compiler-java-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
 
     </dependencies>
 
