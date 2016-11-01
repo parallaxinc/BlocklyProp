@@ -202,6 +202,10 @@
             <category name="Ping)))" colour=140>
                 <block type="scribbler_ping"></block>
             </category>
+            <category name="Pins" colour=140>
+                <block type="digital_input"></block>
+                <block type="analog_input"></block>
+            </category>
         </category>
         <category name="Actions" colour=185>
             <category name="Motors" colour=185>

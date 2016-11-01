@@ -536,6 +536,26 @@ Blockly.Blocks.scribbler_ping = {
     }
 };
 
+Blockly.Blocks.digital_input = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("Digital reading on")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "DIGITAL_PIN");
+	this.setOutput(true, "Boolean");
+        this.setColour(colorPalette.getColor('input'));
+    }
+};
+
+Blockly.Blocks.analog_input = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("Analog reading on")
+                .appendField(new Blockly.FieldDropdown([['A0', '0'], ['A1', '1']]), "ANALOG_PIN");
+	this.setOutput(true, "Number");
+        this.setColour(colorPalette.getColor('input'));
+    }
+};
+
 Blockly.Blocks.spin_integer = {
     init: function () {
         this.appendDummyInput()
@@ -953,6 +973,23 @@ Blockly.Spin.scribbler_ping = function () {
     var Pin = window.parseInt(this.getFieldValue('PING_PIN'));
     var code = 'Scribbler.Ping(' + Pin + ') / ' + Range;
     return [code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.digital_input = function () {
+    var Pin = window.parseInt(this.getFieldValue('DIGITAL_PIN'));
+    var Code = 'Scribbler.DigitalInput(' + Pin + ')';
+    return [Code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.analog_input = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
+    var Pin = window.parseInt(this.getFieldValue('ANALOG_PIN'));
+    var Code = 'Scribbler.ADC(' + Pin + ')';
+    return [Code, Blockly.Spin.ORDER_ATOMIC];
 };
 
 Blockly.Spin.scribbler_servo = function () {
