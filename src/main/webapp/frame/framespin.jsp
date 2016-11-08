@@ -248,6 +248,23 @@
                         </block>
                     </value>
                 </block>
+                <block type="move_motors_xy">
+                    <value name="X_DISTANCE">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                    <value name="Y_DISTANCE">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                    <value name="MOTOR_SPEED">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="move_motors_angle">
                     <value name="ROTATE_ANGLE">
                         <block type="math_integer">

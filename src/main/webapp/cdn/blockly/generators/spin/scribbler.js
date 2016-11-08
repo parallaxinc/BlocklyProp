@@ -338,6 +338,30 @@ Blockly.Blocks.move_motors_distance = {
     }
 };
 
+Blockly.Blocks.move_motors_xy = {
+    init: function () {
+	this.appendDummyInput()
+		.appendField("in ")
+		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100_000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10_000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10_000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1_000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
+        this.appendDummyInput()
+            .appendField("move the Scribbler robot to the");
+	this.appendValueInput("X_DISTANCE")
+		.setCheck("Number")
+		.appendField("left(-)/right(+) by");
+	this.appendValueInput("Y_DISTANCE")
+		.setCheck("Number")
+		.appendField("back(-)/forward(+) by");
+	this.appendValueInput("MOTOR_SPEED")
+		.setCheck("Number")
+		.appendField("at a top speed of (1 to 100)%");
+
+	this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('io'));
+    }
+};
+
 // Move the motors...
 Blockly.Blocks.move_motors_angle = {
     init: function () {
@@ -346,7 +370,7 @@ Blockly.Blocks.move_motors_angle = {
 		.appendField("rotate the Scribbler robot (-1,080 to 1,080)\u00B0");
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
-		.appendField("around a radius in")
+		.appendField("around a radius to the left(-)/right(+) in")
 		.appendField(new Blockly.FieldDropdown([['inches (-85 to 85) of', ' * 100_000 / 1933'], ['tenths of an inch (-850 to 850) of', ' * 10_000 / 1933'], ['centimeters (-216 to 216) of', ' * 10_000 / 491'], ['millimeters (-2,160 to 2,160) of', ' * 1_000 / 491'], ['encoder counts (-4,400 to 4,400) of', '']]), 'RADIUS_MULTIPLIER');
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
@@ -825,6 +849,19 @@ Blockly.Spin.move_motors_distance = function () {
     return 'Scribbler.MotorSetDistance(' + left_distance + distance_multiplier + ', ' + right_distance + distance_multiplier + ', ' + top_speed + ')\n';
 };
 
+Blockly.Spin.move_motors_xy = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
+    var distance_multiplier = this.getFieldValue('MULTIPLIER');
+    var x_distance = Blockly.Spin.valueToCode(this, 'X_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var y_distance = Blockly.Spin.valueToCode(this, 'X_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var top_speed = Blockly.Spin.valueToCode(this, 'MOTOR_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
+    return 'Scribbler.MoveXY(' + x_distance + distance_multiplier + ', ' + y_distance + distance_multiplier + ', ' + top_speed + ')\n';
+};
+
 Blockly.Spin.move_motors_angle = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
     if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
@@ -1046,6 +1083,5 @@ Blockly.Spin.factory_reset = function () {
         Blockly.Spin.setups_[ 'setup_scribbler_default' ] = 'Scribbler_Default.Start';
     }
 
-    return
-    
+    return    
 };
