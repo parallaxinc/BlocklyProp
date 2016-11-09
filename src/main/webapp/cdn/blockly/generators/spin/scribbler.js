@@ -570,6 +570,21 @@ Blockly.Blocks.digital_input = {
     }
 };
 
+Blockly.Blocks.digital_output = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("set")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "OUTPUT_PIN");
+        this.appendDummyInput("")
+                .appendField("to")
+                .appendField(new Blockly.FieldDropdown([['high', "HIGH"], ['low', "LOW"], ['input', "INPUT"], ['output', "OUTPUT"], ['toggle state', "TOGGLE_STATE"], ['toggle direction', "TOGGLE_DIRECTION"]]), "OUTPUT_ACTION");
+	this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('io'));
+    }
+};
+
 Blockly.Blocks.analog_input = {
     init: function () {
         this.appendDummyInput("")
@@ -1016,6 +1031,12 @@ Blockly.Spin.digital_input = function () {
     var Pin = window.parseInt(this.getFieldValue('DIGITAL_PIN'));
     var Code = 'Scribbler.DigitalInput(' + Pin + ')';
     return [Code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.digital_output = function () {
+    var Pin = window.parseInt(this.getFieldValue('OUTPUT_PIN'));
+    var Action = this.getFieldValue('OUTPUT_ACTION');
+    return 'Scribbler.DigitalOutput(' + Pin + ', Scribbler#' + Action + ')\n';
 };
 
 Blockly.Spin.analog_input = function () {

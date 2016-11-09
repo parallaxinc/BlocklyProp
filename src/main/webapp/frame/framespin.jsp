@@ -208,6 +208,7 @@
             </category>
         </category>
         <category name="Actions" colour=185>
+            <block type="digital_output"></block>
             <category name="Motors" colour=185>
                 <block type="scribbler_drive">
                     <field name="DRIVE_ANGLE">STRAIGHT</field>
