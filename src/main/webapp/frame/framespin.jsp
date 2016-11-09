@@ -202,8 +202,13 @@
             <category name="Ping)))" colour=140>
                 <block type="scribbler_ping"></block>
             </category>
+            <category name="Pins" colour=140>
+                <block type="digital_input"></block>
+                <block type="analog_input"></block>
+            </category>
         </category>
         <category name="Actions" colour=185>
+            <block type="digital_output"></block>
             <category name="Motors" colour=185>
                 <block type="scribbler_drive">
                     <field name="DRIVE_ANGLE">STRAIGHT</field>
@@ -234,6 +239,23 @@
                         </block>
                     </value>
                     <value name="RIGHT_MOTOR_DISTANCE">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                    <value name="MOTOR_SPEED">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="move_motors_xy">
+                    <value name="X_DISTANCE">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                    <value name="Y_DISTANCE">
                         <block type="math_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
