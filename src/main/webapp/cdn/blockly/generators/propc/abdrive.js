@@ -27,51 +27,119 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-
-Blockly.Blocks.ab_drive_goto = {
+Blockly.Blocks.activitybot_calibrate = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_ACTIVITYBOT_CALIBRATE_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
-                .appendField('Drive goto')
-                .appendField('Left')
-                .appendField(new Blockly.FieldTextInput('64',
-                        Blockly.FieldTextInput.numberValidator), 'LEFT')
-                .appendField('Right')
-                .appendField(new Blockly.FieldTextInput('64',
-                        Blockly.FieldTextInput.numberValidator), 'RIGHT');
+            .appendField("ActivityBot calibrate");
 
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Blocks.activitybot_display_calibration = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+            .appendField("ActivityBot display calibration");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.Blocks.ab_drive_init = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+                .appendField("Robot")
+                .appendField(new Blockly.FieldDropdown([["ActivityBot", "abdrive.h"], ["Arlo", "arlodrive.h"], ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
+                    this.sourceBlock_.updateShape_({"BOT": bot});
+                }), "BOT")
+                .appendField("initialize"); 
+        this.appendDummyInput("PINS")
+                .appendField(" ramping")
+                .appendField(new Blockly.FieldDropdown([["none", "2000"], ["light", "16"], ["medium", "8"], ["heavy", "4"], ["maximum", "2"]]), "RAMPING");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var bot = this.getFieldValue('BOT');
+        container.setAttribute('BOT', bot);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var bot = xmlElement.getAttribute('BOT');
+        this.updateShape_({"BOT": bot});
+    },
+    updateShape_: function (details) {
+
+        var bot = details['BOT'];
+        if (details['BOT'] === undefined) {
+            bot = this.getFieldValue('BOT');
+        }
+
+        this.removeInput('PINS');
+        this.appendDummyInput("PINS");
+        var inputPins = this.getInput('PINS');
+        if (bot === 'servodiffdrive.h') {
+            inputPins.appendField(" left PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
+                .appendField("right PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT")
+                .appendField(" ramping")
+                .appendField(new Blockly.FieldDropdown([["none", "2000"], ["light", "16"], ["medium", "8"], ["heavy", "4"], ["maximum", "2"]]), "RAMPING");
+        } else {
+            inputPins.appendField(" ramping")
+                .appendField(new Blockly.FieldDropdown([["none", "2000"], ["light", "16"], ["medium", "8"], ["heavy", "4"], ["maximum", "2"]]), "RAMPING");
+        }
+    }
+};
+
+
+Blockly.Blocks.ab_drive_goto = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_ROBOT_DRIVE_DISTANCE_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+                .appendField('Robot drive distance in')
+                .appendField(new Blockly.FieldDropdown([["ticks", "TICK"], ["centimeters", "CM"], ["inches", "INCH"]]), "UNITS");
+        this.appendValueInput("LEFT")
+                .setCheck('Number')
+                .appendField("left");
+        this.appendValueInput("RIGHT")
+                .setCheck('Number')
+                .appendField("right");
+
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.Blocks.ab_drive_speed = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
-        this.appendDummyInput()
-                .appendField('Drive speed')
-                .appendField('Left')
-                .appendField(new Blockly.FieldTextInput('64',
-                        Blockly.FieldTextInput.numberValidator), 'LEFT')
-                .appendField('Right')
-                .appendField(new Blockly.FieldTextInput('64',
-                        Blockly.FieldTextInput.numberValidator), 'RIGHT');
-
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-    }
-};
-
-Blockly.Blocks.ab_drive_ramp = {
-    init: function() {
-        this.setColour(colorPalette.getColor('output'));
-        this.appendDummyInput()
-            .appendField("Drive ramp step")
-            .appendField("Left speed")
-            .appendField(new Blockly.FieldDropdown([["-1", "-1"], ["-2", "-2"], ["-3", "-3"], ["-4", "-4"], ["-5", "-5"], ["-6", "-6"], ["-7", "-7"], ["-8", "-8"], ["-9", "-9"], ["-10", "-10"], ["-11", "-11"], ["-12", "-12"], ["-13", "-13"], ["-14", "-14"], ["-15", "-15"], ["-16", "-16"], ["-17", "-17"], ["-18", "-18"], ["-19", "-19"], ["-20", "-20"], ["-21", "-21"], ["-22", "-22"], ["-23", "-23"], ["-24", "-24"], ["-25", "-25"], ["-26", "-26"], ["-27", "-27"], ["-28", "-28"], ["-29", "-29"], ["-30", "-30"], ["-31", "-31"], [ "-32", "-32"], ["-33", "-33"], ["-34", "-34"], ["-35", "-35"], ["-36", "-36"], ["-37", "-37"], ["-38", "-38"], ["-39", "-39"], ["-40", "-40"], ["-41", "-41"], ["-42", "-42"], ["-43", "-43"], ["-44", "-44"], ["-45", "-45"], ["-46", "-46"], ["-47", "-47"], ["-48", "-48"], ["-49", "-49"], ["-50", "-50"], ["-51", "-51"], ["-52", "-52"], ["-53", "-53"], ["-54", "-54"], ["-55", "-55"], ["-56", "-56"], ["-57", "-57"], ["-58", "-58"], ["-59", "-59"], ["-60", "-60"], ["-61", "-61"], ["-62", "-62"], ["-63", "-63"], ["-64", "-64"], ["-65", "-65"], ["-66", "-66"], ["-67", "-67"], ["-68", "-68"], ["-69", "-69"], ["-70", "-70"], ["-71", "-71"], ["-72", "-72"], ["-73", "-73"], ["-74", "-74"], ["-75", "-75"], ["-76", "-76"], ["-77", "-77"], ["-78", "-78"], ["-79", "-79"], ["-80", "-80"], ["-81", "-81"], ["-82", "-82"], ["-83", "-83"], ["-84", "-84"], ["-85", "-85"], ["-86", "-86"], ["-87", "-87"], ["-88", "-88"], ["-89", "-89"], ["-90", "-90"], ["-91", "-91"], ["-92", "-92"], ["-93", "-93"], ["-94", "-94"], ["-95", "-95"], ["-96", "-96"], ["-97", "-97"], ["-98", "-98"], ["-99", "-99"], ["-100", "-100"], ["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"], [ "32", "32"], ["33", "33"], ["34", "34"], ["35", "35"], ["36", "36"], ["37", "37"], ["38", "38"], ["39", "39"], ["40", "40"], ["41", "41"], ["42", "42"], ["43", "43"], ["44", "44"], ["45", "45"], ["46", "46"], ["47", "47"], ["48", "48"], ["49", "49"], ["50", "50"], ["51", "51"], ["52", "52"], ["53", "53"], ["54", "54"], ["55", "55"], ["56", "56"], ["57", "57"], ["58", "58"], ["59", "59"], ["60", "60"], ["61", "61"], ["62", "62"], ["63", "63"], ["64", "64"], ["65", "65"], ["66", "66"], ["67", "67"], ["68", "68"], ["69", "69"], ["70", "70"], ["71", "71"], ["72", "72"], ["73", "73"], ["74", "74"], ["75", "75"], ["76", "76"], ["77", "77"], ["78", "78"], ["79", "79"], ["80", "80"], ["81", "81"], ["82", "82"], ["83", "83"], ["84", "84"], ["85", "85"], ["86", "86"], ["87", "87"], ["88", "88"], ["89", "89"], ["90", "90"], ["91", "91"], ["92", "92"], ["93", "93"], ["94", "94"], ["95", "95"], ["96", "96"], ["97", "97"], ["98", "98"], ["99", "99"], ["100", "100"]]), 'LEFT_SPEED');
-        this.appendDummyInput()
-            .appendField("Right speed")
-            .appendField(new Blockly.FieldDropdown([["-1", "-1"], ["-2", "-2"], ["-3", "-3"], ["-4", "-4"], ["-5", "-5"], ["-6", "-6"], ["-7", "-7"], ["-8", "-8"], ["-9", "-9"], ["-10", "-10"], ["-11", "-11"], ["-12", "-12"], ["-13", "-13"], ["-14", "-14"], ["-15", "-15"], ["-16", "-16"], ["-17", "-17"], ["-18", "-18"], ["-19", "-19"], ["-20", "-20"], ["-21", "-21"], ["-22", "-22"], ["-23", "-23"], ["-24", "-24"], ["-25", "-25"], ["-26", "-26"], ["-27", "-27"], ["-28", "-28"], ["-29", "-29"], ["-30", "-30"], ["-31", "-31"], [ "-32", "-32"], ["-33", "-33"], ["-34", "-34"], ["-35", "-35"], ["-36", "-36"], ["-37", "-37"], ["-38", "-38"], ["-39", "-39"], ["-40", "-40"], ["-41", "-41"], ["-42", "-42"], ["-43", "-43"], ["-44", "-44"], ["-45", "-45"], ["-46", "-46"], ["-47", "-47"], ["-48", "-48"], ["-49", "-49"], ["-50", "-50"], ["-51", "-51"], ["-52", "-52"], ["-53", "-53"], ["-54", "-54"], ["-55", "-55"], ["-56", "-56"], ["-57", "-57"], ["-58", "-58"], ["-59", "-59"], ["-60", "-60"], ["-61", "-61"], ["-62", "-62"], ["-63", "-63"], ["-64", "-64"], ["-65", "-65"], ["-66", "-66"], ["-67", "-67"], ["-68", "-68"], ["-69", "-69"], ["-70", "-70"], ["-71", "-71"], ["-72", "-72"], ["-73", "-73"], ["-74", "-74"], ["-75", "-75"], ["-76", "-76"], ["-77", "-77"], ["-78", "-78"], ["-79", "-79"], ["-80", "-80"], ["-81", "-81"], ["-82", "-82"], ["-83", "-83"], ["-84", "-84"], ["-85", "-85"], ["-86", "-86"], ["-87", "-87"], ["-88", "-88"], ["-89", "-89"], ["-90", "-90"], ["-91", "-91"], ["-92", "-92"], ["-93", "-93"], ["-94", "-94"], ["-95", "-95"], ["-96", "-96"], ["-97", "-97"], ["-98", "-98"], ["-99", "-99"], ["-100", "-100"], ["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"], [ "32", "32"], ["33", "33"], ["34", "34"], ["35", "35"], ["36", "36"], ["37", "37"], ["38", "38"], ["39", "39"], ["40", "40"], ["41", "41"], ["42", "42"], ["43", "43"], ["44", "44"], ["45", "45"], ["46", "46"], ["47", "47"], ["48", "48"], ["49", "49"], ["50", "50"], ["51", "51"], ["52", "52"], ["53", "53"], ["54", "54"], ["55", "55"], ["56", "56"], ["57", "57"], ["58", "58"], ["59", "59"], ["60", "60"], ["61", "61"], ["62", "62"], ["63", "63"], ["64", "64"], ["65", "65"], ["66", "66"], ["67", "67"], ["68", "68"], ["69", "69"], ["70", "70"], ["71", "71"], ["72", "72"], ["73", "73"], ["74", "74"], ["75", "75"], ["76", "76"], ["77", "77"], ["78", "78"], ["79", "79"], ["80", "80"], ["81", "81"], ["82", "82"], ["83", "83"], ["84", "84"], ["85", "85"], ["86", "86"], ["87", "87"], ["88", "88"], ["89", "89"], ["90", "90"], ["91", "91"], ["92", "92"], ["93", "93"], ["94", "94"], ["95", "95"], ["96", "96"], ["97", "97"], ["98", "98"], ["99", "99"], ["100", "100"]]), 'RIGHT_SPEED');
+        this.appendValueInput("LEFT")
+                .setCheck('Number')
+                .appendField("Robot drive speed left");
+        this.appendValueInput("RIGHT")
+                .setCheck('Number')
+                .appendField("right");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -79,55 +147,91 @@ Blockly.Blocks.ab_drive_ramp = {
     }
 };
 
-Blockly.Blocks.ab_drive_set_ramp_step = {
-    init: function() {
-        this.setColour(colorPalette.getColor('output'));
-        this.appendDummyInput()
-            .appendField("Drive set ramp step")
-            .appendField("Left rampstep")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"]]), 'LEFT_RAMP_STEP');
-        this.appendDummyInput()
-            .appendField("Right rampstep")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"]]), 'RIGHT_RAMP_STEP');
 
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
+Blockly.propc.ab_drive_init = function() {
+    var bot = this.getFieldValue('BOT');
+    var left = Number(this.getFieldValue('LEFT'));
+    var right = Number(this.getFieldValue('RIGHT'));
+    var ramping = Number(this.getFieldValue('RAMPING'));
+
+    Blockly.propc.definitions_["include abdrive"] = '#include "' + bot + '"';
+
+    if(Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
+        Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
+        Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';	
+    } else {
+        Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
     }
+    
+    return '';
 };
 
 Blockly.propc.ab_drive_goto = function() {
-    var left = Number(this.getFieldValue('LEFT'));
-    var right = Number(this.getFieldValue('RIGHT'));
+    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE);
+    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE);
+    var units = this.getFieldValue('UNITS');
+    var bot = Blockly.propc.definitions_["include abdrive"];
 
-    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
-
-    return 'drive_goto(' + left + ', ' + right + ');\n';
+    var code = '';
+    
+    if(bot === '#include "servodiffdrive.h"') {
+        code += '// Servo Differential Drive does not support "Drive Distance"\n';
+    } else if(bot === '#include "abdrive.h"') {
+        if(units === 'TICK') {
+            code += 'drive_goto(' + left + ', ' + right + ');\n';
+        } else if(units === 'CM') {
+            code += 'drive_goto((' + left + ' * 40)/13), (' + right + ' * 40)/13);\n';
+        } else {
+            code += 'drive_goto((' + left + ' * 508)/65), (' + right + ' * 508)/65);\n';            
+        }
+    } else {
+        if(units === 'TICK') {
+            code += 'drive_goto(' + left + ', ' + right + ');\n';
+        } else if(units === 'CM') {
+            code += 'drive_goto((' + left + ' * 253)/90), (' + right + ' * 253)/90);\n';            
+        } else {
+            code += 'drive_goto((' + left + ' * 50)/7), (' + right + ' * 50)/7);\n';            
+        }        
+    }
+    
+    if(bot === undefined) {
+        return '// Robot drive system is not initialized!\n';
+    } else {
+        return code;
+    }
 };
 
 Blockly.propc.ab_drive_speed = function() {
-    var left = Number(this.getFieldValue('LEFT'));
-    var right = Number(this.getFieldValue('RIGHT'));
+    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE);
+    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE);
+    var bot = Blockly.propc.definitions_["include abdrive"];
+    
+    var code = '';
+    
+    if(bot === '#include "servodiffdrive.h"') {
+        code = 'drive_speeds(' + left + ', ' + right + ');\n';
+    } else {
+        if(Blockly.propc.setups_["abd_ramping"] === 'drive_setRampStep(2000);\n') {
+            code = 'drive_speed(' + left + ', ' + right + ');\n';
+        } else {
+            code = 'drive_ramp(' + left + ', ' + right + ');\n';
+        }
+    }
 
-    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
-
-    return 'drive_speed(' + left + ', ' + right + ');\n';
+    if(bot === undefined) {
+        return '// Robot drive system is not initialized!\n';
+    } else {
+        return code;
+    }
 };
 
-Blockly.propc.ab_drive_ramp = function() {
-    var left_speed = this.getFieldValue('LEFT_SPEED');
-    var right_speed = this.getFieldValue('RIGHT_SPEED');
+Blockly.propc.activitybot_calibrate = function() {
+    Blockly.propc.definitions_["activitybot_calibrate"] = '#include "abcalibrate.h"';
+    Blockly.propc.setups_["activitybot_calibrate"] = 'cal_servoPins(12, 13);\n\tcal_encoderPins(14, 15);';
 
-    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
-
-    return 'drive_ramp(' + left_speed + ', ' + right_speed + ');\n';
+    return 'cal_activityBot();\n';
 };
 
-Blockly.propc.ab_drive_set_ramp_step = function() {
-    var left_ramp_speed = this.getFieldValue('LEFT_RAMP_STEP');
-    var right_ramp_speed = this.getFieldValue('RIGHT_RAMP_STEP');
-
-    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
-
-    return 'drive_rampStep(' + left_ramp_speed + ', ' + right_ramp_speed + ');\n';
+Blockly.propc.activitybot_display_calibration = function() {
+    return 'drive_displayInterpolation();\n';
 };

@@ -21,6 +21,8 @@
  * @fileoverview Generating C for ActivityBot Blocks
  * @author valetolpegin@gmail.com (Vale Tolpegin)
  */
+
+/**   ------------moved content to abdrive.js------------------
 'use strict';
 
 if (!Blockly.Blocks)
@@ -59,3 +61,4 @@ Blockly.propc.activitybot_calibrate = function() {
 Blockly.propc.activitybot_display_calibration = function() {
     return 'drive_displayInterpolation();\n';
 }
+*/

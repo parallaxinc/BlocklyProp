@@ -66,8 +66,8 @@ Blockly.Blocks.oled_clear_screen = {
 	this.setTooltip(Blockly.MSG_OLED_CLEAR_SCREEN_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("OLED clear screen");
-
+            .appendField("OLED command")
+            .appendField(new Blockly.FieldDropdown([["clear screen", "CLS"], ["sleep", "SLEEP"], ["wake", "WAKE"], ["invert", "INV"]]), "CMD");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -401,11 +401,22 @@ Blockly.propc.oled_font_loader = function () {
 
 
 Blockly.propc.oled_clear_screen = function() {
+    var cmd = this.getFieldValue("CMD");
     // Ensure header file is included
     Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
-    // Emit code to clear the screen
-    var code = 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );';
+    var code = '';
+    
+    if(cmd === 'CLS') {
+        code += 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );\n';
+    } else if(cmd === 'WAKE') {
+        code += 'oledc_wake();\n';
+    } else if(cmd === 'SLEEP') {
+        code += 'oledc_sleep();\n';
+    } else if(cmd === 'INV') {
+        code += 'oledc_invertDisplay();\n';
+    }
+    
     return code;
 };
 

@@ -864,6 +864,8 @@ Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL = "http://learn.parallax.com/ab-blocks/p
 Blockly.MSG_ANALOG_RC_TIME_HELPURL = "http://learn.parallax.com/ab-blocks/rc-time";
 Blockly.MSG_AUDIO_HELPURL = "http://learn.parallax.com/ab-blocks/audio";
 Blockly.MSG_SERVO_HELPURL = "http://learn.parallax.com/ab-blocks/servo";
+Blockly.MSG_ROBOT_HELPURL = "http://learn.parallax.com/ab-blocks/robot";
+Blockly.MSG_IMU_HELPURL = "http://learn.parallax.com/ab-blocks/imu";
 
 
 //----------Activity Board (Propeller C) block tooltips ----------------------------
@@ -987,6 +989,12 @@ Blockly.MSG_BASE_FREQOUT_TOOLTIP = "frequency out: sends pulses to the I/O pin a
 Blockly.MSG_SERVO_MOVE_TOOLTIP = "Standard servo: sets the position of a standard servo connected to the I/O pin.";
 Blockly.MSG_SERVO_SPEED_TOOLTIP = "CR servo speed: sets the speed of a continuous rotation servo connected to the I/O pin.";
 Blockly.MSG_SERVO_SET_RAMP_TOOLTIP = "CR servo set ramp: sets the amount a servo's speed can change each update cycle.";
+Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP = "Robot drive init: set up the Robot's drive system on the Propeller";
+Blockly.MSG_ROBOT_DRIVE_DISTANCE_TOOLTIP = "Robot drive distance: drives each wheel a specified distance.";
+Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP = "Robot drive speed: drives each wheel at a specified speed.";
+Blockly.MSG_ROBOT_ACTIVITYBOT_CALIBRATE_TOOLTIP = "ActivityBot Calibrate: runs the ActivityBot calibration routine.";
+Blockly.MSG_ROBOT_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP = "ActivityBot Display Calibration: displays the calibration results on the terminal.";
+
 
 //-------Scribbler 3 help URLs ---------------------------------------------
 Blockly.MSG_S3_COMMUNICATE_HELPURL = "http://learn.parallax.com/s3-blocks/communicate";
