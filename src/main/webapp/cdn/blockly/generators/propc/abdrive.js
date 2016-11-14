@@ -188,7 +188,7 @@ Blockly.propc.ab_drive_goto = function() {
         if(units === 'TICK') {
             code += 'drive_goto(' + left + ', ' + right + ');\n';
         } else if(units === 'CM') {
-            code += 'drive_goto((' + left + ' * 2500)/889), (' + right + ' * 2500)/889);\n';            
+            code += 'drive_goto((' + left + ' * 253)/90), (' + right + ' * 253)/90);\n';            
         } else {
             code += 'drive_goto((' + left + ' * 50)/7), (' + right + ' * 50)/7);\n';            
         }        
