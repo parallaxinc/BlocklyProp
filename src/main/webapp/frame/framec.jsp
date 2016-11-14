@@ -52,7 +52,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/activitybot.js"/>"></script>
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/activitybot.js"/>"></script>   -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
 
@@ -787,21 +787,34 @@
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.robot" />" exclude="heb,activity-board" >
-            <category name="<fmt:message key="category.robot.activitybot" />">
-                <block type="ab_drive_speed"></block>
-                <block type="ab_drive_goto"></block>
-                <block type="ab_drive_ramp"></block>
-                <block type="ab_drive_set_ramp_step"></block>
-                <block type="activitybot_calibrate"></block>
-                <block type="activitybot_display_calibration"></block>
-            </category>
-            <category name="<fmt:message key="category.robot.servo-diff-drive" />">
-                <block type="servodiffdrive_library_drive_pins"></block>
-                <block type="servodiffdrive_library_drive_speed"></block>
-                <block type="servodiffdrive_library_drive_setRamp"></block>
-                <block type="servodiffdrive_library_drive_sleep"></block>
-            </category>
+        <category name="<fmt:message key="category.robot" />" exclude="heb" colour="295">
+            <block type="ab_drive_init"></block>
+            <block type="ab_drive_speed">
+                <value name="LEFT">
+                    <block type="math_number">
+                        <field name="NUM">64</field>
+                    </block>
+                </value>
+                <value name="RIGHT">
+                    <block type="math_number">
+                        <field name="NUM">64</field>
+                    </block>
+                </value>
+            </block>
+            <block type="ab_drive_goto">
+                <value name="LEFT">
+                    <block type="math_number">
+                        <field name="NUM">64</field>
+                    </block>
+                </value>
+                <value name="RIGHT">
+                    <block type="math_number">
+                        <field name="NUM">64</field>
+                    </block>
+                </value>
+            </block>
+            <block type="activitybot_calibrate"></block>
+            <block type="activitybot_display_calibration"></block>
         </category>
         <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" colour="290">
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
