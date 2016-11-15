@@ -142,7 +142,7 @@
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
-            <block type="controls_if"></block>
+            <block type="controls_boolean_if"></block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
                     <block type="math_integer">
@@ -174,9 +174,9 @@
             </block>
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
-            <block type="logic_operation"></block>
-            <block type="logic_negate"></block>
-            <block type="logic_compare"></block>
+            <block type="logic_boolean_operation"></block>
+            <block type="logic_boolean_negate"></block>
+            <block type="logic_boolean_compare"></block>
         </category>
         <category name="Sensors" colour=140>
             <category name="Line" colour=140>
