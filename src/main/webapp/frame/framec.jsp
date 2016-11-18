@@ -527,14 +527,24 @@
                 <block type="xbee_receive"></block>
             </category>
         </category>
+        
+        <%-- Sensor menu items --%>        
         <category name="<fmt:message key="category.sensor-input" />" exclude="heb" colour="155">
-            <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
-                <block type="HMC5883L_init"></block>
-                <block type="HMC5883L_read"></block>
-            </category>
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>
                 <block type="joystick_input_yaxis"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.colorpal" />">
+                <block type="colorpal_enable"></block>
+                <block type="colorpal_get_colors_raw"></block>
+                <block type="colorpal_get_colors"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.ping" />">
+                <block type="sensor_ping"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
+                <block type="HMC5883L_init"></block>
+                <block type="HMC5883L_read"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
                 <block type="MX2125_acceleration_xaxis"></block>
@@ -546,9 +556,6 @@
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
                 <block type="MMA7455_init"></block>
                 <block type="MMA7455_acceleration"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.ping" />">
-                <block type="sensor_ping"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.pir" />">
                 <block type="PIR_Sensor"></block>
@@ -566,11 +573,6 @@
                 <block type="sound_impact_run"></block>
                 <block type="sound_impact_get"></block>
                 <block type="sound_impact_end"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.colorpal" />">
-                <block type="colorpal_enable"></block>
-                <block type="colorpal_get_colors_raw"></block>
-                <block type="colorpal_get_colors"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.memory" />" include="activity-board" colour="155">
