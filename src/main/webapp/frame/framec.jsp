@@ -261,25 +261,6 @@
             <block type="set_pins"></block>
         </category>
         <category name="<fmt:message key="category.communicate" />" exclude="heb" colour="320">
-            <category name="<fmt:message key="category.communicate.serial-lcd" />">
-                <block type="debug_lcd_init"></block>
- <%--                <block type="debug_lcd_clear"></block> --%>
-                <block type="debug_lcd_print">
-                    <value name="MESSAGE">
-                        <block type="string_type_block"></block>
-                    </value>
-                </block>
-                <block type="debug_lcd_number">
-                    <value name="VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="debug_lcd_action"></block>
-                <block type="debug_lcd_set_cursor"></block>
-                <block type="debug_lcd_music_note"></block>
-            </category>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>
@@ -445,43 +426,14 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.communicate.serial-terminal" />">
-                <block type="console_print">
-                    <value name="MESSAGE">
-                        <block type="string_type_block"></block>
-                    </value>
-                </block>
-                <block type="console_print_variables">
-                    <value name="VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="console_scan_text"></block>
-                <block type="console_scan_number"></block>
-                <block type="console_newline"></block>
-                <block type="console_clear"></block>
-                <block type="console_move_to_position">
-                    <value name="ROW">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="COLUMN">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="serial_open"></block>
                 <block type="serial_tx"></block>
                 <block type="serial_send_text"></block>
                 <block type="serial_rx"></block>
                 <block type="serial_receive_text"></block>
- <%--           <block type="i2c_new_bus"></block>
+ <%--
+                <block type="i2c_new_bus"></block>
                 <block type="i2c_in">
                     <value name="SIZE">
                         <block type="math_number">
@@ -515,8 +467,59 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
-                </block>   --%>
-                
+                </block>
+ --%>               
+            </category>
+            <category name="<fmt:message key="category.communicate.serial-lcd" />">
+                <block type="debug_lcd_init"></block>
+ <%--
+                <block type="debug_lcd_clear"></block>
+ --%>
+                <block type="debug_lcd_print">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
+                <block type="debug_lcd_number">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="debug_lcd_action"></block>
+                <block type="debug_lcd_set_cursor"></block>
+                <block type="debug_lcd_music_note"></block>
+            </category>
+            <category name="<fmt:message key="category.communicate.serial-terminal" />">
+                <block type="console_print">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
+                <block type="console_print_variables">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="console_scan_text"></block>
+                <block type="console_scan_number"></block>
+                <block type="console_newline"></block>
+                <block type="console_clear"></block>
+                <block type="console_move_to_position">
+                    <value name="ROW">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLUMN">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
@@ -689,7 +692,8 @@
                         </block>
                     </value>
                 </block>
-            </category>                   --%>
+            </category>
+--%>
         </category>
         <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb" colour="200">
             <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">
