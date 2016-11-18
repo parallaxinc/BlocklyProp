@@ -813,6 +813,7 @@
                     </block>
                 </value>
             </block>
+            <block type="ab_drive_stop"></block>
             <block type="activitybot_calibrate"></block>
             <block type="activitybot_display_calibration"></block>
         </category>
