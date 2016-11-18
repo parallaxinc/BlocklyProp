@@ -34,9 +34,6 @@ Blockly.Blocks.activitybot_calibrate = {
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
             .appendField("ActivityBot calibrate");
-
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
     }
 };
 
@@ -99,10 +96,10 @@ Blockly.Blocks.ab_drive_init = {
                 .appendField("right PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT")
                 .appendField(" ramping")
-                .appendField(new Blockly.FieldDropdown([["none", "2000"], ["light", "16"], ["medium", "8"], ["heavy", "4"], ["maximum", "2"]]), "RAMPING");
+                .appendField(new Blockly.FieldDropdown([["none", "2000"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
         } else {
             inputPins.appendField(" ramping")
-                .appendField(new Blockly.FieldDropdown([["none", "2000"], ["light", "16"], ["medium", "8"], ["heavy", "4"], ["maximum", "2"]]), "RAMPING");
+                .appendField(new Blockly.FieldDropdown([["none", "2000"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
         }
     }
 };
@@ -147,6 +144,42 @@ Blockly.Blocks.ab_drive_speed = {
     }
 };
 
+Blockly.Blocks.ab_drive_stop = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+                .appendField("Robot drive stop");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.ab_drive_stop = function() {
+    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE);
+    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE);
+    var bot = Blockly.propc.definitions_["include abdrive"];
+    
+    var code = '';
+    
+    if(bot === '#include "servodiffdrive.h"') {
+        code = 'drive_speeds(0, 0);\n';
+    } else {
+        if(Blockly.propc.setups_["abd_ramping"] === 'drive_setRampStep(2000);\n') {
+            code = 'drive_speed(0, 0);\n';
+        } else {
+            code = 'drive_ramp(0, 0);\n';
+        }
+    }
+
+    if(bot === undefined) {
+        return '// Robot drive system is not initialized!\n';
+    } else {
+        return code;
+    }
+};
 
 Blockly.propc.ab_drive_init = function() {
     var bot = this.getFieldValue('BOT');
@@ -180,17 +213,17 @@ Blockly.propc.ab_drive_goto = function() {
         if(units === 'TICK') {
             code += 'drive_goto(' + left + ', ' + right + ');\n';
         } else if(units === 'CM') {
-            code += 'drive_goto((' + left + ' * 40)/13), (' + right + ' * 40)/13);\n';
+            code += 'drive_goto((' + left + ' * 40)/13, (' + right + ' * 40)/13);\n';
         } else {
-            code += 'drive_goto((' + left + ' * 508)/65), (' + right + ' * 508)/65);\n';            
+            code += 'drive_goto((' + left + ' * 508)/65, (' + right + ' * 508)/65);\n';            
         }
     } else {
         if(units === 'TICK') {
             code += 'drive_goto(' + left + ', ' + right + ');\n';
         } else if(units === 'CM') {
-            code += 'drive_goto((' + left + ' * 253)/90), (' + right + ' * 253)/90);\n';            
+            code += 'drive_goto((' + left + ' * 253)/90, (' + right + ' * 253)/90);\n';            
         } else {
-            code += 'drive_goto((' + left + ' * 50)/7), (' + right + ' * 50)/7);\n';            
+            code += 'drive_goto((' + left + ' * 50)/7, (' + right + ' * 50)/7);\n';            
         }        
     }
     
@@ -233,5 +266,9 @@ Blockly.propc.activitybot_calibrate = function() {
 };
 
 Blockly.propc.activitybot_display_calibration = function() {
+    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+
+    Blockly.propc.serial_terminal_ = true;
+
     return 'drive_displayInterpolation();\n';
 };
