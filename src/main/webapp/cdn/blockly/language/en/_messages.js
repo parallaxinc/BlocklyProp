@@ -865,7 +865,8 @@ Blockly.MSG_ANALOG_RC_TIME_HELPURL = "http://learn.parallax.com/ab-blocks/rc-tim
 Blockly.MSG_AUDIO_HELPURL = "http://learn.parallax.com/ab-blocks/audio";
 Blockly.MSG_SERVO_HELPURL = "http://learn.parallax.com/ab-blocks/servo";
 Blockly.MSG_ROBOT_HELPURL = "http://learn.parallax.com/ab-blocks/robot";
-Blockly.MSG_IMU_HELPURL = "http://learn.parallax.com/ab-blocks/imu";
+Blockly.MSG_IMU_HELPURL = "http://learn.parallax.com/ab-blocks/lsm9ds1";
+Blockly.MSG_WS2812B_HELPURL = "http://learn.parallax.com/ab-blocks/ws2812b";
 
 
 //----------Activity Board (Propeller C) block tooltips ----------------------------
@@ -947,6 +948,10 @@ Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP = "Serial receive text: receives and sto
 Blockly.MSG_XBEE_SETUP_TOOLTIP = "XBee initialize: match to Propeller I/O pin connections and XBee Baud rate.";
 Blockly.MSG_XBEE_TRANSMIT_TOOLTIP = "XBee transmit: sends information to an XBee.  Strings and numbers are terminated with an ASCII 13";
 Blockly.MSG_XBEE_RECEIVE_TOOLTIP = "XBee receive: receives information from an XBee.  Expects strings and numbers to be terminated with an ASCII 13";
+Blockly.MSG_WS2812B_INIT_TOOLTIP = " ";
+Blockly.MSG_WS2812B_SET_TOOLTIP = " ";
+Blockly.MSG_WS2812B_UPDATE_TOOLTIP = " ";
+
 Blockly.MSG_HMC5883L_INIT_TOOLTIP = "Compass initialize: match to Propeller I/O pin connections.";
 Blockly.MSG_HMC5883L_READ_TOOLTIP = "Compass heading: get current heading in degrees.";
 Blockly.MSG_JOYSTICK_INPUT_XAXIS_TOOLTIP = "Joystick x-axis: gets horizontal position of Joystick, match to A/D socket.";
@@ -958,6 +963,11 @@ Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP = "Memsic x tilt: gets x-\tilt in degrees 
 Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP = "Memsic y tilt: gets y-tilt in degrees from level with horizon, match to Propeller I/O pin.";
 Blockly.MSG_MMA7455_INIT_TOOLTIP = "Accelerometer initialize: match to Propeller I/O pin connections.";
 Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP = "Accelerometer store values: stores measured x, y, & z acceleration in specified variables.";
+Blockly.MSG_LSM9DS1_INIT_TOOLTIP = " ";
+Blockly.MSG_LSM9DS1_READ_TOOLTIP = " ";
+Blockly.MSG_LSM9DS1_TILT_TOOLTIP = " ";
+Blockly.MSG_LSM9DS1_HEADING_TOOLTIP = " ";
+
 Blockly.MSG_SENSOR_PING_TOOLTIP = "Ping))) distance: gets distance measured in the specified units, match to Propeller I/O pin.";
 Blockly.MSG_PIR_SENSOR_TOOLTIP = "PIR sensor: returns 1/true if motion is detected, match to Propeller I/O pin.";
 Blockly.MSG_RFID_ENABLE_TOOLTIP = "RFID initialize: match to Propeller I/O pin connections.";
@@ -992,6 +1002,7 @@ Blockly.MSG_SERVO_SET_RAMP_TOOLTIP = "CR servo set ramp: sets the amount a servo
 Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP = "Robot drive init: set up the Robot's drive system on the Propeller";
 Blockly.MSG_ROBOT_DRIVE_DISTANCE_TOOLTIP = "Robot drive distance: drives each wheel a specified distance.";
 Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP = "Robot drive speed: drives each wheel at a specified speed.";
+Blockly.MSG_ROBOT_DRIVE_STOP_TOOLTIP = "Robot drive stop: stops the robot from driving.";
 Blockly.MSG_ROBOT_ACTIVITYBOT_CALIBRATE_TOOLTIP = "ActivityBot Calibrate: runs the ActivityBot calibration routine.";
 Blockly.MSG_ROBOT_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP = "ActivityBot Display Calibration: displays the calibration results on the terminal.";
 
