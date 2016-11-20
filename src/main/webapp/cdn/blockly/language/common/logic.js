@@ -58,6 +58,41 @@ Blockly.Blocks.logic_compare.OPERATORS =
             ['>', 'GT'],
             ['\u2265', 'GTE']];
 
+Blockly.Blocks.logic_boolean_compare = {
+    // Comparison operator.
+    category: Blockly.LANG_CATEGORY_LOGIC,
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_LOGIC_COMPARE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Boolean');
+        this.appendValueInput('A')
+            .setCheck("Number");
+        this.appendValueInput('B')
+            .setCheck("Number")
+            .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+        this.setInputsInline(true);
+        // Assign 'this' to a variable for use in the tooltip closure below.
+        //var thisBlock = this;
+        //this.setTooltip(function () {
+        //    var op = thisBlock.getFieldValue('OP');
+        //    return Blockly.Language.logic_compare.TOOLTIPS[op];
+        //});
+    }
+};
+
+Blockly.Blocks.logic_boolean_compare.OPERATORS =
+        [['=', 'EQ'],
+            ['\u2260', 'NEQ'],
+            ['<', 'LT'],
+            ['\u2264', 'LTE'],
+            ['>', 'GT'],
+            ['\u2265', 'GTE']];
+
 //Blockly.Blocks.logic_compare.TOOLTIPS = {
 //    EQ: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_EQ,
 //    NEQ: Blockly.LANG_LOGIC_COMPARE_TOOLTIP_NEQ,
@@ -105,6 +140,44 @@ Blockly.Blocks.logic_operation.TOOLTIPS = {
     OR: Blockly.LANG_LOGIC_OPERATION_TOOLTIP_OR
 };
 
+Blockly.Blocks.logic_boolean_operation = {
+    // Logical operations: 'and', 'or'.
+    category: Blockly.LANG_CATEGORY_LOGIC,
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_LOGIC_OPERATION_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Boolean');
+        this.appendValueInput('A')
+                .setCheck('Boolean');
+        this.appendValueInput('B')
+                .setCheck('Boolean')
+                .appendField(new Blockly.FieldDropdown(this.OPERATORS), 'OP');
+        this.setInputsInline(true);
+        // Assign 'this' to a variable for use in the tooltip closure below.
+//    var thisBlock = this;
+//    this.setTooltip(function() {
+//      var op = thisBlock.getFieldValue('OP');
+//      return Blockly.Language.logic_operation.TOOLTIPS[op];
+//    });
+    }
+};
+
+Blockly.Blocks.logic_boolean_operation.OPERATORS =
+        [[Blockly.LANG_LOGIC_OPERATION_AND, 'AND'],
+            [Blockly.LANG_LOGIC_OPERATION_OR, 'OR'],
+            ['and not', 'AND_NOT'],
+            ['or not', 'OR_NOT']];
+
+Blockly.Blocks.logic_boolean_operation.TOOLTIPS = {
+    AND: Blockly.LANG_LOGIC_OPERATION_TOOLTIP_AND,
+    OR: Blockly.LANG_LOGIC_OPERATION_TOOLTIP_OR
+};
+
 Blockly.Blocks.logic_negate = {
     // Negation.
     category: Blockly.LANG_CATEGORY_LOGIC,
@@ -119,6 +192,25 @@ Blockly.Blocks.logic_negate = {
         this.setOutput(true, 'Number');
         this.appendValueInput('BOOL')
                 .setCheck('Number')
+                .appendField(Blockly.LANG_LOGIC_NEGATE_INPUT_NOT);
+    //    this.setTooltip(Blockly.LANG_LOGIC_NEGATE_TOOLTIP);
+    }
+};
+
+Blockly.Blocks.logic_boolean_negate = {
+    // Negation.
+    category: Blockly.LANG_CATEGORY_LOGIC,
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_LOGIC_NEGATE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Boolean');
+        this.appendValueInput('BOOL')
+                .setCheck('Boolean')
                 .appendField(Blockly.LANG_LOGIC_NEGATE_INPUT_NOT);
     //    this.setTooltip(Blockly.LANG_LOGIC_NEGATE_TOOLTIP);
     }

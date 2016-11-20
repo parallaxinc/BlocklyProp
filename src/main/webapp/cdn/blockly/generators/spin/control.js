@@ -56,7 +56,7 @@ Blockly.Spin.controls_repeat = function () {
     return code;
 };
 
-Blockly.Spin.controls_if = function () {
+Blockly.Spin.controls_boolean_if = function () {
     // If/elseif/else condition.
     var n = 0;
     var argument = Blockly.Spin.valueToCode(this, 'IF' + n,
