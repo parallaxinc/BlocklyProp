@@ -24,37 +24,43 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/lists.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/procedures.js"/>"></script>
         <!-- define blocks -->
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/bit_math.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/math.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/base.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/console.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/control.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/cog.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/xbee.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/variables.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/procedures.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/logic.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/TiltandAcceleration.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/GPS.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/eeprom.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abdrive.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/debug_LCD.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/serial.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/rfid.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abvolts.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/oled.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/activitybot.js"/>"></script>   -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>
+
+        <!-- Presently Condensed -->  
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/console.js"/>"></script>
+        
+        <!-- Currently Unused -->  
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>   -->
+
+        <!-- Ready to be deleted -->  
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/bit_math.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/activitybot.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/oled.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/rfid.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/serial.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/debug_LCD.js"/>"></script>     -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/TiltandAcceleration.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/GPS.js"/>"></script>      -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/xbee.js"/>"></script>    -->
 
         <style>
             html, body {
@@ -432,49 +438,23 @@
                 <block type="serial_send_text"></block>
                 <block type="serial_rx"></block>
                 <block type="serial_receive_text"></block>
- <%--
-                <block type="i2c_new_bus"></block>
-                <block type="i2c_in">
-                    <value name="SIZE">
+            </category>
+            <category name="<fmt:message key="category.communicate.WS2812B" />">
+                <block type="ws2812b_init"></block>
+                <block type="ws2812b_set">
+                    <value name="LED">
                         <block type="math_number">
                             <field name="NUM">1</field>
                         </block>
                     </value>
-                    <value name="DEVICE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="REGISTER">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
+                    <value name="COLOR">
+                        <block type="color_picker"></block>
                     </value>
                 </block>
-                <block type="i2c_out">
-                    <value name="DATA">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="DEVICE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ADDRESS">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
- --%>               
+                <block type="ws2812b_update"></block>
             </category>
             <category name="<fmt:message key="category.communicate.serial-lcd" />">
                 <block type="debug_lcd_init"></block>
- <%--
-                <block type="debug_lcd_clear"></block>
- --%>
                 <block type="debug_lcd_print">
                     <value name="MESSAGE">
                         <block type="string_type_block"></block>
@@ -527,8 +507,6 @@
                 <block type="xbee_receive"></block>
             </category>
         </category>
-        
-        <%-- Sensor menu items --%>        
         <category name="<fmt:message key="category.sensor-input" />" exclude="heb" colour="155">
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>
@@ -545,6 +523,12 @@
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
+            </category>
+            <category name="<fmt:message key="category.sensor-input.LSM9DS1" />">
+                <block type="lsm9ds1_init"></block>
+                <block type="lsm9ds1_read"></block>
+                <block type="lsm9ds1_tilt"></block>
+                <block type="lsm9ds1_heading"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.memsic-2axis" />">
                 <block type="MX2125_acceleration_xaxis"></block>
@@ -577,13 +561,6 @@
         </category>
         <category name="<fmt:message key="category.memory" />" include="activity-board" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
-<%--            <block type="eeprom_int_to"></block>
-                <block type="eeprom_int_from"></block>
-                <block type="eeprom_float_to"></block>
-                <block type="eeprom_float_from"></block>
-                <block type="eeprom_text_to"></block>
-                <block type="eeprom_text_from"></block>
---%>
                 <block type="eeprom_read">
                     <value name="ADDRESS">
                         <block type="math_number">
@@ -694,8 +671,7 @@
                         </block>
                     </value>
                 </block>
-            </category>
---%>
+            </category>                   --%>
         </category>
         <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb" colour="200">
             <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb">

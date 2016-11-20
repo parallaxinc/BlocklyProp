@@ -1,8 +1,7 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2014 Michel Lampo.
- *
+ * Copyright 2014 Michel Lampo, Vale Tolpegin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +17,22 @@
  */
 
 /**
- * @fileoverview Generating Prop-C for basic blocks.
+ * @fileoverview Generating C for sensor blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
- * @author valetolpegin@gmail.com ( Vale Tolpegin )
+ *         valetolpegin@gmail.com    (Vale Tolpegin)
+ *         jewald@parallax.com       (Jim Ewald)
+ *         mmatz@parallax.com        (Matthew Matz)
+ *         kgracey@parallax.com      (Ken Gracey)
+ *         carsongracey@gmail.com    (Carson Gracey)
  */
+
 'use strict';
 
 //define blocks
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-
+// ------------------ Terminal Console Blocks ----------------------------------
 Blockly.Blocks.console_print = {
     helpUrl: Blockly.MSG_TERMINAL_HELPURL,
     init: function() {
@@ -44,6 +48,17 @@ Blockly.Blocks.console_print = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
+};
+
+Blockly.propc.console_print = function () {
+    var text = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_ATOMIC);
+    var checkbox = this.getFieldValue('ck_nl');
+
+    Blockly.propc.serial_terminal_ = true;
+    
+    var code = 'print(' + text + ');\n';
+    if (checkbox === 'TRUE') { code += 'print("\\r");\n'; }
+    return code;
 };
 
 Blockly.Blocks.console_print_variables = {
@@ -68,6 +83,42 @@ Blockly.Blocks.console_print_variables = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
+};
+
+Blockly.propc.console_print_variables = function () {
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
+    var format = this.getFieldValue('FORMAT');
+    var checkbox = this.getFieldValue('ck_nl');
+    Blockly.propc.serial_terminal_ = true;
+
+    var code = 'print(';
+    if (checkbox !== 'TRUE') {
+        if (format === 'BIN') {
+            code += '"%b"';
+        } else if (format === 'HEX') {
+            code += '"%x"';                
+        } else if (format === 'DEC') {
+            code += '"%d"';
+        } else {
+            code += '"%c"';
+        }
+    } else {
+        if (format === 'BIN') {
+            code += '"%b\\r"';
+        } else if (format === 'HEX') {
+            code += '"%x\\r"';                
+        } else if (format === 'DEC') {
+            code += '"%d\\r"';
+        } else {
+            code += '"%c\\r"';
+        }
+    }
+    if (format === 'CHAR') {
+        code += ', (' + value + ' & 0xFF));\n';
+    } else {
+        code += ', ' + value + ');\n';        
+    }
+    return code;
 };
 
 Blockly.Blocks.console_scan_text = {
@@ -151,54 +202,6 @@ Blockly.propc.console_scan_number = function () {
     }
 };
 
-// Terminal print text
-Blockly.propc.console_print = function () {
-    var text = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_ATOMIC);
-    var checkbox = this.getFieldValue('ck_nl');
-
-    Blockly.propc.serial_terminal_ = true;
-    
-    var code = 'print(' + text + ');\n';
-    if (checkbox === 'TRUE') { code += 'print("\\r");\n'; }
-    return code;
-};
-
-Blockly.propc.console_print_variables = function () {
-    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
-    var format = this.getFieldValue('FORMAT');
-    var checkbox = this.getFieldValue('ck_nl');
-    Blockly.propc.serial_terminal_ = true;
-
-    var code = 'print(';
-    if (checkbox !== 'TRUE') {
-        if (format === 'BIN') {
-            code += '"%b"';
-        } else if (format === 'HEX') {
-            code += '"%x"';                
-        } else if (format === 'DEC') {
-            code += '"%d"';
-        } else {
-            code += '"%c"';
-        }
-    } else {
-        if (format === 'BIN') {
-            code += '"%b\\r"';
-        } else if (format === 'HEX') {
-            code += '"%x\\r"';                
-        } else if (format === 'DEC') {
-            code += '"%d\\r"';
-        } else {
-            code += '"%c\\r"';
-        }
-    }
-    if (format === 'CHAR') {
-        code += ', (' + value + ' & 0xFF));\n';
-    } else {
-        code += ', ' + value + ');\n';        
-    }
-    return code;
-};
-
 Blockly.Blocks.console_newline = {
     helpUrl: Blockly.MSG_TERMINAL_HELPURL,
     init: function() {
@@ -210,6 +213,11 @@ Blockly.Blocks.console_newline = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
+};
+
+Blockly.propc.console_newline = function () {
+    Blockly.propc.serial_terminal_ = true;
+    return 'term_cmd(CR);\n';
 };
 
 Blockly.Blocks.console_clear = {
@@ -225,32 +233,9 @@ Blockly.Blocks.console_clear = {
     }
 };
 
-Blockly.Blocks.console_move_to_column = {
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-            .appendField("Terminal move to column");
-        this.appendValueInput('COLUMNS')
-            .setCheck('Number');
-
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-    }
-};
-
-Blockly.Blocks.console_move_to_row = {
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-            .appendField("Terminal move to row");
-        this.appendValueInput('ROWS')
-            .setCheck('Number');
-
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-    }
+Blockly.propc.console_clear = function () {
+    Blockly.propc.serial_terminal_ = true;
+    return 'term_cmd(CLS);\n';
 };
 
 Blockly.Blocks.console_move_to_position = {
@@ -273,16 +258,6 @@ Blockly.Blocks.console_move_to_position = {
     }
 };
 
-Blockly.propc.console_newline = function () {
-    Blockly.propc.serial_terminal_ = true;
-    return 'term_cmd(CR);\n';
-};
-
-Blockly.propc.console_clear = function () {
-    Blockly.propc.serial_terminal_ = true;
-    return 'term_cmd(CLS);\n';
-};
-
 Blockly.propc.console_move_to_position = function () {
     Blockly.propc.serial_terminal_ = true;
     var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
@@ -301,4 +276,1192 @@ Blockly.propc.console_move_to_position = function () {
     }
 
     return 'term_cmd(CRSRXY, ' + column + ', ' + row + ');\n';
+};
+
+// ----------------------- Serial Protocol Blocks ------------------------------
+Blockly.Blocks.serial_open = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_OPEN_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Serial initialize RX")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
+                .appendField("TX")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
+        this.appendDummyInput()
+                .appendField("baud")
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["4800", "4800"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.serial_open = function () {
+    var dropdown_rx_pin = this.getFieldValue('RXPIN');
+    var dropdown_tx_pin = this.getFieldValue('TXPIN');
+    var baud = this.getFieldValue('BAUD');
+
+    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
+    Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
+
+    return '';
+};
+
+Blockly.Blocks.serial_tx = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_TX_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Serial transmit")
+                .appendField(new Blockly.FieldDropdown([
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
+                    ]), "TYPE");
+        this.appendValueInput('VALUE', Number)
+                .setCheck(null);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.serial_tx = function () {
+    var type = this.getFieldValue('TYPE');
+    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
+
+    if (Blockly.propc.setups_["setup_fdserial"] === undefined)
+    {
+        return '//Missing new serial port declaration\n';
+    }
+
+    if(type === "BYTE") {
+        return 'fdserial_txChar(fdser, (' + data + ' & 0xFF) );\n';
+    } else {
+        var code = 'fdserial_txChar(fdser, (' + data + ' >> 24) & 255);\n'; 
+        code += 'fdserial_txChar(fdser, (' + data + ' >> 16) & 255);\n';
+        code += 'fdserial_txChar(fdser, (' + data + ' >> 8 ) & 255);\n';
+        code += 'fdserial_txChar(fdser, ' + data + ' & 255);\n';
+        
+        return code;
+    }
+};
+
+Blockly.Blocks.serial_send_text = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput('VALUE')
+                .appendField("Serial transmit text")
+                .setCheck('String');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.serial_send_text = function () {
+    var text = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
+   
+    if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
+        return '//Missing new serial port declaration\n';
+    }
+    
+    var code = 'dprint(fdser, "%s", ' + text + ');\n';
+    //code += 'fdserial_txChar(fdser, 0 );\n';
+    code += 'while(!fdserial_txEmpty(fdser));\n';
+    code += 'pause(5);\n';
+    
+    return code;
+};
+
+Blockly.Blocks.serial_rx = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_RX_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Serial receive")
+                .appendField(new Blockly.FieldDropdown([
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
+                    ]), "TYPE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
+    }
+};
+
+Blockly.propc.serial_rx = function () {
+    var type = this.getFieldValue('TYPE');
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
+
+    if (Blockly.propc.setups_["setup_fdserial"] === undefined)
+    {
+        return '//Missing new serial port declaration\n';
+    }
+
+    if(data !== '') {
+        if(type === "BYTE") {
+            return data + ' = fdserial_rxChar(fdser);\n';
+        } else {
+            return data + ' = (fdserial_rxChar(fdser) << 24) | (fdserial_rxChar(fdser) << 16) | (fdserial_rxChar(fdser) << 8) | fdserial_rxChar(fdser);\n';
+        }
+    } else {
+        return '';
+    }
+};
+
+Blockly.Blocks.serial_receive_text = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Serial receive text store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
+    }
+};
+
+Blockly.propc.serial_receive_text = function () {
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
+    Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
+
+    //var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'),
+    //        Blockly.Variables.NAME_TYPE);
+    
+    Blockly.propc.vartype_[data] = 'char *';
+    
+    if (Blockly.propc.setups_["setup_fdserial"] === undefined)
+    {
+        return '//Missing new serial port declaration\n';
+    }
+
+    if(data !== '') {
+        var code = '__idx = 0;\n';
+        code += 'do {\n';
+        code += '  ' + data + '[__idx] = fdserial_rxChar(fdser);\n';
+        code += '  __idx++;\n';
+        code += '} while(fdserial_rxPeek(fdser) != 0);\n';    
+        code += data + '[__idx] = 0;\nfdserial_rxFlush(fdser);\n';
+
+        return code;
+    } else {
+        return '';
+    }
+};
+
+//--------------- Serial LCD Blocks --------------------------------------------
+Blockly.Blocks.debug_lcd_init = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("LCD initialize PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendDummyInput()
+                .appendField("baud")
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.debug_lcd_init = function () {
+    var dropdown_pin = this.getFieldValue('PIN');
+    var baud = this.getFieldValue('BAUD');
+
+    Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
+
+    var code = 'writeChar(debug_lcd, 22);\n';
+    return code;
+};
+
+Blockly.Blocks.debug_lcd_music_note = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_MUSIC_NOTE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("LCD play note")
+            .appendField(new Blockly.FieldDropdown([["C", "223"], ["C#", "224"], ["D", "225"], ["D#", "226"], ["E", "227"], ["F", "228"], ["F#", "229"], ["G", "230"], ["G#", "231"], ["A", "220"], ["A#", "221"], ["B", "222"], ["no note (rest)", "232"]]), "NOTE")
+            .appendField("octave")
+            .appendField(new Blockly.FieldDropdown([["3rd", "215"], ["4th", "216"], ["5th", "217"], ["6th", "218"], ["7th", "219"]]), "OCTAVE")
+            .appendField("length")
+            .appendField(new Blockly.FieldDropdown([["whole (2 s)", "214"], ["half (1 s)", "213"], ["quarter (500 ms)", "212"], ["eigth (250 ms)", "211"], ["sixteenth (125 ms)", "210"], ["thirty-second (63 ms)", "209"], ["sixty-fourth (31 ms)", "208"]]), "LENGTH");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.debug_lcd_music_note = function () {
+  var dropdown_note = this.getFieldValue('NOTE');
+  var dropdown_octave = this.getFieldValue('OCTAVE');
+  var dropdown_length = this.getFieldValue('LENGTH');
+
+  var code  = 'writeChar(debug_lcd, ' + dropdown_octave + ');\n';
+      code += 'writeChar(debug_lcd, ' + dropdown_length + ');\n';
+      code += 'writeChar(debug_lcd, ' + dropdown_note + ');\n';
+      
+  return code;
+};
+
+Blockly.Blocks.debug_lcd_print = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput('MESSAGE')
+            .setCheck('String')
+                .appendField("LCD print text ");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.debug_lcd_print = function () {
+    var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
+    return 'dprint(debug_lcd, ' + msg + ');';
+};
+
+Blockly.Blocks.debug_lcd_number = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput('VALUE')
+            .appendField("LCD print number");
+        this.appendDummyInput()
+            .appendField("as")
+            .appendField(new Blockly.FieldDropdown([
+                ['Decimal','DEC'],
+                ['Hexadecimal','HEX'],
+                ['Binary', 'BIN']
+            ]), "FORMAT");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.debug_lcd_number = function () {
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
+    var format = this.getFieldValue('FORMAT');
+
+    var code = 'dprint(debug_lcd, ';
+    if (format === 'BIN') {
+        code += '"%b"';
+    }else if (format === 'HEX') {
+        code += '"%x"';                
+    }else {
+        code += '"%d"';
+    } 
+    
+    code += ', ' + value + ');';
+    return code;
+};
+
+Blockly.Blocks.debug_lcd_action = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_ACTION_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("LCD command")
+                .appendField(new Blockly.FieldDropdown([
+                    ["clear screen", "12"],
+                    ["move cursor right", "9"],
+                    ["move cursor left", "8"],
+                    ["move cursor down", "10"],
+                    ["carriage return", "13"],
+                    ["backlight on", "17"],
+                    ["backlight off", "18"],
+                    ["display off", "21"],
+                    ["display on, cursor off", "22"],
+                    ["display on, cursor off, blink", "23"],
+                    ["display on, cursor on", "24"],
+                    ["display on, cursor on, blink", "25"]
+                ]), "ACTION");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.debug_lcd_action = function () {
+    var action = this.getFieldValue('ACTION');
+    var code = '';
+    if(action === '12') {
+        code = 'pause(5);\n';
+    }
+    code += 'writeChar(debug_lcd, ' + action + ');\n';
+    return code;
+};
+
+Blockly.Blocks.debug_lcd_set_cursor = {
+    helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("LCD set cursor row")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "ROW")
+                .appendField("column")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"]]), "COLUMN");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.debug_lcd_set_cursor = function () {
+    var row = this.getFieldValue('ROW');
+    var column = this.getFieldValue('COLUMN');
+
+    return 'writeChar(debug_lcd, (128 + (' + row + ' * 20) + ' + column + '));\n';
+};
+
+//--------------- XBee Blocks --------------------------------------------------
+Blockly.Blocks.xbee_setup = {
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_XBEE_SETUP_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("XBee initialize DI")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DO_PIN')
+                .appendField("DO")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN')
+                .appendField("baud")
+                .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.xbee_setup = function () {
+    var do_pin = this.getFieldValue('DO_PIN');
+    var di_pin = this.getFieldValue('DI_PIN');
+    var baud = this.getFieldValue('BAUD');
+
+    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+
+    Blockly.propc.global_vars_["xbee"] = "fdserial *xbee;";
+    Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + di_pin + ', ' + do_pin + ', 0, ' + baud + ');\n';
+
+    return '';
+};
+
+Blockly.Blocks.xbee_transmit = {
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_XBEE_TRANSMIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("XBee transmit")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"], 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
+                    ]), "TYPE");
+        this.appendValueInput('VALUE', Number)
+                .setCheck(null);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.xbee_transmit = function () {
+    var type = this.getFieldValue('TYPE');
+    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
+
+    if (Blockly.propc.setups_["xbee"] === undefined)
+    {
+        return '//Missing xbee initialization\n';
+    }
+
+    if(type === "BYTE") {
+        return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
+    } else if(type === "INT") {
+        return 'dprint(xbee, "%d\\r", ' + data + ');\n';
+    } else {   
+        var code = 'dprint(xbee, "%s\\r", ' + data + ');\n';
+        //code += 'fdserial_txChar(xbee, 0 );\n';
+        code += 'while(!fdserial_txEmpty(xbee));\n';
+        code += 'pause(5);\n';
+
+        return code;
+    }
+};
+
+Blockly.Blocks.xbee_receive = {
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_XBEE_RECEIVE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("XBee receive")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"], 
+                    ["number (32-bit integer)", "INT"], 
+                    ["byte (ASCII character)", "BYTE"] 
+                    ]), "TYPE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
+    }
+};
+
+Blockly.propc.xbee_receive = function () {
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+    var type = this.getFieldValue('TYPE');
+
+    if (Blockly.propc.setups_["xbee"] === undefined)
+    {
+        return '//Missing xbee initialization\n';
+    }
+
+    if(type === "BYTE") {
+        return  data + ' = fdserial_rxChar(xbee);\n';
+    } else if(type === "INT") {
+        return 'dscan(xbee, "%d", &' + data + ');\n';
+    } else {  
+        Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
+        Blockly.propc.vartype_[data] = 'char *';
+           
+        var code = '__XBidx = 0;\n';
+        code += 'while(1) {\n';
+        code += '  ' + data + '[__XBidx] = fdserial_rxChar(xbee);\n';
+        code += '  if(' + data + '[__XBidx] == 13 || ' + data + '[__XBidx] == 10) break;\n';
+        code += '  __XBidx++;\n';
+        code += '}\n';    
+        code += data + '[__XBidx] = 0;\nfdserial_rxFlush(xbee);\n';
+        return code;
+    }
+};
+
+// -------------- OLED Display blocks ------------------------------------------
+Blockly.Blocks.oled_initialize = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_INITIALIZE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        // Field order DIN, CLK, CS, D/C, RES
+        this.appendDummyInput()
+            .appendField("OLED initialize")
+            .appendField("DIN")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DIN")
+            .appendField("CLK")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK")
+            .appendField("CS")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CS")
+            .appendField("D/C")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DC")
+            .appendField("RES")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "RES");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.oled_initialize = function () {
+    var cs_pin = this.getFieldValue("CS");
+    var dc_pin = this.getFieldValue("DC");
+    var din_pin = this.getFieldValue("DIN");
+    var clk_pin = this.getFieldValue("CLK");
+    var res_pin = this.getFieldValue("RES");
+
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    Blockly.propc.setups_["oled"] = 'oledc_init(' + din_pin + ', ' + clk_pin + ', ' + cs_pin + ', ' + dc_pin + ', ' + res_pin + ', 2);';
+
+    return '';
+};
+
+Blockly.Blocks.oled_font_loader = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_FONT_LOADER_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("OLED font loader (EEPROM only)");
+    }
+};
+
+Blockly.propc.oled_font_loader = function () {
+    Blockly.propc.serial_terminal_ = true;
+    Blockly.propc.definitions_["oledfonts"] = '#include "oledc_fontLoader.h"';
+
+    var code = 'oledc_fontLoader();';
+    return code;
+};
+
+Blockly.Blocks.oled_clear_screen = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_CLEAR_SCREEN_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("OLED command")
+            .appendField(new Blockly.FieldDropdown([["clear screen", "CLS"], ["sleep", "SLEEP"], ["wake", "WAKE"], ["invert", "INV"]]), "CMD");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.oled_clear_screen = function() {
+    var cmd = this.getFieldValue("CMD");
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    var code = '';
+    
+    if(cmd === 'CLS') {
+        code += 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );\n';
+    } else if(cmd === 'WAKE') {
+        code += 'oledc_wake();\n';
+    } else if(cmd === 'SLEEP') {
+        code += 'oledc_sleep();\n';
+    } else if(cmd === 'INV') {
+        code += 'oledc_invertDisplay();\n';
+    }
+    
+    return code;
+};
+
+Blockly.Blocks.oled_draw_circle = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_CIRCLE_TOOLTIP);
+        // First x/y coordinates
+        this.appendValueInput("POINT_X")
+            .setCheck("Number")
+            .appendField("OLED draw circle at (x)");
+        this.appendValueInput("POINT_Y")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        this.appendValueInput("RADIUS")
+            .setCheck("Number")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("radius");
+        // Color picker control
+        this.appendValueInput('COLOR')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .setCheck('Number')
+            .appendField("color");
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("fill")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+
+        // Other details
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+Blockly.propc.oled_draw_circle = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+    var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
+
+    if (checkbox === 'TRUE') {
+        code = 'oledc_fillCircle(';
+    } else {
+      code = 'oledc_drawCircle(';
+    }
+
+    code += point_x0 + ', ' + point_y0 + ', ';
+    code += radius + ', ';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")) ';
+    code += ');';
+
+    return code;
+};
+
+Blockly.Blocks.oled_draw_line = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_LINE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("X_ONE")
+            .setCheck('Number')
+            .appendField("OLED draw line from 1 (x)");
+        this.appendValueInput("Y_ONE")
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        this.appendValueInput("X_TWO")
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("to 2 (x)");
+        this.appendValueInput("Y_TWO")
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        this.appendValueInput('COLOR')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .setCheck('Number')
+            .appendField("color");
+
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.oled_draw_line = function () {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+    var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
+    var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
+    var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
+    var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+    var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', ';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+
+    return code;
+};
+
+Blockly.Blocks.oled_draw_pixel = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_PIXEL_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("X_AXIS")
+            .setCheck('Number')
+            .appendField("OLED draw pixel at");
+        this.appendValueInput("Y_AXIS")
+            .setCheck('Number')
+            .appendField(",");
+        this.appendValueInput('COLOR')
+            .setCheck('Number')
+            .appendField("color");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.oled_draw_pixel = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+    var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
+    var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+    var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+
+    return code;
+};
+
+Blockly.Blocks.oled_draw_triangle = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_TRIANGLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        // First x/y coordinates
+        this.appendValueInput("POINT_X0")
+            .setCheck(null)
+            .appendField("OLED draw triangle at 1 (x)");
+        this.appendValueInput("POINT_Y0")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        // Second x/y coordinates
+        this.appendValueInput("POINT_X1")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("2 (x)");
+        this.appendValueInput("POINT_Y1")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        // Third x/y coordinates
+        this.appendValueInput("POINT_X2")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("3 (x)");
+        this.appendValueInput("POINT_Y2")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        // Color picker control
+        this.appendValueInput('COLOR')
+            .setCheck('Number')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("color");
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("fill")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+
+        // Other details
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.oled_draw_triangle = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
+    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
+    var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
+    var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
+    var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
+    var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
+
+    if (checkbox === 'TRUE') {
+        code = 'oledc_fillTriangle(';
+    } else {
+        code = 'oledc_drawTriangle(';
+    }
+
+    code += point_x0 + ', ' + point_y0 + ', ';
+    code += point_x1 + ', ' + point_y1 + ', ';
+    code += point_x2 + ', ' + point_y2 + ', ';
+    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+
+    return code;
+};
+
+Blockly.Blocks.oled_draw_rectangle = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_DRAW_RECTANGLE_TOOLTIP);
+        this.appendValueInput("POINT_X")
+            .setCheck("Number")
+            .appendField("OLED draw rectangle at (x)");
+        this.appendValueInput("POINT_Y")
+            .setCheck("Number")
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("(y)");
+        this.appendValueInput("RECT_WIDTH")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("width");
+        this.appendValueInput("RECT_HEIGHT")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("height");
+        this.appendValueInput("RECT_ROUND")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("roundness");
+        // Color picker control
+        this.appendValueInput('COLOR')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .setCheck('Number')
+            .appendField("color");
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("fill")
+            .appendField(new Blockly.FieldCheckbox("TRUE"), "ck_fill");
+
+        // Other details
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+Blockly.propc.oled_draw_rectangle = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+//    var corners = this.getFieldValue('rect_round');
+    var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+    var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+    var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
+    var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
+    var corners = Blockly.propc.valueToCode(this, 'RECT_ROUND', Blockly.propc.ORDER_NONE);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+    var checkbox = this.getFieldValue('ck_fill');
+    var code;
+
+    if (corners === '0') {
+        if (checkbox === 'TRUE') {
+            code = 'oledc_fillRect(';
+        } else {
+            code = 'oledc_drawRect(';
+        }
+
+        code += point_x + ', ' + point_y + ', ' + width + ', ' + height + ', ';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
+    
+    } else { 
+        // Rounded rectangle
+        if (checkbox === 'TRUE') {
+            code = 'oledc_fillRoundRect(';
+        }
+        else {
+            code = 'oledc_drawRoundRect(';
+        }
+
+        code += point_x + ', ' + point_y + ', ' + width + ', ' + height + ', ' + corners + ', ';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
+    }
+
+    code += ');';
+
+    return code;
+};
+
+Blockly.Blocks.oled_text_size = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_TEXT_SIZE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("OLED text size")
+            .appendField(new Blockly.FieldDropdown([
+                ["small", "SMALL"],
+                ["medium", "MEDIUM"],
+                ["large", "LARGE"]]), "size_select")
+            .appendField("font")
+            .appendField(new Blockly.FieldDropdown([
+                ["sans", "FONT_SANS"],
+                ["serif", "FONT_SERIF"],
+                ["script", "FONT_SCRIPT"],
+                ["bubble", "FONT_BUBBLE"]]), "font_select");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.oled_text_size = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    var size = this.getFieldValue('size_select');
+    var font = this.getFieldValue('font_select');
+
+    // TODO: Update constants when new oledc library is published
+    var code = 'oledc_setTextSize(' + size + ');\n';
+    code +=  'oledc_setTextFont(' + font + ');\n';
+    return code;
+};
+
+Blockly.Blocks.oled_text_color = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_TEXT_COLOR_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput('FONT_COLOR')
+            .setCheck('Number')
+            .appendField("OLED font color");
+        this.appendValueInput('BACKGROUND_COLOR')
+            .setCheck('Number')
+            .appendField("font background color");
+
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.oled_text_color = function() {
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+
+    var font_color = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
+    var background_color = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
+
+    var code = 'oledc_setTextColor(';
+    code += 'oledc_color565(get8bitColor(' + font_color + ', "RED"), get8bitColor(' + font_color + ', "GREEN"), get8bitColor(' + font_color + ', "BLUE")), ';
+    code += 'oledc_color565(get8bitColor(' + background_color + ', "RED"), get8bitColor(' + background_color + ', "GREEN"), get8bitColor(' + background_color + ', "BLUE")));';
+
+    return code;
+};
+
+Blockly.Blocks.oled_get_max_height = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_GET_MAX_HEIGHT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("OLED max height");
+
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, "Number");
+    }
+};
+
+Blockly.propc.oled_get_max_height = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Emit code to clear the screen
+    var code = 'oledc_getHeight()';
+
+    // Return function call with surrounding parens:
+    //    oledc_drawPixel(..., (oledc_getWidth()), ...);
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.oled_get_max_width = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_GET_MAX_WIDTH_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("OLED max width");
+
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, "Number");
+    }
+};
+
+Blockly.propc.oled_get_max_width = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Emit code to clear the screen
+    var code = 'oledc_getWidth()';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.oled_set_cursor = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_SET_CURSOR_TOOLTIP);
+        this.appendValueInput('X_POS')
+            .setCheck('Number')
+            .appendField("OLED set cursor at (x)");
+        this.appendValueInput('Y_POS')
+            .setCheck('Number')
+            .appendField("(y)");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+Blockly.propc.oled_set_cursor = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    // Get user input
+    var x = Blockly.propc.valueToCode(this, 'X_POS', Blockly.propc.ORDER_NONE);
+    var y = Blockly.propc.valueToCode(this, 'Y_POS', Blockly.propc.ORDER_NONE);
+
+    // Do range checks
+    if (x < 0)  { x = 0; }
+    if (x > 95) { x = 95; }
+    if (y < 0)  { y = 0; }
+    if (y > 63) { y = 63; }
+
+    var code = 'oledc_setCursor(' + x + ', ' + y + ',0);';
+    return code;
+};
+
+Blockly.Blocks.oled_print_text = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_PRINT_TEXT_TOOLTIP);
+        this.appendValueInput('MESSAGE')
+            .setCheck('String')
+            .appendField("OLED print text ");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+Blockly.propc.oled_print_text = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
+    var code = 'oledc_drawText(' + msg + ');';
+    return code;
+};
+
+Blockly.Blocks.oled_print_number = {
+    helpUrl: Blockly.MSG_OLED_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_OLED_PRINT_NUMBER_TOOLTIP);
+        this.appendValueInput('NUMIN')
+            .setCheck('Number')
+            .appendField("OLED print number ");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ["Decimal", "DEC"],
+                ["Hexadecimal", "HEX"],
+                ["Binary", "BIN"]
+                //["OCT", "OCT"],
+            ]), "type");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+    }
+};
+
+Blockly.propc.oled_print_number = function() {
+    // Ensure header file is included
+    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+
+    var num = Blockly.propc.valueToCode(this, 'NUMIN', Blockly.propc.ORDER_NONE);
+    var type = this.getFieldValue('type');
+    var code = 'oledc_drawNumber(' + num + ', ' + type + ');';
+    return code;
+};
+
+// -------------- RGB LEDs (WS2812B module) blocks -----------------------------
+Blockly.Blocks.ws2812b_init = {
+    helpUrl: Blockly.MSG_WS2812B_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_WS2812B_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("RGB-LED initialize PIN")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+            .appendField("number of LEDs")
+            .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM")
+            .appendField("type")
+            .appendField(new Blockly.FieldDropdown([["WS2812", "WS2812"]]), "TYPE");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.ws2812b_init = function() {
+    var pin = this.getFieldValue('PIN');
+    var num = window.parseInt(this.getFieldValue('LEDNUM'));
+    
+    if(num < 1) num = 1;
+    if(num > 1500) num = 1500;
+
+    Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"\n\n#define LED_PIN ' + pin + '\n#define LED_COUNT ' + num + '\n';    
+    Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *__ws2812b;\nint RGBleds[' + num + '];\nint __rgbTemp;\n';
+    Blockly.propc.setups_["ws2812b_init"] = '__ws2812b = ws2812b_open();\n';
+    
+    return '';
+};
+
+Blockly.Blocks.ws2812b_set = {
+    helpUrl: Blockly.MSG_WS2812B_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_WS2812B_SET_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("LED")
+            .setCheck("Number")
+            .appendField("RGB-LED set LED number");
+        this.appendValueInput("COLOR")
+            .setCheck("Number")
+            .appendField("to color");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.ws2812b_set = function() {
+    var led = Blockly.propc.valueToCode(this, 'LED', Blockly.propc.ORDER_NONE);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+    var code = '';
+    code += '__rgbTemp = ' + led + ';\nif(rgbTemp < 1) rgbTemp = 1;\nif(rgbTemp > LED_COUNT) rgbTemp = LED_COUNT;\n';
+    code += 'RGBleds[(__rgbTemp - 1)] = ' + color + ';\n';
+    
+    return code;
+};
+
+Blockly.Blocks.ws2812b_update = {
+    helpUrl: Blockly.MSG_WS2812B_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_WS2812B_UPDATE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("RGB-LED update LEDs");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.ws2812b_update = function() {
+    
+    return 'ws2812_set(__ws2812b, LED_PIN, RGBleds, LED_COUNT);\n';
 };
