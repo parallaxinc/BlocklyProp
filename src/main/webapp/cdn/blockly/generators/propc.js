@@ -22,6 +22,64 @@
  * @author michel@creatingfuture.eu (Michel Lampo)
  */
 'use strict';
+
+/**
+ * Quotes - Created by Vale Tolpegin on 29-5-2016.
+ */
+
+var quotes = {
+
+    /**
+     * Create an image of an open or closed quote.
+     * @param {boolean} open True if open quote, false if closed.
+     * @return {!Blockly.FieldImage} The field image of the quote.
+     * @this Blockly.Block
+     */
+    newQuote_: function(open) {
+        if (open === this.RTL) {
+            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAqUlEQVQI1z3KvUpCcRiA8ef9E4JNHhI0aFEacm1o0BsI0Slx8wa8gLauoDnoBhq7DcfWhggONDmJJgqCPA7neJ7p934EOOKOnM8Q7PDElo/4x4lFb2DmuUjcUzS3URnGib9qaPNbuXvBO3sGPHJDRG6fGVdMSeWDP2q99FQdFrz26Gu5Tq7dFMzUvbXy8KXeAj57cOklgA+u1B5AoslLtGIHQMaCVnwDnADZIFIrXsoXrgAAAABJRU5ErkJggg==';
+        } else {
+            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAn0lEQVQI1z3OMa5BURSF4f/cQhAKjUQhuQmFNwGJEUi0RKN5rU7FHKhpjEH3TEMtkdBSCY1EIv8r7nFX9e29V7EBAOvu7RPjwmWGH/VuF8CyN9/OAdvqIXYLvtRaNjx9mMTDyo+NjAN1HNcl9ZQ5oQMM3dgDUqDo1l8DzvwmtZN7mnD+PkmLa+4mhrxVA9fRowBWmVBhFy5gYEjKMfz9AylsaRRgGzvZAAAAAElFTkSuQmCC';
+        }
+        return new Blockly.FieldImage(file, 12, 12, '"');
+    }
+
+};
+
+/**
+ * Color Palette - Created by Michel on 30-4-2016.
+ */
+
+var colorPalette = {
+    defaultColors: {
+        'input': 140,
+        'output': 165,
+        'io': 185,
+        'programming': 205,
+        'functions': 225,
+        'variables': 250,
+        'math': 275,
+        'binary': 275,
+        'robot': 295,
+        'heb': 295,
+        'ab': 320,
+        'protocols': 340
+    },
+    activePalette: null,
+    getColor: function (type) {
+        if (colorPalette.activePalette && colorPalette.activePalette[type] !== undefined) {
+            return colorPalette.activePalette[type];
+        }
+        console.log("Missing color type: " + type);
+        return '#000000';
+    }
+
+};
+
+colorPalette.activePalette = colorPalette.defaultColors;
+
+
+
 Blockly.propc = new Blockly.Generator('propc');
 Blockly.HSV_SATURATION = 0.75;
 Blockly.HSV_VALUE = 0.60;
