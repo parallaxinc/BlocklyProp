@@ -336,18 +336,18 @@ Blockly.propc.serial_tx = function () {
 
     if (Blockly.propc.setups_["setup_fdserial"] === undefined)
     {
-        return '//Missing new serial port declaration\n';
-    }
-
-    if(type === "BYTE") {
-        return 'fdserial_txChar(fdser, (' + data + ' & 0xFF) );\n';
+        return '//Missing serial port initialize block\n';
     } else {
-        var code = 'fdserial_txChar(fdser, (' + data + ' >> 24) & 255);\n'; 
-        code += 'fdserial_txChar(fdser, (' + data + ' >> 16) & 255);\n';
-        code += 'fdserial_txChar(fdser, (' + data + ' >> 8 ) & 255);\n';
-        code += 'fdserial_txChar(fdser, ' + data + ' & 255);\n';
-        
-        return code;
+        if(type === "BYTE") {
+            return 'fdserial_txChar(fdser, (' + data + ' & 0xFF) );\n';
+        } else {
+            var code = 'fdserial_txChar(fdser, (' + data + ' >> 24) & 255);\n'; 
+            code += 'fdserial_txChar(fdser, (' + data + ' >> 16) & 255);\n';
+            code += 'fdserial_txChar(fdser, (' + data + ' >> 8 ) & 255);\n';
+            code += 'fdserial_txChar(fdser, ' + data + ' & 255);\n';
+
+            return code;
+        }
     }
 };
 
@@ -369,15 +369,14 @@ Blockly.propc.serial_send_text = function () {
     var text = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
    
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        return '//Missing new serial port declaration\n';
+        return '//Missing serial port initialize block\n';
+    } else {
+        var code = 'dprint(fdser, "%s", ' + text + ');\n';
+        code += 'while(!fdserial_txEmpty(fdser));\n';
+        code += 'pause(5);\n';
+
+        return code;
     }
-    
-    var code = 'dprint(fdser, "%s", ' + text + ');\n';
-    //code += 'fdserial_txChar(fdser, 0 );\n';
-    code += 'while(!fdserial_txEmpty(fdser));\n';
-    code += 'pause(5);\n';
-    
-    return code;
 };
 
 Blockly.Blocks.serial_rx = {
@@ -413,17 +412,17 @@ Blockly.propc.serial_rx = function () {
 
     if (Blockly.propc.setups_["setup_fdserial"] === undefined)
     {
-        return '//Missing new serial port declaration\n';
-    }
-
-    if(data !== '') {
-        if(type === "BYTE") {
-            return data + ' = fdserial_rxChar(fdser);\n';
-        } else {
-            return data + ' = (fdserial_rxChar(fdser) << 24) | (fdserial_rxChar(fdser) << 16) | (fdserial_rxChar(fdser) << 8) | fdserial_rxChar(fdser);\n';
-        }
+        return '//Missing serial port initialize block\n';
     } else {
-        return '';
+        if(data !== '') {
+            if(type === "BYTE") {
+                return data + ' = fdserial_rxChar(fdser);\n';
+            } else {
+                return data + ' = (fdserial_rxChar(fdser) << 24) | (fdserial_rxChar(fdser) << 16) | (fdserial_rxChar(fdser) << 8) | fdserial_rxChar(fdser);\n';
+            }
+        } else {
+            return '';
+        }
     }
 };
 
@@ -451,29 +450,26 @@ Blockly.Blocks.serial_receive_text = {
 
 Blockly.propc.serial_receive_text = function () {
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);    
-    Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
 
-    //var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'),
-    //        Blockly.Variables.NAME_TYPE);
-    
+    Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
     Blockly.propc.vartype_[data] = 'char *';
     
     if (Blockly.propc.setups_["setup_fdserial"] === undefined)
     {
-        return '//Missing new serial port declaration\n';
-    }
-
-    if(data !== '') {
-        var code = '__idx = 0;\n';
-        code += 'do {\n';
-        code += '  ' + data + '[__idx] = fdserial_rxChar(fdser);\n';
-        code += '  __idx++;\n';
-        code += '} while(fdserial_rxPeek(fdser) != 0);\n';    
-        code += data + '[__idx] = 0;\nfdserial_rxFlush(fdser);\n';
-
-        return code;
+        return '//Missing serial port initialize block\n';
     } else {
-        return '';
+        if(data !== '') {
+            var code = '__idx = 0;\n';
+            code += 'do {\n';
+            code += '  ' + data + '[__idx] = fdserial_rxChar(fdser);\n';
+            code += '  __idx++;\n';
+            code += '} while(fdserial_rxPeek(fdser) != 0);\n';    
+            code += data + '[__idx] = 0;\nfdserial_rxFlush(fdser);\n';
+
+            return code;
+        } else {
+            return '';
+        }
     }
 };
 
@@ -525,15 +521,21 @@ Blockly.Blocks.debug_lcd_music_note = {
 };
 
 Blockly.propc.debug_lcd_music_note = function () {
-  var dropdown_note = this.getFieldValue('NOTE');
-  var dropdown_octave = this.getFieldValue('OCTAVE');
-  var dropdown_length = this.getFieldValue('LENGTH');
+    var dropdown_note = this.getFieldValue('NOTE');
+    var dropdown_octave = this.getFieldValue('OCTAVE');
+    var dropdown_length = this.getFieldValue('LENGTH');
 
-  var code  = 'writeChar(debug_lcd, ' + dropdown_octave + ');\n';
-      code += 'writeChar(debug_lcd, ' + dropdown_length + ');\n';
-      code += 'writeChar(debug_lcd, ' + dropdown_note + ');\n';
-      
-  return code;
+    var code = '';
+    
+    if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
+        code += '//Missing Serial LCD initialize block\n';
+    } else {
+        code += 'writeChar(debug_lcd, ' + dropdown_octave + ');\n';
+        code += 'writeChar(debug_lcd, ' + dropdown_length + ');\n';
+        code += 'writeChar(debug_lcd, ' + dropdown_note + ');\n';
+    } 
+    
+    return code;
 };
 
 Blockly.Blocks.debug_lcd_print = {
@@ -552,7 +554,12 @@ Blockly.Blocks.debug_lcd_print = {
 
 Blockly.propc.debug_lcd_print = function () {
     var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
-    return 'dprint(debug_lcd, ' + msg + ');';
+    
+    if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
+        return '//Missing Serial LCD initialize block\n';
+    } else {
+        return 'dprint(debug_lcd, ' + msg + ');';
+    }
 };
 
 Blockly.Blocks.debug_lcd_number = {
@@ -564,11 +571,7 @@ Blockly.Blocks.debug_lcd_number = {
             .appendField("LCD print number");
         this.appendDummyInput()
             .appendField("as")
-            .appendField(new Blockly.FieldDropdown([
-                ['Decimal','DEC'],
-                ['Hexadecimal','HEX'],
-                ['Binary', 'BIN']
-            ]), "FORMAT");
+            .appendField(new Blockly.FieldDropdown([['Decimal','DEC'], ['Hexadecimal','HEX'], ['Binary', 'BIN']]), "FORMAT");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -579,16 +582,22 @@ Blockly.propc.debug_lcd_number = function () {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
     var format = this.getFieldValue('FORMAT');
 
-    var code = 'dprint(debug_lcd, ';
-    if (format === 'BIN') {
-        code += '"%b"';
-    }else if (format === 'HEX') {
-        code += '"%x"';                
-    }else {
-        code += '"%d"';
-    } 
+    var code = '';
     
-    code += ', ' + value + ');';
+    if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
+        code += '//Missing Serial LCD initialize block\n';
+    } else {
+        code += 'dprint(debug_lcd, ';
+        if (format === 'BIN') {
+            code += '"%b"';
+        }else if (format === 'HEX') {
+            code += '"%x"';                
+        }else {
+            code += '"%d"';
+        } 
+
+        code += ', ' + value + ');';
+    }
     return code;
 };
 
@@ -613,7 +622,6 @@ Blockly.Blocks.debug_lcd_action = {
                     ["display on, cursor on", "24"],
                     ["display on, cursor on, blink", "25"]
                 ]), "ACTION");
-
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
@@ -622,10 +630,15 @@ Blockly.Blocks.debug_lcd_action = {
 Blockly.propc.debug_lcd_action = function () {
     var action = this.getFieldValue('ACTION');
     var code = '';
-    if(action === '12') {
-        code = 'pause(5);\n';
+    
+    if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
+        code += '//Missing Serial LCD initialization\n';
+    } else {
+        if(action === '12') {
+            code = 'pause(5);\n';
+        }
+        code += 'writeChar(debug_lcd, ' + action + ');\n';
     }
-    code += 'writeChar(debug_lcd, ' + action + ');\n';
     return code;
 };
 
@@ -647,8 +660,12 @@ Blockly.Blocks.debug_lcd_set_cursor = {
 Blockly.propc.debug_lcd_set_cursor = function () {
     var row = this.getFieldValue('ROW');
     var column = this.getFieldValue('COLUMN');
-
-    return 'writeChar(debug_lcd, (128 + (' + row + ' * 20) + ' + column + '));\n';
+    
+    if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
+        return '//Missing Serial LCD initialize block\n';
+    } else {
+        return 'writeChar(debug_lcd, (128 + (' + row + ' * 20) + ' + column + '));\n';
+    }
 };
 
 //--------------- XBee Blocks --------------------------------------------------
@@ -691,11 +708,7 @@ Blockly.Blocks.xbee_transmit = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee transmit")
-                .appendField(new Blockly.FieldDropdown([
-                    ["text", "TEXT"], 
-                    ["number (32-bit integer)", "INT"], 
-                    ["byte (ASCII character)", "BYTE"] 
-                    ]), "TYPE");
+                .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE");
         this.appendValueInput('VALUE', Number)
                 .setCheck(null);
         this.setInputsInline(true);
@@ -710,20 +723,19 @@ Blockly.propc.xbee_transmit = function () {
 
     if (Blockly.propc.setups_["xbee"] === undefined)
     {
-        return '//Missing xbee initialization\n';
-    }
+        return '//Missing xbee initialize block\n';
+    } else {
+        if(type === "BYTE") {
+            return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
+        } else if(type === "INT") {
+            return 'dprint(xbee, "%d\\r", ' + data + ');\n';
+        } else {   
+            var code = 'dprint(xbee, "%s\\r", ' + data + ');\n';
+            code += 'while(!fdserial_txEmpty(xbee));\n';
+            code += 'pause(5);\n';
 
-    if(type === "BYTE") {
-        return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
-    } else if(type === "INT") {
-        return 'dprint(xbee, "%d\\r", ' + data + ');\n';
-    } else {   
-        var code = 'dprint(xbee, "%s\\r", ' + data + ');\n';
-        //code += 'fdserial_txChar(xbee, 0 );\n';
-        code += 'while(!fdserial_txEmpty(xbee));\n';
-        code += 'pause(5);\n';
-
-        return code;
+            return code;
+        }
     }
 };
 
@@ -734,11 +746,7 @@ Blockly.Blocks.xbee_receive = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee receive")
-                .appendField(new Blockly.FieldDropdown([
-                    ["text", "TEXT"], 
-                    ["number (32-bit integer)", "INT"], 
-                    ["byte (ASCII character)", "BYTE"] 
-                    ]), "TYPE")
+                .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE")
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
@@ -761,25 +769,25 @@ Blockly.propc.xbee_receive = function () {
 
     if (Blockly.propc.setups_["xbee"] === undefined)
     {
-        return '//Missing xbee initialization\n';
-    }
+        return '//Missing xbee initialize block\n';
+    } else {
+        if(type === "BYTE") {
+            return  data + ' = fdserial_rxChar(xbee);\n';
+        } else if(type === "INT") {
+            return 'dscan(xbee, "%d", &' + data + ');\n';
+        } else {  
+            Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
+            Blockly.propc.vartype_[data] = 'char *';
 
-    if(type === "BYTE") {
-        return  data + ' = fdserial_rxChar(xbee);\n';
-    } else if(type === "INT") {
-        return 'dscan(xbee, "%d", &' + data + ');\n';
-    } else {  
-        Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
-        Blockly.propc.vartype_[data] = 'char *';
-           
-        var code = '__XBidx = 0;\n';
-        code += 'while(1) {\n';
-        code += '  ' + data + '[__XBidx] = fdserial_rxChar(xbee);\n';
-        code += '  if(' + data + '[__XBidx] == 13 || ' + data + '[__XBidx] == 10) break;\n';
-        code += '  __XBidx++;\n';
-        code += '}\n';    
-        code += data + '[__XBidx] = 0;\nfdserial_rxFlush(xbee);\n';
-        return code;
+            var code = '__XBidx = 0;\n';
+            code += 'while(1) {\n';
+            code += '  ' + data + '[__XBidx] = fdserial_rxChar(xbee);\n';
+            code += '  if(' + data + '[__XBidx] == 13 || ' + data + '[__XBidx] == 10) break;\n';
+            code += '  __XBidx++;\n';
+            code += '}\n';    
+            code += data + '[__XBidx] = 0;\nfdserial_rxFlush(xbee);\n';
+            return code;
+        }
     }
 };
 
@@ -855,21 +863,22 @@ Blockly.Blocks.oled_clear_screen = {
 
 Blockly.propc.oled_clear_screen = function() {
     var cmd = this.getFieldValue("CMD");
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
     var code = '';
-    
-    if(cmd === 'CLS') {
-        code += 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );\n';
-    } else if(cmd === 'WAKE') {
-        code += 'oledc_wake();\n';
-    } else if(cmd === 'SLEEP') {
-        code += 'oledc_sleep();\n';
-    } else if(cmd === 'INV') {
-        code += 'oledc_invertDisplay();\n';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
+    } else {  
+        if(cmd === 'CLS') {
+            code += 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );\n';
+        } else if(cmd === 'WAKE') {
+            code += 'oledc_wake();\n';
+        } else if(cmd === 'SLEEP') {
+            code += 'oledc_sleep();\n';
+        } else if(cmd === 'INV') {
+            code += 'oledc_invertDisplay();\n';
+        }
     }
-    
     return code;
 };
 
@@ -909,7 +918,6 @@ Blockly.Blocks.oled_draw_circle = {
 
 Blockly.propc.oled_draw_circle = function() {
     // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
@@ -920,17 +928,20 @@ Blockly.propc.oled_draw_circle = function() {
     var checkbox = this.getFieldValue('ck_fill');
     var code;
 
-    if (checkbox === 'TRUE') {
-        code = 'oledc_fillCircle(';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
     } else {
-      code = 'oledc_drawCircle(';
+        if (checkbox === 'TRUE') {
+            code = 'oledc_fillCircle(';
+        } else {
+            code = 'oledc_drawCircle(';
+        }
+        code += point_x0 + ', ' + point_y0 + ', ';
+        code += radius + ', ';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")) ';
+        code += ');';
     }
-
-    code += point_x0 + ', ' + point_y0 + ', ';
-    code += radius + ', ';
-    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")) ';
-    code += ');';
-
     return code;
 };
 
@@ -967,7 +978,6 @@ Blockly.Blocks.oled_draw_line = {
 
 Blockly.propc.oled_draw_line = function () {
     // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
@@ -976,9 +986,14 @@ Blockly.propc.oled_draw_line = function () {
     var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
-    var code = 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', ';
-    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
-
+    var code = '';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
+    } else {
+        code += 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', ';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+    }
     return code;
 };
 
@@ -1004,17 +1019,20 @@ Blockly.Blocks.oled_draw_pixel = {
 };
 
 Blockly.propc.oled_draw_pixel = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
     var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
-    var code = 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
-    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
-
+    var code = '';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
+    } else {
+        code += 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+    }
     return code;
 };
 
@@ -1067,8 +1085,6 @@ Blockly.Blocks.oled_draw_triangle = {
 };
 
 Blockly.propc.oled_draw_triangle = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
@@ -1081,18 +1097,21 @@ Blockly.propc.oled_draw_triangle = function() {
 
     var checkbox = this.getFieldValue('ck_fill');
     var code;
-
-    if (checkbox === 'TRUE') {
-        code = 'oledc_fillTriangle(';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
     } else {
-        code = 'oledc_drawTriangle(';
+        if (checkbox === 'TRUE') {
+            code = 'oledc_fillTriangle(';
+        } else {
+            code = 'oledc_drawTriangle(';
+        }
+
+        code += point_x0 + ', ' + point_y0 + ', ';
+        code += point_x1 + ', ' + point_y1 + ', ';
+        code += point_x2 + ', ' + point_y2 + ', ';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
     }
-
-    code += point_x0 + ', ' + point_y0 + ', ';
-    code += point_x1 + ', ' + point_y1 + ', ';
-    code += point_x2 + ', ' + point_y2 + ', ';
-    code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
-
     return code;
 };
 
@@ -1138,11 +1157,8 @@ Blockly.Blocks.oled_draw_rectangle = {
 };
 
 Blockly.propc.oled_draw_rectangle = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
-//    var corners = this.getFieldValue('rect_round');
     var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
     var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
     var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
@@ -1153,31 +1169,29 @@ Blockly.propc.oled_draw_rectangle = function() {
     var checkbox = this.getFieldValue('ck_fill');
     var code;
 
-    if (corners === '0') {
-        if (checkbox === 'TRUE') {
-            code = 'oledc_fillRect(';
-        } else {
-            code = 'oledc_drawRect(';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
+    } else {
+        if (corners === '0') {
+            if (checkbox === 'TRUE') {
+                code = 'oledc_fillRect(';
+            } else {
+                code = 'oledc_drawRect(';
+            }
+            code += point_x + ', ' + point_y + ', ' + width + ', ' + height + ', ';
+        } else { 
+            // Rounded rectangle
+            if (checkbox === 'TRUE') {
+                code = 'oledc_fillRoundRect(';
+            }
+            else {
+                code = 'oledc_drawRoundRect(';
+            }
+            code += point_x + ', ' + point_y + ', ' + width + ', ' + height + ', ' + corners + ', ';
         }
-
-        code += point_x + ', ' + point_y + ', ' + width + ', ' + height + ', ';
-        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
-    
-    } else { 
-        // Rounded rectangle
-        if (checkbox === 'TRUE') {
-            code = 'oledc_fillRoundRect(';
-        }
-        else {
-            code = 'oledc_drawRoundRect(';
-        }
-
-        code += point_x + ', ' + point_y + ', ' + width + ', ' + height + ', ' + corners + ', ';
-        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE"))';
+        code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));\n';
     }
-
-    code += ');';
-
     return code;
 };
 
@@ -1188,31 +1202,27 @@ Blockly.Blocks.oled_text_size = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
             .appendField("OLED text size")
-            .appendField(new Blockly.FieldDropdown([
-                ["small", "SMALL"],
-                ["medium", "MEDIUM"],
-                ["large", "LARGE"]]), "size_select")
+            .appendField(new Blockly.FieldDropdown([["small", "SMALL"], ["medium", "MEDIUM"], ["large", "LARGE"]]), "size_select")
             .appendField("font")
-            .appendField(new Blockly.FieldDropdown([
-                ["sans", "FONT_SANS"],
-                ["serif", "FONT_SERIF"],
-                ["script", "FONT_SCRIPT"],
-                ["bubble", "FONT_BUBBLE"]]), "font_select");
+            .appendField(new Blockly.FieldDropdown([["sans", "FONT_SANS"], ["serif", "FONT_SERIF"], ["script", "FONT_SCRIPT"], ["bubble", "FONT_BUBBLE"]]), "font_select");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.oled_text_size = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-
     var size = this.getFieldValue('size_select');
     var font = this.getFieldValue('font_select');
 
-    // TODO: Update constants when new oledc library is published
-    var code = 'oledc_setTextSize(' + size + ');\n';
-    code +=  'oledc_setTextFont(' + font + ');\n';
+    var code = '';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
+    } else {
+        // TODO: Update constants when new oledc library is published
+        code += 'oledc_setTextSize(' + size + ');\n';
+        code += 'oledc_setTextFont(' + font + ');\n';
+    }
     return code;
 };
 
@@ -1234,16 +1244,24 @@ Blockly.Blocks.oled_text_color = {
 };
 
 Blockly.propc.oled_text_color = function() {
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
     Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
 
     var font_color = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
     var background_color = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
 
-    var code = 'oledc_setTextColor(';
-    code += 'oledc_color565(get8bitColor(' + font_color + ', "RED"), get8bitColor(' + font_color + ', "GREEN"), get8bitColor(' + font_color + ', "BLUE")), ';
-    code += 'oledc_color565(get8bitColor(' + background_color + ', "RED"), get8bitColor(' + background_color + ', "GREEN"), get8bitColor(' + background_color + ', "BLUE")));';
+    var code = '';
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        code += '//Missing OLED initialize block\n';
+    } else {
+        code += 'oledc_setTextColor(';
 
+    //  TO DO: Try this - it's shorter but slightly slower:
+    //  code += 'remapColor(' + font_color + ', "8R8G8B", "5R6G5B"), remapColor(' + background_color + ', "8R8G8B", "5R6G5B"));\n';
+
+        code += 'oledc_color565(get8bitColor(' + font_color + ', "RED"), get8bitColor(' + font_color + ', "GREEN"), get8bitColor(' + font_color + ', "BLUE")), ';
+        code += 'oledc_color565(get8bitColor(' + background_color + ', "RED"), get8bitColor(' + background_color + ', "GREEN"), get8bitColor(' + background_color + ', "BLUE")));';
+    }
     return code;
 };
 
@@ -1262,15 +1280,12 @@ Blockly.Blocks.oled_get_max_height = {
 };
 
 Blockly.propc.oled_get_max_height = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-
-    // Emit code to clear the screen
-    var code = 'oledc_getHeight()';
-
-    // Return function call with surrounding parens:
-    //    oledc_drawPixel(..., (oledc_getWidth()), ...);
-    return [code, Blockly.propc.ORDER_NONE];
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        return ['0', Blockly.propc.ORDER_NONE];
+    } else {
+        return ['oledc_getHeight()', Blockly.propc.ORDER_NONE];
+    }
 };
 
 Blockly.Blocks.oled_get_max_width = {
@@ -1288,12 +1303,12 @@ Blockly.Blocks.oled_get_max_width = {
 };
 
 Blockly.propc.oled_get_max_width = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-
-    // Emit code to clear the screen
-    var code = 'oledc_getWidth()';
-    return [code, Blockly.propc.ORDER_NONE];
+    if (Blockly.propc.setups_["oled"] === undefined)
+    {
+        return ['0', Blockly.propc.ORDER_NONE];
+    } else {
+        return ['oledc_getWidth()', Blockly.propc.ORDER_NONE];
+    }
 };
 
 Blockly.Blocks.oled_set_cursor = {
@@ -1315,21 +1330,17 @@ Blockly.Blocks.oled_set_cursor = {
 };
 
 Blockly.propc.oled_set_cursor = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
 
     // Get user input
     var x = Blockly.propc.valueToCode(this, 'X_POS', Blockly.propc.ORDER_NONE);
     var y = Blockly.propc.valueToCode(this, 'Y_POS', Blockly.propc.ORDER_NONE);
 
-    // Do range checks
-    if (x < 0)  { x = 0; }
-    if (x > 95) { x = 95; }
-    if (y < 0)  { y = 0; }
-    if (y > 63) { y = 63; }
+    if (Blockly.propc.setups_["oled"] === undefined) {
+        return '//Missing OLED initialize block\n';
+    } else {
+        return 'oledc_setCursor(' + x + ', ' + y + ',0);';
+    }
 
-    var code = 'oledc_setCursor(' + x + ', ' + y + ',0);';
-    return code;
 };
 
 Blockly.Blocks.oled_print_text = {
@@ -1348,12 +1359,13 @@ Blockly.Blocks.oled_print_text = {
 };
 
 Blockly.propc.oled_print_text = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-
     var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
-    var code = 'oledc_drawText(' + msg + ');';
-    return code;
+    
+    if (Blockly.propc.setups_["oled"] === undefined) {
+        return '//Missing OLED initialize block\n';
+    } else {
+        return 'oledc_drawText(' + msg + ');';
+    }
 };
 
 Blockly.Blocks.oled_print_number = {
@@ -1364,12 +1376,7 @@ Blockly.Blocks.oled_print_number = {
             .setCheck('Number')
             .appendField("OLED print number ");
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([
-                ["Decimal", "DEC"],
-                ["Hexadecimal", "HEX"],
-                ["Binary", "BIN"]
-                //["OCT", "OCT"],
-            ]), "type");
+            .appendField(new Blockly.FieldDropdown([["Decimal", "DEC"], ["Hexadecimal", "HEX"], ["Binary", "BIN"]]), "type");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1378,13 +1385,14 @@ Blockly.Blocks.oled_print_number = {
 };
 
 Blockly.propc.oled_print_number = function() {
-    // Ensure header file is included
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-
     var num = Blockly.propc.valueToCode(this, 'NUMIN', Blockly.propc.ORDER_NONE);
     var type = this.getFieldValue('type');
-    var code = 'oledc_drawNumber(' + num + ', ' + type + ');';
-    return code;
+    
+    if (Blockly.propc.setups_["oled"] === undefined) {
+        return '//Missing OLED initialize block\n';
+    } else {
+        return 'oledc_drawNumber(' + num + ', ' + type + ');';
+    }
 };
 
 // -------------- RGB LEDs (WS2812B module) blocks -----------------------------
@@ -1442,9 +1450,12 @@ Blockly.propc.ws2812b_set = function() {
     var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
     var code = '';
-    code += '__rgbTemp = ' + led + ';\nif(rgbTemp < 1) rgbTemp = 1;\nif(rgbTemp > LED_COUNT) rgbTemp = LED_COUNT;\n';
-    code += 'RGBleds[(__rgbTemp - 1)] = ' + color + ';\n';
-    
+    if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
+        code += '//Missing RGB-LED initialize block\n';
+    } else {
+        code += '__rgbTemp = ' + led + ';\nif(rgbTemp < 1) rgbTemp = 1;\nif(rgbTemp > LED_COUNT) rgbTemp = LED_COUNT;\n';
+        code += 'RGBleds[(__rgbTemp - 1)] = ' + color + ';\n';
+    }    
     return code;
 };
 
@@ -1462,6 +1473,9 @@ Blockly.Blocks.ws2812b_update = {
 };
 
 Blockly.propc.ws2812b_update = function() {
-    
-    return 'ws2812_set(__ws2812b, LED_PIN, RGBleds, LED_COUNT);\n';
+    if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
+        return '//Missing RGB-LED initialize block\n';
+    } else {
+        return 'ws2812_set(__ws2812b, LED_PIN, RGBleds, LED_COUNT);\n';
+    }
 };
