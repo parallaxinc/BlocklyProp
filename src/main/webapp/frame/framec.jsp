@@ -9,58 +9,35 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/polyfill.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/toolboxfilter.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/colorPalette.js"/>"></script>     -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/quotes.js"/>"></script>     -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc.js"/>"></script>
 
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/base.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/control.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/pins.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/logic.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/math.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/text.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/lists.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/procedures.js"/>"></script>
         <!-- define blocks -->
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/math.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/base.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/control.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/cog.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/variables.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/procedures.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/logic.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/eeprom.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abdrive.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abvolts.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/servo.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/hackable_electronic_badge.js"/>"></script>
-
-        <!-- Presently Condensed -->  
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/gpio.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/communicate.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/console.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/heb.js"/>"></script>
         
         <!-- Currently Unused -->  
 <!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>   -->
 <!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>   -->
 <!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>   -->
 
-        <!-- Ready to be deleted -->  
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/bit_math.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/activitybot.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/tv_remote.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/oled.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/i2c.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/rfid.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/serial.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/debug_LCD.js"/>"></script>     -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/joystick.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/TiltandAcceleration.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/GPS.js"/>"></script>      -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/xbee.js"/>"></script>    -->
+        <!-- Ready to be deleted -->      
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/logic.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/cog.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abdrive.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/math.js"/>"></script>   -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/eeprom.js"/>"></script>     -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/abvolts.js"/>"></script>     -->
+<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/wav.js"/>"></script>     -->
 
         <style>
             html, body {
@@ -118,7 +95,6 @@
         <category name="<fmt:message key="category.control" />" colour="220">
             <block type="comment"></block>
             <block type="controls_if"></block>
-<%--        <block type="controls_if_return"></block>       --%>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
@@ -170,7 +146,7 @@
                 <block type="math_bitwise"></block>
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>
-                <block type="logic_compare"></block>
+                <block type="logic_compare"></block> 
             </category>
             <category name="<fmt:message key="category.operators.strings" />" >
                 <block type="string_compare"></block>
@@ -719,11 +695,6 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
-<%--                <value name="LENGTH">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>                    --%>
                 </block>
                 <block type="wav_stop"></block>
             </category>
