@@ -620,8 +620,8 @@ Blockly.propc.lsm9ds1_init = function () {
     var pin_csa = this.getFieldValue('PIN_CSAG');
     var pin_csm = this.getFieldValue('PIN_CSM');
 
-    Blockly.propc.definitions_["include_lsm9ds1"] = '#include "LSM9DS1.h"';
-    Blockly.propc.setups_["lsm9ds1_init"] = 'LSM9DS1_init(' + pin_scl + ', ' + pin_sio + ', ' + pin_csa + ', ' + pin_csm + ');\n';
+    Blockly.propc.definitions_["include_lsm9ds1"] = '#include "lsm9ds1.h"';
+    Blockly.propc.setups_["lsm9ds1_init"] = 'imu_init(' + pin_scl + ', ' + pin_sio + ', ' + pin_csa + ', ' + pin_csm + ');\n';
     Blockly.propc.global_vars_["lsm9ds1_vars"] = 'float __imuX, __imuY, __imuZ, __compI;\n';
 
     return '';
@@ -666,8 +666,8 @@ Blockly.propc.lsm9ds1_read = function () {
     var zstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
 
     var code = '';
-    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "LSM9DS1.h"') {
-        code += 'LSM9DS1_read' + sensor + 'Calculated(&__imuX, &__imuY, &__imuZ);\n';
+    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
+        code += 'imu_read' + sensor + 'Calculated(&__imuX, &__imuY, &__imuZ);\n';
         code += xstorage + ' = (int) (100.0 * __imuX);\n';
         code += ystorage + ' = (int) (100.0 * __imuY);\n';
         code += zstorage + ' = (int) (100.0 * __imuZ);\n';
@@ -710,8 +710,8 @@ Blockly.propc.lsm9ds1_tilt = function () {
     var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
     var code = '';
-    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "LSM9DS1.h"') {
-        code += 'LSM9DS1_readAccelCalculated(&__imuX, &__imuY, &__imuZ);\n';
+    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
+        code += 'imu_readAccelCalculated(&__imuX, &__imuY, &__imuZ);\n';
         code += storage + ' = (int) (atan2(' + t_axis + ', ' + g_axis + ') * 180.0/PI);\n';
     } else {
         code += "// LSM9DS1 IMU is not initialized!\n";
@@ -751,8 +751,8 @@ Blockly.propc.lsm9ds1_heading = function () {
     var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
     var code = '';
-    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "LSM9DS1.h"') {
-        code += 'LSM9DS1_readMagCalculated(&__imuX, &__imuY, &__imuZ);\n';
+    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
+        code += 'imu_readMagCalculated(&__imuX, &__imuY, &__imuZ);\n';
         code += '__compI = atan2(' + lr_axis + ', ' + fb_axis + ') * 180.0/PI;\n';
         code += 'if(__compI < 0.0) __compI = (360.0 + __compI);\n';
         code += storage + ' = (int) __compI;\n';    
