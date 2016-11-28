@@ -22,6 +22,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/communicate.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/heb.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/s3.js"/>"></script>
         
         <!-- Currently Unused -->  
 <!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>   -->
@@ -1068,47 +1069,12 @@
                 <block type="scribbler_LED"></block>
             </category>
             <category name="<fmt:message key="category.communicate" />" include="s3c" exclude="heb, activity-board" colour=185>
-
-<!-- TODO: Make these blocks "Scribbler Friendly" -->
             
-                <block type="console_print">
-                    <value name="MESSAGE">
-                        <block type="string_type_block"></block>
-                    </value>
-                </block>
-                <block type="console_print_variables">
-                    <value name="VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="console_scan_text"></block>
-                <block type="console_scan_number"></block>
-                <block type="console_newline"></block>
-                <block type="console_clear"></block>
-                <block type="console_move_to_position">
-                    <value name="ROW">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="COLUMN">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-
-<!-- TODO: Old scribbler variants - keeping as a reference for now -->
-                
-<!--            <block type="serial_send_text"></block>
-                <block type="serial_send_decimal"></block>
-                <block type="serial_send_char"></block>
-                <block type="serial_send_ctrl">
-                    <field name="SERIAL_CHAR">Scribbler#NL</field>
-                </block>
-                <block type="serial_cursor_xy">
+                <block type="scribbler_serial_send_text"></block>
+                <block type="scribbler_serial_send_decimal"></block>
+                <block type="scribbler_serial_send_char"></block>
+                <block type="scribbler_serial_send_ctrl"></block>
+                <block type="scribbler_serial_cursor_xy">
                     <value name="X">
                         <block type="math_integer">
                             <field name="INT_VALUE">0</field>
@@ -1120,8 +1086,8 @@
                         </block>
                     </value>
                 </block>
-                <block type="serial_rx_byte"></block>
--->
+                <block type="scribbler_serial_rx_byte"></block>
+
             </category>
             <category name="<fmt:message key="category.s3-reset" />" include="s3c" exclude="heb, activity-board" colour=185>
                 <block type="factory_reset"></block>
