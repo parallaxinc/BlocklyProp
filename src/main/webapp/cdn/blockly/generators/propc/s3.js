@@ -543,7 +543,7 @@ Blockly.propc.move_motors_xy = function () {
     var x_distance = Blockly.propc.valueToCode(this, 'X_DISTANCE', Blockly.propc.ORDER_ATOMIC) || '0';
     var y_distance = Blockly.propc.valueToCode(this, 'Y_DISTANCE', Blockly.propc.ORDER_ATOMIC) || '0';
     var top_speed = Blockly.propc.valueToCode(this, 'MOTOR_SPEED', Blockly.propc.ORDER_ATOMIC) || '0';
-    return 's3_moveXY(' + x_distance + distance_multiplier + ', ' + y_distance + distance_multiplier + ', ' + top_speed + ');\n';
+    return 'scribbler_set_speed(' + top_speed + ' * 3 / 20);\nscribbler_move_to(' + x_distance + distance_multiplier + ', ' + y_distance + distance_multiplier + ');\n';
 };
 
 // Move the motors...
@@ -1013,4 +1013,147 @@ Blockly.Blocks.factory_reset = {
         this.setHelpUrl(Blockly.MSG_S3_FACTORY_RESET_HELPURL);
 	this.setTooltip(Blockly.MSG_S3_FACTORY_RESET_TOOLTIP);
     }
+};
+
+Blockly.Blocks.scribbler_serial_send_text = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput("")
+                .appendField("send message")
+                .appendField(quotes.newQuote_(this.RTL))
+                .appendField(new Blockly.FieldTextInput(''), 'MESSAGE_TEXT')
+                .appendField(quotes.newQuote_(this.LTR));
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP);
+    }
+};
+
+Blockly.propc.scribbler_serial_send_text = function () {
+    Blockly.propc.serial_terminal_ = true;
+    var message = Blockly.propc.valueToCode(this, 'MESSAGE_TEXT', Blockly.propc.ORDER_ATOMIC) || '';
+
+    return 'print(' + message + ');\n';
+};
+
+Blockly.Blocks.scribbler_serial_send_char = {
+    init: function () {
+        this.appendValueInput("CHAR_VALUE")
+                .setCheck("Number")
+                .appendField("send character (0 to 255)");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP);
+    }
+};
+
+Blockly.propc.scribbler_serial_send_char = function () {
+    Blockly.propc.serial_terminal_ = true;
+    var message = Blockly.propc.valueToCode(this, 'CHAR_VALUE', Blockly.propc.ORDER_ATOMIC);
+
+    return 'print("%c", ' + message + ');\n';
+};
+
+Blockly.Blocks.scribbler_serial_send_decimal = {
+    init: function () {
+        this.appendValueInput("DECIMAL_VALUE")
+                .setCheck("Number")
+                .appendField("send number (32-bit signed)");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP);
+    }
+};
+
+Blockly.propc.scribbler_serial_send_decimal = function () {
+    Blockly.propc.serial_terminal_ = true;
+    var message = Blockly.propc.valueToCode(this, 'DECIMAL_VALUE', Blockly.propc.ORDER_ATOMIC) || 0;
+
+    return 'print("%d", ' + message + ');\n';
+};
+
+Blockly.Blocks.scribbler_serial_send_ctrl = {
+    init: function () {
+        this.appendDummyInput()
+                .appendField("send control character")
+                .appendField(new Blockly.FieldDropdown([["line feed", "10"], ["carriage return", "13"], ["backspace", "127"], ["clear screen", "256"] ]), "SERIAL_CHAR");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP);
+    }
+};
+
+Blockly.propc.scribbler_serial_send_ctrl = function () {
+    Blockly.propc.serial_terminal_ = true;
+    var message = this.getFieldValue('SERIAL_CHAR');
+    if(message === '256') {
+        return 'term_cmd(CLS);\n';
+    } else {
+        return 'print("%c", ' + message + ');\n';
+    }
+};
+
+Blockly.Blocks.scribbler_serial_rx_byte = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput("")
+                .appendField("receive character (0 to 255)");
+        this.setOutput(true, 'Number');
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP);
+    }
+};
+
+
+Blockly.propc.scribbler_serial_rx_byte = function () {
+    return ['getChar()', Blockly.propc.ORDER_NONE];
+};
+    
+Blockly.Blocks.scribbler_serial_cursor_xy = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("Y")
+                .setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("set cursor position to row");
+        this.appendValueInput("X")
+                .setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("column");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP);
+    }
+};
+
+Blockly.propc.scribbler_serial_cursor_xy = function () {
+    Blockly.propc.serial_terminal_ = true;
+    var row = Blockly.propc.valueToCode(this, 'Y', Blockly.propc.ORDER_NONE);
+    var column = Blockly.propc.valueToCode(this, 'X', Blockly.propc.ORDER_NONE);
+
+    if (Number(row) < 0) {
+        row = 0;
+    } else if (Number(row) > 255) {
+        row = 255;
+    }
+
+    if (Number(column) < 0) {
+        column = 0;
+    } else if (Number(column) > 255) {
+        column = 255;
+    }
+
+    return 'term_cmd(CRSRXY, ' + column + ', ' + row + ');\n';
 };
