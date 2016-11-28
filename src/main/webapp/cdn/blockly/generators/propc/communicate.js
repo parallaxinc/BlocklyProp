@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Generating C for sensor blocks
+ * @fileoverview Generating C for communicate blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
  *         valetolpegin@gmail.com    (Vale Tolpegin)
  *         jewald@parallax.com       (Jim Ewald)
