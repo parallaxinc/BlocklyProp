@@ -645,7 +645,7 @@ Blockly.propc.pwm_set = function () {
         duty_cycle = '100';
     }
 
-    var code = 'pwm_start(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
+    var code = 'pwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
     return code;
 };
 
