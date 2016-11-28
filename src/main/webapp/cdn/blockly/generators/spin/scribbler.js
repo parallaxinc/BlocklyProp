@@ -872,7 +872,7 @@ Blockly.Spin.move_motors_xy = function () {
 
     var distance_multiplier = this.getFieldValue('MULTIPLIER');
     var x_distance = Blockly.Spin.valueToCode(this, 'X_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
-    var y_distance = Blockly.Spin.valueToCode(this, 'X_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var y_distance = Blockly.Spin.valueToCode(this, 'Y_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
     var top_speed = Blockly.Spin.valueToCode(this, 'MOTOR_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
     return 'Scribbler.MoveXY(' + x_distance + distance_multiplier + ', ' + y_distance + distance_multiplier + ', ' + top_speed + ')\n';
 };
