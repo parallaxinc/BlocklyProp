@@ -82,7 +82,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />" exclude="s3c" colour="220">
+        <category name="<fmt:message key="category.control" />" exclude="s3" colour="220">
             <block type="comment"></block>
             <block type="controls_if"></block>
             <block type="controls_repeat">
@@ -90,17 +90,17 @@
             </block>
             <block type="control_repeat_for_loop">
                 <value name="START">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">1</field>
                     </block>
                 </value>
                 <value name="END">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">10</field>
                     </block>
                 </value>
                 <value name="STEP">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">1</field>
                     </block>
                 </value>
@@ -108,7 +108,7 @@
             <block type="controls_break"></block>
             <block type="base_delay">
                 <value name="DELAY_TIME">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">1000</field>
                     </block>
                 </value>
@@ -116,19 +116,19 @@
             <block type="cog_new"></block>
             <block type="controls_return"></block>
         </category>
-        <category name="<fmt:message key="category.operators" />" exclude="s3c" colour="275">
+        <category name="<fmt:message key="category.operators" />" exclude="s3" colour="275">
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
                 <block type="math_limit"></block>
                 <block type="math_crement"></block>
                 <block type="math_random">
                     <value name="A">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                     <value name="B">
-                         <block type="math_number">
+                         <block type="spin_integer">
                             <field name="NUM">100</field>
                         </block>
                     </value> 
@@ -145,26 +145,26 @@
                 <block type="find_substring"></block>
                 <block type="get_char_at_position">
                     <value name="POSITION">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                 </block>
                 <block type="set_char_at_position">
                     <value name="POSITION">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                 </block>
                 <block type="get_substring">
                     <value name="START">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                     <value name="END">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">3</field>
                         </block>
                     </value>
@@ -172,8 +172,8 @@
             </category>            
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />" exclude="s3c" colour="220">
-            <block type="math_number"></block>
+        <category name="<fmt:message key="category.values" />" exclude="s3" colour="220">
+            <block type="spin_integer"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>            
             <block type="logic_boolean"></block>
@@ -181,17 +181,17 @@
             <block type="color_picker"></block>
             <block type="color_value_from">
                 <value name="RED_VALUE">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">0</field>
                     </block>
                 </value>
                 <value name="GREEN_VALUE">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">0</field>
                     </block>
                 </value>
                 <value name="BLUE_VALUE">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">0</field>
                     </block>
                 </value>
@@ -212,12 +212,12 @@
             <block type="system_counter"></block>
         </category>
             
-        <category name="<fmt:message key="category.s3_simple" />" include="s3c" exclude="heb, activity-board">
-            <category name="<fmt:message key="category.s3_simple.simple_control" />" colour=205>
+        <category name="<fmt:message key="category.s3-simple" />" include="s3" exclude="heb, activity-board" colour=185>
+            <category name="<fmt:message key="category.s3-simple.simple-control" />" colour=205>
                 <block type="scribbler_loop"></block>
                 <block type="scribbler_limited_loop">
                     <value name="LOOP_COUNT">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">10</field>
                         </block>
                     </value>
@@ -228,14 +228,14 @@
                     <field name="TIMESCALE">10</field>
                 </block>
             </category>
-            <category name="<fmt:message key="category.s3_simple.simple_sensors" />" colour=140>
+            <category name="<fmt:message key="category.s3-simple.simple-sensors" />" colour=140>
                 <block type="scribbler_if_line"></block>
                 <block type="scribbler_if_obstacle"></block>
                 <block type="scribbler_if_light"></block>
                 <block type="scribbler_if_stalled"></block>
                 <block type="scribbler_if_random"></block>
             </category>
-            <category name="<fmt:message key="category.s3_simple.simple_actions" />" colour=185>
+            <category name="<fmt:message key="category.s3-simple.simple-actions" />" colour=185>
                 <block type="scribbler_drive">
                     <field name="DRIVE_ANGLE">STRAIGHT</field>
                 </block>
@@ -257,7 +257,7 @@
             <block type="controls_if"></block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
-                    <block type="math_integer">
+                    <block type="spin_integer">
                         <field name="INT_VALUE">500</field>
                     </block>
                 </value>
@@ -269,11 +269,11 @@
             
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="heb, s3c" colour="200">
+        <category name="<fmt:message key="category.input-output.pin-states" />" include="activity-board, heb" exclude="s3" colour="200">
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">0</field>
                     </block>
                 </value>
@@ -281,14 +281,14 @@
             <block type="check_pin"></block>
             <block type="check_pin_input">
                 <value name="PIN">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">0</field>
                     </block>
                 </value>
             </block>
             <block type="set_pins"></block>
         </category>
-        <category name="<fmt:message key="category.communicate" />" exclude="heb, s3c" colour="320">
+        <category name="<fmt:message key="category.communicate" />" include="activity-board" exclude="heb, s3" colour="320">
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>
@@ -306,12 +306,12 @@
                 <block type="oled_text_size"></block>
                 <block type="oled_set_cursor">
                     <value name="X_POS">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_POS">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -323,19 +323,19 @@
                 </block>
                 <block type="oled_print_number">
                     <value name="NUMIN">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="oled_draw_pixel">
                     <value name="X_AXIS">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_AXIS">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -345,22 +345,22 @@
                 </block>
                 <block type="oled_draw_line">
                     <value name="X_ONE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_ONE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="X_TWO">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_TWO">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -370,32 +370,32 @@
                 </block>
                 <block type="oled_draw_triangle">
                     <value name="POINT_X0">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y0">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_X1">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y1">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_X2">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y2">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -405,27 +405,27 @@
                 </block>
                 <block type="oled_draw_rectangle">
                     <value name="POINT_X">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RECT_WIDTH">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RECT_HEIGHT">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RECT_ROUND">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -435,17 +435,17 @@
                 </block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RADIUS">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -465,7 +465,7 @@
                 <block type="ws2812b_init"></block>
                 <block type="ws2812b_set">
                     <value name="LED">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">1</field>
                         </block>
                     </value>
@@ -484,7 +484,7 @@
                 </block>
                 <block type="debug_lcd_number">
                     <value name="VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -501,7 +501,7 @@
                 </block>
                 <block type="console_print_variables">
                     <value name="VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -512,12 +512,12 @@
                 <block type="console_clear"></block>
                 <block type="console_move_to_position">
                     <value name="ROW">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="COLUMN">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -529,7 +529,7 @@
                 <block type="xbee_receive"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.sensor-input" />" exclude="heb, s3c" colour="155">
+        <category name="<fmt:message key="category.sensor-input" />" include="activity-board" exclude="heb, s3" colour="155">
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>
                 <block type="joystick_input_yaxis"></block>
@@ -581,18 +581,18 @@
                 <block type="sound_impact_end"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.memory" />" include="activity-board" exclude="s3c" colour="155">
+        <category name="<fmt:message key="category.memory" />" include="activity-board" exclude="s3" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_read">
                     <value name="ADDRESS">
-                        <block type="math_number">
+                        <block type="spin_integer">
                                 <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="eeprom_write">
                     <value name="ADDRESS">
-                        <block type="math_number">
+                        <block type="spin_integer">
                                 <field name="NUM">0</field>
                         </block>
                     </value>
@@ -602,145 +602,145 @@
                 <block type="sd_card_mount"></block>
                 <block type="sd_card_int_to">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_int_from">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_read_int">
                     <value name="INDEX">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_float_to">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_float_from">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_read_float">
                     <value name="INDEX">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_text_to">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_text_from">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_read_text">
                     <value name="INDEX">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
             </category>                   --%>
         </category>
-        <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb, s3c" colour="200">
-            <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb, s3c">
+        <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb, s3" colour="200">
+            <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb, s3">
                 <block type="pulse_in"></block>
                 <block type="pulse_out">
                     <value name="PULSE_LENGTH">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb, s3c">
+            <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb, s3">
                 <block type="pwm_start"></block>
                 <block type="pwm_set">
                     <value name="DUTY_CYCLE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">50</field>
                         </block>
                     </value>
                 </block>
                 <block type="pwm_stop"></block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb, s3c">
+            <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb, s3">
                 <block type="rc_charge_discharge"></block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb, s3c">
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb, s3">
                 <block type="ab_volt_in"></block>
                 <block type="ab_volt_out">
                     <value name="VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb, s3c" colour="200">
+        <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb, s3" colour="200">
             <category name="<fmt:message key="category.audio.freqout" />">
                 <block type="base_freqout">
                     <value name="DURATION">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="FREQUENCY">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -751,7 +751,7 @@
                 <block type="wav_status"></block>
                 <block type="wav_volume">
                     <value name="VOLUME">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -759,11 +759,11 @@
                 <block type="wav_stop"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.servo" />" exclude="heb, s3c" colour="180">
+        <category name="<fmt:message key="category.servo" />" include="activity-board, heb" exclude="s3" colour="180">
             <category name="<fmt:message key="category.servo.standard-servo" />">
                 <block type="servo_move">
                     <value name="ANGLE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -772,42 +772,42 @@
             <category name="<fmt:message key="category.servo.cr-servo" />">
                 <block type="servo_speed">
                     <value name="SPEED">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="servo_set_ramp">
                     <value name="RAMPSTEP">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">50</field>
                         </block>
                     </value>
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.robot" />" exclude="heb, s3c" colour="295">
+        <category name="<fmt:message key="category.robot" />"  include="activity-board" exclude="heb, s3" colour="295">
             <block type="ab_drive_init"></block>
             <block type="ab_drive_speed">
                 <value name="LEFT">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">64</field>
                     </block>
                 </value>
                 <value name="RIGHT">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">64</field>
                     </block>
                 </value>
             </block>
             <block type="ab_drive_goto">
                 <value name="LEFT">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">64</field>
                     </block>
                 </value>
                 <value name="RIGHT">
-                    <block type="math_number">
+                    <block type="spin_integer">
                         <field name="NUM">64</field>
                     </block>
                 </value>
@@ -816,7 +816,7 @@
             <block type="activitybot_calibrate"></block>
             <block type="activitybot_display_calibration"></block>
         </category>
-        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" exclude="s3c" colour="290">
+        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" exclude="s3, activity-board" colour="290">
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print">
                     <value name="MESSAGE">
@@ -825,7 +825,7 @@
                 </block>
                 <block type="console_print_variables">
                     <value name="VALUE">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -836,12 +836,12 @@
                 <block type="console_clear"></block>
                 <block type="console_move_to_position">
                     <value name="ROW">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="COLUMN">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -851,7 +851,7 @@
                 <block type="heb_toggle_led"></block>
                 <block type="heb_toggle_led_open">
                     <value name="LED_NUM">
-                        <block type="math_number">
+                        <block type="spin_integer">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -898,19 +898,19 @@
             </category>
         </category>
         
-        <category name="<fmt:message key="category.s3-math" />" include="s3c" exclude="heb, activity-board" colour=275>
+        <category name="<fmt:message key="category.s3-math" />" include="s3" exclude="heb, activity-board" colour=275>
             <block type="spin_integer"></block>
             <block type="math_int_angle"></block>
             <block type="scribbler_boolean"></block>
             <block type="scribbler_random_boolean"></block>
             <block type="scribbler_random_number">
                 <value name="LOW">
-                    <block type="math_integer">
+                    <block type="spin_integer">
                         <field name="INT_VALUE">1</field>
                     </block>
                 </value>
                 <value name="HIGH">
-                    <block type="math_integer">
+                    <block type="spin_integer">
                         <field name="INT_VALUE">10</field>
                     </block>
                 </value>
@@ -921,38 +921,38 @@
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
         </category>
-        <category name="<fmt:message key="category.sensor-input" />" include="s3c" exclude="heb, activity-board" colour=140>
-            <category name="Line" colour=140>
+        <category name="<fmt:message key="category.sensor-input" />" include="s3" exclude="heb, activity-board" colour=140>
+            <category name="<fmt:message key="category.sensor-input.s3-line" />">
                 <block type="scribbler_if_line"></block>
                 <block type="line_sensor"></block>
             </category>
-            <category name="Obstacle" colour=140>
+            <category name="<fmt:message key="category.sensor-input.s3-obstacle" />">
                 <block type="scribbler_if_obstacle"></block>
                 <block type="obstacle_sensor"></block>
             </category>
-            <category name="Light" colour=140>
+            <category name="<fmt:message key="category.sensor-input.s3-light" />">
                 <block type="scribbler_if_light"></block>
                 <block type="light_sensor"></block>
             </category>
-            <category name="Stall" colour=140>
+            <category name="<fmt:message key="category.sensor-input.s3-stall" />">
                 <block type="scribbler_if_stalled"></block>
                 <block type="stall_sensor"></block>
                 <block type="spinning_sensor"></block>
             </category>
-            <category name="Button" colour=140>
+            <category name="<fmt:message key="category.sensor-input.s3-button" />">
                 <block type="reset_button_presses"></block>
             </category>
-            <category name="Ping)))" colour=140>
+            <category name="<fmt:message key="category.sensor-input.s3-ping" />">
                 <block type="scribbler_ping"></block>
             </category>
-            <category name="Pins" colour=140>
+            <category name="<fmt:message key="category.sensor-input.s3-pins" />">
                 <block type="digital_input"></block>
                 <block type="analog_input"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.s3-actions" />" include="s3c" exclude="heb, activity-board" colour=185>
+        <category name="<fmt:message key="category.s3-actions" />" include="s3" exclude="heb, activity-board" colour=185>
             <block type="digital_output"></block>
-            <category name="Motors" colour=185>
+            <category name="<fmt:message key="category.s3-actions.motors" />">
                 <block type="scribbler_drive">
                     <field name="DRIVE_ANGLE">STRAIGHT</field>
                 </block>
@@ -960,82 +960,82 @@
                 <block type="scribbler_stop"></block>
                 <block type="move_motors">
                     <value name="LEFT_MOTOR_SPEED">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="RIGHT_MOTOR_SPEED">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="MOTOR_DURATION">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="move_motors_distance">
                     <value name="LEFT_MOTOR_DISTANCE">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="RIGHT_MOTOR_DISTANCE">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="MOTOR_SPEED">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="move_motors_xy">
                     <value name="X_DISTANCE">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="Y_DISTANCE">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="MOTOR_SPEED">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="move_motors_angle">
                     <value name="ROTATE_ANGLE">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="ROTATE_RADIUS">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="ROTATE_SPEED">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="scribbler_servo">
                     <value name="SERVO_ANGLE">
-                        <block type="math_int_angle">
+                        <block type="spin_integer">
                             <field name="ANGLE_VALUE">90</field>
                         </block>
                     </value>
 		</block>
                 <block type="scribbler_stop_servo"></block>
             </category>
-            <category name="<fmt:message key="category.s3-sound" />" include="s3c" exclude="heb, activity-board" colour=185>
+            <category name="<fmt:message key="category.s3-actions.sound" />" include="s3" exclude="heb, activity-board">
                 <block type="scribbler_play">
                     <field name="NOTE_DURATION">250</field>
                     <field name="NOTE_OCTAVE">4</field>
@@ -1044,31 +1044,31 @@
                 </block>
                 <block type="play_polyphony">
                     <value name="FREQUENCY_1">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="FREQUENCY_2">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="POLYPHONY_DURATION">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="POLYPHONY_VOLUME">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.s3-leds" />" include="s3c" exclude="heb, activity-board" colour=185>
+            <category name="<fmt:message key="category.s3-actions.leds" />" include="s3" exclude="heb, activity-board">
                 <block type="scribbler_LED"></block>
             </category>
-            <category name="<fmt:message key="category.communicate" />" include="s3c" exclude="heb, activity-board" colour=185>
+            <category name="<fmt:message key="category.communicate" />" include="s3" exclude="heb, activity-board">
             
                 <block type="scribbler_serial_send_text"></block>
                 <block type="scribbler_serial_send_decimal"></block>
@@ -1076,12 +1076,12 @@
                 <block type="scribbler_serial_send_ctrl"></block>
                 <block type="scribbler_serial_cursor_xy">
                     <value name="X">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
                     <value name="Y">
-                        <block type="math_integer">
+                        <block type="spin_integer">
                             <field name="INT_VALUE">0</field>
                         </block>
                     </value>
@@ -1089,7 +1089,7 @@
                 <block type="scribbler_serial_rx_byte"></block>
 
             </category>
-            <category name="<fmt:message key="category.s3-reset" />" include="s3c" exclude="heb, activity-board" colour=185>
+            <category name="<fmt:message key="category.s3-actions.reset" />" include="s3" exclude="heb, activity-board">
                 <block type="factory_reset"></block>
             </category>
         </category>
