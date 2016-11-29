@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Generating C for sensor blocks
+ * @fileoverview Generating C for communicate blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
  *         valetolpegin@gmail.com    (Vale Tolpegin)
  *         jewald@parallax.com       (Jim Ewald)
@@ -1453,7 +1453,7 @@ Blockly.propc.ws2812b_set = function() {
     if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
         code += '//Missing RGB-LED initialize block\n';
     } else {
-        code += '__rgbTemp = ' + led + ';\nif(rgbTemp < 1) rgbTemp = 1;\nif(rgbTemp > LED_COUNT) rgbTemp = LED_COUNT;\n';
+        code += '__rgbTemp = ' + led + ';\nif(__rgbTemp < 1) __rgbTemp = 1;\nif(__rgbTemp > LED_COUNT) __rgbTemp = LED_COUNT;\n';
         code += 'RGBleds[(__rgbTemp - 1)] = ' + color + ';\n';
     }    
     return code;

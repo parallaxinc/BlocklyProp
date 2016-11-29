@@ -1,8 +1,7 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2012 Google Inc.
- * http://blockly.googlecode.com/
+ * Copyright 2014 Michel Lampo, Vale Tolpegin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +17,13 @@
  */
 
 /**
- * @fileoverview Generating Prop-C for control blocks.
+ * @fileoverview Generating C for control blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
+ *         valetolpegin@gmail.com    (Vale Tolpegin)
+ *         jewald@parallax.com       (Jim Ewald)
+ *         mmatz@parallax.com        (Matthew Matz)
+ *         kgracey@parallax.com      (Ken Gracey)
+ *         carsongracey@gmail.com    (Carson Gracey)
  */
 'use strict';
 
@@ -43,12 +47,12 @@ Blockly.Blocks.controls_repeat = {
         });
         this.appendDummyInput()
                 .appendField("repeat");
-        this.appendDummyInput("REPEAT").appendField(fieldDropdown, "TYPE");
+        this.appendDummyInput("REPEAT")
+                .appendField(fieldDropdown, "TYPE");
         this.appendStatementInput("DO")
                 .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        //this.setTooltip(Blockly.LANG_CONTROLS_REPEAT_TOOLTIP);
         this.setInputsInline(true);
     },
     mutationToDom: function () {

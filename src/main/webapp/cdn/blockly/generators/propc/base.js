@@ -1,8 +1,7 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2014 Michel Lampo.
- *
+ * Copyright 2014 Michel Lampo, Vale Tolpegin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +17,13 @@
  */
 
 /**
- * @fileoverview Generating Prop-C for basic blocks.
+ * @fileoverview Generating C for sensor blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
+ *         valetolpegin@gmail.com    (Vale Tolpegin)
+ *         jewald@parallax.com       (Jim Ewald)
+ *         mmatz@parallax.com        (Matthew Matz)
+ *         kgracey@parallax.com      (Ken Gracey)
+ *         carsongracey@gmail.com    (Carson Gracey)
  */
 'use strict';
 
@@ -58,42 +62,34 @@ Blockly.Blocks.math_arithmetic = {
             this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
         }
 	this.setTooltip(Blockly.MSG_MATH_ARITHMETIC_TOOLTIP);
-        var OPERATORS =
-                [["+", 'ADD'],
-                    ["-", 'MINUS'],
-                    ["\u00D7", 'MULTIPLY'],
-                    ["/", 'DIVIDE'],
-                    ["% (remainder after division)", 'MODULUS']];
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
         this.appendValueInput('A')
                 .setCheck('Number');
         this.appendValueInput('B')
                 .setCheck('Number')
-                .appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
+                .appendField(new Blockly.FieldDropdown([
+                ["+", ' + '],
+                ["-", ' - '],
+                ["×", ' * '],
+                ["÷", ' / '],
+                ["% (remainder after division)", ' % ']]), 'OP');
         this.setInputsInline(true);
     }
 };
 
 Blockly.propc.math_arithmetic = function() {
-    var mode = this.getFieldValue('OP');
-    var tuple = Blockly.propc.math_arithmetic.OPERATORS[mode];
-    var operator = tuple[0];
-    var order = tuple[1];
+    var operator = this.getFieldValue('OP');
+    var order = Blockly.propc.ORDER_MULTIPLICATIVE;
+    if(operator === ' + ' || operator === ' - ') {
+        order = Blockly.propc.ORDER_ADDITIVE;
+    }
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
     var code;
 
     code = argument0 + operator + argument1;
     return [code, order];
-};
-
-Blockly.propc.math_arithmetic.OPERATORS = {
-    ADD: [' + ', Blockly.propc.ORDER_ADDITIVE],
-    MINUS: [' - ', Blockly.propc.ORDER_ADDITIVE],
-    MULTIPLY: [' * ', Blockly.propc.ORDER_MULTIPLICATIVE],
-    DIVIDE: [' / ', Blockly.propc.ORDER_MULTIPLICATIVE],
-    MODULUS: [' % ', Blockly.propc.ORDER_MULTIPLICATIVE]
 };
 
 Blockly.Blocks.math_limit = {
@@ -347,7 +343,11 @@ Blockly.Blocks.char_type_block = {
                     ["123 - {", "123"],
                     ["124 - |", "124"],
                     ["125 - }", "125"],
-                    ["126 - ~", "126"]]), "CHAR");
+                    ["126 - ~", "126"],
+                    ["10 - line feed", "10"],
+                    ["11 - tab", "11"],
+                    ["13 - ccarriage return", "13"],
+                    ["127 - delete", "127"]]), "CHAR");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
@@ -639,30 +639,17 @@ Blockly.Blocks.logic_operation = {
                 .setCheck('Number');
         this.appendValueInput('B')
                 .setCheck('Number')
-                .appendField(new Blockly.FieldDropdown([['and', 'AND'], ['or', 'OR'], ['and not', 'AND_NOT'], ['or not', 'OR_NOT']]), 'OP');
+                .appendField(new Blockly.FieldDropdown([['and', ' && '], ['or', ' || '], ['and not', ' && !'], ['or not', ' || !']]), 'OP');
         this.setInputsInline(true);
     }
 };
 
 Blockly.propc.logic_operation = function() {
     // Operations 'and', 'or'.
-    var operator = '';
+    var operator = this.getFieldValue('OP');
     var order = Blockly.propc.ORDER_LOGICAL_AND;
-    switch (this.getFieldValue('OP')) {
-        case 'AND':
-            operator = '&& ';
-            break;
-        case 'OR':
-            operator = '|| ';
-            order = Blockly.propc.ORDER_LOGICAL_OR;
-            break;
-        case 'AND_NOT':
-            operator = '&& !';
-            break;
-        case 'OR_NOT':
-            operator = '|| !';
-            order = Blockly.propc.ORDER_LOGICAL_OR;
-            break;
+    if(operator === ' || ' || operator === ' || !') {
+        order = Blockly.propc.ORDER_LOGICAL_OR;
     }
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
@@ -672,7 +659,7 @@ Blockly.propc.logic_operation = function() {
 
 Blockly.Blocks.logic_negate = {
     // Negation.
-    category: Blockly.LANG_CATEGORY_LOGIC,
+    //category: Blockly.LANG_CATEGORY_LOGIC,
     init: function() {
         if(profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
@@ -684,7 +671,7 @@ Blockly.Blocks.logic_negate = {
         this.setOutput(true, 'Number');
         this.appendValueInput('BOOL')
                 .setCheck('Number')
-                .appendField(Blockly.LANG_LOGIC_NEGATE_INPUT_NOT);
+                .appendField("not");
     }
 };
 
@@ -698,14 +685,14 @@ Blockly.propc.logic_negate = function() {
 
 Blockly.Blocks.logic_boolean = {
     // Boolean data type: true and false.
-    category: Blockly.LANG_CATEGORY_LOGIC,
+    //category: Blockly.LANG_CATEGORY_LOGIC,
     helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_LOGIC_BOOLEAN_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.setOutput(true, 'Number');
         this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown([[Blockly.LANG_LOGIC_BOOLEAN_TRUE, 'TRUE'], [Blockly.LANG_LOGIC_BOOLEAN_FALSE, 'FALSE']]), 'BOOL');
+                .appendField(new Blockly.FieldDropdown([["true", 'TRUE'], ["false", 'FALSE']]), 'BOOL');
     }
 };
 
@@ -949,7 +936,7 @@ Blockly.Blocks.string_compare = {
             .appendField("string");
         this.appendValueInput("STRB")
             .setCheck("String")
-            .appendField(new Blockly.FieldDropdown([["is the same as", "EQUAL"], ["is not the same as", "NOT"], ["is alphabetically before", "BEFORE"], ["is alphabetically after", "AFTER"]]), "COMP");
+            .appendField(new Blockly.FieldDropdown([["is the same as", "=="], ["is not the same as", "!="], ["is alphabetically before", "<"], ["is alphabetically after", ">"]]), "COMP");
         this.setInputsInline(true);
         this.setOutput(true, "Number");
     }
@@ -965,10 +952,7 @@ Blockly.propc.string_compare = function () {
     var code = '';
 
     if(strA !== '' && strB !== '') {
-        if(comp === 'EQUAL') code += 'str_comp(' + strA + ', ' + strB + ') == 0';
-        if(comp === 'BEFORE') code += 'str_comp(' + strA + ', ' + strB + ') < 0';
-        if(comp === 'AFTER') code += 'str_comp(' + strA + ', ' + strB + ') > 0';
-        if(comp === 'NOT') code += 'str_comp(' + strA + ', ' + strB + ') != 0';  
+        code += 'str_comp(' + strA + ', ' + strB + ') ' + comp + ' 0';
     } else {           
         code += '0'; 
     }

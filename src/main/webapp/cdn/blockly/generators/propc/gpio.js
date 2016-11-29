@@ -1,8 +1,7 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2014 Michel Lampo
- * https://github.com/gasolin/BlocklyDuino
+ * Copyright 2014 Michel Lampo, Vale Tolpegin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +17,13 @@
  */
 
 /**
- * @fileoverview Generating C for servo blocks.
+ * @fileoverview Generating C for gpio blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
- * @author valetolpegin@gmail.com (Vale Tolpegin)
+ *         valetolpegin@gmail.com    (Vale Tolpegin)
+ *         jewald@parallax.com       (Jim Ewald)
+ *         mmatz@parallax.com        (Matthew Matz)
+ *         kgracey@parallax.com      (Ken Gracey)
+ *         carsongracey@gmail.com    (Carson Gracey)
  */
 'use strict';
 
@@ -259,7 +262,7 @@ Blockly.Blocks.base_freqout = {
                 .appendField("duration (ms)")
                 .setCheck('Number');
         this.appendValueInput("FREQUENCY", 'Number')
-                .appendField("frequecy (hz)")
+                .appendField("frequecy (Hz)")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -642,7 +645,7 @@ Blockly.propc.pwm_set = function () {
         duty_cycle = '100';
     }
 
-    var code = 'pwm_start(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
+    var code = 'pwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
     return code;
 };
 
