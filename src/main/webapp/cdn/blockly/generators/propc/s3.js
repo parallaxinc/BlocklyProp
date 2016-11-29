@@ -88,7 +88,7 @@ Blockly.Blocks.scribbler_simple_wait = {
     }
 };
 
-Blockly.propc.scribbler_exit_loop = function() {
+Blockly.propc.scribbler_simple_wait = function() {
     var wait_time = Blockly.propc.valueToCode(this, 'WAITTIME', Blockly.propc.ORDER_NONE) || '1';
     var time_scale = Blockly.propc.valueToCode(this, 'TIMESCALE', Blockly.propc.ORDER_NONE);
     return 'pause(' + wait_time + ' * ' + time_scale + ');\n';
@@ -382,7 +382,7 @@ Blockly.Blocks.scribbler_LED = {
     }
 };
 
-Blockly.Spin.scribbler_LED = function () {
+Blockly.propc.scribbler_LED = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include s3.h';
     Blockly.propc.setups_[ 'setup_scribbler' ] = 's3_setup();';
 
@@ -434,7 +434,7 @@ Blockly.propc.scribbler_play = function () {
     var note_duration = this.getFieldValue('NOTE_DURATION');
     var note_volume = this.getFieldValue('NOTE_VOLUME');
     
-    return 's3_simplePlay((' + note_frequency + ' / ' + note_octave + '), ' + note_duration + ', ' + note_volume + ')\n';
+    return 's3_simplePlay((' + note_frequency + ' / ' + note_octave + '), ' + note_duration + ', ' + note_volume + ');\n';
 };
 
 // Move the motors for 0 to ? ms, or indefinately
@@ -921,6 +921,25 @@ Blockly.Blocks.spin_integer = {
 Blockly.propc.spin_integer = function() {
     var code = window.parseInt(this.getFieldValue('INT_VALUE'));
     var order = code < 0 ? Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
+    return [code, order];
+};
+
+Blockly.Blocks.math_int_angle = {
+    init: function () {
+        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP);
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldAngle('90', Blockly.FieldTextInput.numberValidator), 'ANGLE_VALUE');
+
+        this.setOutput(true, 'Number');
+        this.setColour(colorPalette.getColor('math'));
+    }
+};
+
+Blockly.propc.math_int_angle = function () {
+    var code = window.parseInt(this.getFieldValue('ANGLE_VALUE'));
+    var order = code < 0 ?
+            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
     return [code, order];
 };
 
