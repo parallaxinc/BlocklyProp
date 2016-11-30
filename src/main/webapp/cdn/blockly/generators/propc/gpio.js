@@ -262,7 +262,7 @@ Blockly.Blocks.base_freqout = {
                 .appendField("duration (ms)")
                 .setCheck('Number');
         this.appendValueInput("FREQUENCY", 'Number')
-                .appendField("frequecy (Hz)")
+                .appendField("frequency (Hz)")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -982,7 +982,7 @@ Blockly.propc.activitybot_calibrate = function() {
     Blockly.propc.definitions_["activitybot_calibrate"] = '#include "abcalibrate.h"';
     Blockly.propc.setups_["activitybot_calibrate"] = 'cal_servoPins(12, 13);\n\tcal_encoderPins(14, 15);';
 
-    return 'cal_activityBot();\n';
+    return 'high(26);\nhigh(27);\ncal_activityBot();\nlow(26);\nlow(27);\n';
 };
 
 Blockly.Blocks.activitybot_display_calibration = {
@@ -1012,11 +1012,11 @@ Blockly.propc.activitybot_display_calibration = function() {
     code += 'print("=== LEFT SERVO ===\\n");\n';
     code += 'print("Table Entries = %d, Zero Speed Index = %d\\n\\n", abd_elCntL, abd_cntrLidx);\n';
     code += 'print("Index, Servo Drive, Encoder Ticks/Second\\n");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCntL; __rIdx++) print("%d,    %d,    %d\\n", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
+    code += 'for(int __rIdx = 0; __rIdx < abd_elCntL; __rIdx++) print("%d, %d, %d\\n", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
     code += 'print("\\n\\n=== RIGHT SERVO ===\\n");\n';
     code += 'print("Table Entries = %d, Zero Speed Index = %d\\n\\n", abd_elCntR, abd_cntrRidx);\n';
     code += 'print("Index, Servo Drive, Encoder Ticks/Second\\n");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCntR; __rIdx++) print("%d,    %d,    %d\\n", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
+    code += 'for(int __rIdx = 0; __rIdx < abd_elCntR; __rIdx++) print("%d, %d, %d\\n", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
 
     return code;
 };
