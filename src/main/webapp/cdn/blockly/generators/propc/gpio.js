@@ -982,7 +982,7 @@ Blockly.propc.activitybot_calibrate = function() {
     Blockly.propc.definitions_["activitybot_calibrate"] = '#include "abcalibrate.h"';
     Blockly.propc.setups_["activitybot_calibrate"] = 'cal_servoPins(12, 13);\n\tcal_encoderPins(14, 15);';
 
-    return 'cal_activityBot();\n';
+    return 'high(26);\nhigh(27);\ncal_activityBot();\nlow(26);\nlow(27);\n';
 };
 
 Blockly.Blocks.activitybot_display_calibration = {
