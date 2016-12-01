@@ -89,8 +89,8 @@ Blockly.Blocks.scribbler_simple_wait = {
 };
 
 Blockly.propc.scribbler_simple_wait = function() {
-    var wait_time = Blockly.propc.valueToCode(this, 'WAITTIME', Blockly.propc.ORDER_NONE) || '1';
-    var time_scale = Blockly.propc.valueToCode(this, 'TIMESCALE', Blockly.propc.ORDER_NONE);
+    var wait_time = this.getFieldValue('WAITTIME') || '1';
+    var time_scale = this.getFieldValue('TIMESCALE');
     return 'pause(' + wait_time + ' * ' + time_scale + ');\n';
 };
 
@@ -112,7 +112,7 @@ Blockly.Blocks.scribbler_wait = {
 
 Blockly.propc.scribbler_wait = function() {
     var wait_time = Blockly.propc.valueToCode(this, 'WAITTIME', Blockly.propc.ORDER_NONE) || '1';
-    var time_scale = Blockly.propc.valueToCode(this, 'TIMESCALE', Blockly.propc.ORDER_NONE);
+    var time_scale = this.getFieldValue('TIMESCALE');
     return 'pause(' + wait_time + ' * ' + time_scale + ');\n';
 };
 
@@ -735,7 +735,7 @@ Blockly.propc.light_sensor = function() {
 Blockly.Blocks.reset_button_presses = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("reset button presses during the last reset (0 to 8)");
+                .appendField("reset button presses during last reset (0 to 8)");
 	this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_RESET_BUTTON_HELPURL);
