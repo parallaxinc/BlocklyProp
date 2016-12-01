@@ -361,21 +361,22 @@ Blockly.propc.eeprom_write = function () {
     var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC);
     var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_ATOMIC) || '';
     
-    Blockly.propc.global_vars_["i2c_eepromAddr"] = 'int __eeAddr;';
+    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+    Blockly.propc.global_vars_["constrain_function"] = setup_code;
     
-    var code = '// Make sure that the eeprom address does not overwrite the program memory.\n';
-    code += '__eeAddr = ' + address + ';\n';
-    code += 'if(__eeAddr < 0) __eeAddr = 0;\n';
-    code += 'if(__eeAddr > 7675) __eeAddr = 7675;\n';
-        
+    var code = '';
     if(data !== '') {
-    
         if (type === 'BYTE') {
-            code += 'ee_putByte((' + data + ' & 255), (32768 + __eeAddr) );\n';
+            code += 'ee_putByte((' + data + ' & 255), (32768 + constrain(' + address + ', 0, 7675)) );\n';
+            //code += 'ee_putByte((' + data + ' & 255), (32768 + __eeAddr) );\n';
         } else if (type === 'NUMBER') {
-            code += 'ee_putInt(' + data + ', (32768 + __eeAddr) );\n';
+            code += 'ee_putInt(' + data + ', (32768 + constrain(' + address + ', 0, 7675)) );\n';
+            //code += 'ee_putInt(' + data + ', (32768 + __eeAddr) );\n';
         } else {
-            code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + __eeAddr) );\n';        
+            code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + constrain(' + address + ', 0, 7675)) );\n';        
+            //code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + __eeAddr) );\n';        
         }
     }
     
