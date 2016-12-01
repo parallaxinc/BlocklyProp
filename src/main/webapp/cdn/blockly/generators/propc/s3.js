@@ -24,7 +24,7 @@ Blockly.Blocks.scribbler_loop = {
 };
 
 Blockly.propc.scribbler_loop = function() {
-    var branch = Blockly.propc.statementToCode(this, 'DO');
+    var branch = Blockly.propc.statementToCode(this, 'LOOP');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
         branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
                 '\'' + this.id + '\'') + branch;
@@ -50,7 +50,7 @@ Blockly.Blocks.scribbler_limited_loop = {
 };
 
 Blockly.propc.scribbler_limited_loop = function() {
-    var branch = Blockly.propc.statementToCode(this, 'DO');
+    var branch = Blockly.propc.statementToCode(this, 'LOOP');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
         branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
                 '\'' + this.id + '\'') + branch;
@@ -392,13 +392,13 @@ Blockly.propc.scribbler_LED = function () {
     var code = '';
 
     if (this.getFieldValue('LEFT_LED') === 'TRUE') {
-        code += 's3_setLED(S3_LEFT, S3_COLOR_' + left_color.substr(1,6) + ');\n';
+        code += 's3_setLED(S3_LEFT, S3_COLOR_' + left_color.substr(1,6).toUpperCase() + ');\n';
     }
     if (this.getFieldValue('CENTER_LED') === 'TRUE') {
-        code += 's3_setLED(S3_CENTER, S3_COLOR_' + center_color.substr(1,6) + ');\n';
+        code += 's3_setLED(S3_CENTER, S3_COLOR_' + center_color.substr(1,6).toUpperCase() + ');\n';
     }
     if (this.getFieldValue('RIGHT_LED') === 'TRUE') {
-        code += 's3_setLED(S3_RIGHT, S3_COLOR_' + right_color.substr(1,6) + ');\n';
+        code += 's3_setLED(S3_RIGHT, S3_COLOR_' + right_color.substr(1,6).toUpperCase() + ');\n';
     }
 
     return code;
@@ -970,19 +970,17 @@ Blockly.Blocks.scribbler_random_boolean = {
 };
 
 Blockly.propc.scribbler_random_boolean = function() {
-    Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
-    Blockly.propc.setups_[ 'setup_scribbler' ] = 's3_setup();';
-
-    return ['s3_booleanRandom()', Blockly.propc.ORDER_NONE];
+    Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
+    return ['(rand() % 2)', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.scribbler_random_number = {
     init: function () {
-        this.appendValueInput("A")
+        this.appendValueInput("LOW")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("random number from");
-        this.appendValueInput("B")
+        this.appendValueInput("HIGH")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("to");
@@ -995,13 +993,11 @@ Blockly.Blocks.scribbler_random_number = {
 };
 
 Blockly.propc.scribbler_random_number = function() {
-    Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
-    Blockly.propc.setups_[ 'setup_scribbler' ] = 's3_setup();';
+    Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
+    var arg1 = Blockly.propc.valueToCode(this, 'LOW', Blockly.propc.ORDER_ATOMIC) || '0';
+    var arg2 = Blockly.propc.valueToCode(this, 'HIGH', Blockly.propc.ORDER_ATOMIC) || '99';
 
-    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
-    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
-
-    var code = 's3_randomRange(' + arg2 + ', ' + arg1 + ')';
+    var code = '(' + arg1 + ' + rand() % (' + arg2 + ' - ' + arg1 + ' + 1))';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
