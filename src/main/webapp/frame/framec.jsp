@@ -268,7 +268,7 @@
             
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />" include="activity-board, heb" exclude="s3" colour="200">
+        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3" colour="200">
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -694,8 +694,8 @@
                 </block>
             </category>                   --%>
         </category>
-        <category name="<fmt:message key="category.analog-pulses" />" include="activity-board" exclude="heb, s3" colour="200">
-            <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" include="activity-board" exclude="heb, s3">
+        <category name="<fmt:message key="category.analog-pulses" />" exclude="s3" colour="200">
+            <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" exclude="s3">
                 <block type="pulse_in"></block>
                 <block type="pulse_out">
                     <value name="PULSE_LENGTH">
@@ -705,7 +705,7 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.pwm" />" include="activity-board" exclude="heb, s3">
+            <category name="<fmt:message key="category.analog-pulses.pwm" />" exclude="s3">
                 <block type="pwm_start"></block>
                 <block type="pwm_set">
                     <value name="DUTY_CYCLE">
@@ -716,10 +716,10 @@
                 </block>
                 <block type="pwm_stop"></block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.rc" />" include="activity-board" exclude="heb, s3">
+            <category name="<fmt:message key="category.analog-pulses.rc" />" exclude="s3">
                 <block type="rc_charge_discharge"></block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board" exclude="heb, s3">
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="activity-board">
                 <block type="ab_volt_in"></block>
                 <block type="ab_volt_out">
                     <value name="VALUE">
@@ -730,8 +730,8 @@
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.audio" />" include="activity-board" exclude="heb, s3" colour="200">
-            <category name="<fmt:message key="category.audio.freqout" />">
+        <category name="<fmt:message key="category.audio" />" include="activity-board, heb" exclude="s3" colour="200">
+            <category name="<fmt:message key="category.audio.freqout" />" include="activity-board, heb" exclude="s3">
                 <block type="base_freqout">
                     <value name="DURATION">
                         <block type="math_number">
@@ -745,7 +745,7 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.audio.audio" />">
+            <category name="<fmt:message key="category.audio.audio" />" include="activity-board" exclude="heb, s3">
                 <block type="wav_play"></block>
                 <block type="wav_status"></block>
                 <block type="wav_volume">
