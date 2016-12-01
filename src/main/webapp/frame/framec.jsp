@@ -54,9 +54,9 @@
                 } else {
                     // Attempt to diagnose the problem.
                     var msg = 'Error: Unable to communicate between frames.\n\n';
-                    if (window.parent == window) {
+                    if (window.parent === window) {
                         msg += 'Try loading index.html instead of frame.html';
-                    } else if (window.location.protocol == 'file:') {
+                    } else if (window.location.protocol === 'file:') {
                         msg += 'This may be due to a security restriction preventing\n' +
                                 'access when using the file:// protocol.\n' +
                                 'http://code.google.com/p/chromium/issues/detail?id=47416';
@@ -65,7 +65,7 @@
                 }
             }
             function load(xmlText) {
-                var xmlDom = Blockly.Xml.textToDom(xmlText)
+                var xmlDom = Blockly.Xml.textToDom(xmlText);
                 Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
             }
             function ready() {
@@ -90,17 +90,17 @@
             </block>
             <block type="control_repeat_for_loop">
                 <value name="START">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">1</field>
                     </block>
                 </value>
                 <value name="END">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">10</field>
                     </block>
                 </value>
                 <value name="STEP">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">1</field>
                     </block>
                 </value>
@@ -108,7 +108,7 @@
             <block type="controls_break"></block>
             <block type="base_delay">
                 <value name="DELAY_TIME">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">1000</field>
                     </block>
                 </value>
@@ -123,12 +123,12 @@
                 <block type="math_crement"></block>
                 <block type="math_random">
                     <value name="A">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                     <value name="B">
-                         <block type="spin_integer">
+                         <block type="math_number">
                             <field name="NUM">100</field>
                         </block>
                     </value> 
@@ -145,26 +145,26 @@
                 <block type="find_substring"></block>
                 <block type="get_char_at_position">
                     <value name="POSITION">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                 </block>
                 <block type="set_char_at_position">
                     <value name="POSITION">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                 </block>
                 <block type="get_substring">
                     <value name="START">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">1</field>
                         </block>
                     </value>
                     <value name="END">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">3</field>
                         </block>
                     </value>
@@ -173,7 +173,7 @@
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />" exclude="s3" colour="220">
-            <block type="spin_integer"></block>
+            <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>            
             <block type="logic_boolean"></block>
@@ -181,17 +181,17 @@
             <block type="color_picker"></block>
             <block type="color_value_from">
                 <value name="RED_VALUE">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">0</field>
                     </block>
                 </value>
                 <value name="GREEN_VALUE">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">0</field>
                     </block>
                 </value>
                 <value name="BLUE_VALUE">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">0</field>
                     </block>
                 </value>
@@ -225,7 +225,6 @@
                 <block type="scribbler_exit_loop"></block>
                 <block type="scribbler_simple_wait">
                     <field name="WAITTIME">5</field>
-                    <field name="TIMESCALE">10</field>
                 </block>
             </category>
             <category name="<fmt:message key="category.s3-simple.simple-sensors" />" colour=140>
@@ -250,7 +249,7 @@
                 <block type="scribbler_LED"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.control" />" colour=205>
+        <category name="<fmt:message key="category.control" />" include="s3" exclude="heb, activity-board" colour=205>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
@@ -273,7 +272,7 @@
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">0</field>
                     </block>
                 </value>
@@ -281,7 +280,7 @@
             <block type="check_pin"></block>
             <block type="check_pin_input">
                 <value name="PIN">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">0</field>
                     </block>
                 </value>
@@ -306,12 +305,12 @@
                 <block type="oled_text_size"></block>
                 <block type="oled_set_cursor">
                     <value name="X_POS">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_POS">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -323,19 +322,19 @@
                 </block>
                 <block type="oled_print_number">
                     <value name="NUMIN">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="oled_draw_pixel">
                     <value name="X_AXIS">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_AXIS">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -345,22 +344,22 @@
                 </block>
                 <block type="oled_draw_line">
                     <value name="X_ONE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_ONE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="X_TWO">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_TWO">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -370,32 +369,32 @@
                 </block>
                 <block type="oled_draw_triangle">
                     <value name="POINT_X0">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y0">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_X1">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y1">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_X2">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y2">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -405,27 +404,27 @@
                 </block>
                 <block type="oled_draw_rectangle">
                     <value name="POINT_X">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RECT_WIDTH">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RECT_HEIGHT">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RECT_ROUND">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -435,17 +434,17 @@
                 </block>
                 <block type="oled_draw_circle">
                     <value name="POINT_X">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POINT_Y">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RADIUS">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -465,7 +464,7 @@
                 <block type="ws2812b_init"></block>
                 <block type="ws2812b_set">
                     <value name="LED">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">1</field>
                         </block>
                     </value>
@@ -484,7 +483,7 @@
                 </block>
                 <block type="debug_lcd_number">
                     <value name="VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -501,7 +500,7 @@
                 </block>
                 <block type="console_print_variables">
                     <value name="VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -512,12 +511,12 @@
                 <block type="console_clear"></block>
                 <block type="console_move_to_position">
                     <value name="ROW">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="COLUMN">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -585,14 +584,14 @@
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_read">
                     <value name="ADDRESS">
-                        <block type="spin_integer">
+                        <block type="math_number">
                                 <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="eeprom_write">
                     <value name="ADDRESS">
-                        <block type="spin_integer">
+                        <block type="math_number">
                                 <field name="NUM">0</field>
                         </block>
                     </value>
@@ -602,93 +601,93 @@
                 <block type="sd_card_mount"></block>
                 <block type="sd_card_int_to">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_int_from">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_read_int">
                     <value name="INDEX">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_float_to">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_float_from">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_read_float">
                     <value name="INDEX">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_text_to">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_text_from">
                     <value name="STARTING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ENDING_POINT_VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="sd_card_read_text">
                     <value name="INDEX">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -700,7 +699,7 @@
                 <block type="pulse_in"></block>
                 <block type="pulse_out">
                     <value name="PULSE_LENGTH">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -710,7 +709,7 @@
                 <block type="pwm_start"></block>
                 <block type="pwm_set">
                     <value name="DUTY_CYCLE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">50</field>
                         </block>
                     </value>
@@ -724,7 +723,7 @@
                 <block type="ab_volt_in"></block>
                 <block type="ab_volt_out">
                     <value name="VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -735,12 +734,12 @@
             <category name="<fmt:message key="category.audio.freqout" />">
                 <block type="base_freqout">
                     <value name="DURATION">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="FREQUENCY">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -751,7 +750,7 @@
                 <block type="wav_status"></block>
                 <block type="wav_volume">
                     <value name="VOLUME">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -763,7 +762,7 @@
             <category name="<fmt:message key="category.servo.standard-servo" />">
                 <block type="servo_move">
                     <value name="ANGLE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -772,14 +771,14 @@
             <category name="<fmt:message key="category.servo.cr-servo" />">
                 <block type="servo_speed">
                     <value name="SPEED">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="servo_set_ramp">
                     <value name="RAMPSTEP">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">50</field>
                         </block>
                     </value>
@@ -790,24 +789,24 @@
             <block type="ab_drive_init"></block>
             <block type="ab_drive_speed">
                 <value name="LEFT">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">64</field>
                     </block>
                 </value>
                 <value name="RIGHT">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">64</field>
                     </block>
                 </value>
             </block>
             <block type="ab_drive_goto">
                 <value name="LEFT">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">64</field>
                     </block>
                 </value>
                 <value name="RIGHT">
-                    <block type="spin_integer">
+                    <block type="math_number">
                         <field name="NUM">64</field>
                     </block>
                 </value>
@@ -825,7 +824,7 @@
                 </block>
                 <block type="console_print_variables">
                     <value name="VALUE">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -836,12 +835,12 @@
                 <block type="console_clear"></block>
                 <block type="console_move_to_position">
                     <value name="ROW">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="COLUMN">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>
@@ -851,7 +850,7 @@
                 <block type="heb_toggle_led"></block>
                 <block type="heb_toggle_led_open">
                     <value name="LED_NUM">
-                        <block type="spin_integer">
+                        <block type="math_number">
                             <field name="NUM">0</field>
                         </block>
                     </value>

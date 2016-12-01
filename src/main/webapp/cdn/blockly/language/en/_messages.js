@@ -48,6 +48,8 @@ Blockly.MSG_NEW_VARIABLE = 'New variable...';
 Blockly.MSG_NEW_VARIABLE_TITLE = 'New variable name:';
 Blockly.MSG_RENAME_VARIABLE = 'Rename variable...';
 Blockly.MSG_RENAME_VARIABLE_TITLE = 'Rename all "%1" variables to:';
+Blockly.LANG_VARIABLES_SET_ITEM = 'item';
+Blockly.LANG_VARIABLES_GET_ITEM = 'item';
 
 // Control Blocks.
 Blockly.LANG_CATEGORY_CONTROLS = 'Control';
