@@ -5,11 +5,8 @@
  */
 package com.parallax.blocklyprop.test;
 
-import static  org.junit.Assert.assertEquals;
-import static  org.junit.Assert.assertNull;
-
+import static  org.junit.Assert.*;
 import org.junit.Test;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,29 +32,28 @@ public class SandTest {
 
     @Test
     public void verifyDateConversion() {
-        DateConversion convert = new DateConversion();
-
-        // assert statements
+        // Data setup
         Date date = new Date();
         DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
+
+        // Assert values
+        String message = "Date conversion must be in format yyyy/MM/dd";
+        String expected = DateConversion.toString(DF, date);
+        String actual = DateConversion.toDateString(date);
         
-        assertEquals(
-            "Date conversion must be in format yyyy/MM/dd",
-            DateConversion.toString(DF, date),
-            DateConversion.toDateString(date)
-        );
+        assertEquals( message, expected, actual);
     }
     
     @Test
     public void verifyDateConversionDateTimeString() {
         Date date = new Date();
         DateFormat DTF = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+
+        String message = "Date conversion must be in format yyyy/MM/dd HH:mm";
+        String expected = DateConversion.toString(DTF, date);
+        String actual = DateConversion.toDateTimeString(date);
         
-        assertEquals(
-            "Date conversion must be in format yyyy/MM/dd HH:mm",
-            DateConversion.toString(DTF, date),
-            DateConversion.toDateTimeString(date)
-        );
+        assertEquals( message, expected, actual);
     }
         
     @Test
@@ -65,10 +61,10 @@ public class SandTest {
         Date date = new Date();
         DateFormat TF = new SimpleDateFormat("HH:mm");
         
-        assertEquals(
-            "Date conversion must be in format HH:mm",
-            DateConversion.toString(TF, date),
-            DateConversion.toTimeString(date)
-        );
+        String message = "Date conversion must be in format HH:mm";
+        String expected = DateConversion.toString(TF, date);
+        String actual = DateConversion.toTimeString(date);
+        
+        assertEquals( message, expected, actual );
     }
 }
