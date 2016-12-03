@@ -73,7 +73,8 @@ Blockly.Blocks.math_arithmetic = {
                 ["-", ' - '],
                 ["×", ' * '],
                 ["÷", ' / '],
-                ["% (remainder after division)", ' % ']]), 'OP');
+                ["% (remainder after division)", ' % '],
+                ["^ (raise to the power of)", ' p ']]), 'OP');
         this.setInputsInline(true);
     }
 };
@@ -87,8 +88,11 @@ Blockly.propc.math_arithmetic = function() {
     var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
     var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
     var code;
-
-    code = argument0 + operator + argument1;
+    if(operator === ' p ') {
+        code = 'pow(' + argument0 + ', ' + argument1 + ')';
+    } else {
+        code = argument0 + operator + argument1;
+    }
     return [code, order];
 };
 
@@ -671,15 +675,20 @@ Blockly.Blocks.logic_negate = {
         this.setOutput(true, 'Number');
         this.appendValueInput('BOOL')
                 .setCheck('Number')
-                .appendField("not");
+                .appendField(new Blockly.FieldDropdown([["not", '!'], ["negate", '-'], ["abs", 'abs(']]), 'OP');
     }
 };
 
 Blockly.propc.logic_negate = function() {
     // Negation.
     var order = Blockly.propc.ORDER_UNARY_PREFIX;
+    var operator = this.getFieldValue('OP');
     var argument0 = Blockly.propc.valueToCode(this, 'BOOL', order) || '0';
-    var code = '!' + argument0;
+    var code = operator + argument0;
+    if(operator === 'abs(') {
+        code += ')';
+        order = Blockly.propc.ORDER_NONE;
+    } 
     return [code, order];
 };
 
@@ -958,4 +967,219 @@ Blockly.propc.string_compare = function () {
     }
     
     return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.string_to_number = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_STRING_TO_NUMBER_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("STRING")
+            .setCheck("String")
+            .appendField("string");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["in decimal", "%d"], ["in hexadecimal", "%x"], ["in binary", "%b"]]), "TYPE")
+            .appendField("to integer store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+  }
+};
+
+Blockly.propc.string_to_number = function () {
+    var str = Blockly.propc.valueToCode(this, 'STRING', Blockly.propc.ORDER_ATOMIC) || '0';
+    var type = this.getFieldValue('TYPE');
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+
+    return 'sscani(' + str + ', "' + type + '", &' + store + ');\n';
+};
+
+Blockly.Blocks.number_to_string = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_NUMBER_TO_STRING_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("NUMBER")
+            .setCheck("Number")
+            .appendField("integer");
+        this.appendDummyInput()
+            .appendField("to string in")
+            .appendField(new Blockly.FieldDropdown([["decimal", "%d"], ["hexadecimal", "%x"], ["binary", "%b"]]), "TYPE")
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+  }
+};
+
+Blockly.propc.number_to_string = function () {
+    var str = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_ATOMIC) || '0';
+    var type = this.getFieldValue('TYPE');
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+
+    Blockly.propc.vartype_[str] = 'char *';
+    
+    return 'sprinti(' + store + ', "' + type + '", ' + str + ');\n';
+};
+
+Blockly.Blocks.number_binary = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_NUMBER_BINARY_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("0101"), "NUMBER")
+            .appendField("binary");
+        this.setOutput(true, "Number");
+  }
+};
+
+Blockly.propc.number_binary = function() {
+    var code = '0b' + this.getFieldValue("NUMBER");
+
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.number_hex = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_NUMBER_HEX_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("7F"), "NUMBER")
+            .appendField("hexadecimal");
+        this.setOutput(true, "Number");
+  }
+};
+
+Blockly.propc.number_hex = function() {
+    var code = '0x' + this.getFieldValue("NUMBER");
+
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.constrain_value = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSTRAIN_VALUE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("NUMBER")
+            .setCheck("Number")
+            .appendField("constrain");
+        this.appendDummyInput()
+            .appendField("from")
+            .appendField(new Blockly.FieldTextInput("0"), "MIN")
+            .appendField("(min) to")
+            .appendField(new Blockly.FieldTextInput("100"), "MAX")
+            .appendField("(max)");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+  }
+};
+
+Blockly.propc.constrain_value = function() {
+    var num = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_ATOMIC) || '0';
+    var min = window.parseInt(this.getFieldValue('MIN'));
+    var max = window.parseInt(this.getFieldValue('MAX'));
+
+    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+    Blockly.propc.global_vars_["constrain_function"] = setup_code;
+
+    var code = 'constrain(' + num + ', ' + min + ', ' + max + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.math_advanced = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_ADVANCED_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("ARG1")
+            .setCheck("Number");
+        this.appendValueInput("ARG2")
+            .setCheck("Number")
+            .appendField(new Blockly.FieldDropdown([
+            ["× the cosine of", "cos"], 
+            ["× the sine of", "sin"], 
+            ["× the tangent of", "tan"], 
+            ["× the square root of", "sqrt"], 
+            ["× e raised to the power of", "exp"], 
+            ["× the logarithm (base 10) of", "log10"], 
+            ["× the natural logarithm of", "log"]]), "OP");
+        this.appendDummyInput("")
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('STORE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
+            this.setTitleValue(newName, 'STORE');
+        }
+    }
+};
+
+Blockly.propc.math_advanced = function() {
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('STORE'), Blockly.Variables.NAME_TYPE);
+    var arg1 = Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '1';
+    var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
+    var operator = this.getFieldValue('OP');
+    var opTrig = '';
+    if(operator === 'sin' || operator === 'cos' || operator === 'tan') opTrig = ' * 180.0/PI';
+
+    var code = store + ' = (int) (((float)' + arg1 + ') * ' + operator + '(((float) ' + arg2 + ')' + opTrig + '));\n';
+    
+    return code;
+};
+
+Blockly.Blocks.math_inv_trig = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_INV_TRIG_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("ARG1")
+            .setCheck("Number")
+            .appendField(new Blockly.FieldDropdown([
+            ["arcsine of (", "asin"], 
+            ["arccosine of (", "acos"], 
+            ["arctangent of (", "atan2"]]), "OP");
+        this.appendValueInput("ARG2")
+            .setCheck("Number")
+            .appendField("÷");
+        this.appendDummyInput()
+            .appendField(") store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('STORE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
+            this.setTitleValue(newName, 'STORE');
+        }
+    }
+};
+
+Blockly.propc.math_inv_trig = function() {
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('STORE'), Blockly.Variables.NAME_TYPE);
+    var arg1 = Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '1';
+    var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
+    var operator = this.getFieldValue('OP');
+    var opTrig = '/';
+    if(operator === 'atan2') opTrig = ',';
+
+    var code = store + ' = (int) ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + '));\n';
+    
+    return code;
 };
