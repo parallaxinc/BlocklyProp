@@ -120,6 +120,7 @@
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
                 <block type="math_limit"></block>
+                <block type="constrain_value"></block>
                 <block type="math_crement"></block>
                 <block type="math_random">
                     <value name="A">
@@ -137,6 +138,8 @@
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>
                 <block type="logic_compare"></block> 
+                <block type="math_advanced"></block>
+                <block type="math_inv_trig"></block>
             </category>
             <category name="<fmt:message key="category.operators.strings" />" >
                 <block type="string_compare"></block>
@@ -169,13 +172,17 @@
                         </block>
                     </value>
                 </block>
+                <block type="string_to_number"></block>
+                <block type="number_to_string"></block>                
             </category>            
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />" exclude="s3" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
-            <block type="char_type_block"></block>            
+            <block type="char_type_block"></block>  
+            <block type="number_binary"></block>
+            <block type="number_hex"></block>
             <block type="logic_boolean"></block>
             <block type="high_low_value"></block>
             <block type="color_picker"></block>
@@ -919,6 +926,9 @@
             <block type="logic_operation"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
+            <block type="constrain_value"></block>
+            <block type="math_advanced"></block>
+            <block type="math_inv_trig"></block>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" include="s3" exclude="heb, activity-board" colour=140>
             <category name="<fmt:message key="category.sensor-input.s3-line" />">
