@@ -1179,7 +1179,7 @@ Blockly.propc.math_inv_trig = function() {
     var opTrig = '/';
     if(operator === 'atan2') opTrig = ',';
 
-    var code = store + ' = (int) ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + '));\n';
+    var code = store + ' = (int) (108.0 * ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + ')) / PI);\n';
     
     return code;
 };
