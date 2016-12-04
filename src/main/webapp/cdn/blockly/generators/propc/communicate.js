@@ -660,11 +660,16 @@ Blockly.Blocks.debug_lcd_set_cursor = {
 Blockly.propc.debug_lcd_set_cursor = function () {
     var row = this.getFieldValue('ROW');
     var column = this.getFieldValue('COLUMN');
-    
+
+    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+    Blockly.propc.global_vars_["constrain_function"] = setup_code;
+
     if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
         return '//Missing Serial LCD initialize block\n';
     } else {
-        return 'writeChar(debug_lcd, (128 + (' + row + ' * 20) + ' + column + '));\n';
+        return 'writeChar(debug_lcd, (128 + (constrain(' + row + ', 0, 3) * 20) + constrain(' + column + ', 0, 20)));\n';
     }
 };
 
