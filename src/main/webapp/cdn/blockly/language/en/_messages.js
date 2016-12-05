@@ -234,7 +234,7 @@ Blockly.MSG_MATH_CREMENT_TOOLTIP = "de/increment: increase or decrease attached 
 Blockly.MSG_MATH_RANDOM_TOOLTIP = "random: Pick random number between the low “from” and high “to” values.";
 Blockly.MSG_MATH_BITWISE_TOOLTIP = "bitwise:& AND, | OR, ^ XOR, >> right shift, << left shift.";
 Blockly.MSG_LOGIC_OPERATION_TOOLTIP = "boolean comparison: and, or, and not, or not; return 1/true or 0/false.";
-Blockly.MSG_LOGIC_NEGATE_TOOLTIP = "not: Get boolean (1/true or 0/false) opposite of attached value.";
+Blockly.MSG_LOGIC_NEGATE_TOOLTIP = "not: Get boolean (1/true or 0/false) opposite,\nnegate: get the negative decimal value,\nabs: get the absolute value of.";
 Blockly.MSG_LOGIC_COMPARE_TOOLTIP = "compare values: boolean comparison returns 1/true or 0/false.";
 Blockly.MSG_STRING_COMPARE_TOOLTIP = "compare strings: returns 1/true or 0/false. Case sensitive.";
 Blockly.MSG_STRING_LENGTH_TOOLTIP = "length of string: number of characters in string or string variable.";
@@ -351,8 +351,15 @@ Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP = "Robot drive init: set up the Robot's dri
 Blockly.MSG_ROBOT_DRIVE_DISTANCE_TOOLTIP = "Robot drive distance: drives each wheel a specified distance.";
 Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP = "Robot drive speed: drives each wheel at a specified speed.";
 Blockly.MSG_ROBOT_DRIVE_STOP_TOOLTIP = "Robot drive stop: stops the robot from driving.";
-Blockly.MSG_ROBOT_ACTIVITYBOT_CALIBRATE_TOOLTIP = "ActivityBot Calibrate: runs the ActivityBot calibration routine.";
-Blockly.MSG_ROBOT_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP = "ActivityBot Display Calibration: displays the calibration results on the terminal.";
+Blockly.MSG_ROBOT_ACTIVITYBOT_CALIBRATE_TOOLTIP = "ActivityBot calibrate: runs the ActivityBot calibration routine.";
+Blockly.MSG_ROBOT_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP = "ActivityBot display calibration: displays the calibration results on the terminal.";
+Blockly.MSG_STRING_TO_NUMBER_TOOLTIP = "string to number: convert a number (integer) value to a string.";
+Blockly.MSG_NUMBER_TO_STRING_TOOLTIP = "number to string: convert a string representing a number to an integer.";
+Blockly.MSG_NUMBER_BINARY_TOOLTIP = "binary value: use to enter a binary number.";
+Blockly.MSG_NUMBER_HEX_TOOLTIP = "hexadecimal value: use to enter a hexadecimal number.";
+Blockly.MSG_CONSTRAIN_VALUE_TOOLTIP = "constrain value: prevent a value from being too large or too small.";
+Blockly.MSG_MATH_ADVANCED_TOOLTIP = "advanced math: perform a trigonometric, exponential, or logrithmic function.\nAngles are in degrees.";
+Blockly.MSG_MATH_INV_TRIG_TOOLTIP = "inverse trig: perform an inverse trigonometric function.\nAngles are in degrees.";
 
 
 //-------Scribbler 3 help URLs ---------------------------------------------

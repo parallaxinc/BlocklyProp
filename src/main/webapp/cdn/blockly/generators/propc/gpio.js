@@ -370,13 +370,10 @@ Blockly.propc.eeprom_write = function () {
     if(data !== '') {
         if (type === 'BYTE') {
             code += 'ee_putByte((' + data + ' & 255), (32768 + constrain(' + address + ', 0, 7675)) );\n';
-            //code += 'ee_putByte((' + data + ' & 255), (32768 + __eeAddr) );\n';
         } else if (type === 'NUMBER') {
             code += 'ee_putInt(' + data + ', (32768 + constrain(' + address + ', 0, 7675)) );\n';
-            //code += 'ee_putInt(' + data + ', (32768 + __eeAddr) );\n';
         } else {
             code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + constrain(' + address + ', 0, 7675)) );\n';        
-            //code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + __eeAddr) );\n';        
         }
     }
     
