@@ -74,7 +74,6 @@ var utils = {
             parr = parArr[i].split("=");
             if (parr[0] == parameter) {
                 return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-                returnBool = true;
             } else {
                 returnBool = false;
             }
