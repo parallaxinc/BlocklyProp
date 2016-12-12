@@ -729,7 +729,7 @@ Blockly.propc.light_sensor = function() {
     Blockly.propc.setups_[ 'setup_scribbler' ] = 's3_setup();';
 
     var dir = this.getFieldValue("LGHT_SENSOR_CHOICE");
-    return ['s3_resetButtonCount(S3_' + dir + ')', Blockly.propc.ORDER_NONE];
+    return ['s3_lightSensor(S3_' + dir + ')', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.reset_button_presses = {
