@@ -976,11 +976,11 @@ Blockly.propc.scribbler_random_boolean = function() {
 
 Blockly.Blocks.scribbler_random_number = {
     init: function () {
-        this.appendValueInput("LOW")
+        this.appendValueInput("A")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("random number from");
-        this.appendValueInput("HIGH")
+        this.appendValueInput("B")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("to");
@@ -994,8 +994,8 @@ Blockly.Blocks.scribbler_random_number = {
 
 Blockly.propc.scribbler_random_number = function() {
     Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
-    var arg1 = Blockly.propc.valueToCode(this, 'LOW', Blockly.propc.ORDER_ATOMIC) || '0';
-    var arg2 = Blockly.propc.valueToCode(this, 'HIGH', Blockly.propc.ORDER_ATOMIC) || '99';
+    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
+    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
 
     var code = '(' + arg1 + ' + rand() % (' + arg2 + ' - ' + arg1 + ' + 1))';
     return [code, Blockly.propc.ORDER_NONE];
@@ -1034,9 +1034,9 @@ Blockly.Blocks.scribbler_serial_send_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("send message")
+                .appendField("send text")
                 .appendField(quotes.newQuote_(this.RTL))
-                .appendField(new Blockly.FieldTextInput(''), 'MESSAGE_TEXT')
+                .appendField(new Blockly.FieldTextInput(""), "MESSAGE_TEXT")
                 .appendField(quotes.newQuote_(this.LTR));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1047,9 +1047,9 @@ Blockly.Blocks.scribbler_serial_send_text = {
 
 Blockly.propc.scribbler_serial_send_text = function () {
     Blockly.propc.serial_terminal_ = true;
-    var message = Blockly.propc.valueToCode(this, 'MESSAGE_TEXT', Blockly.propc.ORDER_ATOMIC) || '';
+    var message = this.getFieldValue('MESSAGE_TEXT');
 
-    return 'print(' + message + ');\n';
+    return 'print("' + message + '");\n';
 };
 
 Blockly.Blocks.scribbler_serial_send_char = {
