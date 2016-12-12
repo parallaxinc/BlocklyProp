@@ -56,7 +56,7 @@ Blockly.propc.console_print = function () {
 
     Blockly.propc.serial_terminal_ = true;
     
-    var code = 'print(' + text + ');\n';
+    var code = 'print(' + text.replace("%","%%") + ');\n';
     if (checkbox === 'TRUE') { code += 'print("\\r");\n'; }
     return code;
 };
@@ -371,7 +371,7 @@ Blockly.propc.serial_send_text = function () {
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
         return '//Missing serial port initialize block\n';
     } else {
-        var code = 'dprint(fdser, "%s", ' + text + ');\n';
+        var code = 'dprint(fdser, ' + text.replace("%","%%") + ');\n';
         code += 'while(!fdserial_txEmpty(fdser));\n';
         code += 'pause(5);\n';
 
@@ -498,7 +498,7 @@ Blockly.propc.debug_lcd_init = function () {
 
     Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
 
-    var code = 'writeChar(debug_lcd, 22);\n';
+    var code = 'writeChar(debug_lcd, 22);\npause(5);\n';
     return code;
 };
 
@@ -558,7 +558,7 @@ Blockly.propc.debug_lcd_print = function () {
     if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
         return '//Missing Serial LCD initialize block\n';
     } else {
-        return 'dprint(debug_lcd, ' + msg + ');';
+        return 'dprint(debug_lcd, ' + msg.replace("%","%%") + ');\n';
     }
 };
 
@@ -634,10 +634,10 @@ Blockly.propc.debug_lcd_action = function () {
     if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
         code += '//Missing Serial LCD initialization\n';
     } else {
-        if(action === '12') {
-            code = 'pause(5);\n';
-        }
         code += 'writeChar(debug_lcd, ' + action + ');\n';
+        //if(action === '12') {
+            code += 'pause(5);\n';
+        //}
     }
     return code;
 };
@@ -735,7 +735,7 @@ Blockly.propc.xbee_transmit = function () {
         } else if(type === "INT") {
             return 'dprint(xbee, "%d\\r", ' + data + ');\n';
         } else {   
-            var code = 'dprint(xbee, "%s\\r", ' + data + ');\n';
+            var code = 'dprint(xbee, "%s\\r", ' + data.replace("%","%%") + ');\n';
             code += 'while(!fdserial_txEmpty(xbee));\n';
             code += 'pause(5);\n';
 

@@ -1034,7 +1034,7 @@ Blockly.Blocks.scribbler_serial_send_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("send text")
+                .appendField("Terminal / XBee / WX send text")
                 .appendField(quotes.newQuote_(this.RTL))
                 .appendField(new Blockly.FieldTextInput(""), "MESSAGE_TEXT")
                 .appendField(quotes.newQuote_(this.LTR));
@@ -1056,7 +1056,7 @@ Blockly.Blocks.scribbler_serial_send_char = {
     init: function () {
         this.appendValueInput("CHAR_VALUE")
                 .setCheck("Number")
-                .appendField("send character (0 to 255)");
+                .appendField("Terminal / XBee / WX send character (0 to 255)");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1077,7 +1077,7 @@ Blockly.Blocks.scribbler_serial_send_decimal = {
     init: function () {
         this.appendValueInput("DECIMAL_VALUE")
                 .setCheck("Number")
-                .appendField("send number (32-bit signed)");
+                .appendField("Terminal / XBee / WX send number (32-bit signed)");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1122,7 +1122,7 @@ Blockly.Blocks.scribbler_serial_rx_byte = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("receive character (0 to 255)");
+                .appendField("Terminal / XBee / WX receive character (0 to 255)");
         this.setOutput(true, 'Number');
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
 	this.setTooltip(Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP);
@@ -1140,7 +1140,7 @@ Blockly.Blocks.scribbler_serial_cursor_xy = {
         this.appendValueInput("Y")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("set cursor position to row");
+                .appendField("Terminal set cursor position to row");
         this.appendValueInput("X")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
