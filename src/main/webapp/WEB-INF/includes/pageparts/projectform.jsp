@@ -30,8 +30,18 @@
                     <input type="text" class="form-control" name="user" id="project-form-user" readonly="readonly"/>
                 </div>
                 <div class="form-group">
-                    <label for="board"><fmt:message key="project.board" /></label>
-                    <input type="text" class="form-control" name="board" id="project-form-board" readonly="readonly"/>
+                    <table style="width:100%; padding:0;   font-size: 14px;"><tr>
+                        <td style="padding-right:10px;">
+                            <label for="board"><fmt:message key="project.board" /></label>
+                            <input type="text" class="form-control" name="board" id="project-form-board" readonly="readonly"/>
+                        </td><td style="padding-right:10px;">
+                            <label for="createdDate"><fmt:message key="project.created" /></label>
+                            <input type="text" class="form-control" name="createdDate" id="project-form-created" readonly="readonly"/>
+                        </td><td>
+                            <label for="modifiedDate"><fmt:message key="project.modified" /></label>
+                            <input type="text" class="form-control" name="modifiedDate" id="project-form-modified" readonly="readonly"/>
+                        </td>
+                    </tr></table>
                 </div>
                 <div class="form-group">
                     <label for="description"><fmt:message key="project.description" /></label>
