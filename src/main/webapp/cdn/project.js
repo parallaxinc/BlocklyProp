@@ -152,6 +152,8 @@ function loadProject(idProject) {
             boardTranslation = boards['other'];
         }
         $("#project-form-board").val(boardTranslation);
+        $("#project-form-created").val(project['created']);
+        $("#project-form-modified").val(project['modified']);
         simplemde.value(project['description']);
         $("#project-description-html").html(project['description-html']);
         if (project['private']) {
