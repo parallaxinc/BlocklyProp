@@ -14,6 +14,7 @@ import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
+import java.util.GregorianCalendar;
 import java.util.List;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.jooq.Condition;
@@ -185,10 +186,15 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public ProjectRecord updateProjectCode(Long idProject, String code) {
         ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
+
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new java.util.Date());
+
         if (record != null) {
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
             if (record.getIdUser().equals(idUser)) {
                 record.setCode(code);
+                record.setModified(cal);
                 record.update();
                 return record;
             } else {
