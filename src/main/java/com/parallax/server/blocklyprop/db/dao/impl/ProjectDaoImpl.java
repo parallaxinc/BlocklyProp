@@ -80,7 +80,10 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord updateProject(
+            Long idProject, String name, String description,
+            String descriptionHtml, boolean privateProject,
+            boolean sharedProject) {
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
@@ -88,6 +91,11 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setDescriptionHtml(descriptionHtml);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
+
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(new java.util.Date());
+
+            record.setModified(cal);
             record.update();
             return record;
         }
@@ -104,6 +112,10 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setCode(code);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(new java.util.Date());
+
+            record.setModified(cal);
             record.update();
             return record;
         }
@@ -171,21 +183,37 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     private ProjectRecord doProjectClone(ProjectRecord original) {
-        ProjectRecord cloned = createProject(original.getName(), original.getDescription(), original.getDescriptionHtml(), original.getCode(), original.getType(), original.getBoard(), original.getPrivate(), original.getShared());
+        ProjectRecord cloned = createProject(
+                original.getName(), 
+                original.getDescription(), 
+                original.getDescriptionHtml(), 
+                original.getCode(), 
+                original.getType(), 
+                original.getBoard(), 
+                original.getPrivate(), 
+                original.getShared());
+        
         cloned.setBasedOn(original.getId());
         cloned.update();
-        create.update(Tables.PROJECT).set(Tables.PROJECT.BASED_ON, original.getId()).where(Tables.PROJECT.ID.equal(cloned.getId()));
+        
+        create.update(Tables.PROJECT)
+              .set(Tables.PROJECT.BASED_ON, original.getId())
+              .where(Tables.PROJECT.ID.equal(cloned.getId()));
         return cloned;
     }
 
     @Override
     public boolean deleteProject(Long idProject) {
-        return create.deleteFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).execute() > 0;
+        return create.deleteFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID.equal(idProject))
+                .execute() > 0;
     }
 
     @Override
     public ProjectRecord updateProjectCode(Long idProject, String code) {
-        ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
+        ProjectRecord record = create.selectFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID.equal(idProject))
+                .fetchOne();
 
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new java.util.Date());
@@ -201,6 +229,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 if (record.getShared()) {
                     ProjectRecord cloned = doProjectClone(record);
                     cloned.setCode(code);
+                    cloned.setModified(cal);
                     cloned.update();
                     return cloned;
                 }
@@ -219,7 +248,16 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
-            ProjectRecord cloned = createProject(newName, original.getDescription(), original.getDescriptionHtml(), code, original.getType(), original.getBoard(), original.getPrivate(), original.getShared(), original.getId());
+            ProjectRecord cloned = createProject(
+                    newName, 
+                    original.getDescription(), 
+                    original.getDescriptionHtml(), 
+                    code, 
+                    original.getType(), 
+                    original.getBoard(), 
+                    original.getPrivate(), 
+                    original.getShared(), 
+                    original.getId());
 
             return cloned;
         }
