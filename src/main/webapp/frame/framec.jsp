@@ -496,7 +496,19 @@
                     </value>
                 </block>
                 <block type="debug_lcd_action"></block>
-                <block type="debug_lcd_set_cursor"></block>
+                <block type="debug_lcd_set_cursor">
+                    <value name="ROW">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLUMN">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+
+                </block>
                 <block type="debug_lcd_music_note"></block>
             </category>
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
@@ -708,6 +720,13 @@
                     <value name="PULSE_LENGTH">
                         <block type="math_number">
                             <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="base_count">
+                    <value name="DURATION">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
                         </block>
                     </value>
                 </block>
