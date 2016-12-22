@@ -35,14 +35,54 @@ public class ProjectDaoImpl implements ProjectDao {
         this.create = dsl;
     }
 
+    private ProjectRecord alterReadRecord(ProjectRecord record) {
+        
+        String newCode = record.getCode();
+        if (record.getType() == ProjectType.SPIN) {
+            newCode = newCode.replaceAll("block type=\"controls_if\"", "block type=\"controls_boolean_if\"");
+            newCode = newCode.replaceAll("block type=\"logic_compare\"", "block type=\"logic_boolean_compare\"");
+            newCode = newCode.replaceAll("block type=\"logic_operation\"", "block type=\"logic_boolean_operation\"");
+            newCode = newCode.replaceAll("block type=\"logic_negate\"", "block type=\"logic_boolean_negate\"");
+            newCode = newCode.replaceAll("block type=\"math_number\"", "block type=\"spin_integer\"");
+
+        } else if (record.getType() == ProjectType.PROPC){
+            newCode = newCode.replaceAll("field name=\"OP\">ADD</field", "field name=\"OP\"> + </field");
+            newCode = newCode.replaceAll("field name=\"OP\">MINUS</field", "field name=\"OP\"> - </field");
+            newCode = newCode.replaceAll("field name=\"OP\">MULTIPLY</field", "field name=\"OP\"> * </field");
+            newCode = newCode.replaceAll("field name=\"OP\">DIVIDE</field", "field name=\"OP\"> / </field");
+            newCode = newCode.replaceAll("field name=\"OP\">MODULUS</field", "field name=\"OP\"> % </field");
+            newCode = newCode.replaceAll("field name=\"OP\">AND</field", "field name=\"OP\"> &amp;&amp; </field");
+            newCode = newCode.replaceAll("field name=\"OP\">AND_NOT</field", "field name=\"OP\"> &amp;&amp; !</field");
+
+            newCode = newCode.replaceAll("field name=\"OP\">LT</field", "field name=\"OP\">&lt;</field");
+            newCode = newCode.replaceAll("field name=\"OP\">GT</field", "field name=\"OP\">&gt;</field");
+            newCode = newCode.replaceAll("field name=\"OP\">LTE</field", "field name=\"OP\">&lt;=</field");
+            newCode = newCode.replaceAll("field name=\"OP\">GTE</field", "field name=\"OP\">&gt;=</field");
+            newCode = newCode.replaceAll("field name=\"OP\">EQ</field", "field name=\"OP\">==</field");
+            newCode = newCode.replaceAll("field name=\"OP\">NEQ</field", "field name=\"OP\">!=</field");
+
+            newCode = newCode.replaceAll("field name=\"UNIT\">INCHES</field", "field name=\"UNIT\">_inches</field");
+            newCode = newCode.replaceAll("field name=\"UNIT\">CM</field", "field name=\"UNIT\">_cm</field");
+            
+        }
+        record.setCode(newCode);
+
+        return record;
+    }
+
     @Override
     public ProjectRecord getProject(Long idProject) {
-        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
+        ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
+
+        return alterReadRecord(record);
+        //return record;
     }
 
     private ProjectRecord getProject(Long idProject, boolean toEdit) {
         ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
         if (record != null) {
+
+
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
             if (!toEdit || record.getIdUser().equals(idUser)) {
                 return record;
@@ -52,7 +92,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
         }
 
-        return record;
+        return alterReadRecord(record);
+        //return record;
     }
 
     @Override
@@ -103,7 +144,10 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public ProjectRecord updateProject(Long idProject, String name, String description, String descriptionHtml, String code, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord updateProject(
+            Long idProject, String name, String description, 
+            String descriptionHtml, String code, boolean privateProject, 
+            boolean sharedProject) {
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
@@ -112,6 +156,7 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setCode(code);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
+            
             GregorianCalendar cal = new GregorianCalendar();
             cal.setTime(new java.util.Date());
 
