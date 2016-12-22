@@ -81,8 +81,6 @@ public class ProjectDaoImpl implements ProjectDao {
     private ProjectRecord getProject(Long idProject, boolean toEdit) {
         ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
         if (record != null) {
-
-
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
             if (!toEdit || record.getIdUser().equals(idUser)) {
                 return record;
