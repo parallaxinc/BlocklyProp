@@ -647,19 +647,22 @@ Blockly.Blocks.debug_lcd_set_cursor = {
     init: function() {
 	this.setTooltip(Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("LCD set cursor row")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "ROW")
-                .appendField("column")
-                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"]]), "COLUMN");
+        this.appendValueInput('ROW')
+            .appendField("LCD set cursor row")
+            .setCheck('Number');
+        this.appendValueInput('COLUMN')
+            .appendField("column")
+            .setCheck('Number');
+
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.debug_lcd_set_cursor = function () {
-    var row = this.getFieldValue('ROW');
-    var column = this.getFieldValue('COLUMN');
+    var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
+    var column = Blockly.propc.valueToCode(this, 'COLUMN', Blockly.propc.ORDER_NONE);
 
     var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
     setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';

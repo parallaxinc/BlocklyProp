@@ -55,7 +55,7 @@ Blockly.propc.scribbler_limited_loop = function() {
         branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
                 '\'' + this.id + '\'') + branch;
     }
-    var repeats = Blockly.propc.valueToCode(this, 'LOOP_COUNT', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
+    var repeats = this.getFieldValue('LOOP_COUNT') || '0';
     return 'for (int __n = 0; __n < ' + repeats + '; __n++) {\n' + branch + '}\n';
 };
 
@@ -478,7 +478,7 @@ Blockly.Blocks.move_motors_distance = {
     init: function () {
 	this.appendDummyInput()
 		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (-633 to 633)', ' * 100_000 / 1933'], ['tenths of an inch (-6,333 to 6,333)', ' * 10_000 / 1933'], ['centimeters (-1,608 to 1,608)', ' * 10_000 / 491'], ['millimeters (-16,088 to 16,088)', ' * 1_000 / 491'], ['encoder counts (-32,767 to 32,767)', '']]), 'MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (-633 to 633)', ' * 100000 / 1933'], ['tenths of an inch (-6,333 to 6,333)', ' * 10000 / 1933'], ['centimeters (-1,608 to 1,608)', ' * 10000 / 491'], ['millimeters (-16,088 to 16,088)', ' * 1000 / 491'], ['encoder counts (-32,767 to 32,767)', '']]), 'MULTIPLIER');
 	this.appendValueInput("LEFT_MOTOR_DISTANCE")
 		.setCheck("Number")
 		.appendField("move the left motor");
@@ -514,7 +514,7 @@ Blockly.Blocks.move_motors_xy = {
     init: function () {
 	this.appendDummyInput()
 		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100_000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10_000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10_000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1_000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
         this.appendDummyInput()
             .appendField("move the Scribbler robot to the");
 	this.appendValueInput("X_DISTANCE")
@@ -555,7 +555,7 @@ Blockly.Blocks.move_motors_angle = {
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
 		.appendField("around a radius to the left(-)/right(+) in")
-		.appendField(new Blockly.FieldDropdown([['inches (-85 to 85) of', ' * 100_000 / 1933'], ['tenths of an inch (-850 to 850) of', ' * 10_000 / 1933'], ['centimeters (-216 to 216) of', ' * 10_000 / 491'], ['millimeters (-2,160 to 2,160) of', ' * 1_000 / 491'], ['encoder counts (-4,400 to 4,400) of', '']]), 'RADIUS_MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (-85 to 85) of', ' * 100000 / 1933'], ['tenths of an inch (-850 to 850) of', ' * 10000 / 1933'], ['centimeters (-216 to 216) of', ' * 10000 / 491'], ['millimeters (-2,160 to 2,160) of', ' * 1000 / 491'], ['encoder counts (-4,400 to 4,400) of', '']]), 'RADIUS_MULTIPLIER');
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
 		.appendField("at a top speed of (1 to 100)%");
@@ -817,7 +817,7 @@ Blockly.Blocks.scribbler_ping = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("distance in")
-                .appendField(new Blockly.FieldDropdown([['inches (1 to 125)', '11848'], ['tenths of an inch (8 to 1,249)', '1185'], ['centimeters (4 to 635)', '2332'], ['millimeters (39 to 6352)', '233']]), "SCALE")
+                .appendField(new Blockly.FieldDropdown([['inches (1 to 124)', '_inches'], ['centimeters (4 to 315)', '_cm']]), "SCALE")
                 .appendField("from Ping))) sensor on")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
 
@@ -829,12 +829,13 @@ Blockly.Blocks.scribbler_ping = {
 };
 
 Blockly.propc.scribbler_ping = function() {
-    Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
-    Blockly.propc.setups_[ 'setup_scribbler' ] = 's3_setup();';
+    var dropdown_pin = this.getFieldValue('PIN');
+    var unit = this.getFieldValue('SCALE');
 
-    var pin = this.getFieldValue('PIN');
-    var scale = this.getFieldValue('SCALE');
-    return ['(s3_ping(' + pin + ')/' + scale + ')', Blockly.propc.ORDER_NONE];
+    Blockly.propc.definitions_["include ping"] = '#include "ping.h"';
+
+    var code = 'ping' + unit + '(' + dropdown_pin + ')';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.Blocks.digital_input = {

@@ -419,25 +419,6 @@ Blockly.propc.high_low_value = function() {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.Blocks.pulse_in = {
-    helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_PULSE_IN_TOOLTIP);
-        this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput()
-            .appendField("pulse-in PIN")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.appendDummyInput()
-            .appendField("read")
-            .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
-
-        this.setInputsInline(true);
-        this.setPreviousStatement(false, null);
-        this.setNextStatement(false, null);
-        this.setOutput(true, 'Number');
-    }
-};
-
 Blockly.Blocks.comment = {
     helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function() {

@@ -280,6 +280,52 @@ Blockly.propc.base_freqout = function () {
     return code;
 };
 
+Blockly.Blocks.base_count = {
+    helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
+    init: function() {
+	//this.setTooltip(Blockly.MSG_BASE_FREQOUT_TOOLTIP);
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput("")
+                .appendField("count pulses PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendValueInput("DURATION", 'Number')
+                .appendField("duration (ms)")
+                .setCheck('Number');
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.base_count = function () {
+    var dropdown_pin = this.getFieldValue('PIN');
+    var duration = Blockly.propc.valueToCode(this, 'DURATION', Blockly.propc.ORDER_ATOMIC) || '1';
+
+    var code = 'count(' + dropdown_pin + ', ' + duration + ')';
+
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.pulse_in = {
+    helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_PULSE_IN_TOOLTIP);
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
+            .appendField("pulse-in PIN")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendDummyInput()
+            .appendField("read")
+            .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.propc.pulse_in = function() {
     var pin = this.getFieldValue("PIN");
     var state = this.getFieldValue("STATE");
