@@ -973,7 +973,13 @@ Blockly.propc.string_to_number = function () {
     var type = this.getFieldValue('TYPE');
     var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
-    return 'sscani(' + str + ', "' + type + '", &' + store + ');\n';
+    Blockly.propc.definitions_['str_Buffer'] = 'char __s2iBfr[64];';
+
+    var code = '';
+    code += 'strcpy(__s2iBfr, ' + str + ');\n';
+    code += 'sscan(__s2iBfr, "' + type + '", &' + store + ');\n';
+    
+    return code;
 };
 
 Blockly.Blocks.number_to_string = {
@@ -1002,7 +1008,7 @@ Blockly.propc.number_to_string = function () {
 
     Blockly.propc.vartype_[str] = 'char *';
     
-    return 'sprinti(' + store + ', "' + type + '", ' + str + ');\n';
+    return 'sprint(' + store + ', "' + type + '", ' + str + ');\n';
 };
 
 Blockly.Blocks.number_binary = {
@@ -1114,9 +1120,9 @@ Blockly.propc.math_advanced = function() {
     var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
     var operator = this.getFieldValue('OP');
     var opTrig = '';
-    if(operator === 'sin' || operator === 'cos' || operator === 'tan') opTrig = ' * 180.0/PI';
+    if(operator === 'sin' || operator === 'cos' || operator === 'tan') opTrig = ' * PI/180.0';
 
-    var code = store + ' = (int) (((float)' + arg1 + ') * ' + operator + '(((float) ' + arg2 + ')' + opTrig + '));\n';
+    var code = store + ' = (int) (((float)' + arg1 + ') * ' + operator + '(((float) ' + arg2 + ')' + opTrig + ') + 0.5);\n';
     
     return code;
 };
@@ -1160,7 +1166,7 @@ Blockly.propc.math_inv_trig = function() {
     var opTrig = '/';
     if(operator === 'atan2') opTrig = ',';
 
-    var code = store + ' = (int) (180.0 * ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + ')) / PI);\n';
+    var code = store + ' = (int) (180.0 * ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + ')) / PI + 0.5);\n';
     
     return code;
 };
