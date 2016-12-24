@@ -973,7 +973,7 @@ Blockly.propc.string_to_number = function () {
     var type = this.getFieldValue('TYPE');
     var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.definitions_['str_Buffer'] = 'char __s2iBfr[64];';
+    Blockly.propc.definitions_['s2i_Buffer'] = 'char __s2iBfr[64];';
 
     var code = '';
     code += 'strcpy(__s2iBfr, ' + str + ');\n';
