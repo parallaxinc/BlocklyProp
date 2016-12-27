@@ -64,6 +64,11 @@ public class ProjectDaoImpl implements ProjectDao {
             newCode = newCode.replaceAll("field name=\"UNIT\">INCHES</field", "field name=\"UNIT\">_inches</field");
             newCode = newCode.replaceAll("field name=\"UNIT\">CM</field", "field name=\"UNIT\">_cm</field");
             
+            newCode = newCode.replaceAll("block type=\"controls_boolean_if\"", "block type=\"controls_if\"");
+            newCode = newCode.replaceAll("block type=\"logic_boolean_compare\"", "block type=\"logic_compare\"");
+            newCode = newCode.replaceAll("block type=\"logic_boolean_operation\"", "block type=\"logic_operation\"");
+            newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"", "block type=\"logic_negate\"");
+            
         }
         record.setCode(newCode);
 
