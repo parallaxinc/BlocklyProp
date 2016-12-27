@@ -1173,3 +1173,31 @@ Blockly.propc.scribbler_serial_cursor_xy = function () {
 
     return 'term_cmd(CRSRXY, ' + column + ', ' + row + ');\n';
 };
+
+Blockly.Blocks.sirc_s3_get = {
+    helpUrl: Blockly.MSG_S3_SIRC_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SIRC_TOOLTIP);
+        var addPin = [["Onboard IR sensor", "SCRIBBLER_OBS_RX"]];
+        var thePins = addPin.concat(profile.default.digital);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+            .appendField("Sony Remote value received from")
+            .appendField(new Blockly.FieldDropdown(thePins), "PIN");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.sirc_s3_get = function() {
+    var pin = this.getFieldValue('PIN');
+
+    Blockly.propc.definitions_["sirc"] = '#include "sirc.h"';
+    Blockly.propc.setups_["sirc"] = "sirc_setTimeout(70);\n";
+
+    var code = 'sirc_button(' + pin + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};

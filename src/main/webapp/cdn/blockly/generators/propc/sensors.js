@@ -967,9 +967,9 @@ Blockly.propc.rfid_disable = function() {
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
     if(data === "ENABLE") {
-        return 'rfid_enable(rfid);';
+        return 'rfid_enable(rfid);\n';
     } else {
-        return 'rfid_disable(rfid);';    
+        return 'rfid_disable(rfid);\n';    
     }
 };
 

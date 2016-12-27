@@ -353,8 +353,13 @@ Blockly.propc.controls_if_return = function () {
 */
 
 Blockly.Blocks.control_repeat_for_loop = {
-    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    //helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+        }
 	this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
