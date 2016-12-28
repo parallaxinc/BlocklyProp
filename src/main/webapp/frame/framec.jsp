@@ -23,11 +23,6 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/heb.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/s3.js"/>"></script>
-        
-        <!-- Currently Unused -->  
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/pressure.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sd_card.js"/>"></script>   -->
-<!--    <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/file.js"/>"></script>   -->
 
         <style>
             html, body {
@@ -260,6 +255,23 @@
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
+            <block type="control_repeat_for_loop">
+                <value name="START">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+                <value name="END">
+                    <block type="math_number">
+                        <field name="NUM">10</field>
+                    </block>
+                </value>
+                <value name="STEP">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+            </block>
             <block type="controls_if"></block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
@@ -272,7 +284,6 @@
             <block type="spin_comment"></block>
         </category>
 
-            
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
         <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3" colour="200">
@@ -507,7 +518,6 @@
                             <field name="NUM">0</field>
                         </block>
                     </value>
-
                 </block>
                 <block type="debug_lcd_music_note"></block>
             </category>
@@ -541,6 +551,14 @@
                     </value>
                 </block>
             </category>
+                
+<%--   ------------ Not yet ready to be activated -----------------
+            <category name="WX Module">
+                <block type="wx_set_widget"></block>
+                <block type="wx_send_widget"></block>
+                <block type="wx_read_widget"></block>
+            </category>
+--%>
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
                 <block type="xbee_transmit"></block>
@@ -616,102 +634,6 @@
                     </value>
                 </block>
             </category>
-<%--        <category name="<fmt:message key="category.memory.sdcard" />">
-                <block type="sd_card_mount"></block>
-                <block type="sd_card_int_to">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_int_from">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_read_int">
-                    <value name="INDEX">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_float_to">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_float_from">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_read_float">
-                    <value name="INDEX">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_text_to">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_text_from">
-                    <value name="STARTING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="ENDING_POINT_VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="sd_card_read_text">
-                    <value name="INDEX">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-            </category>                   --%>
         </category>
         <category name="<fmt:message key="category.analog-pulses" />" exclude="s3" colour="200">
             <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" exclude="s3">
@@ -974,6 +896,7 @@
                 <block type="scribbler_ping"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-pins" />">
+                <block type="sirc_s3_get"></block>
                 <block type="digital_input"></block>
                 <block type="analog_input"></block>
             </category>
@@ -1097,7 +1020,6 @@
                 <block type="scribbler_LED"></block>
             </category>
             <category name="<fmt:message key="category.communicate" />" include="s3" exclude="heb, activity-board">
-            
                 <block type="scribbler_serial_send_text"></block>
                 <block type="scribbler_serial_send_decimal"></block>
                 <block type="scribbler_serial_send_char"></block>
@@ -1121,7 +1043,6 @@
                 <block type="factory_reset"></block>
             </category>
         </category>
-
     </xml>
 </body>
 </html>

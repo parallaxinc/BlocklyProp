@@ -1487,3 +1487,169 @@ Blockly.propc.ws2812b_update = function() {
         return 'ws2812_set(__ws2812b, LED_PIN, RGBleds, LED_COUNT);\n';
     }
 };
+
+// --------------------- Simple WX Module --------------------------------------
+Blockly.Blocks.wx_set_widget = {
+    init: function() {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput("SET_1")
+            .appendField("Simple WX set widget")
+            .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET")    
+            .appendField("to a")
+            .appendField(new Blockly.FieldDropdown([
+                ["Button \u2794", '0'], 
+                ["Switch \u2794", '1'], 
+                ["Slider \u2794", '2'], 
+                ["Send Value \u2794", '3'], 
+                ["Pick Color \u2794", '4'], 
+                ["\u2794 Show Value", '5'], 
+                ["\u2794 Gauge", '6'], 
+                ["\u2794 Bar Graph", '7'], 
+                ["\u2794 Show Color", '8'], 
+                ["\u2794 Light Bulb", '9'], 
+                ["Clear Widget", '10']], function (type) {
+                    this.sourceBlock_.updateShape_({"TYPE": type});
+                }), "TYPE");
+        this.appendDummyInput("SET_2")
+            .appendField("widget color")
+            .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
+            .appendField(" minimum")
+            .appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'MIN')
+            .appendField(" maximum")
+            .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'MAX')
+            .appendField(" initial value")
+            .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'INITIAL');
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var type = this.getFieldValue('TYPE');
+        container.setAttribute('TYPE', type);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var type = xmlElement.getAttribute('TYPE');
+        this.updateShape_({"TYPE": type});
+    },
+    updateShape_: function (details) {
+        var type = details['TYPE'];
+        if (details['TYPE'] === undefined) {
+            type = this.getFieldValue('TYPE');
+        }
+
+        if (this.getInput('SET_2') !== undefined) {
+            this.removeInput('SET_2');
+        }
+        var inputPins;
+        if (type !== '10') {
+            this.appendDummyInput("SET_2");
+            inputPins = this.getInput('SET_2');
+        }
+        if (type === '2' || type === '6' || type === '7') {
+            inputPins.appendField("widget color")
+                .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
+                .appendField(" minimum")
+                .appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'MIN')
+                .appendField(" maximum")
+                .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'MAX')
+                .appendField(" initial value")
+                .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'INITIAL');
+        } else if (type === '1') {
+            inputPins.appendField("widget color")
+                .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
+                .appendField(" minimum")
+                .appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'MIN')
+                .appendField(" maximum")
+                .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'MAX');
+        } else if (type === '0' || type === '5' || type === '9') {
+            inputPins.appendField("widget color")
+                .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
+                .appendField(" initial value")
+                .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'INITIAL');
+        } else if (type === '8') {
+            inputPins.appendField("widget color")
+                .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
+                .appendField(" initial color shown")
+                .appendField(new Blockly.FieldColour("#ffffff"), "INITIAL_COLOR");
+        } else if (type === '3' || type === '4') {
+            inputPins.appendField("widget color")
+                .appendField(new Blockly.FieldColour("#ffffff"), "COLOR");
+        }
+    }
+};
+
+Blockly.propc.wx_set_widget = function() {
+    var widget = this.getFieldValue('WIDGET');
+    var type = this.getFieldValue('TYPE');
+    var color = this.getFieldValue('COLOR').substr(1).toUpperCase();
+    var min = window.parseInt(this.getFieldValue('MIN') || '0');
+    var max = window.parseInt(this.getFieldValue('MAX') || '10');
+    var initial;
+    if (type !== '8') {
+        initial = window.parseInt(this.getFieldValue('INITIAL') || '5');
+    } else { 
+        initial = window.parseInt((this.getFieldValue('INITIAL_COLOR') || '#FFFFFF').substr(1), 16);
+    }
+    
+    var code = '';
+    code += 'wx_print("s' + widget + ',' + type + ',' + color + ',';
+    code += min + ',' + max + ',' + initial + '");\n';
+    
+    return code;
+};
+
+Blockly.Blocks.wx_send_widget = {
+    init: function() {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("NUM")
+            .setCheck(null)
+            .appendField("Simple WX send");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["as text", "%s"], ["as an ASCII character", "%c"], ["as a decimal integer", "%d"], ["as a hexadecimal integer", "%x"], ["as a binary integer", "%b"]]), "TYPE")
+            .appendField("to widget")
+            .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.wx_send_widget = function() {
+    var num = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE);
+    var widget = this.getFieldValue('WIDGET');
+    var type = this.getFieldValue('TYPE');
+    
+    var code = '';
+    code += 'wx_print("t' + widget + ',' + type + '", ' + num + ');\n';
+    
+    return code;
+};
+
+Blockly.Blocks.wx_read_widget = {
+    init: function() {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("Simple WX read")
+            .appendField(new Blockly.FieldDropdown([["text", "%s"], ["an ASCII character", "%c"], ["a decimal integer", "%d"], ["a hexadecimal integer", "%x"], ["a binary integer", "%b"]]), "TYPE")
+            .appendField("from widget")
+            .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET")
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.wx_read_widget = function() {
+    var value = Blockly.propc.valueToCode(this, 'VAR', Blockly.propc.ORDER_NONE);
+    var widget = this.getFieldValue('WIDGET');
+    var type = this.getFieldValue('TYPE');
+    
+    var code = '';
+    code += 'wx_scan("r' + widget + ',' + type + '", &' + value + ');\n';
+    
+    return code;
+};
