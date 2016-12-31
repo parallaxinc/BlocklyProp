@@ -1239,9 +1239,14 @@
                     case '>':
                         out += '&gt;';
                         break;
+                    case '-':
+                        out += '&#8209;'; // change to non-breaking hyphen
+                        break;
                     default:
                         if (ch <= ' ') {
                             out += '&nbsp;';
+                        } else if (ch.charCodeAt(0) > 127 && ch.charCodeAt(0) < 256) {
+                            out += '&#' + ch.charCodeAt(0).toString + ';';
                         } else {
                             out += ch;
                         }
