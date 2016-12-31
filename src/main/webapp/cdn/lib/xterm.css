@@ -2147,4 +2147,5 @@
  */
 .terminal .xterm-rows > div {
     line-height: normal;
+    white-space: nowrap;
 }
