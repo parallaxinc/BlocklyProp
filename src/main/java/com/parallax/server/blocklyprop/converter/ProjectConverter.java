@@ -84,10 +84,8 @@ public class ProjectConverter {
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
-        if (!isYours) {
-            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
-
-        } else {
+        result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+        if (isYours) {
             List<ProjectSharingRecord> projectSharingRecords = projectSharingService.getSharingInfo(project.getId());
             if (projectSharingRecords != null && !projectSharingRecords.isEmpty()) {
                 result.addProperty("share-key", projectSharingRecords.get(0).getSharekey());
@@ -126,9 +124,7 @@ public class ProjectConverter {
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
-        if (!isYours) {
-            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
-        }
+        result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
 
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
