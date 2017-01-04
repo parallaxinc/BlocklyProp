@@ -1048,7 +1048,7 @@ Blockly.Blocks.scribbler_serial_send_text = {
 
 Blockly.propc.scribbler_serial_send_text = function () {
     Blockly.propc.serial_terminal_ = true;
-    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600)";
+    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
     
     var message = this.getFieldValue('MESSAGE_TEXT');
 
@@ -1071,7 +1071,7 @@ Blockly.Blocks.scribbler_serial_send_char = {
 
 Blockly.propc.scribbler_serial_send_char = function () {
     Blockly.propc.serial_terminal_ = true;
-    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600)";
+    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
 
     var message = Blockly.propc.valueToCode(this, 'CHAR_VALUE', Blockly.propc.ORDER_ATOMIC);
 
@@ -1094,7 +1094,7 @@ Blockly.Blocks.scribbler_serial_send_decimal = {
 
 Blockly.propc.scribbler_serial_send_decimal = function () {
     Blockly.propc.serial_terminal_ = true;
-    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600)";
+    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
 
     var message = Blockly.propc.valueToCode(this, 'DECIMAL_VALUE', Blockly.propc.ORDER_ATOMIC) || 0;
 
@@ -1105,7 +1105,7 @@ Blockly.Blocks.scribbler_serial_send_ctrl = {
     init: function () {
         this.appendDummyInput()
                 .appendField("Terminal / XBee / WX command")
-                .appendField(new Blockly.FieldDropdown([["new line", "10"], ["carriage return", "13"], ["backspace", "127"], ["clear screen", "256"] ]), "SERIAL_CHAR");
+                .appendField(new Blockly.FieldDropdown([["carriage return", "13"], ["new line", "10"], ["backspace", "127"], ["clear screen", "256"]]), "SERIAL_CHAR");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1117,7 +1117,7 @@ Blockly.Blocks.scribbler_serial_send_ctrl = {
 
 Blockly.propc.scribbler_serial_send_ctrl = function () {
     Blockly.propc.serial_terminal_ = true;
-    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600)";
+    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
 
     var message = this.getFieldValue('SERIAL_CHAR');
     if(message === '256') {
@@ -1140,7 +1140,7 @@ Blockly.Blocks.scribbler_serial_rx_byte = {
 
 
 Blockly.propc.scribbler_serial_rx_byte = function () {
-    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600)";
+    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
 
     return ['getChar()', Blockly.propc.ORDER_NONE];
 };
@@ -1166,7 +1166,7 @@ Blockly.Blocks.scribbler_serial_cursor_xy = {
 
 Blockly.propc.scribbler_serial_cursor_xy = function () {
     Blockly.propc.serial_terminal_ = true;
-    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600)";
+    Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
 
     var row = Blockly.propc.valueToCode(this, 'Y', Blockly.propc.ORDER_NONE);
     var column = Blockly.propc.valueToCode(this, 'X', Blockly.propc.ORDER_NONE);
