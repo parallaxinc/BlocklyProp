@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -163,6 +163,14 @@ setInterval(function () {
     $.get(baseUrl + 'ping');
 }, 60000);
 
+function hashCode(str) {
+    var hash = 0, i = 0, len = str.length;
+    while ( i < len ) {
+        hash  = ((hash << 5) - hash + str.charCodeAt(i++)) << 0;
+    }
+    return (hash + 2147483647) + 1;
+};
+
 function downloadCode() {
     var projXMLcode = projectData['code'];
         projXMLcode = projXMLcode.substring(42,projXMLcode.length);
@@ -232,8 +240,11 @@ function downloadCode() {
             // Replace any illegal characters
             value = value.replace(/[\\/:*?\"<>|]/g, '_');
             
+            var xmlChecksum = hashCode(projXMLcode).toString();
+            var xmlChecksum = '000000000000'.substring(xmlChecksum.length, 12) + xmlChecksum;
+            
             // Assemble both the SVG (image) of the blocks and the blocks' XML definition
-            saveData(SVGheader + projSVGcode + SVGfooter + projXMLcode + '</svg>', value + '.svg');
+            saveData(SVGheader + projSVGcode + SVGfooter + projXMLcode + '<ckm>' + xmlChecksum + '</ckm></svg>', value + '.svg');
         }
     });
 };
@@ -248,20 +259,40 @@ function uploadHandler(files) {
     UploadReader.onload = function() {
         var parsed = new DOMParser().parseFromString(this.result, "text/xml");
         var xmlString = (new XMLSerializer()).serializeToString(parsed);
+        var xmlValid = false;
+        var uploadBoardType = '';
         
         //validate file, screen for potentially malicious code.
         if(files[0].type === 'image/svg+xml' 
             && xmlString.indexOf("<svg blocklyprop=\"blocklypropproject\"") === 0
             && xmlString.indexOf("<!ENTITY") === -1
             && xmlString.indexOf("CDATA") === -1
-            && xmlString.indexOf("<!--") === -1        
-        ) {
-            document.getElementById("selectfile-verify-valid").style.visibility = "visible";
+            && xmlString.indexOf("<!--") === -1) 
+        {
+            var uploadedChecksum = xmlString.substring((xmlString.length - 24), (xmlString.length - 12));
+            uploadedXML = xmlString.substring(xmlString.indexOf("<block"), (xmlString.length - 29));
+            var computedChecksum = hashCode(uploadedXML).toString();
+            computedChecksum = '000000000000'.substring(computedChecksum.length, 12) + computedChecksum;
+
+            if(computedChecksum === uploadedChecksum) xmlValid = true;
+            
+            if(xmlValid) {
+                var boardIndex = xmlString.indexOf('transform="translate(-225,-23)">Device: ');
+                uploadBoardType = xmlString.substring((boardIndex + 40), xmlString.indexOf('</text>', (boardIndex + 41)));
+                if(uploadBoardType !== projectData['board']) {
+                    document.getElementById("selectfile-verify-boardtype").style.display = "block";
+                }
+            }
+        };
+            
+            
+        if(xmlValid === true) {
+            document.getElementById("selectfile-verify-valid").style.display = "block";
             document.getElementById("selectfile-replace").disabled = false;
             document.getElementById("selectfile-append").disabled = false;
             uploadedXML = xmlString;
         } else {
-            document.getElementById("selectfile-verify-notvalid").style.visibility = "visible";
+            document.getElementById("selectfile-verify-notvalid").style.display = "block";
             document.getElementById("selectfile-replace").disabled = true;
             document.getElementById("selectfile-append").disabled = true;
             uploadedXML = '';
@@ -271,9 +302,18 @@ function uploadHandler(files) {
     UploadReader.readAsText(files[0]);
     
     if(uploadedXML !== '') {
-        uploadedXML = uploadedXML.substring(uploadedXML.indexOf("<block"), (uploadedXML.length - 6));
+        
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
     };
+};
+
+function clearUploadInfo() {
+        // Reset all of the upload fields and containers
+    uploadedXML ='';
+    $('#selectfile').val('');
+    document.getElementById("selectfile-verify-notvalid").style.display = "none";
+    document.getElementById("selectfile-verify-valid").style.display = "none";
+    document.getElementById("selectfile-verify-boardtype").style.display = "none";
 };
 
 function replaceCode() {
@@ -281,7 +321,7 @@ function replaceCode() {
     if(uploadedXML !== '') {
         var newCode = uploadedXML;
         newCode = newCode.substring(42,newCode.length);
-        newCode = newCode.substring(0,(newCode.length - 6));
+        newCode = newCode.substring(0,(newCode.length - 29));
 
         window.frames["content_blocks"].location.reload();
         window.frames["content_blocks"].setProfile(projectData['board']);
@@ -290,10 +330,7 @@ function replaceCode() {
         window.frames["content_blocks"].load(projectData['code']);
         
         // Reset all of the upload fields and containers
-        uploadedXML ='';
-        $('#selectfile').val('');
-        document.getElementById("selectfile-verify-notvalid").style.visibility = "hidden";
-        document.getElementById("selectfile-verify-valid").style.visibility = "hidden";
+        clearUploadInfo();
     }
 };
 
@@ -315,10 +352,7 @@ function appendCode() {
         window.frames["content_blocks"].load(projectData['code']);
         
         // Reset all of the upload fields and containers
-        uploadedXML ='';
-        $('#selectfile').val('');
-        document.getElementById("selectfile-verify-notvalid").style.visibility = "hidden";
-        document.getElementById("selectfile-verify-valid").style.visibility = "hidden";
+        clearUploadInfo();
     }
 };
 

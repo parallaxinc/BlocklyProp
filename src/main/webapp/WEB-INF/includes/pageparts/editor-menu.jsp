@@ -98,10 +98,10 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a id="save-project-as" href="#"><fmt:message key="editor.save-as" /></a></li>
-                        <!--        
+                                
                                 <li><a id="download-project" href="#"><fmt:message key="editor.download" /></a></li>
                                 <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
-                        -->
+                        <!-- -->
                                 <li><a id="clear-workspace" href="#"><fmt:message key="editor.clear-workspace" /></a></li>
                             </ul>
                         </div>

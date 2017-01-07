@@ -69,20 +69,21 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal" onclick="clearUploadInfo();" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="compile-dialog-title"><fmt:message key="editor.upload" /></h4>
                     </div>
                     <div class="modal-body">
                         
                         <label class="control-label"><fmt:message key="editor.upload.selectfile" /></label>
                         <input id="selectfile" type="file" onchange="uploadHandler(this.files);">
-                        <div id="selectfile-verify-valid" style="visibility: hidden;"><font color="green" size="+2">&#10003;</font> <fmt:message key="editor.upload.valid" /></div>
-                        <div id="selectfile-verify-notvalid" style="visibility: hidden;"><font color="red" size="+2">&#10060;</font> <fmt:message key="editor.upload.notvalid" /></div>
+                        <div id="selectfile-verify-valid" class="alert alert-success" style="display: none;"><span class="glyphicon glyphicon-ok"></span> <fmt:message key="editor.upload.valid" /></div>
+                        <div id="selectfile-verify-notvalid" class="alert alert-danger" style="display: none;"><span class="glyphicon glyphicon-ban-circle"></span> <fmt:message key="editor.upload.notvalid" /></div>
+                        <div id="selectfile-verify-boardtype" class="alert alert-warning" style="display: none;"><span class="glyphicon glyphicon-warning-sign"></span> <fmt:message key="editor.upload.boardtype.warning" /></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" disabled="true" id="selectfile-replace" onclick="replaceCode();"><fmt:message key="editor.button.replace" /></button>
                         <button type="button" class="btn btn-primary" disabled="true" id="selectfile-append" onclick="appendCode();"><fmt:message key="editor.button.append" /></button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.cancel" /></button>
+                        <button type="button" class="btn btn-default" onclick="clearUploadInfo();" data-dismiss="modal"><fmt:message key="editor.button.cancel" /></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
