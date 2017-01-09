@@ -275,7 +275,7 @@ Blockly.Blocks.scribbler_play = {
             .appendField("for a")
             .appendField(new Blockly.FieldDropdown([['sixteenth', '63'], ['dotted sixteenth', '94'], ['eighth', '125'], ['dotted eighth', '188'], ['quarter', '250'], ['dotted quarter', '375'], ['half', '500'], ['dotted half', '750'], ['whole', '1000'], ['dotted whole', '1500']]), 'NOTE_DURATION')
             .appendField("note at a")
-            .appendField(new Blockly.FieldDropdown([['loud', '100'], ['medium', '50'], ['quiet', '25']]), 'NOTE_VOLUME')
+            .appendField(new Blockly.FieldDropdown([['loud', '50'], ['medium', '30'], ['quiet', '15']]), 'NOTE_VOLUME')
             .appendField("volume");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -909,7 +909,7 @@ Blockly.Spin.play_tone = function () {
     var Frequency = Blockly.Spin.valueToCode(this, 'FREQUENCY', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Note_Duration = Blockly.Spin.valueToCode(this, 'NOTE_DURATION', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Volume = Blockly.Spin.valueToCode(this, 'NOTE_VOLUME', Blockly.Spin.ORDER_ATOMIC) || '0';
-    return 'Scribbler.SetVolume(' + Volume + ')\nScribbler.PlayNote(' + Frequency + ', 0, ' + Note_Duration + ')\n';
+    return 'Scribbler.SetVolume((' + Volume + ' / 2))\nScribbler.PlayNote(' + Frequency + ', 0, ' + Note_Duration + ')\n';
 };
 
 Blockly.Spin.play_polyphony = function () {
@@ -922,7 +922,7 @@ Blockly.Spin.play_polyphony = function () {
     var Frequency2 = Blockly.Spin.valueToCode(this, 'FREQUENCY_2', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Polyphony_Duration = Blockly.Spin.valueToCode(this, 'POLYPHONY_DURATION', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Volume = Blockly.Spin.valueToCode(this, 'POLYPHONY_VOLUME', Blockly.Spin.ORDER_ATOMIC) || '0';
-    return 'Scribbler.SetVolume(' + Volume + ')\nScribbler.PlayNote(' + Frequency1 + ', ' + Frequency2 + ', ' + Polyphony_Duration + ')\n';
+    return 'Scribbler.SetVolume((' + Volume + ' / 2))\nScribbler.PlayNote(' + Frequency1 + ', ' + Frequency2 + ', ' + Polyphony_Duration + ')\n';
 };
 
 Blockly.Spin.line_sensor = function () {

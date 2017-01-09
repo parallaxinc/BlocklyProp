@@ -5,7 +5,7 @@ var utils = {
             message: message,
             buttons: {
                 confirm: {
-                    lable: "Ok",
+                    label: "Ok",
                     className: "btn-primary"
                 }
             }
@@ -24,7 +24,7 @@ var utils = {
                     callback: callback
                 },
                 confirm: {
-                    lable: "Confirm",
+                    label: "Confirm",
                     className: "btn-primary",
                     callback: callback
                 }
@@ -45,7 +45,7 @@ var utils = {
                     }
                 },
                 confirm: {
-                    lable: "Confirm",
+                    label: "Confirm",
                     className: "btn-primary",
                     callback: function () {
                         callback(true);
