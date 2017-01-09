@@ -42,6 +42,13 @@ Blockly.MSG_DISABLE_BLOCK = 'Disable Block';
 Blockly.MSG_ENABLE_BLOCK = 'Enable Block';
 Blockly.MSG_HELP = 'Help';
 
+// Editor dialogs.
+Blockly.Msg.DIALOG_CLEAR_WORKSPACE = 'Clear Workspace';
+Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING = 'Are you sure you want to clear your workspace?  This action cannot be undone!';
+Blockly.Msg.DIALOG_CHANGED_SINCE = 'The project has been changed since the last save.';
+Blockly.Msg.DIALOG_PROJECT_SAVED = 'Project saved';
+Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT = 'The project has been saved';
+
 // Variable renaming.
 Blockly.MSG_CHANGE_VALUE_TITLE = 'Change value:';
 Blockly.MSG_NEW_VARIABLE = 'New variable...';
