@@ -290,7 +290,9 @@ function uploadHandler(files) {
             uploadedXML = xmlString.substring(xmlString.indexOf("<block"), (xmlString.length - 29));
             var computedChecksum = hashCode(uploadedXML).toString();
             computedChecksum = '000000000000'.substring(computedChecksum.length, 12) + computedChecksum;
-
+            
+            alert("uploaded = " + uploadedChecksum + "\ncomputed = " + computedChecksum);
+            
             if(computedChecksum === uploadedChecksum) xmlValid = true;
             
             if(xmlValid) {
