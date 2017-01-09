@@ -43,15 +43,32 @@ function tabClick(id) {
 
     // Deselect all tabs and hide all panes.
     for (var x in TABS_) {
-        if (document.getElementById('tab_' + TABS_[x])) {
-            document.getElementById('tab_' + TABS_[x]).className = 'taboff';
-        }
+        //if (document.getElementById('tab_' + TABS_[x])) {
+        //    document.getElementById('tab_' + TABS_[x]).className = 'taboff';
+        //}
         document.getElementById('content_' + TABS_[x]).style.display = 'none';
     }
 
     // Select the active tab.
     selected = id.replace('tab_', '');
-    document.getElementById(id).className = 'active';
+    //document.getElementById(id).className = 'active';
+
+    if (id === 'tab_blocks') {
+        document.getElementById('btn-view-blocks').style.display = 'none';
+        var btns = document.getElementsByClassName("btn-view-code");
+        for (var i = 0; i < btns.length; i++)
+        {
+            btns[i].style.display = 'inline';
+        }
+    } else {
+        document.getElementById('btn-view-blocks').style.display = 'inline';
+        var btns = document.getElementsByClassName("btn-view-code");
+        for (var i = 0; i < btns.length; i++)
+        {
+            btns[i].style.display = 'none';
+        }
+    }
+
     // Show the selected pane.
     var content = document.getElementById('content_' + selected);
     content.style.display = 'block';
@@ -98,6 +115,7 @@ function init(blockly) {
     window.Blockly = blockly;
 
     // Make the 'Blocks' tab line up with the toolbox.
+    /*
     if (Blockly.Toolbox) {
         window.setTimeout(function () {
             document.getElementById('tab_blocks').style.minWidth =
@@ -105,6 +123,7 @@ function init(blockly) {
             // Account for the 19 pixel margin and on each side.
         }, 1);
     }
+    */
 
     loadProject();
 }
@@ -228,7 +247,7 @@ function serial_console() {
         connection.onerror = function (error) {
             console.log('WebSocket Error');
             console.log(error);
-           // term.destroy();
+            // term.destroy();
         };
         // Log messages from the server
         connection.onmessage = function (e) {
@@ -316,3 +335,50 @@ $(document).ready(function () {
 getComPort = function () {
     return $('#comPort').find(":selected").text();
 };
+
+function downloadPropC() {
+    var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+    var isEmptyProject = propcCode.indexOf("EMPTY_PROJECT") > -1;
+    if (isEmptyProject) {
+        alert("You can't download an empty project");
+    } else {
+        utils.confirm('Downloading a SimpleIDE project', 'To open your project in SimpleIDE, two files will be downloaded.  They must both be saved in the same folder on your computer.', function (confirmed) {
+            if (confirmed) {
+                utils.prompt("Download SimpleIDE files", "Filename:", 'Project' + idProject, function (value) {
+                    if (value) {
+
+                        var sideFileContent = ".c\n>compiler=C\n>memtype=cmm main ram compact\n";
+                        sideFileContent += ">optimize=-Os\n>-m32bit-doubles\n>-fno-exceptions\n>defs::-std=c99\n";
+                        sideFileContent += ">-lm\n>BOARD::ACTIVITYBOARD";
+
+                        var saveData = (function () {
+                            var a = document.createElement("a");
+                            document.body.appendChild(a);
+                            a.style = "display: none";
+                            return function (data, fileName) {
+                                var blob = new Blob([data], {type: "octet/stream"});
+                                var url = window.URL.createObjectURL(blob);
+                                a.href = url;
+                                a.download = fileName;
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            };
+                        }());
+
+                        // Check for any file extentions at the end of the submitted name, and truncate if any
+                        if(value.indexOf(".") !== -1) value = value.substring(0,value.indexOf("."));
+                        // Check to make sure the filename is not too long
+                        if(value.length >= 30) value = value.substring(0, 29);
+                        // Replace any illegal characters
+                        value = value.replace(/[\\/:*?\"<>|]/g, '_');
+
+                        saveData(propcCode, value + ".c");
+                        saveData(value + sideFileContent, value + ".side");
+                    }
+                });
+            }
+        });
+    }
+    
+    
+}
