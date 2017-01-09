@@ -48,6 +48,10 @@ Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING = 'Are you sure you want to clear you
 Blockly.Msg.DIALOG_CHANGED_SINCE = 'The project has been changed since the last save.';
 Blockly.Msg.DIALOG_PROJECT_SAVED = 'Project saved';
 Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT = 'The project has been saved';
+Blockly.Msg.DIALOG_SIDE_FILES = '';
+Blockly.Msg.DIALOG_SIDE_FILES_WARNING = '';
+Blockly.Msg.DIALOG_NO_CLIENT = '<i class="glyphicon glyphicon-exclamation-sign"></i> BlocklyPropClient <strong>is not running</strong>';
+Blockly.Msg.DIALOG_CLIENT_SEARCHING = '<i class="glyphicon glyphicon-info-sign"></i> Looking for BlocklyPropClient';
 
 // Variable renaming.
 Blockly.MSG_CHANGE_VALUE_TITLE = 'Change value:';

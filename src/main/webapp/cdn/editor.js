@@ -33,7 +33,24 @@ $(document).ready(function () {
 
     $('#save-project').on('click', function () {
         saveProject();
+        
+        var elem = document.getElementById('save-project');
+        elem.style.paddingLeft = '10px';
+        elem.style.background = 'rgb(92, 184, 92)';
+        elem.style.borderColor = 'rgb(76, 174, 76)';
+        
+        setTimeout(function() {
+            elem.innerHTML = 'Save &#x2713;';
+        }, 600);
+
+        setTimeout(function() {
+            elem.innerHTML = 'Save&nbsp;&nbsp;';
+            elem.style.paddingLeft = '15px';
+            elem.style.background = '#337ab7';
+            elem.style.borderColor = '#2e6da4';
+        }, 1750);
     });
+    
     $('#save-project-as').on('click', function () {
         saveProjectAs();
     });
@@ -64,7 +81,7 @@ saveProject = function () {
         var previousOwner = projectData['yours'];
         projectData = data;
         projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-        utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
+        //utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
         if (!previousOwner) {
             window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
         }
@@ -273,7 +290,9 @@ function uploadHandler(files) {
             uploadedXML = xmlString.substring(xmlString.indexOf("<block"), (xmlString.length - 29));
             var computedChecksum = hashCode(uploadedXML).toString();
             computedChecksum = '000000000000'.substring(computedChecksum.length, 12) + computedChecksum;
-
+            
+            alert("uploaded = " + uploadedChecksum + "\ncomputed = " + computedChecksum);
+            
             if(computedChecksum === uploadedChecksum) xmlValid = true;
             
             if(xmlValid) {
