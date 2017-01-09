@@ -258,6 +258,7 @@ function downloadCode() {
             value = value.replace(/[\\/:*?\"<>|]/g, '_');
             
             var xmlChecksum = hashCode(projXMLcode).toString();
+                        
             var xmlChecksum = '000000000000'.substring(xmlChecksum.length, 12) + xmlChecksum;
             
             // Assemble both the SVG (image) of the blocks and the blocks' XML definition
@@ -274,8 +275,9 @@ function uploadHandler(files) {
 
     var UploadReader = new FileReader();
     UploadReader.onload = function() {
-        var parsed = new DOMParser().parseFromString(this.result, "text/xml");
-        var xmlString = (new XMLSerializer()).serializeToString(parsed);
+        //var parsed = new DOMParser().parseFromString(this.result, "text/xml");
+        //var xmlString = (new XMLSerializer()).serializeToString(parsed);
+        var xmlString = this.result;
         var xmlValid = false;
         var uploadBoardType = '';
         
@@ -290,9 +292,7 @@ function uploadHandler(files) {
             uploadedXML = xmlString.substring(xmlString.indexOf("<block"), (xmlString.length - 29));
             var computedChecksum = hashCode(uploadedXML).toString();
             computedChecksum = '000000000000'.substring(computedChecksum.length, 12) + computedChecksum;
-            
-            alert("uploaded = " + uploadedChecksum + "\ncomputed = " + computedChecksum);
-            
+                        
             if(computedChecksum === uploadedChecksum) xmlValid = true;
             
             if(xmlValid) {
