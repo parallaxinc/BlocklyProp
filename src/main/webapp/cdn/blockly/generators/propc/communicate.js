@@ -672,7 +672,7 @@ Blockly.propc.debug_lcd_set_cursor = function () {
     if(Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
         return '//Missing Serial LCD initialize block\n';
     } else {
-        return 'writeChar(debug_lcd, (128 + (constrain(' + row + ', 0, 3) * 20) + constrain(' + column + ', 0, 20)));\n';
+        return 'writeChar(debug_lcd, (128 + (constrain(' + row + ', 0, 3) * 20) + constrain(' + column + ', 0, 19)));\n';
     }
 };
 
