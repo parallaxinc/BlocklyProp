@@ -200,6 +200,10 @@ nav .nav > li > a:first-child {
     border-radius: 15px;
 }
 
+.btn-circle:hover {
+    box-shadow: 2px 2px 5px #89a;
+}
+
 #save-project {
     -webkit-transition: padding-left 1s, background 1s, border 1s;
     transition: padding-left 1s, background 1s, border 1s;

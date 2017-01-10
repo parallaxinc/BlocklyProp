@@ -33,7 +33,7 @@
                     <span class="project-name"></span> <span class="project-owner"></span>
                 </div>
             </div>
-            <div style="width:100%;">
+            <div style="width:100%; padding-bottom: 5px;">
                 <div style="display:inline; padding-left: 10px;">        
                     <a onclick="compile()" data-toggle="tooltip" title="Verify code (compile)" data-placement="bottom" href="#" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-ok"></i></a>
                     <c:if test="${param.editor_lang == 'c'}">
