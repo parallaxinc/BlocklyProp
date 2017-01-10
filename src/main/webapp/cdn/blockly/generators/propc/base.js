@@ -258,7 +258,6 @@ Blockly.Blocks.system_counter = {
         this.appendDummyInput()
             .appendField("system counter");
         this.setOutput(true, "Number");
-        this.setTooltip('');
   }
 };
 
