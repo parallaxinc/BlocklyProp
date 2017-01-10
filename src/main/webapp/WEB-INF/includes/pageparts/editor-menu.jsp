@@ -70,7 +70,9 @@
                             <hr style="line-height:5px; margin:5px;">
                             <li><a id="clear-workspace" href="#"><fmt:message key="editor.clear-workspace" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
+                            <c:if test="${param.editor_lang == 'c'}">
                             <li><a id="download-side" href="#" onclick="downloadPropC()">Download SimpleIDE files</a></li>
+                            </c:if>
                             <li><a id="download-project" href="#"><fmt:message key="editor.download" /></a></li>
                             <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
