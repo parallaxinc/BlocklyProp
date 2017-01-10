@@ -300,6 +300,8 @@ function uploadHandler(files) {
                 uploadBoardType = xmlString.substring((boardIndex + 40), xmlString.indexOf('</text>', (boardIndex + 41)));
                 if(uploadBoardType !== projectData['board']) {
                     document.getElementById("selectfile-verify-boardtype").style.display = "block";
+                } else {
+                    document.getElementById("selectfile-verify-boardtype").style.display = "none";                    
                 }
             }
         };
