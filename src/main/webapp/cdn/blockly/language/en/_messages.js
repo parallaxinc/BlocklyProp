@@ -267,7 +267,7 @@ Blockly.MSG_SYSTEM_COUNTER_TOOLTIP = "system counter: 0 to 4,294,967,295 before 
 Blockly.MSG_VARIABLES_SET_TOOLTIP = "set variable: name and attach initial value block.";
 Blockly.MSG_VARIABLES_GET_TOOLTIP = "use variable: choose set variables from dropdown.";
 Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP = "define function: group blocks to re-use ending with return; name group.";
-Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP = "return: Required at the end of code enclosed in a “define function” block.";
+Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP = "return: use in a “define function” block to go back to the main code.";
 Blockly.MSG_MAKE_PIN_TOOLTIP = "make PIN (dropdown): Select I/O pin and setting with menus.";
 Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP = "make PIN (programmable): Select I/O pin with value and setting with menu.";
 Blockly.MSG_CHECK_PIN_TOOLTIP = "check PIN (dropdown): Get the state of I/O pin; high = 1, low = 0.";

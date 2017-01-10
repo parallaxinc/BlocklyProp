@@ -189,7 +189,7 @@ function hashCode(str) {
 };
 
 function downloadCode() {
-    var projXMLcode = projectData['code'];
+    var projXMLcode = window.frames["content_blocks"].getXml(); //projectData['code'];
         projXMLcode = projXMLcode.substring(42,projXMLcode.length);
         projXMLcode = projXMLcode.substring(0,(projXMLcode.length - 6));
 

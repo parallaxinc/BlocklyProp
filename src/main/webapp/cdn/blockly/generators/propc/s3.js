@@ -414,7 +414,7 @@ Blockly.Blocks.scribbler_play = {
             .appendField("for a")
             .appendField(new Blockly.FieldDropdown([['sixteenth', '63'], ['dotted sixteenth', '94'], ['eighth', '125'], ['dotted eighth', '188'], ['quarter', '250'], ['dotted quarter', '375'], ['half', '500'], ['dotted half', '750'], ['whole', '1000'], ['dotted whole', '1500']]), 'NOTE_DURATION')
             .appendField("note at a")
-            .appendField(new Blockly.FieldDropdown([['loud', '100'], ['medium', '50'], ['quiet', '25']]), 'NOTE_VOLUME')
+            .appendField(new Blockly.FieldDropdown([['loud', '50'], ['medium', '30'], ['quiet', '15']]), 'NOTE_VOLUME')
             .appendField("volume");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -613,7 +613,7 @@ Blockly.propc.play_polyphony = function() {
     var dur = Blockly.propc.valueToCode(this, 'POLYPHONY_DURATION', Blockly.propc.ORDER_ATOMIC) || 250;
     var vol = Blockly.propc.valueToCode(this, 'POLYPHONY_VOLUME', Blockly.propc.ORDER_ATOMIC) || 50;
 
-    return 's3_setVolume(' + vol + ');\ns3_playNote(' + fq1 + ', ' + fq2 + ', ' + dur + ');\n';
+    return 's3_setVolume((' + vol + ' / 2));\ns3_playNote(' + fq1 + ', ' + fq2 + ', ' + dur + ');\n';
 };
 
 Blockly.Blocks.line_sensor = {

@@ -33,7 +33,7 @@
                     <span class="project-name"></span> <span class="project-owner"></span>
                 </div>
             </div>
-            <div style="width:100%;">
+            <div style="width:100%; padding-bottom: 5px;">
                 <div style="display:inline; padding-left: 10px;">        
                     <a onclick="compile()" data-toggle="tooltip" title="Verify code (compile)" data-placement="bottom" href="#" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-ok"></i></a>
                     <c:if test="${param.editor_lang == 'c'}">
@@ -70,7 +70,9 @@
                             <hr style="line-height:5px; margin:5px;">
                             <li><a id="clear-workspace" href="#"><fmt:message key="editor.clear-workspace" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
+                            <c:if test="${param.editor_lang == 'c'}">
                             <li><a id="download-side" href="#" onclick="downloadPropC()">Download SimpleIDE files</a></li>
+                            </c:if>
                             <li><a id="download-project" href="#"><fmt:message key="editor.download" /></a></li>
                             <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
