@@ -35,7 +35,8 @@ public class ProjectCreationServlet extends HttpServlet {
      * Update user
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         resp.setContentType("text/json");
         JsonObject result = new JsonObject();
 
@@ -49,23 +50,34 @@ public class ProjectCreationServlet extends HttpServlet {
         boolean privateProject = "private".equalsIgnoreCase(sharing);
         boolean sharedProject = "shared".equalsIgnoreCase(sharing);
 
+        // ProjectType can be on of two values; 'SPIN' or 'PROPC'
         ProjectType projectType = null;
+        
         try {
             projectType = ProjectType.valueOf(projectTypeString);
             if (projectType == null) {
+                // The project type we received is unknown.
                 result.addProperty("success", false);
-                result.addProperty("message", "Invalid projecttype");
+                result.addProperty("message", "Unknown Project Type " + projectTypeString );
                 resp.getWriter().write(result.toString());
                 return;
             }
         } catch (IllegalArgumentException iae) {
+            // The project type was not supplied.
             result.addProperty("success", false);
-            result.addProperty("message", "Invalid projecttype");
+            result.addProperty("message", "Invalid Project Type");
             resp.getWriter().write(result.toString());
             return;
         }
 
-        ProjectRecord project = projectService.createProject(projectName, projectDescription, projectDescriptionHtml, privateProject, sharedProject, projectType, boardType);
+        ProjectRecord project = projectService.createProject(
+                projectName, projectDescription, 
+                projectDescriptionHtml, 
+                privateProject, 
+                sharedProject, 
+                projectType, 
+                boardType);
+        
         result.addProperty("success", true);
         result.addProperty("id", project.getId());
         resp.getWriter().write(result.toString());

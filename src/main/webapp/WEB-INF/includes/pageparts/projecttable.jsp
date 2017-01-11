@@ -55,6 +55,7 @@
         "activity-board": "<fmt:message key="project.board.activity-board" />",
         "s3": "<fmt:message key="project.board.s3" />",
         "heb": "<fmt:message key="project.board.heb" />",
+        "flip": "<fmt:message key="project.board.flip" />",
         "other": "<fmt:message key="project.board.other" />"
     };
 

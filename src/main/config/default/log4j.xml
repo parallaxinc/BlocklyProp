@@ -6,9 +6,12 @@
             <param name="ConversionPattern" value="%d [%t] %-5p %c %x - %m%n"/>
         </layout>
     </appender>
-    <root>
-        <priority value="info"></priority>
-        <appender-ref ref="stdout"/>
-    </root>
-    <Logger name="log4j.category.com.parallax.server" level="DEBUG"/>
+    <loggers>
+        <Logger name="com.parallax.server.blocklyprop.monitoring" level="trace" additivity="false">
+            <AppenderRef ref="stdout"/>
+        </Logger>
+        <root level="info">
+            <appender-ref ref="stdout"/>
+        </root>
+    </loggers>
 </log4j:configuration>

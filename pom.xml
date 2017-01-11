@@ -19,6 +19,13 @@
         <metrics-version>3.1.0</metrics-version>
         <jersey.version>1.19</jersey.version>
     </properties>
+    
+    <repositories>
+        <repository>
+            <id>netbeans.maven2.repository</id>
+            <url>http://bits.netbeans.org/maven2/</url>
+        </repository>
+    </repositories>
 
     <build>
         <resources>
@@ -55,6 +62,7 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
             <plugin>
@@ -90,7 +98,7 @@
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.35</version>
+                        <version>5.1.40</version>
                     </dependency>
                 </dependencies>
 
@@ -224,15 +232,16 @@
         </dependency>
 
         <!-- Dependencies for logging -->
+        <!-- sl4fj is a facade for various logging frameworks -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.6</version>
+            <version>1.7.21</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.6</version>
+            <version>1.7.21</version>
         </dependency>
         <!-- END Logging Dependencies -->
 
@@ -457,7 +466,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.6</version>
+            <version>5.1.40</version>
         </dependency>
 
         <dependency>
@@ -472,8 +481,6 @@
             <version>1.8.3</version>
         </dependency>
 
-
-
         <!-- Clients for other Parallax servers -->
         <dependency>
             <groupId>com.parallax.client</groupId>
@@ -486,8 +493,29 @@
             <artifactId>Cloud-Compiler-java-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-
+        
+        <!-- Unit Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    
+        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-nbjunit -->
+    <!--    <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-nbjunit</artifactId>
+            <version>RELEASE801</version>
+        </dependency>
+    -->
+        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-jellytools-platform -->
+    <!--    <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-jellytools-platform</artifactId>
+            <version>RELEASE801</version>
+        </dependency>
+    -->
     </dependencies>
 
 </project>

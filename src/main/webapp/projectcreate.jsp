@@ -77,6 +77,7 @@
                                                             <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
                                                             <option value="activity-board"><fmt:message key="project.board.activity-board" /></option>
                                                             <option value="s3"><fmt:message key="project.board.s3" /></option>
+                                                            <option value="flip"><fmt:message key="project.board.flip" /></option>
                                                             <option value="heb"><fmt:message key="project.board.heb" /></option>
                                                             <option value="other"><fmt:message key="project.board.other" /></option>
                                                         </select>
