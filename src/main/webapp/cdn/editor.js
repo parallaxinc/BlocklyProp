@@ -268,11 +268,14 @@ function downloadCode() {
 };
 
 function uploadCode() {
-    $('#upload-dialog').modal('show');
+    if (checkLeave()) {
+        utils.showMessage('Unsaved Project', 'You must save your project before you can upload a blocks file to it.');
+    } else {
+        $('#upload-dialog').modal('show');
+    }
 };
 
 function uploadHandler(files) {
-
     var UploadReader = new FileReader();
     UploadReader.onload = function() {
         //var parsed = new DOMParser().parseFromString(this.result, "text/xml");
@@ -280,7 +283,7 @@ function uploadHandler(files) {
         var xmlString = this.result;
         var xmlValid = false;
         var uploadBoardType = '';
-        
+
         //validate file, screen for potentially malicious code.
         if(files[0].type === 'image/svg+xml' 
             && xmlString.indexOf("<svg blocklyprop=\"blocklypropproject\"") === 0
@@ -292,9 +295,9 @@ function uploadHandler(files) {
             uploadedXML = xmlString.substring(xmlString.indexOf("<block"), (xmlString.length - 29));
             var computedChecksum = hashCode(uploadedXML).toString();
             computedChecksum = '000000000000'.substring(computedChecksum.length, 12) + computedChecksum;
-                        
+
             if(computedChecksum === uploadedChecksum) xmlValid = true;
-            
+
             if(xmlValid) {
                 var boardIndex = xmlString.indexOf('transform="translate(-225,-23)">Device: ');
                 uploadBoardType = xmlString.substring((boardIndex + 40), xmlString.indexOf('</text>', (boardIndex + 41)));
@@ -305,8 +308,8 @@ function uploadHandler(files) {
                 }
             }
         };
-            
-            
+
+
         if(xmlValid === true) {
             document.getElementById("selectfile-verify-valid").style.display = "block";
             document.getElementById("selectfile-replace").disabled = false;
@@ -319,11 +322,11 @@ function uploadHandler(files) {
             uploadedXML = '';
         }
     };
-    
+
     UploadReader.readAsText(files[0]);
-    
+
     if(uploadedXML !== '') {
-        
+
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
     };
 };
