@@ -1,8 +1,7 @@
 /**
  * Visual Blocks Language
  *
- * Copyright 2014 Michel Lampo.
- *
+ * Copyright 2014 Michel Lampo, Vale Tolpegin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +17,13 @@
  */
 
 /**
- * @fileoverview Generating Prop-C for basic blocks.
+ * @fileoverview Generating C for sensor blocks
  * @author michel@creatingfuture.eu  (Michel Lampo)
+ *         valetolpegin@gmail.com    (Vale Tolpegin)
+ *         jewald@parallax.com       (Jim Ewald)
+ *         mmatz@parallax.com        (Matthew Matz)
+ *         kgracey@parallax.com      (Ken Gracey)
+ *         carsongracey@gmail.com    (Carson Gracey)
  */
 'use strict';
 
@@ -28,89 +32,195 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 
-Blockly.propc.make_pin = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
-    var dropdown_action = this.getFieldValue('ACTION');
-    switch (dropdown_action) {
-        case "HIGH":
-            return 'high(' + dropdown_pin + ');\n';
-        case "LOW":
-            return 'low(' + dropdown_pin + ');\n';
-        case "TOGGLE":
-            return 'toggle(' + dropdown_pin + ');\n\tset_direction(' + dropdown_pin + ', 1);\n';
-        case "INPUT":
-            return 'set_direction(' + dropdown_pin + ', 0);\n';
-        case "REVERSE":
-            return 'reverse(' + dropdown_pin + ');\n';
+Blockly.Blocks.math_number = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldTextInput('0',
+                        Blockly.FieldTextInput.numberValidator), 'NUM');
+        this.setOutput(true, 'Number');
     }
 };
 
-Blockly.propc.make_pin_input = function () {
-    var pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || 0;
-    var dropdown_action = this.getFieldValue('ACTION');
-    switch (dropdown_action) {
-        case "HIGH":
-            return 'high(' + pin + ');\n';
-        case "LOW":
-            return 'low(' + pin + ');\n';
-        case "TOGGLE":
-            return 'toggle(' + pin + ');\n\tset_direction(' + pin + ', 1);\n';
-        case "INPUT":
-            return 'set_direction(' + pin + ', 0);\n';
-        case "REVERSE":
-            return 'reverse(' + pin + ');\n';
+Blockly.propc.math_number = function() {
+    // Numeric value.
+    var code = window.parseInt(this.getFieldValue('NUM'));
+    // -4.abs() returns -4 in Dart due to strange order of operation choices.
+    // -4 is actually an operator and a number.  Reflect this in the order.
+    var order = code < 0 ?
+            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
+    return [code, order];
+};
+
+Blockly.Blocks.math_arithmetic = {
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_MATH_ARITHMETIC_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Number');
+        this.appendValueInput('A')
+                .setCheck('Number');
+        this.appendValueInput('B')
+                .setCheck('Number')
+                .appendField(new Blockly.FieldDropdown([
+                ["+", ' + '],
+                ["-", ' - '],
+                ["×", ' * '],
+                ["÷", ' / '],
+                ["% (remainder after division)", ' % '],
+                ["^ (raise to the power of)", ' p ']]), 'OP');
+        this.setInputsInline(true);
     }
 };
 
-Blockly.propc.check_pin = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
-
-    var code = 'input(' + dropdown_pin + ')';
-    return [code, Blockly.propc.ORDER_ATOMIC];
+Blockly.propc.math_arithmetic = function() {
+    var operator = this.getFieldValue('OP');
+    var order = Blockly.propc.ORDER_MULTIPLICATIVE;
+    if(operator === ' + ' || operator === ' - ') {
+        order = Blockly.propc.ORDER_ADDITIVE;
+    }
+    var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
+    var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
+    var code;
+    if(operator === ' p ') {
+        code = 'pow(' + argument0 + ', ' + argument1 + ')';
+    } else {
+        code = argument0 + operator + argument1;
+    }
+    return [code, order];
 };
 
-Blockly.propc.check_pin_input = function () {
-    var dropdown_pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
+Blockly.Blocks.math_limit = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_LIMIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput('A')
+                .setCheck('Number')
+                .appendField(new Blockly.FieldDropdown([["highest of", " #> "], ["lowest of", " <# "]]), 'OP');
+        this.appendValueInput('B')
+                .setCheck('Number')
+                .appendField("and");
 
-    var code = 'input(' + dropdown_pin + ')';
-    return [code, Blockly.propc.ORDER_ATOMIC];
+        this.setInputsInline(true);
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
 };
 
-Blockly.propc.set_pins = function () {
-    var code = '';
-    var action = this.getFieldValue('ACTION');
-    var dropdown_pin_count = Number(this.getFieldValue('PIN_COUNT'));
-    var dropdown_start_pin = Number(this.getFieldValue('START_PIN'));
-    if (action === 'STATE') {
-        code = 'set_outputs(';
-    } else if (action === 'DIRECTION') {
-        code = 'set_directions(';
+Blockly.propc.math_limit = function() {
+    var operator = this.getFieldValue('OP');
+    var argument0 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ASSIGNMENT) || '0';
+    var argument1 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ASSIGNMENT) || '0';
+    var code;
+
+    code = argument0 + operator + argument1;
+    return [code, Blockly.propc.ORDER_ASSIGNMENT];
+};
+
+Blockly.Blocks.math_crement = {            
+    // Increment/decrement
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_CREMENT_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput('VAR')
+            .setCheck('Number')
+            .appendField(new Blockly.FieldDropdown([["decrement", "--"], ["increment", "++"]]), "OP");
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
     }
-    //var highestPin = dropdown_start_pin + dropdown_pin_count - 1;
-    
-    code += dropdown_pin_count;
-    code += ', ';
-    code += dropdown_start_pin;
-    code += ', 0b';
-    for (var i = dropdown_pin_count; i >= dropdown_start_pin; i--) {
-        code += this.getFieldValue('P' + i);
+};
+
+Blockly.propc.math_crement = function() {
+    var operator = this.getFieldValue('OP');
+    var variable = Blockly.propc.valueToCode(this, 'VAR', Blockly.propc.ORDER_UNARY_PREFIX) || '0';
+
+    var code = variable + operator + ';\n';
+    return code;
+};
+
+Blockly.Blocks.math_random = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_RANDOM_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("A")
+            .setCheck("Number")
+            .appendField("random number from");
+        this.appendValueInput("B")
+            .setCheck("Number")
+            .appendField("to");
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
     }
-    return code + ');\n';
+};
+
+Blockly.propc.math_random = function() {
+    Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
+    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
+    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
+
+    var code = '(' + arg1 + ' + rand() % (' + arg2 + ' - ' + arg1 + ' + 1))';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.math_bitwise = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_BITWISE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput('A');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ["& (bitwise AND)", " & "], 
+                ["| (bitwise OR)", " | "], 
+                ["^ (bitwise XOR)", " ^ "], 
+                [">> (bitwise right shift)", " >> "], 
+                ["<< (bitwise left shift)", " << "]]), "OP");
+        this.appendValueInput('B');
+        
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.math_bitwise = function() {
+    var argument0 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_NONE);
+    var argument1 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_NONE);
+    var operator = this.getFieldValue('OP');
+
+    var code = argument0 + operator + argument1;
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.base_delay = {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_BASE_DELAY_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendValueInput("DELAY_TIME", 'Number')
+                .appendField("pause (ms)")
+                .setCheck('Number');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
 };
 
 Blockly.propc.base_delay = function () {
     var delay_time = Blockly.propc.valueToCode(this, 'DELAY_TIME', Blockly.propc.ORDER_ATOMIC) || '1000';
     var code = 'pause(' + delay_time + ');\n';
-    return code;
-};
-
-Blockly.propc.base_freqout = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
-    var duration = Blockly.propc.valueToCode(this, 'DURATION', Blockly.propc.ORDER_ATOMIC) || 1000;
-    var frequency = Blockly.propc.valueToCode(this, 'FREQUENCY', Blockly.propc.ORDER_ATOMIC) || 3000;
-
-    var code = 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
-
     return code;
 };
 
@@ -237,7 +347,11 @@ Blockly.Blocks.char_type_block = {
                     ["123 - {", "123"],
                     ["124 - |", "124"],
                     ["125 - }", "125"],
-                    ["126 - ~", "126"]]), "CHAR");
+                    ["126 - ~", "126"],
+                    ["10 - line feed", "10"],
+                    ["11 - tab", "11"],
+                    ["13 - ccarriage return", "13"],
+                    ["127 - delete", "127"]]), "CHAR");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
@@ -305,29 +419,6 @@ Blockly.propc.high_low_value = function() {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.propc.pulse_in = function() {
-    var pin = this.getFieldValue("PIN");
-    var state = this.getFieldValue("STATE");
-
-    var code = 'pulse_in(' + pin + ', ' + state + ')';
-    return [code, Blockly.propc.ORDER_NONE];
-};
-
-Blockly.propc.pulse_out = function() {
-    var pin = this.getFieldValue("PIN");
-    var pulse_length = Blockly.propc.valueToCode(this, 'PULSE_LENGTH', Blockly.propc.ORDER_ATOMIC);
-
-    return 'pulse_out(' + pin + ', ' + pulse_length + ');\n';
-};
-
-Blockly.propc.rc_charge_discharge = function() {
-    var pin = this.getFieldValue("PIN");
-    var state = this.getFieldValue("STATE");
-
-    var code = 'rc_time(' + pin + ', ' + state + ')';
-    return [code, Blockly.propc.ORDER_NONE];
-};
-
 Blockly.Blocks.comment = {
     helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function() {
@@ -347,6 +438,9 @@ Blockly.propc.comment = function() {
 
     return '// ' + text + '\n';
 };
+
+/*  
+ * Casting Blocks are not currently used (Everything is a string or an int)
 
 Blockly.Blocks.cast = {
     init: function() {
@@ -370,6 +464,7 @@ Blockly.propc.cast = function() {
     var code = "" + type + item;
     return [code, Blockly.propc.ORDER_NONE];
 };
+*/
 
 Blockly.Blocks.color_picker = {
     helpUrl: Blockly.MSG_VALUES_HELPURL,
@@ -479,4 +574,599 @@ Blockly.propc.compare_colors = function() {
 
     var code = 'compareRRGGBB(' + color1 + ', ' + color2 + ')';
     return [code];
+};
+
+Blockly.Blocks.logic_compare = {
+    // Comparison operator.
+    category: Blockly.LANG_CATEGORY_LOGIC,
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_LOGIC_COMPARE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Number');
+        this.appendValueInput('A')
+            .setCheck("Number");
+        this.appendValueInput('B')
+            .setCheck("Number")
+            .appendField(new Blockly.FieldDropdown([['=', '=='], ['\u2260', '!='], ['<', '<'], ['\u2264', '<='], ['>', '>'], ['\u2265', '>=']]), 'OP');
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.propc.logic_compare = function() {
+    // Comparison operator.
+    var operator = this.getFieldValue('OP');
+    var order = (operator === '==' || operator === '!=') ?
+            Blockly.propc.ORDER_EQUALITY : Blockly.propc.ORDER_RELATIONAL;
+    var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
+    var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
+    var code = argument0 + ' ' + operator + ' ' + argument1;
+    return [code, order];
+};
+
+Blockly.Blocks.logic_operation = {
+    // Logical operations: 'and', 'or'.
+    category: Blockly.LANG_CATEGORY_LOGIC,
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_LOGIC_OPERATION_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Number');
+        this.appendValueInput('A')
+                .setCheck('Number');
+        this.appendValueInput('B')
+                .setCheck('Number')
+                .appendField(new Blockly.FieldDropdown([['and', ' && '], ['or', ' || '], ['and not', ' && !'], ['or not', ' || !']]), 'OP');
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.propc.logic_operation = function() {
+    // Operations 'and', 'or'.
+    var operator = this.getFieldValue('OP');
+    var order = Blockly.propc.ORDER_LOGICAL_AND;
+    if(operator === ' || ' || operator === ' || !') {
+        order = Blockly.propc.ORDER_LOGICAL_OR;
+    }
+    var argument0 = Blockly.propc.valueToCode(this, 'A', order) || '0';
+    var argument1 = Blockly.propc.valueToCode(this, 'B', order) || '0';
+    var code = argument0 + ' ' + operator + argument1;
+    return [code, order];
+};
+
+Blockly.Blocks.logic_negate = {
+    // Negation.
+    //category: Blockly.LANG_CATEGORY_LOGIC,
+    init: function() {
+        if(profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+	this.setTooltip(Blockly.MSG_LOGIC_NEGATE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Number');
+        this.appendValueInput('BOOL')
+                .setCheck('Number')
+                .appendField(new Blockly.FieldDropdown([["not", '!'], ["negate", '-'], ["abs", 'abs(']]), 'OP');
+    }
+};
+
+Blockly.propc.logic_negate = function() {
+    // Negation.
+    var order = Blockly.propc.ORDER_UNARY_PREFIX;
+    var operator = this.getFieldValue('OP');
+    var argument0 = Blockly.propc.valueToCode(this, 'BOOL', order) || '0';
+    var code = operator + argument0;
+    if(operator === 'abs(') {
+        code += ')';
+        order = Blockly.propc.ORDER_NONE;
+    } 
+    return [code, order];
+};
+
+Blockly.Blocks.logic_boolean = {
+    // Boolean data type: true and false.
+    //category: Blockly.LANG_CATEGORY_LOGIC,
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_LOGIC_BOOLEAN_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.setOutput(true, 'Number');
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown([["true", 'TRUE'], ["false", 'FALSE']]), 'BOOL');
+    }
+};
+
+Blockly.propc.logic_boolean = function() {
+    // Boolean values true and false.
+    var code = (this.getFieldValue('BOOL') === 'TRUE') ? '1' : '0';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+Blockly.Blocks.cog_new = {
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_COG_NEW_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField("new processor");
+        this.appendStatementInput("METHOD")
+            .appendField("function");
+
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.cog_new = function() {
+    var method = Blockly.propc.statementToCode(this, 'METHOD');
+    method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
+
+    var code = 'cog_run(' + method + ', 128);\n';
+    return code;
+};
+
+Blockly.Blocks.combine_strings = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_COMBINE_STRINGS_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("STRA")
+            .setCheck("String")
+            .appendField("combine string");
+        this.appendValueInput("STRB")
+            .setCheck("String")
+            .appendField("with string");
+        this.appendDummyInput()
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
+    }
+};
+
+Blockly.propc.combine_strings = function () {
+    var strA = Blockly.propc.valueToCode(this, 'STRA', Blockly.propc.ORDER_ATOMIC) || '';
+    var strB = Blockly.propc.valueToCode(this, 'STRB', Blockly.propc.ORDER_ATOMIC) || '';
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+    var code = '';
+
+    Blockly.propc.vartype_[data] = 'char *';
+
+    if(strA !== '' && strB !== '') {
+        Blockly.propc.definitions_['str_Buffer'] = 'char *__scBfr;';
+
+        code += 'sprint(__scBfr, "%s%s", ' + strA + ', ' + strB + ');\n'; 
+        code += 'strcpy(' + data + ', __scBfr);\n'; 
+    } else if(strA !== ''){           
+         code += 'strcpy(' + data + ', ' + strB + ');\n'; 
+    } else if(strB !== ''){           
+         code += 'strcpy(' + data + ', ' + strA + ');\n'; 
+    } else {            
+        code += '// Both of the strings to combine are blank!\n';
+    }
+    return code;
+};
+
+Blockly.Blocks.find_substring = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_FIND_SUBSTRING_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("SUBSTR")
+            .setCheck("String")
+            .appendField("find location of text");
+        this.appendValueInput("STR")
+            .setCheck("String")
+            .appendField("in string");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+  }
+};
+
+Blockly.propc.find_substring = function () {
+    var subs = Blockly.propc.valueToCode(this, 'SUBSTR', Blockly.propc.ORDER_ATOMIC) || '';
+    var strs = Blockly.propc.valueToCode(this, 'STR', Blockly.propc.ORDER_ATOMIC) || '';
+
+    Blockly.propc.definitions_['find_sub'] = 'int find_sub(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS + 1); }\n';
+    
+    var code = '';
+
+    if(subs !== '' && strs !== '') {
+        code += 'find_sub(' + strs + ', ' + subs + ')'; 
+    } else {           
+        code += '0'; 
+    }
+    
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.get_char_at_position = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_GET_CHAR_AT_POSITION_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("POSITION")
+            .setCheck("Number")
+            .appendField("get character at position");
+        this.appendDummyInput()
+            .appendField("of")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+        },
+
+        getVars: function () {
+            return [this.getFieldValue('VALUE')];
+        },
+
+        renameVar: function (oldName, newName) {
+            if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+                this.setTitleValue(newName, 'VALUE');
+            }
+      }
+};
+
+Blockly.propc.get_char_at_position = function () {
+    var pos = Blockly.propc.valueToCode(this, 'POSITION', Blockly.propc.ORDER_ATOMIC) || '1';
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+
+    var code = '0';
+    
+    if(Blockly.propc.vartype_[data] === 'char *') 
+    {
+        code = data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1]';
+    }
+    
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.set_char_at_position = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SET_CHAR_AT_POSITION_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("POSITION")
+            .setCheck("Number")
+            .appendField("set character at position");
+        this.appendDummyInput()
+            .appendField("of string")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.appendValueInput("CHAR")
+            .setCheck("Number")
+            .appendField("to");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.set_char_at_position = function () {
+    var pos = Blockly.propc.valueToCode(this, 'POSITION', Blockly.propc.ORDER_ATOMIC) || '1';
+    var chr = Blockly.propc.valueToCode(this, 'CHAR', Blockly.propc.ORDER_ATOMIC) || '32';
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+
+    return data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1] = (' + chr + ' & 0xFF)\n;';
+};
+
+Blockly.Blocks.get_substring = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_GET_SUBSTRING_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+            .appendField("get part of string")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'FROM_STR');
+        this.appendValueInput("START")
+            .setCheck("Number")
+            .appendField("from position");
+        this.appendValueInput("END")
+            .setCheck("Number")
+            .appendField("to position");
+        this.appendDummyInput()
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'TO_STR');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.get_substring = function () {
+    var sst = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_ATOMIC) || '1';
+    var snd = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_ATOMIC) || '2';
+    var frStr = Blockly.propc.variableDB_.getName(this.getFieldValue('FROM_STR'), Blockly.Variables.NAME_TYPE);
+    var toStr = Blockly.propc.variableDB_.getName(this.getFieldValue('TO_STR'), Blockly.Variables.NAME_TYPE);
+
+    Blockly.propc.vartype_[toStr] = 'char *';
+    Blockly.propc.definitions_['str_Buffer'] = 'char *__scBfr;';
+
+    var code = '';
+    
+    if(Blockly.propc.vartype_[frStr] === 'char *') 
+    {
+        Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
+
+        code += '__stIdx = 0;\nfor(__ssIdx = (' + sst + '-1); __ssIdx <= (' + snd +' <= strlen(' + frStr + ')?' + snd +':strlen(' + frStr + '))-1; __ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+        code += '__scBfr[__stIdx] = 0;\n';
+        code += 'strcpy(' + toStr + ', __scBfr);\n';
+    }
+    
+    return code;
+};
+
+Blockly.Blocks.string_compare = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_STRING_COMPARE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("STRA")
+            .setCheck("String")
+            .appendField("string");
+        this.appendValueInput("STRB")
+            .setCheck("String")
+            .appendField(new Blockly.FieldDropdown([["is the same as", "=="], ["is not the same as", "!="], ["is alphabetically before", "<"], ["is alphabetically after", ">"]]), "COMP");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+    }
+};
+
+Blockly.propc.string_compare = function () {
+    var strA = Blockly.propc.valueToCode(this, 'STRA', Blockly.propc.ORDER_ATOMIC) || '';
+    var strB = Blockly.propc.valueToCode(this, 'STRB', Blockly.propc.ORDER_ATOMIC) || '';
+    var comp = this.getFieldValue('COMP');
+
+    Blockly.propc.definitions_['str_comp'] = 'int str_comp(char *__strA, char *__strB) { return strcmp(__strA, __strB); }';
+    
+    var code = '';
+
+    if(strA !== '' && strB !== '') {
+        code += 'str_comp(' + strA + ', ' + strB + ') ' + comp + ' 0';
+    } else {           
+        code += '0'; 
+    }
+    
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.string_to_number = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_STRING_TO_NUMBER_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("STRING")
+            .setCheck("String")
+            .appendField("string");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["in decimal", "%d"], ["in hexadecimal", "%x"], ["in binary", "%b"]]), "TYPE")
+            .appendField("to integer store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+  }
+};
+
+Blockly.propc.string_to_number = function () {
+    var str = Blockly.propc.valueToCode(this, 'STRING', Blockly.propc.ORDER_ATOMIC) || '0';
+    var type = this.getFieldValue('TYPE');
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+
+    Blockly.propc.definitions_['s2i_Buffer'] = 'char __s2iBfr[64];';
+
+    var code = '';
+    code += 'strcpy(__s2iBfr, ' + str + ');\n';
+    code += 'sscan(__s2iBfr, "' + type + '", &' + store + ');\n';
+    
+    return code;
+};
+
+Blockly.Blocks.number_to_string = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_NUMBER_TO_STRING_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("NUMBER")
+            .setCheck("Number")
+            .appendField("integer");
+        this.appendDummyInput()
+            .appendField("to string in")
+            .appendField(new Blockly.FieldDropdown([["decimal", "%d"], ["hexadecimal", "%x"], ["binary", "%b"]]), "TYPE")
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+  }
+};
+
+Blockly.propc.number_to_string = function () {
+    var str = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_ATOMIC) || '0';
+    var type = this.getFieldValue('TYPE');
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+
+    Blockly.propc.vartype_[str] = 'char *';
+    
+    return 'sprint(' + store + ', "' + type + '", ' + str + ');\n';
+};
+
+Blockly.Blocks.number_binary = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_NUMBER_BINARY_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("0101"), "NUMBER")
+            .appendField("binary");
+        this.setOutput(true, "Number");
+  }
+};
+
+Blockly.propc.number_binary = function() {
+    var code = '0b' + this.getFieldValue("NUMBER");
+
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.number_hex = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_NUMBER_HEX_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("7F"), "NUMBER")
+            .appendField("hexadecimal");
+        this.setOutput(true, "Number");
+  }
+};
+
+Blockly.propc.number_hex = function() {
+    var code = '0x' + this.getFieldValue("NUMBER");
+
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.constrain_value = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_CONSTRAIN_VALUE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("NUMBER")
+            .setCheck("Number")
+            .appendField("constrain");
+        this.appendDummyInput()
+            .appendField("from")
+            .appendField(new Blockly.FieldTextInput("0"), "MIN")
+            .appendField("(min) to")
+            .appendField(new Blockly.FieldTextInput("100"), "MAX")
+            .appendField("(max)");
+        this.setInputsInline(true);
+        this.setOutput(true, "Number");
+  }
+};
+
+Blockly.propc.constrain_value = function() {
+    var num = Blockly.propc.valueToCode(this, 'NUMBER', Blockly.propc.ORDER_ATOMIC) || '0';
+    var min = window.parseInt(this.getFieldValue('MIN'));
+    var max = window.parseInt(this.getFieldValue('MAX'));
+
+    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+    Blockly.propc.global_vars_["constrain_function"] = setup_code;
+
+    var code = 'constrain(' + num + ', ' + min + ', ' + max + ')';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.math_advanced = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_ADVANCED_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("ARG1")
+            .setCheck("Number");
+        this.appendValueInput("ARG2")
+            .setCheck("Number")
+            .appendField(new Blockly.FieldDropdown([
+            ["× the cosine of", "cos"], 
+            ["× the sine of", "sin"], 
+            ["× the tangent of", "tan"], 
+            ["× the square root of", "sqrt"], 
+            ["× e raised to the power of", "exp"], 
+            ["× the logarithm (base 10) of", "log10"], 
+            ["× the natural logarithm of", "log"]]), "OP");
+        this.appendDummyInput("")
+            .appendField("store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('STORE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
+            this.setTitleValue(newName, 'STORE');
+        }
+    }
+};
+
+Blockly.propc.math_advanced = function() {
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('STORE'), Blockly.Variables.NAME_TYPE);
+    var arg1 = Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '1';
+    var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
+    var operator = this.getFieldValue('OP');
+    var opTrig = '';
+    if(operator === 'sin' || operator === 'cos' || operator === 'tan') opTrig = ' * PI/180.0';
+
+    var code = store + ' = (int) (((float)' + arg1 + ') * ' + operator + '(((float) ' + arg2 + ')' + opTrig + ') + 0.5);\n';
+    
+    return code;
+};
+
+Blockly.Blocks.math_inv_trig = {
+    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MATH_INV_TRIG_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("ARG1")
+            .setCheck("Number")
+            .appendField(new Blockly.FieldDropdown([
+            ["arcsine of (", "asin"], 
+            ["arccosine of (", "acos"], 
+            ["arctangent of (", "atan2"]]), "OP");
+        this.appendValueInput("ARG2")
+            .setCheck("Number")
+            .appendField("÷");
+        this.appendDummyInput()
+            .appendField(") store in")
+            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('STORE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
+            this.setTitleValue(newName, 'STORE');
+        }
+    }
+};
+
+Blockly.propc.math_inv_trig = function() {
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('STORE'), Blockly.Variables.NAME_TYPE);
+    var arg1 = Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '1';
+    var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
+    var operator = this.getFieldValue('OP');
+    var opTrig = '/';
+    if(operator === 'atan2') opTrig = ',';
+
+    var code = store + ' = (int) (180.0 * ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + ')) / PI + 0.5);\n';
+    
+    return code;
 };

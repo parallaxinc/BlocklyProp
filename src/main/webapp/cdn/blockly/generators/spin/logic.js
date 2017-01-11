@@ -23,10 +23,10 @@
  */
 'use strict';
 
-Blockly.Spin.logic_compare = function () {
+Blockly.Spin.logic_boolean_compare = function () {
     // Comparison operator.
     var mode = this.getFieldValue('OP');
-    var operator = Blockly.Spin.logic_compare.OPERATORS[mode];
+    var operator = Blockly.Spin.logic_boolean_compare.OPERATORS[mode];
     var order = (operator == '==' || operator == '!=') ?
             Blockly.Spin.ORDER_EQUALITY : Blockly.Spin.ORDER_RELATIONAL;
     var argument0 = Blockly.Spin.valueToCode(this, 'A', order) || '0';
@@ -35,7 +35,7 @@ Blockly.Spin.logic_compare = function () {
     return [code, order];
 };
 
-Blockly.Spin.logic_compare.OPERATORS = {
+Blockly.Spin.logic_boolean_compare.OPERATORS = {
     EQ: '==',
     NEQ: '<>',
     LT: '<',
@@ -44,7 +44,7 @@ Blockly.Spin.logic_compare.OPERATORS = {
     GTE: '=>'
 };
 
-Blockly.Spin.logic_operation = function () {
+Blockly.Spin.logic_boolean_operation = function () {
     // Operations 'and', 'or'.
     var operator = ''; //(this.getFieldValue('OP') == 'AND') ? '&&' : '||';
     var order = Blockly.Spin.ORDER_LOGICAL_AND;
@@ -70,7 +70,7 @@ Blockly.Spin.logic_operation = function () {
     return [code, order];
 };
 
-Blockly.Spin.logic_negate = function () {
+Blockly.Spin.logic_boolean_negate = function () {
     // Negation.
     var order = Blockly.Spin.ORDER_UNARY_PREFIX;
     var argument0 = Blockly.Spin.valueToCode(this, 'BOOL', order) || 'FALSE';

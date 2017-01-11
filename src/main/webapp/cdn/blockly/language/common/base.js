@@ -64,14 +64,14 @@ Blockly.Blocks.base_freqout = {
 	this.setTooltip(Blockly.MSG_BASE_FREQOUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
-                .appendField("frequency PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+            .appendField("frequency PIN")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("DURATION", 'Number')
-                .appendField("duration (ms)")
-                .setCheck('Number');
+            .appendField("duration (ms)")
+            .setCheck('Number');
         this.appendValueInput("FREQUENCY", 'Number')
-                .appendField("frequecy (hz)")
-                .setCheck('Number');
+            .appendField("frequecy (Hz)")
+            .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

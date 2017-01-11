@@ -16,31 +16,17 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin.js"/>"></script>
 
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/base.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/servo.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/sensors.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/debug_lcd.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/control.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/logic.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/math.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/PIRSensor.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/bit_math.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/distance.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/pressure.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/TiltandAcceleration.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/variables.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/procedures.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/serial.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/scribbler.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/control.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/pins.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/logic.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/joystick.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/math.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/text.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/lists.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/common/procedures.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/spin/base.js"/>"></script>
 
         <style>
             html, body {
@@ -142,7 +128,7 @@
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
             </block>
-            <block type="controls_if"></block>
+            <block type="controls_boolean_if"></block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
                     <block type="math_integer">
@@ -174,9 +160,9 @@
             </block>
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
-            <block type="logic_operation"></block>
-            <block type="logic_negate"></block>
-            <block type="logic_compare"></block>
+            <block type="logic_boolean_operation"></block>
+            <block type="logic_boolean_negate"></block>
+            <block type="logic_boolean_compare"></block>
         </category>
         <category name="Sensors" colour=140>
             <category name="Line" colour=140>
@@ -202,8 +188,13 @@
             <category name="Ping)))" colour=140>
                 <block type="scribbler_ping"></block>
             </category>
+            <category name="Pins" colour=140>
+                <block type="digital_input"></block>
+                <block type="analog_input"></block>
+            </category>
         </category>
         <category name="Actions" colour=185>
+            <block type="digital_output"></block>
             <category name="Motors" colour=185>
                 <block type="scribbler_drive">
                     <field name="DRIVE_ANGLE">STRAIGHT</field>
@@ -234,6 +225,23 @@
                         </block>
                     </value>
                     <value name="RIGHT_MOTOR_DISTANCE">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                    <value name="MOTOR_SPEED">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="move_motors_xy">
+                    <value name="X_DISTANCE">
+                        <block type="math_integer">
+                            <field name="INT_VALUE">0</field>
+                        </block>
+                    </value>
+                    <value name="Y_DISTANCE">
                         <block type="math_integer">
                             <field name="INT_VALUE">0</field>
                         </block>

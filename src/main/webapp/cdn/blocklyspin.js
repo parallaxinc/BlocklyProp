@@ -41,19 +41,35 @@ function tabClick(id) {
 
     // Deselect all tabs and hide all panes.
     for (var x in TABS_) {
-        if (document.getElementById('tab_' + TABS_[x])) {
-            document.getElementById('tab_' + TABS_[x]).className = 'taboff';
-        }
+        //if (document.getElementById('tab_' + TABS_[x])) {
+        //    document.getElementById('tab_' + TABS_[x]).className = 'taboff';
+        //}
         if (document.getElementById('content_' + TABS_[x])) {
             document.getElementById('content_' + TABS_[x]).style.display = 'none';
-        } else {
+        //} else {
 //            document.getElementByName('content_' + TABS_[x])[0].style.display = 'none';
         }
     }
 
     // Select the active tab.
     selected = id.replace('tab_', '');
-    document.getElementById(id).className = 'active';
+    //document.getElementById(id).className = 'active';
+    if (id === 'tab_blocks') {
+        document.getElementById('btn-view-blocks').style.display = 'none';
+        var btns = document.getElementsByClassName("btn-view-code");
+        for (var i = 0; i < btns.length; i++)
+        {
+            btns[i].style.display = 'inline';
+        }
+    } else {
+        document.getElementById('btn-view-blocks').style.display = 'inline';
+        var btns = document.getElementsByClassName("btn-view-code");
+        for (var i = 0; i < btns.length; i++)
+        {
+            btns[i].style.display = 'none';
+        }
+    }
+
     // Show the selected pane.
     var content = document.getElementById('content_' + selected);
     content.style.display = 'block';
@@ -94,6 +110,7 @@ function init(blockly) {
     window.Blockly = blockly;
 
     // Make the 'Blocks' tab line up with the toolbox.
+    /*
     if (Blockly.Toolbox) {
         window.setTimeout(function () {
             document.getElementById('tab_blocks').style.minWidth =
@@ -101,6 +118,8 @@ function init(blockly) {
             // Account for the 19 pixel margin and on each side.
         }, 1);
     }
+    */
+   
     loadProject();
 }
 
