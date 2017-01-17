@@ -142,11 +142,11 @@ Blockly.Blocks.set_pins = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         var start_pin = [];
-        for (var i = 0; i < 14; i++) {
+        for (var i = profile.default.contiguous_pins_start; i <= profile.default.contiguous_pins_end; i++) {
             start_pin.push([i.toString(), i.toString()]);
         }
         var pin_count = [];
-        for (var i = 0; i < 14; i++) {
+        for (var i = profile.default.contiguous_pins_start; i <= profile.default.contiguous_pins_end; i++) {
             pin_count.push([i.toString(), i.toString()]);
         }
         this.appendDummyInput("")
