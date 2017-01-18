@@ -142,7 +142,7 @@ var profile = {
             ["99", "32868"], ["100", "32869"]],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 13
+        contiguous_pins_end: 17
     },
     "s3": {
         description: "Scribbler Robot",
