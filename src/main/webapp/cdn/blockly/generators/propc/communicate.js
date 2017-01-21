@@ -1489,8 +1489,61 @@ Blockly.propc.ws2812b_update = function() {
 };
 
 // --------------------- Simple WX Module --------------------------------------
-Blockly.Blocks.wx_set_widget = {
+Blockly.Blocks.wx_init = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_SWX_INIT_TOOLTIP);
+        var bkg_colors = new Blockly.FieldColour("#FFFFFF");
+        bkg_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("Simple WX initialize DO")
+            .appendField(new Blockly.FieldDropdown([['31 (WX)', '31']].concat(profile.default.digital)), "DO")    
+            .appendField("DI")
+            .appendField(new Blockly.FieldDropdown([['30 (WX)', '30']].concat(profile.default.digital)), "DI")
+            .appendField(" mode")
+            .appendField(new Blockly.FieldDropdown([['Terminal via Wifi', 'USB_PGM'], ['Terminal via USB', 'USB_PGM_TERM']].concat(profile.default.digital)), "MODE");
+        this.appendDummyInput()  
+            .appendField(" title")
+            .appendField(new Blockly.FieldTextInput('title'), 'TITLE')
+            .appendField(" background color")
+            .appendField(bkg_colors, "BKG");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.wx_init = function() {
+    var pin_do = this.getFieldValue('DO');
+    var pin_di = this.getFieldValue('DI');
+    var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
+    var title = this.getFieldValue('TITLE');
+    var mode = this.getFieldValue('MODE');
+    if(pin_do === '31' && pin_di === '30' && mode === 'USB_PGM') mode = 'WX_ALL_COM';
+    var code = '';
+    code += 'wifi_start(' + pin_do + ', ' + pin_di + ', 115200, ' + mode + ');\n';
+    code += 'wifi_setBuffer(__wxBffr, sizeof(__wxBffr));\n';
+    code += '__wsId = wifi_listen(WS, "/ws/a");\n';
+    code += 'while(!__wsHandle) {\n  wifi_poll(&__wxEvent, &__wxId, &__wxHandle);\n'; 
+    code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}'; 
+    code += 'wifi_print(WS, __wsHandle, "S,' + bkg + ',' + title + '");\n';
+
+    var vars = '';
+    vars += 'int __wxEvent, __wxId, __wxHandle, __wsId, __wv[13], __wsHandle = 0;\n';
+    vars += 'char __wxBffr[136];\n';
+            
+    Blockly.propc.definitions_["wx_def"] = '#include "wifi.h"';    
+    Blockly.propc.global_vars_["wx_vars"] = vars;
+    Blockly.propc.setups_["wx_init"] = code;
+
+    return '';
+};
+
+Blockly.Blocks.wx_set_widget = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SWX_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("SET_1")
             .appendField("Simple WX set widget")
@@ -1509,7 +1562,9 @@ Blockly.Blocks.wx_set_widget = {
                 ["\u2794 Light Bulb", '9'], 
                 ["Clear Widget", '10']], function (type) {
                     this.sourceBlock_.updateShape_({"TYPE": type});
-                }), "TYPE");
+                }), "TYPE")
+            .appendField(" label")
+            .appendField(new Blockly.FieldTextInput('label'), 'LABEL');
         this.appendDummyInput("SET_2")
             .appendField("widget color")
             .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
@@ -1526,17 +1581,47 @@ Blockly.Blocks.wx_set_widget = {
     mutationToDom: function () {
         var container = document.createElement('mutation');
         var type = this.getFieldValue('TYPE');
-        container.setAttribute('TYPE', type);
+        container.setAttribute('w_type', type);
+        var color = this.getFieldValue('COLOR');
+        container.setAttribute('w_color', color);
+        var min = this.getFieldValue('MIN');
+        container.setAttribute('w_min', min);
+        var max = this.getFieldValue('MAX');
+        container.setAttribute('w_max', max);
+        var initial = this.getFieldValue('INITIAL');
+        container.setAttribute('w_init', initial);
+        
         return container;
     },
     domToMutation: function (xmlElement) {
-        var type = xmlElement.getAttribute('TYPE');
-        this.updateShape_({"TYPE": type});
+        var type = xmlElement.getAttribute('w_type');
+        var color = xmlElement.getAttribute('w_color');
+        var min = xmlElement.getAttribute('w_min');
+        var max = xmlElement.getAttribute('w_max');
+        var initial = xmlElement.getAttribute('w_init');
+        this.updateShape_({"TYPE": type, "COLOR": color, "MIN": min, "MAX": max, "INITIAL": initial});
     },
     updateShape_: function (details) {
         var type = details['TYPE'];
         if (details['TYPE'] === undefined) {
             type = this.getFieldValue('TYPE');
+        }
+        
+        var min = details['MIN'];
+        if (details['MIN'] === undefined) {
+            min = this.getFieldValue('MIN');
+        }
+        var max = details['MAX'];
+        if (details['MAX'] === undefined) {
+            max = this.getFieldValue('MAX');
+        }
+        var color = details['COLOR'];
+        if (details['COLOR'] === undefined) {
+            color = this.getFieldValue('COLOR');
+        }
+        var initial = details['INITIAL'];
+        if (details['INITIAL'] === undefined) {
+            initial = this.getFieldValue('INITIAL');
         }
 
         if (this.getInput('SET_2') !== undefined) {
@@ -1559,10 +1644,12 @@ Blockly.Blocks.wx_set_widget = {
         } else if (type === '1') {
             inputPins.appendField("widget color")
                 .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
-                .appendField(" minimum")
+                .appendField(" off value")
                 .appendField(new Blockly.FieldTextInput('0', Blockly.FieldTextInput.numberValidator), 'MIN')
-                .appendField(" maximum")
-                .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'MAX');
+                .appendField(" on value")
+                .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'MAX')
+                .appendField(" initial state")
+                .appendField(new Blockly.FieldDropdown([['on', 'on'], ['off', 'off']]), 'INITIAL');
         } else if (type === '0' || type === '5' || type === '9') {
             inputPins.appendField("widget color")
                 .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
@@ -1572,42 +1659,71 @@ Blockly.Blocks.wx_set_widget = {
             inputPins.appendField("widget color")
                 .appendField(new Blockly.FieldColour("#ffffff"), "COLOR")
                 .appendField(" initial color shown")
-                .appendField(new Blockly.FieldColour("#ffffff"), "INITIAL_COLOR");
+                .appendField(new Blockly.FieldColour("#ffffff"), "INITIAL");
         } else if (type === '3' || type === '4') {
             inputPins.appendField("widget color")
                 .appendField(new Blockly.FieldColour("#ffffff"), "COLOR");
         }
+        
+        if (this.getField('TYPE') && type !== null) {
+                this.setFieldValue(type, 'TYPE');
+        }
+        if (this.getField('MIN') && min !== null) {
+                this.setFieldValue(min, 'MIN');
+        }
+        if (this.getField('MAX') && max !== null) {
+                this.setFieldValue(max, 'MAX');
+        }
+        if (this.getField('COLOR') && color !== null) {
+                this.setFieldValue(color, 'COLOR');
+        }
+        if (this.getField('INITIAL') && initial !== null) {
+                this.setFieldValue(initial, 'INITIAL');
+                if (type === '1' && initial === min) this.setFieldValue('off', 'INITIAL');
+                if (type === '1' && initial === max) this.setFieldValue('on', 'INITIAL');
+        }
+
     }
 };
 
 Blockly.propc.wx_set_widget = function() {
     var widget = this.getFieldValue('WIDGET');
+    var label = this.getFieldValue('LABEL');
     var type = this.getFieldValue('TYPE');
     var color = this.getFieldValue('COLOR').substr(1).toUpperCase();
     var min = window.parseInt(this.getFieldValue('MIN') || '0');
     var max = window.parseInt(this.getFieldValue('MAX') || '10');
     var initial;
-    if (type !== '8') {
-        initial = window.parseInt(this.getFieldValue('INITIAL') || '5');
+    if (type === '8') {
+        initial = (window.parseInt((this.getFieldValue('INITIAL') || '#FFFFFF').substr(1), 16)).toString(10);
+    } else if(this.getFieldValue('INITIAL') === 'on') {
+        initial = max;
+    } else if(this.getFieldValue('INITIAL') === 'off') {
+        initial = min;
     } else { 
-        initial = window.parseInt((this.getFieldValue('INITIAL_COLOR') || '#FFFFFF').substr(1), 16);
+        initial = (window.parseInt(this.getFieldValue('INITIAL') || '5')).toString(10);
     }
     
     var code = '';
-    code += 'wx_print("s' + widget + ',' + type + ',' + color + ',';
-    code += min + ',' + max + ',' + initial + '");\n';
+    code += 'wifi_print(WS, __wsHandle, "W,' + widget + ',' + type + ',' + label + ',';
+    code += min + ',' + max + ',' + initial + ',' + color + '");\n';
     
-    return code;
+    if(Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        return code;
+    } else {
+        return '// Missing Simple WX initialize block!\n';
+    }
 };
 
 Blockly.Blocks.wx_send_widget = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_SWX_SEND_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("NUM")
             .setCheck(null)
             .appendField("Simple WX send");
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([["as text", "%s"], ["as an ASCII character", "%c"], ["as a decimal integer", "%d"], ["as a hexadecimal integer", "%x"], ["as a binary integer", "%b"]]), "TYPE")
             .appendField("to widget")
             .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET");
         this.setInputsInline(true);
@@ -1621,35 +1737,68 @@ Blockly.propc.wx_send_widget = function() {
     var widget = this.getFieldValue('WIDGET');
     var type = this.getFieldValue('TYPE');
     
-    var code = '';
-    code += 'wx_print("t' + widget + ',' + type + '", ' + num + ');\n';
+    var code = 'wifi_print(WS, __wsHandle, "D,' + widget + ',%d", ' + num + ');\n';
     
-    return code;
+    if(Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        return code;
+    } else {
+        return '// Missing Simple WX initialize block!\n';
+    }
+
 };
 
-Blockly.Blocks.wx_read_widget = {
+Blockly.Blocks.wx_read_widgets = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
     init: function() {
+	this.setTooltip(Blockly.MSG_SWX_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("Simple WX read")
-            .appendField(new Blockly.FieldDropdown([["text", "%s"], ["an ASCII character", "%c"], ["a decimal integer", "%d"], ["a hexadecimal integer", "%x"], ["a binary integer", "%b"]]), "TYPE")
-            .appendField("from widget")
-            .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET")
-            .appendField("store in")
-            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
+            .appendField("Simple WX read widgets");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.wx_read_widget = function() {
-    var value = Blockly.propc.valueToCode(this, 'VAR', Blockly.propc.ORDER_NONE);
-    var widget = this.getFieldValue('WIDGET');
-    var type = this.getFieldValue('TYPE');
-    
+Blockly.propc.wx_read_widgets = function() {
     var code = '';
-    code += 'wx_scan("r' + widget + ',' + type + '", &' + value + ');\n';
+    code += 'wifi_print(WS, __wsHandle, "U,0");\n__wv[0] = 0;\n';
+    code += 'while(__wv[0] != \'V\') {\n  wifi_poll(&__wxEvent, &__wxId,';
+    code += '&__wxHandle);\n  if(__wxEvent == \'W\' && __wxId == __wsId)';
+    code += '__wsHandle = __wxHandle;\n   if(__wxEvent == \'D\') ';
+    code += 'wifi_scan(WS, __wxHandle, "%c%d%d%d%d%d%d%d%d%d%d%d%d", ';
+    code += '&__wv[0], &__wv[1], &__wv[2], &__wv[3], &__wv[4], &__wv[5], &__wv[6], ';
+    code += '&__wv[7], &__wv[8], &__wv[9], &__wv[10], &__wv[11], &__wv[12]);\n}';
     
-    return code;
+    if(Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        return code;
+    } else {
+        return '// Missing Simple WX initialize block!\n';
+    }
+};
+
+Blockly.Blocks.wx_get_widget = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SWX_GET_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("Simple WX widget")
+            .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET")
+            .appendField("value");
+        this.setOutput(true, "Number");
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.wx_get_widget = function() {
+    var widget = this.getFieldValue('WIDGET');
+
+    if(Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        return ['__wv[' + widget + ']', Blockly.propc.ORDER_ATOMIC];
+    } else {
+        return '// Missing Simple WX initialize block!\n';
+    }
+
 };
