@@ -552,13 +552,16 @@
                 </block>
             </category>
                 
-<%--   ------------ Not yet ready to be activated -----------------
             <category name="WX Module">
-                <block type="wx_set_widget"></block>
-                <block type="wx_send_widget"></block>
-                <block type="wx_read_widget"></block>
+                <category name="Simple">
+                    <block type="wx_init"></block>
+                    <block type="wx_set_widget"></block>
+                    <block type="wx_send_widget"></block>
+                    <block type="wx_read_widgets"></block>
+                    <block type="wx_get_widget"></block>                    
+                </category>
             </category>
---%>
+
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
                 <block type="xbee_transmit"></block>
