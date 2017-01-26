@@ -1503,11 +1503,6 @@ Blockly.Blocks.wx_init = {
             .appendField(new Blockly.FieldDropdown([['30 (WX)', '30']].concat(profile.default.digital)), "DI")
             .appendField(" mode")
             .appendField(new Blockly.FieldDropdown([['Terminal via Wifi', 'USB_PGM'], ['Terminal via USB', 'USB_PGM_TERM']].concat(profile.default.digital)), "MODE");
-        this.appendDummyInput()  
-            .appendField(" title")
-            .appendField(new Blockly.FieldTextInput('title'), 'TITLE')
-            .appendField(" background color")
-            .appendField(bkg_colors, "BKG");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1527,7 +1522,6 @@ Blockly.propc.wx_init = function() {
     code += '__wsId = wifi_listen(WS, "/ws/a");\n';
     code += 'while(!__wsHandle) {\n  wifi_poll(&__wxEvent, &__wxId, &__wxHandle);\n'; 
     code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}'; 
-    code += 'wifi_print(WS, __wsHandle, "S,' + bkg + ',' + title + '");\n';
 
     var vars = '';
     vars += 'int __wxEvent, __wxId, __wxHandle, __wsId, __wv[13], __wsHandle = 0;\n';
@@ -1540,13 +1534,40 @@ Blockly.propc.wx_init = function() {
     return '';
 };
 
+Blockly.Blocks.wx_config_page = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SWX_INIT_TOOLTIP);
+        var bkg_colors = new Blockly.FieldColour("#FFFFFF");
+        bkg_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()  
+            .appendField("Simple WX configure page title")
+            .appendField(new Blockly.FieldTextInput('title'), 'TITLE')
+            .appendField(" background color")
+            .appendField(bkg_colors, "BKG");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.wx_config_page = function() {
+    var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
+    var title = this.getFieldValue('TITLE');
+
+    var code = 'wifi_print(WS, __wsHandle, "S,' + bkg + ',' + title + '");\n';
+
+    return code;
+};
+
 Blockly.Blocks.wx_set_widget = {
     helpUrl: Blockly.MSG_SWX_HELPURL,
     init: function() {
 	this.setTooltip(Blockly.MSG_SWX_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("SET_1")
-            .appendField("Simple WX set widget")
+            .appendField("Simple WX configure widget")
             .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET")    
             .appendField("to a")
             .appendField(new Blockly.FieldDropdown([
@@ -1763,12 +1784,15 @@ Blockly.Blocks.wx_read_widgets = {
 Blockly.propc.wx_read_widgets = function() {
     var code = '';
     code += 'wifi_print(WS, __wsHandle, "U,0");\n__wv[0] = 0;\n';
-    code += 'while(__wv[0] != \'V\') {\n  wifi_poll(&__wxEvent, &__wxId,';
+    code += 'while(__wv[0] != \'V\') {  __wv[0]++;\n  wifi_poll(&__wxEvent, &__wxId,';
     code += '&__wxHandle);\n  if(__wxEvent == \'W\' && __wxId == __wsId)';
     code += '__wsHandle = __wxHandle;\n   if(__wxEvent == \'D\') ';
     code += 'wifi_scan(WS, __wxHandle, "%c%d%d%d%d%d%d%d%d%d%d%d%d", ';
     code += '&__wv[0], &__wv[1], &__wv[2], &__wv[3], &__wv[4], &__wv[5], &__wv[6], ';
-    code += '&__wv[7], &__wv[8], &__wv[9], &__wv[10], &__wv[11], &__wv[12]);\n}';
+    code += '&__wv[7], &__wv[8], &__wv[9], &__wv[10], &__wv[11], &__wv[12]);\n';
+    code += 'if(__wxEvent == \'X\') {__wsHandle = 0;\nwhile (!__wsHandle)';
+    code += '{wifi_poll( & __wxEvent, & __wxId, & __wxHandle);\nif (__wxEvent == \'W\' ';
+    code += '&& __wxId == __wsId) __wsHandle = __wxHandle;}break;}}';
     
     if(Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
@@ -1797,6 +1821,29 @@ Blockly.propc.wx_get_widget = function() {
 
     if(Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return ['__wv[' + widget + ']', Blockly.propc.ORDER_ATOMIC];
+    } else {
+        return '// Missing Simple WX initialize block!\n';
+    }
+
+};
+
+Blockly.Blocks.wx_evt_connected = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SWX_GET_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("Simple WX connected");
+        this.setOutput(true, "Number");
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.wx_evt_connected = function() {
+
+    if(Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        return ['(__wxEvent != \'X\')', Blockly.propc.ORDER_ATOMIC];
     } else {
         return '// Missing Simple WX initialize block!\n';
     }

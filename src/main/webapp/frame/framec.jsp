@@ -555,10 +555,12 @@
             <category name="WX Module">
                 <category name="Simple">
                     <block type="wx_init"></block>
+                    <block type="wx_config_page"></block>
                     <block type="wx_set_widget"></block>
                     <block type="wx_send_widget"></block>
                     <block type="wx_read_widgets"></block>
-                    <block type="wx_get_widget"></block>                    
+                    <block type="wx_get_widget"></block> 
+                    <block type="wx_evt_connected"></block>
                 </category>
             </category>
 
