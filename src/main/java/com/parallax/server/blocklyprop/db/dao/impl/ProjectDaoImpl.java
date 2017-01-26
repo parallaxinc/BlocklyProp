@@ -37,15 +37,20 @@ public class ProjectDaoImpl implements ProjectDao {
 
     // Swap out old block definitions
     private ProjectRecord alterReadRecord(ProjectRecord record) {
+        String newCode;
         
-        String newCode = record.getCode();
-
-        // Return immediately if there is no code to adjust
-        if (newCode == null) {
-            return record;
+        if (record == null) {
+            throw new NullPointerException("Cannot alter a null project record.");
         }
-        
+
         try {
+            newCode = record.getCode();
+
+            // Return immediately if there is no code to adjust
+            if (newCode == null) {
+                return record;
+            }
+            
             if (record.getType() == ProjectType.SPIN) {
                 newCode = newCode.replaceAll("block type=\"controls_if\"", "block type=\"controls_boolean_if\"");
                 newCode = newCode.replaceAll("block type=\"logic_compare\"", "block type=\"logic_boolean_compare\"");
