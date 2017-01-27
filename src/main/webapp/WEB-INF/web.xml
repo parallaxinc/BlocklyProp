@@ -17,7 +17,7 @@
     <!--                                                                -->
     <!--                      ORDER MATTERS!!                           -->
     <!--                                                                -->
-    <!-- -------------------------------------------------------------- -->
+    <!-- ============================================================== -->
  
     <!-- Shiro - Apache application security framework                  -->
     <!-- no init-param means the configuration will be loaded from the  -->
