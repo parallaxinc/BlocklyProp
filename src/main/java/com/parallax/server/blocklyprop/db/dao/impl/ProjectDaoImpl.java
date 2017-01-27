@@ -20,6 +20,8 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.SortField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -27,7 +29,7 @@ import org.jooq.SortField;
  */
 @Singleton
 public class ProjectDaoImpl implements ProjectDao {
-
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectDao.class);
     private DSLContext create;
 
     @Inject
