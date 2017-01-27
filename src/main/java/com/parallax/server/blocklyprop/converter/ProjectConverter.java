@@ -107,7 +107,6 @@ public class ProjectConverter {
             }
         }
 
-        System.out.println("project to json" + result.get("name").getAsString());
         return result;
     }
 
