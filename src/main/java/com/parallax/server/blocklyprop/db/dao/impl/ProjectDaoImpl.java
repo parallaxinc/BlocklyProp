@@ -213,7 +213,7 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
         if (idUser != null) {
-            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
+            conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
         }
         return create.selectFrom(Tables.PROJECT).where(conditions).orderBy(orderField).limit(limit).offset(offset).fetch();
     }
@@ -227,7 +227,7 @@ public class ProjectDaoImpl implements ProjectDao {
     public int countSharedProjects(Long idUser) {
         Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
         if (idUser != null) {
-            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
+            conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
         }
         return create.fetchCount(Tables.PROJECT, conditions);
     }

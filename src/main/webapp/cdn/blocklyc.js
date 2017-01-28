@@ -81,14 +81,14 @@ function tabClick(id) {
 function renderContent() {
     var content = document.getElementById('content_' + selected);
     // Initialize the pane.
-    if (content.id == 'content_blocks') {
+    if (content.id === 'content_blocks') {
         Blockly.mainWorkspace.render();
-    } else if (content.id == 'content_xml') {
+    } else if (content.id === 'content_xml') {
         var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
         codeXml.setValue(xmlText);
         codeXml.gotoLine(0);
-    } else if (content.id == 'content_propc') {
+    } else if (content.id === 'content_propc') {
         var code = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
         codePropC.setValue(js_beautify(code, {
             'brace_style': 'expand'

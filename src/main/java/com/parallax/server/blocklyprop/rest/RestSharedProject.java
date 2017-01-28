@@ -73,6 +73,30 @@ public class RestSharedProject {
     }
 
     @GET
+    @Path("/list/{id}")
+    @Detail("Get shared projects by user")
+    @Name("Get shared projects by user")
+    @Produces("application/json")
+    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset, @PathParam("id") Long idUser) {
+        System.out.println("Sort: " + sort);
+
+        List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
+        int projectCount = projectService.countSharedProjectsByUser(idUser);
+
+        JsonObject result = new JsonObject();
+        JsonArray jsonProjects = new JsonArray();
+        for (ProjectRecord project : projects) {
+            jsonProjects.add(projectConverter.toListJson(project));
+        }
+
+        result.add("rows", jsonProjects);
+        result.addProperty("total", projectCount);
+
+        return Response.ok(result.toString()).build();
+    }
+
+
+    @GET
     @Path("/get/{id}")
     @Detail("Get project by id")
     @Name("Get project by id")
