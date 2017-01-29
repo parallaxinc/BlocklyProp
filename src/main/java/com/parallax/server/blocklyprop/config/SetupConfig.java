@@ -21,6 +21,10 @@ import javax.servlet.ServletContextEvent;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.LoggerContext;
+
 
 /**
  *
@@ -29,6 +33,7 @@ import org.apache.commons.configuration.DefaultConfigurationBuilder;
 public class SetupConfig extends GuiceServletContextListener {
 
     private Configuration configuration;
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     @Override
     protected Injector getInjector() {
@@ -62,10 +67,11 @@ public class SetupConfig extends GuiceServletContextListener {
 
     private void readConfiguration() {
         try {
-            System.out.println("Looking for blocklyprop.properties in: " + System.getProperty("user.home"));
+            LOG.info("Looking for blocklyprop.properties in: {}", System.getProperty("user.home"));
             DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(getClass().getResource("/config.xml"));
             configuration = configurationBuilder.getConfiguration();
         } catch (ConfigurationException ce) {
+            LOG.error("{}", ce.getMessage());
             ce.printStackTrace();
         } catch (Throwable t) {
             t.printStackTrace();
@@ -81,12 +87,20 @@ public class SetupConfig extends GuiceServletContextListener {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                //  LOG.log(Level.INFO, String.format("deregistering jdbc driver: %s", driver));
+                LOG.info("deregistering jdbc driver: {}",driver);
             } catch (SQLException sqlE) {
                 //   LOG.log(Level.SEVERE, String.format("Error deregistering driver %s", driver), e);
             }
 
         }
+        
+        // Shut down the loggers. Assume SLF4J is bound to logback-classic
+        // in the current environment
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        if (loggerContext != null) {
+            loggerContext.stop();
+        }
+        
     }
 
 }

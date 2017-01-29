@@ -39,9 +39,11 @@ public class ProjectDaoImpl implements ProjectDao {
 
     // Swap out old block definitions
     private ProjectRecord alterReadRecord(ProjectRecord record) {
+        LOG.info("Updating outdated block definitions");
         String newCode;
         
         if (record == null) {
+            LOG.error("Null project record detected.");
             throw new NullPointerException("Cannot alter a null project record.");
         }
 

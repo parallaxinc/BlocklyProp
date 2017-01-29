@@ -403,10 +403,17 @@
 
         <dependency>
             <groupId>net.kencochrane.raven</groupId>
-            <artifactId>raven-log4j</artifactId>
+            <artifactId>raven-logback</artifactId>
             <version>6.0.0</version>
         </dependency>
 
+<!--
+        <dependency>
+            <groupId>net.kencochrane.raven</groupId>
+            <artifactId>raven-log4j</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+-->
         <!-- Lucene search engine -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
@@ -455,10 +462,17 @@
 
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-logback</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
+<!--
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-log4j</artifactId>
             <version>${metrics-version}</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>

@@ -9,8 +9,34 @@ and open the template in the editor.
 Valid logging levels: TRACE, DEBUG, INFO, WARN and ERROR
 -->
 <configuration>
+    
+    <!--
+    <property name="logFileName" value="/home/developer/blocklt-app.log" />
+    -->
+    
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>/home/developer/blockly-app.log</file>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
 
-    <root level="info">
-        
+    <logger name="com.parallax.server.blocklyprop.monitoring" level="info">
+        <appender-ref ref="file" />
+    </logger>
+    
+    <logger name="com.parallax.server.blocklyprop" level="debug">
+        <appender-ref ref="file" />
+    </logger>
+    
+
+    <root level="debug">
+        <appender-ref ref="stdout" />
     </root>
 </configuration>

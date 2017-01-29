@@ -12,17 +12,23 @@ import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.PickledGraphite;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import com.codahale.metrics.log4j.InstrumentedAppender;
+import com.codahale.metrics.Slf4jReporter;
+// import com.codahale.metrics.log4j.InstrumentedAppender;
+// import com.codahale.metrics.logback.InstrumentedAppender;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.net.InetSocketAddress;
+// import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.configuration.Configuration;
-import org.apache.log4j.LogManager;
+import org.slf4j.LoggerFactory;
+
+
 
 /**
  *
  * @author Michel
+ * 
  */
 @Singleton
 public class Monitor {
@@ -40,6 +46,7 @@ public class Monitor {
 
     @Inject
     public Monitor(Configuration configuration) {
+        /* Load settings from the application configuration file */
         consoleEnabled = configuration.getBoolean("monitor.console.enabled", false);
         consoleReportingInterval = configuration.getInt("monitor.console.interval", 300);
 
@@ -53,21 +60,46 @@ public class Monitor {
     }
     
     private void init() {
+        
+//        final LoggerContext factory = (LoggerContext) LoggerFactory.getILoggerFactory();
+        
         if (consoleEnabled) {
-            ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics).convertDurationsTo(TimeUnit.MILLISECONDS).build();
+            ConsoleReporter reporter = 
+                    ConsoleReporter
+                            .forRegistry(metrics)
+                            .convertDurationsTo(TimeUnit.MILLISECONDS)
+                            .build();
             reporter.start(consoleReportingInterval, TimeUnit.SECONDS);
         }
 
         if (graphiteEnabled) {
-            final PickledGraphite pickledGraphite = new PickledGraphite(new InetSocketAddress(graphiteServerAddress, graphiteServerPort));
-            final GraphiteReporter graphiteReporter = GraphiteReporter.forRegistry(metrics).prefixedWith(graphitePrefix).convertDurationsTo(TimeUnit.MILLISECONDS).filter(MetricFilter.ALL).build(pickledGraphite);
+            final PickledGraphite pickledGraphite = new PickledGraphite(
+                    new InetSocketAddress(
+                            graphiteServerAddress,
+                            graphiteServerPort));
+            final GraphiteReporter graphiteReporter = 
+                    GraphiteReporter
+                            .forRegistry(metrics)
+                            .prefixedWith(graphitePrefix)
+                            .convertDurationsTo(TimeUnit.MILLISECONDS).
+                            filter(MetricFilter.ALL).build(pickledGraphite);
             graphiteReporter.start(graphiteReportingInterval, TimeUnit.SECONDS);
         }
+        
+        final Slf4jReporter reporter = Slf4jReporter
+                .forRegistry(metrics)
+                .outputTo(LoggerFactory.getLogger(Monitor.class))
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build();
+        reporter.start(5, TimeUnit.SECONDS);
 
-        InstrumentedAppender appender = new InstrumentedAppender(metrics);
-        appender.activateOptions();
-
-        LogManager.getRootLogger().addAppender(appender);
+//        InstrumentedAppender appender = new InstrumentedAppender(metrics);
+//        appender.setContext(context);
+        
+//        appender.activateOptions();
+        
+//        LogManager.getRootLogger().addAppender(appender);
 
         MemoryUsageGaugeSet memoryUsageGaugeSet = new MemoryUsageGaugeSet();
         metrics.registerAll(memoryUsageGaugeSet);
