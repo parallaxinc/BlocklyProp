@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 /**
  *
  * @author Michel
+ * 
+ * TODO: add details.
  */
 @Singleton
 public class ProjectDaoImpl implements ProjectDao {
@@ -37,77 +39,15 @@ public class ProjectDaoImpl implements ProjectDao {
         this.create = dsl;
     }
 
-    // Swap out old block definitions
-    private ProjectRecord alterReadRecord(ProjectRecord record) {
-        LOG.info("Verify project block characteristics");
-        String currentCode, newCode;
-        
-        
-        if (record == null) {
-            LOG.error("Null project record detected.");
-            throw new NullPointerException("Cannot alter a null project record.");
-        }
-
-        try {
-            currentCode = record.getCode();
-
-            // Return immediately if there is no code to adjust
-            if (currentCode == null) {
-                LOG.warn("Project is empty.");
-                return record;
-            }
-            
-            /*
-             * Make a copy of the project. We will use this after the updates
-             * to determine if anything was changed. This ensures that we do
-             * not do any database I/O unless we actually changed something.
-             */
-            newCode = currentCode;
-            
-            if (record.getType() == ProjectType.SPIN) {
-                newCode = newCode.replaceAll("block type=\"controls_if\"", "block type=\"controls_boolean_if\"");
-                newCode = newCode.replaceAll("block type=\"logic_compare\"", "block type=\"logic_boolean_compare\"");
-                newCode = newCode.replaceAll("block type=\"logic_operation\"", "block type=\"logic_boolean_operation\"");
-                newCode = newCode.replaceAll("block type=\"logic_negate\"", "block type=\"logic_boolean_negate\"");
-                newCode = newCode.replaceAll("block type=\"math_number\"", "block type=\"spin_integer\"");
-            } else if (record.getType() == ProjectType.PROPC){
-                newCode = newCode.replaceAll("field name=\"OP\">ADD</field", "field name=\"OP\"> + </field");
-                newCode = newCode.replaceAll("field name=\"OP\">MINUS</field", "field name=\"OP\"> - </field");
-                newCode = newCode.replaceAll("field name=\"OP\">MULTIPLY</field", "field name=\"OP\"> * </field");
-                newCode = newCode.replaceAll("field name=\"OP\">DIVIDE</field", "field name=\"OP\"> / </field");
-                newCode = newCode.replaceAll("field name=\"OP\">MODULUS</field", "field name=\"OP\"> % </field");
-                newCode = newCode.replaceAll("field name=\"OP\">AND</field", "field name=\"OP\"> &amp;&amp; </field");
-                newCode = newCode.replaceAll("field name=\"OP\">AND_NOT</field", "field name=\"OP\"> &amp;&amp; !</field");
-
-                newCode = newCode.replaceAll("field name=\"OP\">LT</field", "field name=\"OP\">&lt;</field");
-                newCode = newCode.replaceAll("field name=\"OP\">GT</field", "field name=\"OP\">&gt;</field");
-                newCode = newCode.replaceAll("field name=\"OP\">LTE</field", "field name=\"OP\">&lt;=</field");
-                newCode = newCode.replaceAll("field name=\"OP\">GTE</field", "field name=\"OP\">&gt;=</field");
-                newCode = newCode.replaceAll("field name=\"OP\">EQ</field", "field name=\"OP\">==</field");
-                newCode = newCode.replaceAll("field name=\"OP\">NEQ</field", "field name=\"OP\">!=</field");
-
-                newCode = newCode.replaceAll("field name=\"UNIT\">INCHES</field", "field name=\"UNIT\">_inches</field");
-                newCode = newCode.replaceAll("field name=\"UNIT\">CM</field", "field name=\"UNIT\">_cm</field");
-            
-                newCode = newCode.replaceAll("block type=\"controls_boolean_if\"", "block type=\"controls_if\"");
-                newCode = newCode.replaceAll("block type=\"logic_boolean_compare\"", "block type=\"logic_compare\"");
-                newCode = newCode.replaceAll("block type=\"logic_boolean_operation\"", "block type=\"logic_operation\"");
-                newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"", "block type=\"logic_negate\"");
-            }
-
-            // Check for any difference from the original code
-            if (! currentCode.equals(newCode)) {
-                record.setCode(newCode);
-            }
-        }
-        
-        catch (Exception ex) {
-            LOG.error("Exception trapped. Messate is: {}", ex.getMessage());
-        }
-
-        return record;
-    }
-
+    /**
+     *
+     * Create a ProjectRecord object from an existing project.
+     * 
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @return
+     */
     @Override
     public ProjectRecord getProject(Long idProject) {
         LOG.info("Retreiving project: {}", idProject);
@@ -121,32 +61,22 @@ public class ProjectDaoImpl implements ProjectDao {
         return alterReadRecord(record);
     }
 
-    
-    private ProjectRecord getProject(Long idProject, boolean toEdit) {
-        
-        ProjectRecord record = create
-                .selectFrom(Tables.PROJECT)
-                .where(Tables.PROJECT.ID.equal(idProject))
-                .fetchOne();
-        
-        if (record != null) {
-            Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-            
-            // Return a project if the edit flag is off or the edit flag is
-            // on and the project owner is the current user
-            if (!toEdit || record.getIdUser().equals(idUser)) {
-                return alterReadRecord(record);
-            } else {
-                LOG.error("User {} attempted to edit project {} without authorization.",
-                        idUser, idProject);
-                throw new UnauthorizedException();
-            }
-        }
-
-        // Return the project after checking if for depricated blocks
-        return alterReadRecord(record);
-    }
-
+    /**
+     *
+     * Create a new project with supplied code.
+     * 
+     * TODO: add details.
+     * 
+     * @param name
+     * @param description
+     * @param descriptionHtml
+     * @param code
+     * @param type
+     * @param board
+     * @param privateProject
+     * @param sharedProject
+     * @return
+     */
     @Override
     public ProjectRecord createProject(
             String name, String description, String descriptionHtml, 
@@ -185,7 +115,25 @@ public class ProjectDaoImpl implements ProjectDao {
         return record;
     }
 
-    // Overload to create project from an existing project
+    /**
+     *
+     * Create a new project based on an existing project.
+     * 
+     * Note: This is an overload of createProject() with existing blocks.
+     * 
+     * TODO: add details.
+     * 
+     * @param name
+     * @param description
+     * @param descriptionHtml
+     * @param code
+     * @param type
+     * @param board
+     * @param privateProject
+     * @param sharedProject
+     * @param idProjectBasedOn
+     * @return
+     */
     public ProjectRecord createProject(
             String name, String description, String descriptionHtml, 
             String code, ProjectType type, String board, boolean privateProject, 
@@ -226,11 +174,45 @@ public class ProjectDaoImpl implements ProjectDao {
         return record;
     }
 
+    /**
+     *
+     * Create a new project with a blank canvas.
+     * 
+     * TODO: add details.
+     * 
+     * @param name
+     * @param description
+     * @param descriptionHtml
+     * @param type
+     * @param board
+     * @param privateProject
+     * @param sharedProject
+     * @return
+     */
     @Override
-    public ProjectRecord createProject(String name, String description, String descriptionHtml, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord createProject(
+            String name, String description, String descriptionHtml, 
+            ProjectType type, String board, boolean privateProject, 
+            boolean sharedProject) {
+        
+        LOG.info("Creating a new, empty project from existing project.");
         return createProject(name, description, descriptionHtml, "", type, board, privateProject, sharedProject);
     }
 
+    /**
+     *
+     * Update a project.
+     * 
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @param name
+     * @param description
+     * @param descriptionHtml
+     * @param privateProject
+     * @param sharedProject
+     * @return
+     */
     @Override
     public ProjectRecord updateProject(
             Long idProject, String name, String description,
@@ -254,6 +236,21 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
+    /**
+     *
+     * Update a project.
+     * 
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @param name
+     * @param description
+     * @param descriptionHtml
+     * @param code
+     * @param privateProject
+     * @param sharedProject
+     * @return
+     */
     @Override
     public ProjectRecord updateProject(
             Long idProject, String name, String description, 
@@ -278,6 +275,13 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
+    /**
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @param code
+     * @return
+     */
     @Override
     public ProjectRecord saveCode(Long idProject, String code) {
         ProjectRecord record = getProject(idProject, true);
@@ -289,6 +293,16 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
+    /**
+     * TODO: add details.
+     * 
+     * @param idUser
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return
+     */
     @Override
     public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
@@ -298,6 +312,16 @@ public class ProjectDaoImpl implements ProjectDao {
         return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID_USER.equal(idUser)).orderBy(orderField).limit(limit).offset(offset).fetch();
     }
 
+    /**
+     * TODO: add details.
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @param idUser
+     * @return
+     */
     @Override
     public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
@@ -311,11 +335,24 @@ public class ProjectDaoImpl implements ProjectDao {
         return create.selectFrom(Tables.PROJECT).where(conditions).orderBy(orderField).limit(limit).offset(offset).fetch();
     }
 
+    /**
+     * TODO: add details.
+     * 
+     * @param idUser
+     * @return
+     */
     @Override
     public int countUserProjects(Long idUser) {
         return create.fetchCount(Tables.PROJECT, Tables.PROJECT.ID_USER.equal(idUser));
     }
 
+    /**
+     *
+     * TODO: add details.
+     * 
+     * @param idUser
+     * @return
+     */
     @Override
     public int countSharedProjects(Long idUser) {
         Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
@@ -325,6 +362,12 @@ public class ProjectDaoImpl implements ProjectDao {
         return create.fetchCount(Tables.PROJECT, conditions);
     }
 
+    /**
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @return
+     */
     @Override
     public ProjectRecord cloneProject(Long idProject) {
         ProjectRecord original = getProject(idProject);
@@ -338,26 +381,12 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
-    private ProjectRecord doProjectClone(ProjectRecord original) {
-        ProjectRecord cloned = createProject(
-                original.getName(), 
-                original.getDescription(), 
-                original.getDescriptionHtml(), 
-                original.getCode(), 
-                original.getType(), 
-                original.getBoard(), 
-                original.getPrivate(), 
-                original.getShared());
-        
-        cloned.setBasedOn(original.getId());
-        cloned.update();
-        
-        create.update(Tables.PROJECT)
-              .set(Tables.PROJECT.BASED_ON, original.getId())
-              .where(Tables.PROJECT.ID.equal(cloned.getId()));
-        return cloned;
-    }
-
+    /**
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @return
+     */
     @Override
     public boolean deleteProject(Long idProject) {
         return create.deleteFrom(Tables.PROJECT)
@@ -365,6 +394,13 @@ public class ProjectDaoImpl implements ProjectDao {
                 .execute() > 0;
     }
 
+    /**
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @param code
+     * @return
+     */
     @Override
     public ProjectRecord updateProjectCode(Long idProject, String code) {
         ProjectRecord record = create.selectFrom(Tables.PROJECT)
@@ -396,6 +432,14 @@ public class ProjectDaoImpl implements ProjectDao {
         }
     }
 
+    /**
+     * TODO: add details.
+     * 
+     * @param idProject
+     * @param code
+     * @param newName
+     * @return
+     */
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
         ProjectRecord original = getProject(idProject);
@@ -420,4 +464,182 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
+        
+    private ProjectRecord getProject(Long idProject, boolean toEdit) {
+        
+        ProjectRecord record = create
+                .selectFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID.equal(idProject))
+                .fetchOne();
+        
+        if (record != null) {
+            Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+            
+            // Return a project if the edit flag is off or the edit flag is
+            // on and the project owner is the current user
+            if (!toEdit || record.getIdUser().equals(idUser)) {
+                return alterReadRecord(record);
+            } else {
+                LOG.error("User {} attempted to edit project {} without authorization.",
+                        idUser, idProject);
+                throw new UnauthorizedException();
+            }
+        }
+
+        // Return the project after checking if for depricated blocks
+        return alterReadRecord(record);
+    }
+
+    private ProjectRecord doProjectClone(ProjectRecord original) {
+        ProjectRecord cloned = createProject(
+                original.getName(), 
+                original.getDescription(), 
+                original.getDescriptionHtml(), 
+                original.getCode(), 
+                original.getType(), 
+                original.getBoard(), 
+                original.getPrivate(), 
+                original.getShared());
+        
+        cloned.setBasedOn(original.getId());
+        cloned.update();
+        
+        create.update(Tables.PROJECT)
+              .set(Tables.PROJECT.BASED_ON, original.getId())
+              .where(Tables.PROJECT.ID.equal(cloned.getId()));
+        return cloned;
+    }
+
+
+        // Swap out old block definitions
+    private ProjectRecord alterReadRecord(ProjectRecord record) {
+        LOG.info("Verify project block characteristics");
+        String currentCode, newCode;
+        
+        
+        if (record == null) {
+            LOG.error("Null project record detected.");
+            throw new NullPointerException("Cannot alter a null project record.");
+        }
+
+        try {
+            currentCode = record.getCode();
+
+            // Return immediately if there is no code to adjust
+            if (currentCode == null) {
+                LOG.warn("Project is empty.");
+                return record;
+            }
+            
+            /*
+             * Make a copy of the project. We will use this after the updates
+             * to determine if anything was changed. This ensures that we do
+             * not do any database I/O unless we actually changed something.
+             */
+            newCode = currentCode;
+            
+            if (record.getType() == ProjectType.SPIN) {
+                newCode = fixSpinProjectBlocks(newCode);
+
+            } else if (record.getType() == ProjectType.PROPC){
+                newCode = fixSpinProjectBlocks(newCode);
+            }
+
+            // Check for any difference from the original code
+            if (! currentCode.equals(newCode)) {
+                LOG.info("Updating converted project.");
+                record.setCode(newCode);
+            }
+        }
+        
+        catch (Exception ex) {
+            LOG.error("Exception trapped. Messate is: {}", ex.getMessage());
+        }
+
+        return record;
+    }
+
+    // Correct depricated block details related to Spin blocks
+    private String fixSpinProjectBlocks(String newCode) {
+        LOG.info("Looking for depricated Spin blocks.");
+
+        newCode = newCode.replaceAll("block type=\"controls_if\"",
+                "block type=\"controls_boolean_if\"");
+
+        newCode = newCode.replaceAll("block type=\"logic_compare\"",
+                "block type=\"logic_boolean_compare\"");
+
+        newCode = newCode.replaceAll("block type=\"logic_operation\"",
+                "block type=\"logic_boolean_operation\"");
+                
+        newCode = newCode.replaceAll("block type=\"logic_negate\"",
+                "block type=\"logic_boolean_negate\"");
+                
+        newCode = newCode.replaceAll("block type=\"math_number\"",
+                "block type=\"spin_integer\"");
+        return newCode;
+    }
+    
+    private String fixPropcProjectBlocks(String newCode) {
+        LOG.info("Looking for depricated PropC blocks.");
+        
+        newCode = newCode.replaceAll("field name=\"OP\">ADD</field",
+                "field name=\"OP\"> + </field");
+        
+        newCode = newCode.replaceAll("field name=\"OP\">MINUS</field",
+                "field name=\"OP\"> - </field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">MULTIPLY</field",
+                "field name=\"OP\"> * </field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">DIVIDE</field",
+                "field name=\"OP\"> / </field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">MODULUS</field",
+                "field name=\"OP\"> % </field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">AND</field",
+                "field name=\"OP\"> &amp;&amp; </field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">AND_NOT</field",
+                "field name=\"OP\"> &amp;&amp; !</field");
+
+        newCode = newCode.replaceAll("field name=\"OP\">LT</field",
+                "field name=\"OP\">&lt;</field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">GT</field",
+                "field name=\"OP\">&gt;</field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">LTE</field",
+                "field name=\"OP\">&lt;=</field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">GTE</field",
+                "field name=\"OP\">&gt;=</field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">EQ</field",
+                "field name=\"OP\">==</field");
+                
+        newCode = newCode.replaceAll("field name=\"OP\">NEQ</field",
+                "field name=\"OP\">!=</field");
+
+        newCode = newCode.replaceAll("field name=\"UNIT\">INCHES</field",
+                "field name=\"UNIT\">_inches</field");
+                
+        newCode = newCode.replaceAll("field name=\"UNIT\">CM</field",
+                "field name=\"UNIT\">_cm</field");
+            
+        newCode = newCode.replaceAll("block type=\"controls_boolean_if\"",
+                "block type=\"controls_if\"");
+                
+        newCode = newCode.replaceAll("block type=\"logic_boolean_compare\"",
+                "block type=\"logic_compare\"");
+                
+        newCode = newCode.replaceAll("block type=\"logic_boolean_operation\"",
+                "block type=\"logic_operation\"");
+                
+        newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"",
+                "block type=\"logic_negate\"");
+
+        return newCode;
+    }
 }
