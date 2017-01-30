@@ -56,13 +56,66 @@ public class Monitor {
         graphiteServerPort = configuration.getInt("monitor.graphite.port", 2003);
         graphiteReportingInterval = configuration.getInt("monitor.graphite.interval", 30);
 
-        init();
+        if (consoleEnabled) {
+            initConsoleReporter();
+        }
+        
+        if (graphiteEnabled) {
+            initGraphiteReporter();
+        }
+        
+        // initFileLogger();
+
+        // JVM memory utilization stats
+        MemoryUsageGaugeSet memoryUsageGaugeSet = new MemoryUsageGaugeSet();
+        metrics.registerAll(memoryUsageGaugeSet);
+
+        // JVM garbage collecion stats
+        GarbageCollectorMetricSet garbageCollectorMetricSet = new GarbageCollectorMetricSet();
+        metrics.registerAll(garbageCollectorMetricSet);
+
+    }
+
+    private void initConsoleReporter() {
+        ConsoleReporter reporter = 
+                ConsoleReporter
+                        .forRegistry(metrics)
+                        .convertDurationsTo(TimeUnit.MILLISECONDS)
+                        .build();
+        reporter.start(consoleReportingInterval, TimeUnit.SECONDS);
+    }
+
+    private void initGraphiteReporter() {
+            final PickledGraphite pickledGraphite = new PickledGraphite(
+                    new InetSocketAddress(
+                            graphiteServerAddress,
+                            graphiteServerPort));
+
+            final GraphiteReporter graphiteReporter = 
+                    GraphiteReporter
+                            .forRegistry(metrics)
+                            .prefixedWith(graphitePrefix)
+                            .convertDurationsTo(TimeUnit.MILLISECONDS).
+                            filter(MetricFilter.ALL).build(pickledGraphite);
+
+            graphiteReporter.start(graphiteReportingInterval, TimeUnit.SECONDS);
+    }
+
+    private void initFileLogger() {
+                final Slf4jReporter reporter = Slf4jReporter
+                .forRegistry(metrics)
+                .outputTo(LoggerFactory.getLogger(Monitor.class))
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build();
+        reporter.start(graphiteReportingInterval, TimeUnit.SECONDS);
+
     }
     
     private void init() {
         
 //        final LoggerContext factory = (LoggerContext) LoggerFactory.getILoggerFactory();
-        
+/*        
         if (consoleEnabled) {
             ConsoleReporter reporter = 
                     ConsoleReporter
@@ -92,7 +145,7 @@ public class Monitor {
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .build();
-        reporter.start(5, TimeUnit.SECONDS);
+        reporter.start(graphiteReportingInterval, TimeUnit.SECONDS);
 
 //        InstrumentedAppender appender = new InstrumentedAppender(metrics);
 //        appender.setContext(context);
@@ -106,6 +159,7 @@ public class Monitor {
 
         GarbageCollectorMetricSet garbageCollectorMetricSet = new GarbageCollectorMetricSet();
         metrics.registerAll(garbageCollectorMetricSet);
+*/
     }
 
     public static MetricRegistry metrics() {

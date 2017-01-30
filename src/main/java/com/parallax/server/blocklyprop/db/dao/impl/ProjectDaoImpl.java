@@ -39,8 +39,9 @@ public class ProjectDaoImpl implements ProjectDao {
 
     // Swap out old block definitions
     private ProjectRecord alterReadRecord(ProjectRecord record) {
-        LOG.info("Updating outdated block definitions");
-        String newCode;
+        LOG.info("Verify project block characteristics");
+        String currentCode, newCode;
+        
         
         if (record == null) {
             LOG.error("Null project record detected.");
@@ -48,12 +49,20 @@ public class ProjectDaoImpl implements ProjectDao {
         }
 
         try {
-            newCode = record.getCode();
+            currentCode = record.getCode();
 
             // Return immediately if there is no code to adjust
-            if (newCode == null) {
+            if (currentCode == null) {
+                LOG.warn("Project is empty.");
                 return record;
             }
+            
+            /*
+             * Make a copy of the project. We will use this after the updates
+             * to determine if anything was changed. This ensures that we do
+             * not do any database I/O unless we actually changed something.
+             */
+            newCode = currentCode;
             
             if (record.getType() == ProjectType.SPIN) {
                 newCode = newCode.replaceAll("block type=\"controls_if\"", "block type=\"controls_boolean_if\"");
@@ -86,11 +95,14 @@ public class ProjectDaoImpl implements ProjectDao {
                 newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"", "block type=\"logic_negate\"");
             }
 
-            record.setCode(newCode);
+            // Check for any difference from the original code
+            if (! currentCode.equals(newCode)) {
+                record.setCode(newCode);
+            }
         }
         
         catch (Exception ex) {
-            System.out.print(ex.getMessage());
+            LOG.error("Exception trapped. Messate is: {}", ex.getMessage());
         }
 
         return record;
@@ -98,42 +110,119 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public ProjectRecord getProject(Long idProject) {
-        ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
+        LOG.info("Retreiving project: {}", idProject);
 
+        ProjectRecord record = create
+                .selectFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID.equal(idProject))
+                .fetchOne();
+
+        // Return the project after checking if for depricated blocks
         return alterReadRecord(record);
     }
 
+    
     private ProjectRecord getProject(Long idProject, boolean toEdit) {
-        ProjectRecord record = create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID.equal(idProject)).fetchOne();
+        
+        ProjectRecord record = create
+                .selectFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID.equal(idProject))
+                .fetchOne();
+        
         if (record != null) {
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+            
+            // Return a project if the edit flag is off or the edit flag is
+            // on and the project owner is the current user
             if (!toEdit || record.getIdUser().equals(idUser)) {
-                return record;
+                return alterReadRecord(record);
             } else {
+                LOG.error("User {} attempted to edit project {} without authorization.",
+                        idUser, idProject);
                 throw new UnauthorizedException();
             }
-
         }
 
+        // Return the project after checking if for depricated blocks
         return alterReadRecord(record);
     }
 
     @Override
-    public ProjectRecord createProject(String name, String description, String descriptionHtml, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject) {
+    public ProjectRecord createProject(
+            String name, String description, String descriptionHtml, 
+            String code, ProjectType type, String board, boolean privateProject, 
+            boolean sharedProject) {
+
+        LOG.info("Creating a new project.");
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
-        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.DESCRIPTION_HTML, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.BOARD, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED)
-                .values(idUser, idCloudUser, name, description, descriptionHtml, code, type, board, privateProject, sharedProject).returning().fetchOne();
+        
+        ProjectRecord record = create
+                .insertInto(Tables.PROJECT, 
+                            Tables.PROJECT.ID_USER, 
+                            Tables.PROJECT.ID_CLOUDUSER, 
+                            Tables.PROJECT.NAME, 
+                            Tables.PROJECT.DESCRIPTION, 
+                            Tables.PROJECT.DESCRIPTION_HTML, 
+                            Tables.PROJECT.CODE, 
+                            Tables.PROJECT.TYPE, 
+                            Tables.PROJECT.BOARD, 
+                            Tables.PROJECT.PRIVATE, 
+                            Tables.PROJECT.SHARED)
+                .values(idUser, 
+                        idCloudUser, 
+                        name, 
+                        description, 
+                        descriptionHtml, 
+                        code, 
+                        type, 
+                        board, 
+                        privateProject, 
+                        sharedProject)
+                .returning()
+                .fetchOne();
 
         return record;
     }
 
-    public ProjectRecord createProject(String name, String description, String descriptionHtml, String code, ProjectType type, String board, boolean privateProject, boolean sharedProject, Long idProjectBasedOn) {
+    // Overload to create project from an existing project
+    public ProjectRecord createProject(
+            String name, String description, String descriptionHtml, 
+            String code, ProjectType type, String board, boolean privateProject, 
+            boolean sharedProject, Long idProjectBasedOn) {
+        
+        LOG.info("Creating a new project from existing project.");
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
-        ProjectRecord record = create.insertInto(Tables.PROJECT, Tables.PROJECT.ID_USER, Tables.PROJECT.ID_CLOUDUSER, Tables.PROJECT.NAME, Tables.PROJECT.DESCRIPTION, Tables.PROJECT.DESCRIPTION_HTML, Tables.PROJECT.CODE, Tables.PROJECT.TYPE, Tables.PROJECT.BOARD, Tables.PROJECT.PRIVATE, Tables.PROJECT.SHARED, Tables.PROJECT.BASED_ON)
-                .values(idUser, idCloudUser, name, description, descriptionHtml, code, type, board, privateProject, sharedProject, idProjectBasedOn).returning().fetchOne();
-        System.out.println("Save as: " + record.getName());
+
+        ProjectRecord record = create
+                .insertInto(Tables.PROJECT, 
+                            Tables.PROJECT.ID_USER, 
+                            Tables.PROJECT.ID_CLOUDUSER, 
+                            Tables.PROJECT.NAME, 
+                            Tables.PROJECT.DESCRIPTION, 
+                            Tables.PROJECT.DESCRIPTION_HTML, 
+                            Tables.PROJECT.CODE, 
+                            Tables.PROJECT.TYPE, 
+                            Tables.PROJECT.BOARD, 
+                            Tables.PROJECT.PRIVATE, 
+                            Tables.PROJECT.SHARED, 
+                            Tables.PROJECT.BASED_ON)
+                .values(idUser, 
+                        idCloudUser, 
+                        name, 
+                        description, 
+                        descriptionHtml, 
+                        code, 
+                        type, 
+                        board, 
+                        privateProject, 
+                        sharedProject, 
+                        idProjectBasedOn)
+                .returning()
+                .fetchOne();
+
+        LOG.info("New project saved as {}.", record.getName());
         return record;
     }
 
