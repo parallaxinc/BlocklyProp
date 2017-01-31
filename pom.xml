@@ -238,11 +238,25 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.21</version>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+            
+        <!--        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.21</version>
         </dependency>
+        -->
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -389,10 +403,17 @@
 
         <dependency>
             <groupId>net.kencochrane.raven</groupId>
-            <artifactId>raven-log4j</artifactId>
+            <artifactId>raven-logback</artifactId>
             <version>6.0.0</version>
         </dependency>
 
+<!--
+        <dependency>
+            <groupId>net.kencochrane.raven</groupId>
+            <artifactId>raven-log4j</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+-->
         <!-- Lucene search engine -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
@@ -441,10 +462,17 @@
 
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-logback</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
+<!--
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-log4j</artifactId>
             <version>${metrics-version}</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>
