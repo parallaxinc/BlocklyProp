@@ -15,9 +15,26 @@ import com.parallax.server.blocklyprop.db.dao.impl.ProjectSharingDaoImpl;
 import com.parallax.server.blocklyprop.db.dao.impl.SessionDaoImpl;
 import com.parallax.server.blocklyprop.db.dao.impl.UserDaoImpl;
 
+
 /**
  *
  * @author Michel
+ * 
+ * AbstractModule:
+ * A support class for Modules which reduces repetition and results in a more
+ * readable configuration. Simply extend this class, implement configure(),
+ * and call the inherited methods which mirror those found in Binder.
+ * For example:
+ * 
+ *  public class MyModule extends AbstractModule {
+ *     protected void configure() {
+ *     bind(Service.class).to(ServiceImpl.class).in(Singleton.class);
+ *     bind(CreditCardPaymentService.class);
+ *     bind(PaymentService.class).to(CreditCardPaymentService.class);
+ *     bindConstant().annotatedWith(Names.named("port")).to(8080);
+ *    }
+ *  }
+ * 
  */
 public class DaoModule extends AbstractModule {
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+logback-test.xml
+
+Test logging configuration
+-->
+
+<!-- 
+Valid logging levels: TRACE, DEBUG, INFO, WARN and ERROR
+-->
+
+<configuration>
+    
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name="com.parallax.blockly" level="info" />
+
+    <root level="debug">
+        <appender-ref ref="stdout" />
+    </root>
+</configuration>

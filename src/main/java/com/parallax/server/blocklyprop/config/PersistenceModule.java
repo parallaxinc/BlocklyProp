@@ -10,12 +10,13 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.parallax.server.blocklyprop.db.utils.DataSourceSetup;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.dbcp2.PoolingDataSource;
 import org.jooq.SQLDialect;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -37,6 +38,7 @@ public class PersistenceModule extends AbstractModule {
 
     @Provides
     PoolingDataSource dataSource() throws ClassNotFoundException {
+
         PoolingDataSource ds = DataSourceSetup.connect(configuration);
         try {
             ds.getConnection();
