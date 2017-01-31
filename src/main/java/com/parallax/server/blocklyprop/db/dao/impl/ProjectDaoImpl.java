@@ -83,7 +83,7 @@ public class ProjectDaoImpl implements ProjectDao {
             String code, ProjectType type, String board, boolean privateProject, 
             boolean sharedProject) {
 
-        LOG.info("Creating a new project.");
+        LOG.info("Creating a new project with existing code.");
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
         
@@ -218,22 +218,28 @@ public class ProjectDaoImpl implements ProjectDao {
             Long idProject, String name, String description,
             String descriptionHtml, boolean privateProject,
             boolean sharedProject) {
+
+        LOG.info("Update project {}.", idProject);
+
         ProjectRecord record = getProject(idProject, true);
-        if (record != null) {
-            record.setName(name);
-            record.setDescription(description);
-            record.setDescriptionHtml(descriptionHtml);
-            record.setPrivate(privateProject);
-            record.setShared(sharedProject);
-
-            GregorianCalendar cal = new GregorianCalendar();
-            cal.setTime(new java.util.Date());
-
-            record.setModified(cal);
-            record.update();
-            return record;
+        if (record == null) {
+            LOG.warn("Unable to locate project {} to update it.", idProject);
+            return null;
         }
-        return null;
+
+        record.setName(name);
+        record.setDescription(description);
+        record.setDescriptionHtml(descriptionHtml);
+        record.setPrivate(privateProject);
+        record.setShared(sharedProject);
+
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new java.util.Date());
+
+        record.setModified(cal);
+        record.update();
+        
+        return record;
     }
 
     /**
@@ -256,6 +262,9 @@ public class ProjectDaoImpl implements ProjectDao {
             Long idProject, String name, String description, 
             String descriptionHtml, String code, boolean privateProject, 
             boolean sharedProject) {
+
+        LOG.info("Update project {}.", idProject);
+        
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
@@ -270,8 +279,11 @@ public class ProjectDaoImpl implements ProjectDao {
 
             record.setModified(cal);
             record.update();
+        
             return record;
         }
+        
+        LOG.warn("Unable to update project {}", idProject);
         return null;
     }
 
@@ -284,12 +296,15 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord saveCode(Long idProject, String code) {
+        LOG.info("Saving code for project {}.", idProject);
+
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setCode(code);
             ProjectRecord returningRecord = create.update(Tables.PROJECT).set(record).returning().fetchOne();
             return returningRecord;
         }
+        LOG.warn("Unable to save code for project {}", idProject);
         return null;
     }
 
@@ -305,11 +320,17 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
+        LOG.info("Retreive projects for user {}.", idUser);
+        
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
         if (TableOrder.desc == order) {
             orderField = Tables.PROJECT.NAME.desc();
         }
-        return create.selectFrom(Tables.PROJECT).where(Tables.PROJECT.ID_USER.equal(idUser)).orderBy(orderField).limit(limit).offset(offset).fetch();
+        
+        return create.selectFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID_USER.equal(idUser))
+                .orderBy(orderField).limit(limit).offset(offset)
+                .fetch();
     }
 
     /**
@@ -324,6 +345,8 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
+        LOG.info("Retreive shared projects.");
+        
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
         if (TableOrder.desc == order) {
             orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
@@ -332,7 +355,10 @@ public class ProjectDaoImpl implements ProjectDao {
         if (idUser != null) {
             conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
         }
-        return create.selectFrom(Tables.PROJECT).where(conditions).orderBy(orderField).limit(limit).offset(offset).fetch();
+        return create.selectFrom(Tables.PROJECT)
+                .where(conditions)
+                .orderBy(orderField).limit(limit).offset(offset)
+                .fetch();
     }
 
     /**
@@ -343,6 +369,8 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public int countUserProjects(Long idUser) {
+        LOG.info("Count project for user {}.", idUser);
+
         return create.fetchCount(Tables.PROJECT, Tables.PROJECT.ID_USER.equal(idUser));
     }
 
@@ -355,6 +383,8 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public int countSharedProjects(Long idUser) {
+        LOG.info("Count shared projects for user {}.", idUser);
+
         Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
         if (idUser != null) {
             conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
@@ -370,6 +400,8 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord cloneProject(Long idProject) {
+        LOG.info("Clone existing project {} to a new project.", idProject);
+
         ProjectRecord original = getProject(idProject);
         if (original == null) {
             throw new NullPointerException("Project doesn't exist");
@@ -389,6 +421,7 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public boolean deleteProject(Long idProject) {
+        LOG.info("Delete project {}.", idProject);
         return create.deleteFrom(Tables.PROJECT)
                 .where(Tables.PROJECT.ID.equal(idProject))
                 .execute() > 0;
@@ -403,6 +436,7 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord updateProjectCode(Long idProject, String code) {
+        LOG.info("Update code for project {}.", idProject);
         ProjectRecord record = create.selectFrom(Tables.PROJECT)
                 .where(Tables.PROJECT.ID.equal(idProject))
                 .fetchOne();
@@ -425,9 +459,11 @@ public class ProjectDaoImpl implements ProjectDao {
                     cloned.update();
                     return cloned;
                 }
+                LOG.error("User {} tried and failed to update project {}.", idUser, idProject);
                 throw new UnauthorizedException();
             }
         } else {
+            LOG.warn("Unable to project {}. Unknown reason.", idProject);
             return null;
         }
     }
@@ -442,10 +478,14 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+        LOG.info("Saving project code as '{}'", newName);
+                
         ProjectRecord original = getProject(idProject);
         if (original == null) {
+            LOG.error("Original project {} is missing. Unable to save code as...", idProject);
             throw new NullPointerException("Project doesn't exist");
         }
+        
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
             ProjectRecord cloned = createProject(
@@ -466,7 +506,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
         
     private ProjectRecord getProject(Long idProject, boolean toEdit) {
-        
+        LOG.info("Retreiving project {}.", idProject);
         ProjectRecord record = create
                 .selectFrom(Tables.PROJECT)
                 .where(Tables.PROJECT.ID.equal(idProject))
