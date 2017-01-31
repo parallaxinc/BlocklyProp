@@ -87,6 +87,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public List<ProjectRecord> getSharedProjectsByUser(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
+        return projectDao.getSharedProjects(sort, order, limit, offset, idUser);
+    }
+
+    @Override
     public int countUserProjects(Long idUser) {
         return projectDao.countUserProjects(idUser);
     }
@@ -95,6 +100,11 @@ public class ProjectServiceImpl implements ProjectService {
     public int countSharedProjects() {
         return projectDao.countSharedProjects(BlocklyPropSecurityUtils.getCurrentUserId());
     }
+    
+    @Override
+    public int countSharedProjectsByUser(Long idUser) {
+        return projectDao.countSharedProjects(idUser);
+    }    
 
     @Override
     public ProjectRecord saveProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
