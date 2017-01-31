@@ -88,7 +88,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectRecord> getSharedProjectsByUser(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
-        return projectDao.getSharedProjects(sort, order, limit, offset, idUser);
+        return projectDao.getSharedProjectsByUser(sort, order, limit, offset, idUser);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class ProjectServiceImpl implements ProjectService {
     
     @Override
     public int countSharedProjectsByUser(Long idUser) {
-        return projectDao.countSharedProjects(idUser);
+        return projectDao.countSharedProjectsByUser(idUser);
     }    
 
     @Override

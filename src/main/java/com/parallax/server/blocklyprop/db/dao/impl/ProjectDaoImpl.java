@@ -353,6 +353,34 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
         if (idUser != null) {
+            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
+        }
+        return create.selectFrom(Tables.PROJECT)
+                .where(conditions)
+                .orderBy(orderField).limit(limit).offset(offset)
+                .fetch();
+    }
+
+    /**
+     * TODO: add details.
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @param idUser
+     * @return
+     */
+    @Override
+    public List<ProjectRecord> getSharedProjectsByUser(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
+        LOG.info("Retreive shared projects.");
+        
+        SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
+        if (TableOrder.desc == order) {
+            orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
+        }
+        Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
+        if (idUser != null) {
             conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
         }
         return create.selectFrom(Tables.PROJECT)
@@ -383,6 +411,24 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public int countSharedProjects(Long idUser) {
+        LOG.info("Count shared projects for user {}.", idUser);
+
+        Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
+        if (idUser != null) {
+            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
+        }
+        return create.fetchCount(Tables.PROJECT, conditions);
+    }
+
+    /**
+     *
+     * TODO: add details.
+     * 
+     * @param idUser
+     * @return
+     */
+    @Override
+    public int countSharedProjectsByUser(Long idUser) {
         LOG.info("Count shared projects for user {}.", idUser);
 
         Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
