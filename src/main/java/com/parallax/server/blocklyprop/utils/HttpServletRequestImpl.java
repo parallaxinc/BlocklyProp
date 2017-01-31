@@ -152,9 +152,12 @@ public class HttpServletRequestImpl implements HttpServletRequest {
         throw new UnsupportedOperationException("Not supported.");
     }
 
+    /*
+     * Depricated as of Java Servlet API version 2.1
+     */
     @Override
     public boolean isRequestedSessionIdFromUrl() {
-        throw new UnsupportedOperationException("Not supported.");
+        return this.isRequestedSessionIdFromURL();
     }
 
     @Override
@@ -277,9 +280,16 @@ public class HttpServletRequestImpl implements HttpServletRequest {
         throw new UnsupportedOperationException("Not supported.");
     }
 
+    /*
+    * Depricated as of Java Servlet API version 2.1
+    *
+    * Consider using this in it's place:
+    *
+    *     servletRequest.getSession().getServletContext().getRealPath("/")
+    */
     @Override
     public String getRealPath(String path) {
-        throw new UnsupportedOperationException("Not supported.");
+        return this.getSession().getServletContext().getRealPath(path);
     }
 
     @Override
