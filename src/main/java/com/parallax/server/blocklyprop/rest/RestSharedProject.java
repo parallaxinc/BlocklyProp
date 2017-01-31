@@ -73,7 +73,7 @@ public class RestSharedProject {
     }
 
     @GET
-    @Path("/list/{id}")
+    @Path("/list/user/{id}")
     @Detail("Get shared projects by user")
     @Name("Get shared projects by user")
     @Produces("application/json")

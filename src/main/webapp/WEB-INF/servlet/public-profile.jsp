@@ -75,7 +75,7 @@
                                         page = parseInt(getUrlParameter('page')) * 10;
                                     }
                                     
-                                    $.get(baseUrl + "/rest/shared/project/list/" + getUrlParameter('id-user') + "?sort=modified&order=desc&limit=10&offset=" + page.toString(10), function (data) {
+                                    $.get(baseUrl + "/rest/shared/project/list/user/" + getUrlParameter('id-user') + "?sort=modified&order=desc&limit=10&offset=" + page.toString(10), function (data) {
                                         $.each(data['rows'], function (index, project) {
                                             var projectItem = $("<li/>", {
                                                 "class": "project"
