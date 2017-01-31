@@ -73,9 +73,18 @@ public interface ProjectDao {
             Integer offset, 
             Long idUser);
 
+    List<ProjectRecord> getSharedProjectsByUser(
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset, 
+            Long idUser);
+
     int countUserProjects(Long idUser);
 
     int countSharedProjects(Long idUser);
+
+    int countSharedProjectsByUser(Long idUser);
 
     ProjectRecord cloneProject(Long idProject);
 
