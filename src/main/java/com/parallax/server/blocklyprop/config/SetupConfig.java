@@ -33,7 +33,7 @@ import ch.qos.logback.classic.LoggerContext;
 public class SetupConfig extends GuiceServletContextListener {
 
     private Configuration configuration;
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
     @Override
     protected Injector getInjector() {
@@ -72,9 +72,10 @@ public class SetupConfig extends GuiceServletContextListener {
             configuration = configurationBuilder.getConfiguration();
         } catch (ConfigurationException ce) {
             LOG.error("{}", ce.getMessage());
-            ce.printStackTrace();
+//            ce.printStackTrace();
         } catch (Throwable t) {
-            t.printStackTrace();
+            LOG.error(t.getMessage());
+//            t.printStackTrace();
         }
     }
 
@@ -89,7 +90,8 @@ public class SetupConfig extends GuiceServletContextListener {
                 DriverManager.deregisterDriver(driver);
                 LOG.info("deregistering jdbc driver: {}",driver);
             } catch (SQLException sqlE) {
-                //   LOG.log(Level.SEVERE, String.format("Error deregistering driver %s", driver), e);
+                LOG.error("Error deregistering driver %s", driver);
+                LOG.error("{}", sqlE.getSQLState());
             }
 
         }
@@ -100,7 +102,6 @@ public class SetupConfig extends GuiceServletContextListener {
         if (loggerContext != null) {
             loggerContext.stop();
         }
-        
     }
 
 }

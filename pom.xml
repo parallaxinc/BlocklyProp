@@ -396,24 +396,17 @@
 
         <!-- Raven / Sentry API -->
         <dependency>
-            <groupId>net.kencochrane.raven</groupId>
+            <groupId>com.getsentry.raven</groupId>
             <artifactId>raven</artifactId>
-            <version>6.0.0</version>
+            <version>7.8.1</version>
         </dependency>
 
         <dependency>
-            <groupId>net.kencochrane.raven</groupId>
+            <groupId>com.getsentry.raven</groupId>
             <artifactId>raven-logback</artifactId>
-            <version>6.0.0</version>
+            <version>7.8.1</version>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>net.kencochrane.raven</groupId>
-            <artifactId>raven-log4j</artifactId>
-            <version>6.0.0</version>
-        </dependency>
--->
         <!-- Lucene search engine -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
