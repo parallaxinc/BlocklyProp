@@ -477,6 +477,14 @@
                 <block type="serial_send_text"></block>
                 <block type="serial_rx"></block>
                 <block type="serial_receive_text"></block>
+                <block type="shift_in"></block>
+                <block type="shift_out">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">10</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.communicate.WS2812B" />">
                 <block type="ws2812b_init"></block>
@@ -557,7 +565,13 @@
                     <block type="wx_init"></block>
                     <block type="wx_config_page"></block>
                     <block type="wx_set_widget"></block>
-                    <block type="wx_send_widget"></block>
+                    <block type="wx_send_widget">
+                        <value name="NUM">
+                            <block type="math_number">
+                                <field name="NUM">10</field>
+                            </block>
+                        </value>
+                    </block>
                     <block type="wx_read_widgets"></block>
                     <block type="wx_get_widget"></block> 
                     <block type="wx_evt_connected"></block>
@@ -681,6 +695,10 @@
                         </block>
                     </value>
                 </block>
+            </category>
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="flip">
+                <block type="mcp320x_read"></block>
+                <block type="mcp320x_set_vref"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.audio" />" exclude="s3" colour="200">
