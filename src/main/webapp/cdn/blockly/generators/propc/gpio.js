@@ -1053,14 +1053,127 @@ Blockly.propc.activitybot_display_calibration = function() {
 
     code = '';
     code += 'if(!abd_intTabSetup) interpolation_table_setup();\n';
-    code += 'print("=== LEFT SERVO ===\\n");\n';
-    code += 'print("Table Entries = %d, Zero Speed Index = %d\\n\\n", abd_elCntL, abd_cntrLidx);\n';
+    code += 'print("=== LEFT SERVO ===\\r");\n';
+    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCntL, abd_cntrLidx);\n';
     code += 'print("Index, Servo Drive, Encoder Ticks/Second\\n");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCntL; __rIdx++) print("%d, %d, %d\\n", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
-    code += 'print("\\n\\n=== RIGHT SERVO ===\\n");\n';
-    code += 'print("Table Entries = %d, Zero Speed Index = %d\\n\\n", abd_elCntR, abd_cntrRidx);\n';
-    code += 'print("Index, Servo Drive, Encoder Ticks/Second\\n");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCntR; __rIdx++) print("%d, %d, %d\\n", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
+    code += 'for(int __rIdx = 0; __rIdx < abd_elCntL; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
+    code += 'print("\\r\\r=== RIGHT SERVO ===\\r");\n';
+    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCntR, abd_cntrRidx);\n';
+    code += 'print("Index, Servo Drive, Encoder Ticks/Second\\r");\n';
+    code += 'for(int __rIdx = 0; __rIdx < abd_elCntR; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
 
+    return code;
+};
+
+Blockly.Blocks.mcp320x_read = {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MCP320X_READ_TOOLTIP);
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["MCP3202","2"], ["MCP3204","4"], ["MCP8208","8"]], function (ch_c) {
+                this.sourceBlock_.updateShape_({"CH_C": ch_c});}), "CHIP")
+            .appendField("CS")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CS_PIN")
+            .appendField("CLK")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK_PIN")
+            .appendField("DO")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DO_PIN")
+            .appendField("DI")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DI_PIN");
+        this.appendDummyInput('CHANNELS')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("channel")
+            .appendField(new Blockly.FieldDropdown([["1","1"], ["2", "2"]]), "CHAN")
+            .appendField("read (0-3.3V) in volt-100ths");
+        this.setInputsInline(false);
+        this.setOutput(true, null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var ch_c = this.getFieldValue('CHIP');
+        container.setAttribute('chip', ch_c);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var ch_c = xmlElement.getAttribute('chip');
+        this.updateShape_({"CH_C": ch_c});
+    },
+    updateShape_: function (details) {
+
+        var num = details['CH_C'];
+        if (details['CH_C'] === undefined) {
+            num = this.getFieldValue('CH_C');
+        }
+
+        var chan_count = [];
+        
+        for (var i = 1; i <= num; i++) {
+            chan_count.push([i.toString(), i.toString()]);
+        }
+
+        this.removeInput('CHANNELS');
+        this.appendDummyInput('CHANNELS')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("channel")
+            .appendField(new Blockly.FieldDropdown(chan_count), "CHAN")
+            .appendField("read (0-3.3V) in volt-100ths");
+    }
+};
+
+Blockly.propc.mcp320x_read = function() {
+    var chip = parseInt(this.getFieldValue('CHIP'));
+    var cs_pin = this.getFieldValue('CS_PIN');
+    var clk_pin = this.getFieldValue('CLK_PIN');
+    var do_pin = this.getFieldValue('DO_PIN');
+    var di_pin = this.getFieldValue('DI_PIN');
+    var channel = '000' + parseInt(this.getFieldValue('CHANNEL')).toString(2) + "1";
+    
+    if(chip < 4) {
+        channel = "11" + channel.substr(0,1) + "1";
+    } else {
+        channel = "11" + channel.substr(0,3) + "0";
+    }
+    
+    var func = '';
+    func += 'int __Mvref = 330;';
+    func += 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr) {\n';
+    func += '  high(__McsPin);  low(__MclkPin);  low(__McsPin);\n';
+    func += '  shift_out(__MdiPin, __MclkPin, MSBFIRST, __Mbits, __Mdata);\n';
+    func += '  int __Mvolts = shift_in(__MdiPin, __MclkPin, MSBPOST, 12);\n';
+    func += '  high(__McsPin);  high(__MclkPin);\n  return ((__Mvolts * __MVr) / 4096);}';
+    Blockly.propc.global_vars_["mcp320x_read"] = func;
+    
+    
+    var code = '';
+    code += 'read_mcp320x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin;
+    code += ', ' + di_pin + ', ' + channel.length + ', 0b' + channel + ', __Mvref)';
+
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.mcp320x_set_vref = {
+    helpUrl: Blockly.MSG_ANALOG_PULSES_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_MCP320X_SET_VREF_TOOLTIP);
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
+            .appendField("MCP320X set Vref to")
+            .appendField(new Blockly.FieldTextInput('330',
+                Blockly.FieldTextInput.numberValidator), "VREF")
+            .appendField("volt 100ths");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.mcp320x_set_vref = function() {
+    var vref = parseInt(this.getFieldValue('VREF'));
+    
+    var code = '';
+    if(Blockly.propc.global_vars_["mcp320x_read"] !== undefined) {
+        code += '__Mvref = ' + vref + ';\n';
+    }
     return code;
 };
