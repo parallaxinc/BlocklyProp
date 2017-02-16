@@ -473,6 +473,133 @@ Blockly.propc.serial_receive_text = function () {
     }
 };
 
+
+//--------------- Shift In/Out Blocks ------------------------------------------
+Blockly.Blocks.shift_in = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SHIFT_IN_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+            .appendField("shift in")
+            .appendField(new Blockly.FieldDropdown(
+                [['2','2'],
+                ['3','3'],
+                ['4','4'],
+                ['5','5'],
+                ['6','6'],
+                ['7','7'],
+                ['8','8'],
+                ['9','9'],
+                ['10','10'],
+                ['11','11'],
+                ['12','12'],
+                ['13','13'],
+                ['14','14'],
+                ['15','15'],
+                ['16','16'],
+                ['17','17'],
+                ['18','18'],
+                ['19','19'],
+                ['20','20'],
+                ['21','21'],
+                ['22','22'],
+                ['23','23'],
+                ['24','24'],
+                ['25','25'],
+                ['26','26'],
+                ['27','27'],
+                ['28','28'],
+                ['29','29'],
+                ['30','30'],
+                ['31','31'],
+                ['32','32']]), "BITS")
+            .appendField("bits")
+            .appendField(new Blockly.FieldDropdown([["MSB first","MSB"], ["LSB first","LSB"]]), "MODE")
+            .appendField(new Blockly.FieldDropdown([["before clock","PRE"], ["after clock","POST"]]), "ORDER")
+            .appendField("DATA")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DATA")
+            .appendField("CLK")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK");
+        this.setInputsInline(true);
+        this.setOutput(true, null);
+    }
+};
+
+Blockly.propc.shift_in = function() {
+    var bits = this.getFieldValue('BITS');
+    var mode = this.getFieldValue('MODE');
+    var ord = this.getFieldValue('ORDER');
+    var dat = this.getFieldValue('DATA');
+    var clk = this.getFieldValue('CLK');
+    
+    return ['shift_in(' + dat + ', ' + clk + ', ' + mode + ord + ', ' + bits + ')', Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.shift_out = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function() {
+	this.setTooltip(Blockly.MSG_SHIFT_OUT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("VALUE")
+            .setCheck("Number")
+            .appendField("shift out the")
+            .appendField(new Blockly.FieldDropdown(
+                [['2','2'],
+                ['3','3'],
+                ['4','4'],
+                ['5','5'],
+                ['6','6'],
+                ['7','7'],
+                ['8','8'],
+                ['9','9'],
+                ['10','10'],
+                ['11','11'],
+                ['12','12'],
+                ['13','13'],
+                ['14','14'],
+                ['15','15'],
+                ['16','16'],
+                ['17','17'],
+                ['18','18'],
+                ['19','19'],
+                ['20','20'],
+                ['21','21'],
+                ['22','22'],
+                ['23','23'],
+                ['24','24'],
+                ['25','25'],
+                ['26','26'],
+                ['27','27'],
+                ['28','28'],
+                ['29','29'],
+                ['30','30'],
+                ['31','31'],
+                ['32','32']]), "BITS")
+            .appendField("lowest bits of");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([["MSB first","MSBFIRST"], ["LSB first","LSBFIRST"]]), "MODE")
+            .appendField("DATA")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "DATA")
+            .appendField("CLK")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.shift_out = function() {
+    var bits = this.getFieldValue('BITS');
+    var mode = this.getFieldValue('MODE');
+    var dat = this.getFieldValue('DATA');
+    var clk = this.getFieldValue('CLK');
+    var val = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
+    
+    return 'shift_out(' + dat + ', ' + clk + ', ' + mode + ', ' + bits + ', ' + val + ');\n';
+};
+
+
 //--------------- Serial LCD Blocks --------------------------------------------
 Blockly.Blocks.debug_lcd_init = {
     helpUrl: Blockly.MSG_SERIAL_LCD_HELPURL,
@@ -1497,12 +1624,12 @@ Blockly.Blocks.wx_init = {
         bkg_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-            .appendField("Simple WX initialize DO")
-            .appendField(new Blockly.FieldDropdown([['31 (WX)', '31']].concat(profile.default.digital)), "DO")    
+            .appendField("Simple WX initialize  mode")
+            .appendField(new Blockly.FieldDropdown([['Terminal on USB', 'USB_PGM_TERM'], ['Terminal on WX', 'USB_PGM'], ['Term & Programming on WX', 'WX_ALL_COM']]), "MODE")  // .concat(profile.default.digital)
+            .appendField(" DO")
+            .appendField(new Blockly.FieldDropdown([['WX Socket', '31']].concat(profile.default.digital)), "DO")    
             .appendField("DI")
-            .appendField(new Blockly.FieldDropdown([['30 (WX)', '30']].concat(profile.default.digital)), "DI")
-            .appendField(" mode")
-            .appendField(new Blockly.FieldDropdown([['Terminal via Wifi', 'USB_PGM'], ['Terminal via USB', 'USB_PGM_TERM']].concat(profile.default.digital)), "MODE");
+            .appendField(new Blockly.FieldDropdown([['WX Socket', '30']].concat(profile.default.digital)), "DI");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1515,7 +1642,7 @@ Blockly.propc.wx_init = function() {
     var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
     var title = this.getFieldValue('TITLE');
     var mode = this.getFieldValue('MODE');
-    if(pin_do === '31' && pin_di === '30' && mode === 'USB_PGM') mode = 'WX_ALL_COM';
+    //if(pin_do === '31' && pin_di === '30' && mode === 'USB_PGM') mode = 'WX_ALL_COM';
     var code = '';
     code += 'wifi_start(' + pin_do + ', ' + pin_di + ', 115200, ' + mode + ');\n';
     code += 'wifi_setBuffer(__wxBffr, sizeof(__wxBffr));\n';
@@ -1537,7 +1664,7 @@ Blockly.propc.wx_init = function() {
 Blockly.Blocks.wx_config_page = {
     helpUrl: Blockly.MSG_SWX_HELPURL,
     init: function() {
-	this.setTooltip(Blockly.MSG_SWX_INIT_TOOLTIP);
+	this.setTooltip(Blockly.MSG_SWX_CONFIG_PAGE_TOOLTIP);
         var bkg_colors = new Blockly.FieldColour("#FFFFFF");
         bkg_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
