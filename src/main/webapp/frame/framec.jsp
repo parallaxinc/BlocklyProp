@@ -124,7 +124,7 @@
                         </block>
                     </value>
                     <value name="B">
-                         <block type="math_number">
+                        <block type="math_number">
                             <field name="NUM">100</field>
                         </block>
                     </value> 
@@ -213,7 +213,7 @@
             </block>
             <block type="system_counter"></block>
         </category>
-            
+
         <category name="<fmt:message key="category.s3-simple" />" include="s3" colour=185>
             <category name="<fmt:message key="category.s3-simple.simple-control" />" colour=205>
                 <block type="scribbler_loop"></block>
@@ -559,7 +559,7 @@
                     </value>
                 </block>
             </category>
-                
+
             <category name="WX Module">
                 <category name="Simple">
                     <block type="wx_init"></block>
@@ -575,6 +575,56 @@
                     <block type="wx_read_widgets"></block>
                     <block type="wx_get_widget"></block> 
                     <block type="wx_evt_connected"></block>
+                </category>
+                <category name="Advanced">
+                    <block type="wx_init_adv"></block>
+                    <block type="wx_listen">
+                        <field name="ID">wxConnId1</field>
+                        <value name="PATH">
+                            <block type="string_type_block">
+                                <field name="TEXT">path</field>
+                            </block>
+                        </value>                        
+                    </block>
+                    <block type="wx_poll">
+                        <field name="EVENT">wxEvent</field>
+                        <field name="ID">wxId</field>
+                        <field name="HANDLE">wxHandle</field>
+                    </block>
+                    <block type="wx_print_multiple">
+                        <field name="HANDLE">wxHandle</field>
+                    </block>
+                    <block type="wx_send_string">
+                        <field name="HANDLE">wxHandle</field>
+                        <value name="DATA">
+                            <block type="string_type_block"></block>
+                        </value>                        
+                    </block>
+                    <block type="wx_scan_multiple">
+                        <field name="HANDLE">wxHandle</field>
+                    </block>
+                    <block type="wx_scan_string">
+                        <field name="HANDLE">wxHandle</field>
+                    </block>
+                    <block type="wx_receive_string">
+                        <field name="HANDLE">wxHandle</field>
+                        <value name="MAX">
+                            <block type="math_number">
+                                <field name="NUM">64</field>
+                            </block>
+                        </value>
+                    </block>
+                    <block type="wx_mode"></block>
+                    <block type="wx_code"></block>
+                    <block type="wx_buffer">
+                        <value name="SIZE">
+                            <block type="math_number">
+                                <field name="NUM">64</field>
+                            </block>
+                        </value>
+                    </block>
+                    <block type="wx_disconnect"></block>
+                    <block type="wx_ip"></block>
                 </category>
             </category>
 
@@ -641,14 +691,14 @@
                 <block type="eeprom_read">
                     <value name="ADDRESS">
                         <block type="math_number">
-                                <field name="NUM">0</field>
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="eeprom_write">
                     <value name="ADDRESS">
                         <block type="math_number">
-                                <field name="NUM">0</field>
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
@@ -834,7 +884,13 @@
                 <block type="heb_set_led_rgb"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
-                <block type="heb_print_numeric_var"></block>
+                <block type="heb_print_numeric_var">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="heb_print_string_var">
                     <value name="VALUE">
                         <block type="string_type_block">
@@ -843,19 +899,54 @@
                     </value>
                 </block>
                 <block type="heb_cursor_position_large"></block>
-                <block type="heb_cursor_position_small"></block>
+                <block type="heb_cursor_position_small">
+                    <value name="ROWS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="heb_clear_screen"></block>
                 <block type="heb_rotate"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.ir-communication" />">
-                <block type="heb_ir_send_signal"></block>
+                <block type="heb_ir_send_signal">
+                    <value name="MESSAGE">
+                        <block type="string_type_block">
+                            <field name="TEXT">Hello</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="heb_ir_read_signal"></block>
                 <block type="heb_ir_clear_buffer"></block>
             </category>
             <category name="<fmt:message key="category.hackable-electronic-badge.eeprom" />">
-                <block type="heb_badge_eeprom_store"></block>
-                <block type="heb_badge_eeprom_is_stored"></block>
-                <block type="heb_badge_eeprom_retrieve"></block>
+                <block type="heb_badge_eeprom_store">
+                    <value name="CONTACT">
+                        <block type="string_type_block">
+                            <field name="TEXT">Last, First</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_badge_eeprom_is_stored">
+                    <value name="CONTACT">
+                        <block type="string_type_block">
+                            <field name="TEXT">Last, First</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_badge_eeprom_retrieve">
+                    <value name="INDEX">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
                 <block type="heb_count_contacts"></block>
                 <block type="heb_erase_all_contacts"></block>
             </category>
@@ -866,8 +957,24 @@
             <category name="<fmt:message key="category.hackable-electronic-badge.touchpad-control" />">
                 <block type="heb_touchpad_status"></block>
             </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.text-to-speech" />">
+                <block type="heb_text_to_speech_say">
+                    <value name="STRING">
+                        <block type="string_type_block">
+                            <field name="TEXT">heloa</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_text_to_speech_spell">
+                    <value name="STRING">
+                        <block type="string_type_block">
+                            <field name="TEXT">hello</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
         </category>
-        
+
         <category name="<fmt:message key="category.s3-math" />" include="s3" colour=275>
             <block type="spin_integer"></block>
             <block type="math_int_angle"></block>
@@ -1006,7 +1113,7 @@
                             <field name="ANGLE_VALUE">90</field>
                         </block>
                     </value>
-		</block>
+                </block>
                 <block type="scribbler_stop_servo"></block>
             </category>
             <category name="<fmt:message key="category.s3-actions.sound" />" include="s3">
@@ -1062,11 +1169,11 @@
                 <block type="scribbler_serial_rx_byte"></block>
 
             </category>
-<%--
-            <category name="<fmt:message key="category.s3-actions.reset" />" include="s3">
-                <block type="factory_reset"></block>
-            </category>
---%>
+            <%--
+                        <category name="<fmt:message key="category.s3-actions.reset" />" include="s3">
+                            <block type="factory_reset"></block>
+                        </category>
+            --%>
         </category>
     </xml>
 </body>
