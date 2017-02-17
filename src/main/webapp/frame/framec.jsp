@@ -172,7 +172,7 @@
             </category>            
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />" exclude="s3" colour="220">
+        <category name="<fmt:message key="category.values" />" exclude="s3,heb" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>  
@@ -211,6 +211,18 @@
                     <block type="color_picker"></block>
                 </value>
             </block>
+            <block type="system_counter"></block>
+        </category>
+
+        <category name="<fmt:message key="category.values" />" include="heb" colour="220">
+            <block type="math_number"></block>
+            <block type="string_type_block"></block>
+            <block type="char_type_block"></block>  
+            <block type="number_binary"></block>
+            <block type="number_hex"></block>
+            <block type="logic_boolean"></block>
+            <block type="high_low_value"></block>
+            <block type="heb_color_val"></block>
             <block type="system_counter"></block>
         </category>
 
@@ -286,7 +298,7 @@
 
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3" colour="200">
+        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3,heb" colour="200">
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -634,7 +646,262 @@
                 <block type="xbee_receive"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.sensor-input" />" exclude="s3" colour="155">
+
+        <sep include="heb"></sep>
+        
+        <category name="<fmt:message key="category.communicate" />" include="heb" colour="320">
+            <category name="<fmt:message key="category.communicate.serial-terminal" />">
+                <block type="console_print">
+                    <value name="MESSAGE">
+                        <block type="string_type_block"></block>
+                    </value>
+                </block>
+                <block type="console_print_variables">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="console_scan_text"></block>
+                <block type="console_scan_number"></block>
+                <block type="console_newline"></block>
+                <block type="console_clear"></block>
+                <block type="console_move_to_position">
+                    <value name="ROW">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLUMN">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
+                <block type="heb_print_numeric_var">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_print_string_var">
+                    <value name="VALUE">
+                        <block type="string_type_block">
+                            <field name="TEXT">Hello</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_cursor_position_large"></block>
+                <block type="heb_cursor_position_small">
+                    <value name="ROWS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="COLS">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_clear_screen"></block>
+                <block type="heb_rotate"></block>
+                <block type="heb_oled_point">
+                    <value name="X0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_oled_line">
+                    <value name="X0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="X1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_oled_box">
+                    <value name="X0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="W">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="H">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_oled_circle">
+                    <value name="X0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="R">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_oled_triangle">
+                    <value name="X0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y0">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="X1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y1">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="X2">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                    <value name="Y2">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.ir-communication" />">
+                <block type="heb_ir_send_signal">
+                    <value name="MESSAGE">
+                        <block type="string_type_block">
+                            <field name="TEXT">Hello</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_ir_read_signal"></block>
+                <block type="heb_ir_clear_buffer"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.audio" />" include="heb" colour="290">
+            <category name="<fmt:message key="category.hackable-electronic-badge.text-to-speech" />">
+                <block type="heb_text_to_speech_say">
+                    <value name="STRING">
+                        <block type="string_type_block">
+                            <field name="TEXT">heloa</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="heb_text_to_speech_spell">
+                    <value name="STRING">
+                        <block type="string_type_block">
+                            <field name="TEXT">hello</field>
+                        </block>
+                    </value>
+                </block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />" include="heb" colour="225">
+            <block type="heb_toggle_led"></block>
+            <block type="heb_toggle_led_open">
+                <value name="LED_NUM">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="LED_STATE">
+                    <block type="high_low_value">
+                        <field name="VALUE">high</field>
+                    </block>
+                </value>
+            </block>
+            <block type="heb_set_led_rgb">
+                <value name="RGB">
+                    <block type="heb_color_val"></block>
+                </value>
+            </block>
+        </category>
+        <category name="<fmt:message key="category.sensor-input" />" include="heb" colour="185">
+            <category name="<fmt:message key="category.hackable-electronic-badge.accelerometer" />">
+                <block type="heb_badge_axis_acceleration"></block>
+                <block type="heb_badge_was_shaken"></block>
+            </category>
+            <category name="<fmt:message key="category.hackable-electronic-badge.touchpad-control" />">
+                <block type="heb_touchpad_status"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.memory" />" include="heb" colour="140">
+            <block type="heb_badge_eeprom_store">
+                <value name="CONTACT">
+                    <block type="string_type_block">
+                        <field name="TEXT">Last, First</field>
+                    </block>
+                </value>
+            </block>
+            <block type="heb_badge_eeprom_is_stored">
+                <value name="CONTACT">
+                    <block type="string_type_block">
+                        <field name="TEXT">Last, First</field>
+                    </block>
+                </value>
+            </block>
+            <block type="heb_badge_eeprom_retrieve">
+                <value name="INDEX">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="heb_count_contacts"></block>
+            <block type="heb_erase_all_contacts"></block>
+        </category>
+            
+        <category name="<fmt:message key="category.sensor-input" />" exclude="s3,heb" colour="155">
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>
                 <block type="joystick_input_yaxis"></block>
@@ -704,7 +971,7 @@
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.analog-pulses" />" exclude="s3" colour="200">
+        <category name="<fmt:message key="category.analog-pulses" />" exclude="s3,heb" colour="200">
             <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" exclude="s3">
                 <block type="pulse_in"></block>
                 <block type="pulse_out">
@@ -751,7 +1018,7 @@
                 <block type="mcp320x_set_vref"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.audio" />" exclude="s3" colour="200">
+        <category name="<fmt:message key="category.audio" />" exclude="s3,heb" colour="200">
             <category name="<fmt:message key="category.audio.freqout" />" exclude="s3">
                 <block type="base_freqout">
                     <value name="DURATION">
@@ -779,7 +1046,7 @@
                 <block type="wav_stop"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.servo" />" exclude="s3" colour="180">
+        <category name="<fmt:message key="category.servo" />" exclude="s3,heb" colour="180">
             <category name="<fmt:message key="category.servo.standard-servo" />">
                 <block type="servo_move">
                     <value name="ANGLE">
@@ -835,144 +1102,6 @@
             <block type="ab_drive_stop"></block>
             <block type="activitybot_calibrate"></block>
             <block type="activitybot_display_calibration"></block>
-        </category>
-        <category name="<fmt:message key="category.hackable-electronic-badge" />" include="heb" colour="290">
-            <category name="<fmt:message key="category.communicate.serial-terminal" />">
-                <block type="console_print">
-                    <value name="MESSAGE">
-                        <block type="string_type_block"></block>
-                    </value>
-                </block>
-                <block type="console_print_variables">
-                    <value name="VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="console_scan_text"></block>
-                <block type="console_scan_number"></block>
-                <block type="console_newline"></block>
-                <block type="console_clear"></block>
-                <block type="console_move_to_position">
-                    <value name="ROW">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="COLUMN">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
-            <category name="<fmt:message key="category.hackable-electronic-badge.led_control" />">
-                <block type="heb_toggle_led"></block>
-                <block type="heb_toggle_led_open">
-                    <value name="LED_NUM">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="LED_STATE">
-                        <block type="high_low_value">
-                            <field name="VALUE">high</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_set_led_rgb"></block>
-            </category>
-            <category name="<fmt:message key="category.hackable-electronic-badge.oled" />">
-                <block type="heb_print_numeric_var">
-                    <value name="VALUE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_print_string_var">
-                    <value name="VALUE">
-                        <block type="string_type_block">
-                            <field name="TEXT">Hello</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_cursor_position_large"></block>
-                <block type="heb_cursor_position_small">
-                    <value name="ROWS">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                    <value name="COLS">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_clear_screen"></block>
-                <block type="heb_rotate"></block>
-            </category>
-            <category name="<fmt:message key="category.hackable-electronic-badge.ir-communication" />">
-                <block type="heb_ir_send_signal">
-                    <value name="MESSAGE">
-                        <block type="string_type_block">
-                            <field name="TEXT">Hello</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_ir_read_signal"></block>
-                <block type="heb_ir_clear_buffer"></block>
-            </category>
-            <category name="<fmt:message key="category.hackable-electronic-badge.eeprom" />">
-                <block type="heb_badge_eeprom_store">
-                    <value name="CONTACT">
-                        <block type="string_type_block">
-                            <field name="TEXT">Last, First</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_badge_eeprom_is_stored">
-                    <value name="CONTACT">
-                        <block type="string_type_block">
-                            <field name="TEXT">Last, First</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_badge_eeprom_retrieve">
-                    <value name="INDEX">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_count_contacts"></block>
-                <block type="heb_erase_all_contacts"></block>
-            </category>
-            <category name="<fmt:message key="category.hackable-electronic-badge.accelerometer" />">
-                <block type="heb_badge_axis_acceleration"></block>
-                <block type="heb_badge_was_shaken"></block>
-            </category>
-            <category name="<fmt:message key="category.hackable-electronic-badge.touchpad-control" />">
-                <block type="heb_touchpad_status"></block>
-            </category>
-            <category name="<fmt:message key="category.hackable-electronic-badge.text-to-speech" />">
-                <block type="heb_text_to_speech_say">
-                    <value name="STRING">
-                        <block type="string_type_block">
-                            <field name="TEXT">heloa</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="heb_text_to_speech_spell">
-                    <value name="STRING">
-                        <block type="string_type_block">
-                            <field name="TEXT">hello</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
         </category>
 
         <category name="<fmt:message key="category.s3-math" />" include="s3" colour=275>
