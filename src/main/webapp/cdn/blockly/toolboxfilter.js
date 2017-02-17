@@ -27,6 +27,24 @@ function filterToolbox(profileName, peripherals) {
             }
         }
     });
+    $("#toolbox").find('sep').each(function () {
+        var toolboxEntry = $(this);
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+    });
 }
 
 // http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
