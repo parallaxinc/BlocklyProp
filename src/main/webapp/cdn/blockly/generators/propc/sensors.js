@@ -652,7 +652,7 @@ Blockly.Blocks.lsm9ds1_read = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("IMU read")
-                .appendField(new Blockly.FieldDropdown([["accelerometer (100ths of g's)", "Accel"], ["gyroscope (100ths of deg/s)", "Gyro"], ["magnetometer (100ths of guass)", "Mag"]]), "SENSOR")
+                .appendField(new Blockly.FieldDropdown([["accelerometer (100ths of g's)", "Accel"], ["gyroscope (100ths of deg/s)", "Gyro"], ["magnetometer (100ths of gauss)", "Mag"]]), "SENSOR")
                 .appendField("store X-axis in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR')
                 .appendField(" y-axis in")
