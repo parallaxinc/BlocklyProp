@@ -1628,7 +1628,7 @@ Blockly.Blocks.wx_init = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('Simple WX initialize')
-                .appendField("mode")        
+                .appendField("mode")
                 .appendField(new Blockly.FieldDropdown([['Terminal on USB', 'USB_PGM_TERM'], ['Terminal on WX', 'USB_PGM'], ['Term & Programming on WX', 'WX_ALL_COM']]), "MODE")  // .concat(profile.default.digital)
                 .appendField(" DO")
                 .appendField(new Blockly.FieldDropdown([['WX Socket', '31']].concat(profile.default.digital), function (pin) {
@@ -1653,7 +1653,8 @@ Blockly.Blocks.wx_init = {
 Blockly.propc.wx_init = function () {
     var pin_do = this.getFieldValue('DO');
     var pin_di = this.getFieldValue('DI');
-    if(pin_do === '31') pin_di = '30';
+    if (pin_do === '31')
+        pin_di = '30';
     var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
     var title = this.getFieldValue('TITLE');
     var mode = this.getFieldValue('MODE');
@@ -2004,7 +2005,7 @@ Blockly.Blocks.wx_init_adv = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('WX initialize')
-                .appendField("mode")        
+                .appendField("mode")
                 .appendField(new Blockly.FieldDropdown([['Terminal on USB', 'USB_PGM_TERM'], ['Terminal on WX', 'USB_PGM'], ['Term & Programming on WX', 'WX_ALL_COM']]), "MODE")  // .concat(profile.default.digital)
                 .appendField(" DO")
                 .appendField(new Blockly.FieldDropdown([['WX Socket', '31']].concat(profile.default.digital), function (pin) {
@@ -2029,7 +2030,8 @@ Blockly.Blocks.wx_init_adv = {
 Blockly.propc.wx_init_adv = function () {
     var pin_do = this.getFieldValue('DO');
     var pin_di = this.getFieldValue('DI');
-    if(pin_do === '31') pin_di = '30';
+    if (pin_do === '31')
+        pin_di = '30';
     var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
     var title = this.getFieldValue('TITLE');
     var mode = this.getFieldValue('MODE');
@@ -2038,7 +2040,7 @@ Blockly.propc.wx_init_adv = function () {
 
     Blockly.propc.definitions_["wx_def"] = '#include "wifi.h"';
     Blockly.propc.setups_["wx_init"] = code;
-    
+
     return '';
 };
 
@@ -2175,6 +2177,14 @@ Blockly.Blocks.wx_scan_multiple = {
             this.setWarningText('WX scan must have at least one search term.');
         } else {
             this.setWarningText(null);
+        }
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
         }
     }
 };
@@ -2375,9 +2385,15 @@ Blockly.Blocks.wx_print_multiple = {
             this.removeInput('PRINTa');
             this.removeInput('PRINTb');
         }
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
-
-
 };
 
 Blockly.Blocks.wx_print_container = {
@@ -2446,7 +2462,7 @@ Blockly.propc.wx_print_multiple = function () {
         i++;
     }
     code += '"' + varList + ');\n';
-    
+
     if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
     } else {
@@ -2487,6 +2503,14 @@ Blockly.Blocks.wx_scan_string = {
         this.appendDummyInput('STORE')
                 .appendField('store sting in')
                 .appendField(new Blockly.FieldVariable(data), 'VARNAME');
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -2523,6 +2547,14 @@ Blockly.Blocks.wx_send_string = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -2531,7 +2563,7 @@ Blockly.propc.wx_send_string = function () {
     var handle = this.getFieldValue('HANDLE');
 
     var code = 'wifi_send(' + handle + ', ' + data + ', sizeof(' + data + '));\n';
-    
+
     if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
     } else {
@@ -2558,6 +2590,14 @@ Blockly.Blocks.wx_receive_string = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setInputsInline(false);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -2568,7 +2608,7 @@ Blockly.propc.wx_receive_string = function () {
     var bytes = this.getFieldValue('BYTES');
 
     var code = bytes + ' = wifi_recv(' + handle + ', ' + data + ', ' + max + ');\n';
-    
+
     if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
     } else {
@@ -2654,6 +2694,14 @@ Blockly.Blocks.wx_listen = {
             this.getInput('CONNVARS').setVisible(false);
         }
         this.getInput('PORT').setVisible(prefixVisible);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -2751,8 +2799,8 @@ Blockly.Blocks.wx_code = {
 };
 
 Blockly.propc.wx_code = function () {
-    
-if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+
+    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return [this.getFieldValue('CODE'), Blockly.propc.ORDER_NONE];
     } else {
         return '// Missing Simple WX initialize block!\n';
@@ -2808,7 +2856,7 @@ Blockly.propc.wx_mode = function () {
     var action = this.getFieldValue('ACTION');
 
     var code;
-    
+
     if (action === 'CHECK') {
         code = ['wifi_mode(CHECK)', Blockly.propc.ORDER_NONE];
     } else if (mode === 'LEAVE') {
@@ -2816,7 +2864,7 @@ Blockly.propc.wx_mode = function () {
     } else {
         code = 'wifi_mode(' + mode + ');\n';
     }
-    
+
     if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
     } else {
@@ -2860,6 +2908,14 @@ Blockly.Blocks.wx_buffer = {
                     .appendField(new Blockly.FieldVariable(data || Blockly.LANG_VARIABLES_GET_ITEM), "BUFFER")
                     .appendField("as buffer");
             this.getInput('BUF').setVisible(true);
+        }
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
         }
     }
 };
@@ -2907,6 +2963,14 @@ Blockly.Blocks.wx_disconnect = {
         } else {
             this.setFieldValue('wxId', 'ID');
             this.setFieldValue('ID', 'TEXT');
+        }
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
         }
     }
 };

@@ -524,6 +524,14 @@ Blockly.Blocks.heb_ir_read_signal = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    }, 
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
@@ -614,6 +622,14 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'BUFFER');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    }, 
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
+        }
     }
 };
 
