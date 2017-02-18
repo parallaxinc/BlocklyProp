@@ -34,8 +34,8 @@ if (!Blockly.Blocks)
 Blockly.Blocks.variables_get = {
     // Variable getter.
     helpUrl: Blockly.MSG_VARIABLES_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_VARIABLES_GET_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_VARIABLES_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput("")
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
@@ -82,8 +82,8 @@ Blockly.Blocks.variables_declare = {
 Blockly.Blocks.variables_set = {
     // Variable setter.
     helpUrl: Blockly.MSG_VARIABLES_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_VARIABLES_SET_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_VARIABLES_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('VALUE')
                 .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
@@ -136,38 +136,150 @@ Blockly.propc.variables_set = function () {
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
-         if (argument0.indexOf("int") > -1) {
-           Blockly.propc.vartype_[varName] = 'int';
-           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
-         } else if (argument0.indexOf("float") > -1) {
-           Blockly.propc.vartype_[varName] = 'float';
-           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
-         } else if (argument0.indexOf("char") > -1) {
-           Blockly.propc.vartype_[varName] = 'char';
-           Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
-         } else if (argument0.indexOf("char\[\]") > -1) {
-           Blockly.propc.vartype_[varName] = 'char *';
-         } else if (argument0.indexOf("\"") > -1) {
-           Blockly.propc.vartype_[varName] = 'char *';
-         } else if (argument0.indexOf(".") > -1) {
-           Blockly.propc.vartype_[varName] = 'float';
-         } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false") > -1) {
-           Blockly.propc.vartype_[varName] = 'boolean';
-         } else {
-           Blockly.propc.vartype_[varName] = 'int';
-         }
+        if (argument0.indexOf("int") > -1) {
+            Blockly.propc.vartype_[varName] = 'int';
+            Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+        } else if (argument0.indexOf("float") > -1) {
+            Blockly.propc.vartype_[varName] = 'float';
+            Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+        } else if (argument0.indexOf("char") > -1) {
+            Blockly.propc.vartype_[varName] = 'char';
+            Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+        } else if (argument0.indexOf("char\[\]") > -1) {
+            Blockly.propc.vartype_[varName] = 'char *';
+        } else if (argument0.indexOf("\"") > -1) {
+            Blockly.propc.vartype_[varName] = 'char *';
+        } else if (argument0.indexOf(".") > -1) {
+            Blockly.propc.vartype_[varName] = 'float';
+        } else if (argument0.indexOf("true") > -1 || argument0.indexOf("false") > -1) {
+            Blockly.propc.vartype_[varName] = 'boolean';
+        } else {
+            Blockly.propc.vartype_[varName] = 'int';
+        }
     } else if (argument0.indexOf("int") > -1) {
-      Blockly.propc.vartype_[varName] = 'int';
-      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+        Blockly.propc.vartype_[varName] = 'int';
+        Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
     } else if (argument0.indexOf("float") > -1) {
-      Blockly.propc.vartype_[varName] = 'float';
-      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+        Blockly.propc.vartype_[varName] = 'float';
+        Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
     } else if (argument0.indexOf("char") > -1) {
-      Blockly.propc.vartype_[varName] = 'char';
-      Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
+        Blockly.propc.vartype_[varName] = 'char';
+        Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
     } else if (argument0.indexOf("char\[\]") > -1) {
-      Blockly.propc.vartype_[varName] = 'char *';
+        Blockly.propc.vartype_[varName] = 'char *';
     }
 
     return varName + ' = ' + argument0 + ';\n';
+};
+
+
+
+
+Blockly.Blocks.array_get = {
+    helpUrl: Blockly.MSG_ARRAYS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ARRAY_GET_TOOLTIP);
+        this.setColour(colorPalette.getColor('variables'));
+        this.appendValueInput('NUM')
+                .appendField('Array')
+                .appendField(new Blockly.FieldTextInput('list'), 'VAR')
+                .appendField('element');
+        this.setInputsInline(true);
+        this.setOutput(true, null);
+    }
+};
+
+Blockly.propc.array_get = function () {
+    var varName = this.getFieldValue('VAR');
+    var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
+    var list = Blockly.propc.global_vars_;
+
+    var code = varName + '[' + element + ']';
+
+    if (Object.keys(list).indexOf('__ARRAY' + varName) < 0) {
+        return '// ERROR: The array "' + varName + '" has not been initialized!\n';
+    } else {
+        return [code, Blockly.propc.ORDER_ATOMIC];
+    }
+};
+
+Blockly.Blocks.array_init = {
+    helpUrl: Blockly.MSG_ARRAYS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ARRAY_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('variables'));
+        this.appendDummyInput()
+                .appendField('Array initialize')
+                .appendField(new Blockly.FieldTextInput('list'), 'VAR')
+                .appendField("with")
+                .appendField(new Blockly.FieldTextInput('10',
+                        Blockly.FieldTextInput.numberValidator), 'NUM')
+                .appendField("elements");
+
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+    }
+};
+
+Blockly.propc.array_init = function () {
+    var varName = this.getFieldValue('VAR');
+    var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '10';
+
+    Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];\n';
+
+    return '';
+};
+
+Blockly.Blocks.array_set = {
+    helpUrl: Blockly.MSG_ARRAYS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ARRAY_SET_TOOLTIP);
+        this.setColour(colorPalette.getColor('variables'));
+        this.appendValueInput('NUM')
+                .appendField('Array')
+                .appendField(new Blockly.FieldTextInput('list'), 'VAR')
+                .appendField('element');
+        this.appendValueInput('VALUE')
+                .appendField('=');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+    }
+};
+
+Blockly.propc.array_set = function () {
+    var varName = this.getFieldValue('VAR');
+    var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
+    var list = Blockly.propc.global_vars_;
+
+    if (Object.keys(list).indexOf('__ARRAY' + varName) < 0) {
+        return '// ERROR: The array "' + varName + '" has not been initialized!\n';
+    } else {
+        return varName + '[' + element + '] = ' + value + ';\n';
+    }
+};
+
+Blockly.Blocks.array_clear = {
+    helpUrl: Blockly.MSG_ARRAYS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ARRAY_CLEAR_TOOLTIP);
+        this.setColour(colorPalette.getColor('variables'));
+        this.appendDummyInput()
+                .appendField('Array clear')
+                .appendField(new Blockly.FieldTextInput('list'), 'VAR');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+    }
+};
+
+Blockly.propc.array_clear = function () {
+    var varName = this.getFieldValue('VAR');
+    var list = Blockly.propc.global_vars_;
+
+    if (Object.keys(list).indexOf('__ARRAY' + varName) < 0) {
+        return '// ERROR: The array "' + varName + '" has not been initialized!\n';
+    } else {
+        return 'memset(' + varName + ', 0, sizeof ' + varName + ');\n';
+    }
 };

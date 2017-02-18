@@ -34,12 +34,12 @@ if (!Blockly.Blocks)
 // ---------------- 2-axis Joystick Blocks -------------------------------------
 Blockly.Blocks.joystick_input_yaxis = {
     helpUrl: Blockly.MSG_JOYSTICK_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_JOYSTICK_INPUT_YAXIS_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_JOYSTICK_INPUT_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Joystick y-axis A/D")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "PINY");
+                .appendField("Joystick y-axis A/D")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "PINY");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -47,7 +47,7 @@ Blockly.Blocks.joystick_input_yaxis = {
     }
 };
 
-Blockly.propc.joystick_input_yaxis = function() {
+Blockly.propc.joystick_input_yaxis = function () {
     var pin_number_yaxis = this.getFieldValue('PINY');
 
     Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
@@ -58,12 +58,12 @@ Blockly.propc.joystick_input_yaxis = function() {
 
 Blockly.Blocks.joystick_input_xaxis = {
     helpUrl: Blockly.MSG_JOYSTICK_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_JOYSTICK_INPUT_XAXIS_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_JOYSTICK_INPUT_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Joystick x-axis A/D")
-            .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "PINX");
+                .appendField("Joystick x-axis A/D")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"]]), "PINX");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -71,7 +71,7 @@ Blockly.Blocks.joystick_input_xaxis = {
     }
 };
 
-Blockly.propc.joystick_input_xaxis = function() {
+Blockly.propc.joystick_input_xaxis = function () {
     var pin_number_xaxis = this.getFieldValue('PINX');
 
     Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
@@ -83,14 +83,14 @@ Blockly.propc.joystick_input_xaxis = function() {
 // ---------------- Ping))) Sensor Blocks --------------------------------------
 Blockly.Blocks.sensor_ping = {
     helpUrl: Blockly.MSG_PING_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_SENSOR_PING_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_SENSOR_PING_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Ping))) distance in")
-            .appendField(new Blockly.FieldDropdown([["inches", "_inches"], ["cm", "_cm"]]), "UNIT")
-            .appendField("PIN")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+                .appendField("Ping))) distance in")
+                .appendField(new Blockly.FieldDropdown([["inches", "_inches"], ["cm", "_cm"]]), "UNIT")
+                .appendField("PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -98,7 +98,7 @@ Blockly.Blocks.sensor_ping = {
     }
 };
 
-Blockly.propc.sensor_ping = function() {
+Blockly.propc.sensor_ping = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var unit = this.getFieldValue('UNIT');
 
@@ -111,8 +111,8 @@ Blockly.propc.sensor_ping = function() {
 // ---------------- PIR Sensor Blocks ------------------------------------------
 Blockly.Blocks.PIR_Sensor = {
     helpUrl: Blockly.MSG_PIR_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_PIR_SENSOR_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_PIR_SENSOR_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("PIR Sensor PIN")
@@ -133,39 +133,39 @@ Blockly.propc.PIR_Sensor = function () {
 
 // ---------------- SF02 Laser Rangefinder Blocks ------------------------------
 /*
-Blockly.Blocks.SF02_Laser_Rangefinder = {
-    init: function () {
-        this.setColour(colorPalette.getColor('input'));
-        this.appendDummyInput()
-                .appendField("SF02 Laser Rangefinder PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-
-        this.setOutput(true, 'Number');
-        this.setPreviousStatement(false, null);
-        this.setNextStatement(false, null);
-    }
-};
-
-Blockly.propc.SF02_Laser_Rangefinder = function() {
-    var pin = this.getFieldValue('PIN');
-
-    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
-    Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
-
-    var code = 'ad_volts(' + pin + ')';
-    return [code, Blockly.propc.ORDER_ATOMIC];
-};
-*/
+ Blockly.Blocks.SF02_Laser_Rangefinder = {
+ init: function () {
+ this.setColour(colorPalette.getColor('input'));
+ this.appendDummyInput()
+ .appendField("SF02 Laser Rangefinder PIN")
+ .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+ 
+ this.setOutput(true, 'Number');
+ this.setPreviousStatement(false, null);
+ this.setNextStatement(false, null);
+ }
+ };
+ 
+ Blockly.propc.SF02_Laser_Rangefinder = function() {
+ var pin = this.getFieldValue('PIN');
+ 
+ Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
+ Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+ 
+ var code = 'ad_volts(' + pin + ')';
+ return [code, Blockly.propc.ORDER_ATOMIC];
+ };
+ */
 
 // ---------------- Sound Impact Sensor Blocks ---------------------------------
 Blockly.Blocks.sound_impact_run = {
     helpUrl: Blockly.MSG_SOUND_IMPACT_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_SOUND_IMPACT_RUN_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_SOUND_IMPACT_RUN_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound Impact initialize PIN")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+                .appendField("Sound Impact initialize PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
@@ -173,7 +173,7 @@ Blockly.Blocks.sound_impact_run = {
     }
 };
 
-Blockly.propc.sound_impact_run = function() {
+Blockly.propc.sound_impact_run = function () {
     var pin = this.getTitleValue('PIN');
 
     Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
@@ -184,11 +184,11 @@ Blockly.propc.sound_impact_run = function() {
 
 Blockly.Blocks.sound_impact_get = {
     helpUrl: Blockly.MSG_SOUND_IMPACT_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_SOUND_IMPACT_GET_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_SOUND_IMPACT_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound Impact get count");
+                .appendField("Sound Impact get count");
 
         this.setNextStatement(false, null);
         this.setPreviousStatement(false, null);
@@ -196,7 +196,7 @@ Blockly.Blocks.sound_impact_get = {
     }
 };
 
-Blockly.propc.sound_impact_get = function() {
+Blockly.propc.sound_impact_get = function () {
     Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
 
     if (Blockly.propc.setups_["sound_impact"] === undefined)
@@ -210,18 +210,18 @@ Blockly.propc.sound_impact_get = function() {
 
 Blockly.Blocks.sound_impact_end = {
     helpUrl: Blockly.MSG_SOUND_IMPACT_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_SOUND_IMPACT_END_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_SOUND_IMPACT_END_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sound Impact close");
+                .appendField("Sound Impact close");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.sound_impact_end = function() {
+Blockly.propc.sound_impact_end = function () {
     Blockly.propc.definitions_["sound_impact"] = '#include "soundimpact.h"';
     if (Blockly.propc.setups_["sound_impact"] === undefined)
     {
@@ -234,8 +234,8 @@ Blockly.propc.sound_impact_end = function() {
 // ---------------- ColorPal Color Sensor Blocks -------------------------------
 Blockly.Blocks.colorpal_enable = {
     helpUrl: Blockly.MSG_COLORPAL_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_COLORPAL_ENABLE_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_COLORPAL_ENABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("ColorPal initialize PIN")
@@ -249,8 +249,8 @@ Blockly.propc.colorpal_enable = function () {
     Blockly.propc.global_vars_["colorpal"] = 'colorPal *cpal;';
     Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
 
-    var pin = this.getFieldValue('IO_PIN');    
-    
+    var pin = this.getFieldValue('IO_PIN');
+
     Blockly.propc.setups_["colorpal"] = 'cpal = colorPal_open(' + pin + ');';
 
     return '';
@@ -258,8 +258,8 @@ Blockly.propc.colorpal_enable = function () {
 
 Blockly.Blocks.colorpal_get_colors_raw = {
     helpUrl: Blockly.MSG_COLORPAL_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_COLORPAL_GET_COLORS_RAW_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_COLORPAL_GET_COLORS_RAW_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("ColorPal raw colors store R in")
@@ -299,8 +299,8 @@ Blockly.propc.colorpal_get_colors_raw = function () {
 
 Blockly.Blocks.colorpal_get_colors = {
     helpUrl: Blockly.MSG_COLORPAL_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_COLORPAL_GET_COLORS_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_COLORPAL_GET_COLORS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("ColorPal store color in")
@@ -334,7 +334,7 @@ Blockly.propc.colorpal_get_colors = function () {
 // -------------Memsic Tilt/Accel (MX2125 Module) ------------------------------
 Blockly.Blocks.MX2125_acceleration_xaxis = {
     helpUrl: Blockly.MSG_MEMSIC_HELPURL,
-    init: function() {
+    init: function () {
         this.setTooltip(Blockly.MSG_MX2125_ACCELERATION_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -358,7 +358,7 @@ Blockly.propc.MX2125_acceleration_xaxis = function () {
 
 Blockly.Blocks.MX2125_acceleration_yaxis = {
     helpUrl: Blockly.MSG_MEMSIC_HELPURL,
-    init: function() {
+    init: function () {
         this.setTooltip(Blockly.MSG_MX2125_ACCELERATION_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -382,7 +382,7 @@ Blockly.propc.MX2125_acceleration_yaxis = function () {
 
 Blockly.Blocks.MX2125_rotation = {
     helpUrl: Blockly.MSG_MEMSIC_HELPURL,
-    init: function() {
+    init: function () {
         this.setTooltip(Blockly.MSG_MX2125_ROTATION_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -410,8 +410,8 @@ Blockly.propc.MX2125_rotation = function () {
 
 Blockly.Blocks.MX2125_tilt_xaxis = {
     helpUrl: Blockly.MSG_MEMSIC_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_MX2125_TILT_XAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic tilt x-axis PIN")
@@ -434,8 +434,8 @@ Blockly.propc.MX2125_tilt_xaxis = function () {
 
 Blockly.Blocks.MX2125_tilt_yaxis = {
     helpUrl: Blockly.MSG_MEMSIC_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_MX2125_TILT_YAXIS_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Memsic tilt y-axis PIN")
@@ -459,8 +459,8 @@ Blockly.propc.MX2125_tilt_yaxis = function () {
 // --------------Accelerometer (MMA7455 Module) Blocks--------------------------
 Blockly.Blocks.MMA7455_init = {
     helpUrl: Blockly.MSG_ACCELEROMETER_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_MMA7455_INIT_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_MMA7455_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Accelerometer initialize CS")
@@ -489,8 +489,8 @@ Blockly.propc.MMA7455_init = function () {
 
 Blockly.Blocks.MMA7455_acceleration = {
     helpUrl: Blockly.MSG_ACCELEROMETER_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_MMA7455_ACCELERATION_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Accelerometer store x-axis in")
@@ -530,8 +530,8 @@ Blockly.propc.MMA7455_acceleration = function () {
 //-----------------------Compass (HMC5883L Module) Blocks ----------------------
 Blockly.Blocks.HMC5883L_init = {
     helpUrl: Blockly.MSG_COMPASS_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_HMC5883L_INIT_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_HMC5883L_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Compass initialize SCL")
@@ -558,8 +558,8 @@ Blockly.propc.HMC5883L_init = function () {
 
 Blockly.Blocks.HMC5883L_read = {
     helpUrl: Blockly.MSG_COMPASS_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_HMC5883L_READ_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_HMC5883L_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Compass heading store in")
@@ -582,21 +582,21 @@ Blockly.Blocks.HMC5883L_read = {
 Blockly.propc.HMC5883L_read = function () {
     var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('HEADING'), Blockly.Variables.NAME_TYPE);
     Blockly.propc.global_vars_["compass_vars"] = 'int __compX, __compY, __compZ;\nfloat __compH;\n';
-    
+
     var code = '';
     code += 'compass_read(bus, &__compX, &__compY, &__compZ);\n';
     code += '\t__compH = atan2(((float) __compY), (((float) __compX)) * 180.0/PI;\n';
     code += '\tif(__compH < 0.0) __compH = (360.0 + __compH);\n';
     code += '\t' + storage + ' = (int) __compH;\n';
-    
+
     return code;
 };
 
 // ------------------ IMU (LSM9DS1 module) Blocks ------------------------------
 Blockly.Blocks.lsm9ds1_init = {
     helpUrl: Blockly.MSG_IMU_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_LSM9DS1_INIT_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_LSM9DS1_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("IMU initialize SCL")
@@ -627,14 +627,32 @@ Blockly.propc.lsm9ds1_init = function () {
     return '';
 };
 
+Blockly.Blocks.lsm9ds1_mag_calibrate = {
+    helpUrl: Blockly.MSG_IMU_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_LSM9DS1_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("IMU calibrate magnetometer");
+
+        this.setInputsInline(true);
+        this.setNextStatement(true, null);
+        this.setPreviousStatement(true, null);
+    }
+};
+
+Blockly.propc.lsm9ds1_mag_calibrate = function () {
+    return 'high(26);high(27);imu_calibrateMag();low(26);low(27);';
+};
+
 Blockly.Blocks.lsm9ds1_read = {
     helpUrl: Blockly.MSG_IMU_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_LSM9DS1_READ_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_LSM9DS1_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("IMU read")
-                .appendField(new Blockly.FieldDropdown([["accelerometer (g-100ths)", "Accel"], ["gyroscope (DPS-100ths)", "Gyro"], ["magnetometer (gauss-100ths)", "Mag"]]), "SENSOR")
+                .appendField(new Blockly.FieldDropdown([["accelerometer (100ths of g's)", "Accel"], ["gyroscope (100ths of deg/s)", "Gyro"], ["magnetometer (100ths of guass)", "Mag"]]), "SENSOR")
                 .appendField("store X-axis in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'X_VAR')
                 .appendField(" y-axis in")
@@ -666,7 +684,7 @@ Blockly.propc.lsm9ds1_read = function () {
     var zstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
 
     var code = '';
-    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
+    if (Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
         code += 'imu_read' + sensor + 'Calculated(&__imuX, &__imuY, &__imuZ);\n';
         code += xstorage + ' = (int) (100.0 * __imuX);\n';
         code += ystorage + ' = (int) (100.0 * __imuY);\n';
@@ -674,73 +692,166 @@ Blockly.propc.lsm9ds1_read = function () {
     } else {
         code += "// LSM9DS1 IMU is not initialized!\n";
     }
-    
+
     return code;
 };
 
 Blockly.Blocks.lsm9ds1_tilt = {
     helpUrl: Blockly.MSG_IMU_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_LSM9DS1_TILT_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_LSM9DS1_TILT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("IMU tilt along ")
-                .appendField(new Blockly.FieldDropdown([["x-axis", "__imuX"], ["y-axis", "__imuY"], ["z-axis", "__imuZ"]]), "T_AXIS")
-                .appendField("gravity pulls along ")
-                .appendField(new Blockly.FieldDropdown([["z-axis", "__imuZ"], ["x-axis", "__imuX"], ["y-axis", "__imuY"]]), "G_AXIS")
-                .appendField("store in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
-        this.setInputsInline(false);
+                .appendField("IMU tilt")
+                .appendField(new Blockly.FieldDropdown([["x-axis", "X"], ["y-axis", "Y"], ["z-axis", "Z"]], function (action) {
+                    this.sourceBlock_.setAxes_({"ACTION": action});
+                }), "G_AXIS")
+                .appendField("points up/down");
+        this.appendDummyInput('TILT1')
+                .appendField("store y-tilt in", 'A1')
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR1');
+        this.appendDummyInput('TILT2')
+                .appendField("z-tilt in", 'A2')
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR2');
+        this.setInputsInline(true);
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
     },
-    getVars: function () {
-        return [this.getFieldValue('VAR')];
+    setAxes_: function (details) {
+        var theVar1 = this.getFieldValue('VAR1');
+        var theVar2 = this.getFieldValue('VAR2');       
+        this.removeInput('TILT1');
+        this.removeInput('TILT2');
+        if (details['ACTION'] === 'X') {
+            this.appendDummyInput('TILT1')
+                    .appendField("store y-tilt in", 'A1')
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR1');
+            this.appendDummyInput('TILT2')
+                    .appendField("z-tilt in", 'A2')
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR2');
+        } else if (details['ACTION'] === 'Y') {
+            this.appendDummyInput('TILT1')
+                    .appendField("store x-tilt in", 'A1')
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR1');
+            this.appendDummyInput('TILT2')
+                    .appendField("z-tilt in", 'A2')
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR2');
+        } else {
+            this.appendDummyInput('TILT1')
+                    .appendField("store x-tilt in", 'A1')
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR1');
+            this.appendDummyInput('TILT2')
+                    .appendField("y-tilt in", 'A2')
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR2');
+        }
+        this.setFieldValue(theVar1, 'VAR1');
+        this.setFieldValue(theVar2, 'VAR2');
     },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    }, 
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
         }
     }
 };
 
 Blockly.propc.lsm9ds1_tilt = function () {
-    var t_axis = this.getFieldValue('T_AXIS');
-    var g_axis = this.getFieldValue('G_AXIS');
-    var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+    var t1_axis = '__imu' + this.getFieldValue('A1')[0].toUpperCase();
+    var t2_axis = '__imu' + this.getFieldValue('A2')[0].toUpperCase();
+    var g_axis = '__imu' + this.getFieldValue('G_AXIS');
+    var storage1 = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR1'), Blockly.Variables.NAME_TYPE);
+    var storage2 = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR2'), Blockly.Variables.NAME_TYPE);
 
     var code = '';
-    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
+    if (Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
         code += 'imu_readAccelCalculated(&__imuX, &__imuY, &__imuZ);\n';
-        code += storage + ' = (int) (atan2(' + t_axis + ', ' + g_axis + ') * 180.0/PI);\n';
+        code += storage1 + ' = (int) (atan2(' + t1_axis + ', ' + g_axis + ') * 180.0/PI);\n';
+        code += storage2 + ' = (int) (atan2(' + t2_axis + ', ' + g_axis + ') * 180.0/PI);\n';
     } else {
         code += "// LSM9DS1 IMU is not initialized!\n";
     }
-    
+
     return code;
 };
 
 Blockly.Blocks.lsm9ds1_heading = {
     helpUrl: Blockly.MSG_IMU_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_LSM9DS1_HEADING_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_LSM9DS1_HEADING_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("IMU heading")
-                .appendField(new Blockly.FieldDropdown([["Z-axis points forward", "__imuZ"], ["Z-axis points backward", "(-1.0*__imuZ)"], ["Y-axis points forward", "__imuY"], ["Y axis points backward", "(-1.0*__imuY)"], ["X-axis points forward", "(-1.0*__imuX)"], ["X-axis points backward", "__imuX"]]), "FB_AXIS")
-                .appendField(new Blockly.FieldDropdown([["Y-axis points left", "__imuY"], ["Y-axis points right", "(-1.0*__imuY)"], ["X-axis points left", "(-1.0*__imuX)"], ["X-axis points right", "__imuX"], ["Z-axis points left", "__imuZ"], ["Z-axis points right", "(-1.0*__imuZ)"]]), "LR_AXIS")
+                .appendField(new Blockly.FieldDropdown([
+                    ["z-axis points forward", "__imuZ"],
+                    ["z-axis points backward", "(-1.0*__imuZ)"],
+                    ["y-axis points forward", "__imuY"],
+                    ["y axis points backward", "(-1.0*__imuY)"],
+                    ["x-axis points forward", "(-1.0*__imuX)"],
+                    ["x-axis points backward", "__imuX"]],
+                        function (action) {
+                            this.sourceBlock_.setAxes_({"ACTION": action});
+                        }), "FB_AXIS")
+                .appendField(' ');
+        this.appendDummyInput('MENU2')
+                .appendField(new Blockly.FieldDropdown([
+                    ["y-axis points left", "__imuY"],
+                    ["y-axis points right", "(-1.0*__imuY)"],
+                    ["x-axis points left", "(-1.0*__imuX)"],
+                    ["x-axis points right", "__imuX"]
+                ]), "LR_AXIS")
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
-        this.setInputsInline(false);
+        this.setInputsInline(true);
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
     },
-    getVars: function () {
-        return [this.getFieldValue('VAR')];
+    setAxes_: function (details) {
+        var theVar = this.getFieldValue('VAR');
+        this.removeInput('MENU2');
+        var wh = details['ACTION'][details['ACTION'].length - 1];
+        if (wh === ')')
+            wh = details['ACTION'][details['ACTION'].length - 2];
+        if (wh === 'X') {
+            this.appendDummyInput('MENU2')
+                    .appendField(new Blockly.FieldDropdown([
+                        ["y-axis points left", "__imuY"],
+                        ["y-axis points right", "(-1.0*__imuY)"],
+                        ["z-axis points left", "__imuZ"],
+                        ["z-axis points right", "(-1.0*__imuZ)"]
+                    ]), "LR_AXIS")
+                    .appendField("store in")
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+        } else if (wh === 'Y') {
+            this.appendDummyInput('MENU2')
+                    .appendField(new Blockly.FieldDropdown([
+                        ["x-axis points left", "(-1.0*__imuX)"],
+                        ["x-axis points right", "__imuX"],
+                        ["z-axis points left", "__imuZ"],
+                        ["z-axis points right", "(-1.0*__imuZ)"]
+                    ]), "LR_AXIS")
+                    .appendField("store in")
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+        } else {
+            this.appendDummyInput('MENU2')
+                    .appendField(new Blockly.FieldDropdown([
+                        ["y-axis points left", "__imuY"],
+                        ["y-axis points right", "(-1.0*__imuY)"],
+                        ["x-axis points left", "(-1.0*__imuX)"],
+                        ["x-axis points right", "__imuX"]
+                    ]), "LR_AXIS")
+                    .appendField("store in")
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+        }
+        this.setFieldValue(theVar, 'VAR');
     },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    }, 
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setTitleValue(newName, 'VALUE');
         }
     }
 };
@@ -751,15 +862,15 @@ Blockly.propc.lsm9ds1_heading = function () {
     var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
     var code = '';
-    if(Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
+    if (Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
         code += 'imu_readMagCalculated(&__imuX, &__imuY, &__imuZ);\n';
         code += '__compI = atan2(' + lr_axis + ', ' + fb_axis + ') * 180.0/PI;\n';
         code += 'if(__compI < 0.0) __compI = (360.0 + __compI);\n';
-        code += storage + ' = (int) __compI;\n';    
+        code += storage + ' = (int) __compI;\n';
     } else {
         code += "// LSM9DS1 IMU is not initialized!\n";
     }
-    
+
     return code;
 };
 
@@ -768,23 +879,23 @@ Blockly.Blocks.PAM_7Q_Init = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("PAM7Q GPS Module");
+                .appendField("PAM7Q GPS Module");
         this.appendDummyInput()
-            .appendField("RX pin#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN");
+                .appendField("RX pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN");
         this.appendDummyInput()
-            .appendField("TX pin#")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
+                .appendField("TX pin#")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput()
-            .appendField("baud")
-            .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
+                .appendField("baud")
+                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
 
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
     }
 };
 
-Blockly.propc.PAM_7Q_Init = function() {
+Blockly.propc.PAM_7Q_Init = function () {
     var rx_pin = this.getFieldValue('RXPIN');
     var tx_pin = this.getFieldValue('TXPIN');
     var baud = this.getFieldValue('BAUD');
@@ -799,7 +910,7 @@ Blockly.Blocks.PAM_7Q_Latitude = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get latitude");
+                .appendField("get latitude");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -807,7 +918,7 @@ Blockly.Blocks.PAM_7Q_Latitude = {
     }
 };
 
-Blockly.propc.PAM_7Q_Latitude = function() {
+Blockly.propc.PAM_7Q_Latitude = function () {
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
 
     var code = 'gps_latitude()';
@@ -818,7 +929,7 @@ Blockly.Blocks.PAM_7Q_Longitude = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get longitude");
+                .appendField("get longitude");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -826,7 +937,7 @@ Blockly.Blocks.PAM_7Q_Longitude = {
     }
 };
 
-Blockly.propc.PAM_7Q_Longitude = function() {
+Blockly.propc.PAM_7Q_Longitude = function () {
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
 
     var code = 'gps_longitude()';
@@ -837,7 +948,7 @@ Blockly.Blocks.PAM_7Q_Heading = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get heading");
+                .appendField("get heading");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -845,7 +956,7 @@ Blockly.Blocks.PAM_7Q_Heading = {
     }
 };
 
-Blockly.propc.PAM_7Q_Heading = function() {
+Blockly.propc.PAM_7Q_Heading = function () {
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
 
     var code = '(int)gps_heading()';
@@ -856,7 +967,7 @@ Blockly.Blocks.PAM_7Q_Altitude = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get altitude");
+                .appendField("get altitude");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -864,7 +975,7 @@ Blockly.Blocks.PAM_7Q_Altitude = {
     }
 };
 
-Blockly.propc.PAM_7Q_Altitude = function() {
+Blockly.propc.PAM_7Q_Altitude = function () {
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
 
     var code = 'gps_altitude()';
@@ -875,7 +986,7 @@ Blockly.Blocks.PAM_7Q_SatsTracked = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get # of satellites tracked");
+                .appendField("get # of satellites tracked");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -883,7 +994,7 @@ Blockly.Blocks.PAM_7Q_SatsTracked = {
     }
 };
 
-Blockly.propc.PAM_7Q_SatsTracked = function() {
+Blockly.propc.PAM_7Q_SatsTracked = function () {
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
 
     var code = 'gps_satsTracked()';
@@ -894,8 +1005,8 @@ Blockly.Blocks.PAM_7Q_Velocity = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("get velocity in units")
-            .appendField(new Blockly.FieldDropdown([["mph", "MPH"], ["knots", "KNOTS"]]), "VELOCITYUNITS");
+                .appendField("get velocity in units")
+                .appendField(new Blockly.FieldDropdown([["mph", "MPH"], ["knots", "KNOTS"]]), "VELOCITYUNITS");
 
         this.setOutput(true, 'Number');
         this.setNextStatement(false, null);
@@ -903,7 +1014,7 @@ Blockly.Blocks.PAM_7Q_Velocity = {
     }
 };
 
-Blockly.propc.PAM_7Q_Velocity = function() {
+Blockly.propc.PAM_7Q_Velocity = function () {
     var velocity_units = this.getFieldValue('VELOCITYUNITS');
 
     Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
@@ -915,12 +1026,12 @@ Blockly.propc.PAM_7Q_Velocity = function() {
 // ------------------ RFID Reader Blocks ---------------------------------------
 Blockly.Blocks.rfid_get = {
     helpUrl: Blockly.MSG_RFID_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_RFID_GET_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_RFID_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("RFID store reading in")
-            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
+                .appendField("RFID store reading in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -935,7 +1046,7 @@ Blockly.Blocks.rfid_get = {
     }
 };
 
-Blockly.propc.rfid_get = function() {
+Blockly.propc.rfid_get = function () {
     var saveVariable = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.global_vars_["rfid_buffer"] = "char *rfidBfr;";
@@ -947,43 +1058,43 @@ Blockly.propc.rfid_get = function() {
 
 Blockly.Blocks.rfid_disable = {
     helpUrl: Blockly.MSG_RFID_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_RFID_DISABLE_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_RFID_DISABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("RFID")
-            .appendField(new Blockly.FieldDropdown([
-                    ["disable", "DISABLE"], 
-                    ["enable", "ENABLE"] 
-                    ]), "ACTION");
+                .appendField("RFID")
+                .appendField(new Blockly.FieldDropdown([
+                    ["disable", "DISABLE"],
+                    ["enable", "ENABLE"]
+                ]), "ACTION");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.rfid_disable = function() {
+Blockly.propc.rfid_disable = function () {
     var data = this.getFieldValue('ACTION');
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
-    if(data === "ENABLE") {
+    if (data === "ENABLE") {
         return 'rfid_enable(rfid);';
     } else {
-        return 'rfid_disable(rfid);';    
+        return 'rfid_disable(rfid);';
     }
 };
 
 Blockly.Blocks.rfid_enable = {
     helpUrl: Blockly.MSG_RFID_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_RFID_ENABLE_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_RFID_ENABLE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("RFID initialize EN")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_IN");
+                .appendField("RFID initialize EN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_IN");
         this.appendDummyInput()
-            .appendField("SOUT")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_OUT");
+                .appendField("SOUT")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_OUT");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -991,7 +1102,7 @@ Blockly.Blocks.rfid_enable = {
     }
 };
 
-Blockly.propc.rfid_enable = function() {
+Blockly.propc.rfid_enable = function () {
     var pin_in = this.getFieldValue('PIN_IN');
     var pin_out = this.getFieldValue('PIN_OUT');
 
@@ -1004,18 +1115,18 @@ Blockly.propc.rfid_enable = function() {
 
 Blockly.Blocks.rfid_close = {
     helpUrl: Blockly.MSG_RFID_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_RFID_CLOSE_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_RFID_CLOSE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("RFID close");
+                .appendField("RFID close");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }
 };
 
-Blockly.propc.rfid_close = function() {
+Blockly.propc.rfid_close = function () {
     Blockly.propc.definitions_["rfidser"] = '#include "rfidser.h"';
 
     return 'rfidser_close(rfid);\n';
@@ -1024,12 +1135,12 @@ Blockly.propc.rfid_close = function() {
 // ------------------ Sony TV Remote (Using 40 kHz IR sensor) Blocks -----------
 Blockly.Blocks.sirc_get = {
     helpUrl: Blockly.MSG_SONY_REMOTE_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_SIRC_GET_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_SIRC_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sony Remote value received from PIN")
-            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+                .appendField("Sony Remote value received from PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
 
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
@@ -1038,7 +1149,7 @@ Blockly.Blocks.sirc_get = {
     }
 };
 
-Blockly.propc.sirc_get = function() {
+Blockly.propc.sirc_get = function () {
     var pin = this.getFieldValue('PIN');
 
     Blockly.propc.definitions_["sirc"] = '#include "sirc.h"';
