@@ -2510,7 +2510,7 @@ Blockly.Blocks.wx_scan_string = {
         this.removeInput('STORE');
 
         this.appendDummyInput('STORE')
-                .appendField('store sting in')
+                .appendField('store string in')
                 .appendField(new Blockly.FieldVariable(data), 'VARNAME');
     },
     getVars: function () {
