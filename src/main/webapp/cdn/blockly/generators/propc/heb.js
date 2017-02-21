@@ -83,8 +83,8 @@ Blockly.propc.heb_toggle_led_open = function () {
 Blockly.Blocks.heb_color_val = {
     init: function () {
         this.setColour(colorPalette.getColor('programming'));
-	var rgb_led_colors = new Blockly.FieldColour("#FFFFFF");
-	rgb_led_colors.setColours(['#FFFFFF','#FFFF00','#00FFFF','#FF00FF','#000000','#00FF00','#0000FF','#FF0000']).setColumns(4);
+        var rgb_led_colors = new Blockly.FieldColour("#FFFFFF");
+        rgb_led_colors.setColours(['#FFFFFF', '#FFFF00', '#00FFFF', '#FF00FF', '#000000', '#00FF00', '#0000FF', '#FF0000']).setColumns(4);
         this.appendDummyInput()
                 .appendField('color (Badge)')
                 .appendField(rgb_led_colors, "RGB");
@@ -106,8 +106,7 @@ Blockly.Blocks.heb_set_led_rgb = {
         this.setColour(colorPalette.getColor('functions'));
         this.appendValueInput('RGB')
                 .appendField('RGB LED set state of')
-                .appendField(new Blockly.FieldDropdown([["left LED", "L"], ["right LED", "R"], ["both LEDs", "B"]]), "SIDE");
-        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown([["left LED", "L"], ["right LED", "R"], ["both LEDs", "B"]]), "SIDE")
                 .appendField('to');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -224,8 +223,8 @@ Blockly.propc.heb_cursor_position_small = function () {
 
 Blockly.Blocks.heb_oled_point = {
     init: function () {
-	var oled_colors = new Blockly.FieldColour("#FFFFFF");
-	oled_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
+        var oled_colors = new Blockly.FieldColour("#FFFFFF");
+        oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
                 .appendField('Display draw pixel at (x)');
@@ -245,8 +244,10 @@ Blockly.propc.heb_oled_point = function () {
     var y = Blockly.propc.valueToCode(this, "Y0", Blockly.propc.ORDER_NONE);
     var c = this.getFieldValue('COLOR');
     //var c = Blockly.propc.valueToCode(this, "COLOR", Blockly.propc.ORDER_NONE);
-    if(c === '#000000') c = '0';
-    else c = '1';
+    if (c === '#000000')
+        c = '0';
+    else
+        c = '1';
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -257,8 +258,8 @@ Blockly.propc.heb_oled_point = function () {
 
 Blockly.Blocks.heb_oled_line = {
     init: function () {
-	var oled_colors = new Blockly.FieldColour("#FFFFFF");
-	oled_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
+        var oled_colors = new Blockly.FieldColour("#FFFFFF");
+        oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
                 .appendField('Display draw line from 1 (x)');
@@ -288,8 +289,10 @@ Blockly.propc.heb_oled_line = function () {
     var y1 = Blockly.propc.valueToCode(this, "Y1", Blockly.propc.ORDER_NONE);
     var c = this.getFieldValue('COLOR');
     //var c = Blockly.propc.valueToCode(this, "COLOR", Blockly.propc.ORDER_NONE);
-    if(c === '#000000') c = '0';
-    else c = '1';
+    if (c === '#000000')
+        c = '0';
+    else
+        c = '1';
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -300,8 +303,8 @@ Blockly.propc.heb_oled_line = function () {
 
 Blockly.Blocks.heb_oled_circle = {
     init: function () {
-	var oled_colors = new Blockly.FieldColour("#FFFFFF");
-	oled_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
+        var oled_colors = new Blockly.FieldColour("#FFFFFF");
+        oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
                 .appendField('Display draw circle at (x)');
@@ -332,10 +335,14 @@ Blockly.propc.heb_oled_circle = function () {
     var f = this.getFieldValue('FILL');
     var c = this.getFieldValue('COLOR');
     //var c = Blockly.propc.valueToCode(this, "COLOR", Blockly.propc.ORDER_NONE);
-    if(c === '#000000') c = '0';
-    else c = '1';
-    if (f === 'TRUE') f = 'Filled';
-    else f = '';
+    if (c === '#000000')
+        c = '0';
+    else
+        c = '1';
+    if (f === 'TRUE')
+        f = 'Filled';
+    else
+        f = '';
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -346,8 +353,8 @@ Blockly.propc.heb_oled_circle = function () {
 
 Blockly.Blocks.heb_oled_box = {
     init: function () {
-	var oled_colors = new Blockly.FieldColour("#FFFFFF");
-	oled_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
+        var oled_colors = new Blockly.FieldColour("#FFFFFF");
+        oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
                 .appendField('Display draw rectangle at 1 (x)');
@@ -382,10 +389,14 @@ Blockly.propc.heb_oled_box = function () {
     var f = this.getFieldValue('FILL');
     var c = this.getFieldValue('COLOR');
     //var c = Blockly.propc.valueToCode(this, "COLOR", Blockly.propc.ORDER_NONE);
-    if(c === '#000000') c = '0';
-    else c = '1';
-    if (f === 'TRUE') f = 'Filled';
-    else f = '';
+    if (c === '#000000')
+        c = '0';
+    else
+        c = '1';
+    if (f === 'TRUE')
+        f = 'Filled';
+    else
+        f = '';
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -397,8 +408,8 @@ Blockly.propc.heb_oled_box = function () {
 
 Blockly.Blocks.heb_oled_triangle = {
     init: function () {
-	var oled_colors = new Blockly.FieldColour("#FFFFFF");
-	oled_colors.setColours(['#FFFFFF','#000000']).setColumns(2);
+        var oled_colors = new Blockly.FieldColour("#FFFFFF");
+        oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
                 .appendField('Display draw triangle from 1 (x)');
@@ -441,10 +452,14 @@ Blockly.propc.heb_oled_triangle = function () {
     var f = this.getFieldValue('FILL');
     var c = this.getFieldValue('COLOR');
     //var c = Blockly.propc.valueToCode(this, "COLOR", Blockly.propc.ORDER_NONE);
-    if(c === '#000000') c = '0';
-    else c = '1';
-    if (f === 'TRUE') f = 'Filled';
-    else f = '';
+    if (c === '#000000')
+        c = '0';
+    else
+        c = '1';
+    if (f === 'TRUE')
+        f = 'Filled';
+    else
+        f = '';
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -526,12 +541,13 @@ Blockly.Blocks.heb_ir_read_signal = {
         this.setInputsInline(true);
     },
     getVars: function () {
-        return [this.getFieldValue('VALUE')];
-    }, 
+        return [this.getFieldValue('BUFFER')];
+    },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
-        }
+        if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER')))
+            this.setTitleValue(newName, 'BUFFER');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('LENGTH')))
+            this.setTitleValue(newName, 'LENGTH');
     }
 };
 
@@ -624,11 +640,11 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
         this.setNextStatement(true, null);
     },
     getVars: function () {
-        return [this.getFieldValue('VALUE')];
-    }, 
+        return [this.getFieldValue('BUFFER')];
+    },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
+            this.setTitleValue(newName, 'BUFFER');
         }
     }
 };
@@ -751,7 +767,7 @@ Blockly.propc.heb_touchpad_status = function () {
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = '';
-    if(touchpad === "-1") {
+    if (touchpad === "-1") {
         code += 'buttons()';
     } else {
         code += 'button(' + touchpad + ')';
@@ -774,11 +790,11 @@ Blockly.propc.heb_text_to_speech_say = function () {
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-    
+
     Blockly.propc.definitions_["TTS"] = '#include "text2speech.h"';
     Blockly.propc.global_vars_["TTS"] = 'talk *tts_talk;';
     Blockly.propc.setups_["TTS"] = 'tts_talk = talk_run(9, 10);\ntalk_set_speaker(tts_talk, 1, 100);';
-    
+
     var code = 'talk_say(tts_talk, ' + str + ');\n';
     return code;
 };
@@ -798,11 +814,11 @@ Blockly.propc.heb_text_to_speech_spell = function () {
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-    
+
     Blockly.propc.definitions_["TTS"] = '#include "text2speech.h"';
     Blockly.propc.global_vars_["TTS"] = 'talk *tts_talk;';
     Blockly.propc.setups_["TTS"] = 'tts_talk = talk_run(9, 10);\ntalk_set_speaker(tts_talk, 1, 100);';
-    
+
     var code = 'talk_spell(tts_talk, ' + str + ');\n';
     return code;
 };

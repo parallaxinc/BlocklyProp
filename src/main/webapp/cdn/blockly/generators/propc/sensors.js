@@ -748,12 +748,11 @@ Blockly.Blocks.lsm9ds1_tilt = {
         this.setFieldValue(theVar2, 'VAR2');
     },
     getVars: function () {
-        return [this.getFieldValue('VALUE')];
+        return [this.getFieldValue('VAR1'), this.getFieldValue('VAR2')];
     }, 
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
-        }
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR1')))  this.setTitleValue(newName, 'VAR1');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR2')))  this.setTitleValue(newName, 'VAR2');
     }
 };
 
@@ -847,11 +846,11 @@ Blockly.Blocks.lsm9ds1_heading = {
         this.setFieldValue(theVar, 'VAR');
     },
     getVars: function () {
-        return [this.getFieldValue('VALUE')];
+        return [this.getFieldValue('VAR')];
     }, 
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+            this.setTitleValue(newName, 'VAR');
         }
     }
 };
