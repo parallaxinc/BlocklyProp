@@ -2510,7 +2510,7 @@ Blockly.Blocks.wx_scan_string = {
         this.removeInput('STORE');
 
         this.appendDummyInput('STORE')
-                .appendField('store sting in')
+                .appendField('store string in')
                 .appendField(new Blockly.FieldVariable(data), 'VARNAME');
     },
     getVars: function () {
@@ -2528,6 +2528,8 @@ Blockly.propc.wx_scan_string = function () {
     var start = this.getFieldValue('START');
     start.replace(/['"]+/g, '');
     var store = this.getFieldValue('VARNAME');
+
+    Blockly.propc.vartype_[store] = 'char *';
 
     if (conn !== 'POST')
         start = '';
@@ -2548,7 +2550,8 @@ Blockly.Blocks.wx_send_string = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("DATA")
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("WX send string");
+                .appendField("WX send string")
+                .setCheck("String");
         this.appendDummyInput()
                 .appendField("handle")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HANDLE');
@@ -2594,6 +2597,7 @@ Blockly.Blocks.wx_receive_string = {
                 .appendField("handle")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HANDLE')
                 .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
                 .appendField("max bytes");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -2614,6 +2618,8 @@ Blockly.propc.wx_receive_string = function () {
     var handle = this.getFieldValue('HANDLE');
     var max = Blockly.propc.valueToCode(this, 'MAX', Blockly.propc.NONE) || '64';
     var bytes = this.getFieldValue('BYTES');
+
+    Blockly.propc.vartype_[data] = 'char *';
 
     var code = bytes + ' = wifi_recv(' + handle + ', ' + data + ', ' + max + ');\n';
 
@@ -2676,9 +2682,11 @@ Blockly.Blocks.wx_listen = {
                 }), 'PROTOCOL')
                 .appendField("store ID in", 'TEXT')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'ID')
-                .appendField("path", "LABEL");
+                .appendField("path", "LABEL")
+                .setCheck("String");
         this.appendValueInput("PORT")
-                .appendField("port");
+                .appendField("port")
+                .setCheck("Number");
         this.appendDummyInput('CONNVARS')
                 .appendField(new Blockly.FieldVariable('wxConnId1'), 'ID1')
                 .appendField(new Blockly.FieldVariable('wxConnId2'), 'ID2')
@@ -2901,7 +2909,7 @@ Blockly.Blocks.wx_buffer = {
         this.setTooltip(Blockly.MSG_AWX_BUFFER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("SIZE")
-                .setCheck(null)
+                .setCheck('Number')
                 .appendField("WX buffer use default")
                 .appendField(new Blockly.FieldCheckbox("TRUE", function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
@@ -2947,6 +2955,8 @@ Blockly.propc.wx_buffer = function () {
     var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
     var def = this.getFieldValue('DEFAULT');
     var buffer = this.getFieldValue('BUFFER');
+    
+    Blockly.propc.vartype_[buffer] = 'char *';
 
     var code = '';
     if (def === "TRUE") {
