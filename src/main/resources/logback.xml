@@ -4,25 +4,20 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-
 <!-- 
 Valid logging levels: TRACE, DEBUG, INFO, WARN and ERROR
 -->
 <configuration>
     <!-- Log file destinations are defined here -->
-    <property name="APP_LOG_PATH" value="/var/log/tomcat7" />
-    <property name="APP_LOG_FILE_BASE" value="blockly-app" />
-    
-    <!--
-    <property name="logFileName" value="/home/developer/blocklt-app.log" />
-    -->
+    <property name="APP_LOG_PATH" value="/var/log/tomcat7"/>
+    <property name="APP_LOG_FILE_BASE" value="blockly-app"/>
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    
+
     <appender name="file" class="ch.qos.logback.core.FileAppender">
         <file>${APP_LOG_PATH}/${APP_LOG_FILE_BASE}.log</file>
         <encoder>
@@ -31,15 +26,14 @@ Valid logging levels: TRACE, DEBUG, INFO, WARN and ERROR
     </appender>
 
     <logger name="com.parallax.server.blocklyprop.monitoring" level="info">
-        <appender-ref ref="file" />
+        <appender-ref ref="file"/>
     </logger>
-    
+
     <logger name="com.parallax.server.blocklyprop" level="info">
-        <appender-ref ref="file" />
+        <appender-ref ref="file"/>
     </logger>
-    
 
     <root level="info">
-        <appender-ref ref="stdout" />
+        <appender-ref ref="stdout"/>
     </root>
 </configuration>
