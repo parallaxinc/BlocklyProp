@@ -937,6 +937,17 @@
             <category name="<fmt:message key="category.sensor-input.ping" />">
                 <block type="sensor_ping"></block>
             </category>
+            <category name="<fmt:message key="category.sensor-input.fingerprint" />">
+                <block type="fp_scanner_init"></block>
+                <block type="fp_scanner_add">
+                    <value name="USER">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="fp_scanner_scan"></block>
+            </category>
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>

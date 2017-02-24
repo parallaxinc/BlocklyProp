@@ -331,6 +331,174 @@ Blockly.propc.colorpal_get_colors = function () {
     return code;
 };
 
+// -------------- Fingerprint Scanner Blocks -----------------------------------
+Blockly.Blocks.fp_scanner_init = {
+    helpUrl: Blockly.MSG_FPS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_FPS_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("Fingerprint Scanner initialize RX")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
+                .appendField("TX")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN")
+                .appendField("allow overwrite")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "OW");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.fp_scanner_init = function () {
+    var rxpin = this.getFieldValue('RXPIN');
+    var txpin = this.getFieldValue('TXPIN');
+    var ow = this.getFieldValue('OW');
+
+    Blockly.propc.global_vars_["fpScannerObj"] = 'fpScanner *fpScan;';
+    Blockly.propc.definitions_["fpScannerDef"] = '#include "fingerprint.h"';
+
+    Blockly.propc.setups_["fpScanner"] = 'fpScan = fingerprint_open(' + rxpin + ', ' + txpin + ');';
+
+    if (ow === "TRUE")
+        Blockly.propc.setups_["fpScanOverWrite"] = 'fingerprint_allowOverwrite(fpScan, 1);';
+    else
+        Blockly.propc.setups_["fpScanOverWrite"] = 'fingerprint_allowOverwrite(fpScan, 0);';
+
+    return '';
+};
+
+Blockly.Blocks.fp_scanner_add = {
+    helpUrl: Blockly.MSG_FPS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_FPS_ADD_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("Fingerprint Scanner")
+                .appendField(new Blockly.FieldDropdown([["add", "ADD"], ["delete", "DEL"], ["delete all users", "ALL"]], function (action) {
+                    this.sourceBlock_.setAction_({"ACTION": action});
+                }), "ACTION");
+        this.appendValueInput("USER")
+                .setCheck("Number")
+                .appendField("user");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('ACTION');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setAction_({"ACTION": action});
+    },
+    setAction_: function (details) {
+        var inputIs = this.getInput('USER');
+        if (details['ACTION'] !== 'ALL') {
+            if (!inputIs) {
+                this.appendValueInput("USER")
+                        .setCheck("Number")
+                        .appendField("user");
+            }
+        } else {
+            if (inputIs)
+                this.removeInput('USER');
+        }
+    }
+};
+
+Blockly.propc.fp_scanner_add = function () {
+    var act = this.getFieldValue('ACTION');
+    var usr = '1';
+    if (act !== "ALL")
+        usr = Blockly.propc.valueToCode(this, 'USER', Blockly.propc.NONE) || '1';
+
+    var code = '';
+
+    if (Blockly.propc.global_vars_["fpScannerObj"] === 'fpScanner *fpScan;') {
+        if (act === 'ADD')
+            code = 'fingerprint_add(fpScan, ' + usr + ', 3, 0);\n';
+        if (act === 'DEL')
+            code = 'fingerprint_deleteUser(fpScan, ' + usr + ');\n';
+        if (act === 'ALL')
+            code = 'fingerprint_deleteUser(fpScan, 0);\n';
+    } else {
+        code = '// ERROR: Fingerprint Scanner is not initialized!\n';
+    }
+
+    return code;
+};
+
+Blockly.Blocks.fp_scanner_scan = {
+    helpUrl: Blockly.MSG_FPS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_FPS_SCAN_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("Fingerprint Scanner")
+                .appendField(new Blockly.FieldDropdown([["scan", "SCAN"], ["scan and compare", "COMP"], ["count users", "COUNT"]], function (action) {
+                    this.sourceBlock_.setAction_({"ACTION": action});
+                }), "ACTION");
+        this.setInputsInline(true);
+        this.setOutput(true, 'Number');
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('ACTION');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setAction_({"ACTION": action});
+    },
+    setAction_: function (details) {
+        var inputIs = this.getInput('USER');
+        if (details['ACTION'] === 'COMP') {
+            if (!inputIs) {
+                this.appendValueInput("USER")
+                        .setCheck("Number")
+                        .appendField("to user");
+            }
+        } else {
+            if (inputIs)
+                this.removeInput('USER');
+        }
+    }
+};
+
+Blockly.propc.fp_scanner_scan = function () {
+    var act = this.getFieldValue('ACTION');
+    var usr = '1';
+    if (act === "COMP")
+        usr = Blockly.propc.valueToCode(this, 'USER', Blockly.propc.NONE) || '1';
+
+    var func = 'int fingerScanner(int __u) {';
+    func += 'int r;\nfingerprint_scan(fpScan, __u, &r);\n';
+    func += 'if (__u != 0 && r != 0) return 1;\n else return r;}';
+
+    var code = '0';
+
+    if (Blockly.propc.global_vars_["fpScannerObj"] === 'fpScanner *fpScan;') {
+        if (act === 'SCAN') {
+            Blockly.propc.global_vars_["fpScannerFunc"] = func;
+            code = 'fingerScanner(0)';
+        }
+        if (act === 'COMP') {
+            Blockly.propc.global_vars_["fpScannerFunc"] = func;
+            code = 'fingerScanner(' + usr + ')';
+        }
+        if (act === 'COUNT')
+            code = 'fingerScanner(fpScan)';
+    }
+    //code = 'toast';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+
 // -------------Memsic Tilt/Accel (MX2125 Module) ------------------------------
 Blockly.Blocks.MX2125_acceleration_xaxis = {
     helpUrl: Blockly.MSG_MEMSIC_HELPURL,
@@ -719,7 +887,7 @@ Blockly.Blocks.lsm9ds1_tilt = {
     },
     setAxes_: function (details) {
         var theVar1 = this.getFieldValue('VAR1');
-        var theVar2 = this.getFieldValue('VAR2');       
+        var theVar2 = this.getFieldValue('VAR2');
         this.removeInput('TILT1');
         this.removeInput('TILT2');
         if (details['ACTION'] === 'X') {
@@ -749,10 +917,12 @@ Blockly.Blocks.lsm9ds1_tilt = {
     },
     getVars: function () {
         return [this.getFieldValue('VAR1'), this.getFieldValue('VAR2')];
-    }, 
+    },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR1')))  this.setTitleValue(newName, 'VAR1');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR2')))  this.setTitleValue(newName, 'VAR2');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR1')))
+            this.setTitleValue(newName, 'VAR1');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR2')))
+            this.setTitleValue(newName, 'VAR2');
     }
 };
 
@@ -847,7 +1017,7 @@ Blockly.Blocks.lsm9ds1_heading = {
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
-    }, 
+    },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
             this.setTitleValue(newName, 'VAR');

@@ -1642,11 +1642,21 @@ Blockly.Blocks.wx_init = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var pin = this.getFieldValue('DO');
+        container.setAttribute('pin', pin);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var pin = xmlElement.getAttribute('pin');
+        this.updateShape_({"PIN": pin});
+    },
     updateShape_: function (details) {
-        var prefixVisible = false;
-        if (details['PIN'] !== '31')
-            prefixVisible = true;
-        this.getInput('DIPIN').setVisible(prefixVisible);
+        if (details['PIN'] === '31')
+            this.getInput('DIPIN').setVisible(false);
+        else
+            this.getInput('DIPIN').setVisible(true);
     }
 };
 
@@ -2019,11 +2029,21 @@ Blockly.Blocks.wx_init_adv = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var pin = this.getFieldValue('DO');
+        container.setAttribute('pin', pin);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var pin = xmlElement.getAttribute('pin');
+        this.updateShape_({"PIN": pin});
+    },
     updateShape_: function (details) {
-        var prefixVisible = false;
-        if (details['PIN'] !== '31')
-            prefixVisible = true;
-        this.getInput('DIPIN').setVisible(prefixVisible);
+        if (details['PIN'] === '31')
+            this.getInput('DIPIN').setVisible(false);
+        else
+            this.getInput('DIPIN').setVisible(true);
     }
 };
 
@@ -2517,8 +2537,10 @@ Blockly.Blocks.wx_scan_string = {
         return [this.getFieldValue('HANDLE'), this.getFieldValue('HANDLE')];
     },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) this.setTitleValue(newName, 'HANDLE');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VARNAME'))) this.setTitleValue(newName, 'VARNAME');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
+            this.setTitleValue(newName, 'HANDLE');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VARNAME')))
+            this.setTitleValue(newName, 'VARNAME');
     }
 };
 
@@ -2607,9 +2629,12 @@ Blockly.Blocks.wx_receive_string = {
         return [this.getFieldValue('DATA'), this.getFieldValue('BYTES'), this.getFieldValue('HANDLE')];
     },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('DATA'))) this.setTitleValue(newName, 'DATA');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('BYTES'))) this.setTitleValue(newName, 'BYTES');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) this.setTitleValue(newName, 'HANDLE');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('DATA')))
+            this.setTitleValue(newName, 'DATA');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('BYTES')))
+            this.setTitleValue(newName, 'BYTES');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
+            this.setTitleValue(newName, 'HANDLE');
     }
 };
 
@@ -2649,9 +2674,12 @@ Blockly.Blocks.wx_poll = {
         return [this.getFieldValue('ID'), this.getFieldValue('EVENT'), this.getFieldValue('HANDLE')];
     },
     renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID'))) this.setTitleValue(newName, 'ID');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('EVENT'))) this.setTitleValue(newName, 'EVENT');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) this.setTitleValue(newName, 'HANDLE');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('ID')))
+            this.setTitleValue(newName, 'ID');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('EVENT')))
+            this.setTitleValue(newName, 'EVENT');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
+            this.setTitleValue(newName, 'HANDLE');
     }
 };
 
@@ -2697,6 +2725,16 @@ Blockly.Blocks.wx_listen = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('PROTOCOL');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setPrefix_({"ACTION": action});
     },
     setPrefix_: function (details) {
         var prefixVisible = false;
@@ -2857,6 +2895,16 @@ Blockly.Blocks.wx_mode = {
         this.setNextStatement(true, null);
         this.setInputsInline(true);
     },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('ACTION');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setPrefix_({"ACTION": action});
+    },
     setPrefix_: function (details) {
         this.removeInput('CHECK');
         if (details['ACTION'] === 'LEAVE') {
@@ -2924,16 +2972,20 @@ Blockly.Blocks.wx_buffer = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('DEFAULT');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setPrefix_({"ACTION": action});
+    },
     setPrefix_: function (details) {
         var data = this.getFieldValue('BUFFER');
         this.removeInput('BUF');
-        if (details["ACTION"] === 'TRUE') {
-            this.appendDummyInput('BUF')
-                    .appendField("set")
-                    .appendField(new Blockly.FieldVariable(data || Blockly.LANG_VARIABLES_GET_ITEM), "BUFFER")
-                    .appendField("as buffer");
-            this.getInput('BUF').setVisible(false);
-        } else {
+        if (details["ACTION"] === 'FALSE' || details["ACTION"] === false || details["ACTION"] === 'false') {
             this.appendDummyInput('BUF')
                     .appendField("set")
                     .appendField(new Blockly.FieldVariable(data || Blockly.LANG_VARIABLES_GET_ITEM), "BUFFER")
@@ -2955,7 +3007,7 @@ Blockly.propc.wx_buffer = function () {
     var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
     var def = this.getFieldValue('DEFAULT');
     var buffer = this.getFieldValue('BUFFER');
-    
+
     Blockly.propc.vartype_[buffer] = 'char *';
 
     var code = '';
@@ -2988,6 +3040,16 @@ Blockly.Blocks.wx_disconnect = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('PROTOCOL');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setPrefix_({"ACTION": action});
     },
     setPrefix_: function (details) {
         if (details['ACTION'] === 'TCP') {
