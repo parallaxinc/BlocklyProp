@@ -93,6 +93,16 @@
                             <label for="confirmpassword" ><fmt:message key="register.do.confirm_password" /></label>
                             <input class="form-control" type="password" name="confirmpassword" maxlength="255">
                         </div>
+                        <div class="form-group">
+                            <p>
+                                <fmt:message key="register.do.coppa.msg1" />
+                                <a href="https://www.ftc.gov/tips-advice/business-center/guidance/childrens-online-privacy-protection-rule-not-just-kids-sites"
+                                   target ="_blank">
+                                    <fmt:message key="register.do.coppa.msg2" /></a>.
+                            </p>
+                            <label for="birthdate"><fmt:message key="register.do.birth.date" /></label>
+                            <input class="form-control"  type="month" name="birthdate" maxlength="7">
+                        </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="register.do.submit" />">
                     </form>
                 </div>

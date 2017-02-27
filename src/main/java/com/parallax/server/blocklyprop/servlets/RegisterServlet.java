@@ -14,6 +14,7 @@ import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import java.io.IOException;
+import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,12 +52,21 @@ public class RegisterServlet extends HttpServlet {
         String email = Strings.emptyToNull(req.getParameter("email"));
         String password = Strings.emptyToNull(req.getParameter("password"));
         String confirmPassword = Strings.emptyToNull(req.getParameter("confirmpassword"));
+        String birthDate = Strings.emptyToNull(req.getParameter("birthdate"));
 
         req.setAttribute("screenname", screenname == null ? "" : screenname);
         req.setAttribute("email", email == null ? "" : email);
-
+        req.setAttribute("birthdate", birthDate == null ? "" : birthDate );
+        
         Long idUser;
+        
         try {
+            // Obtain month and year date components
+            String[] dates = birthDate.split("/");
+            String month = dates[0];
+            String year = dates[1];
+            
+            
             idUser = securityService.register(screenname, email, password, confirmPassword);
             if (idUser != null && idUser > 0) {
                 req.getRequestDispatcher("WEB-INF/servlet/register/registered.jsp").forward(req, resp);
@@ -80,6 +90,11 @@ public class RegisterServlet extends HttpServlet {
             req.setAttribute("screennameUsed", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
+    }
+    
+    private Boolean splitDate(String date) {
+
+        return false;
     }
 
 }
