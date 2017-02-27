@@ -304,14 +304,17 @@ check_com_ports = function () {
         }).fail(function () {
             $("#comPort").empty();
             $("#comPort").append($('<option>', {
-                text: 'COM1'
+                //text: 'COM1'
+                text: 'No client found'
             }));
+            /*
             $("#comPort").append($('<option>', {
                 text: 'COM3'
             }));
             $("#comPort").append($('<option>', {
                 text: 'COM4'
             }));
+            */
             select_com_port(selected_port);
             client_available = false;
         });

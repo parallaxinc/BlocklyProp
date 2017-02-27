@@ -885,6 +885,16 @@ Blockly.Blocks.lsm9ds1_tilt = {
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
     },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('G_AXIS');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setAxes_({"ACTION": action});
+    },
     setAxes_: function (details) {
         var theVar1 = this.getFieldValue('VAR1');
         var theVar2 = this.getFieldValue('VAR2');
@@ -975,6 +985,16 @@ Blockly.Blocks.lsm9ds1_heading = {
         this.setInputsInline(true);
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('FB_AXIS');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.setAxes_({"ACTION": action});
     },
     setAxes_: function (details) {
         var theVar = this.getFieldValue('VAR');
