@@ -25,7 +25,7 @@ import com.parallax.client.cloudsession.objects.User;
  */
 public interface SecurityService {
 
-    Long register(String screenname, String email, String password, String passwordConfirm) 
+    Long register(String screenname, String email, String password, String passwordConfirm, String birthMonth, String birthYear) 
             throws NonUniqueEmailException, 
                    PasswordVerifyException, 
                    PasswordComplexityException, 

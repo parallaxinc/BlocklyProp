@@ -79,7 +79,10 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException, PasswordComplexityException, ScreennameUsedException {
+    public Long register( String screenname, String email, String password, 
+            String passwordConfirm, String birthMonth, String birthYear) 
+            throws NonUniqueEmailException, PasswordVerifyException, 
+            PasswordComplexityException, ScreennameUsedException {
         Preconditions.checkNotNull(screenname, "Screenname cannot be null");
         Preconditions.checkNotNull(email, "Email cannot be null");
         Preconditions.checkNotNull(password, "Password cannot be null");
