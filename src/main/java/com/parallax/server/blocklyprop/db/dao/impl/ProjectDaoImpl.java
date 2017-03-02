@@ -655,7 +655,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 newCode = fixSpinProjectBlocks(newCode);
 
             } else if (record.getType() == ProjectType.PROPC){
-                newCode = fixSpinProjectBlocks(newCode);
+                newCode = fixPropcProjectBlocks(newCode);
             }
 
             // Check for any difference from the original code
@@ -752,6 +752,10 @@ public class ProjectDaoImpl implements ProjectDao {
                 
         newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"",
                 "block type=\"logic_negate\"");
+
+        // Fix a small issue with calling the wrong project type.
+        newCode = newCode.replaceAll("block type=\"spin_integer\"",
+                "block type=\"math_number\"");
 
         return newCode;
     }
