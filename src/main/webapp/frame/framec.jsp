@@ -172,6 +172,7 @@
             </category>            
             <category name="<fmt:message key="category.operators.arrays" />" >
                 <block type="array_init"></block>
+                <block type="array_fill"></block>
                 <block type="array_get">
                     <value name="NUM">
                         <block type="math_number">
