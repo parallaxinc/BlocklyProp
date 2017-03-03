@@ -237,6 +237,7 @@ Blockly.MSG_WS2812B_HELPURL = "http://learn.parallax.com/ab-blocks/ws2812b";
 //----------Activity Board (Propeller C) block tooltips ----------------------------
 Blockly.MSG_COMMENT_TOOLTIP = "add comment: Leave a note for people that will not affect the program.";
 Blockly.MSG_CONTROLS_IF_TOOLTIP = "If...do: when condition attached is true. Click the gear to add conditions.";
+Blockly.MSG_CONTROLS_SELECT_TOOLTIP = "switch...case: does statements when case condition is true. Click the gear to add conditions.";
 Blockly.MSG_CONTROLS_REPEAT_TOOLTIP = "conditional repeat: forever, x times , until, or while attached condition is true.";
 Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP = "repeat item: use variable and value blocks for counted loop.";
 Blockly.MSG_CONTROLS_BREAK_TOOLTIP = "break: Exit loop and skip to the next block.";
@@ -282,6 +283,8 @@ Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP = "make PIN (programmable): Select I/O pin wi
 Blockly.MSG_CHECK_PIN_TOOLTIP = "check PIN (dropdown): Get the state of I/O pin; high = 1, low = 0.";
 Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP = "check PIN (programmable): Get state of I/O pin at inserted value; high = 1, low = 0.";
 Blockly.MSG_SET_PINS_TOOLTIP = "set multiple pins: define group then set each pin. Do not use on P29-P31.";
+Blockly.MSG_GET_PINS_TOOLTIP = "binary get pins: gets the value of a group of pins as a binary value. Highest pin is MSB.";
+Blockly.MSG_SET_PINS_BINARY_TOOLTIP = "binary set pins: define group then set each pins using a binary value. Highest pin is MSB. Do not use on P29-P31.";
 Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP = "LCD initialize: set I/O pin to LCD; match baud to LCD switches.";
 Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP = "LCD print text: display on serial LCD.";
 Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP = "LCD print number: display on serial LCD.";

@@ -249,7 +249,10 @@ Blockly.propc.array_fill = function () {
     var varName = this.getFieldValue('VAR');
     var varVals = this.getFieldValue('NUM');
     varVals = varVals.replace(/[^0-9,-\.]/g, "");
-    varVals = varVals.replace(/\b\.\w+,\b/g, ",");
+    varVals = varVals.replace(/,\./g, ",0.");
+    varVals = varVals.replace(/\b\.[0-9-]+,\b/g, ",");
+    varVals = varVals.replace(/\.[0-9],/g, ",");
+    varVals = varVals.replace(/,,/g, ",0,");
     varVals = varVals.replace(/,\s*$/, "");
     var noCommas = varVals.replace(/,/g, "");
 
@@ -274,7 +277,7 @@ Blockly.propc.array_fill = function () {
     } else {
         code += '// ERROR: The array "' + varName + '" has not been initialized!\n';
     }
-    
+
     return code;
 };
 

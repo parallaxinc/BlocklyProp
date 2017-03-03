@@ -32,13 +32,13 @@ if (!Blockly.Blocks)
 
 
 Blockly.Blocks.controls_repeat = {
-    init: function() {
-        if(profile.default.description === "Scribbler Robot") {
+    init: function () {
+        if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
         } else {
             this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
         }
-	this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         // ["with", "WITH"]
         var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
@@ -95,7 +95,7 @@ Blockly.Blocks.controls_repeat = {
     }
 };
 
-Blockly.propc.controls_repeat = function() {
+Blockly.propc.controls_repeat = function () {
     var type = this.getFieldValue('TYPE');
     var branch = Blockly.propc.statementToCode(this, 'DO');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
@@ -130,13 +130,13 @@ Blockly.propc.controls_repeat = function() {
 Blockly.Blocks.controls_if = {
     // If/elseif/else condition.
     category: Blockly.LANG_CATEGORY_CONTROLS,
-    init: function() {
-        if(profile.default.description === "Scribbler Robot") {
+    init: function () {
+        if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
         } else {
             this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
         }
-	this.setTooltip(Blockly.MSG_CONTROLS_IF_TOOLTIP);
+        this.setTooltip(Blockly.MSG_CONTROLS_IF_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput('IF0')
                 .setCheck('Number')
@@ -309,7 +309,7 @@ Blockly.Blocks.controls_if_else = {
     }
 };
 
-Blockly.propc.controls_if = function() {
+Blockly.propc.controls_if = function () {
     // If/elseif/else condition.
     var n = 0;
     var argument = Blockly.propc.valueToCode(this, 'IF' + n,
@@ -331,51 +331,51 @@ Blockly.propc.controls_if = function() {
 
 /*
  * Disabled/Unused
-
-Blockly.Blocks.controls_if_return = {
-    init: function () {
-        this.setColour(colorPalette.getColor('programming'));
-        this.appendValueInput('CONDITION')
-                .appendField("if");
-        this.appendDummyInput()
-                .appendField("return");
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-    }
-};
-
-Blockly.propc.controls_if_return = function () {
-    var argument = Blockly.propc.valueToCode(this, 'CONDITION', Blockly.propc.ORDER_NONE) || '0';
-
-    return 'if (' + argument + ') {return;}\n';
-};
-*/
+ 
+ Blockly.Blocks.controls_if_return = {
+ init: function () {
+ this.setColour(colorPalette.getColor('programming'));
+ this.appendValueInput('CONDITION')
+ .appendField("if");
+ this.appendDummyInput()
+ .appendField("return");
+ this.setInputsInline(true);
+ this.setPreviousStatement(true, null);
+ this.setNextStatement(true, null);
+ }
+ };
+ 
+ Blockly.propc.controls_if_return = function () {
+ var argument = Blockly.propc.valueToCode(this, 'CONDITION', Blockly.propc.ORDER_NONE) || '0';
+ 
+ return 'if (' + argument + ') {return;}\n';
+ };
+ */
 
 Blockly.Blocks.control_repeat_for_loop = {
     //helpUrl: Blockly.MSG_CONTROL_HELPURL,
-    init: function() {
-        if(profile.default.description === "Scribbler Robot") {
+    init: function () {
+        if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
         } else {
             this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
         }
-	this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
+        this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-            .appendField("repeat")
-            .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+                .appendField("repeat")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         this.appendValueInput('START')
-            .setCheck('Number')
-            .appendField("from");
+                .setCheck('Number')
+                .appendField("from");
         this.appendValueInput('END')
-            .setCheck('Number')
-            .appendField("to");
+                .setCheck('Number')
+                .appendField("to");
         this.appendValueInput('STEP')
-            .setCheck('Number')
-            .appendField("by");
+                .setCheck('Number')
+                .appendField("by");
         this.appendStatementInput("DO")
-            .appendField("do");
+                .appendField("do");
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -402,41 +402,258 @@ Blockly.propc.control_repeat_for_loop = function () {
         var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
         return code;
     } else {
-      var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' -= abs(' + step + ')) {\n' + repeat_code + '\n}';
-      return code;
+        var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' -= abs(' + step + ')) {\n' + repeat_code + '\n}';
+        return code;
     }
 };
 
 Blockly.Blocks.controls_return = {
-  helpUrl: Blockly.MSG_CONTROL_HELPURL,
-  init: function() {
-    this.setTooltip(Blockly.MSG_CONTROLS_RETURN_TOOLTIP);
-    this.appendDummyInput()
-        .appendField("return");
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_CONTROLS_RETURN_TOOLTIP);
+        this.appendDummyInput()
+                .appendField("return");
 
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setColour(colorPalette.getColor('programming'));
-  }
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setColour(colorPalette.getColor('programming'));
+    }
 };
 
-Blockly.propc.controls_return = function() {
+Blockly.propc.controls_return = function () {
     return 'return;';
 };
 
 Blockly.Blocks.controls_break = {
-  helpUrl: Blockly.MSG_CONTROL_HELPURL,
-  init: function() {
-    this.setTooltip(Blockly.MSG_CONTROLS_BREAK_TOOLTIP);
-    this.appendDummyInput()
-        .appendField("break");
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_CONTROLS_BREAK_TOOLTIP);
+        this.appendDummyInput()
+                .appendField("break");
 
-    this.setInputsInline(false);
-    this.setPreviousStatement(true, null);
-    this.setColour(colorPalette.getColor('programming'));
-  }
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setColour(colorPalette.getColor('programming'));
+    }
 };
 
-Blockly.propc.controls_break = function() {
+Blockly.propc.controls_break = function () {
     return 'break;';
+};
+
+Blockly.Blocks.controls_select = {
+    // If/elseif/else condition.
+    category: Blockly.LANG_CATEGORY_CONTROLS,
+    init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+        }
+        this.setTooltip(Blockly.MSG_CONTROLS_SELECT_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendValueInput('SWITCH')
+                .appendField('switch');
+        this.appendValueInput('SEL1')
+                .setCheck('Number')
+                .appendField('case');
+        this.appendStatementInput('CASE1')
+                .appendField('do (then break')
+                .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK0')
+                .appendField(')');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setMutator(new Blockly.Mutator(['controls_select_case',
+            'controls_select_default']));
+        this.elseifCount_ = 1;
+        this.elseCount_ = 0;
+    },
+    mutationToDom: function () {
+        if (!this.elseifCount_ && !this.elseCount_) {
+            return null;
+        }
+        var container = document.createElement('mutation');
+        if (this.elseifCount_) {
+            container.setAttribute('case', this.elseifCount_);
+        }
+        if (this.elseCount_) {
+            container.setAttribute('default', 1);
+        }
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        this.elseifCount_ = window.parseInt(xmlElement.getAttribute('case'), 10);
+        this.elseCount_ = window.parseInt(xmlElement.getAttribute('default'), 10);
+        for (var x = 1; x <= this.elseifCount_; x++) {
+            var theInput = this.getInput('SEL' + x);
+            if (!theInput) {
+                this.appendValueInput('SEL' + x)
+                        .setCheck('Number')
+                        .appendField('case');
+                this.appendStatementInput('CASE' + x)
+                        .appendField('do (then break')
+                        .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK' + x)
+                        .appendField(')');
+            }
+        }
+        if (this.elseCount_) {
+            this.appendStatementInput('DEFAULT')
+                    .appendField('default');
+        }
+    },
+    decompose: function (workspace) {
+        var containerBlock = Blockly.Block.obtain(workspace, 'controls_select_select');
+        containerBlock.initSvg();
+        var connection = containerBlock.getInput('STACK').connection;
+        for (var x = 1; x <= this.elseifCount_; x++) {
+            var elseifBlock = Blockly.Block.obtain(workspace, 'controls_select_case');
+            elseifBlock.initSvg();
+            connection.connect(elseifBlock.previousConnection);
+            connection = elseifBlock.nextConnection;
+        }
+        if (this.elseCount_) {
+            var elseBlock = Blockly.Block.obtain(workspace, 'controls_select_default');
+            elseBlock.initSvg();
+            connection.connect(elseBlock.previousConnection);
+        }
+        return containerBlock;
+    },
+    compose: function (containerBlock) {
+        // Disconnect the else input blocks and remove the inputs.
+        if (this.elseCount_) {
+            this.removeInput('DEFAULT');
+        }
+        this.elseCount_ = 0;
+        // Disconnect all the elseif input blocks and remove the inputs.
+        for (var x = this.elseifCount_; x > 0; x--) {
+            this.removeInput('SEL' + x);
+            this.removeInput('CASE' + x);
+        }
+        this.elseifCount_ = 0;
+        // Rebuild the block's optional inputs.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        while (clauseBlock) {
+            switch (clauseBlock.type) {
+                case 'controls_select_case':
+                    this.elseifCount_++;
+                    var ifInput = this.appendValueInput('SEL' + this.elseifCount_)
+                            .setCheck('Number')
+                            .appendField('case');
+                    var doInput = this.appendStatementInput('CASE' + this.elseifCount_);
+                    doInput.appendField('do (then break')
+                            .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK' + x)
+                            .appendField(')');
+                    // Reconnect any child blocks.
+                    if (clauseBlock.valueConnection_) {
+                        ifInput.connection.connect(clauseBlock.valueConnection_);
+                    }
+                    if (clauseBlock.statementConnection_) {
+                        doInput.connection.connect(clauseBlock.statementConnection_);
+                    }
+                    break;
+                case 'controls_select_default':
+                    this.elseCount_++;
+                    var elseInput = this.appendStatementInput('DEFAULT');
+                    elseInput.appendField('default');
+                    // Reconnect any child blocks.
+                    if (clauseBlock.statementConnection_) {
+                        elseInput.connection.connect(clauseBlock.statementConnection_);
+                    }
+                    break;
+                default:
+                    throw 'Unknown block type.';
+            }
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+    },
+    saveConnections: function (containerBlock) {
+        // Store a pointer to any connected child blocks.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        var x = 1;
+        while (clauseBlock) {
+            switch (clauseBlock.type) {
+                case 'controls_select_case':
+                    var inputIf = this.getInput('SEL' + x);
+                    var inputDo = this.getInput('CASE' + x);
+                    clauseBlock.valueConnection_ =
+                            inputIf && inputIf.connection.targetConnection;
+                    clauseBlock.statementConnection_ =
+                            inputDo && inputDo.connection.targetConnection;
+                    x++;
+                    break;
+                case 'controls_select_default':
+                    var inputDo = this.getInput('DEFAULT');
+                    clauseBlock.statementConnection_ =
+                            inputDo && inputDo.connection.targetConnection;
+                    break;
+                default:
+                    throw 'Unknown block type.';
+            }
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+    }
+};
+
+
+Blockly.Blocks.controls_select_select = {
+    // If condition.
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField('switch');
+        this.appendStatementInput('STACK');
+        this.setInputsInline(false);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.controls_select_case = {
+    // Else-If condition.
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField('case');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.controls_select_default = {
+    // Else condition.
+    init: function () {
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField('default');
+        this.setPreviousStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.propc.controls_select = function () {
+    // If/elseif/else condition.
+    var n = 0;
+    var start = Blockly.propc.valueToCode(this, 'SWITCH', Blockly.propc.ORDER_NONE) || '0';
+    var argument = ''; //Blockly.propc.valueToCode(this, 'SEL' + n, Blockly.propc.ORDER_NONE) || '0';
+    var breaking = ''; //this.getFieldValue('BREAK' + n);
+    var branch = ''; //Blockly.propc.statementToCode(this, 'CASE' + n);
+    var code = 'switch(' + start + ') {\n';
+    //code += 'case ' + argument + ':\n' + branch;
+    if (breaking === true || breaking === 'TRUE' || breaking === 'true')
+        code += 'break;\n';
+    for (n = 1; n <= this.elseifCount_; n++) {
+        argument = Blockly.propc.valueToCode(this, 'SEL' + n, Blockly.propc.ORDER_NONE) || '0';
+        branch = Blockly.propc.statementToCode(this, 'CASE' + n);
+        code += 'case ' + argument + ':\n' + branch;
+        breaking = this.getFieldValue('BREAK' + n);
+        if (breaking === true || breaking === 'TRUE' || breaking === 'true')
+            code += 'break;\n';
+    }
+    if (this.elseCount_) {
+        branch = Blockly.propc.statementToCode(this, 'DEFAULT');
+        code += 'default: \n' + branch + '\n';
+    }
+    return code + '}\n';
 };
