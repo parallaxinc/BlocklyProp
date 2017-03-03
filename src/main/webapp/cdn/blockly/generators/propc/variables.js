@@ -233,7 +233,7 @@ Blockly.propc.array_init = function () {
 Blockly.Blocks.array_fill = {
     helpUrl: Blockly.MSG_ARRAYS_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ARRAY_INIT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ARRAY_FILL_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput()
                 .appendField('Array fill')
