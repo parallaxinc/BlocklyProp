@@ -43,6 +43,10 @@ public class ProjectDaoImpl implements ProjectDao {
      *
      * Create a ProjectRecord object from an existing project.
      * 
+     * Note: There are private getProject methods that retrieve
+     *       a project record based on a number of parameters
+     *       passed in.
+     * 
      * TODO: add details.
      * 
      * @param idProject
@@ -58,6 +62,8 @@ public class ProjectDaoImpl implements ProjectDao {
                 .fetchOne();
 
         // Return the project after checking if for depricated blocks
+        //
+        // Todo: Verify that the record was fetched - it sometimes is not.
         return alterReadRecord(record);
     }
 
@@ -215,8 +221,10 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord updateProject(
-            Long idProject, String name, String description,
-            String descriptionHtml, boolean privateProject,
+            Long idProject, String name,
+            String description,
+            String descriptionHtml,
+            boolean privateProject,
             boolean sharedProject) {
 
         LOG.info("Update project {}.", idProject);
@@ -259,8 +267,12 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord updateProject(
-            Long idProject, String name, String description, 
-            String descriptionHtml, String code, boolean privateProject, 
+            Long idProject, 
+            String name, 
+            String description, 
+            String descriptionHtml, 
+            String code, 
+            boolean privateProject, 
             boolean sharedProject) {
 
         LOG.info("Update project {}.", idProject);
@@ -301,10 +313,14 @@ public class ProjectDaoImpl implements ProjectDao {
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setCode(code);
-            ProjectRecord returningRecord = create.update(Tables.PROJECT).set(record).returning().fetchOne();
+            ProjectRecord returningRecord = create
+                    .update(Tables.PROJECT)
+                    .set(record)
+                    .returning()
+                    .fetchOne();
             return returningRecord;
         }
-        LOG.warn("Unable to save code for project {}", idProject);
+        LOG.error("Unable to save code for project {}", idProject);
         return null;
     }
 
@@ -550,7 +566,9 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
-        
+    // Private over-ride of the public getProject()
+    //
+    // 
     private ProjectRecord getProject(Long idProject, boolean toEdit) {
         LOG.info("Retreiving project {}.", idProject);
         ProjectRecord record = create
@@ -564,6 +582,8 @@ public class ProjectDaoImpl implements ProjectDao {
             // Return a project if the edit flag is off or the edit flag is
             // on and the project owner is the current user
             if (!toEdit || record.getIdUser().equals(idUser)) {
+                
+                // Todo: Verify that the record was fetched - it sometimes is not.
                 return alterReadRecord(record);
             } else {
                 LOG.error("User {} attempted to edit project {} without authorization.",
@@ -573,6 +593,8 @@ public class ProjectDaoImpl implements ProjectDao {
         }
 
         // Return the project after checking if for depricated blocks
+        //
+        // Todo: Verify that the record was fetched - it sometimes is not.
         return alterReadRecord(record);
     }
 
@@ -597,11 +619,16 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
 
-        // Swap out old block definitions
+    // Evaluate project code and replace any depricated or updated blocks
+    //
+    // Return a ProjectRecord object. The code field may be altered to correct
+    // any old, depricated or updated blocks. The method will throw an
+    // exception if the ProjectRecord parameter is null or something has gone
+    // horribly wrong with the string conversions.
+    //
     private ProjectRecord alterReadRecord(ProjectRecord record) {
         LOG.info("Verify project block characteristics");
         String currentCode, newCode;
-        
         
         if (record == null) {
             LOG.error("Null project record detected.");
@@ -613,7 +640,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
             // Return immediately if there is no code to adjust
             if (currentCode == null) {
-                LOG.warn("Project is empty.");
+                LOG.warn("Project () code block is empty.", record.getId());
                 return record;
             }
             
@@ -628,18 +655,18 @@ public class ProjectDaoImpl implements ProjectDao {
                 newCode = fixSpinProjectBlocks(newCode);
 
             } else if (record.getType() == ProjectType.PROPC){
-                newCode = fixSpinProjectBlocks(newCode);
+                newCode = fixPropcProjectBlocks(newCode);
             }
 
             // Check for any difference from the original code
             if (! currentCode.equals(newCode)) {
-                LOG.info("Updating converted project.");
+                LOG.info("Updated depricated project code blocks in project {}.", record.getId());
                 record.setCode(newCode);
             }
         }
         
         catch (Exception ex) {
-            LOG.error("Exception trapped. Messate is: {}", ex.getMessage());
+            LOG.error("Exception trapped. Message is: {}", ex.getMessage());
         }
 
         return record;
@@ -725,6 +752,10 @@ public class ProjectDaoImpl implements ProjectDao {
                 
         newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"",
                 "block type=\"logic_negate\"");
+
+        // Fix a small issue with calling the wrong project type.
+        newCode = newCode.replaceAll("block type=\"spin_integer\"",
+                "block type=\"math_number\"");
 
         return newCode;
     }

@@ -33,7 +33,7 @@ import ch.qos.logback.classic.LoggerContext;
 public class SetupConfig extends GuiceServletContextListener {
 
     private Configuration configuration;
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
     @Override
     protected Injector getInjector() {
@@ -65,6 +65,12 @@ public class SetupConfig extends GuiceServletContextListener {
         );
     }
 
+    /*
+     * The application configuration is stored in the blocklyprop.properties
+     * file in user home directory. The config.xml contains the actual file
+     * name of the configuation file. If the file is not found, the app will
+     * use a set of default values. 
+    */
     private void readConfiguration() {
         try {
             LOG.info("Looking for blocklyprop.properties in: {}", System.getProperty("user.home"));
@@ -72,9 +78,8 @@ public class SetupConfig extends GuiceServletContextListener {
             configuration = configurationBuilder.getConfiguration();
         } catch (ConfigurationException ce) {
             LOG.error("{}", ce.getMessage());
-            ce.printStackTrace();
         } catch (Throwable t) {
-            t.printStackTrace();
+            LOG.error(t.getMessage());
         }
     }
 
@@ -89,7 +94,8 @@ public class SetupConfig extends GuiceServletContextListener {
                 DriverManager.deregisterDriver(driver);
                 LOG.info("deregistering jdbc driver: {}",driver);
             } catch (SQLException sqlE) {
-                //   LOG.log(Level.SEVERE, String.format("Error deregistering driver %s", driver), e);
+                LOG.error("Error deregistering driver %s", driver);
+                LOG.error("{}", sqlE.getSQLState());
             }
 
         }
@@ -100,7 +106,6 @@ public class SetupConfig extends GuiceServletContextListener {
         if (loggerContext != null) {
             loggerContext.stop();
         }
-        
     }
 
 }
