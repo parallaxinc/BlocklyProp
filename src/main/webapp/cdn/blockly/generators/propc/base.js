@@ -1035,7 +1035,7 @@ Blockly.propc.number_to_string = function () {
     var type = this.getFieldValue('TYPE');
     var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.vartype_[str] = 'char *';
+    Blockly.propc.vartype_[store] = 'char *';
 
     return 'sprint(' + store + ', "' + type + '", ' + str + ');\n';
 };
