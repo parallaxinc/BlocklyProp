@@ -100,6 +100,11 @@
                     </block>
                 </value>
             </block>
+            <block type="controls_select">
+                <value name="SWITCH">
+                    <block type="variables_get"></block>
+                </value>
+            </block>
             <block type="controls_break"></block>
             <block type="base_delay">
                 <value name="DELAY_TIME">
@@ -127,12 +132,12 @@
                         <block type="math_number">
                             <field name="NUM">100</field>
                         </block>
-                    </value> 
-                </block>  
+                    </value>
+                </block>
                 <block type="math_bitwise"></block>
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>
-                <block type="logic_compare"></block> 
+                <block type="logic_compare"></block>
                 <block type="math_advanced"></block>
                 <block type="math_inv_trig"></block>
             </category>
@@ -168,10 +173,11 @@
                     </value>
                 </block>
                 <block type="string_to_number"></block>
-                <block type="number_to_string"></block>                
-            </category>            
+                <block type="number_to_string"></block>
+            </category>
             <category name="<fmt:message key="category.operators.arrays" />" >
                 <block type="array_init"></block>
+                <block type="array_fill"></block>
                 <block type="array_get">
                     <value name="NUM">
                         <block type="math_number">
@@ -192,13 +198,13 @@
                     </value>
                 </block>
                 <block type="array_clear"></block>
-            </category>            
+            </category>
         </category>
         <sep></sep>
         <category name="<fmt:message key="category.values" />" exclude="s3,heb" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
-            <block type="char_type_block"></block>  
+            <block type="char_type_block"></block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -240,7 +246,7 @@
         <category name="<fmt:message key="category.values" />" include="heb" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
-            <block type="char_type_block"></block>  
+            <block type="char_type_block"></block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -339,6 +345,11 @@
                 </value>
             </block>
             <block type="set_pins"></block>
+            <block type="get_pins"></block>
+            <block type="set_pins_binary">
+                <value name="VALUE">
+                    <block type="number_binary"></block>
+                </value>
         </category>
         <category name="<fmt:message key="category.communicate" />" include="activity-board,flip" colour="320">
             <category name="<fmt:message key="category.communicate.oled" />">
@@ -608,7 +619,7 @@
                         </value>
                     </block>
                     <block type="wx_read_widgets"></block>
-                    <block type="wx_get_widget"></block> 
+                    <block type="wx_get_widget"></block>
                     <block type="wx_evt_connected"></block>
                 </category>
                 <category name="Advanced">
@@ -619,7 +630,7 @@
                             <block type="string_type_block">
                                 <field name="TEXT">path</field>
                             </block>
-                        </value>                        
+                        </value>
                     </block>
                     <block type="wx_poll">
                         <field name="EVENT">wxEvent</field>
@@ -633,7 +644,7 @@
                         <field name="HANDLE">wxHandle</field>
                         <value name="DATA">
                             <block type="string_type_block"></block>
-                        </value>                        
+                        </value>
                     </block>
                     <block type="wx_scan_multiple">
                         <field name="HANDLE">wxHandle</field>
@@ -671,7 +682,7 @@
         </category>
 
         <sep include="heb"></sep>
-        
+
         <category name="<fmt:message key="category.communicate" />" include="heb" colour="320">
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print">
@@ -923,7 +934,7 @@
             <block type="heb_count_contacts"></block>
             <block type="heb_erase_all_contacts"></block>
         </category>
-            
+
         <category name="<fmt:message key="category.sensor-input" />" exclude="s3,heb" colour="155">
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>

@@ -223,11 +223,62 @@ Blockly.Blocks.array_init = {
 
 Blockly.propc.array_init = function () {
     var varName = this.getFieldValue('VAR');
-    var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '10';
+    var element = this.getFieldValue('NUM') || '10';
 
     Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];\n';
 
     return '';
+};
+
+Blockly.Blocks.array_fill = {
+    helpUrl: Blockly.MSG_ARRAYS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ARRAY_FILL_TOOLTIP);
+        this.setColour(colorPalette.getColor('variables'));
+        this.appendDummyInput()
+                .appendField('Array fill')
+                .appendField(new Blockly.FieldTextInput('list'), 'VAR')
+                .appendField("with values")
+                .appendField(new Blockly.FieldTextInput('10,20,30,40,50'), 'NUM');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+    }
+};
+
+Blockly.propc.array_fill = function () {
+    var varName = this.getFieldValue('VAR');
+    var varVals = this.getFieldValue('NUM');
+    varVals = varVals.replace(/[^0-9,-\.]/g, "");
+    varVals = varVals.replace(/,\./g, ",0.");
+    varVals = varVals.replace(/\b\.[0-9-]+,\b/g, ",");
+    varVals = varVals.replace(/\.[0-9],/g, ",");
+    varVals = varVals.replace(/,,/g, ",0,");
+    varVals = varVals.replace(/,\s*$/, "");
+    var noCommas = varVals.replace(/,/g, "");
+
+    var elements = varVals.length - noCommas.length + 1;
+    var elemCount = 0;
+
+    var initStr = Blockly.propc.global_vars_['__ARRAY' + varName];
+
+    var code = '';
+
+    if (initStr) {
+        initStr = initStr.replace("int " + varName + "[", "");
+        elemCount = parseInt(initStr, 10);
+
+        if (elements > elemCount) {
+            code += '// WARNING: You are trying to add more elements to your\n';
+            code += '//          array than you initialized your array with!\n';
+            elements = elemCount;
+        }
+        code += 'int __tmpArr[] = {' + varVals + '};\n';
+        code += 'memcpy(' + varName + ', __tmpArr, ' + elements + ' * sizeof(int));\n';
+    } else {
+        code += '// ERROR: The array "' + varName + '" has not been initialized!\n';
+    }
+
+    return code;
 };
 
 Blockly.Blocks.array_set = {

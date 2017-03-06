@@ -120,11 +120,11 @@ loadProject = function () {
         window.frames["content_blocks"].load(projectData['code']);
     }
     if (projectData['board'] === 's3' && type === 'PROPC') {
-        document.getElementById('load-ram-button').style.display = 'none';
+        $('#load-ram-button').addClass('hidden');
         document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
     }
     else {
-        document.getElementById('load-ram-button').style.display = 'inline';
+        $('#load-ram-button').removeClass('hidden');
         document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
     }
 };

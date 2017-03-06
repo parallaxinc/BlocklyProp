@@ -296,7 +296,7 @@ check_com_ports = function () {
             $("#comPort").empty();
             $("#comPort").append($('<option>', {
                 //text: 'COM1'
-                text: 'No client found'
+                text: 'Searching...'
             }));
             /*
             $("#comPort").append($('<option>', {
