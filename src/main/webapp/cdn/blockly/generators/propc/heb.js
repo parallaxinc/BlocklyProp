@@ -211,8 +211,8 @@ Blockly.Blocks.heb_cursor_position_small = {
 };
 
 Blockly.propc.heb_cursor_position_small = function () {
-    var columns = this.getFieldValue("COLS");
-    var rows = this.getFieldValue("ROWS");
+    var columns = Blockly.propc.valueToCode(this, "COLS", Blockly.propc.ORDER_NONE);
+    var rows = Blockly.propc.valueToCode(this, "ROWS", Blockly.propc.ORDER_NONE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -524,7 +524,7 @@ Blockly.propc.heb_ir_send_signal = function () {
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
-    var code = 'send("' + message + '");\n';
+    var code = 'send(' + message + ');\n';
     return code;
 };
 
@@ -541,7 +541,7 @@ Blockly.Blocks.heb_ir_read_signal = {
         this.setInputsInline(true);
     },
     getVars: function () {
-        return [this.getFieldValue('BUFFER')];
+        return [this.getFieldValue('BUFFER'), this.getFieldValue('LENGTH')];
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER')))
