@@ -41,5 +41,18 @@ public class Properties {
         return configuration.getBoolean("oauth." + oauthProvider + ".enabled", true);
         }
     }
+    
+    // Use experimental menu items in test environment
+    public static boolean isExperimentalMenu(Boolean state) {
+        try {
+            if (configuration.getBoolean("experimental.menu") == true) {
+                return true;
+            }
+        } catch (java.util.NoSuchElementException ex) {
+            return false;
+        }
+        
+        return false;
+    }
 
 }
