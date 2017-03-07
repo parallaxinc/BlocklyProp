@@ -225,7 +225,7 @@ Blockly.propc.array_init = function () {
     var varName = this.getFieldValue('VAR');
     var element = this.getFieldValue('NUM') || '10';
 
-    Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];\n';
+    Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];';
 
     return '';
 };
@@ -261,10 +261,25 @@ Blockly.propc.array_fill = function () {
 
     var initStr = Blockly.propc.global_vars_['__ARRAY' + varName];
 
+    // Find all Array-type variables, and find the largest one.
+    var ArrayList = Object.keys(Blockly.propc.global_vars_);
+    var ArrayMaxSize = 1;
+    for (var k = 0; k < ArrayList.length; k++) {
+        if (ArrayList[k].indexOf('__ARRAY') >= 0) {
+            var t = Blockly.propc.global_vars_[ArrayList[k]];
+            t = t.replace(/[^0-9]/g, "");
+            var z = parseInt(t, 10);
+            if (z > ArrayMaxSize)
+                ArrayMaxSize = z;
+        }
+    }
+
+    Blockly.propc.global_vars_['__TEMP_ARR'] = 'int __tmpArr[' + ArrayMaxSize.toString() + '];';
+
     var code = '';
 
     if (initStr) {
-        initStr = initStr.replace("int " + varName + "[", "");
+        initStr = initStr.replace(/[^0-9]/g, "");
         elemCount = parseInt(initStr, 10);
 
         if (elements > elemCount) {
@@ -272,7 +287,7 @@ Blockly.propc.array_fill = function () {
             code += '//          array than you initialized your array with!\n';
             elements = elemCount;
         }
-        code += 'int __tmpArr[] = {' + varVals + '};\n';
+        code += '__tmpArr[] = {' + varVals + '};\n';
         code += 'memcpy(' + varName + ', __tmpArr, ' + elements + ' * sizeof(int));\n';
     } else {
         code += '// ERROR: The array "' + varName + '" has not been initialized!\n';
@@ -303,11 +318,20 @@ Blockly.propc.array_set = function () {
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
     var list = Blockly.propc.global_vars_;
+    var elemCount = '0';
+
+    var initStr = Blockly.propc.global_vars_['__ARRAY' + varName];
+
+
+    if (initStr) {
+        initStr = initStr.replace(/[^0-9]/g, "");
+        elemCount = parseInt(initStr, 10).toString();
+    }
 
     if (Object.keys(list).indexOf('__ARRAY' + varName) < 0) {
         return '// ERROR: The array "' + varName + '" has not been initialized!\n';
     } else {
-        return varName + '[' + element + '] = ' + value + ';\n';
+        return 'if(' + element + ' < ' + elemCount + ' && ' + element + ' >= 0) ' + varName + '[' + element + '] = ' + value + ';\n';
     }
 };
 
