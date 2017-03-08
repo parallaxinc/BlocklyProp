@@ -341,9 +341,7 @@ Blockly.Blocks.fp_scanner_init = {
                 .appendField("Fingerprint Scanner initialize RX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
                 .appendField("TX")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN")
-                .appendField("allow overwrite")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "OW");
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -353,17 +351,11 @@ Blockly.Blocks.fp_scanner_init = {
 Blockly.propc.fp_scanner_init = function () {
     var rxpin = this.getFieldValue('RXPIN');
     var txpin = this.getFieldValue('TXPIN');
-    var ow = this.getFieldValue('OW');
 
     Blockly.propc.global_vars_["fpScannerObj"] = 'fpScanner *fpScan;';
     Blockly.propc.definitions_["fpScannerDef"] = '#include "fingerprint.h"';
 
     Blockly.propc.setups_["fpScanner"] = 'fpScan = fingerprint_open(' + rxpin + ', ' + txpin + ');';
-
-    if (ow === "TRUE")
-        Blockly.propc.setups_["fpScanOverWrite"] = 'fingerprint_allowOverwrite(fpScan, 1);';
-    else
-        Blockly.propc.setups_["fpScanOverWrite"] = 'fingerprint_allowOverwrite(fpScan, 0);';
 
     return '';
 };
