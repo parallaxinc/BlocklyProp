@@ -182,7 +182,7 @@ Blockly.Blocks.array_get = {
         this.setTooltip(Blockly.MSG_ARRAY_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('NUM')
-                .appendField('Array')
+                .appendField('array')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR')
                 .appendField('element');
         this.setInputsInline(true);
@@ -192,6 +192,8 @@ Blockly.Blocks.array_get = {
 
 Blockly.propc.array_get = function () {
     var varName = this.getFieldValue('VAR');
+    varName = varName.replace(" ", "_");
+    varName = varName.replace(/\W/g, "");
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var list = Blockly.propc.global_vars_;
 
@@ -210,7 +212,7 @@ Blockly.Blocks.array_init = {
         this.setTooltip(Blockly.MSG_ARRAY_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput()
-                .appendField('Array initialize')
+                .appendField('array initialize')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR')
                 .appendField("with")
                 .appendField(new Blockly.FieldTextInput('10',
@@ -224,6 +226,8 @@ Blockly.Blocks.array_init = {
 
 Blockly.propc.array_init = function () {
     var varName = this.getFieldValue('VAR');
+    varName = varName.replace(" ", "_");
+    varName = varName.replace(/\W/g, "");
     var element = this.getFieldValue('NUM') || '10';
 
     Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];';
@@ -237,7 +241,7 @@ Blockly.Blocks.array_fill = {
         this.setTooltip(Blockly.MSG_ARRAY_FILL_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput()
-                .appendField('Array fill')
+                .appendField('array fill')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR')
                 .appendField("with values")
                 .appendField(new Blockly.FieldTextInput('10,20,30,40,50'), 'NUM');
@@ -248,6 +252,8 @@ Blockly.Blocks.array_fill = {
 
 Blockly.propc.array_fill = function () {
     var varName = this.getFieldValue('VAR');
+    varName = varName.replace(" ", "_");
+    varName = varName.replace(/\W/g, "");
     var varVals = this.getFieldValue('NUM');
     varVals = varVals.replace(/[^0-9,-\.]/g, "");
     varVals = varVals.replace(/,\./g, ",0.");
@@ -308,7 +314,7 @@ Blockly.Blocks.array_set = {
         this.setTooltip(Blockly.MSG_ARRAY_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('NUM')
-                .appendField('Array')
+                .appendField('array')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR')
                 .appendField('element');
         this.appendValueInput('VALUE')
@@ -321,6 +327,8 @@ Blockly.Blocks.array_set = {
 
 Blockly.propc.array_set = function () {
     var varName = this.getFieldValue('VAR');
+    varName = varName.replace(" ", "_");
+    varName = varName.replace(/\W/g, "");
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
     var list = Blockly.propc.global_vars_;
@@ -347,7 +355,7 @@ Blockly.Blocks.array_clear = {
         this.setTooltip(Blockly.MSG_ARRAY_CLEAR_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendDummyInput()
-                .appendField('Array clear')
+                .appendField('array clear')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
@@ -356,6 +364,8 @@ Blockly.Blocks.array_clear = {
 
 Blockly.propc.array_clear = function () {
     var varName = this.getFieldValue('VAR');
+    varName = varName.replace(" ", "_");
+    varName = varName.replace(/\W/g, "");
     var list = Blockly.propc.global_vars_;
 
     if (Object.keys(list).indexOf('__ARRAY' + varName) < 0) {
