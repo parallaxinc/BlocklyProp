@@ -648,7 +648,6 @@ Blockly.propc.controls_select = function () {
         branch = Blockly.propc.statementToCode(this, 'CASE' + n);
         code += 'case ' + argument + ':\n' + branch;
         breaking = this.getFieldValue('BREAK' + n);
-        alert(breaking);
         if (breaking === true || breaking === 'TRUE' || breaking === 'true')
             code += 'break;\n';
     }
