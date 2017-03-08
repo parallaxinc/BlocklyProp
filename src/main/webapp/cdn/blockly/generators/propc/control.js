@@ -459,7 +459,7 @@ Blockly.Blocks.controls_select = {
                 .appendField('case');
         this.appendStatementInput('CASE1')
                 .appendField('do (then break')
-                .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK0')
+                .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK1')
                 .appendField(')');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
@@ -541,7 +541,7 @@ Blockly.Blocks.controls_select = {
                             .appendField('case');
                     var doInput = this.appendStatementInput('CASE' + this.elseifCount_);
                     doInput.appendField('do (then break')
-                            .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK' + x)
+                            .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK' + this.elseifCount_)
                             .appendField(')');
                     // Reconnect any child blocks.
                     if (clauseBlock.valueConnection_) {
@@ -648,6 +648,7 @@ Blockly.propc.controls_select = function () {
         branch = Blockly.propc.statementToCode(this, 'CASE' + n);
         code += 'case ' + argument + ':\n' + branch;
         breaking = this.getFieldValue('BREAK' + n);
+        alert(breaking);
         if (breaking === true || breaking === 'TRUE' || breaking === 'true')
             code += 'break;\n';
     }
