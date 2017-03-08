@@ -30,6 +30,7 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
+var tempArrayNumber = 0;
 
 Blockly.Blocks.variables_get = {
     // Variable getter.
@@ -261,6 +262,8 @@ Blockly.propc.array_fill = function () {
 
     var initStr = Blockly.propc.global_vars_['__ARRAY' + varName];
 
+    /* DONT DELETE - MAY WANT TO USE THIS CODE ELSEWHERE
+
     // Find all Array-type variables, and find the largest one.
     var ArrayList = Object.keys(Blockly.propc.global_vars_);
     var ArrayMaxSize = 1;
@@ -275,7 +278,9 @@ Blockly.propc.array_fill = function () {
     }
 
     Blockly.propc.global_vars_['__TEMP_ARR'] = 'int __tmpArr[' + ArrayMaxSize.toString() + '];';
-
+    
+    */
+   
     var code = '';
 
     if (initStr) {
@@ -287,8 +292,9 @@ Blockly.propc.array_fill = function () {
             code += '//          array than you initialized your array with!\n';
             elements = elemCount;
         }
-        code += '__tmpArr[] = {' + varVals + '};\n';
-        code += 'memcpy(' + varName + ', __tmpArr, ' + elements + ' * sizeof(int));\n';
+        code += 'int __tmpArr' + tempArrayNumber.toString() + '[] = {' + varVals + '};\n';
+        code += 'memcpy(' + varName + ', __tmpArr' + tempArrayNumber.toString() + ', ' + elements + ' * sizeof(int));\n';
+        tempArrayNumber++;
     } else {
         code += '// ERROR: The array "' + varName + '" has not been initialized!\n';
     }
