@@ -21,6 +21,10 @@ import javax.servlet.ServletContextEvent;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.LoggerContext;
+
 
 /**
  *
@@ -29,6 +33,7 @@ import org.apache.commons.configuration.DefaultConfigurationBuilder;
 public class SetupConfig extends GuiceServletContextListener {
 
     private Configuration configuration;
+    private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
     @Override
     protected Injector getInjector() {
@@ -60,15 +65,21 @@ public class SetupConfig extends GuiceServletContextListener {
         );
     }
 
+    /*
+     * The application configuration is stored in the blocklyprop.properties
+     * file in user home directory. The config.xml contains the actual file
+     * name of the configuation file. If the file is not found, the app will
+     * use a set of default values. 
+    */
     private void readConfiguration() {
         try {
-            System.out.println("Looking for blocklyprop.properties in: " + System.getProperty("user.home"));
+            LOG.info("Looking for blocklyprop.properties in: {}", System.getProperty("user.home"));
             DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(getClass().getResource("/config.xml"));
             configuration = configurationBuilder.getConfiguration();
         } catch (ConfigurationException ce) {
-            ce.printStackTrace();
+            LOG.error("{}", ce.getMessage());
         } catch (Throwable t) {
-            t.printStackTrace();
+            LOG.error(t.getMessage());
         }
     }
 
@@ -81,11 +92,19 @@ public class SetupConfig extends GuiceServletContextListener {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                //  LOG.log(Level.INFO, String.format("deregistering jdbc driver: %s", driver));
+                LOG.info("deregistering jdbc driver: {}",driver);
             } catch (SQLException sqlE) {
-                //   LOG.log(Level.SEVERE, String.format("Error deregistering driver %s", driver), e);
+                LOG.error("Error deregistering driver %s", driver);
+                LOG.error("{}", sqlE.getSQLState());
             }
 
+        }
+        
+        // Shut down the loggers. Assume SLF4J is bound to logback-classic
+        // in the current environment
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        if (loggerContext != null) {
+            loggerContext.stop();
         }
     }
 

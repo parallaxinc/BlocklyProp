@@ -238,11 +238,25 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.21</version>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+            
+        <!--        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.21</version>
         </dependency>
+        -->
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -382,15 +396,15 @@
 
         <!-- Raven / Sentry API -->
         <dependency>
-            <groupId>net.kencochrane.raven</groupId>
+            <groupId>com.getsentry.raven</groupId>
             <artifactId>raven</artifactId>
-            <version>6.0.0</version>
+            <version>7.8.1</version>
         </dependency>
 
         <dependency>
-            <groupId>net.kencochrane.raven</groupId>
-            <artifactId>raven-log4j</artifactId>
-            <version>6.0.0</version>
+            <groupId>com.getsentry.raven</groupId>
+            <artifactId>raven-logback</artifactId>
+            <version>7.8.1</version>
         </dependency>
 
         <!-- Lucene search engine -->
@@ -441,10 +455,17 @@
 
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-logback</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
+<!--
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-log4j</artifactId>
             <version>${metrics-version}</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>
@@ -517,5 +538,4 @@
         </dependency>
     -->
     </dependencies>
-
 </project>

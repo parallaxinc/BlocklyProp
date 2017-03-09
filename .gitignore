@@ -1,9 +1,13 @@
 build.properties
 
 #################
+## Blockly Files
+#################
+# /src/main/**/logback.xml
+
+#################
 ## NetBeans
 #################
-
 nb-configuration.xml
 nbactions.xml
 target/
@@ -15,7 +19,7 @@ BlocklyProp.iml
 #################
 
 .idea
-
+*.iml
 
 #################
 ## Eclipse

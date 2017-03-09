@@ -26,11 +26,33 @@ public class Properties {
     }
 
     public static String getDownloadFilesBaseUrl(String file) {
-        return configuration.getString("downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
+        if (configuration.getBoolean("offline.enabled") == true) {
+            return configuration.getString("offline.downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
+        } else {
+            return configuration.getString("downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
+        }
     }
 
     public static boolean isOauthEnabled(String oauthProvider) {
+        // Disable Oauth if we are running offline
+        if (configuration.getBoolean("offline.enabled") == true) {
+           return false; 
+        } else {
         return configuration.getBoolean("oauth." + oauthProvider + ".enabled", true);
+        }
+    }
+    
+    // Use experimental menu items in test environment
+    public static boolean isExperimentalMenu(Boolean state) {
+        try {
+            if (configuration.getBoolean("experimental.menu") == true) {
+                return true;
+            }
+        } catch (java.util.NoSuchElementException ex) {
+            return false;
+        }
+        
+        return false;
     }
 
 }

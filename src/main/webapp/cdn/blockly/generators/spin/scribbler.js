@@ -269,7 +269,7 @@ Blockly.Blocks.scribbler_play = {
     init: function () {
         this.appendDummyInput()
             .appendField("play a")
-            .appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
+            .appendField(new Blockly.FieldDropdown([['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6']]), 'NOTE_OCTAVE')
             //.appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
             .appendField(new Blockly.FieldDropdown([['A\u266D', '3322'], ['A', '3520'], ['A\u266F/B\u266D', '3729'], ['B', '3951'], ['C', '4186'], ['C\u266F/D\u266D', '4435'], ['D', '4699'], ['D\u266F/E\u266D', '4978'], ['E', '5274'], ['F', '5588'], ['F\u266F/G\u266D', '5920'], ['G', '6272'], ['G\u266F', '6645']]), 'NOTE_FREQUENCY')
             .appendField("for a")
@@ -389,10 +389,10 @@ Blockly.Blocks.play_polyphony = {
     init: function () {
 	this.appendValueInput("FREQUENCY_1")
 		.setCheck("Number")
-		.appendField("play a tone of (1 to 10,000) Hz");
+		.appendField("play a tone of (1 to 2,000) Hz");
 	this.appendValueInput("FREQUENCY_2")
 		.setCheck("Number")
-		.appendField("and a tone of (1 to 10,000) Hz");
+		.appendField("and a tone of (1 to 2,000) Hz");
 	this.appendValueInput("POLYPHONY_DURATION")
 		.setCheck("Number")
 		.appendField("for a duration of (1 to 8,000) ms");
