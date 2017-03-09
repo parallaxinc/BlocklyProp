@@ -610,77 +610,77 @@
                     </value>
                 </block>
             </category>
-<c:choose>
-    <c:when test="${experimental == true}">
-            <category name="WX Module">
-                <category name="Simple">
-                    <block type="wx_init"></block>
-                    <block type="wx_config_page"></block>
-                    <block type="wx_set_widget"></block>
-                    <block type="wx_send_widget">
-                        <value name="NUM">
-                            <block type="math_number">
-                                <field name="NUM">10</field>
+            <c:choose>
+                <c:when test="${experimental == true}">
+                    <category name="WX Module">
+                        <category name="Simple">
+                            <block type="wx_init"></block>
+                            <block type="wx_config_page"></block>
+                            <block type="wx_set_widget"></block>
+                            <block type="wx_send_widget">
+                                <value name="NUM">
+                                    <block type="math_number">
+                                        <field name="NUM">10</field>
+                                    </block>
+                                </value>
                             </block>
-                        </value>
-                    </block>
-                    <block type="wx_read_widgets"></block>
-                    <block type="wx_get_widget"></block>
-                    <block type="wx_evt_connected"></block>
-                </category>
-                <category name="Advanced">
-                    <block type="wx_init_adv"></block>
-                    <block type="wx_listen">
-                        <field name="ID">wxConnId1</field>
-                        <value name="PATH">
-                            <block type="string_type_block">
-                                <field name="TEXT">path</field>
+                            <block type="wx_read_widgets"></block>
+                            <block type="wx_get_widget"></block>
+                            <block type="wx_evt_connected"></block>
+                        </category>
+                        <category name="Advanced">
+                            <block type="wx_init_adv"></block>
+                            <block type="wx_listen">
+                                <field name="ID">wxConnId1</field>
+                                <value name="PATH">
+                                    <block type="string_type_block">
+                                        <field name="TEXT">path</field>
+                                    </block>
+                                </value>
                             </block>
-                        </value>
-                    </block>
-                    <block type="wx_poll">
-                        <field name="EVENT">wxEvent</field>
-                        <field name="ID">wxId</field>
-                        <field name="HANDLE">wxHandle</field>
-                    </block>
-                    <block type="wx_print_multiple">
-                        <field name="HANDLE">wxHandle</field>
-                    </block>
-                    <block type="wx_send_string">
-                        <field name="HANDLE">wxHandle</field>
-                        <value name="DATA">
-                            <block type="string_type_block"></block>
-                        </value>
-                    </block>
-                    <block type="wx_scan_multiple">
-                        <field name="HANDLE">wxHandle</field>
-                    </block>
-                    <block type="wx_scan_string">
-                        <field name="HANDLE">wxHandle</field>
-                    </block>
-                    <block type="wx_receive_string">
-                        <field name="HANDLE">wxHandle</field>
-                        <value name="MAX">
-                            <block type="math_number">
-                                <field name="NUM">64</field>
+                            <block type="wx_poll">
+                                <field name="EVENT">wxEvent</field>
+                                <field name="ID">wxId</field>
+                                <field name="HANDLE">wxHandle</field>
                             </block>
-                        </value>
-                    </block>
-                    <block type="wx_mode"></block>
-                    <block type="wx_code"></block>
-                    <block type="wx_buffer">
-                        <value name="SIZE">
-                            <block type="math_number">
-                                <field name="NUM">64</field>
+                            <block type="wx_print_multiple">
+                                <field name="HANDLE">wxHandle</field>
                             </block>
-                        </value>
-                    </block>
-                    <block type="wx_disconnect"></block>
-                    <block type="wx_ip"></block>
-                </category>
-            </category>
-    </c:when>
-</c:choose>
+                            <block type="wx_send_string">
+                                <field name="HANDLE">wxHandle</field>
+                                <value name="DATA">
+                                    <block type="string_type_block"></block>
+                                </value>
+                            </block>
+                            <block type="wx_scan_multiple">
+                                <field name="HANDLE">wxHandle</field>
+                            </block>
+                            <block type="wx_scan_string">
+                                <field name="HANDLE">wxHandle</field>
+                            </block>
+                            <block type="wx_receive_string">
+                                <field name="HANDLE">wxHandle</field>
+                                <value name="MAX">
+                                    <block type="math_number">
+                                        <field name="NUM">64</field>
+                                    </block>
+                                </value>
+                            </block>
+                            <block type="wx_mode"></block>
+                            <block type="wx_code"></block>
+                            <block type="wx_buffer">
+                                <value name="SIZE">
+                                    <block type="math_number">
+                                        <field name="NUM">64</field>
+                                    </block>
+                                </value>
+                            </block>
+                            <block type="wx_disconnect"></block>
+                            <block type="wx_ip"></block>
+                        </category>
+                    </category>
+                </c:when>
+            </c:choose>
 
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
@@ -957,8 +957,6 @@
                 <block type="sensor_ping"></block>
             </category>
 
-<c:choose>
-    <c:when test="${experimental == true}">
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
                 <block type="fp_scanner_add">
@@ -970,9 +968,7 @@
                 </block>
                 <block type="fp_scanner_scan"></block>
             </category>
-    </c:when>
-</c:choose>
-    
+
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
