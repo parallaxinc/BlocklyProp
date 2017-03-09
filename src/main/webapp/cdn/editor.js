@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -33,24 +33,24 @@ $(document).ready(function () {
 
     $('#save-project').on('click', function () {
         saveProject();
-        
+
         var elem = document.getElementById('save-project');
         elem.style.paddingLeft = '10px';
         elem.style.background = 'rgb(92, 184, 92)';
         elem.style.borderColor = 'rgb(76, 174, 76)';
-        
-        setTimeout(function() {
+
+        setTimeout(function () {
             elem.innerHTML = 'Save &#x2713;';
         }, 600);
 
-        setTimeout(function() {
+        setTimeout(function () {
             elem.innerHTML = 'Save&nbsp;&nbsp;';
             elem.style.paddingLeft = '15px';
             elem.style.background = '#337ab7';
             elem.style.borderColor = '#2e6da4';
         }, 1750);
     });
-    
+
     $('#save-project-as').on('click', function () {
         saveProjectAs();
     });
@@ -119,6 +119,14 @@ loadProject = function () {
     if (projectData !== null) {
         window.frames["content_blocks"].load(projectData['code']);
     }
+    if (projectData['board'] === 's3' && type === 'PROPC') {
+        $('#load-ram-button').addClass('hidden');
+        document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+    }
+    else {
+        $('#load-ram-button').removeClass('hidden');
+        document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+    }
 };
 
 window.onbeforeunload = function () {
@@ -182,23 +190,25 @@ setInterval(function () {
 
 function hashCode(str) {
     var hash = 0, i = 0, len = str.length;
-    while ( i < len ) {
-        hash  = ((hash << 5) - hash + str.charCodeAt(i++)) << 0;
+    while (i < len) {
+        hash = ((hash << 5) - hash + str.charCodeAt(i++)) << 0;
     }
     return (hash + 2147483647) + 1;
-};
+}
+;
 
 function downloadCode() {
     var projXMLcode = window.frames["content_blocks"].getXml(); //projectData['code'];
-        projXMLcode = projXMLcode.substring(42,projXMLcode.length);
-        projXMLcode = projXMLcode.substring(0,(projXMLcode.length - 6));
+    projXMLcode = projXMLcode.substring(42, projXMLcode.length);
+    projXMLcode = projXMLcode.substring(0, (projXMLcode.length - 6));
 
     utils.prompt("Download Project", "Filename:", 'Project' + idProject, function (value) {
         if (value) {
             // extract the SVG from the iFrame that contains it
             var x = document.getElementsByName("content_blocks");
-                var y = (x[0].contentWindow || x[0].contentDocument);
-                if (y.document)y = y.document;
+            var y = (x[0].contentWindow || x[0].contentDocument);
+            if (y.document)
+                y = y.document;
 
             // get the paths of the blocks themselves and the size/position of the blocks
             var projSVG = y.getElementsByClassName('blocklyBlockCanvas');
@@ -251,21 +261,24 @@ function downloadCode() {
             SVGfooter += '<text class="bkginfo" x="100%" y="100%" transform="translate(-225,-23)">Device: ' + projectData['board'] + '</text>';
 
             // Check for any file extentions at the end of the submitted name, and truncate if any
-            if(value.indexOf(".") !== -1) value = value.substring(0,value.indexOf("."));
+            if (value.indexOf(".") !== -1)
+                value = value.substring(0, value.indexOf("."));
             // Check to make sure the filename is not too long
-            if(value.length >= 30) value = value.substring(0, 29);
+            if (value.length >= 30)
+                value = value.substring(0, 29);
             // Replace any illegal characters
             value = value.replace(/[\\/:*?\"<>|]/g, '_');
-            
+
             var xmlChecksum = hashCode(projXMLcode).toString();
-                        
+
             var xmlChecksum = '000000000000'.substring(xmlChecksum.length, 12) + xmlChecksum;
-            
+
             // Assemble both the SVG (image) of the blocks and the blocks' XML definition
             saveData(SVGheader + projSVGcode + SVGfooter + projXMLcode + '<ckm>' + xmlChecksum + '</ckm></svg>', value + '.svg');
         }
     });
-};
+}
+;
 
 function uploadCode() {
     if (checkLeave()) {
@@ -273,11 +286,12 @@ function uploadCode() {
     } else {
         $('#upload-dialog').modal('show');
     }
-};
+}
+;
 
 function uploadHandler(files) {
     var UploadReader = new FileReader();
-    UploadReader.onload = function() {
+    UploadReader.onload = function () {
         //var parsed = new DOMParser().parseFromString(this.result, "text/xml");
         //var xmlString = (new XMLSerializer()).serializeToString(parsed);
         var xmlString = this.result;
@@ -285,32 +299,34 @@ function uploadHandler(files) {
         var uploadBoardType = '';
 
         //validate file, screen for potentially malicious code.
-        if(files[0].type === 'image/svg+xml' 
-            && xmlString.indexOf("<svg blocklyprop=\"blocklypropproject\"") === 0
-            && xmlString.indexOf("<!ENTITY") === -1
-            && xmlString.indexOf("CDATA") === -1
-            && xmlString.indexOf("<!--") === -1) 
+        if (files[0].type === 'image/svg+xml'
+                && xmlString.indexOf("<svg blocklyprop=\"blocklypropproject\"") === 0
+                && xmlString.indexOf("<!ENTITY") === -1
+                && xmlString.indexOf("CDATA") === -1
+                && xmlString.indexOf("<!--") === -1)
         {
             var uploadedChecksum = xmlString.substring((xmlString.length - 24), (xmlString.length - 12));
             uploadedXML = xmlString.substring(xmlString.indexOf("<block"), (xmlString.length - 29));
             var computedChecksum = hashCode(uploadedXML).toString();
             computedChecksum = '000000000000'.substring(computedChecksum.length, 12) + computedChecksum;
 
-            if(computedChecksum === uploadedChecksum) xmlValid = true;
+            if (computedChecksum === uploadedChecksum)
+                xmlValid = true;
 
-            if(xmlValid) {
+            if (xmlValid) {
                 var boardIndex = xmlString.indexOf('transform="translate(-225,-23)">Device: ');
                 uploadBoardType = xmlString.substring((boardIndex + 40), xmlString.indexOf('</text>', (boardIndex + 41)));
-                if(uploadBoardType !== projectData['board']) {
+                if (uploadBoardType !== projectData['board']) {
                     document.getElementById("selectfile-verify-boardtype").style.display = "block";
                 } else {
-                    document.getElementById("selectfile-verify-boardtype").style.display = "none";                    
+                    document.getElementById("selectfile-verify-boardtype").style.display = "none";
                 }
             }
-        };
+        }
+        ;
 
 
-        if(xmlValid === true) {
+        if (xmlValid === true) {
             document.getElementById("selectfile-verify-valid").style.display = "block";
             document.getElementById("selectfile-replace").disabled = false;
             document.getElementById("selectfile-append").disabled = false;
@@ -325,63 +341,68 @@ function uploadHandler(files) {
 
     UploadReader.readAsText(files[0]);
 
-    if(uploadedXML !== '') {
+    if (uploadedXML !== '') {
 
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
-    };
-};
+    }
+    ;
+}
+;
 
 function clearUploadInfo() {
-        // Reset all of the upload fields and containers
-    uploadedXML ='';
+    // Reset all of the upload fields and containers
+    uploadedXML = '';
     $('#selectfile').val('');
     document.getElementById("selectfile-verify-notvalid").style.display = "none";
     document.getElementById("selectfile-verify-valid").style.display = "none";
     document.getElementById("selectfile-verify-boardtype").style.display = "none";
-};
+}
+;
 
 function replaceCode() {
     $('#upload-dialog').modal('hide');
-    if(uploadedXML !== '') {
+    if (uploadedXML !== '') {
         var newCode = uploadedXML;
-        newCode = newCode.substring(42,newCode.length);
-        newCode = newCode.substring(0,(newCode.length - 29));
+        newCode = newCode.substring(42, newCode.length);
+        newCode = newCode.substring(0, (newCode.length - 29));
 
         window.frames["content_blocks"].location.reload();
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
         window.frames["content_blocks"].load(projectData['code']);
-        
+
         // Reset all of the upload fields and containers
         clearUploadInfo();
     }
-};
+}
+;
 
 function appendCode() {
     $('#upload-dialog').modal('hide');
-    if(uploadedXML !== '') {
+    if (uploadedXML !== '') {
         var projCode = projectData['code'];
-        projCode = projCode.substring(42,projCode.length);
-        projCode = projCode.substring(0,(projCode.length - 6));
-        
+        projCode = projCode.substring(42, projCode.length);
+        projCode = projCode.substring(0, (projCode.length - 6));
+
         var newCode = uploadedXML;
-        newCode = newCode.substring(42,newCode.length);
-        newCode = newCode.substring(0,(newCode.length - 6));
-        
+        newCode = newCode.substring(42, newCode.length);
+        newCode = newCode.substring(0, (newCode.length - 6));
+
         window.frames["content_blocks"].location.reload();
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
         window.frames["content_blocks"].load(projectData['code']);
-        
+
         // Reset all of the upload fields and containers
         clearUploadInfo();
     }
-};
+}
+;
 
 function clearWorkspace() {
-        utils.confirm(Blockly.Msg.DIALOG_CLEAR_WORKSPACE, Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING, function (value) {
+    utils.confirm(Blockly.Msg.DIALOG_CLEAR_WORKSPACE, Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING, function (value) {
         if (value) {
             window.frames["content_blocks"].location.reload();
             window.frames["content_blocks"].setProfile(projectData['board']);
@@ -390,5 +411,6 @@ function clearWorkspace() {
             window.frames["content_blocks"].load(projectData['code']);
         }
     });
-};
+}
+;
 

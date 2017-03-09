@@ -25,6 +25,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -34,6 +37,7 @@ import javax.ws.rs.core.Response;
 @Group(name = "/shared/project", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestSharedProject {
+    private static final Logger LOG = LoggerFactory.getLogger(RestSharedProject.class);
 
     private ProjectService projectService;
 
@@ -55,7 +59,7 @@ public class RestSharedProject {
     @Name("Get all shared projects")
     @Produces("application/json")
     public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
-        System.out.println("Sort: " + sort);
+        LOG.info("Sort: {}", sort);
 
         List<ProjectRecord> projects = projectService.getSharedProjects(sort, order, limit, offset);
         int projectCount = projectService.countSharedProjects();
@@ -73,20 +77,50 @@ public class RestSharedProject {
     }
 
     @GET
+    @Path("/list/user/{id}")
+    @Detail("Get shared projects by user")
+    @Name("Get shared projects by user")
+    @Produces("application/json")
+    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset, @PathParam("id") Long idUser) {
+        LOG.info("Sort: {}", sort);
+
+        List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
+        int projectCount = projectService.countSharedProjectsByUser(idUser);
+
+        JsonObject result = new JsonObject();
+        JsonArray jsonProjects = new JsonArray();
+        for (ProjectRecord project : projects) {
+            jsonProjects.add(projectConverter.toListJson(project));
+        }
+
+        result.add("rows", jsonProjects);
+        result.addProperty("total", projectCount);
+
+        return Response.ok(result.toString()).build();
+    }
+
+
+    @GET
     @Path("/get/{id}")
     @Detail("Get project by id")
     @Name("Get project by id")
     @Produces("application/json")
     public Response get(@HeaderParam("X-Authorization") String authorization, @HeaderParam("X-Timestamp") Long timestamp, @PathParam("id") Long idProject) {
-        ProjectRecord project = projectService.getProject(idProject);
-
-        if (project == null) {
+        
+        try {
+            ProjectRecord project = projectService.getProject(idProject);
+            
+            if (project == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            
+            JsonObject result = projectConverter.toJson(project);
+            return Response.ok(result.toString()).build();
+        }
+        catch (Exception e) {
+            LOG.error("Exception in {} detected. Message is: {}", e.getClass(), e.getLocalizedMessage());
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        JsonObject result = projectConverter.toJson(project);
-
-        return Response.ok(result.toString()).build();
     }
 
     @GET
@@ -95,18 +129,24 @@ public class RestSharedProject {
     @Name("Get project by id for editor")
     @Produces("application/json")
     public Response getEditor(@HeaderParam("X-Authorization") String authorization, @HeaderParam("X-Timestamp") Long timestamp, @PathParam("id") Long idProject) {
-        System.out.println("Authorization: " + authorization);
+        LOG.info("Authorization: {}", authorization);
 
-        ProjectRecord project = projectService.getProject(idProject);
+        try {
+            ProjectRecord project = projectService.getProject(idProject);
 
-        if (project == null) {
+            if (project == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+
+            JsonObject result = projectConverter.toJson(project);
+            result.addProperty("code", project.getCode());
+
+            return Response.ok(result.toString()).build();
+        }
+        catch (Exception e) {
+            LOG.error("Exception in {} detected. Message is: {}", e.getClass(), e.getLocalizedMessage());
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
-        JsonObject result = projectConverter.toJson(project);
-        result.addProperty("code", project.getCode());
-
-        return Response.ok(result.toString()).build();
     }
 
 }

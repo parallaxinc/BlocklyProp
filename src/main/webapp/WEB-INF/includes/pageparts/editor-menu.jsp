@@ -28,16 +28,22 @@
                         <fmt:message key="editor.client.available.short" />
                     </c:if>
                     </span>
+                    <span id="client-available-short" class="hidden">
+                        <fmt:message key="editor.client.available.short" />
+                    </span>
+                    <span id="client-available-long" class="hidden">
+                        <fmt:message key="editor.client.available" />
+                    </span>
                 </div>
                 <div class="project-name-wrapper" align="right">        
                     <span class="project-name"></span> <span class="project-owner"></span>
                 </div>
             </div>
             <div style="width:100%; padding-bottom: 5px;">
-                <div style="display:inline; padding-left: 10px;">        
+                <div style="display:inline; padding-left: 10px;" id="board-action-buttons">        
                     <a onclick="compile()" data-toggle="tooltip" title="Verify code (compile)" data-placement="bottom" href="#" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-ok"></i></a>
                     <c:if test="${param.editor_lang == 'c'}">
-                    <a onclick="loadIntoRam()" data-toggle="tooltip" title="Run once (load code to RAM)" data-placement="bottom" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-arrow-down"></i></a>
+                    <a onclick="loadIntoRam()" data-toggle="tooltip" title="Run once (load code to RAM)" data-placement="bottom" class="btn btn-success btn-circle" id="load-ram-button"><i class="glyphicon glyphicon-arrow-down"></i></a>
                     </c:if>
                     <a onclick="loadIntoEeprom()" data-toggle="tooltip" title="Load and run (save code to EEPROM)" data-placement="bottom" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-save"></i></a>
                     <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list-alt"></i></a>

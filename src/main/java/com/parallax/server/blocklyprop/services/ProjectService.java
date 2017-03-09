@@ -25,9 +25,13 @@ public interface ProjectService {
 
     List<ProjectRecord> getSharedProjects(TableSort tablesSort, TableOrder order, Integer limit, Integer offset);
 
+    List<ProjectRecord> getSharedProjectsByUser(TableSort tablesSort, TableOrder order, Integer limit, Integer offset, Long idUser);
+
     int countUserProjects(Long idUser);
 
     int countSharedProjects();
+    
+    int countSharedProjectsByUser(Long idUser);
 
     ProjectRecord saveProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
