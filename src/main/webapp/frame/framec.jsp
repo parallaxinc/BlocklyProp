@@ -1,6 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
+<!-- Support for experimental blocks in Demo builds  -->
+<!-- See developer notes to use this feature         -->
+<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -606,7 +610,8 @@
                     </value>
                 </block>
             </category>
-
+<c:choose>
+    <c:when test="${experimental == true}">
             <category name="WX Module">
                 <category name="Simple">
                     <block type="wx_init"></block>
@@ -674,6 +679,8 @@
                     <block type="wx_ip"></block>
                 </category>
             </category>
+    </c:when>
+</c:choose>
 
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
@@ -949,6 +956,9 @@
             <category name="<fmt:message key="category.sensor-input.ping" />">
                 <block type="sensor_ping"></block>
             </category>
+
+<c:choose>
+    <c:when test="${experimental == true}">
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
                 <block type="fp_scanner_add">
@@ -960,6 +970,9 @@
                 </block>
                 <block type="fp_scanner_scan"></block>
             </category>
+    </c:when>
+</c:choose>
+    
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
