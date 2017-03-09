@@ -255,12 +255,14 @@ Blockly.propc.array_fill = function () {
     varName = varName.replace(" ", "_");
     varName = varName.replace(/\W/g, "");
     var varVals = this.getFieldValue('NUM');
+    
     varVals = varVals.replace(/[^0-9,-\.]/g, "");
     varVals = varVals.replace(/,\./g, ",0.");
     varVals = varVals.replace(/\b\.[0-9-]+,\b/g, ",");
     varVals = varVals.replace(/\.[0-9],/g, ",");
     varVals = varVals.replace(/,,/g, ",0,");
     varVals = varVals.replace(/,\s*$/, "");
+    varVals = varVals.split(".")[0];
     var noCommas = varVals.replace(/,/g, "");
 
     var elements = varVals.length - noCommas.length + 1;

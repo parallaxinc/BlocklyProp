@@ -367,12 +367,12 @@ Blockly.Blocks.fp_scanner_add = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Fingerprint Scanner")
-                .appendField(new Blockly.FieldDropdown([["add", "ADD"], ["delete", "DEL"], ["delete all users", "ALL"]], function (action) {
+                .appendField(new Blockly.FieldDropdown([["capture and save to", "ADD"], ["delete capture for", "DEL"], ["delete all captures", "ALL"]], function (action) {
                     this.sourceBlock_.setAction_({"ACTION": action});
                 }), "ACTION");
         this.appendValueInput("USER")
                 .setCheck("Number")
-                .appendField("user");
+                .appendField("ID");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -393,7 +393,7 @@ Blockly.Blocks.fp_scanner_add = {
             if (!inputIs) {
                 this.appendValueInput("USER")
                         .setCheck("Number")
-                        .appendField("user");
+                        .appendField("ID");
             }
         } else {
             if (inputIs)
@@ -431,7 +431,7 @@ Blockly.Blocks.fp_scanner_scan = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("Fingerprint Scanner")
-                .appendField(new Blockly.FieldDropdown([["scan", "SCAN"], ["scan and compare", "COMP"], ["count users", "COUNT"]], function (action) {
+                .appendField(new Blockly.FieldDropdown([["scan and identify", "SCAN"], ["scan and compare", "COMP"], ["count number of IDs", "COUNT"]], function (action) {
                     this.sourceBlock_.setAction_({"ACTION": action});
                 }), "ACTION");
         this.setInputsInline(true);
@@ -453,7 +453,7 @@ Blockly.Blocks.fp_scanner_scan = {
             if (!inputIs) {
                 this.appendValueInput("USER")
                         .setCheck("Number")
-                        .appendField("to user");
+                        .appendField("to ID");
             }
         } else {
             if (inputIs)
@@ -484,7 +484,7 @@ Blockly.propc.fp_scanner_scan = function () {
             code = 'fingerScanner(' + usr + ')';
         }
         if (act === 'COUNT')
-            code = 'fingerScanner(fpScan)';
+            code = 'fingerprint_countUsers(fpScan)';
     }
     //code = 'toast';
     return [code, Blockly.propc.ORDER_ATOMIC];
