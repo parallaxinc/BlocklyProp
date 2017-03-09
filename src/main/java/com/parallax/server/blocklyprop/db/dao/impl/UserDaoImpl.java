@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class UserDaoImpl implements UserDao {
 
-    private static Logger log = LoggerFactory.getLogger(UserDao.class);
+    private static final Logger log = LoggerFactory.getLogger(UserDao.class);
 
     private DSLContext create;
 

@@ -28,14 +28,13 @@
  */
 
 var quotes = {
-
     /**
      * Create an image of an open or closed quote.
      * @param {boolean} open True if open quote, false if closed.
      * @return {!Blockly.FieldImage} The field image of the quote.
      * @this Blockly.Block
      */
-    newQuote_: function(open) {
+    newQuote_: function (open) {
         if (open === this.RTL) {
             var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAqUlEQVQI1z3KvUpCcRiA8ef9E4JNHhI0aFEacm1o0BsI0Slx8wa8gLauoDnoBhq7DcfWhggONDmJJgqCPA7neJ7p934EOOKOnM8Q7PDElo/4x4lFb2DmuUjcUzS3URnGib9qaPNbuXvBO3sGPHJDRG6fGVdMSeWDP2q99FQdFrz26Gu5Tq7dFMzUvbXy8KXeAj57cOklgA+u1B5AoslLtGIHQMaCVnwDnADZIFIrXsoXrgAAAABJRU5ErkJggg==';
         } else {
@@ -140,7 +139,9 @@ var profile = {
             ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
             ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
             ["99", "32868"], ["100", "32869"]],
-        baudrate: 115200
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 17
     },
     "s3": {
         description: "Scribbler Robot",
@@ -157,12 +158,14 @@ var profile = {
             ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
             ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
             ["99", "32868"], ["100", "32869"]],
-        baudrate: 9600
+        baudrate: 9600,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 5
     },
     "heb": {
         description: "Hackable Electronic Badge",
-        digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
-        servo: [["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"]],
+        digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"]],
+        servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
         eeprom: [["0", "32768"], ["1", "32769"], ["2", "32770"], ["3", "32771"], ["4", "32772"], ["5", "32773"], ["6", "32774"], ["7", "32775"], ["8", "32776"], ["9", "32777"], ["10", "32778"], ["11", "32779"],
             ["12", "32780"], ["13", "32781"], ["14", "32782"], ["15", "32783"], ["16", "32784"], ["17", "32785"], ["18", "32786"], ["19", "32787"], ["20", "32788"], ["21", "32789"], ["22", "32790"],
@@ -174,10 +177,12 @@ var profile = {
             ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
             ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
             ["99", "32868"], ["100", "32869"]],
-        baudrate: 115200
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 11
     },
     "flip": {
-        description: "Propeller Flip Board",
+        description: "Propeller FLiP or Project Board",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         servo: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
         analog: [["A0", "A0"], ["A1", "A1"], ["A2", "A2"], ["A3", "A3"], ["A4", "A4"], ["A5", "A5"]],
@@ -191,7 +196,9 @@ var profile = {
             ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
             ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
             ["99", "32868"], ["100", "32869"]],
-        baudrate: 115200
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 27
     },
     "other": {
         description: "Other Propeller Boards",
@@ -208,7 +215,9 @@ var profile = {
             ["78", "32846"], ["79", "32847"], ["80", "32848"], ["81", "32849"], ["82", "32850"], ["83", "32851"], ["84", "32852"], ["85", "32853"], ["86", "32854"], ["87", "32855"], ["88", "32856"],
             ["89", "32857"], ["90", "32858"], ["91", "32859"], ["92", "32860"], ["92", "32861"], ["93", "32862"], ["94", "32863"], ["95", "32864"], ["96", "32865"], ["97", "32866"], ["98", "32867"],
             ["99", "32868"], ["100", "32869"]],
-        baudrate: 115200
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 27
     }
 };
 function setProfile(profileName) {
@@ -311,7 +320,11 @@ Blockly.propc.finish = function (code) {
     // Convert the setups dictionary into a list.
     var setups = [];
     for (var name in Blockly.propc.setups_) {
-        setups.push('  ' + Blockly.propc.setups_[name]);
+        if (name !== 's3_setup') {
+            setups.push('  ' + Blockly.propc.setups_[name]);
+        } else {
+            setups.unshift('  ' + Blockly.propc.setups_[name]);
+        }
     }
 
     for (var method in Blockly.propc.methods_) {
@@ -382,4 +395,48 @@ Blockly.propc.scrub_ = function (block, code) {
     var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
     var nextCode = this.blockToCode(nextBlock);
     return commentCode + code + nextCode;
+};
+
+// Provides backward compatibility for some older browsers:
+// From: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+
+if (!Object.keys) {
+  Object.keys = (function() {
+    'use strict';
+    var hasOwnProperty = Object.prototype.hasOwnProperty,
+        hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
+        dontEnums = [
+          'toString',
+          'toLocaleString',
+          'valueOf',
+          'hasOwnProperty',
+          'isPrototypeOf',
+          'propertyIsEnumerable',
+          'constructor'
+        ],
+        dontEnumsLength = dontEnums.length;
+
+    return function(obj) {
+      if (typeof obj !== 'function' && (typeof obj !== 'object' || obj === null)) {
+        throw new TypeError('Object.keys called on non-object');
+      }
+
+      var result = [], prop, i;
+
+      for (prop in obj) {
+        if (hasOwnProperty.call(obj, prop)) {
+          result.push(prop);
+        }
+      }
+
+      if (hasDontEnumBug) {
+        for (i = 0; i < dontEnumsLength; i++) {
+          if (hasOwnProperty.call(obj, dontEnums[i])) {
+            result.push(dontEnums[i]);
+          }
+        }
+      }
+      return result;
+    };
+  }());
 };
