@@ -42,7 +42,7 @@
                     <div class="clients">
                         <div class="client MacOS">
                             <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-installer.dmg')}">
+                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
                                 <fmt:message key="clientdownload.client.macos.installer" /></a>
                         </div>
                         <div class="client Windows">
