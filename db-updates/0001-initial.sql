@@ -27,6 +27,7 @@ CREATE TABLE if not exists `project` (
   `id_clouduser` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` longtext,
+  `description_html` longtext,
   `code` longtext,
   `type` varchar(45) NOT NULL,
   `board` varchar(45) NOT NULL,
