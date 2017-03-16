@@ -71,7 +71,9 @@ Blockly.Blocks.make_pin_input = {
         this.appendDummyInput("")
                 .appendField("make PIN");
         this.appendValueInput('PIN')
-                .setCheck('Number');
+                .setCheck('Number')
+                .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
     }
@@ -338,7 +340,7 @@ Blockly.propc.set_pins_binary = function () {
     code += ', ';
     code += dropdown_start_pin;
     code += ', ' + value + ');\n';
-    
+
     return code;
 };
 
@@ -908,14 +910,13 @@ Blockly.Blocks.ab_drive_init = {
                     this.sourceBlock_.updateShape_({"BOT": bot});
                 }), "BOT")
                 .appendField("initialize");
-        this.appendDummyInput("PINS")
-                .appendField(" ramping")
-                .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+        this.appendDummyInput("PINS");
+        //        .appendField(" ramping")
+        //        .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -941,12 +942,21 @@ Blockly.Blocks.ab_drive_init = {
             inputPins.appendField(" left PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
                     .appendField("right PIN")
-                    .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT")
-                    .appendField(" ramping")
-                    .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+                    .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT");
+            //.appendField(" ramping")
+            //.appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
         } else {
-            inputPins.appendField(" ramping")
-                    .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+            //inputPins.appendField(" ramping")
+            //.appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+        }
+
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+        // Iterate through every block.
+        for (var x = 0; x < blocks.length; x++) {
+            var func = blocks[x].newRobot;
+            if (func) {
+                func.call(blocks[x], bot);
+            }
         }
     }
 };
@@ -955,12 +965,39 @@ Blockly.propc.ab_drive_init = function () {
     var bot = this.getFieldValue('BOT');
     var left = Number(this.getFieldValue('LEFT'));
     var right = Number(this.getFieldValue('RIGHT'));
-    var ramping = Number(this.getFieldValue('RAMPING'));
+    //var ramping = Number(this.getFieldValue('RAMPING'));
 
     Blockly.propc.definitions_["include abdrive"] = '#include "' + bot + '"';
 
     if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
         Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
+        //Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';
+    } else {
+        //Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
+    }
+
+    return '';
+};
+
+Blockly.Blocks.ab_drive_ramping = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+                .appendField("Robot set acceleration")
+                .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.ab_drive_ramping = function () {
+    var ramping = Number(this.getFieldValue('RAMPING'));
+
+    if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
+        //Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
         Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';
     } else {
         Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
@@ -979,14 +1016,39 @@ Blockly.Blocks.ab_drive_goto = {
                 .appendField(new Blockly.FieldDropdown([["ticks", "TICK"], ["centimeters", "CM"], ["inches", "INCH"]]), "UNITS");
         this.appendValueInput("LEFT")
                 .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("right");
+//        this.appendValueInput("SPEED")
+//                .setCheck('Number')
+//                .setAlign(Blockly.ALIGN_RIGHT)
+//               .appendField("speed");
 
-        this.setInputsInline(true);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+
+        var whichRobot = '';
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        //if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
+        //    whichRobot = 'abdrive.h';
+        //if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+        //    whichRobot = 'arlodrive.h';
+        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1) {
+            whichRobot = 'servodiffdrive.h';
+            this.newRobot('servodiffdrive.h');
+        }
+
+    },
+    newRobot: function (robot) {
+        if (robot === 'servodiffdrive.h') {
+            this.setWarningText('WARNING: Servo Differential Drive does not support "Robot drive distance"!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
@@ -1030,14 +1092,18 @@ Blockly.Blocks.ab_drive_speed = {
     init: function () {
         this.setTooltip(Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+                .appendField('Robot drive speed');
         this.appendValueInput("LEFT")
                 .setCheck('Number')
-                .appendField("Robot drive speed left");
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("right");
 
-        this.setInputsInline(true);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     }

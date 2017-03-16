@@ -222,7 +222,6 @@
             </block>
             <block type="system_counter"></block>
         </category>
-
         <category name="<fmt:message key="category.operators.arrays" />"  colour="250">
             <block type="array_init"></block>
             <block type="array_fill"></block>
@@ -247,7 +246,6 @@
             </block>
             <block type="array_clear"></block>
         </category>
-
         <category name="<fmt:message key="category.values" />" include="heb" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
@@ -259,7 +257,6 @@
             <block type="heb_color_val"></block>
             <block type="system_counter"></block>
         </category>
-
         <category name="<fmt:message key="category.s3-simple" />" include="s3" colour=185>
             <category name="<fmt:message key="category.s3-simple.simple-control" />" colour=205>
                 <block type="scribbler_loop"></block>
@@ -329,7 +326,6 @@
             </block>
             <block type="spin_comment"></block>
         </category>
-
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
         <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3,heb" colour="200">
@@ -356,7 +352,7 @@
                     <block type="number_binary"></block>
                 </value>
         </category>
-        <category name="<fmt:message key="category.communicate" />" include="activity-board,flip" colour="320">
+        <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="320">
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>
@@ -681,7 +677,6 @@
                     </category>
                 </c:when>
             </c:choose>
-
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
                 <block type="xbee_transmit"></block>
@@ -942,7 +937,6 @@
             <block type="heb_count_contacts"></block>
             <block type="heb_erase_all_contacts"></block>
         </category>
-
         <category name="<fmt:message key="category.sensor-input" />" exclude="s3,heb" colour="155">
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>
@@ -956,7 +950,16 @@
             <category name="<fmt:message key="category.sensor-input.ping" />">
                 <block type="sensor_ping"></block>
             </category>
-
+            <category name="<fmt:message key="category.sensor-input.gps" />">
+                <block type="GPS_init"></block>
+                <block type="GPS_hasFix"></block>
+                <block type="GPS_latitude"></block>
+                <block type="GPS_longitude"></block>
+                <block type="GPS_heading"></block>
+                <block type="GPS_altitude"></block>
+                <block type="GPS_velocity"></block>
+                <block type="GPS_satsTracked"></block>
+            </category>
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
                 <block type="fp_scanner_add">
@@ -968,7 +971,6 @@
                 </block>
                 <block type="fp_scanner_scan"></block>
             </category>
-
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
@@ -1009,7 +1011,7 @@
                 <block type="sound_impact_end"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.memory" />" include="activity-board,flip" colour="155">
+        <category name="<fmt:message key="category.memory" />" include="activity-board,flip,other" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_read">
                     <value name="ADDRESS">
@@ -1069,7 +1071,7 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="flip">
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="flip,other">
                 <block type="mcp320x_read"></block>
                 <block type="mcp320x_set_vref"></block>
             </category>
@@ -1131,6 +1133,7 @@
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
             <block type="ab_drive_init"></block>
+            <block type="ab_drive_ramping"></block>
             <block type="ab_drive_speed">
                 <value name="LEFT">
                     <block type="math_number">
@@ -1159,7 +1162,6 @@
             <block type="activitybot_calibrate"></block>
             <block type="activitybot_display_calibration"></block>
         </category>
-
         <category name="<fmt:message key="category.s3-math" />" include="s3" colour=275>
             <block type="spin_integer"></block>
             <block type="math_int_angle"></block>
@@ -1352,7 +1354,6 @@
                     </value>
                 </block>
                 <block type="scribbler_serial_rx_byte"></block>
-
             </category>
             <%--
                         <category name="<fmt:message key="category.s3-actions.reset" />" include="s3">

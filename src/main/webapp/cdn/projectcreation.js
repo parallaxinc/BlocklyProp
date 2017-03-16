@@ -151,7 +151,10 @@ $('.btn-finish').on('click', function () {
             if (data['success']) {
                 window.location = $('#finish').data('editor') + projectTypes[utils.getUrlParameters('lang')] + "?project=" + data['id'];
             } else {
-                alert(data['message']);
+                if (typeof data['message'] === "string")
+                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
+                else
+                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message'].toString());
             }
         });
     }

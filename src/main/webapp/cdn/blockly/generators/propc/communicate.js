@@ -1447,6 +1447,8 @@ Blockly.propc.oled_get_max_width = function () {
     }
 };
 
+// This block is holding a commented out example of how to pass
+// values to the block it is connected to.
 Blockly.Blocks.oled_set_cursor = {
     helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function () {
@@ -1454,10 +1456,13 @@ Blockly.Blocks.oled_set_cursor = {
         this.appendValueInput('X_POS')
                 .setCheck('Number')
                 .appendField("OLED set cursor at (x)");
+//                .appendField('R,-75,75,5', 'RANGEVALS0');
         this.appendValueInput('Y_POS')
                 .setCheck('Number')
                 .appendField("(y)");
-
+//                .appendField('R,-50,50,5', 'RANGEVALS1');
+//        this.getField('RANGEVALS0').setVisible(false);
+//        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
