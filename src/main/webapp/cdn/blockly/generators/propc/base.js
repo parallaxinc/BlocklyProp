@@ -54,6 +54,129 @@ Blockly.propc.math_number = function () {
     return [code, order];
 };
 
+// Experimental block that can mutate to show a range or if a value
+// is out bounds or not available.  Gets values from the block its connected
+// to by looking for a hidden field starting with "RANGEVALS".  
+// field "RANGEVALS" must start with S, R, or A, and hold a comma-separated
+// set of values.  'S' and 'R' are for a range (with 'S' eventually invoking
+// a UI slider).  The first number is the minimum allowed value, the second is
+// the maximum allowed value, and the third is a dummy start value.  If the
+// range is within +/- 1000, the block will display it.  A warning is thrown
+// if a value entered is out of range. The 'A' argument takes a 
+// comma-separated list of allowed values (think PINS), and throws a 
+// warning if an illegal value is entered.
+// 
+// Will eventually move this functionality into "math_number" and 
+// "spin_integer" blocks.
+Blockly.Blocks.number_range = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput('MAIN')
+                .appendField(new Blockly.FieldTextInput('0',
+                        Blockly.FieldTextInput.numberValidator), 'NUM');
+        this.appendDummyInput('HIDDENVALS')
+                .appendField('', 'RVALS')
+                .setVisible(false);
+        this.setOutput(true, 'Number');
+        this.onchange();
+    },
+    onchange: function () {
+        var rangeVals = null;
+        var range = [-100, 100, 0];
+        var data = this.getFieldValue('NUM');
+
+        if (this.outputConnection) {
+            if (this.outputConnection.targetBlock() !== null) {
+                var key, inputvalue, _connectedField;
+                var _blockFields = this.outputConnection.targetBlock().getInputWithBlock(this).fieldRow;
+                for (key in _blockFields) {
+                    if (_blockFields.hasOwnProperty(key) && !isNaN(parseInt(key, 10))) {
+                        inputvalue = _blockFields[key].name || ' ';
+                        if (inputvalue.substring(0, 9) === "RANGEVALS") {
+                            _connectedField = inputvalue;
+                            break;
+                        }
+                    }
+                }
+                var sourceBlock_ = this.outputConnection.targetBlock();
+                if (sourceBlock_) {
+                    rangeVals = sourceBlock_.getFieldValue(_connectedField).split(',');
+                    if (rangeVals[0] === 'S' || rangeVals[0] === 'R' || rangeVals[0] === 'A') {
+                        var idx;
+                        for (idx = 1; idx <= rangeVals.length; idx++)
+                            range[idx - 1] = Number(rangeVals[idx]);
+                    }
+                }
+            } else {
+                rangeVals = null;
+            }
+        }
+        range[2] = Number(this.getFieldValue('NUM'));
+        if (rangeVals) {
+            if (rangeVals[0] === 'S' || rangeVals[0] === 'R') {
+                if (range[2] < range[0]) {
+                    this.setWarningText('WARNING: Your value is too small!  It must be greater than or equal to ' + range[0].toString(10));
+                } else if (range[2] > range[1]) {
+                    this.setWarningText('WARNING: Your value is too large!  It must be less than or equal to ' + range[1].toString(10));
+                } else {
+                    this.setWarningText(null);
+                }
+            } else if (rangeVals[0] === 'A') {
+                var warnMsg = 'none';
+                var idx;
+                for (idx = 0; idx < range.length; idx++)
+                    if (range[2] === Number(rangeVals[idx]))
+                        warnMsg = 'match';
+                if (warnMsg === 'none') {
+                    this.setWarningText('WARNING: The value you entered is not available or not allowed!');
+                } else {
+                    this.setWarningText(null);
+                }
+            }
+            if ((rangeVals[0] === 'S' || rangeVals[0] === 'R') && (range[2] < range[0] || range[2] > range[1])) {
+                if (this.getField('TITLE')) {
+                    this.setFieldValue('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
+                } else {
+                    this.removeInput('MAIN');
+                    this.appendDummyInput('MAIN')
+                            .appendField(new Blockly.FieldTextInput(data,
+                                    Blockly.FieldTextInput.numberValidator), 'NUM')
+                            .appendField('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
+                 }
+            } else {
+                if (this.getField('TITLE')) {
+                    this.removeInput('MAIN');
+                    this.appendDummyInput('MAIN')
+                            .appendField(new Blockly.FieldTextInput(data,
+                                    Blockly.FieldTextInput.numberValidator), 'NUM');
+                }
+            }
+            this.setFieldValue(rangeVals.toString(), 'RVALS');
+        } else {
+            if (this.getField('TITLE')) {
+                this.removeInput('MAIN');
+                this.appendDummyInput('MAIN')
+                        .appendField(new Blockly.FieldTextInput(data,
+                                Blockly.FieldTextInput.numberValidator), 'NUM');
+            }
+            this.setFieldValue('', 'RVALS');
+            this.setWarningText(null);
+        }
+    }
+};
+
+Blockly.propc.number_range = function () {
+    // Numeric value.
+    var code = window.parseInt(this.getFieldValue('NUM'));
+    // -4.abs() returns -4 in Dart due to strange order of operation choices.
+    // -4 is actually an operator and a number.  Reflect this in the order.
+    var order = code < 0 ?
+            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
+    return [code, order];
+};
+
 Blockly.Blocks.math_arithmetic = {
     init: function () {
         if (profile.default.description === "Scribbler Robot") {
@@ -424,12 +547,52 @@ Blockly.Blocks.comment = {
     init: function () {
         this.setTooltip(Blockly.MSG_COMMENT_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
-        this.appendDummyInput()
-                .appendField("add comment")
+        this.appendDummyInput('MAIN')
+                .appendField("add", 'TITLE')
+                .appendField(new Blockly.FieldDropdown([['comment', 'COMMENT'], ['blank separator', 'SPACER'], ['***       ', 'SPACER']], function (action) {
+                    this.sourceBlock_.updateShape_({"ACTION": action});
+                }), 'ACTION')
                 .appendField(new Blockly.FieldTextInput(''), "COMMENT_TEXT");
-
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        var action = this.getFieldValue('ACTION');
+        container.setAttribute('action', action);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var action = xmlElement.getAttribute('action');
+        this.updateShape_({"ACTION": action});
+    },
+    updateShape_: function (details) {
+        var action = details['ACTION'];
+        if (details['ACTION'] === undefined) {
+            action = this.getFieldValue('ACTION');
+        }
+        var data = this.getFieldValue('COMMENT_TEXT');
+        this.removeInput('MAIN');
+        if (action === 'COMMENT') {
+            this.setColour(colorPalette.getColor('programming'));
+            this.appendDummyInput('MAIN')
+                    .appendField("add", 'TITLE')
+                    .appendField(new Blockly.FieldDropdown([['comment', 'COMMENT'], ['blank separator', 'SPACER']], function (action) {
+                        this.sourceBlock_.updateShape_({"ACTION": action});
+                    }), 'ACTION')
+                    .appendField(new Blockly.FieldTextInput(''), "COMMENT_TEXT");
+        } else if (action === 'SPACER' && this.getColour !== '#FFFFFF') {
+            this.setColour('#FFFFFF');
+            this.appendDummyInput('MAIN')
+                    .appendField("   ", 'TITLE')
+                    .appendField(new Blockly.FieldDropdown([['comment', 'COMMENT'], ['       \u25BD       ', 'SPACER']], function (action) {
+                        this.sourceBlock_.updateShape_({"ACTION": action});
+                    }), 'ACTION')
+                    .appendField(new Blockly.FieldTextInput(''), "COMMENT_TEXT");
+            this.setFieldValue('SPACER', 'ACTION');
+            var cmt = this.getField('COMMENT_TEXT');
+            cmt.setVisible(false);
+        }
     }
 };
 

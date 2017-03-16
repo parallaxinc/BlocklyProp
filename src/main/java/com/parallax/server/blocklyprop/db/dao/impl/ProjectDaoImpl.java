@@ -22,15 +22,18 @@ import org.jooq.DSLContext;
 import org.jooq.SortField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Random;
+
 
 /**
  *
  * @author Michel
- * 
+ *
  * TODO: add details.
  */
 @Singleton
 public class ProjectDaoImpl implements ProjectDao {
+
     private static final Logger LOG = LoggerFactory.getLogger(ProjectDao.class);
     private DSLContext create;
 
@@ -42,13 +45,12 @@ public class ProjectDaoImpl implements ProjectDao {
     /**
      *
      * Create a ProjectRecord object from an existing project.
-     * 
-     * Note: There are private getProject methods that retrieve
-     *       a project record based on a number of parameters
-     *       passed in.
-     * 
+     *
+     * Note: There are private getProject methods that retrieve a project record
+     * based on a number of parameters passed in.
+     *
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @return
      */
@@ -70,9 +72,9 @@ public class ProjectDaoImpl implements ProjectDao {
     /**
      *
      * Create a new project with supplied code.
-     * 
+     *
      * TODO: add details.
-     * 
+     *
      * @param name
      * @param description
      * @param descriptionHtml
@@ -85,35 +87,35 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord createProject(
-            String name, String description, String descriptionHtml, 
-            String code, ProjectType type, String board, boolean privateProject, 
+            String name, String description, String descriptionHtml,
+            String code, ProjectType type, String board, boolean privateProject,
             boolean sharedProject) {
 
         LOG.info("Creating a new project with existing code.");
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
-        
+
         ProjectRecord record = create
-                .insertInto(Tables.PROJECT, 
-                            Tables.PROJECT.ID_USER, 
-                            Tables.PROJECT.ID_CLOUDUSER, 
-                            Tables.PROJECT.NAME, 
-                            Tables.PROJECT.DESCRIPTION, 
-                            Tables.PROJECT.DESCRIPTION_HTML, 
-                            Tables.PROJECT.CODE, 
-                            Tables.PROJECT.TYPE, 
-                            Tables.PROJECT.BOARD, 
-                            Tables.PROJECT.PRIVATE, 
-                            Tables.PROJECT.SHARED)
-                .values(idUser, 
-                        idCloudUser, 
-                        name, 
-                        description, 
-                        descriptionHtml, 
-                        code, 
-                        type, 
-                        board, 
-                        privateProject, 
+                .insertInto(Tables.PROJECT,
+                        Tables.PROJECT.ID_USER,
+                        Tables.PROJECT.ID_CLOUDUSER,
+                        Tables.PROJECT.NAME,
+                        Tables.PROJECT.DESCRIPTION,
+                        Tables.PROJECT.DESCRIPTION_HTML,
+                        Tables.PROJECT.CODE,
+                        Tables.PROJECT.TYPE,
+                        Tables.PROJECT.BOARD,
+                        Tables.PROJECT.PRIVATE,
+                        Tables.PROJECT.SHARED)
+                .values(idUser,
+                        idCloudUser,
+                        name,
+                        description,
+                        descriptionHtml,
+                        code,
+                        type,
+                        board,
+                        privateProject,
                         sharedProject)
                 .returning()
                 .fetchOne();
@@ -124,11 +126,11 @@ public class ProjectDaoImpl implements ProjectDao {
     /**
      *
      * Create a new project based on an existing project.
-     * 
+     *
      * Note: This is an overload of createProject() with existing blocks.
-     * 
+     *
      * TODO: add details.
-     * 
+     *
      * @param name
      * @param description
      * @param descriptionHtml
@@ -141,37 +143,37 @@ public class ProjectDaoImpl implements ProjectDao {
      * @return
      */
     public ProjectRecord createProject(
-            String name, String description, String descriptionHtml, 
-            String code, ProjectType type, String board, boolean privateProject, 
+            String name, String description, String descriptionHtml,
+            String code, ProjectType type, String board, boolean privateProject,
             boolean sharedProject, Long idProjectBasedOn) {
-        
+
         LOG.info("Creating a new project from existing project.");
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
 
         ProjectRecord record = create
-                .insertInto(Tables.PROJECT, 
-                            Tables.PROJECT.ID_USER, 
-                            Tables.PROJECT.ID_CLOUDUSER, 
-                            Tables.PROJECT.NAME, 
-                            Tables.PROJECT.DESCRIPTION, 
-                            Tables.PROJECT.DESCRIPTION_HTML, 
-                            Tables.PROJECT.CODE, 
-                            Tables.PROJECT.TYPE, 
-                            Tables.PROJECT.BOARD, 
-                            Tables.PROJECT.PRIVATE, 
-                            Tables.PROJECT.SHARED, 
-                            Tables.PROJECT.BASED_ON)
-                .values(idUser, 
-                        idCloudUser, 
-                        name, 
-                        description, 
-                        descriptionHtml, 
-                        code, 
-                        type, 
-                        board, 
-                        privateProject, 
-                        sharedProject, 
+                .insertInto(Tables.PROJECT,
+                        Tables.PROJECT.ID_USER,
+                        Tables.PROJECT.ID_CLOUDUSER,
+                        Tables.PROJECT.NAME,
+                        Tables.PROJECT.DESCRIPTION,
+                        Tables.PROJECT.DESCRIPTION_HTML,
+                        Tables.PROJECT.CODE,
+                        Tables.PROJECT.TYPE,
+                        Tables.PROJECT.BOARD,
+                        Tables.PROJECT.PRIVATE,
+                        Tables.PROJECT.SHARED,
+                        Tables.PROJECT.BASED_ON)
+                .values(idUser,
+                        idCloudUser,
+                        name,
+                        description,
+                        descriptionHtml,
+                        code,
+                        type,
+                        board,
+                        privateProject,
+                        sharedProject,
                         idProjectBasedOn)
                 .returning()
                 .fetchOne();
@@ -183,9 +185,9 @@ public class ProjectDaoImpl implements ProjectDao {
     /**
      *
      * Create a new project with a blank canvas.
-     * 
+     *
      * TODO: add details.
-     * 
+     *
      * @param name
      * @param description
      * @param descriptionHtml
@@ -197,20 +199,44 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord createProject(
-            String name, String description, String descriptionHtml, 
-            ProjectType type, String board, boolean privateProject, 
+            String name, String description, String descriptionHtml,
+            ProjectType type, String board, boolean privateProject,
             boolean sharedProject) {
-        
+
         LOG.info("Creating a new, empty project from existing project.");
         return createProject(name, description, descriptionHtml, "", type, board, privateProject, sharedProject);
     }
 
+
+    // Used by the randomString function
+    
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*-+./:;=?@[]^_`{|}~";
+    static Random rnd = new Random();
+
+    /**
+     *
+     * Create a random string to use as a blockID.
+     *
+     * TODO: add details.
+     *
+     * @param len
+     * @return
+     */
+    String randomString(int len) {
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
+    }
+    
+
     /**
      *
      * Update a project.
-     * 
+     *
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @param name
      * @param description
@@ -246,16 +272,16 @@ public class ProjectDaoImpl implements ProjectDao {
 
         record.setModified(cal);
         record.update();
-        
+
         return record;
     }
 
     /**
      *
      * Update a project.
-     * 
+     *
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @param name
      * @param description
@@ -267,16 +293,16 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord updateProject(
-            Long idProject, 
-            String name, 
-            String description, 
-            String descriptionHtml, 
-            String code, 
-            boolean privateProject, 
+            Long idProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            boolean privateProject,
             boolean sharedProject) {
 
         LOG.info("Update project {}.", idProject);
-        
+
         ProjectRecord record = getProject(idProject, true);
         if (record != null) {
             record.setName(name);
@@ -285,23 +311,23 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setCode(code);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
-            
+
             GregorianCalendar cal = new GregorianCalendar();
             cal.setTime(new java.util.Date());
 
             record.setModified(cal);
             record.update();
-        
+
             return record;
         }
-        
+
         LOG.warn("Unable to update project {}", idProject);
         return null;
     }
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @param code
      * @return
@@ -326,7 +352,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param idUser
      * @param sort
      * @param order
@@ -337,12 +363,12 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
         LOG.info("Retreive projects for user {}.", idUser);
-        
+
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
         if (TableOrder.desc == order) {
             orderField = Tables.PROJECT.NAME.desc();
         }
-        
+
         return create.selectFrom(Tables.PROJECT)
                 .where(Tables.PROJECT.ID_USER.equal(idUser))
                 .orderBy(orderField).limit(limit).offset(offset)
@@ -351,7 +377,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param sort
      * @param order
      * @param limit
@@ -362,7 +388,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
         LOG.info("Retreive shared projects.");
-        
+
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
         if (TableOrder.desc == order) {
             orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
@@ -379,7 +405,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param sort
      * @param order
      * @param limit
@@ -390,7 +416,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public List<ProjectRecord> getSharedProjectsByUser(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
         LOG.info("Retreive shared projects.");
-        
+
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
         if (TableOrder.desc == order) {
             orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
@@ -407,7 +433,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param idUser
      * @return
      */
@@ -421,7 +447,7 @@ public class ProjectDaoImpl implements ProjectDao {
     /**
      *
      * TODO: add details.
-     * 
+     *
      * @param idUser
      * @return
      */
@@ -439,7 +465,7 @@ public class ProjectDaoImpl implements ProjectDao {
     /**
      *
      * TODO: add details.
-     * 
+     *
      * @param idUser
      * @return
      */
@@ -456,7 +482,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @return
      */
@@ -477,7 +503,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @return
      */
@@ -491,7 +517,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @param code
      * @return
@@ -532,7 +558,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * TODO: add details.
-     * 
+     *
      * @param idProject
      * @param code
      * @param newName
@@ -541,24 +567,24 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
         LOG.info("Saving project code as '{}'", newName);
-                
+
         ProjectRecord original = getProject(idProject);
         if (original == null) {
             LOG.error("Original project {} is missing. Unable to save code as...", idProject);
             throw new NullPointerException("Project doesn't exist");
         }
-        
+
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
             ProjectRecord cloned = createProject(
-                    newName, 
-                    original.getDescription(), 
-                    original.getDescriptionHtml(), 
-                    code, 
-                    original.getType(), 
-                    original.getBoard(), 
-                    original.getPrivate(), 
-                    original.getShared(), 
+                    newName,
+                    original.getDescription(),
+                    original.getDescriptionHtml(),
+                    code,
+                    original.getType(),
+                    original.getBoard(),
+                    original.getPrivate(),
+                    original.getShared(),
                     original.getId());
 
             return cloned;
@@ -575,14 +601,14 @@ public class ProjectDaoImpl implements ProjectDao {
                 .selectFrom(Tables.PROJECT)
                 .where(Tables.PROJECT.ID.equal(idProject))
                 .fetchOne();
-        
+
         if (record != null) {
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-            
+
             // Return a project if the edit flag is off or the edit flag is
             // on and the project owner is the current user
             if (!toEdit || record.getIdUser().equals(idUser)) {
-                
+
                 // Todo: Verify that the record was fetched - it sometimes is not.
                 return alterReadRecord(record);
             } else {
@@ -600,24 +626,23 @@ public class ProjectDaoImpl implements ProjectDao {
 
     private ProjectRecord doProjectClone(ProjectRecord original) {
         ProjectRecord cloned = createProject(
-                original.getName(), 
-                original.getDescription(), 
-                original.getDescriptionHtml(), 
-                original.getCode(), 
-                original.getType(), 
-                original.getBoard(), 
-                original.getPrivate(), 
+                original.getName(),
+                original.getDescription(),
+                original.getDescriptionHtml(),
+                original.getCode(),
+                original.getType(),
+                original.getBoard(),
+                original.getPrivate(),
                 original.getShared());
-        
+
         cloned.setBasedOn(original.getId());
         cloned.update();
-        
+
         create.update(Tables.PROJECT)
-              .set(Tables.PROJECT.BASED_ON, original.getId())
-              .where(Tables.PROJECT.ID.equal(cloned.getId()));
+                .set(Tables.PROJECT.BASED_ON, original.getId())
+                .where(Tables.PROJECT.ID.equal(cloned.getId()));
         return cloned;
     }
-
 
     // Evaluate project code and replace any depricated or updated blocks
     //
@@ -629,7 +654,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private ProjectRecord alterReadRecord(ProjectRecord record) {
         LOG.info("Verify project block characteristics");
         String currentCode, newCode;
-        
+
         if (record == null) {
             LOG.error("Null project record detected.");
             throw new NullPointerException("Cannot alter a null project record.");
@@ -643,29 +668,27 @@ public class ProjectDaoImpl implements ProjectDao {
                 LOG.warn("Project () code block is empty.", record.getId());
                 return record;
             }
-            
+
             /*
              * Make a copy of the project. We will use this after the updates
              * to determine if anything was changed. This ensures that we do
              * not do any database I/O unless we actually changed something.
              */
             newCode = currentCode;
-            
+
             if (record.getType() == ProjectType.SPIN) {
                 newCode = fixSpinProjectBlocks(newCode);
 
-            } else if (record.getType() == ProjectType.PROPC){
+            } else if (record.getType() == ProjectType.PROPC) {
                 newCode = fixPropcProjectBlocks(newCode);
             }
 
             // Check for any difference from the original code
-            if (! currentCode.equals(newCode)) {
+            if (!currentCode.equals(newCode)) {
                 LOG.info("Updated depricated project code blocks in project {}.", record.getId());
                 record.setCode(newCode);
             }
-        }
-        
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.error("Exception trapped. Message is: {}", ex.getMessage());
         }
 
@@ -684,72 +707,72 @@ public class ProjectDaoImpl implements ProjectDao {
 
         newCode = newCode.replaceAll("block type=\"logic_operation\"",
                 "block type=\"logic_boolean_operation\"");
-                
+
         newCode = newCode.replaceAll("block type=\"logic_negate\"",
                 "block type=\"logic_boolean_negate\"");
-                
+
         newCode = newCode.replaceAll("block type=\"math_number\"",
                 "block type=\"spin_integer\"");
         return newCode;
     }
-    
+
     private String fixPropcProjectBlocks(String newCode) {
         LOG.info("Looking for depricated PropC blocks.");
-        
+
         newCode = newCode.replaceAll("field name=\"OP\">ADD</field",
                 "field name=\"OP\"> + </field");
-        
+
         newCode = newCode.replaceAll("field name=\"OP\">MINUS</field",
                 "field name=\"OP\"> - </field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">MULTIPLY</field",
                 "field name=\"OP\"> * </field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">DIVIDE</field",
                 "field name=\"OP\"> / </field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">MODULUS</field",
                 "field name=\"OP\"> % </field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">AND</field",
                 "field name=\"OP\"> &amp;&amp; </field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">AND_NOT</field",
                 "field name=\"OP\"> &amp;&amp; !</field");
 
         newCode = newCode.replaceAll("field name=\"OP\">LT</field",
                 "field name=\"OP\">&lt;</field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">GT</field",
                 "field name=\"OP\">&gt;</field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">LTE</field",
                 "field name=\"OP\">&lt;=</field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">GTE</field",
                 "field name=\"OP\">&gt;=</field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">EQ</field",
                 "field name=\"OP\">==</field");
-                
+
         newCode = newCode.replaceAll("field name=\"OP\">NEQ</field",
                 "field name=\"OP\">!=</field");
 
         newCode = newCode.replaceAll("field name=\"UNIT\">INCHES</field",
                 "field name=\"UNIT\">_inches</field");
-                
+
         newCode = newCode.replaceAll("field name=\"UNIT\">CM</field",
                 "field name=\"UNIT\">_cm</field");
-            
+
         newCode = newCode.replaceAll("block type=\"controls_boolean_if\"",
                 "block type=\"controls_if\"");
-                
+
         newCode = newCode.replaceAll("block type=\"logic_boolean_compare\"",
                 "block type=\"logic_compare\"");
-                
+
         newCode = newCode.replaceAll("block type=\"logic_boolean_operation\"",
                 "block type=\"logic_operation\"");
-                
+
         newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"",
                 "block type=\"logic_negate\"");
 
@@ -757,6 +780,13 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll("block type=\"spin_integer\"",
                 "block type=\"math_number\"");
 
+        
+        // Replace the Robot init block with two blocks, need to generate unique 20-digit blockID:
+        
+        newCode = newCode.replaceAll("</field><field name=\"RAMPING\">", 
+                "</field></block><block type=\"ab_drive_ramping\" id=\"" + randomString(20) + "\"><field name=\"RAMPING\">");
+        
+        
         return newCode;
     }
 }

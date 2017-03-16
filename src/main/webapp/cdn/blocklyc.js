@@ -116,14 +116,14 @@ function init(blockly) {
 
     // Make the 'Blocks' tab line up with the toolbox.
     /*
-    if (Blockly.Toolbox) {
-        window.setTimeout(function () {
-            document.getElementById('tab_blocks').style.minWidth =
-                    (Blockly.Toolbox.width - 38) + 'px';
-            // Account for the 19 pixel margin and on each side.
-        }, 1);
-    }
-    */
+     if (Blockly.Toolbox) {
+     window.setTimeout(function () {
+     document.getElementById('tab_blocks').style.minWidth =
+     (Blockly.Toolbox.width - 38) + 'px';
+     // Account for the 19 pixel margin and on each side.
+     }, 1);
+     }
+     */
 
     loadProject();
 }
@@ -154,7 +154,10 @@ function cloudCompile(text, action, successHandler) {
             'data': {"code": propcCode}
         }).done(function (data) {
             if (data.error) {
-                alert(data['message']);
+                if (typeof data['message'] === "string")
+                    alert("BlocklyProp was unable to compile your project:\n" + data['message']);
+                else
+                    alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString());
             } else {
                 if (data.success) {
                     $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
@@ -164,7 +167,10 @@ function cloudCompile(text, action, successHandler) {
                 }
             }
         }).fail(function (data) {
-            alert(data);
+            if (typeof data === "string")
+                alert("BlocklyProp was unable to compile your project:\n----------\n" + data);
+            else
+                alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString());
         });
     }
 }
@@ -308,13 +314,13 @@ check_com_ports = function () {
                 text: 'Searching...'
             }));
             /*
-            $("#comPort").append($('<option>', {
-                text: 'COM3'
-            }));
-            $("#comPort").append($('<option>', {
-                text: 'COM4'
-            }));
-            */
+             $("#comPort").append($('<option>', {
+             text: 'COM3'
+             }));
+             $("#comPort").append($('<option>', {
+             text: 'COM4'
+             }));
+             */
             select_com_port(selected_port);
             client_available = false;
         });
@@ -369,9 +375,11 @@ function downloadPropC() {
                         }());
 
                         // Check for any file extentions at the end of the submitted name, and truncate if any
-                        if(value.indexOf(".") !== -1) value = value.substring(0,value.indexOf("."));
+                        if (value.indexOf(".") !== -1)
+                            value = value.substring(0, value.indexOf("."));
                         // Check to make sure the filename is not too long
-                        if(value.length >= 30) value = value.substring(0, 29);
+                        if (value.length >= 30)
+                            value = value.substring(0, 29);
                         // Replace any illegal characters
                         value = value.replace(/[\\/:*?\"<>|]/g, '_');
 
@@ -382,6 +390,6 @@ function downloadPropC() {
             }
         });
     }
-    
-    
+
+
 }
