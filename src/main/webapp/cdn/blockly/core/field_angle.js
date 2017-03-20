@@ -66,11 +66,11 @@ Blockly.FieldAngle = function (text, opt_changeHandler, opt_min, opt_max) {
     }
 
     if (opt_min)
-        Blockly.FieldAngle.MIN = opt_min;
+        Blockly.FieldAngle.MIN = Number(opt_min);
     else
         Blockly.FieldAngle.MIN = null;
     if (opt_max)
-        Blockly.FieldAngle.MAX = opt_max;
+        Blockly.FieldAngle.MAX = Number(opt_max);
     else
         Blockly.FieldAngle.MAX = null;
 
@@ -145,47 +145,90 @@ Blockly.FieldAngle.prototype.showEditor_ = function () {
         // Mobile interface uses window.prompt.
         return;
     }
-    // Build the SVG DOM.
-    var svg = Blockly.createSvgElement('svg', {
-        'xmlns': 'http://www.w3.org/2000/svg',
-        'xmlns:html': 'http://www.w3.org/1999/xhtml',
-        'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-        'version': '1.1',
-        'height': (Blockly.FieldAngle.HALF * 2) + 'px',
-        'width': (Blockly.FieldAngle.HALF * 2) + 'px'
-    }, div);
-    var circle = Blockly.createSvgElement('circle', {
-        'cx': Blockly.FieldAngle.HALF, 'cy': Blockly.FieldAngle.HALF,
-        'r': Blockly.FieldAngle.RADIUS,
-        'class': 'blocklyAngleCircle'
-    }, svg);
-    this.gauge_ = Blockly.createSvgElement('path',
-            {'class': 'blocklyAngleGauge'}, svg);
-    this.line_ = Blockly.createSvgElement('line',
-            {'x1': Blockly.FieldAngle.HALF,
-                'y1': Blockly.FieldAngle.HALF,
-                'class': 'blocklyAngleLine'}, svg);
-    // Draw markers around the edge.
-    for (var a = 0; a < 360; a += 15) {
-        Blockly.createSvgElement('line', {
-            'x1': Blockly.FieldAngle.HALF + Blockly.FieldAngle.RADIUS,
-            'y1': Blockly.FieldAngle.HALF,
-            'x2': Blockly.FieldAngle.HALF + Blockly.FieldAngle.RADIUS -
-                    (a % 45 == 0 ? 10 : 5),
-            'y2': Blockly.FieldAngle.HALF,
-            'class': 'blocklyAngleMarks',
-            'transform': 'rotate(' + a + ', ' +
-                    Blockly.FieldAngle.HALF + ', ' + Blockly.FieldAngle.HALF + ')'
+
+    if (Blockly.FieldAngle.MIN) {
+        // Build the SVG DOM for the slider
+        var svg = Blockly.createSvgElement('svg', {
+            'xmlns': 'http://www.w3.org/2000/svg',
+            'xmlns:html': 'http://www.w3.org/1999/xhtml',
+            'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+            'version': '1.1',
+            'height': (33) + 'px',
+            'width': (150) + 'px',
+            'viewbox': '8 8 188 28'
+        }, div);
+        this.gauge_ = Blockly.createSvgElement('rect', {
+            'x': '10', 'y': '10',
+            'rx': '12', 'ry': '12',
+            'width': '180', 'height': '24',
+            'class': 'blocklySliderBkgOutline'
         }, svg);
+        var highbar = Blockly.createSvgElement('line', {
+            'x1': '22', 'y1': '22',
+            'x2': '178', 'y2': '22',
+            'class': 'blocklySliderHighSide'
+        }, svg);
+        this.line_ = Blockly.createSvgElement('line', {
+            'x1': '22', 'y1': '22',
+            'class': 'blocklySliderLowSide'
+        }, svg);
+        this.circle_ = Blockly.createSvgElement('circle', {
+            'r': '9.5',
+            'class': 'blocklySliderKnob'
+        }, svg);
+
+        svg.style.marginLeft = '-35px';
+        this.clickWrapper_ =
+                Blockly.bindEvent_(svg, 'click', this, Blockly.WidgetDiv.hide);
+        this.moveWrapper1_ =
+                Blockly.bindEvent_(this.circle_, 'mousemove', this, this.onMouseMove);
+        this.moveWrapper2_ =
+                Blockly.bindEvent_(this.gauge_, 'mousemove', this, this.onMouseMove);
+        this.updateGraph_();
+
+    } else {
+        // Build the SVG DOM for the Protractor.
+        var svg = Blockly.createSvgElement('svg', {
+            'xmlns': 'http://www.w3.org/2000/svg',
+            'xmlns:html': 'http://www.w3.org/1999/xhtml',
+            'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+            'version': '1.1',
+            'height': (Blockly.FieldAngle.HALF * 2) + 'px',
+            'width': (Blockly.FieldAngle.HALF * 2) + 'px'
+        }, div);
+        var circle = Blockly.createSvgElement('circle', {
+            'cx': Blockly.FieldAngle.HALF, 'cy': Blockly.FieldAngle.HALF,
+            'r': Blockly.FieldAngle.RADIUS,
+            'class': 'blocklyAngleCircle'
+        }, svg);
+        this.gauge_ = Blockly.createSvgElement('path',
+                {'class': 'blocklyAngleGauge'}, svg);
+        this.line_ = Blockly.createSvgElement('line',
+                {'x1': Blockly.FieldAngle.HALF,
+                    'y1': Blockly.FieldAngle.HALF,
+                    'class': 'blocklyAngleLine'}, svg);
+        // Draw markers around the edge.
+        for (var a = 0; a < 360; a += 15) {
+            Blockly.createSvgElement('line', {
+                'x1': Blockly.FieldAngle.HALF + Blockly.FieldAngle.RADIUS,
+                'y1': Blockly.FieldAngle.HALF,
+                'x2': Blockly.FieldAngle.HALF + Blockly.FieldAngle.RADIUS -
+                        (a % 45 == 0 ? 10 : 5),
+                'y2': Blockly.FieldAngle.HALF,
+                'class': 'blocklyAngleMarks',
+                'transform': 'rotate(' + a + ', ' +
+                        Blockly.FieldAngle.HALF + ', ' + Blockly.FieldAngle.HALF + ')'
+            }, svg);
+        }
+        svg.style.marginLeft = '-35px';
+        this.clickWrapper_ =
+                Blockly.bindEvent_(svg, 'click', this, Blockly.WidgetDiv.hide);
+        this.moveWrapper1_ =
+                Blockly.bindEvent_(circle, 'mousemove', this, this.onMouseMove);
+        this.moveWrapper2_ =
+                Blockly.bindEvent_(this.gauge_, 'mousemove', this, this.onMouseMove);
+        this.updateGraph_();
     }
-    svg.style.marginLeft = '-35px';
-    this.clickWrapper_ =
-            Blockly.bindEvent_(svg, 'click', this, Blockly.WidgetDiv.hide);
-    this.moveWrapper1_ =
-            Blockly.bindEvent_(circle, 'mousemove', this, this.onMouseMove);
-    this.moveWrapper2_ =
-            Blockly.bindEvent_(this.gauge_, 'mousemove', this, this.onMouseMove);
-    this.updateGraph_();
 };
 
 /**
@@ -193,32 +236,66 @@ Blockly.FieldAngle.prototype.showEditor_ = function () {
  * @param {!Event} e Mouse move event.
  */
 Blockly.FieldAngle.prototype.onMouseMove = function (e) {
-    var bBox = this.gauge_.ownerSVGElement.getBoundingClientRect();
-    var dx = e.clientX - bBox.left - Blockly.FieldAngle.HALF;
-    var dy = e.clientY - bBox.top - Blockly.FieldAngle.HALF;
-    var angle = Math.atan(-dy / dx);
-    if (isNaN(angle)) {
-        // This shouldn't happen, but let's not let this error propogate further.
-        return;
+
+    if (Blockly.FieldAngle.MIN) {
+
+        var bBox = this.gauge_.ownerSVGElement.getBoundingClientRect();
+
+        // set this values:
+        var steps = Math.round(360 / Blockly.FieldAngle.ROUND);
+        var min = Blockly.FieldAngle.MIN;
+        var max = Blockly.FieldAngle.MAX;
+
+        // calculate slider position:
+        var m = max - min;
+        var dx = e.clientX - bBox.left;
+        var pos = dx / (bBox.width / 200);
+        if (pos < 22)
+            pos = 22;
+        if (pos > 178)
+            pos = 178;
+
+        // draw slider and knob:
+        var angle = Math.round(Math.round((((pos - 22) / (178 - 22)) * m) / (m / steps)) * (m / steps) + min);
+
+        if (isNaN(angle)) {
+            // This shouldn't happen, but let's not let this error propogate further.
+            return;
+        }
+        angle = String(angle);
+        Blockly.FieldTextInput.htmlInput_.value = angle;
+        this.setText(angle);
+
+    } else {
+
+        var bBox = this.gauge_.ownerSVGElement.getBoundingClientRect();
+        var dx = e.clientX - bBox.left - Blockly.FieldAngle.HALF;
+        var dy = e.clientY - bBox.top - Blockly.FieldAngle.HALF;
+        var angle = Math.atan(-dy / dx);
+        if (isNaN(angle)) {
+            // This shouldn't happen, but let's not let this error propogate further.
+            return;
+        }
+        angle = goog.math.toDegrees(angle);
+        // 0: East, 90: North, 180: West, 270: South.
+        if (dx < 0) {
+            angle += 180;
+        } else if (dy > 0) {
+            angle += 360;
+        }
+        if (Blockly.FieldAngle.ROUND) {
+            angle = Math.round(angle / Blockly.FieldAngle.ROUND) *
+                    Blockly.FieldAngle.ROUND;
+        }
+        if (angle >= 360) {
+            // Rounding may have rounded up to 360.
+            angle -= 360;
+        }
+        angle = String(angle);
+        Blockly.FieldTextInput.htmlInput_.value = angle;
+        this.setText(angle);
+
     }
-    angle = goog.math.toDegrees(angle);
-    // 0: East, 90: North, 180: West, 270: South.
-    if (dx < 0) {
-        angle += 180;
-    } else if (dy > 0) {
-        angle += 360;
-    }
-    if (Blockly.FieldAngle.ROUND) {
-        angle = Math.round(angle / Blockly.FieldAngle.ROUND) *
-                Blockly.FieldAngle.ROUND;
-    }
-    if (angle >= 360) {
-        // Rounding may have rounded up to 360.
-        angle -= 360;
-    }
-    angle = String(angle);
-    Blockly.FieldTextInput.htmlInput_.value = angle;
-    this.setText(angle);
 };
 
 /**
@@ -253,25 +330,55 @@ Blockly.FieldAngle.prototype.updateGraph_ = function () {
     if (!this.gauge_) {
         return;
     }
-    var angleRadians = goog.math.toRadians(Number(this.getText()));
-    if (isNaN(angleRadians)) {
-        this.gauge_.setAttribute('d',
-                'M ' + Blockly.FieldAngle.HALF + ', ' + Blockly.FieldAngle.HALF);
-        this.line_.setAttribute('x2', Blockly.FieldAngle.HALF);
-        this.line_.setAttribute('y2', Blockly.FieldAngle.HALF);
+    if (Blockly.FieldAngle.MIN) {
+
+        var angleRadians = Number(this.getText());
+        if (isNaN(angleRadians)) {
+            this.circle_.setAttribute('cx', '100');
+            this.circle_.setAttribute('cy', '22');
+            this.line_.setAttribute('x2', '100');
+            this.line_.setAttribute('y2', '22');
+        } else {
+            var min = Blockly.FieldAngle.MIN;
+            var max = Blockly.FieldAngle.MAX;
+
+            // calculate slider position:
+            var m = max - min;
+
+            if (angleRadians < min)
+                angleRadians = min;
+            if (angleRadians > max)
+                angleRadians = max;
+            
+            var pos = Math.round(((angleRadians - min)/m) * 156 + 22);
+
+            this.circle_.setAttribute('cx', pos);
+            this.circle_.setAttribute('cy', '22');
+            this.line_.setAttribute('x2', pos);
+            this.line_.setAttribute('y2', '22');
+        }
+
     } else {
-        var x = Blockly.FieldAngle.HALF + Math.cos(angleRadians) *
-                Blockly.FieldAngle.RADIUS;
-        var y = Blockly.FieldAngle.HALF + Math.sin(angleRadians) *
-                -Blockly.FieldAngle.RADIUS;
-        var largeFlag = (angleRadians > Math.PI) ? 1 : 0;
-        this.gauge_.setAttribute('d',
-                'M ' + Blockly.FieldAngle.HALF + ', ' + Blockly.FieldAngle.HALF +
-                ' h ' + Blockly.FieldAngle.RADIUS +
-                ' A ' + Blockly.FieldAngle.RADIUS + ',' + Blockly.FieldAngle.RADIUS +
-                ' 0 ' + largeFlag + ' 0 ' + x + ',' + y + ' z');
-        this.line_.setAttribute('x2', x);
-        this.line_.setAttribute('y2', y);
+        var angleRadians = goog.math.toRadians(Number(this.getText()));
+        if (isNaN(angleRadians)) {
+            this.gauge_.setAttribute('d',
+                    'M ' + Blockly.FieldAngle.HALF + ', ' + Blockly.FieldAngle.HALF);
+            this.line_.setAttribute('x2', Blockly.FieldAngle.HALF);
+            this.line_.setAttribute('y2', Blockly.FieldAngle.HALF);
+        } else {
+            var x = Blockly.FieldAngle.HALF + Math.cos(angleRadians) *
+                    Blockly.FieldAngle.RADIUS;
+            var y = Blockly.FieldAngle.HALF + Math.sin(angleRadians) *
+                    -Blockly.FieldAngle.RADIUS;
+            var largeFlag = (angleRadians > Math.PI) ? 1 : 0;
+            this.gauge_.setAttribute('d',
+                    'M ' + Blockly.FieldAngle.HALF + ', ' + Blockly.FieldAngle.HALF +
+                    ' h ' + Blockly.FieldAngle.RADIUS +
+                    ' A ' + Blockly.FieldAngle.RADIUS + ',' + Blockly.FieldAngle.RADIUS +
+                    ' 0 ' + largeFlag + ' 0 ' + x + ',' + y + ' z');
+            this.line_.setAttribute('x2', x);
+            this.line_.setAttribute('y2', y);
+        }
     }
 };
 

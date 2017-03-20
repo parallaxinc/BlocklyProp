@@ -45,6 +45,26 @@ var quotes = {
 
 };
 
+/*
+var directionArrow = {
+    /**
+     * Create an image of a arrow pointing toward or away.
+     * @param {string} direction 'forward' or 'backward'.
+     * @return {!Blockly.FieldImage} The field image of the arrow.
+     * @this Blockly.Block
+     *
+    newArrow_: function (direction) {
+        if (direction === 'forward') {
+            var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C3 L2%2C10 L4%2C10 z M3%2C.5 L.5%2C3 L5.5%2C3 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
+            return new Blockly.FieldImage(file, 8, 12, '&#8593;');
+        } else {
+            var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C0 L2%2C7 L4%2C7 z M3%2C10 L0.2%2C6.5 L5.8%2C6.5 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
+            return new Blockly.FieldImage(file, 8, 12, '&#8595;');
+        }
+    }
+};
+*/
+
 /**
  * Color Palette - Created by Michel on 30-4-2016.
  */
@@ -347,42 +367,43 @@ Blockly.propc.scrub_ = function (block, code) {
 // From: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 
 if (!Object.keys) {
-  Object.keys = (function() {
-    'use strict';
-    var hasOwnProperty = Object.prototype.hasOwnProperty,
-        hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
-        dontEnums = [
-          'toString',
-          'toLocaleString',
-          'valueOf',
-          'hasOwnProperty',
-          'isPrototypeOf',
-          'propertyIsEnumerable',
-          'constructor'
-        ],
-        dontEnumsLength = dontEnums.length;
+    Object.keys = (function () {
+        'use strict';
+        var hasOwnProperty = Object.prototype.hasOwnProperty,
+                hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+                dontEnums = [
+                    'toString',
+                    'toLocaleString',
+                    'valueOf',
+                    'hasOwnProperty',
+                    'isPrototypeOf',
+                    'propertyIsEnumerable',
+                    'constructor'
+                ],
+                dontEnumsLength = dontEnums.length;
 
-    return function(obj) {
-      if (typeof obj !== 'function' && (typeof obj !== 'object' || obj === null)) {
-        throw new TypeError('Object.keys called on non-object');
-      }
+        return function (obj) {
+            if (typeof obj !== 'function' && (typeof obj !== 'object' || obj === null)) {
+                throw new TypeError('Object.keys called on non-object');
+            }
 
-      var result = [], prop, i;
+            var result = [], prop, i;
 
-      for (prop in obj) {
-        if (hasOwnProperty.call(obj, prop)) {
-          result.push(prop);
-        }
-      }
+            for (prop in obj) {
+                if (hasOwnProperty.call(obj, prop)) {
+                    result.push(prop);
+                }
+            }
 
-      if (hasDontEnumBug) {
-        for (i = 0; i < dontEnumsLength; i++) {
-          if (hasOwnProperty.call(obj, dontEnums[i])) {
-            result.push(dontEnums[i]);
-          }
-        }
-      }
-      return result;
-    };
-  }());
-};
+            if (hasDontEnumBug) {
+                for (i = 0; i < dontEnumsLength; i++) {
+                    if (hasOwnProperty.call(obj, dontEnums[i])) {
+                        result.push(dontEnums[i]);
+                    }
+                }
+            }
+            return result;
+        };
+    }());
+}
+;

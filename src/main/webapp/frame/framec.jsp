@@ -183,6 +183,7 @@
         <sep></sep>
         <category name="<fmt:message key="category.values" />" exclude="s3,heb" colour="220">
             <block type="math_number"></block>
+            <block type="math_ang"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
             <block type="number_binary"></block>
@@ -543,6 +544,21 @@
                     </value>
                     <value name="COLOR">
                         <block type="color_picker"></block>
+                    </value>
+                </block>
+                <block type="ws2812b_set_multiple">
+                    <value name="START">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                    <value name="END">
+                        <block type="math_number">
+                            <field name="NUM">4</field>
+                        </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker">#000000</block>
                     </value>
                 </block>
                 <block type="ws2812b_update"></block>

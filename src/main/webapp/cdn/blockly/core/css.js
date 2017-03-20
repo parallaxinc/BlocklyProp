@@ -372,10 +372,9 @@ Blockly.Css.CONTENT = [
   '}',
   
   '.blocklySliderBkgOutline {',
-  '  fill: none;',
+  '  fill: #ddd;',
   '  stroke: #000;',
-  '  stroke-width: 25;',
-  '  stroke-linecap: round;',
+  '  stroke-width: .5;',
   '}',
 
   '.blocklySliderBkgFill {',

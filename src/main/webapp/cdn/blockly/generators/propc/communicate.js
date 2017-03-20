@@ -1565,7 +1565,7 @@ Blockly.propc.ws2812b_init = function () {
         num = 1500;
 
     Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"\n\n#define LED_PIN ' + pin + '\n#define LED_COUNT ' + num + '\n';
-    Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *__ws2812b;\nint RGBleds[' + num + '];\nint __rgbTemp;\n';
+    Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *__ws2812b;\nint RGBleds[' + num + '];\n';
     Blockly.propc.setups_["ws2812b_init"] = '__ws2812b = ws2812b_open();\n';
 
     return '';
@@ -1596,8 +1596,49 @@ Blockly.propc.ws2812b_set = function () {
     if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
         code += '//Missing RGB-LED initialize block\n';
     } else {
-        code += '__rgbTemp = ' + led + ';\nif(__rgbTemp < 1) __rgbTemp = 1;\nif(__rgbTemp > LED_COUNT) __rgbTemp = LED_COUNT;\n';
-        code += 'RGBleds[(__rgbTemp - 1)] = ' + color + ';\n';
+        code += 'if(' + led + ' > 0 && ' + led + ' <= LED_COUNT) {';
+        code += 'RGBleds[' + led + ' - 1] = ' + color + ';}';
+    }
+    return code;
+};
+
+Blockly.Blocks.ws2812b_set_multiple = {
+    helpUrl: Blockly.MSG_WS2812B_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_WS2812B_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("START")
+                .setCheck("Number")
+                .appendField("RGB-LED set LEDs from");
+        this.appendValueInput("END")
+                .setCheck("Number")
+                .appendField("to");
+        this.appendValueInput("COLOR")
+                .setCheck("Number")
+                .appendField("to color");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.ws2812b_set_multiple = function () {
+    var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE);
+    var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE);
+    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+    var code = '';
+    if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
+        code += '//Missing RGB-LED initialize block\n';
+    } else {
+        var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+        Blockly.propc.global_vars_["constrain_function"] = setup_code;
+
+        code += 'memset(RGBleds + (constrain(' + start + ', 1, LED_COUNT) - 1) * 4, ';
+        code += color + ', (constrain(' + end + ', 1, LED_COUNT) - constrain(';
+        code += start + ', 1, LED_COUNT)) * 4);\n';
     }
     return code;
 };

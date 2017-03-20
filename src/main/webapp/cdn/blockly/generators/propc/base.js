@@ -53,6 +53,48 @@ Blockly.propc.math_number = function () {
             Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
     return [code, order];
 };
+Blockly.Blocks.math_number = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldTextInput('0',
+                        Blockly.FieldTextInput.numberValidator), 'NUM');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.math_number = function () {
+    // Numeric value.
+    var code = window.parseInt(this.getFieldValue('NUM'));
+    // -4.abs() returns -4 in Dart due to strange order of operation choices.
+    // -4 is actually an operator and a number.  Reflect this in the order.
+    var order = code < 0 ?
+            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
+    return [code, order];
+};
+
+Blockly.Blocks.math_ang = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldAngle('100', null, '-50', '50'), 'NUM');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.math_ang = function () {
+    // Numeric value.
+    var code = window.parseInt(this.getFieldValue('NUM'));
+    // -4.abs() returns -4 in Dart due to strange order of operation choices.
+    // -4 is actually an operator and a number.  Reflect this in the order.
+    var order = code < 0 ?
+            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
+    return [code, order];
+};
 
 // Experimental block that can mutate to show a range or if a value
 // is out bounds or not available.  Gets values from the block its connected
