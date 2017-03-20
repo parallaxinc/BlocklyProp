@@ -353,7 +353,7 @@ function downloadPropC() {
     } else {
         utils.confirm('Downloading a SimpleIDE project', 'To open your project in SimpleIDE, two files will be downloaded.  They must both be saved in the same folder on your computer.', function (confirmed) {
             if (confirmed) {
-                utils.prompt("Download SimpleIDE files", "Filename:", 'Project' + idProject, function (value) {
+                utils.prompt("Enter a filename:", 'Project' + idProject, function (value) {
                     if (value) {
 
                         var sideFileContent = ".c\n>compiler=C\n>memtype=cmm main ram compact\n";

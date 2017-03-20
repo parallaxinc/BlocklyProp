@@ -16,6 +16,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/field_range.js"/>"></script>
 
         <!-- define blocks -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/base.js"/>"></script>
@@ -183,6 +184,7 @@
         <sep></sep>
         <category name="<fmt:message key="category.values" />" exclude="s3,heb" colour="220">
             <block type="math_number"></block>
+            <block type="math_ang"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
             <block type="number_binary"></block>

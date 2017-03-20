@@ -64,7 +64,7 @@ Blockly.Blocks.math_ang = {
         this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldAngle('100', null, '-50', '50'), 'NUM');
+                .appendField(new Blockly.FieldRange('100', '-50', '50'), 'NUM');
         this.setOutput(true, 'Number');
     }
 };
