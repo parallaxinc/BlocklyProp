@@ -345,6 +345,7 @@ Blockly.MSG_XBEE_TRANSMIT_TOOLTIP = "XBee transmit: sends information to an XBee
 Blockly.MSG_XBEE_RECEIVE_TOOLTIP = "XBee receive: receives information from an XBee.  Expects strings and numbers to be terminated with an ASCII 13";
 Blockly.MSG_WS2812B_INIT_TOOLTIP = "RGB-LED init: match to Propeller I/O pin connections and number of LEDs.";
 Blockly.MSG_WS2812B_SET_TOOLTIP = "RGB-LED set: specify color for a specific LED.";
+Blockly.MSG_WS2812B_MULTIPLE_TOOLTIP = "RGB-LED set multiple: specify color for a range of consecutive LEDs.";
 Blockly.MSG_WS2812B_UPDATE_TOOLTIP = "RGB-LED update: update colors of all connected RGB-LEDs.";
 Blockly.MSG_GPS_INIT_TOOLTIP = "GPS Init: match to Propeller I/O pin connections and GPS module buad rate.";
 Blockly.MSG_GPS_HASFIX_TOOLTIP = "GPS has satellite fix: Returns 1 if there is a valid fix, 0 (zero) if not.";

@@ -89,7 +89,7 @@ saveProject = function () {
 };
 
 saveProjectAs = function () {
-    utils.prompt("Save as", "Save project as", projectData['name'], function (value) {
+    utils.prompt("Save project as", projectData['name'], function (value) {
         if (value) {
             var code = window.frames["content_blocks"].getXml();
             projectData['code'] = code;
@@ -202,7 +202,7 @@ function downloadCode() {
     projXMLcode = projXMLcode.substring(42, projXMLcode.length);
     projXMLcode = projXMLcode.substring(0, (projXMLcode.length - 6));
 
-    utils.prompt("Download Project", "Filename:", 'Project' + idProject, function (value) {
+    utils.prompt("Download Project - Filename:", 'Project' + idProject, function (value) {
         if (value) {
             // extract the SVG from the iFrame that contains it
             var x = document.getElementsByName("content_blocks");

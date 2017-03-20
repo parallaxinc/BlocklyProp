@@ -1017,7 +1017,7 @@ Blockly.Blocks.ab_drive_goto = {
         this.appendValueInput("LEFT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("left");
+                .appendField("(\u2191+, \u2193-) left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
@@ -1026,22 +1026,19 @@ Blockly.Blocks.ab_drive_goto = {
 //                .setCheck('Number')
 //                .setAlign(Blockly.ALIGN_RIGHT)
 //               .appendField("speed");
-
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
 
         var whichRobot = '';
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        //if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
-        //    whichRobot = 'abdrive.h';
-        //if (allBlocks.indexOf('Robot Arlo initialize') > -1)
-        //    whichRobot = 'arlodrive.h';
-        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1) {
-            whichRobot = 'servodiffdrive.h';
-            this.newRobot('servodiffdrive.h');
-        }
-
+        var whichRobot = 'servodiffdrive.h';    
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
+            whichRobot = 'abdrive.h';
+        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+            whichRobot = 'arlodrive.h';
+        this.newRobot(whichRobot);
     },
     newRobot: function (robot) {
         if (robot === 'servodiffdrive.h') {
@@ -1093,11 +1090,11 @@ Blockly.Blocks.ab_drive_speed = {
         this.setTooltip(Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
-                .appendField('Robot drive speed');
+                .appendField('Robot drive speed', 'TITLE');
         this.appendValueInput("LEFT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("left");
+                .appendField("(\u2191+, \u2193-) left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
@@ -1106,7 +1103,23 @@ Blockly.Blocks.ab_drive_speed = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+            
+        var whichRobot = 'servodiffdrive.h';    
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
+            whichRobot = 'abdrive.h';
+        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+            whichRobot = 'arlodrive.h';
+        this.newRobot(whichRobot);
+    },
+    newRobot: function (robot) {
+        if (robot === 'abdrive.h' || robot === 'arlodrive.h' ) {
+            this.setFieldValue('Robot drive speed (%)', 'TITLE');
+        } else {
+            this.setFieldValue('Robot drive speed', 'TITLE');
+        }
     }
+
 };
 
 Blockly.propc.ab_drive_speed = function () {
