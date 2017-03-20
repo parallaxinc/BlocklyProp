@@ -53,28 +53,11 @@ Blockly.propc.math_number = function () {
             Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
     return [code, order];
 };
-Blockly.Blocks.math_number = {
-    helpUrl: Blockly.MSG_VALUES_HELPURL,
-    init: function () {
-        this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldTextInput('0',
-                        Blockly.FieldTextInput.numberValidator), 'NUM');
-        this.setOutput(true, 'Number');
-    }
-};
 
-Blockly.propc.math_number = function () {
-    // Numeric value.
-    var code = window.parseInt(this.getFieldValue('NUM'));
-    // -4.abs() returns -4 in Dart due to strange order of operation choices.
-    // -4 is actually an operator and a number.  Reflect this in the order.
-    var order = code < 0 ?
-            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
-    return [code, order];
-};
 
+// Experimental block for demonstrating the slider pop-down by providing the
+// Blockly.FieldAngle with two additional parameters (Min and Max of the slider's
+// range).  If parameters are not provided, it reverts to the standard angle input.
 Blockly.Blocks.math_ang = {
     helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
