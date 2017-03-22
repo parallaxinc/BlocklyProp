@@ -195,7 +195,6 @@ function hashCode(str) {
     }
     return (hash + 2147483647) + 1;
 }
-;
 
 function downloadCode() {
     var projXMLcode = window.frames["content_blocks"].getXml(); //projectData['code'];
@@ -278,7 +277,6 @@ function downloadCode() {
         }
     });
 }
-;
 
 function uploadCode() {
     if (checkLeave()) {
@@ -287,7 +285,6 @@ function uploadCode() {
         $('#upload-dialog').modal('show');
     }
 }
-;
 
 function uploadHandler(files) {
     var UploadReader = new FileReader();
@@ -347,7 +344,6 @@ function uploadHandler(files) {
     }
     ;
 }
-;
 
 function clearUploadInfo() {
     // Reset all of the upload fields and containers
@@ -357,7 +353,6 @@ function clearUploadInfo() {
     document.getElementById("selectfile-verify-valid").style.display = "none";
     document.getElementById("selectfile-verify-boardtype").style.display = "none";
 }
-;
 
 function replaceCode() {
     $('#upload-dialog').modal('hide');
@@ -376,7 +371,6 @@ function replaceCode() {
         clearUploadInfo();
     }
 }
-;
 
 function appendCode() {
     $('#upload-dialog').modal('hide');
@@ -399,7 +393,6 @@ function appendCode() {
         clearUploadInfo();
     }
 }
-;
 
 function clearWorkspace() {
     utils.confirm(Blockly.Msg.DIALOG_CLEAR_WORKSPACE, Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING, function (value) {
@@ -412,5 +405,4 @@ function clearWorkspace() {
         }
     });
 }
-;
 

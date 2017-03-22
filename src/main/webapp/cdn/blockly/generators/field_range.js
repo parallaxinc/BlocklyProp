@@ -23,14 +23,10 @@
  * @author fraser@google.com (Neil Fraser)
  */
 'use strict';
-
 goog.provide('Blockly.FieldRange');
-
 goog.require('Blockly.FieldTextInput');
 goog.require('goog.math');
 goog.require('goog.userAgent');
-
-
 /**
  * Class for an editable range field.
  * @param {string} text The initial content of the field.
@@ -60,14 +56,11 @@ Blockly.FieldRange = function (text, opt_min, opt_max, opt_changeHandler) {
     }
 
     Blockly.FieldRange.MIN = Number(opt_min);
-
     Blockly.FieldRange.MAX = Number(opt_max);
-
     Blockly.FieldRange.superClass_.constructor.call(this,
             text, changeHandler);
 };
 goog.inherits(Blockly.FieldRange, Blockly.FieldTextInput);
-
 /**
  * Clone this FieldRange.
  * @return {!Blockly.FieldRange} The result of calling the constructor again
@@ -77,24 +70,6 @@ Blockly.FieldRange.prototype.clone = function () {
     return new Blockly.FieldRange(this.getText(), this.changeHandler_,
             Blockly.FieldRange.MIN, Blockly.FieldRange.MAX);
 };
-
-/**
- * Round ranges to the nearest 15 degrees when using mouse.
- * Set to 0 to disable rounding.
- */
-Blockly.FieldRange.ROUND = 24;
-
-/**
- * Half the width of protractor image.
- */
-Blockly.FieldRange.HALF = 100 / 2;
-
-/**
- * Radius of protractor circle.  Slightly smaller than protractor size since
- * otherwise SVG crops off half the border at the edges.
- */
-Blockly.FieldRange.RADIUS = Blockly.FieldRange.HALF - 1;
-
 /**
  * Clean up this FieldRange, as well as the inherited FieldTextInput.
  * @return {!Function} Closure to call on destruction of the WidgetDiv.
@@ -116,7 +91,6 @@ Blockly.FieldRange.prototype.dispose_ = function () {
         }
     };
 };
-
 /**
  * Show the inline free-text editor on top of the text.
  * @private
@@ -145,22 +119,33 @@ Blockly.FieldRange.prototype.showEditor_ = function () {
         'x': '10', 'y': '10',
         'rx': '12', 'ry': '12',
         'width': '180', 'height': '24',
-        'style': 'fill: #ddd;stroke: #000;stroke-width: .5;'
+        'style': 'fill: #bbb;stroke: #000;stroke-width: .5;'
     }, svg);
-    var highbar = Blockly.createSvgElement('line', {
-        'x1': '22', 'y1': '22',
-        'x2': '178', 'y2': '22',
-        'style': 'fill:none;stroke:#8d8;fill-opacity:.8;stroke-width:10;stroke-linecap:round;'
-    }, svg);
-    this.line_ = Blockly.createSvgElement('line', {
-        'x1': '22', 'y1': '22',
-        'style': 'fill:none;stroke:#f99;fill-opacity:.8;stroke-width:10;stroke-linecap:round;'
-    }, svg);
+    if (Blockly.FieldRange.MIN < 0) {
+        Blockly.createSvgElement('line', {
+            'x1': '22', 'y1': '22', 'x2': '178', 'y2': '22',
+            'style': 'stroke:#888;stroke-width:10;stroke-linecap:round;'
+        }, svg);
+    }
+    if (Blockly.FieldRange.MAX > 0 && Blockly.FieldRange.MIN < 0) {
+        Blockly.createSvgElement('line', {
+            'x1': '125', 'y1': '22', 'x2': '178', 'y2': '22',
+            'style': 'stroke:#eee;stroke-width:10;stroke-linecap:round;'
+        }, svg);
+        Blockly.createSvgElement('line', {
+            'x1': '100', 'y1': '22', 'x2': '135', 'y2': '22',
+            'style': 'stroke:#eee;stroke-width:10;'
+        }, svg);
+    } else {
+        Blockly.createSvgElement('line', {
+            'x1': '22', 'y1': '22', 'x2': '178', 'y2': '22',
+            'style': 'stroke:#eee;stroke-width:10;stroke-linecap:round;'
+        }, svg);
+    }
     this.circle_ = Blockly.createSvgElement('circle', {
         'r': '9.5',
-        'style': 'fill:#fff;stroke:#000;stroke-width:1;'
+        'style': 'fill:#fff;stroke:#000;fill-opacity:.6;stroke-width:2;'
     }, svg);
-
     svg.style.marginLeft = '-35px';
     this.clickWrapper_ =
             Blockly.bindEvent_(svg, 'click', this, Blockly.WidgetDiv.hide);
@@ -169,9 +154,7 @@ Blockly.FieldRange.prototype.showEditor_ = function () {
     this.moveWrapper2_ =
             Blockly.bindEvent_(this.gauge_, 'mousemove', this, this.onMouseMove);
     this.updateGraph_();
-
 };
-
 /**
  * Set the range to match the mouse's position.
  * @param {!Event} e Mouse move event.
@@ -179,12 +162,10 @@ Blockly.FieldRange.prototype.showEditor_ = function () {
 Blockly.FieldRange.prototype.onMouseMove = function (e) {
 
     var bBox = this.gauge_.ownerSVGElement.getBoundingClientRect();
-
     // set this values:
-    var steps = Blockly.FieldRange.ROUND;
+    //var steps = Blockly.FieldRange.ROUND;
     var min = Blockly.FieldRange.MIN;
     var max = Blockly.FieldRange.MAX;
-
     // calculate slider position:
     var m = max - min;
     var dx = e.clientX - bBox.left;
@@ -193,10 +174,8 @@ Blockly.FieldRange.prototype.onMouseMove = function (e) {
         pos = 22;
     if (pos > 178)
         pos = 178;
-
     // draw slider and knob:
-    var range = Math.round(Math.round((((pos - 22) / (178 - 22)) * m) / (m / steps)) * (m / steps) + min);
-
+    var range = Math.round(((pos - 22) / (178 - 22)) * m + min);
     if (isNaN(range)) {
         // This shouldn't happen, but let's not let this error propogate further.
         return;
@@ -204,9 +183,7 @@ Blockly.FieldRange.prototype.onMouseMove = function (e) {
     range = String(range);
     Blockly.FieldTextInput.htmlInput_.value = range;
     this.setText(range);
-
 };
-
 /**
  * Insert a degree symbol.
  * @param {?string} text New text.
@@ -218,11 +195,9 @@ Blockly.FieldRange.prototype.setText = function (text) {
         return;
     }
     this.updateGraph_();
-
     // Cached width is obsolete.  Clear it.
     this.size_.width = 0;
 };
-
 /**
  * Redraw the graph with the current range.
  * @private
@@ -236,29 +211,20 @@ Blockly.FieldRange.prototype.updateGraph_ = function () {
     if (isNaN(rangeValue)) {
         this.circle_.setAttribute('cx', '100');
         this.circle_.setAttribute('cy', '22');
-        this.line_.setAttribute('x2', '100');
-        this.line_.setAttribute('y2', '22');
     } else {
         var min = Blockly.FieldRange.MIN;
         var max = Blockly.FieldRange.MAX;
-
         // calculate slider position:
         var m = max - min;
-
         if (rangeValue < min)
             rangeValue = min;
         if (rangeValue > max)
             rangeValue = max;
-
         var pos = Math.round(((rangeValue - min) / m) * 156 + 22);
-
         this.circle_.setAttribute('cx', pos);
         this.circle_.setAttribute('cy', '22');
-        this.line_.setAttribute('x2', pos);
-        this.line_.setAttribute('y2', '22');
     }
 };
-
 /**
  * Ensure that only a number may be entered.
  * @param {string} text The user's text.

@@ -184,7 +184,8 @@
         <sep></sep>
         <category name="<fmt:message key="category.values" />" exclude="s3,heb" colour="220">
             <block type="math_number"></block>
-    <!--    <block type="math_ang"></block>      -->
+    <!--    <block type="math_ang"></block>     --> 
+    <!--    <block type="number_range"></block> -->    
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
             <block type="number_binary"></block>
