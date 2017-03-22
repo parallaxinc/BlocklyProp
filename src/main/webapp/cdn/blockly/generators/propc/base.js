@@ -169,7 +169,7 @@ Blockly.Blocks.number_range = {
                             .appendField(new Blockly.FieldTextInput(data,
                                     Blockly.FieldTextInput.numberValidator), 'NUM')
                             .appendField('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
-                 }
+                }
             } else {
                 if (this.getField('TITLE')) {
                     this.removeInput('MAIN');
@@ -518,14 +518,131 @@ Blockly.Blocks.system_counter = {
         this.setTooltip(Blockly.MSG_SYSTEM_COUNTER_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField("system counter");
+                .appendField("system")
+                .appendField(new Blockly.FieldDropdown([
+                    ['counter', 'CNT'],
+                    ['clock frequency', 'CLKFREQ']
+                ], 'CMD'));
         this.setOutput(true, "Number");
     }
 };
 
 Blockly.propc.system_counter = function () {
-    var code = 'CNT';
+    var code = this.getFieldValue('CMD');
     return [code, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.waitcnt = {
+    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_WAITCNT_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendValueInput('TARGET')
+                .appendField("Pause until system counter =");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.waitcnt = function () {
+    var target = Blockly.propc.valueToCode(this, 'TARGET', Blockly.propc.ORDER_NONE);
+    return 'waitcnt(' + target + ');\n';
+};
+
+Blockly.Blocks.register_set = {
+    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_REGISTER_SET_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendValueInput('TARGET')
+                .appendField("cog")
+                .appendField(new Blockly.FieldDropdown([
+                    ['pin input', 'INA'],
+                    ['pin output', 'OUTA']
+                    ['pin direction', 'DIRA']
+                    ['counter A', 'CTRA']
+                    ['counter B', 'CTRB']
+                    ['frequency A', 'FRQA']
+                    ['frequency B', 'FRQB']
+                    ['phase accumulator A', 'PHSA']
+                    ['phase accumulator B', 'PHSB']
+                ], 'CMD'))
+                .appendField("register =");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.register_set = function () {
+    var target = Blockly.propc.valueToCode(this, 'TARGET', Blockly.propc.ORDER_NONE);
+    var register = this.getFieldValue('CMD');
+    return register + ' = ' + target + ';\n';
+};
+
+Blockly.Blocks.register_get = {
+    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_REGISTER_GET_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField("cog")
+                .appendField(new Blockly.FieldDropdown([
+                    ['pin input', 'INA'],
+                    ['pin output', 'OUTA']
+                    ['pin direction', 'DIRA']
+                    ['counter A', 'CTRA']
+                    ['counter B', 'CTRB']
+                    ['frequency A', 'FRQA']
+                    ['frequency B', 'FRQB']
+                    ['phase accumulator A', 'PHSA']
+                    ['phase accumulator B', 'PHSB']
+                ], 'CMD'))
+                .appendField("register");
+        this.setOutput(true, "Number");
+    }
+};
+
+Blockly.propc.register_get = function () {
+    var code = this.getFieldValue("CMD");
+    return [code, Blockly.propc.ORDER_NONE];
+};
+
+var cCode;
+
+Blockly.Blocks.custom_code = {
+    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_CUSTOM_CODE_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField("user code")
+                .appendField(new Blockly.FieldTextInput(''), 'CODE')
+                .appendField("place in")
+                .appendField(new Blockly.FieldDropdown([["main", "main"], ["setup", "setup"], ["definitions", "definitions"], ["includes", "includes"]]), 'LOC');
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.custom_code = function () {
+    var loc = this.getFieldValue("LOC");
+    var usr = this.getFieldValue("CODE");
+    var code = '';
+        
+    if(loc === 'includes') {
+        Blockly.definitions_["cCode" + cCode] = usr;
+    } else if (loc === 'setup') {
+        Blockly.propc.setups_["cCode" + cCode] = usr;
+    } else if (loc === 'definitions') {
+        Blockly.propc.global_vars_["cCode" + cCode] = usr;
+    } else {
+        code = usr;
+    }
+    cCode++;
+    return code;
 };
 
 Blockly.Blocks.string_length = {

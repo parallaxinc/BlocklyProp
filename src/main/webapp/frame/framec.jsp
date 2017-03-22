@@ -181,8 +181,57 @@
                 <block type="number_to_string"></block>
             </category>
         </category>
+        <category name="<fmt:message key="category.system" />" include="other" colour="220">
+            <block type="waitcnt"></block>
+            <block type="register_set"></block>
+            <block type="register_get"></block>
+            <block type="system_counter"></block>
+            <block type="custom_code"></block>
+        </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />" exclude="s3,heb" colour="220">
+        <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE FOLLOWING MENU AS WELL -->
+        <category name="<fmt:message key="category.values" />" include="other" colour="220">
+            <block type="math_number"></block>
+            <block type="string_type_block"></block>
+            <block type="char_type_block"></block>
+            <block type="number_binary"></block>
+            <block type="number_hex"></block>
+            <block type="logic_boolean"></block>
+            <block type="high_low_value"></block>
+            <block type="color_picker"></block>
+            <block type="color_value_from">
+                <value name="RED_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="GREEN_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="BLUE_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="get_channel_from">
+                <value name="COLOR">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
+            <block type="compare_colors">
+                <value name="COLOR1">
+                    <block type="color_picker"></block>
+                </value>
+                <value name="COLOR2">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
+        </category>
+        <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE PREVIOUS MENU AS WELL -->
+        <category name="<fmt:message key="category.values" />" include="activity-board,flip" colour="220">
             <block type="math_number"></block>
     <!--    <block type="math_ang"></block>     --> 
     <!--    <block type="number_range"></block> -->    
