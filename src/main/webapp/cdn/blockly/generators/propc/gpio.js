@@ -943,13 +943,9 @@ Blockly.Blocks.ab_drive_init = {
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
                     .appendField("right PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT");
-            //.appendField(" ramping")
-            //.appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
-        } else {
-            //inputPins.appendField(" ramping")
-            //.appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
         }
 
+        // Go through all of the blocks and run the "newRobot" function in each one that has it.
         var blocks = Blockly.getMainWorkspace().getAllBlocks();
         // Iterate through every block.
         for (var x = 0; x < blocks.length; x++) {
@@ -1032,17 +1028,19 @@ Blockly.Blocks.ab_drive_goto = {
 
         var whichRobot = '';
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        var whichRobot = 'servodiffdrive.h';    
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
             whichRobot = 'abdrive.h';
         if (allBlocks.indexOf('Robot Arlo initialize') > -1)
             whichRobot = 'arlodrive.h';
+        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
+            whichRobot = 'servodiffdrive.h';
         this.newRobot(whichRobot);
     },
     newRobot: function (robot) {
         if (robot === 'servodiffdrive.h') {
-            this.setWarningText('WARNING: Servo Differential Drive does not support "Robot drive distance"!');
+            this.setWarningText('WARNING: Servo Differential Drive\ndoes not support "Robot drive distance"!');
+        } else if (robot === '') {
+            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
         } else {
             this.setWarningText(null);
         }
@@ -1104,18 +1102,24 @@ Blockly.Blocks.ab_drive_speed = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
             
-        var whichRobot = 'servodiffdrive.h';    
+        var whichRobot = '';
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
             whichRobot = 'abdrive.h';
         if (allBlocks.indexOf('Robot Arlo initialize') > -1)
             whichRobot = 'arlodrive.h';
+        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
+            whichRobot = 'servodiffdrive.h';
         this.newRobot(whichRobot);
     },
     newRobot: function (robot) {
         if (robot === 'abdrive.h' || robot === 'arlodrive.h' ) {
+            this.setWarningText(null);
             this.setFieldValue('Robot drive speed (%)', 'TITLE');
+        } else if (robot === '') {
+            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
         } else {
+            this.setWarningText(null);
             this.setFieldValue('Robot drive speed', 'TITLE');
         }
     }
