@@ -54,37 +54,12 @@ Blockly.propc.math_number = function () {
     return [code, order];
 };
 
-
-// Experimental block for demonstrating the slider pop-down by providing the
-// Blockly.FieldAngle with two additional parameters (Min and Max of the slider's
-// range).  If parameters are not provided, it reverts to the standard angle input.
-Blockly.Blocks.math_ang = {
-    helpUrl: Blockly.MSG_VALUES_HELPURL,
-    init: function () {
-        this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldRange('100', '-50', '50'), 'NUM');
-        this.setOutput(true, 'Number');
-    }
-};
-
-Blockly.propc.math_ang = function () {
-    // Numeric value.
-    var code = window.parseInt(this.getFieldValue('NUM'));
-    // -4.abs() returns -4 in Dart due to strange order of operation choices.
-    // -4 is actually an operator and a number.  Reflect this in the order.
-    var order = code < 0 ?
-            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
-    return [code, order];
-};
-
 // Experimental block that can mutate to show a range or if a value
 // is out bounds or not available.  Gets values from the block its connected
 // to by looking for a hidden field starting with "RANGEVALS".  
 // field "RANGEVALS" must start with S, R, or A, and hold a comma-separated
-// set of values.  'S' and 'R' are for a range (with 'S' eventually invoking
-// a UI slider).  The first number is the minimum allowed value, the second is
+// set of values.  'S' and 'R' are for a range, with 'S' invoking
+// a UI slider.  The first number is the minimum allowed value, the second is
 // the maximum allowed value, and the third is a dummy start value.  If the
 // range is within +/- 1000, the block will display it.  A warning is thrown
 // if a value entered is out of range. The 'A' argument takes a 
@@ -140,7 +115,7 @@ Blockly.Blocks.number_range = {
         }
         range[2] = Number(this.getFieldValue('NUM'));
         if (rangeVals) {
-            if (rangeVals[0] === 'S' || rangeVals[0] === 'R') {
+            if (rangeVals[0] === 'R') {
                 if (range[2] < range[0]) {
                     this.setWarningText('WARNING: Your value is too small!  It must be greater than or equal to ' + range[0].toString(10));
                 } else if (range[2] > range[1]) {
@@ -160,22 +135,33 @@ Blockly.Blocks.number_range = {
                     this.setWarningText(null);
                 }
             }
-            if ((rangeVals[0] === 'S' || rangeVals[0] === 'R') && (range[2] < range[0] || range[2] > range[1])) {
+            if (rangeVals[0] === 'R' && (range[2] < range[0] || range[2] > range[1]) && Math.abs(range[0] - range[1]) <= 10000000) {
                 if (this.getField('TITLE')) {
-                    this.setFieldValue('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
+                    if (range[1] >= 2147483648) {
+                        this.setFieldValue('(\u2265 ' + range[0].toString(10) + ')', 'TITLE');
+                    } else if (range[0] <= -2147483648) {
+                        this.setFieldValue('(\u2264' + range[1].toString(10) + ')', 'TITLE');
+                    } else {
+                        this.setFieldValue('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
+                    }
                 } else {
                     this.removeInput('MAIN');
                     this.appendDummyInput('MAIN')
                             .appendField(new Blockly.FieldTextInput(data,
                                     Blockly.FieldTextInput.numberValidator), 'NUM')
-                            .appendField('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
+                            .appendField('', 'TITLE');
                 }
             } else {
                 if (this.getField('TITLE')) {
                     this.removeInput('MAIN');
-                    this.appendDummyInput('MAIN')
-                            .appendField(new Blockly.FieldTextInput(data,
-                                    Blockly.FieldTextInput.numberValidator), 'NUM');
+                    if (rangeVals[0] === 'S') {
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldRange(data, range[0].toString(10), range[1].toString(10)), 'NUM');
+                    } else {
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldTextInput(data,
+                                        Blockly.FieldTextInput.numberValidator), 'NUM');
+                    }
                 }
             }
             this.setFieldValue(rangeVals.toString(), 'RVALS');
@@ -522,7 +508,7 @@ Blockly.Blocks.system_counter = {
                 .appendField(new Blockly.FieldDropdown([
                     ['counter', 'CNT'],
                     ['clock frequency', 'CLKFREQ']
-                ], 'CMD'));
+                ]), 'CMD');
         this.setOutput(true, "Number");
     }
 };
@@ -559,15 +545,15 @@ Blockly.Blocks.register_set = {
                 .appendField("cog")
                 .appendField(new Blockly.FieldDropdown([
                     ['pin input', 'INA'],
-                    ['pin output', 'OUTA']
-                    ['pin direction', 'DIRA']
-                    ['counter A', 'CTRA']
-                    ['counter B', 'CTRB']
-                    ['frequency A', 'FRQA']
-                    ['frequency B', 'FRQB']
-                    ['phase accumulator A', 'PHSA']
+                    ['pin output', 'OUTA'],
+                    ['pin direction', 'DIRA'],
+                    ['counter A', 'CTRA'],
+                    ['counter B', 'CTRB'],
+                    ['frequency A', 'FRQA'],
+                    ['frequency B', 'FRQB'],
+                    ['phase accumulator A', 'PHSA'],
                     ['phase accumulator B', 'PHSB']
-                ], 'CMD'))
+                ]), 'CMD')
                 .appendField("register =");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
@@ -590,15 +576,15 @@ Blockly.Blocks.register_get = {
                 .appendField("cog")
                 .appendField(new Blockly.FieldDropdown([
                     ['pin input', 'INA'],
-                    ['pin output', 'OUTA']
-                    ['pin direction', 'DIRA']
-                    ['counter A', 'CTRA']
-                    ['counter B', 'CTRB']
-                    ['frequency A', 'FRQA']
-                    ['frequency B', 'FRQB']
-                    ['phase accumulator A', 'PHSA']
+                    ['pin output', 'OUTA'],
+                    ['pin direction', 'DIRA'],
+                    ['counter A', 'CTRA'],
+                    ['counter B', 'CTRB'],
+                    ['frequency A', 'FRQA'],
+                    ['frequency B', 'FRQB'],
+                    ['phase accumulator A', 'PHSA'],
                     ['phase accumulator B', 'PHSB']
-                ], 'CMD'))
+                ]), 'CMD')
                 .appendField("register");
         this.setOutput(true, "Number");
     }
@@ -620,7 +606,12 @@ Blockly.Blocks.custom_code = {
                 .appendField("user code")
                 .appendField(new Blockly.FieldTextInput(''), 'CODE')
                 .appendField("place in")
-                .appendField(new Blockly.FieldDropdown([["main", "main"], ["setup", "setup"], ["definitions", "definitions"], ["includes", "includes"]]), 'LOC');
+                .appendField(new Blockly.FieldDropdown([
+                    ["main", "main"],
+                    ["setup", "setup"],
+                    ["definitions", "definitions"],
+                    ["includes", "includes"]
+                ]), 'LOC');
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -631,8 +622,8 @@ Blockly.propc.custom_code = function () {
     var loc = this.getFieldValue("LOC");
     var usr = this.getFieldValue("CODE");
     var code = '';
-        
-    if(loc === 'includes') {
+
+    if (loc === 'includes') {
         Blockly.definitions_["cCode" + cCode] = usr;
     } else if (loc === 'setup') {
         Blockly.propc.setups_["cCode" + cCode] = usr;

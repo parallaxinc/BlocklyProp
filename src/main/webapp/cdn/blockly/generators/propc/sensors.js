@@ -355,7 +355,7 @@ Blockly.propc.fp_scanner_init = function () {
     Blockly.propc.global_vars_["fpScannerObj"] = 'fpScanner *fpScan;';
     Blockly.propc.definitions_["fpScannerDef"] = '#include "fingerprint.h"';
 
-    Blockly.propc.setups_["fpScanner"] = 'fpScan = fingerprint_open(' + rxpin + ', ' + txpin + ');';
+    Blockly.propc.setups_["fpScanner"] = 'fpScan = fingerprint_open(' + txpin + ', ' + rxpin + ');';
 
     return '';
 };
@@ -1067,10 +1067,8 @@ Blockly.Blocks.GPS_init = {
         this.appendDummyInput()
                 .appendField("GPS module initialize RX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
-                .appendField("TX")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN")
-                .appendField("baud")
-                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["4800", "4800"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
+               .appendField("baud")
+                .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"]]), "BAUD");
 
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
@@ -1079,12 +1077,12 @@ Blockly.Blocks.GPS_init = {
 
 Blockly.propc.GPS_init = function () {
     var rx_pin = this.getFieldValue('RXPIN');
-    var tx_pin = this.getFieldValue('TXPIN');
+    //var tx_pin = this.getFieldValue('TXPIN');
     var baud = this.getFieldValue('BAUD');
 
     Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = 'gps_open(' + rx_pin + ', ' + tx_pin + ', ' + baud + ');\npause(100)';
+    var code = 'gps_open(' + rx_pin + ', 32, ' + baud + ');\npause(100);';
     return code;
 };
 
@@ -1115,7 +1113,7 @@ Blockly.Blocks.GPS_latitude = {
         this.setTooltip(Blockly.MSG_GPS_LAT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("GPS latitude (degree-100ths)");
+                .appendField("GPS latitude (microdegrees)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1136,7 +1134,7 @@ Blockly.Blocks.GPS_longitude = {
         this.setTooltip(Blockly.MSG_GPS_LONG_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("GPS longitude (degree-100ths)");
+                .appendField("GPS longitude (\u00B5\u00B0)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1157,7 +1155,7 @@ Blockly.Blocks.GPS_heading = {
         this.setTooltip(Blockly.MSG_GPS_HEADING_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("GPS heading (degrees)");
+                .appendField("GPS heading (\u00B5\u00B0)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
