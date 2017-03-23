@@ -1124,7 +1124,7 @@ Blockly.Blocks.GPS_latitude = {
 Blockly.propc.GPS_latitude = function () {
     Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = '(int) (gps_latitude() * 100)';
+    var code = '(int) (gps_latitude() * 1000000)';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
@@ -1145,7 +1145,7 @@ Blockly.Blocks.GPS_longitude = {
 Blockly.propc.GPS_longitude = function () {
     Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = '(int) (gps_longitude() * 100)';
+    var code = '(int) (gps_longitude() * 1000000)';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
