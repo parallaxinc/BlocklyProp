@@ -1113,7 +1113,7 @@ Blockly.Blocks.GPS_latitude = {
         this.setTooltip(Blockly.MSG_GPS_LAT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("GPS latitude (microdegrees)");
+                .appendField("GPS latitude (\u00B5\u00B0)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1155,7 +1155,7 @@ Blockly.Blocks.GPS_heading = {
         this.setTooltip(Blockly.MSG_GPS_HEADING_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("GPS heading (\u00B5\u00B0)");
+                .appendField("GPS heading (\u00B0)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
