@@ -1636,8 +1636,8 @@ Blockly.propc.ws2812b_set_multiple = function () {
         setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
         Blockly.propc.global_vars_["constrain_function"] = setup_code;
 
-        code += 'for(int __ldx = constrain(' + start + ', 1, LED_COUNT); __ldx <= ';
-        code += 'constrain(' + end + ', 1, LED_COUNT); __ldx++) RGBleds[__ldx - 1] = ' + color + ';\n';
+        code += 'for(int __ldx = ' + start + '; __ldx <= ' + end + '; __ldx++) {';
+        code += 'RGBleds[constrain(__ldx, 1, LED_COUNT) - 1] = ' + color + ';}';
     }
     return code;
 };
