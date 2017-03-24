@@ -87,7 +87,7 @@ Blockly.Blocks.math_number = {
         this.onchange();
     },
     onchange: function () {
-        var rangeVals = null;
+        var rangeVals = ['N','-100','100','0'];
         var range = [-100, 100, 0];
         var data = this.getFieldValue('NUM');
 
@@ -115,8 +115,6 @@ Blockly.Blocks.math_number = {
                                 range[idx - 1] = Number(rangeVals[idx]);
                         }
                     }
-                } else {
-                    rangeVals[0] = 'N';
                 }
                 if (this.outputConnection.targetBlock().getInputWithBlock(this) !== this.connection_id_) {
                     var theVal = this.getFieldValue('NUM');
@@ -147,7 +145,7 @@ Blockly.Blocks.math_number = {
                                     Blockly.FieldTextInput.numberValidator), 'NUM');
                 }
                 this.connection_id_ = null;
-                rangeVals = null;
+                rangeVals = ['N','-100','100','0'];
             }
         }
         range[2] = Number(this.getFieldValue('NUM'));
