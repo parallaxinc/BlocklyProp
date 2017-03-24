@@ -181,13 +181,6 @@
                 <block type="number_to_string"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.system" />" include="other" colour="220">
-            <block type="waitcnt"></block>
-            <block type="register_set"></block>
-            <block type="register_get"></block>
-            <block type="system_counter"></block>
-            <block type="custom_code"></block>
-        </category>
         <sep></sep>
         <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE FOLLOWING MENU AS WELL -->
         <category name="<fmt:message key="category.values" />" include="other" colour="220">
@@ -233,7 +226,6 @@
         <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE PREVIOUS MENU AS WELL -->
         <category name="<fmt:message key="category.values" />" include="activity-board,flip" colour="220">
             <block type="math_number"></block>
-    <!--    <block type="number_range"></block> -->    
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
             <block type="number_binary"></block>
@@ -1427,6 +1419,22 @@
                         </category>
             --%>
         </category>
+        <category name="<fmt:message key="category.system" />" include="other" colour="320">
+            <block type="waitcnt">
+                <value name="TARGET">
+                    <block type="math_arithmetic">
+                        <value name="A">
+                            <block type="system_counter"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+            <block type="register_set"></block>
+            <block type="register_get"></block>
+            <block type="system_counter"></block>
+            <block type="custom_code"></block>
+        </category>
+
     </xml>
 </body>
 </html>
