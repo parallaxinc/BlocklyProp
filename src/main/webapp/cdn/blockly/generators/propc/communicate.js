@@ -1456,13 +1456,9 @@ Blockly.Blocks.oled_set_cursor = {
         this.appendValueInput('X_POS')
                 .setCheck('Number')
                 .appendField("OLED set cursor at (x)");
-//                .appendField('R,-75,75,5', 'RANGEVALS0');
         this.appendValueInput('Y_POS')
                 .setCheck('Number')
                 .appendField("(y)");
-//                .appendField('R,-50,50,5', 'RANGEVALS1');
-//        this.getField('RANGEVALS0').setVisible(false);
-//        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
