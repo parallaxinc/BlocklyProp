@@ -120,10 +120,11 @@ Blockly.Blocks.check_pin_input = {
     init: function () {
         this.setTooltip(Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput("")
-                .appendField("check PIN");
         this.appendValueInput('PIN')
-                .setCheck('Number');
+                .appendField("check PIN")
+                .setCheck('Number')
+                .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
         this.setOutput(true, 'Number');
         this.setInputsInline(true);
     }
@@ -531,10 +532,12 @@ Blockly.Blocks.eeprom_read = {
                 .setCheck("Number")
                 .appendField("EEPROM read")
                 .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE")
+                .appendField('R,0,7675,0', 'RANGEVALS0')
                 .appendField("from address");
         this.appendDummyInput()
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -716,7 +719,9 @@ Blockly.Blocks.ab_volt_out = {
         this.appendValueInput("VALUE")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField('R,0,330,0', 'RANGEVALS1')
                 .appendField("volt-100ths");
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -767,9 +772,10 @@ Blockly.Blocks.pwm_set = {
                 .appendField("channel")
                 .appendField(new Blockly.FieldDropdown([["A", "0"], ["B", "1"]]), "CHANNEL");
         this.appendValueInput("DUTY_CYCLE", Number)
+                .appendField('R,0,100,0', 'RANGEVALS1')
                 .setCheck('Number')
-                .appendField("duty cycle (0 - 100)");
-
+                .appendField("duty cycle (%)");
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -862,7 +868,9 @@ Blockly.Blocks.wav_volume = {
         this.setTooltip(Blockly.MSG_WAV_VOLUME_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendValueInput('VOLUME')
-                .appendField("WAV volume (0 - 10)");
+                .appendField("WAV volume (0 - 10)")
+                .appendField('R,0,10,0', 'RANGEVALS1');
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -874,13 +882,12 @@ Blockly.propc.wav_volume = function () {
 
     Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
 
-    if (Number(volume) < 0) {
-        volume = '0';
-    } else if (Number(volume) > 10) {
-        volume = '10';
-    }
+    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+    Blockly.propc.global_vars_["constrain_function"] = setup_code;
 
-    var code = 'wav_volume(' + volume + ');\n';
+    var code = 'wav_volume(constrain(' + volume + ', 0, 10));\n';
     return code;
 };
 
@@ -1015,13 +1022,17 @@ Blockly.Blocks.ab_drive_goto = {
                 .appendField('Robot drive distance in')
                 .appendField(new Blockly.FieldDropdown([["ticks", "TICK"], ["centimeters", "CM"], ["inches", "INCH"]]), "UNITS");
         this.appendValueInput("LEFT")
+                .appendField('R,-4227330,4227330,0', 'RANGEVALS0')
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("left");
         this.appendValueInput("RIGHT")
+                .appendField('R,-4227330,4227330,0', 'RANGEVALS1')
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("right");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

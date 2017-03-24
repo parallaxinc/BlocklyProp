@@ -176,9 +176,9 @@ Blockly.Blocks.math_number = {
             }
             if (rangeVals[0] === 'R' && (range[2] < range[0] || range[2] > range[1]) && Math.abs(range[0] - range[1]) <= 10000000) {
                 if (this.getField('TITLE')) {
-                    if (range[1] >= 2147483648) {
+                    if (range[1] >= 2147483647) {
                         this.setFieldValue('(\u2265 ' + range[0].toString(10) + ')', 'TITLE');
-                    } else if (range[0] <= -2147483648) {
+                    } else if (range[0] <= -2147483647) {
                         this.setFieldValue('(\u2264' + range[1].toString(10) + ')', 'TITLE');
                     } else {
                         this.setFieldValue('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
@@ -835,12 +835,17 @@ Blockly.Blocks.color_value_from = {
         this.appendDummyInput()
                 .appendField("color value from:");
         this.appendValueInput("RED_VALUE")
+                .appendField('R,0,255,0', 'RANGEVALS0')
                 .appendField("red");
         this.appendValueInput("GREEN_VALUE")
+                .appendField('R,0,255,0', 'RANGEVALS1')
                 .appendField("green");
         this.appendValueInput("BLUE_VALUE")
+                .appendField('R,0,255,0', 'RANGEVALS2')
                 .appendField("blue");
-
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.getField('RANGEVALS2').setVisible(false);
         this.setOutput(true, "Number");
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
