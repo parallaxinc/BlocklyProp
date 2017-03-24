@@ -43,7 +43,7 @@ if (!Blockly.Blocks)
  this.setOutput(true, 'Number');
  }
  };
-
+ 
  Blockly.propc.number_range = function () {
  // Numeric value.
  var code = window.parseInt(this.getFieldValue('NUM'));
@@ -115,6 +115,8 @@ Blockly.Blocks.math_number = {
                                 range[idx - 1] = Number(rangeVals[idx]);
                         }
                     }
+                } else {
+                    rangeVals[0] = 'N';
                 }
                 if (this.outputConnection.targetBlock().getInputWithBlock(this) !== this.connection_id_) {
                     var theVal = this.getFieldValue('NUM');
@@ -170,6 +172,7 @@ Blockly.Blocks.math_number = {
                     this.setWarningText(null);
                 }
             } else if (rangeVals[0] === 'S') {
+                this.setWarningText(null);
             } else {
                 this.setWarningText(null);
             }
@@ -779,7 +782,7 @@ Blockly.propc.comment = function () {
 
 /*
  * Casting Blocks are not currently used (Everything is a string or an int)
-
+ 
  Blockly.Blocks.cast = {
  init: function() {
  this.setColour(colorPalette.getColor('math'));
@@ -788,17 +791,17 @@ Blockly.propc.comment = function () {
  this.appendDummyInput()
  .appendField("to")
  .appendField(new Blockly.FieldDropdown([["int", "(int) "], ["float", "(float) "], ["char", "(char) "], ["char[128]", "(char[]) "]]), "CAST_TYPE");
-
+ 
  this.setPreviousStatement(false, null);
  this.setNextStatement(false, null);
  this.setOutput(true, 'Number');
  }
  };
-
+ 
  Blockly.propc.cast = function() {
  var type = this.getFieldValue("CAST_TYPE");
  var item = Blockly.propc.valueToCode(this, 'ITEM_TO_CAST', Blockly.propc.ORDER_NONE);
-
+ 
  var code = "" + type + item;
  return [code, Blockly.propc.ORDER_NONE];
  };
