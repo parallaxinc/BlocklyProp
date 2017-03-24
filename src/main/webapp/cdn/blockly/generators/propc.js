@@ -82,7 +82,8 @@ var colorPalette = {
         'robot': 295,
         'heb': 295,
         'ab': 320,
-        'protocols': 340
+        'protocols': 340,
+        'system': 320
     },
     activePalette: null,
     getColor: function (type) {

@@ -488,8 +488,10 @@ Blockly.Blocks.eeprom_write = {
                 .appendField("EEPROM write")
                 .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE");
         this.appendValueInput("ADDRESS")
+                .appendField('R,0,7675,0', 'RANGEVALS0')
                 .setCheck("Number")
                 .appendField("to address");
+        this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -591,7 +593,9 @@ Blockly.Blocks.servo_move = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("ANGLE")
                 .appendField("set angle (0-180\u00B0)")
-                .setCheck("Number");
+                .setCheck("Number")
+                .appendField('R,0,180,0', 'RANGEVALS1');
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1013,15 +1017,11 @@ Blockly.Blocks.ab_drive_goto = {
         this.appendValueInput("LEFT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("(\u2191+, \u2193-) left");
+                .appendField("left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("right");
-//        this.appendValueInput("SPEED")
-//                .setCheck('Number')
-//                .setAlign(Blockly.ALIGN_RIGHT)
-//               .appendField("speed");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1092,16 +1092,19 @@ Blockly.Blocks.ab_drive_speed = {
         this.appendValueInput("LEFT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("(\u2191+, \u2193-) left");
+                .appendField('S,-128,128,0', 'RANGEVALS0')
+                .appendField("left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField('S,-128,128,0', 'RANGEVALS1')
                 .appendField("right");
-
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-            
+
         var whichRobot = '';
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
@@ -1113,17 +1116,33 @@ Blockly.Blocks.ab_drive_speed = {
         this.newRobot(whichRobot);
     },
     newRobot: function (robot) {
-        if (robot === 'abdrive.h' || robot === 'arlodrive.h' ) {
+        if (robot === 'servodiffdrive.h') {
             this.setWarningText(null);
-            this.setFieldValue('Robot drive speed (%)', 'TITLE');
+            this.setFieldValue('R,-500,500,0', 'RANGEVALS0');
+            this.setFieldValue('R,-500,500,0', 'RANGEVALS1');
         } else if (robot === '') {
             this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
-        } else {
+            this.setFieldValue('N,0,0,0', 'RANGEVALS0');
+            this.setFieldValue('N,0,0,0', 'RANGEVALS1');
+        } else if (robot === 'abdrive.h') {
+            this.setFieldValue('S,-128,128,0', 'RANGEVALS0');
+            this.setFieldValue('S,-128,128,0', 'RANGEVALS1');
             this.setWarningText(null);
-            this.setFieldValue('Robot drive speed', 'TITLE');
+        } else if (robot === 'arlodrive.h') {
+            this.setFieldValue('R,-128,128,0', 'RANGEVALS0');
+            this.setFieldValue('R,-128,128,0', 'RANGEVALS1');
+            this.setWarningText(null);
+        }
+
+        var connectedBlockLeft_ = this.getInput('LEFT').connection.targetBlock();
+        if (connectedBlockLeft_) {
+            connectedBlockLeft_.onchange();
+        }
+        var connectedBlockRight_ = this.getInput('RIGHT').connection.targetBlock();
+        if (connectedBlockRight_) {
+            connectedBlockRight_.onchange();
         }
     }
-
 };
 
 Blockly.propc.ab_drive_speed = function () {

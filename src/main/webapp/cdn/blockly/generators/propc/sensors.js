@@ -1065,8 +1065,8 @@ Blockly.Blocks.GPS_init = {
         this.setTooltip(Blockly.MSG_GPS_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("GPS module initialize RX")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
+                .appendField("GPS module initialize TX")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN")
                .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"]]), "BAUD");
 
@@ -1076,13 +1076,13 @@ Blockly.Blocks.GPS_init = {
 };
 
 Blockly.propc.GPS_init = function () {
-    var rx_pin = this.getFieldValue('RXPIN');
-    //var tx_pin = this.getFieldValue('TXPIN');
+    //var rx_pin = this.getFieldValue('RXPIN');
+    var tx_pin = this.getFieldValue('TXPIN');
     var baud = this.getFieldValue('BAUD');
 
     Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = 'gps_open(' + rx_pin + ', 32, ' + baud + ');\npause(100);';
+    var code = 'gps_open(' + tx_pin + ', 32, ' + baud + ');\npause(100);';
     return code;
 };
 

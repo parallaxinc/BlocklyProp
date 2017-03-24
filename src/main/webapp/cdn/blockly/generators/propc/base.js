@@ -31,8 +31,8 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-
-Blockly.Blocks.math_number = {
+/*
+Blockly.Blocks.number_range = {
     helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
@@ -44,7 +44,7 @@ Blockly.Blocks.math_number = {
     }
 };
 
-Blockly.propc.math_number = function () {
+Blockly.propc.number_range = function () {
     // Numeric value.
     var code = window.parseInt(this.getFieldValue('NUM'));
     // -4.abs() returns -4 in Dart due to strange order of operation choices.
@@ -53,22 +53,24 @@ Blockly.propc.math_number = function () {
             Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
     return [code, order];
 };
+*/
 
-// Experimental block that can mutate to show a range or if a value
+
+// Number block that can mutate to show a range or if a value
 // is out bounds or not available.  Gets values from the block its connected
-// to by looking for a hidden field starting with "RANGEVALS".  
+// to by looking for a hidden field starting with "RANGEVALS".
 // field "RANGEVALS" must start with S, R, or A, and hold a comma-separated
 // set of values.  'S' and 'R' are for a range, with 'S' invoking
 // a UI slider.  The first number is the minimum allowed value, the second is
 // the maximum allowed value, and the third is a dummy start value.  If the
 // range is within +/- 1000, the block will display it.  A warning is thrown
-// if a value entered is out of range. The 'A' argument takes a 
-// comma-separated list of allowed values (think PINS), and throws a 
+// if a value entered is out of range. The 'A' argument takes a
+// comma-separated list of allowed values (think PINS), and throws a
 // warning if an illegal value is entered.
-// 
-// Will eventually move this functionality into "math_number" and 
-// "spin_integer" blocks.
-Blockly.Blocks.number_range = {
+//
+// Will eventually move this functionality into the
+// "spin_integer" block for the S3.
+Blockly.Blocks.math_number = {
     helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
@@ -78,8 +80,10 @@ Blockly.Blocks.number_range = {
                         Blockly.FieldTextInput.numberValidator), 'NUM');
         this.appendDummyInput('HIDDENVALS')
                 .appendField('', 'RVALS')
+                .appendField('', 'CONN')
                 .setVisible(false);
         this.setOutput(true, 'Number');
+        this.connection_id_ = null;
         this.onchange();
     },
     onchange: function () {
@@ -109,7 +113,35 @@ Blockly.Blocks.number_range = {
                             range[idx - 1] = Number(rangeVals[idx]);
                     }
                 }
+                if (this.outputConnection.targetBlock().getInputWithBlock(this) !== this.connection_id_) {
+                    var theVal = this.getFieldValue('NUM');
+                    this.removeInput('MAIN');
+                    if (rangeVals[0] === 'S') {
+                        var theNum = Number(theVal);
+                        if (theNum > range[1])
+                            theNum = range[1];
+                        if (theNum < range[0])
+                            theNum = range[0];
+                        this.setWarningText(null);
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldRange(theNum.toString(10),
+                                        range[0].toString(10), range[1].toString(10)), 'NUM');
+                    } else {
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldTextInput(theVal,
+                                        Blockly.FieldTextInput.numberValidator), 'NUM');
+                    }
+                }
+                this.connection_id_ = this.outputConnection.targetBlock().getInputWithBlock(this);
             } else {
+                if (this.connection_id_) {
+                    var theVal = this.getFieldValue('NUM');
+                    this.removeInput('MAIN');
+                    this.appendDummyInput('MAIN')
+                            .appendField(new Blockly.FieldTextInput(theVal,
+                                    Blockly.FieldTextInput.numberValidator), 'NUM');
+                }
+                this.connection_id_ = null;
                 rangeVals = null;
             }
         }
@@ -134,6 +166,9 @@ Blockly.Blocks.number_range = {
                 } else {
                     this.setWarningText(null);
                 }
+            } else if (rangeVals[0] === 'S') {
+            } else {
+                this.setWarningText(null);
             }
             if (rangeVals[0] === 'R' && (range[2] < range[0] || range[2] > range[1]) && Math.abs(range[0] - range[1]) <= 10000000) {
                 if (this.getField('TITLE')) {
@@ -178,7 +213,7 @@ Blockly.Blocks.number_range = {
     }
 };
 
-Blockly.propc.number_range = function () {
+Blockly.propc.math_number = function () {
     // Numeric value.
     var code = window.parseInt(this.getFieldValue('NUM'));
     // -4.abs() returns -4 in Dart due to strange order of operation choices.
@@ -502,7 +537,11 @@ Blockly.Blocks.system_counter = {
     helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_SYSTEM_COUNTER_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
+        if (profile.default.description === "Other Propeller Boards") {
+            this.setColour(colorPalette.getColor('system'));
+        } else {
+            this.setColour(colorPalette.getColor('programming'));
+        }
         this.appendDummyInput()
                 .appendField("system")
                 .appendField(new Blockly.FieldDropdown([
@@ -522,9 +561,9 @@ Blockly.Blocks.waitcnt = {
     //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WAITCNT_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('system'));
         this.appendValueInput('TARGET')
-                .appendField("Pause until system counter =");
+                .appendField("Pause until");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -540,7 +579,7 @@ Blockly.Blocks.register_set = {
     //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_REGISTER_SET_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('system'));
         this.appendValueInput('TARGET')
                 .appendField("cog")
                 .appendField(new Blockly.FieldDropdown([
@@ -571,7 +610,7 @@ Blockly.Blocks.register_get = {
     //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_REGISTER_GET_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('system'));
         this.appendDummyInput()
                 .appendField("cog")
                 .appendField(new Blockly.FieldDropdown([
@@ -601,11 +640,11 @@ Blockly.Blocks.custom_code = {
     //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_CUSTOM_CODE_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
+        this.setColour(colorPalette.getColor('system'));
         this.appendDummyInput()
                 .appendField("user code")
                 .appendField(new Blockly.FieldTextInput(''), 'CODE')
-                .appendField("place in")
+                .appendField("in")
                 .appendField(new Blockly.FieldDropdown([
                     ["main", "main"],
                     ["setup", "setup"],
@@ -735,7 +774,7 @@ Blockly.propc.comment = function () {
     return '// ' + text + '\n';
 };
 
-/*  
+/*
  * Casting Blocks are not currently used (Everything is a string or an int)
  
  Blockly.Blocks.cast = {
