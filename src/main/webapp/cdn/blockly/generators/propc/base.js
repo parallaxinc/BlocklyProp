@@ -32,28 +32,28 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 /*
-Blockly.Blocks.number_range = {
-    helpUrl: Blockly.MSG_VALUES_HELPURL,
-    init: function () {
-        this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldTextInput('0',
-                        Blockly.FieldTextInput.numberValidator), 'NUM');
-        this.setOutput(true, 'Number');
-    }
-};
+ Blockly.Blocks.number_range = {
+ helpUrl: Blockly.MSG_VALUES_HELPURL,
+ init: function () {
+ this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
+ this.setColour(colorPalette.getColor('programming'));
+ this.appendDummyInput()
+ .appendField(new Blockly.FieldTextInput('0',
+ Blockly.FieldTextInput.numberValidator), 'NUM');
+ this.setOutput(true, 'Number');
+ }
+ };
 
-Blockly.propc.number_range = function () {
-    // Numeric value.
-    var code = window.parseInt(this.getFieldValue('NUM'));
-    // -4.abs() returns -4 in Dart due to strange order of operation choices.
-    // -4 is actually an operator and a number.  Reflect this in the order.
-    var order = code < 0 ?
-            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
-    return [code, order];
-};
-*/
+ Blockly.propc.number_range = function () {
+ // Numeric value.
+ var code = window.parseInt(this.getFieldValue('NUM'));
+ // -4.abs() returns -4 in Dart due to strange order of operation choices.
+ // -4 is actually an operator and a number.  Reflect this in the order.
+ var order = code < 0 ?
+ Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
+ return [code, order];
+ };
+ */
 
 
 // Number block that can mutate to show a range or if a value
@@ -106,11 +106,14 @@ Blockly.Blocks.math_number = {
                 }
                 var sourceBlock_ = this.outputConnection.targetBlock();
                 if (sourceBlock_) {
-                    rangeVals = sourceBlock_.getFieldValue(_connectedField).split(',');
-                    if (rangeVals[0] === 'S' || rangeVals[0] === 'R' || rangeVals[0] === 'A') {
-                        var idx;
-                        for (idx = 1; idx <= rangeVals.length; idx++)
-                            range[idx - 1] = Number(rangeVals[idx]);
+                    var fieldListing = sourceBlock_.getFieldValue(_connectedField);
+                    if (fieldListing) {
+                        rangeVals = fieldListing.split(',');
+                        if (rangeVals[0] === 'S' || rangeVals[0] === 'R' || rangeVals[0] === 'A') {
+                            var idx;
+                            for (idx = 1; idx <= rangeVals.length; idx++)
+                                range[idx - 1] = Number(rangeVals[idx]);
+                        }
                     }
                 }
                 if (this.outputConnection.targetBlock().getInputWithBlock(this) !== this.connection_id_) {
@@ -776,7 +779,7 @@ Blockly.propc.comment = function () {
 
 /*
  * Casting Blocks are not currently used (Everything is a string or an int)
- 
+
  Blockly.Blocks.cast = {
  init: function() {
  this.setColour(colorPalette.getColor('math'));
@@ -785,17 +788,17 @@ Blockly.propc.comment = function () {
  this.appendDummyInput()
  .appendField("to")
  .appendField(new Blockly.FieldDropdown([["int", "(int) "], ["float", "(float) "], ["char", "(char) "], ["char[128]", "(char[]) "]]), "CAST_TYPE");
- 
+
  this.setPreviousStatement(false, null);
  this.setNextStatement(false, null);
  this.setOutput(true, 'Number');
  }
  };
- 
+
  Blockly.propc.cast = function() {
  var type = this.getFieldValue("CAST_TYPE");
  var item = Blockly.propc.valueToCode(this, 'ITEM_TO_CAST', Blockly.propc.ORDER_NONE);
- 
+
  var code = "" + type + item;
  return [code, Blockly.propc.ORDER_NONE];
  };
