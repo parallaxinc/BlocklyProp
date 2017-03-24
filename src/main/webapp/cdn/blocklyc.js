@@ -155,9 +155,11 @@ function cloudCompile(text, action, successHandler) {
         }).done(function (data) {
             if (data.error) {
                 if (typeof data['message'] === "string")
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message']);
+                    alert("BlocklyProp was unable to compile your project:\n" + data['message']
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
                 else
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString());
+                    alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
             } else {
                 if (data.success) {
                     $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
@@ -168,9 +170,11 @@ function cloudCompile(text, action, successHandler) {
             }
         }).fail(function (data) {
             if (typeof data === "string")
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data);
+                alert("BlocklyProp was unable to compile your project:\n----------\n" + data
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
             else
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString());
+                alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString()
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
         });
     }
 }
@@ -199,7 +203,8 @@ function loadIntoRam() {
             });
         });
     } else {
-        alert("BlocklyPropClient not available to communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller"
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
     }
 }
 
@@ -218,7 +223,8 @@ function loadIntoEeprom() {
             });
         });
     } else {
-        alert("BlocklyPropClient not available to communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller"
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
     }
 }
 
