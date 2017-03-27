@@ -1218,7 +1218,7 @@ Blockly.Blocks.GPS_velocity = {
         this.setTooltip(Blockly.MSG_GPS_VELOCITY_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("GPS velocity in")
+                .appendField("GPS speed in")
                 .appendField(new Blockly.FieldDropdown([["mph", "MPH"], ["knots", "KNOTS"]]), "VELOCITYUNITS");
 
         this.setOutput(true, 'Number');
