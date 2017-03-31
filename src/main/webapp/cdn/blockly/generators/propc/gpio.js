@@ -976,10 +976,12 @@ Blockly.propc.ab_drive_init = function () {
 
     Blockly.propc.definitions_["include abdrive"] = '#include "' + bot + '"';
 
-    if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
+    if (bot === 'servodiffdrive.h') {
         Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
         //Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';
-    } else {
+    } else if (bot === 'abdrive.h'){
+        //Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
+    } else if (bot === 'arlodrive.h'){
         //Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
     }
 
@@ -993,7 +995,17 @@ Blockly.Blocks.ab_drive_ramping = {
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField("Robot set acceleration")
-                .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+                .appendField(new Blockly.FieldDropdown([
+            ["2000 ticks/s\u00B2", "2000"], 
+            ["1600 ticks/s\u00B2 (jerky)", "1600"], 
+            ["1200 ticks/s\u00B2", "1200"],
+            ["800 ticks/s\u00B2 (peppy)", "800"],
+            ["600 ticks/s\u00B2", "600"], 
+            ["400 ticks/s\u00B2 (smooth)", "400"], 
+            ["200 ticks/s\u00B2", "200"], 
+            ["100 ticks/s\u00B2 (sluggish)", "100"], 
+            ["50 ticks/s\u00B2", "50"]
+        ]), "RAMPING");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1002,15 +1014,18 @@ Blockly.Blocks.ab_drive_ramping = {
 
 Blockly.propc.ab_drive_ramping = function () {
     var ramping = Number(this.getFieldValue('RAMPING'));
+    
+    var code = '';
 
     if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
         //Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
-        Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';
+        code += 'drive_setRampStep(' + (ramping / 50).toString(10)
+                + ',' + (ramping / 50).toString(10) + ');\n';
     } else {
-        Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
+        code += 'drive_setAcceleration(' + ramping + ');\n';
     }
 
-    return '';
+    return code;
 };
 
 Blockly.Blocks.ab_drive_goto = {
@@ -1022,11 +1037,11 @@ Blockly.Blocks.ab_drive_goto = {
                 .appendField('Robot drive distance in')
                 .appendField(new Blockly.FieldDropdown([["ticks", "TICK"], ["centimeters", "CM"], ["inches", "INCH"]]), "UNITS");
         this.appendValueInput("LEFT")
-                .appendField('R,-4227330,4227330,0', 'RANGEVALS0')
-                .setCheck('Number')
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("left");
-        this.appendValueInput("RIGHT")
+                .appendField('R,-4227330,4227330,0', 'RANGEVALS0')   // this number is derived from (2^31)/508
+                .setCheck('Number')                                  // where 508 is the largest multiplier
+                .setAlign(Blockly.ALIGN_RIGHT)                       // used in the scaling functions below.
+                .appendField("left");                                // keeps the user input from going above 2^31
+        this.appendValueInput("RIGHT")                               // (max for a 32-bit integer)
                 .appendField('R,-4227330,4227330,0', 'RANGEVALS1')
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
@@ -1093,6 +1108,62 @@ Blockly.propc.ab_drive_goto = function () {
     }
 };
 
+Blockly.Blocks.ab_drive_goto_max_speed = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ROBOT_DRIVE_DISTANCE_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendValueInput("SPEED")
+                .appendField('Robot drive distance max speed')
+                .appendField('S,0,128,0', 'RANGEVALS0')
+                .setCheck('Number');
+        this.getField('RANGEVALS0').setVisible(false);
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+
+        var whichRobot = '';
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
+            whichRobot = 'abdrive.h';
+        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+            whichRobot = 'arlodrive.h';
+        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
+            whichRobot = 'servodiffdrive.h';
+        this.newRobot(whichRobot);
+    },
+    newRobot: function (robot) {
+        if (robot === 'servodiffdrive.h') {
+            this.setWarningText('WARNING: Servo Differential Drive\ndoes not support "Robot drive distance"!');
+        } else if (robot === '') {
+            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
+    }
+};
+
+Blockly.propc.ab_drive_goto_max_speed = function () {
+    var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE);
+    var bot = Blockly.propc.definitions_["include abdrive"];
+
+    var code = '';
+
+    if (bot === '#include "servodiffdrive.h"') {
+        code += '// Servo Differential Drive does not support "Drive Distance"\n';
+    } else if (bot === '#include "abdrive.h"') {
+        code += 'drive_setMaxSpeed(' + speed + ');\n';
+    } else {
+        code += 'drive_setMaxSpeed(' + speed + ');\n';
+    }
+
+    if (bot === undefined) {
+        return '// Robot drive system is not initialized!\n';
+    } else {
+        return code;
+    }
+};
+
 Blockly.Blocks.ab_drive_speed = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
@@ -1127,32 +1198,54 @@ Blockly.Blocks.ab_drive_speed = {
         this.newRobot(whichRobot);
     },
     newRobot: function (robot) {
+        var connectionRight_ = this.getInput('RIGHT').connection;
+        var connectionLeft_ = this.getInput('LEFT').connection;
+        var blockLeft_ = connectionLeft_.targetBlock();
+        var blockRight_ = connectionRight_.targetBlock();
+        var warnText = null;
+        var rangeText = 'R,-128,128,0';
+
+        if (blockLeft_)
+            blockLeft_.outputConnection.disconnect();
+        if (blockRight_)
+            blockRight_.outputConnection.disconnect();
+        this.removeInput('LEFT');
+        this.removeInput('RIGHT');
+
         if (robot === 'servodiffdrive.h') {
-            this.setWarningText(null);
-            this.setFieldValue('R,-500,500,0', 'RANGEVALS0');
-            this.setFieldValue('R,-500,500,0', 'RANGEVALS1');
+            rangeText = 'R,-500,500,0';
         } else if (robot === '') {
-            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
-            this.setFieldValue('N,0,0,0', 'RANGEVALS0');
-            this.setFieldValue('N,0,0,0', 'RANGEVALS1');
+            warnText = 'WARNING: You must use a Robot initialize\nblock at the beginning of your program!';
+            rangeText = 'N,0,0,0';
         } else if (robot === 'abdrive.h') {
-            this.setFieldValue('S,-128,128,0', 'RANGEVALS0');
-            this.setFieldValue('S,-128,128,0', 'RANGEVALS1');
-            this.setWarningText(null);
-        } else if (robot === 'arlodrive.h') {
-            this.setFieldValue('R,-128,128,0', 'RANGEVALS0');
-            this.setFieldValue('R,-128,128,0', 'RANGEVALS1');
-            this.setWarningText(null);
+            rangeText = 'S,-128,128,0';
         }
 
-        var connectedBlockLeft_ = this.getInput('LEFT').connection.targetBlock();
-        if (connectedBlockLeft_) {
-            connectedBlockLeft_.onchange();
-        }
-        var connectedBlockRight_ = this.getInput('RIGHT').connection.targetBlock();
-        if (connectedBlockRight_) {
-            connectedBlockRight_.onchange();
-        }
+        this.appendValueInput("LEFT")
+                .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(rangeText, 'RANGEVALS0')
+                .appendField("left");
+        this.appendValueInput("RIGHT")
+                .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(rangeText, 'RANGEVALS1')
+                .appendField("right");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.setWarningText(warnText);
+
+        if (blockLeft_)
+            blockLeft_.outputConnection.connect(this.getInput('LEFT').connection);
+        if (blockRight_)
+            blockRight_.outputConnection.connect(this.getInput('RIGHT').connection);
+
+        if (blockLeft_)
+            if (blockLeft_.onchange)
+                blockLeft_.onchange.call(blockLeft_);
+        if (blockRight_)
+            if (blockRight_.onchange)
+                blockRight_.onchange.call(blockRight_);
     }
 };
 
@@ -1163,21 +1256,14 @@ Blockly.propc.ab_drive_speed = function () {
 
     var code = '';
 
-    if (bot === '#include "servodiffdrive.h"') {
-        code = 'drive_speeds(' + left + ', ' + right + ');\n';
+    if (bot === undefined || bot === '') {
+        code += '// Robot drive system is not initialized!\n';
+    } else if (bot === '#include "servodiffdrive.h"') {
+        code += 'drive_speeds(' + left + ', ' + right + ');\n';
     } else {
-        if (Blockly.propc.setups_["abd_ramping"] === 'drive_setRampStep(64);\n') {
-            code = 'drive_speed(' + left + ', ' + right + ');\n';
-        } else {
-            code = 'drive_ramp(' + left + ', ' + right + ');\n';
-        }
+        code += 'drive_speed(' + left + ', ' + right + ');\n';
     }
-
-    if (bot === undefined) {
-        return '// Robot drive system is not initialized!\n';
-    } else {
-        return code;
-    }
+    return code;
 };
 
 Blockly.Blocks.ab_drive_stop = {
@@ -1200,21 +1286,14 @@ Blockly.propc.ab_drive_stop = function () {
 
     var code = '';
 
-    if (bot === '#include "servodiffdrive.h"') {
-        code = 'drive_speeds(0, 0);\n';
+    if (bot === undefined || bot === '') {
+        code += '// Robot drive system is not initialized!\n';
+    } else if (bot === '#include "servodiffdrive.h"') {
+        code += 'drive_speeds(0, 0);\n';
     } else {
-        if (Blockly.propc.setups_["abd_ramping"] === 'drive_setRampStep(64);\n') {
-            code = 'drive_speed(0, 0);\n';
-        } else {
-            code = 'drive_ramp(0, 0);\n';
-        }
+        code += 'drive_speed(0, 0);\n';
     }
-
-    if (bot === undefined) {
-        return '// Robot drive system is not initialized!\n';
-    } else {
-        return code;
-    }
+    return code;
 };
 
 Blockly.Blocks.activitybot_calibrate = {

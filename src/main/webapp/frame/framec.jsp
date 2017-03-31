@@ -124,6 +124,7 @@
         <category name="<fmt:message key="category.operators" />" exclude="s3" colour="275">
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
+            <!--<block type="math_arithmetic_multiple"></block> -->
                 <block type="math_limit"></block>
                 <block type="constrain_value"></block>
                 <block type="math_crement"></block>
@@ -1211,6 +1212,13 @@
                     </block>
                 </value>
                 <value name="RIGHT">
+                    <block type="math_number">
+                        <field name="NUM">64</field>
+                    </block>
+                </value>
+            </block>
+            <block type="ab_drive_goto_max_speed">
+                <value name="SPEED">
                     <block type="math_number">
                         <field name="NUM">64</field>
                     </block>
