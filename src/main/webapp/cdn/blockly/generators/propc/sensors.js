@@ -355,7 +355,7 @@ Blockly.propc.fp_scanner_init = function () {
     Blockly.propc.global_vars_["fpScannerObj"] = 'fpScanner *fpScan;';
     Blockly.propc.definitions_["fpScannerDef"] = '#include "fingerprint.h"';
 
-    Blockly.propc.setups_["fpScanner"] = 'fpScan = fingerprint_open(' + rxpin + ', ' + txpin + ');';
+    Blockly.propc.setups_["fpScanner"] = 'fpScan = fingerprint_open(' + txpin + ', ' + rxpin + ');';
 
     return '';
 };
@@ -642,6 +642,7 @@ Blockly.propc.MMA7455_init = function () {
     var pinz = this.getFieldValue('PINZ');
 
     Blockly.propc.definitions_["include_mma7455"] = '#include "mma7455.h"';
+    Blockly.propc.global_vars_["mma_7455_tempVars"] = 'short int __tmpX, __tmpY, __tmpZ;';
     Blockly.propc.setups_["mma_7455"] = 'MMA7455_init(' + pinx + ', ' + piny + ', ' + pinz + ');\n';
 
     return '';
@@ -684,7 +685,9 @@ Blockly.propc.MMA7455_acceleration = function () {
     var ystorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Y_VAR'), Blockly.Variables.NAME_TYPE);
     var zstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
 
-    return 'MMA7455_getxyz10(&' + xstorage + ', &' + ystorage + ', &' + zstorage + ');\n';
+    var code = 'MMA7455_getxyz10(&__tmpX, &__tmpY, &__tmpZ);\n';
+    code += xstorage + ' = (int) __tmpX;\n' + ystorage + ' = (int) __tmpY;\n' + zstorage + ' = (int) __tmpZ;\n';
+    return code;
 };
 
 //-----------------------Compass (HMC5883L Module) Blocks ----------------------
@@ -1055,43 +1058,41 @@ Blockly.propc.lsm9ds1_heading = function () {
     return code;
 };
 
-// ------------------ GPS (PAM7Q module) Blocks --------------------------------
-Blockly.Blocks.PAM_7Q_Init = {
+// ------------------ GPS module Blocks ----------------------------------------
+Blockly.Blocks.GPS_init = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
     init: function () {
+        this.setTooltip(Blockly.MSG_GPS_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("PAM7Q GPS Module");
-        this.appendDummyInput()
-                .appendField("RX pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN");
-        this.appendDummyInput()
-                .appendField("TX pin#")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
-        this.appendDummyInput()
-                .appendField("baud")
-                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
+                .appendField("GPS module initialize TX")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN")
+               .appendField("baud")
+                .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"]]), "BAUD");
 
         this.setNextStatement(true, null);
         this.setPreviousStatement(true, null);
     }
 };
 
-Blockly.propc.PAM_7Q_Init = function () {
-    var rx_pin = this.getFieldValue('RXPIN');
+Blockly.propc.GPS_init = function () {
+    //var rx_pin = this.getFieldValue('RXPIN');
     var tx_pin = this.getFieldValue('TXPIN');
     var baud = this.getFieldValue('BAUD');
 
-    Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = 'gps_open(' + rx_pin + ', ' + tx_pin + ', ' + baud + ');\npause(100)';
+    var code = 'gps_open(' + tx_pin + ', 32, ' + baud + ');\npause(100);';
     return code;
 };
 
-Blockly.Blocks.PAM_7Q_Latitude = {
+Blockly.Blocks.GPS_hasFix = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
     init: function () {
+        this.setTooltip(Blockly.MSG_GPS_HASFIX_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("get latitude");
+                .appendField("GPS has valid satellite fix");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1099,18 +1100,20 @@ Blockly.Blocks.PAM_7Q_Latitude = {
     }
 };
 
-Blockly.propc.PAM_7Q_Latitude = function () {
-    Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
+Blockly.propc.GPS_hasFix = function () {
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = 'gps_latitude()';
-    return code;
+    var code = 'gps_fixValid()';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.Blocks.PAM_7Q_Longitude = {
+Blockly.Blocks.GPS_latitude = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
     init: function () {
+        this.setTooltip(Blockly.MSG_GPS_LAT_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("get longitude");
+                .appendField("GPS latitude (\u00B5\u00B0)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1118,18 +1121,20 @@ Blockly.Blocks.PAM_7Q_Longitude = {
     }
 };
 
-Blockly.propc.PAM_7Q_Longitude = function () {
-    Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
+Blockly.propc.GPS_latitude = function () {
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = 'gps_longitude()';
-    return code;
+    var code = '(int) (gps_latitude() * 1000000)';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.Blocks.PAM_7Q_Heading = {
+Blockly.Blocks.GPS_longitude = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
     init: function () {
+        this.setTooltip(Blockly.MSG_GPS_LONG_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("get heading");
+                .appendField("GPS longitude (\u00B5\u00B0)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1137,18 +1142,20 @@ Blockly.Blocks.PAM_7Q_Heading = {
     }
 };
 
-Blockly.propc.PAM_7Q_Heading = function () {
-    Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
+Blockly.propc.GPS_longitude = function () {
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = '(int)gps_heading()';
-    return code;
+    var code = '(int) (gps_longitude() * 1000000)';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.Blocks.PAM_7Q_Altitude = {
+Blockly.Blocks.GPS_heading = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
     init: function () {
+        this.setTooltip(Blockly.MSG_GPS_HEADING_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("get altitude");
+                .appendField("GPS heading (\u00B0)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1156,18 +1163,20 @@ Blockly.Blocks.PAM_7Q_Altitude = {
     }
 };
 
-Blockly.propc.PAM_7Q_Altitude = function () {
-    Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
+Blockly.propc.GPS_heading = function () {
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = 'gps_altitude()';
-    return code;
+    var code = '(int) gps_heading()';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.Blocks.PAM_7Q_SatsTracked = {
+Blockly.Blocks.GPS_altitude = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
     init: function () {
+        this.setTooltip(Blockly.MSG_GPS_ALTITUDE_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("get # of satellites tracked");
+                .appendField("GPS altitude (cm)");
 
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
@@ -1175,18 +1184,41 @@ Blockly.Blocks.PAM_7Q_SatsTracked = {
     }
 };
 
-Blockly.propc.PAM_7Q_SatsTracked = function () {
-    Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
+Blockly.propc.GPS_altitude = function () {
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
+
+    var code = '(int) (gps_altitude() * 100)';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+Blockly.Blocks.GPS_satsTracked = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_GPS_SATS_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("GPS number of satellites");
+
+        this.setOutput(true, 'Number');
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+    }
+};
+
+Blockly.propc.GPS_satsTracked = function () {
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
     var code = 'gps_satsTracked()';
-    return code;
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-Blockly.Blocks.PAM_7Q_Velocity = {
+Blockly.Blocks.GPS_velocity = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
     init: function () {
+        this.setTooltip(Blockly.MSG_GPS_VELOCITY_TOOLTIP);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("get velocity in units")
+                .appendField("GPS speed in")
                 .appendField(new Blockly.FieldDropdown([["mph", "MPH"], ["knots", "KNOTS"]]), "VELOCITYUNITS");
 
         this.setOutput(true, 'Number');
@@ -1195,13 +1227,13 @@ Blockly.Blocks.PAM_7Q_Velocity = {
     }
 };
 
-Blockly.propc.PAM_7Q_Velocity = function () {
+Blockly.propc.GPS_velocity = function () {
     var velocity_units = this.getFieldValue('VELOCITYUNITS');
 
-    Blockly.propc.definitions_["include PAM7Q"] = '#include "gps.h"';
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
 
-    var code = 'gps_velocity(' + velocity_units + ')';
-    return code;
+    var code = '(int) gps_velocity(' + velocity_units + ')';
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 // ------------------ RFID Reader Blocks ---------------------------------------

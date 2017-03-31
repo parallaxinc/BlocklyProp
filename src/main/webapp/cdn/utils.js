@@ -11,11 +11,10 @@ var utils = {
             }
         });
     },
-    prompt: function (title, message, defaultValue, callback) {
+    prompt: function (title, defaultValue, callback) {
         bootbox.prompt({
             title: title,
             value: defaultValue,
-            message: message,
             callback: callback,
             buttons: {
                 cancel: {

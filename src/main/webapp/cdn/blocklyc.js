@@ -116,14 +116,14 @@ function init(blockly) {
 
     // Make the 'Blocks' tab line up with the toolbox.
     /*
-    if (Blockly.Toolbox) {
-        window.setTimeout(function () {
-            document.getElementById('tab_blocks').style.minWidth =
-                    (Blockly.Toolbox.width - 38) + 'px';
-            // Account for the 19 pixel margin and on each side.
-        }, 1);
-    }
-    */
+     if (Blockly.Toolbox) {
+     window.setTimeout(function () {
+     document.getElementById('tab_blocks').style.minWidth =
+     (Blockly.Toolbox.width - 38) + 'px';
+     // Account for the 19 pixel margin and on each side.
+     }, 1);
+     }
+     */
 
     loadProject();
 }
@@ -154,7 +154,12 @@ function cloudCompile(text, action, successHandler) {
             'data': {"code": propcCode}
         }).done(function (data) {
             if (data.error) {
-                alert(data['message']);
+                if (typeof data['message'] === "string")
+                    alert("BlocklyProp was unable to compile your project:\n" + data['message']
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                else
+                    alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
             } else {
                 if (data.success) {
                     $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
@@ -164,7 +169,12 @@ function cloudCompile(text, action, successHandler) {
                 }
             }
         }).fail(function (data) {
-            alert(data);
+            if (typeof data === "string")
+                alert("BlocklyProp was unable to compile your project:\n----------\n" + data
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+            else
+                alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString()
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
         });
     }
 }
@@ -193,7 +203,8 @@ function loadIntoRam() {
             });
         });
     } else {
-        alert("BlocklyPropClient not available to communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller"
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
     }
 }
 
@@ -212,7 +223,8 @@ function loadIntoEeprom() {
             });
         });
     } else {
-        alert("BlocklyPropClient not available to communicate with a microcontroller");
+        alert("BlocklyPropClient not available to communicate with a microcontroller"
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
     }
 }
 
@@ -308,13 +320,13 @@ check_com_ports = function () {
                 text: 'Searching...'
             }));
             /*
-            $("#comPort").append($('<option>', {
-                text: 'COM3'
-            }));
-            $("#comPort").append($('<option>', {
-                text: 'COM4'
-            }));
-            */
+             $("#comPort").append($('<option>', {
+             text: 'COM3'
+             }));
+             $("#comPort").append($('<option>', {
+             text: 'COM4'
+             }));
+             */
             select_com_port(selected_port);
             client_available = false;
         });
@@ -347,7 +359,7 @@ function downloadPropC() {
     } else {
         utils.confirm('Downloading a SimpleIDE project', 'To open your project in SimpleIDE, two files will be downloaded.  They must both be saved in the same folder on your computer.', function (confirmed) {
             if (confirmed) {
-                utils.prompt("Download SimpleIDE files", "Filename:", 'Project' + idProject, function (value) {
+                utils.prompt("Enter a filename:", 'Project' + idProject, function (value) {
                     if (value) {
 
                         var sideFileContent = ".c\n>compiler=C\n>memtype=cmm main ram compact\n";
@@ -369,9 +381,11 @@ function downloadPropC() {
                         }());
 
                         // Check for any file extentions at the end of the submitted name, and truncate if any
-                        if(value.indexOf(".") !== -1) value = value.substring(0,value.indexOf("."));
+                        if (value.indexOf(".") !== -1)
+                            value = value.substring(0, value.indexOf("."));
                         // Check to make sure the filename is not too long
-                        if(value.length >= 30) value = value.substring(0, 29);
+                        if (value.length >= 30)
+                            value = value.substring(0, 29);
                         // Replace any illegal characters
                         value = value.replace(/[\\/:*?\"<>|]/g, '_');
 
@@ -382,6 +396,6 @@ function downloadPropC() {
             }
         });
     }
-    
-    
+
+
 }

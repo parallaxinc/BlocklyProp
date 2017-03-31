@@ -397,14 +397,27 @@ Blockly.propc.control_repeat_for_loop = function () {
     var step = Blockly.propc.valueToCode(this, 'STEP', Blockly.propc.ORDER_NONE) || '1';
     var repeat_code = Blockly.propc.statementToCode(this, 'DO');
     var loop_counter = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+    var code = '';
 
-    if (Number(start) < Number(end)) {
-        var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
-        return code;
+    if (isNaN(parseFloat(start)) || !isFinite(start) || isNaN(parseFloat(end)) || !isFinite(end)) {
+        if (isNaN(parseFloat(step)) || !isFinite(step)) {
+            code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
+        } else {
+            if (Number(step) < 1)
+                code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' += (' + step + ')) {\n' + repeat_code + '\n}';
+            else if (Number(step) > 1)
+                code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += (' + step + ')) {\n' + repeat_code + '\n}';
+            else if (Number(step) === 0)
+                code += '// ERROR: Your "step" size cannot be 0 (zero)!';
+        }
     } else {
-        var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' -= abs(' + step + ')) {\n' + repeat_code + '\n}';
-        return code;
+        if (Number(start) < Number(end)) {
+            code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
+        } else {
+            code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' -= abs(' + step + ')) {\n' + repeat_code + '\n}';
+        }
     }
+    return code;
 };
 
 Blockly.Blocks.controls_return = {

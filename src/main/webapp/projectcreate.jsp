@@ -7,6 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
+<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
+
 <html><!-- manifest=node.manifest> -->
     <head>
         <meta name="application-name" content="&nbsp;"/>
@@ -74,12 +76,21 @@
                                                     <div class="form-group">
                                                         <label for="board-type"><fmt:message key="project.create.board_type" /></label>
                                                         <select class="form-control" id="board-type" name="board-type">
-                                                            <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
-                                                            <option value="activity-board"><fmt:message key="project.board.activity-board" /></option>
-                                                            <option value="s3"><fmt:message key="project.board.s3" /></option>
-                                                            <option value="flip"><fmt:message key="project.board.flip" /></option>
-                                                            <option value="heb"><fmt:message key="project.board.heb" /></option>
-                                                            <option value="other"><fmt:message key="project.board.other" /></option>
+                                                            <c:if test="${param.lang == 'PROPC'}">
+                                                                <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
+                                                                <option value="activity-board"><fmt:message key="project.board.activity-board" /></option>
+                                                                <c:choose>
+                                                                    <c:when test="${experimental == true}">
+                                                                        <option value="s3"><fmt:message key="project.board.s3" /></option>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                                <option value="flip"><fmt:message key="project.board.flip" /></option>
+                                                                <option value="heb"><fmt:message key="project.board.heb" /></option>
+                                                                <option value="other"><fmt:message key="project.board.other" /></option>
+                                                            </c:if>
+                                                            <c:if test="${param.lang == 'SPIN'}">
+                                                                <option value="s3"><fmt:message key="project.board.s3" /></option>
+                                                            </c:if>
                                                         </select>
                                                     </div>
                                                 </div>

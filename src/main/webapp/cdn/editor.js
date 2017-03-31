@@ -89,7 +89,7 @@ saveProject = function () {
 };
 
 saveProjectAs = function () {
-    utils.prompt("Save as", "Save project as", projectData['name'], function (value) {
+    utils.prompt("Save project as", projectData['name'], function (value) {
         if (value) {
             var code = window.frames["content_blocks"].getXml();
             projectData['code'] = code;
@@ -195,14 +195,13 @@ function hashCode(str) {
     }
     return (hash + 2147483647) + 1;
 }
-;
 
 function downloadCode() {
     var projXMLcode = window.frames["content_blocks"].getXml(); //projectData['code'];
     projXMLcode = projXMLcode.substring(42, projXMLcode.length);
     projXMLcode = projXMLcode.substring(0, (projXMLcode.length - 6));
 
-    utils.prompt("Download Project", "Filename:", 'Project' + idProject, function (value) {
+    utils.prompt("Download Project - Filename:", 'Project' + idProject, function (value) {
         if (value) {
             // extract the SVG from the iFrame that contains it
             var x = document.getElementsByName("content_blocks");
@@ -278,7 +277,6 @@ function downloadCode() {
         }
     });
 }
-;
 
 function uploadCode() {
     if (checkLeave()) {
@@ -287,7 +285,6 @@ function uploadCode() {
         $('#upload-dialog').modal('show');
     }
 }
-;
 
 function uploadHandler(files) {
     var UploadReader = new FileReader();
@@ -347,7 +344,6 @@ function uploadHandler(files) {
     }
     ;
 }
-;
 
 function clearUploadInfo() {
     // Reset all of the upload fields and containers
@@ -357,7 +353,6 @@ function clearUploadInfo() {
     document.getElementById("selectfile-verify-valid").style.display = "none";
     document.getElementById("selectfile-verify-boardtype").style.display = "none";
 }
-;
 
 function replaceCode() {
     $('#upload-dialog').modal('hide');
@@ -376,7 +371,6 @@ function replaceCode() {
         clearUploadInfo();
     }
 }
-;
 
 function appendCode() {
     $('#upload-dialog').modal('hide');
@@ -399,7 +393,6 @@ function appendCode() {
         clearUploadInfo();
     }
 }
-;
 
 function clearWorkspace() {
     utils.confirm(Blockly.Msg.DIALOG_CLEAR_WORKSPACE, Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING, function (value) {
@@ -412,5 +405,4 @@ function clearWorkspace() {
         }
     });
 }
-;
 
