@@ -370,7 +370,7 @@ Blockly.Css.CONTENT = [
   '  stroke-width: 2;',
   '  stroke-linecap: round;',
   '}',
-
+  
   '.blocklyContextMenu {',
   '  border-radius: 4px;',
   '}',

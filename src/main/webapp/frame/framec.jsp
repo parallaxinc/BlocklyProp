@@ -16,6 +16,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/field_range.js"/>"></script>
 
         <!-- define blocks -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/base.js"/>"></script>
@@ -181,7 +182,49 @@
             </category>
         </category>
         <sep></sep>
-        <category name="<fmt:message key="category.values" />" exclude="s3,heb" colour="220">
+        <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE FOLLOWING MENU AS WELL -->
+        <category name="<fmt:message key="category.values" />" include="other" colour="220">
+            <block type="math_number"></block>
+            <block type="string_type_block"></block>
+            <block type="char_type_block"></block>
+            <block type="number_binary"></block>
+            <block type="number_hex"></block>
+            <block type="logic_boolean"></block>
+            <block type="high_low_value"></block>
+            <block type="color_picker"></block>
+            <block type="color_value_from">
+                <value name="RED_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="GREEN_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="BLUE_VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="get_channel_from">
+                <value name="COLOR">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
+            <block type="compare_colors">
+                <value name="COLOR1">
+                    <block type="color_picker"></block>
+                </value>
+                <value name="COLOR2">
+                    <block type="color_picker"></block>
+                </value>
+            </block>
+        </category>
+        <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE PREVIOUS MENU AS WELL -->
+        <category name="<fmt:message key="category.values" />" include="activity-board,flip" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
@@ -222,7 +265,6 @@
             </block>
             <block type="system_counter"></block>
         </category>
-
         <category name="<fmt:message key="category.operators.arrays" />"  colour="250">
             <block type="array_init"></block>
             <block type="array_fill"></block>
@@ -247,7 +289,6 @@
             </block>
             <block type="array_clear"></block>
         </category>
-
         <category name="<fmt:message key="category.values" />" include="heb" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
@@ -259,7 +300,6 @@
             <block type="heb_color_val"></block>
             <block type="system_counter"></block>
         </category>
-
         <category name="<fmt:message key="category.s3-simple" />" include="s3" colour=185>
             <category name="<fmt:message key="category.s3-simple.simple-control" />" colour=205>
                 <block type="scribbler_loop"></block>
@@ -329,7 +369,6 @@
             </block>
             <block type="spin_comment"></block>
         </category>
-
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
         <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3,heb" colour="200">
@@ -356,7 +395,7 @@
                     <block type="number_binary"></block>
                 </value>
         </category>
-        <category name="<fmt:message key="category.communicate" />" include="activity-board,flip" colour="320">
+        <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="320">
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>
@@ -549,6 +588,21 @@
                         <block type="color_picker"></block>
                     </value>
                 </block>
+                <block type="ws2812b_set_multiple">
+                    <value name="START">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                    <value name="END">
+                        <block type="math_number">
+                            <field name="NUM">4</field>
+                        </block>
+                    </value>
+                    <value name="COLOR">
+                        <block type="color_picker">#000000</block>
+                    </value>
+                </block>
                 <block type="ws2812b_update"></block>
             </category>
             <category name="<fmt:message key="category.communicate.serial-lcd" />">
@@ -681,7 +735,6 @@
                     </category>
                 </c:when>
             </c:choose>
-
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
                 <block type="xbee_transmit"></block>
@@ -942,7 +995,6 @@
             <block type="heb_count_contacts"></block>
             <block type="heb_erase_all_contacts"></block>
         </category>
-
         <category name="<fmt:message key="category.sensor-input" />" exclude="s3,heb" colour="155">
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
                 <block type="joystick_input_xaxis"></block>
@@ -956,7 +1008,16 @@
             <category name="<fmt:message key="category.sensor-input.ping" />">
                 <block type="sensor_ping"></block>
             </category>
-
+            <category name="<fmt:message key="category.sensor-input.gps" />">
+                <block type="GPS_init"></block>
+                <block type="GPS_hasFix"></block>
+                <block type="GPS_latitude"></block>
+                <block type="GPS_longitude"></block>
+                <block type="GPS_heading"></block>
+                <block type="GPS_altitude"></block>
+                <block type="GPS_velocity"></block>
+                <block type="GPS_satsTracked"></block>
+            </category>
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
                 <block type="fp_scanner_add">
@@ -968,7 +1029,6 @@
                 </block>
                 <block type="fp_scanner_scan"></block>
             </category>
-
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
@@ -1009,7 +1069,7 @@
                 <block type="sound_impact_end"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.memory" />" include="activity-board,flip" colour="155">
+        <category name="<fmt:message key="category.memory" />" include="activity-board,flip,other" colour="155">
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_read">
                     <value name="ADDRESS">
@@ -1069,7 +1129,7 @@
                     </value>
                 </block>
             </category>
-            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="flip">
+            <category name="<fmt:message key="category.analog-pulses.voltage" />" include="flip,other">
                 <block type="mcp320x_read"></block>
                 <block type="mcp320x_set_vref"></block>
             </category>
@@ -1131,6 +1191,7 @@
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
             <block type="ab_drive_init"></block>
+            <block type="ab_drive_ramping"></block>
             <block type="ab_drive_speed">
                 <value name="LEFT">
                     <block type="math_number">
@@ -1159,7 +1220,6 @@
             <block type="activitybot_calibrate"></block>
             <block type="activitybot_display_calibration"></block>
         </category>
-
         <category name="<fmt:message key="category.s3-math" />" include="s3" colour=275>
             <block type="spin_integer"></block>
             <block type="math_int_angle"></block>
@@ -1352,7 +1412,6 @@
                     </value>
                 </block>
                 <block type="scribbler_serial_rx_byte"></block>
-
             </category>
             <%--
                         <category name="<fmt:message key="category.s3-actions.reset" />" include="s3">
@@ -1360,6 +1419,22 @@
                         </category>
             --%>
         </category>
+        <category name="<fmt:message key="category.system" />" include="other" colour="320">
+            <block type="waitcnt">
+                <value name="TARGET">
+                    <block type="math_arithmetic">
+                        <value name="A">
+                            <block type="system_counter"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+            <block type="register_set"></block>
+            <block type="register_get"></block>
+            <block type="system_counter"></block>
+            <block type="custom_code"></block>
+        </category>
+
     </xml>
 </body>
 </html>

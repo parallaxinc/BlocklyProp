@@ -71,7 +71,9 @@ Blockly.Blocks.make_pin_input = {
         this.appendDummyInput("")
                 .appendField("make PIN");
         this.appendValueInput('PIN')
-                .setCheck('Number');
+                .setCheck('Number')
+                .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
     }
@@ -118,10 +120,11 @@ Blockly.Blocks.check_pin_input = {
     init: function () {
         this.setTooltip(Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput("")
-                .appendField("check PIN");
         this.appendValueInput('PIN')
-                .setCheck('Number');
+                .appendField("check PIN")
+                .setCheck('Number')
+                .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
         this.setOutput(true, 'Number');
         this.setInputsInline(true);
     }
@@ -338,7 +341,7 @@ Blockly.propc.set_pins_binary = function () {
     code += ', ';
     code += dropdown_start_pin;
     code += ', ' + value + ');\n';
-    
+
     return code;
 };
 
@@ -486,8 +489,10 @@ Blockly.Blocks.eeprom_write = {
                 .appendField("EEPROM write")
                 .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE");
         this.appendValueInput("ADDRESS")
+                .appendField('R,0,7675,0', 'RANGEVALS0')
                 .setCheck("Number")
                 .appendField("to address");
+        this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -527,10 +532,12 @@ Blockly.Blocks.eeprom_read = {
                 .setCheck("Number")
                 .appendField("EEPROM read")
                 .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE")
+                .appendField('R,0,7675,0', 'RANGEVALS0')
                 .appendField("from address");
         this.appendDummyInput()
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -589,7 +596,9 @@ Blockly.Blocks.servo_move = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput("ANGLE")
                 .appendField("set angle (0-180\u00B0)")
-                .setCheck("Number");
+                .setCheck("Number")
+                .appendField('R,0,180,0', 'RANGEVALS1');
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -710,7 +719,9 @@ Blockly.Blocks.ab_volt_out = {
         this.appendValueInput("VALUE")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField('R,0,330,0', 'RANGEVALS1')
                 .appendField("volt-100ths");
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -761,9 +772,10 @@ Blockly.Blocks.pwm_set = {
                 .appendField("channel")
                 .appendField(new Blockly.FieldDropdown([["A", "0"], ["B", "1"]]), "CHANNEL");
         this.appendValueInput("DUTY_CYCLE", Number)
+                .appendField('R,0,100,0', 'RANGEVALS1')
                 .setCheck('Number')
-                .appendField("duty cycle (0 - 100)");
-
+                .appendField("duty cycle (%)");
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -856,7 +868,9 @@ Blockly.Blocks.wav_volume = {
         this.setTooltip(Blockly.MSG_WAV_VOLUME_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendValueInput('VOLUME')
-                .appendField("WAV volume (0 - 10)");
+                .appendField("WAV volume (0 - 10)")
+                .appendField('R,0,10,0', 'RANGEVALS1');
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -868,13 +882,12 @@ Blockly.propc.wav_volume = function () {
 
     Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
 
-    if (Number(volume) < 0) {
-        volume = '0';
-    } else if (Number(volume) > 10) {
-        volume = '10';
-    }
+    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+    Blockly.propc.global_vars_["constrain_function"] = setup_code;
 
-    var code = 'wav_volume(' + volume + ');\n';
+    var code = 'wav_volume(constrain(' + volume + ', 0, 10));\n';
     return code;
 };
 
@@ -908,14 +921,13 @@ Blockly.Blocks.ab_drive_init = {
                     this.sourceBlock_.updateShape_({"BOT": bot});
                 }), "BOT")
                 .appendField("initialize");
-        this.appendDummyInput("PINS")
-                .appendField(" ramping")
-                .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+        this.appendDummyInput("PINS");
+        //        .appendField(" ramping")
+        //        .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
 
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -941,12 +953,17 @@ Blockly.Blocks.ab_drive_init = {
             inputPins.appendField(" left PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
                     .appendField("right PIN")
-                    .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT")
-                    .appendField(" ramping")
-                    .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
-        } else {
-            inputPins.appendField(" ramping")
-                    .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+                    .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT");
+        }
+
+        // Go through all of the blocks and run the "newRobot" function in each one that has it.
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+        // Iterate through every block.
+        for (var x = 0; x < blocks.length; x++) {
+            var func = blocks[x].newRobot;
+            if (func) {
+                func.call(blocks[x], bot);
+            }
         }
     }
 };
@@ -955,12 +972,39 @@ Blockly.propc.ab_drive_init = function () {
     var bot = this.getFieldValue('BOT');
     var left = Number(this.getFieldValue('LEFT'));
     var right = Number(this.getFieldValue('RIGHT'));
-    var ramping = Number(this.getFieldValue('RAMPING'));
+    //var ramping = Number(this.getFieldValue('RAMPING'));
 
     Blockly.propc.definitions_["include abdrive"] = '#include "' + bot + '"';
 
     if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
         Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
+        //Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';
+    } else {
+        //Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
+    }
+
+    return '';
+};
+
+Blockly.Blocks.ab_drive_ramping = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+                .appendField("Robot set acceleration")
+                .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.ab_drive_ramping = function () {
+    var ramping = Number(this.getFieldValue('RAMPING'));
+
+    if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
+        //Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
         Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';
     } else {
         Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
@@ -978,15 +1022,39 @@ Blockly.Blocks.ab_drive_goto = {
                 .appendField('Robot drive distance in')
                 .appendField(new Blockly.FieldDropdown([["ticks", "TICK"], ["centimeters", "CM"], ["inches", "INCH"]]), "UNITS");
         this.appendValueInput("LEFT")
+                .appendField('R,-4227330,4227330,0', 'RANGEVALS0')
                 .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("left");
         this.appendValueInput("RIGHT")
+                .appendField('R,-4227330,4227330,0', 'RANGEVALS1')
                 .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("right");
-
-        this.setInputsInline(true);
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+
+        var whichRobot = '';
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
+            whichRobot = 'abdrive.h';
+        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+            whichRobot = 'arlodrive.h';
+        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
+            whichRobot = 'servodiffdrive.h';
+        this.newRobot(whichRobot);
+    },
+    newRobot: function (robot) {
+        if (robot === 'servodiffdrive.h') {
+            this.setWarningText('WARNING: Servo Differential Drive\ndoes not support "Robot drive distance"!');
+        } else if (robot === '') {
+            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
@@ -1030,16 +1098,61 @@ Blockly.Blocks.ab_drive_speed = {
     init: function () {
         this.setTooltip(Blockly.MSG_ROBOT_DRIVE_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput()
+                .appendField('Robot drive speed', 'TITLE');
         this.appendValueInput("LEFT")
                 .setCheck('Number')
-                .appendField("Robot drive speed left");
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField('S,-128,128,0', 'RANGEVALS0')
+                .appendField("left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField('S,-128,128,0', 'RANGEVALS1')
                 .appendField("right");
-
-        this.setInputsInline(true);
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+
+        var whichRobot = '';
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
+            whichRobot = 'abdrive.h';
+        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+            whichRobot = 'arlodrive.h';
+        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
+            whichRobot = 'servodiffdrive.h';
+        this.newRobot(whichRobot);
+    },
+    newRobot: function (robot) {
+        if (robot === 'servodiffdrive.h') {
+            this.setWarningText(null);
+            this.setFieldValue('R,-500,500,0', 'RANGEVALS0');
+            this.setFieldValue('R,-500,500,0', 'RANGEVALS1');
+        } else if (robot === '') {
+            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
+            this.setFieldValue('N,0,0,0', 'RANGEVALS0');
+            this.setFieldValue('N,0,0,0', 'RANGEVALS1');
+        } else if (robot === 'abdrive.h') {
+            this.setFieldValue('S,-128,128,0', 'RANGEVALS0');
+            this.setFieldValue('S,-128,128,0', 'RANGEVALS1');
+            this.setWarningText(null);
+        } else if (robot === 'arlodrive.h') {
+            this.setFieldValue('R,-128,128,0', 'RANGEVALS0');
+            this.setFieldValue('R,-128,128,0', 'RANGEVALS1');
+            this.setWarningText(null);
+        }
+
+        var connectedBlockLeft_ = this.getInput('LEFT').connection.targetBlock();
+        if (connectedBlockLeft_) {
+            connectedBlockLeft_.onchange();
+        }
+        var connectedBlockRight_ = this.getInput('RIGHT').connection.targetBlock();
+        if (connectedBlockRight_) {
+            connectedBlockRight_.onchange();
+        }
     }
 };
 
