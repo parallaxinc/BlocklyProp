@@ -387,14 +387,12 @@ Blockly.Blocks.math_arithmetic_multiple = {
                 var currentBlock = this.getInput(String.fromCharCode(inCount)).connection.targetBlock();
                 var previousBlock = this.getInput(String.fromCharCode(inCount + 1)).connection.targetBlock();
                 if (currentBlock === null && previousBlock === null) {
-                    var wrapperBlock = this;
-                    setTimeout(function () {
-                        wrapperBlock.removeInput(String.fromCharCode(inCount + 1));
-                    }, 500);
-                }
+                        this.getInput(String.fromCharCode(inCount + 1)).connection.unhighlight();
+                        this.removeInput(String.fromCharCode(inCount + 1));
+                } else if (currentBlock !== null)
+                    break;
             }
         }
-        this.initSvg();
     }
 };
 
@@ -420,27 +418,27 @@ Blockly.propc.math_arithmetic_multiple = function () {
     operator.push('');
 
 
-    for (var k = 0; k < 27; k++) {
-        if (operator[k] === ' p ' && !isNaN(argument[k])) {
+    for (var k = 0; k < 26; k++) {//&& !isNaN(argument[k])
+        if (operator[k] === ' p ' ) {
             code += 'pow(' + argument[k] + ', ';
         } else {
             if (k > 0) {
                 if (operator[k - 1] === ' p ') {
-                    if (!isNaN(argument[k]))
+                    //if (!isNaN(argument[k]))
                         code += argument[k] + ')' + operator[k];
                 } else {
-                    if (!isNaN(argument[k]))
+                    //if (!isNaN(argument[k]))
                         code += argument[k] + operator[k];
                 }
             } else {
-                if (!isNaN(argument[k]))
+                //if (!isNaN(argument[k]))
                     code += argument[k];
                 code += operator[k];
             }
         }
     }
     //alert(code);
-    return [code, Blockly.propc.ORDER_ATOMIC];
+    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.math_limit = {

@@ -124,7 +124,7 @@
         <category name="<fmt:message key="category.operators" />" exclude="s3" colour="275">
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
-                <block type="math_arithmetic_multiple"></block>
+            <!--<block type="math_arithmetic_multiple"></block> -->
                 <block type="math_limit"></block>
                 <block type="constrain_value"></block>
                 <block type="math_crement"></block>
