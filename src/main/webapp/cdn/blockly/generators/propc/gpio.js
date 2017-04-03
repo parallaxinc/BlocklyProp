@@ -991,7 +991,7 @@ Blockly.propc.ab_drive_init = function () {
 Blockly.Blocks.ab_drive_ramping = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_RAMPING_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField("Robot set acceleration")
@@ -1111,11 +1111,11 @@ Blockly.propc.ab_drive_goto = function () {
 Blockly.Blocks.ab_drive_goto_max_speed = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ROBOT_DRIVE_DISTANCE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_DISTANCE_MAX_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendValueInput("SPEED")
-                .appendField('Robot drive distance max speed')
-                .appendField('S,0,128,0', 'RANGEVALS0')
+                .appendField('Robot drive max speed')
+                .appendField('R,0,128,0', 'RANGEVALS0')
                 .setCheck('Number');
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(false);
@@ -1174,12 +1174,12 @@ Blockly.Blocks.ab_drive_speed = {
         this.appendValueInput("LEFT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField('S,-128,128,0', 'RANGEVALS0')
+                .appendField('R,-128,128,0', 'RANGEVALS0')
                 .appendField("left");
         this.appendValueInput("RIGHT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField('S,-128,128,0', 'RANGEVALS1')
+                .appendField('R,-128,128,0', 'RANGEVALS1')
                 .appendField("right");
         this.getField('RANGEVALS0').setVisible(false);
         this.getField('RANGEVALS1').setVisible(false);
@@ -1218,7 +1218,7 @@ Blockly.Blocks.ab_drive_speed = {
             warnText = 'WARNING: You must use a Robot initialize\nblock at the beginning of your program!';
             rangeText = 'N,0,0,0';
         } else if (robot === 'abdrive.h') {
-            rangeText = 'S,-128,128,0';
+            rangeText = 'R,-128,128,0';
         }
 
         this.appendValueInput("LEFT")
@@ -1355,7 +1355,8 @@ Blockly.Blocks.mcp320x_read = {
         this.setTooltip(Blockly.MSG_MCP320X_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown([["MCP3202", "2"], ["MCP3204", "4"], ["MCP8208", "8"]], function (ch_c) {
+                .appendField("ADC")
+                .appendField(new Blockly.FieldDropdown([["MCP3002", "02"], ["MCP3004", "04"], ["MCP8008", "08"], ["MCP3202", "22"], ["MCP3204", "24"], ["MCP8208", "28"]], function (ch_c) {
                     this.sourceBlock_.updateShape_({"CH_C": ch_c});
                 }), "CHIP")
                 .appendField("CS")
@@ -1369,7 +1370,7 @@ Blockly.Blocks.mcp320x_read = {
         this.appendDummyInput('CHANNELS')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("channel")
-                .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"]]), "CHAN")
+                .appendField(new Blockly.FieldDropdown([["0", "0"], ["1", "1"]]), "CHAN")
                 .appendField("read (0-3.3V) in volt-100ths");
         this.setInputsInline(false);
         this.setOutput(true, null);
@@ -1377,7 +1378,7 @@ Blockly.Blocks.mcp320x_read = {
     mutationToDom: function () {
         var container = document.createElement('mutation');
         var ch_c = this.getFieldValue('CHIP');
-        container.setAttribute('chip', ch_c);
+        container.setAttribute('chip', ch_c[1]);
         return container;
     },
     domToMutation: function (xmlElement) {
@@ -1393,7 +1394,7 @@ Blockly.Blocks.mcp320x_read = {
 
         var chan_count = [];
 
-        for (var i = 1; i <= num; i++) {
+        for (var i = 0; i < num; i++) {
             chan_count.push([i.toString(), i.toString()]);
         }
 
@@ -1407,12 +1408,13 @@ Blockly.Blocks.mcp320x_read = {
 };
 
 Blockly.propc.mcp320x_read = function () {
-    var chip = parseInt(this.getFieldValue('CHIP'));
+    var chip = parseInt(this.getFieldValue('CHIP')[1]);
+    var res = '1' + this.getFieldValue('CHIP')[0];
     var cs_pin = this.getFieldValue('CS_PIN');
     var clk_pin = this.getFieldValue('CLK_PIN');
     var do_pin = this.getFieldValue('DO_PIN');
     var di_pin = this.getFieldValue('DI_PIN');
-    var channel = '000' + parseInt(this.getFieldValue('CHANNEL')).toString(2) + "1";
+    var channel = '000' + parseInt(this.getFieldValue('CHAN')).toString(2) + "1";
 
     if (chip < 4) {
         channel = "11" + channel.substr(0, 1) + "1";
@@ -1422,17 +1424,17 @@ Blockly.propc.mcp320x_read = function () {
 
     var func = '';
     func += 'int __Mvref = 330;';
-    func += 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr) {\n';
+    func += 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr, int__Mres) {\n';
     func += '  high(__McsPin);  low(__MclkPin);  low(__McsPin);\n';
     func += '  shift_out(__MdiPin, __MclkPin, MSBFIRST, __Mbits, __Mdata);\n';
-    func += '  int __Mvolts = shift_in(__MdiPin, __MclkPin, MSBPOST, 12);\n';
-    func += '  high(__McsPin);  high(__MclkPin);\n  return ((__Mvolts * __MVr) / 4096);}';
+    func += '  int __Mvolts = shift_in(__MdoPin, __MclkPin, MSBPOST, __Mres);\n';
+    func += '  high(__McsPin);  high(__MclkPin);\n  return ((__Mvolts * __MVr) / pow(2,__Mres));}';
     Blockly.propc.global_vars_["mcp320x_read"] = func;
 
 
     var code = '';
     code += 'read_mcp320x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin;
-    code += ', ' + di_pin + ', ' + channel.length + ', 0b' + channel + ', __Mvref)';
+    code += ', ' + di_pin + ', ' + channel.length + ', 0b' + channel + ', __Mvref, ' + res + ')';
 
     return [code, Blockly.propc.ORDER_NONE];
 };
