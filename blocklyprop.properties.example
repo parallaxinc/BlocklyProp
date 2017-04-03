@@ -19,14 +19,15 @@ cloudcompiler.baseurl = http://localhost:5001
 
 # Static files can be served from the BlocklyProp server directly or from a
 # content delivery network, such as Amazon's S3 CDN. Specify the location of
-# the static content here.
+# the static content here, for both HTTP and HTTPS protocols.
 cdnfiles.baseurl = http://localhost/blockly/cdn
+cdnfiles.baseurl.https = https://localhost/blockly/cdn
 
 # BlocklyProp requires a software driver, loaded on the client's computer, to
 # pass the compiled code to a device attached to the client computer. The
 # drivers can be hosted on the BlocklyProp server or in a content delivery
 # network. Specify the URL to the download resource here.
-downloadfiles.baseurl =  http://demo.blockly.parallax.com/download
+downloadfiles.baseurl =  http://localhost/download
 
 # OAuth support for Google users
 oauth.google.enabled = false

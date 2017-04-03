@@ -25,6 +25,15 @@ public class Properties {
         return configuration;
     }
 
+    /**
+     * Retrieve the base path to the BlocklyProp Client download files
+     * <p>
+     * This method supports the "offline" mode which assumes that there is
+     * no Internet connectivity available.
+     * 
+     * @param file
+     * @return 
+     */
     public static String getDownloadFilesBaseUrl(String file) {
         if (configuration.getBoolean("offline.enabled") == true) {
             return configuration.getString("offline.downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
@@ -42,7 +51,20 @@ public class Properties {
         }
     }
     
-    // Use experimental menu items in test environment
+    //
+    
+    /**
+     * Obtain the state of experimental menu items.
+     * <p>
+     * Blocks that are not ready for production use can be placed within
+     * and 'experimental block' pattern. The 'experimental.menu' option
+     * contained in the application properties file will trigger the menu
+     * system to expose experimental menu items. If this option is off or
+     * missing, the experimental menu items will be disabled.
+     * 
+     * @param state
+     * @return 
+     */
     public static boolean isExperimentalMenu(Boolean state) {
         try {
             if (configuration.getBoolean("experimental.menu") == true) {
