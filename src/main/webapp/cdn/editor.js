@@ -106,6 +106,10 @@ saveProjectAs = function () {
     });
 };
 
+editProjectDetails = function () {
+    window.location.href = baseUrl + 'my/projects.jsp#' + idProject; 
+};
+
 blocklyReady = function () {
     if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);

@@ -1067,7 +1067,7 @@ Blockly.Blocks.GPS_init = {
         this.appendDummyInput()
                 .appendField("GPS module initialize TX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN")
-               .appendField("baud")
+                .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"]]), "BAUD");
 
         this.setNextStatement(true, null);
@@ -1370,4 +1370,100 @@ Blockly.propc.sirc_get = function () {
 
     var code = 'sirc_button(' + pin + ')';
     return [code, Blockly.propc.ORDER_NONE];
+};
+
+// ------------------ 4x4 Keypad Blocks ----------------------------------------
+Blockly.Blocks.keypad_initialize = {
+    helpUrl: Blockly.MSG_KEYPAD_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_KEYPAD_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("4x4 Keypad initialize PINS left")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P0")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P1")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P2")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P3")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P4")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P5")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P6")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P7")
+                .appendField("right");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.keypadPins_ = '0,1,2,3,4,5,6,7,';
+        this.onchange();
+    },
+    onchange: function () {
+        this.keypadPins_ = '';
+        for (var i = 0; i < 8; i++)
+            this.keypadPins_ += this.getFieldValue('P' + i) + ',';
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+        // Iterate through every block.
+        for (var x = 0; x < blocks.length; x++) {
+            var func = blocks[x].keypadSetPins;
+            if (func) {
+                func.call(blocks[x]);
+            }
+        }
+    }
+};
+
+Blockly.propc.keypad_initialize = function () {
+    var keyFunc = 'int keypad_button(int __a, int __b, int __c, int __d, int __e, ';
+    keyFunc += 'int __f, int __g, int __h) {int __press = 0, __k, __j, ';
+    keyFunc += '__keytimeout = CNT + CLKFREQ/10;\nint __keypad[] = {__a, __b, ';
+    keyFunc += '__c, __d, __e, __f, __g, __h};\nint __keyval[] = {1,4,7,15,2,5,';
+    keyFunc += '8,0,3,6,9,14,10,11,12,13};\nwhile(CNT < __keytimeout) {';
+    keyFunc += 'for(__k = 4; __k < 8; __k++) input(__keypad[__k]);\n';
+    keyFunc += 'for(__k = 0; __k < 4; __k++) {';
+    keyFunc += 'for(__j = 0; __j < 4; __j++) low(__keypad[__j]);\n';
+    keyFunc += 'high(__keypad[__k]);\nfor(__j = 4; __j < 8; __j++) {';
+    keyFunc += '__press = input(__keypad[__j]);\nif(__press) break;}';
+    keyFunc += 'if(__press) return __keyval[__k | ((__j - 4) << 2)];}}';   
+    keyFunc += 'return -1;}';
+
+    Blockly.propc.global_vars_["4x4keypad"] = keyFunc;
+
+    return '';
+};
+
+Blockly.Blocks.keypad_read = {
+    helpUrl: Blockly.MSG_KEYPAD_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_KEYPAD_READ_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("4x4 Keypad")
+                .appendField('', "PINS");
+        this.getField('PINS').setVisible(false);
+        this.setOutput(true, null);
+        this.keypadSetPins_ = '';
+        this.keypadSetPins();
+    },
+    onchange: function () {
+        this.keypadSetPins();
+    },
+    keypadSetPins: function () {
+        var warnText = 'WARNING: You must use a 4X4 Keypad initialize\nblock at the beginning of your program!';
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+        for (var x = 0; x < blocks.length; x++) {
+            var pins = blocks[x].keypadPins_;
+            if (pins) {
+                this.keypadSetPins_ = pins;
+                this.setFieldValue(pins, "PINS");
+                warnText = null;
+                break;
+            }
+        }
+        this.setWarningText(warnText);
+    }
+};
+
+Blockly.propc.keypad_read = function () {
+    var pins = this.getFieldValue('PINS');
+    pins = pins.substr(0, pins.length - 1);
+
+    return ['keypad_button(' + pins + ')', Blockly.propc.ORDER_ATOMIC];
 };

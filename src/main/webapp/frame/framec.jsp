@@ -124,7 +124,7 @@
         <category name="<fmt:message key="category.operators" />" exclude="s3" colour="275">
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
-            <!--<block type="math_arithmetic_multiple"></block> -->
+                <!--<block type="math_arithmetic_multiple"></block> -->
                 <block type="math_limit"></block>
                 <block type="constrain_value"></block>
                 <block type="math_crement"></block>
@@ -1001,6 +1001,14 @@
                 <block type="joystick_input_xaxis"></block>
                 <block type="joystick_input_yaxis"></block>
             </category>
+            <c:choose>
+                <c:when test="${experimental == true}">
+                    <category name="<fmt:message key="category.sensor-input.4x4-keypad" />">
+                        <block type="keypad_initialize"></block>
+                        <block type="keypad_read"></block>
+                    </category>
+                </c:when>
+            </c:choose>
             <category name="<fmt:message key="category.sensor-input.colorpal" />">
                 <block type="colorpal_enable"></block>
                 <block type="colorpal_get_colors_raw"></block>

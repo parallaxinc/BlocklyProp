@@ -21,12 +21,12 @@
                         <a class="client-unavailable-link" data-toggle="modal" data-target="#client-download-modal" href="#"><fmt:message key="editor.client.not-available" /></span></a>
                     </span>
                     <span id="client-available" class="bp-client-available hidden">
-                    <c:if test="${param.editor_lang == 'c'}">
-                        <fmt:message key="editor.client.available" />
-                    </c:if>
-                    <c:if test="${param.editor_lang == 'spin'}">
-                        <fmt:message key="editor.client.available.short" />
-                    </c:if>
+                        <c:if test="${param.editor_lang == 'c'}">
+                            <fmt:message key="editor.client.available" />
+                        </c:if>
+                        <c:if test="${param.editor_lang == 'spin'}">
+                            <fmt:message key="editor.client.available.short" />
+                        </c:if>
                     </span>
                     <span id="client-available-short" class="hidden">
                         <fmt:message key="editor.client.available.short" />
@@ -42,9 +42,9 @@
             <div style="width:100%; padding-bottom: 5px;">
                 <div style="display:inline; padding-left: 10px;" id="board-action-buttons">        
                     <a onclick="compile()" data-toggle="tooltip" title="Verify code (compile)" data-placement="bottom" href="#" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-ok"></i></a>
-                    <c:if test="${param.editor_lang == 'c'}">
-                    <a onclick="loadIntoRam()" data-toggle="tooltip" title="Run once (load code to RAM)" data-placement="bottom" class="btn btn-success btn-circle" id="load-ram-button"><i class="glyphicon glyphicon-arrow-down"></i></a>
-                    </c:if>
+                        <c:if test="${param.editor_lang == 'c'}">
+                        <a onclick="loadIntoRam()" data-toggle="tooltip" title="Run once (load code to RAM)" data-placement="bottom" class="btn btn-success btn-circle" id="load-ram-button"><i class="glyphicon glyphicon-arrow-down"></i></a>
+                        </c:if>
                     <a onclick="loadIntoEeprom()" data-toggle="tooltip" title="Load and run (save code to EEPROM)" data-placement="bottom" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-save"></i></a>
                     <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list-alt"></i></a>
                 </div>
@@ -65,6 +65,7 @@
                     <span class="dropdown"><button class="btn btn-sm btn-default dropdown-toggle" id="options-menu" type="button" data-toggle="dropdown"><i class="glyphicon glyphicon-menu-hamburger"></i>
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu pull-right btn-sm">
+                            <li><a id="edit-project-details" href="#" onclick="editProjectDetails()"><fmt:message key="editor.edit-details" /></a></li>
                             <li><a id="save-project-as" href="#"><fmt:message key="editor.save-as" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
                             <li><a href="<url:getUrl url="/projectcreate.jsp?lang=SPIN"/>">New <fmt:message key="editor.newproject.spin" /> project</a></li>
@@ -77,8 +78,8 @@
                             <li><a id="clear-workspace" href="#"><fmt:message key="editor.clear-workspace" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
                             <c:if test="${param.editor_lang == 'c'}">
-                            <li><a id="download-side" href="#" onclick="downloadPropC()">Download SimpleIDE files</a></li>
-                            </c:if>
+                                <li><a id="download-side" href="#" onclick="downloadPropC()">Download SimpleIDE files</a></li>
+                                </c:if>
                             <li><a id="download-project" href="#"><fmt:message key="editor.download" /></a></li>
                             <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
