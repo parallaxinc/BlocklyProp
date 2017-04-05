@@ -514,15 +514,15 @@ Blockly.Blocks.move_motors_xy = {
     init: function () {
 	this.appendDummyInput()
 		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100_000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10_000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10_000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1_000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
         this.appendDummyInput()
-            .appendField("move the Scribbler robot to the");
+            .appendField("move the Scribbler to a new coordinate (X,Y)");
 	this.appendValueInput("X_DISTANCE")
 		.setCheck("Number")
-		.appendField("left(-)/right(+) by");
+		.appendField("change (+/-) in X");
 	this.appendValueInput("Y_DISTANCE")
 		.setCheck("Number")
-		.appendField("back(-)/forward(+) by");
+		.appendField("change (+/-) in Y");
 	this.appendValueInput("MOTOR_SPEED")
 		.setCheck("Number")
 		.appendField("at a top speed of (1 to 100)%");
@@ -531,6 +531,8 @@ Blockly.Blocks.move_motors_xy = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_XY_TOOLTIP);
     }
 };
 
