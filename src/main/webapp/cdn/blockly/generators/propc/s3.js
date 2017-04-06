@@ -514,7 +514,7 @@ Blockly.Blocks.move_motors_xy = {
     init: function () {
 	this.appendDummyInput()
 		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100_000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10_000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10_000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1_000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
+		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
         this.appendDummyInput()
             .appendField("move the Scribbler to a new coordinate (X,Y)");
 	this.appendValueInput("X_DISTANCE")
