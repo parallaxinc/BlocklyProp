@@ -793,10 +793,11 @@ Blockly.propc.debug_lcd_set_cursor = function () {
     var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
     var column = Blockly.propc.valueToCode(this, 'COLUMN', Blockly.propc.ORDER_NONE);
 
-    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
     setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
     setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.global_vars_["constrain_function"] = setup_code;
+    Blockly.propc.methods_["constrain_function"] = setup_code;
+    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
 
     if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
         return '//Missing Serial LCD initialize block\n';
@@ -1627,10 +1628,11 @@ Blockly.propc.ws2812b_set_multiple = function () {
     if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
         code += '//Missing RGB-LED initialize block\n';
     } else {
-        var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
         setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
         setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-        Blockly.propc.global_vars_["constrain_function"] = setup_code;
+        Blockly.propc.methods_["constrain_function"] = setup_code;
+        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
 
         code += 'for(int __ldx = ' + start + '; __ldx <= ' + end + '; __ldx++) {';
         code += 'RGBleds[constrain(__ldx, 1, LED_COUNT) - 1] = ' + color + ';}';

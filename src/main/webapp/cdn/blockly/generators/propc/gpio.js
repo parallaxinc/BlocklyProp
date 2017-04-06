@@ -504,10 +504,11 @@ Blockly.propc.eeprom_write = function () {
     var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC);
     var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_ATOMIC) || '';
 
-    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
     setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
     setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.global_vars_["constrain_function"] = setup_code;
+    Blockly.propc.methods_["constrain_function"] = setup_code;
+    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
 
     var code = '';
     if (data !== '') {
@@ -554,7 +555,7 @@ Blockly.Blocks.eeprom_read = {
 
 Blockly.propc.eeprom_read = function () {
     var type = this.getFieldValue('TYPE');
-    var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC);
+    var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC) || '0';
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.global_vars_["i2c_eepromAddr"] = 'int __eeAddr;';
@@ -882,10 +883,11 @@ Blockly.propc.wav_volume = function () {
 
     Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
 
-    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
     setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
     setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.global_vars_["constrain_function"] = setup_code;
+    Blockly.propc.methods_["constrain_function"] = setup_code;
+    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
 
     var code = 'wav_volume(constrain(' + volume + ', 0, 10));\n';
     return code;
@@ -1074,8 +1076,8 @@ Blockly.Blocks.ab_drive_goto = {
 };
 
 Blockly.propc.ab_drive_goto = function () {
-    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE);
-    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE);
+    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE) || '0';
+    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE) || '0';
     var units = this.getFieldValue('UNITS');
     var bot = Blockly.propc.definitions_["include abdrive"];
 
@@ -1144,7 +1146,7 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
 };
 
 Blockly.propc.ab_drive_goto_max_speed = function () {
-    var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE);
+    var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE) || '128';
     var bot = Blockly.propc.definitions_["include abdrive"];
 
     var code = '';
@@ -1250,8 +1252,8 @@ Blockly.Blocks.ab_drive_speed = {
 };
 
 Blockly.propc.ab_drive_speed = function () {
-    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE);
-    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE);
+    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE) || '0';
+    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE) || '0';
     var bot = Blockly.propc.definitions_["include abdrive"];
 
     var code = '';
@@ -1280,8 +1282,6 @@ Blockly.Blocks.ab_drive_stop = {
 };
 
 Blockly.propc.ab_drive_stop = function () {
-    var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE);
-    var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE);
     var bot = Blockly.propc.definitions_["include abdrive"];
 
     var code = '';
@@ -1339,7 +1339,7 @@ Blockly.propc.activitybot_display_calibration = function () {
     code += 'if(!abd_intTabSetup) interpolation_table_setup();\n';
     code += 'print("=== LEFT SERVO ===\\r");\n';
     code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCntL, abd_cntrLidx);\n';
-    code += 'print("Index, Servo Drive, Encoder Ticks/Second\\n");\n';
+    code += 'print("Index, Servo Drive, Encoder Ticks/Second\\r");\n';
     code += 'for(int __rIdx = 0; __rIdx < abd_elCntL; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
     code += 'print("\\r\\r=== RIGHT SERVO ===\\r");\n';
     code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCntR, abd_cntrRidx);\n';
@@ -1494,7 +1494,8 @@ Blockly.propc.mcp320x_read = function () {
         func += '{low(__MclkPin);\nlow(__McsPin);\npulse_out(__MclkPin, 250);\n';
         func += 'int __Mvolts = shift_in(__MdoPin, __MclkPin, MSBPOST, 8);\nhigh(__McsPin);\n';
         func += 'return ((__Mvolts * __MVr) / 256);}';
-        Blockly.propc.global_vars_["adc083x_read"] = func;
+        Blockly.propc.methods_["adc083x_read"] = func;
+        Blockly.propc.method_declarations_["adc083x_read"] = 'int read_adc0831(int __McsPin, int __MclkPin, int __MdoPin, int __MVr);\n';
 
         code += 'read_adc083x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin + ', __Mvref)';
     } else {
@@ -1503,7 +1504,8 @@ Blockly.propc.mcp320x_read = function () {
         func += '  shift_out(__MdiPin, __MclkPin, MSBFIRST, __Mbits, __Mdata);\n';
         func += '  int __Mvolts = shift_in(__MdoPin, __MclkPin, MSBPOST, __Mres);\n';
         func += '  high(__McsPin);  high(__MclkPin);\n  return ((__Mvolts * __MVr) / pow(2,__Mres));}';
-        Blockly.propc.global_vars_["mcp320x_read"] = func;
+        Blockly.propc.methods_["mcp320x_read"] = func;
+        Blockly.propc.method_declarations_["mcp320x_read"] = 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr, int __Mres);\n';
 
         code += 'read_mcp320x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin;
         code += ', ' + di_pin + ', ' + channel.length + ', 0b' + channel + ', __Mvref, ' + res + ')';
