@@ -51,7 +51,7 @@ Blockly.Blocks.serial_send_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("send message")
+                .appendField("Terminal / XBee / WX send text")
                 .appendField(this.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'MESSAGE_TEXT')
                 .appendField(this.newQuote_(false));
@@ -108,8 +108,16 @@ Blockly.Blocks.serial_send_decimal = {
 Blockly.Blocks.serial_send_ctrl = {
     init: function () {
         this.appendDummyInput()
-                .appendField("send control character")
-                .appendField(new Blockly.FieldDropdown([["position cursor (x,y)", "Scribbler#PC"], ["backspace", "Scribbler#BS"], ["line feed", "Scribbler#LF"], ["carriage return", "Scribbler#NL"], ["position cursor (x)", "Scribbler#PX"], ["position cursor (y)", "Scribbler#PY"], ["clear screen", "Scribbler#CS"] ]), "SERIAL_CHAR");
+                .appendField("Terminal / XBee / WX send control character")
+                .appendField(new Blockly.FieldDropdown([
+            ["clear screen", "Scribbler#CS"],
+            ["carriage return", "Scribbler#NL"], 
+            ["line feed", "Scribbler#LF"], 
+            ["backspace", "Scribbler#BS"], 
+            ["position cursor (x)", "Scribbler#PX"], 
+            ["position cursor (y)", "Scribbler#PY"], 
+            ["position cursor (x,y)", "Scribbler#PC"]
+        ]), "SERIAL_CHAR");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
