@@ -1616,11 +1616,12 @@ Blockly.propc.constrain_value = function () {
     var min = window.parseInt(this.getFieldValue('MIN'));
     var max = window.parseInt(this.getFieldValue('MAX'));
 
-    var setup_code = '// Constrain Function\nint constrain(int __cVal, int __cMin, int __cMax) {';
+    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
     setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
     setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.global_vars_["constrain_function"] = setup_code;
-
+    Blockly.propc.methods_["constrain_function"] = setup_code;
+    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
+    
     var code = 'constrain(' + num + ', ' + min + ', ' + max + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };

@@ -66,7 +66,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" onclick="clearUploadInfo();" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="compile-dialog-title"><fmt:message key="editor.upload" /></h4>
+                        <h4 class="modal-title" id="upload-dialog-title"><fmt:message key="editor.upload" /></h4>
                     </div>
                     <div class="modal-body">
                         
@@ -108,7 +108,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="console-dialog-title">Console</h4>
+                        <h4 class="modal-title" id="console-dialog-title">Terminal</h4>
                     </div>
                     <div class="modal-body" style="height: 430px;">
                         <div id="serial_console" class="console"></div>

@@ -1415,6 +1415,7 @@
                 <block type="scribbler_serial_send_decimal"></block>
                 <block type="scribbler_serial_send_char"></block>
                 <block type="scribbler_serial_send_ctrl"></block>
+<!--
                 <block type="scribbler_serial_cursor_xy">
                     <value name="X">
                         <block type="spin_integer">
@@ -1427,6 +1428,7 @@
                         </block>
                     </value>
                 </block>
+-->
                 <block type="scribbler_serial_rx_byte"></block>
             </category>
             <%--

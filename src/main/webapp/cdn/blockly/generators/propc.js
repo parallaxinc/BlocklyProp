@@ -205,6 +205,7 @@ Blockly.propc.init = function (workspace) {
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
     Blockly.propc.methods_ = {};
+    Blockly.propc.method_declarations_ = {};
     // Create a dictionary of setups to be printed before the code.
     Blockly.propc.setups_ = {};
     Blockly.propc.global_vars_ = {};
@@ -240,6 +241,7 @@ Blockly.propc.finish = function (code) {
     // Convert the definitions dictionary into a list.
     var imports = [];
     var methods = [];
+    var declarations = [];
     var objects = [];
     var definitions = [];
 
@@ -298,7 +300,16 @@ Blockly.propc.finish = function (code) {
         methods.push(Blockly.propc.methods_[method]);
     }
 
-    var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
+    for (var declaration in Blockly.propc.method_declarations_) {
+        declarations.push(Blockly.propc.method_declarations_[declaration]);
+    }
+    
+    var spacer_defs = '\n\n';
+    if(definitions.toString().trim().length > 0)
+        spacer_defs += '// ------ Global Variables ------\n';
+
+    var allDefs = '// ------ Libraries ------\n' + imports.join('\n') + 
+            spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
     // Indent every line.
     code = '  ' + code.replace(/\n/g, '\n  ');
@@ -311,7 +322,19 @@ Blockly.propc.finish = function (code) {
     if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
         setup += "/* EMPTY_PROJECT */\n";
     }
-    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
+    
+    var spacer_decs = '';
+    if(declarations.length > 0)
+        spacer_decs += '// ------ Function Declarations ------\n';
+    
+    var spacer_funcs = '\n\n';
+    if(methods.length > 0)
+        spacer_funcs += '// ------ Functions ------\n';
+
+    //return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
+    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + 
+            spacer_decs + declarations.join('\n\n').replace(/\n\n+/g, '\n').replace(/\n*$/, '\n') + 
+            '\n// ------ Main Program ------\n' + code + spacer_funcs + methods.join('\n');
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into
