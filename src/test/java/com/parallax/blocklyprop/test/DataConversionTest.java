@@ -20,7 +20,7 @@ import com.parallax.server.blocklyprop.utils.DateConversion;
  * 
  * Test the methods in the DateConversion class.
  */
-public class SandTest {
+public class DataConversionTest {
     @Test
     public void verifyToStringNullDate() {
         DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
