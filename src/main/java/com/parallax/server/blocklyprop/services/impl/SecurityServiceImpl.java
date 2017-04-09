@@ -35,14 +35,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * User security services
+ * 
  * @author Michel
  */
 @Singleton
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
 
-    private static Logger log = LoggerFactory.getLogger(SecurityServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(SecurityServiceImpl.class);
+    
+    private static SecurityServiceImpl instance;
 
     private Provider<SessionData> sessionData;
 
@@ -54,107 +57,258 @@ public class SecurityServiceImpl implements SecurityService {
 
     private UserDao userDao;
 
-    private static SecurityServiceImpl instance;
-
+    /**
+     * Constructor
+     * 
+     */
     public SecurityServiceImpl() {
+        // TODO: Correct the 'this' construct in the constructor
+        //
+        // Notes from: https://www.securecoding.cert.org/confluence/display/java/TSM01-J.+Do+not+let+the+this+reference+escape+during+object+construction 
+        //
+        // Publishing by assigning this to a public static variable from the 
+        // constructor of a class whose object is being constructed.
+        //-------------------------------------------------------------------
         instance = this;
     }
 
+    /**
+     * Set the session's data provider
+     * 
+     * @param sessionDataProvider 
+     */
     @Inject
     public void setSessionDataProvider(Provider<SessionData> sessionDataProvider) {
         this.sessionData = sessionDataProvider;
     }
 
+    /**
+     * Set the session's user database object
+     * 
+     * @param userDao 
+     */
     @Inject
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    /**
+     * Configure cloud session service endpoints
+     * 
+     * @param configuration 
+     */
     @Inject
     public void setConfiguration(Configuration configuration) {
+        log.debug("Setting cloud session configuration");
         this.configuration = configuration;
-        registerService = new CloudSessionRegisterService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
-        authenticateService = new CloudSessionAuthenticateService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
-        userService = new CloudSessionUserService(configuration.getString("cloudsession.baseurl"));
+
+        // Set the source for the cloud session registration services
+        registerService = new CloudSessionRegisterService(
+                configuration.getString("cloudsession.server"), 
+                configuration.getString("cloudsession.baseurl"));
+        
+        // Set the source for cloud session user authentication  services
+        authenticateService = new CloudSessionAuthenticateService(
+                configuration.getString("cloudsession.server"), 
+                configuration.getString("cloudsession.baseurl"));
+        
+        // Set the source location for cloud session existing local user
+        // account services
+        userService = new CloudSessionUserService(
+                configuration.getString("cloudsession.baseurl"));
     }
 
+    /**
+     * Register a user account
+     * 
+     * @param screenname
+     * @param email
+     * @param password
+     * @param passwordConfirm
+     * @return An ID for the new account or null if unsuccessful
+     * @throws NonUniqueEmailException
+     * @throws PasswordVerifyException
+     * @throws PasswordComplexityException
+     * @throws ScreennameUsedException 
+     */
     @Override
-    public Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException, PasswordComplexityException, ScreennameUsedException {
+    public Long register(
+            String screenname, 
+            String email, 
+            String password, 
+            String passwordConfirm) throws 
+                NonUniqueEmailException, 
+                PasswordVerifyException, 
+                PasswordComplexityException, 
+                ScreennameUsedException {
+
+        log.info("Resgistering new user: {}", screenname);
+        
+        // Perform basic sanity checks on inputs
         Preconditions.checkNotNull(screenname, "Screenname cannot be null");
         Preconditions.checkNotNull(email, "Email cannot be null");
         Preconditions.checkNotNull(password, "Password cannot be null");
         Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
 
         try {
-            Long id = registerService.registerUser(email, password, passwordConfirm, "en", screenname);
+            // Attempt to register the user account data
+            Long id = registerService.registerUser(
+                    email, password, passwordConfirm, "en", screenname);
             userDao.create(id);
             return id;
         } catch (ServerException se) {
+            log.error("Server error detected");
             return null;
         }
     }
 
-    public static User authenticateLocalUserStatic(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException, WrongAuthenticationSourceException {
+    /**
+     *  Get instance of the authenticated user object
+     * 
+     * @param email
+     * @param password
+     * @return Authenticated User object or null
+     * @throws UnknownUserException
+     * @throws UserBlockedException
+     * @throws EmailNotConfirmedException
+     * @throws InsufficientBucketTokensException
+     * @throws WrongAuthenticationSourceException 
+     */
+    public static User authenticateLocalUserStatic(
+            String email, 
+            String password) throws
+                UnknownUserException, 
+                UserBlockedException, 
+                EmailNotConfirmedException, 
+                InsufficientBucketTokensException, 
+                WrongAuthenticationSourceException {
+
+        log.info("Authenticating user from email address");
         return instance.authenticateLocalUser(email, password);
     }
 
-    public static User authenticateLocalUserStatic(Long idUser) throws UnknownUserIdException, UserBlockedException, EmailNotConfirmedException {
+    /**
+     * Authenticate a user from the provided userID
+     * 
+     * @param idUser
+     * 
+     * @return
+     * @throws UnknownUserIdException
+     * @throws UserBlockedException
+     * @throws EmailNotConfirmedException 
+     */
+    public static User authenticateLocalUserStatic(Long idUser) throws 
+            UnknownUserIdException, 
+            UserBlockedException, 
+            EmailNotConfirmedException {
+        
+        log.info("Authenticating user from userID");
         return instance.authenticateLocalUser(idUser);
     }
 
+    /**
+     * 
+     * @param email
+     * @param password
+     * @return
+     * @throws UnknownUserException
+     * @throws UserBlockedException
+     * @throws EmailNotConfirmedException
+     * @throws InsufficientBucketTokensException
+     * @throws WrongAuthenticationSourceException 
+     */
     @Override
-    public User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException, WrongAuthenticationSourceException {
+    public User authenticateLocalUser(String email, String password) throws 
+            UnknownUserException, 
+            UserBlockedException, 
+            EmailNotConfirmedException, 
+            InsufficientBucketTokensException, 
+            WrongAuthenticationSourceException {
+        
         try {
             User user = authenticateService.authenticateLocalUser(email, password);
-//            sessionData.get().setUser(user);
-//            sessionData.get().setIdUser(userDao.getUserIdForCloudSessionUserId(user.getId()));
+            log.info("User authenticated");
             return user;
+
         } catch (NullPointerException npe) {
-            npe.printStackTrace();
             throw npe;
+
         } catch (ServerException se) {
+            log.error("Server error encountered: {}", se.getMessage());
             return null;
         }
     }
 
-    public User authenticateLocalUser(Long idUser) throws UnknownUserIdException, UserBlockedException, EmailNotConfirmedException {
+    /**
+     * 
+     * @param idUser
+     * @return
+     * @throws UnknownUserIdException
+     * @throws UserBlockedException
+     * @throws EmailNotConfirmedException 
+     */
+    public User authenticateLocalUser(Long idUser) throws 
+            UnknownUserIdException, 
+            UserBlockedException, 
+            EmailNotConfirmedException {
+        
         try {
             User user = userService.getUser(idUser);
-//            sessionData.get().setUser(user);
-//            sessionData.get().setIdUser(userDao.getUserIdForCloudSessionUserId(user.getId()));
+            log.info("User authenticated");
             return user;
+
         } catch (NullPointerException npe) {
-            npe.printStackTrace();
             throw npe;
+
         } catch (ServerException se) {
+            log.error("Server error detected. {}", se.getMessage());
             return null;
         }
     }
 
+    /**
+     * Return user session data
+     * 
+     * @return SessionData object containing user session details or null
+     */
     public static SessionData getSessionData() {
+        log.debug("Getting user session data");
         SessionData sessionData = instance.sessionData.get();
+        
         if (sessionData.getIdUser() == null) {
+            
+            // Did not get a valid session
             if (SecurityUtils.getSubject().isAuthenticated()) {
+                
                 try {
-                    User user = instance.userService.getUser((String) SecurityUtils.getSubject().getPrincipal());
+                    User user = instance.userService.getUser(
+                            (String) SecurityUtils.getSubject().getPrincipal());
+                    
                     if (user != null) {
+                        // User account local may have changed
                         if (!Strings.isNullOrEmpty(sessionData.getLocale())) {
                             if (!sessionData.getLocale().equals(user.getLocale())) {
                                 try {
-                                    user = instance.userService.changeUserLocale(user.getId(), sessionData.getLocale());
+                                    user = instance.userService.changeUserLocale(
+                                            user.getId(), sessionData.getLocale());
                                 } catch (UnknownUserIdException ex) {
-                                    log.error("UnknownUserId", ex);
+                                    log.error("UnknownUserId exception detected. {}", ex.getMessage());
                                 }
                             }
                         }
+                        
                         sessionData.setUser(user);
-                        sessionData.setIdUser(instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
-                        instance.userDao.updateScreenname(sessionData.getIdUser(), user.getScreenname());
+                        sessionData.setIdUser(
+                                instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
+                        
+                        instance.userDao.updateScreenname(
+                                sessionData.getIdUser(), 
+                                user.getScreenname());
                     }
                 } catch (UnknownUserException ex) {
-                    //       Logger.getLogger(SecurityServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    log.error("Unknown user ID. {}", ex);
                 } catch (ServerException se) {
-
+                    log.error("Server error detected. {}", se.getMessage());
                 }
             }
         }
