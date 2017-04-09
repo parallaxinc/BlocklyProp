@@ -14,7 +14,7 @@
            http://central.maven.org/maven2/org/eclipse/jetty/jetty-maven-plugin/
         -->
 
-        <jooq-version>3.6.1</jooq-version>
+        <jooq-version>3.6.4</jooq-version>
         <shiro-version>1.2.3</shiro-version>
         <metrics-version>3.1.0</metrics-version>
         <jersey.version>1.19</jersey.version>
