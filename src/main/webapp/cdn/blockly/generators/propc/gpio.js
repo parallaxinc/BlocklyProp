@@ -1116,7 +1116,7 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
         this.setTooltip(Blockly.MSG_ROBOT_DISTANCE_MAX_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendValueInput("SPEED")
-                .appendField('Robot drive max speed')
+                .appendField('Robot drive max speed (+/-)')
                 .appendField('R,0,128,0', 'RANGEVALS0')
                 .setCheck('Number');
         this.getField('RANGEVALS0').setVisible(false);

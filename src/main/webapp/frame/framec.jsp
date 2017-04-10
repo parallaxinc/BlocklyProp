@@ -266,7 +266,7 @@
             </block>
             <block type="system_counter"></block>
         </category>
-        <category name="<fmt:message key="category.operators.arrays" />"  colour="250">
+        <category name="<fmt:message key="category.operators.arrays" />" exclude="s3" colour="250">
             <block type="array_init"></block>
             <block type="array_fill"></block>
             <block type="array_get">
@@ -371,6 +371,30 @@
             <block type="spin_comment"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
+        <category name="<fmt:message key="category.operators.arrays" />" include="s3" colour="250">
+            <block type="array_init"></block>
+            <block type="array_fill"></block>
+            <block type="array_get">
+                <value name="NUM">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="array_set">
+                <value name="NUM">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="array_clear"></block>
+        </category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
         <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3,heb" colour="200">
             <block type="make_pin"></block>

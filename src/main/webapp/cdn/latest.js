@@ -9,6 +9,14 @@ var projectTypes = {
     }
 };
 
+var projectBoard = {
+    "activity-board": "icon-board-ab",
+    "s3": "icon-board-s3",
+    "heb": "icon-board-heb",
+    "flip": "icon-board-flip",
+    "other": "icon-board-other"
+};
+
 $.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", function (data) {
     $.each(data['rows'], function (index, project) {
         var user = '';
@@ -19,7 +27,7 @@ $.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", func
             "class": "project"
         });
         $("<a/>", {
-            "class": "editor-view-link editor-icon " + projectTypes[project['type']]['class'],
+            "class": "editor-view-link editor-icon " + projectBoard[project['board']],
             "href": "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id'],
             "text": project['name'] + user
         }).appendTo(projectItem);
