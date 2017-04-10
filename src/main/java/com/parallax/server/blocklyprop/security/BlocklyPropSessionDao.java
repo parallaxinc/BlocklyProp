@@ -34,8 +34,8 @@ public class BlocklyPropSessionDao implements SessionDAO {
     public Serializable create(Session session) {
         LOG.info("Create BlocklyProp session");
         
-        // Set session timeout for 2 hours
-        //session.setTimeout(7200000);
+        // Set session timeout for 1 hours
+        session.setTimeout(3600000);
         
         SimpleSession simpleSession = (SimpleSession) session;
         String uuid = UUID.randomUUID().toString();
