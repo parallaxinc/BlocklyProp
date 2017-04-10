@@ -41,9 +41,9 @@ public class BlocklyPropSessionDao implements SessionDAO {
         String uuid = UUID.randomUUID().toString();
         
         simpleSession.setId(uuid);
-        LOG.info("Creating session: {}", session.getId());
-        LOG.info("Session timeout is: {}", session.getTimeout());
         SessionServiceImpl.getSessionService().create(convert(simpleSession));
+        LOG.info("Session timeout is: {}", session.getTimeout());
+        LOG.info("Creating session: {}", simpleSession.getId());
 
         return uuid;
     }
