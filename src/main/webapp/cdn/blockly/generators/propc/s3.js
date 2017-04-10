@@ -1062,7 +1062,6 @@ Blockly.Blocks.scribbler_serial_send_char = {
     init: function () {
         this.appendValueInput("CHAR_VALUE")
                 .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
-                .appendField("send text")
                 .appendField("send character")
                 .setCheck("Number");
         this.setInputsInline(false);
