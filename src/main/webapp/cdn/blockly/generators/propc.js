@@ -254,7 +254,7 @@ Blockly.propc.finish = function (code) {
 
     for (var name in Blockly.propc.definitions_) {
         var def = Blockly.propc.definitions_[name];
-        if (def.match(/^#include/) || def.match(/^#define/) || def.match(/^#if/) || def.match(/^#if/) || def.match(/^#end/) || def.match(/^#else/)) {
+        if (def.match(/^#include/) || def.match(/^#define/) || def.match(/^#if/) || def.match(/^#end/) || def.match(/^#else/)) {
             imports.push(def);
         } else {
             definitions.push(def);
@@ -306,9 +306,9 @@ Blockly.propc.finish = function (code) {
     
     var spacer_defs = '\n\n';
     if(definitions.toString().trim().length > 0)
-        spacer_defs += '// ------ Global Variables ------\n';
+        spacer_defs += '// ------ Global Variables and Objects ------\n';
 
-    var allDefs = '// ------ Libraries ------\n' + imports.join('\n') + 
+    var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') + 
             spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
     // Indent every line.

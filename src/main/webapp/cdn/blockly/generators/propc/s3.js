@@ -1037,7 +1037,8 @@ Blockly.Blocks.scribbler_serial_send_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("Terminal / XBee / WX send text")
+                .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
+                .appendField("send text")
                 .appendField(quotes.newQuote_(this.RTL))
                 .appendField(new Blockly.FieldTextInput(""), "MESSAGE_TEXT")
                 .appendField(quotes.newQuote_(this.LTR));
@@ -1060,8 +1061,9 @@ Blockly.propc.scribbler_serial_send_text = function () {
 Blockly.Blocks.scribbler_serial_send_char = {
     init: function () {
         this.appendValueInput("CHAR_VALUE")
-                .setCheck("Number")
-                .appendField("Terminal / XBee / WX send character (0 to 255)");
+                .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
+                .appendField("send character")
+                .setCheck("Number");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1084,7 +1086,8 @@ Blockly.Blocks.scribbler_serial_send_decimal = {
     init: function () {
         this.appendValueInput("DECIMAL_VALUE")
                 .setCheck("Number")
-                .appendField("Terminal / XBee / WX send number (32-bit signed)");
+                .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
+                .appendField("send number");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1106,7 +1109,8 @@ Blockly.propc.scribbler_serial_send_decimal = function () {
 Blockly.Blocks.scribbler_serial_send_ctrl = {
     init: function () {
         this.appendDummyInput()
-                .appendField("Terminal / XBee / WX command")
+                .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
+                .appendField("send command")
                 .appendField(new Blockly.FieldDropdown([["carriage return", "13"], ["new line", "10"], ["backspace", "127"], ["clear screen", "256"]]), "SERIAL_CHAR");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
@@ -1133,7 +1137,8 @@ Blockly.Blocks.scribbler_serial_rx_byte = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("Terminal / XBee / WX receive character (0 to 255)");
+                .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
+                .appendField("receive character");
         this.setOutput(true, 'Number');
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
 	this.setTooltip(Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP);

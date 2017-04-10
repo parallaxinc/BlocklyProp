@@ -55,8 +55,8 @@
                     <form style="margin-bottom: 0;">
                         <select id="language" name="language" onchange="submit()">
                             <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-                            <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
-                            <%--       <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>--%>
+                            <%--      <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
+                             <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>--%>
                         </select>
                     </form>
                 </li>
