@@ -19,11 +19,11 @@ Blockly.Blocks.scribbler_loop = {
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_loop = function() {
+Blockly.propc.scribbler_loop = function () {
     var branch = Blockly.propc.statementToCode(this, 'LOOP');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
         branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
@@ -35,9 +35,9 @@ Blockly.propc.scribbler_loop = function() {
 Blockly.Blocks.scribbler_limited_loop = {
     init: function () {
         this.appendDummyInput()
-            .appendField("loop")
-            .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'LOOP_COUNT')
-            .appendField("times");
+                .appendField("loop")
+                .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'LOOP_COUNT')
+                .appendField("times");
         this.appendStatementInput("LOOP");
 
         this.setPreviousStatement(true);
@@ -45,11 +45,11 @@ Blockly.Blocks.scribbler_limited_loop = {
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_limited_loop = function() {
+Blockly.propc.scribbler_limited_loop = function () {
     var branch = Blockly.propc.statementToCode(this, 'LOOP');
     if (Blockly.propc.INFINITE_LOOP_TRAP) {
         branch = Blockly.propc.INFINITE_LOOP_TRAP.replace(/%1/g,
@@ -62,33 +62,33 @@ Blockly.propc.scribbler_limited_loop = function() {
 Blockly.Blocks.scribbler_exit_loop = {
     init: function () {
         this.appendDummyInput()
-            .appendField("exit loop");
+                .appendField("exit loop");
         this.setPreviousStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_exit_loop = function() {
+Blockly.propc.scribbler_exit_loop = function () {
     return 'break;\n';
 };
 
 Blockly.Blocks.scribbler_simple_wait = {
     init: function () {
         this.appendDummyInput()
-            .appendField("wait")
-            .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'WAITTIME')
-            .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1000'], ['tenth(s) of a second (1 to 535)', '100'], ['millisecond(s) (1 to 53,500)', '1']]), 'TIMESCALE');
+                .appendField("wait")
+                .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'WAITTIME')
+                .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1000'], ['tenth(s) of a second (1 to 535)', '100'], ['millisecond(s) (1 to 53,500)', '1']]), 'TIMESCALE');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_simple_wait = function() {
+Blockly.propc.scribbler_simple_wait = function () {
     var wait_time = this.getFieldValue('WAITTIME') || '1';
     var time_scale = this.getFieldValue('TIMESCALE');
     return 'pause(' + wait_time + ' * ' + time_scale + ');\n';
@@ -100,17 +100,17 @@ Blockly.Blocks.scribbler_wait = {
                 .appendField("wait")
                 .setCheck('Number');
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1000'], ['tenth(s) of a second (1 to 535)', '100'], ['millisecond(s) (1 to 53,500)', '1']]), 'TIMESCALE');
+                .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1000'], ['tenth(s) of a second (1 to 535)', '100'], ['millisecond(s) (1 to 53,500)', '1']]), 'TIMESCALE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_wait = function() {
+Blockly.propc.scribbler_wait = function () {
     var wait_time = Blockly.propc.valueToCode(this, 'WAITTIME', Blockly.propc.ORDER_NONE) || '1';
     var time_scale = this.getFieldValue('TIMESCALE');
     return 'pause(' + wait_time + ' * ' + time_scale + ');\n';
@@ -119,21 +119,21 @@ Blockly.propc.scribbler_wait = function() {
 Blockly.Blocks.scribbler_if_line = {
     init: function () {
         this.appendDummyInput()
-            .appendField("if the Scribbler robot")
-            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LINE_CONDITION')
-            .appendField("over")
-            .appendField(new Blockly.FieldDropdown([['the center', 'CENTER'], ['the left edge', 'LEFT'], ['the right edge', 'RIGHT'], ['any part', 'DETECTED']]), 'LINE_POSITION')
-            .appendField("of a")
-            .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
-            .appendField("line");
+                .appendField("if the Scribbler robot")
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LINE_CONDITION')
+                .appendField("over")
+                .appendField(new Blockly.FieldDropdown([['the center', 'CENTER'], ['the left edge', 'LEFT'], ['the right edge', 'RIGHT'], ['any part', 'DETECTED']]), 'LINE_POSITION')
+                .appendField("of a")
+                .appendField(new Blockly.FieldDropdown([['black', 'BLACK'], ['white', 'WHITE']]), 'LINE_COLOR')
+                .appendField("line");
         this.appendStatementInput("IF_LINE")
-            .appendField();
+                .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP);
     }
 };
 
@@ -151,18 +151,18 @@ Blockly.propc.scribbler_if_line = function () {
 Blockly.Blocks.scribbler_if_obstacle = {
     init: function () {
         this.appendDummyInput()
-            .appendField("if an obstacle")
-            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'OBSTACLE_CONDITION')
-            .appendField(new Blockly.FieldDropdown([['in front of', 'CENTER'], ['to the left of', 'LEFT'], ['to the right of', 'RIGHT'], ['detected by', 'DETECTED']]), 'OBSTACLE_POSITION')
-            .appendField("the Scribbler robot");
+                .appendField("if an obstacle")
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'OBSTACLE_CONDITION')
+                .appendField(new Blockly.FieldDropdown([['in front of', 'CENTER'], ['to the left of', 'LEFT'], ['to the right of', 'RIGHT'], ['detected by', 'DETECTED']]), 'OBSTACLE_POSITION')
+                .appendField("the Scribbler robot");
         this.appendStatementInput("IF_OBSTACLE")
-            .appendField();
+                .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP);
     }
 };
 
@@ -179,18 +179,18 @@ Blockly.propc.scribbler_if_obstacle = function () {
 Blockly.Blocks.scribbler_if_light = {
     init: function () {
         this.appendDummyInput()
-            .appendField("if the most light")
-            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LIGHT_CONDITION')
-            .appendField(new Blockly.FieldDropdown([['in front', 'CENTER'], ['to the left', 'LEFT'], ['to the right', 'RIGHT'], ['on all sides', 'DETECTED']]), 'LIGHT_POSITION')
-            .appendField("of the Scribbler robot");
+                .appendField("if the most light")
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LIGHT_CONDITION')
+                .appendField(new Blockly.FieldDropdown([['in front', 'CENTER'], ['to the left', 'LEFT'], ['to the right', 'RIGHT'], ['on all sides', 'DETECTED']]), 'LIGHT_POSITION')
+                .appendField("of the Scribbler robot");
         this.appendStatementInput("IF_LIGHT")
-            .appendField();
+                .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP);
     }
 };
 
@@ -207,17 +207,17 @@ Blockly.propc.scribbler_if_light = function () {
 Blockly.Blocks.scribbler_if_stalled = {
     init: function () {
         this.appendDummyInput()
-            .appendField("if the Scribbler robot")
-            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'STALLED_CONDITION')
-            .appendField("stuck");
+                .appendField("if the Scribbler robot")
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'STALLED_CONDITION')
+                .appendField("stuck");
         this.appendStatementInput("IF_STALLED")
-            .appendField();
+                .appendField();
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP);
     }
 };
 
@@ -232,9 +232,9 @@ Blockly.propc.scribbler_if_stalled = function () {
 Blockly.Blocks.scribbler_if_button = {
     init: function () {
         this.appendDummyInput()
-            .appendField("if the red button")
-            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'BUTTON_CONDITION')
-            .appendField("pressed");
+                .appendField("if the red button")
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'BUTTON_CONDITION')
+                .appendField("pressed");
         this.appendStatementInput("IF_BUTTON");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
@@ -254,16 +254,16 @@ Blockly.propc.scribbler_if_button = function () {
 Blockly.Blocks.scribbler_if_random = {
     init: function () {
         this.appendDummyInput()
-            .appendField("if a virtual coin flip")
-            .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['was', 'WAS']]), 'RANDOM_CONDITION')
-            .appendField(new Blockly.FieldDropdown([['heads', ''], ['tails', '_NOT']]), 'RANDOM_INVERT');
+                .appendField("if a virtual coin flip")
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['was', 'WAS']]), 'RANDOM_CONDITION')
+                .appendField(new Blockly.FieldDropdown([['heads', ''], ['tails', '_NOT']]), 'RANDOM_INVERT');
         this.appendStatementInput("IF_RANDOM");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_RANDOM_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_RANDOM_TOOLTIP);
     }
 };
 
@@ -278,18 +278,18 @@ Blockly.propc.scribbler_if_random = function () {
 Blockly.Blocks.scribbler_drive = {
     init: function () {
         this.appendDummyInput()
-            .appendField("drive")
-            .appendField(new Blockly.FieldDropdown([['forward', ''], ['backward', '-']]), 'DRIVE_DIRECTION')
-            .appendField("and")
-            .appendField(new Blockly.FieldDropdown([['sharply to the left', 'SHARP_LEFT'], ['gently to the left', 'GENTLE_LEFT'], ['slightly to the left', 'SLIGHT_LEFT'], ['straight', 'STRAIGHT'], ['slightly to the right', 'SLIGHT_RIGHT'], ['gently to the right', 'GENTLE_RIGHT'], ['sharply to the right', 'SHARP_RIGHT']]), 'DRIVE_ANGLE')
-            .appendField("at")
-            .appendField(new Blockly.FieldDropdown([['full', '255'], ['a quick', '191'], ['a gentle', '127'], ['a slow', '63']]), 'DRIVE_SPEED')
-            .appendField("speed");
+                .appendField("drive")
+                .appendField(new Blockly.FieldDropdown([['forward', ''], ['backward', '-']]), 'DRIVE_DIRECTION')
+                .appendField("and")
+                .appendField(new Blockly.FieldDropdown([['sharply to the left', 'SHARP_LEFT'], ['gently to the left', 'GENTLE_LEFT'], ['slightly to the left', 'SLIGHT_LEFT'], ['straight', 'STRAIGHT'], ['slightly to the right', 'SLIGHT_RIGHT'], ['gently to the right', 'GENTLE_RIGHT'], ['sharply to the right', 'SHARP_RIGHT']]), 'DRIVE_ANGLE')
+                .appendField("at")
+                .appendField(new Blockly.FieldDropdown([['full', '255'], ['a quick', '191'], ['a gentle', '127'], ['a slow', '63']]), 'DRIVE_SPEED')
+                .appendField("speed");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_DRIVE_TOOLTIP);
     }
 };
 
@@ -306,18 +306,18 @@ Blockly.propc.scribbler_drive = function () {
 Blockly.Blocks.scribbler_spin = {
     init: function () {
         this.appendDummyInput()
-            .appendField("rotate")
-            .appendField(new Blockly.FieldDropdown([['\u21BB', ''], ['\u21BA', '-']]), 'SPIN_DIRECTION')
-            .appendField("for")
-	    .appendField(new Blockly.FieldAngle(90), "SPIN_ANGLE")
-            .appendField("at")
-            .appendField(new Blockly.FieldDropdown([['full', '15'], ['a quick', '7'], ['a gentle', '3'], ['a slow', '1']]), 'SPIN_SPEED')
-            .appendField("speed");
+                .appendField("rotate")
+                .appendField(new Blockly.FieldDropdown([['\u21BB', ''], ['\u21BA', '-']]), 'SPIN_DIRECTION')
+                .appendField("for")
+                .appendField(new Blockly.FieldAngle(90), "SPIN_ANGLE")
+                .appendField("at")
+                .appendField(new Blockly.FieldDropdown([['full', '15'], ['a quick', '7'], ['a gentle', '3'], ['a slow', '1']]), 'SPIN_SPEED')
+                .appendField("speed");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SPIN_TOOLTIP);
     }
 };
 
@@ -334,12 +334,12 @@ Blockly.propc.scribbler_spin = function () {
 Blockly.Blocks.scribbler_stop = {
     init: function () {
         this.appendDummyInput()
-            .appendField("stop driving");
+                .appendField("stop driving");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_TOOLTIP);
     }
 };
 
@@ -353,32 +353,32 @@ Blockly.propc.scribbler_stop = function () {
 Blockly.Blocks.scribbler_LED = {
     init: function () {
         this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("change these LEDs:   ")
-            .appendField(new Blockly.FieldCheckbox("TRUE"), "LEFT_LED")
-            .appendField("  ")
-            .appendField(new Blockly.FieldCheckbox("TRUE"), "CENTER_LED")
-            .appendField("  ")
-            .appendField(new Blockly.FieldCheckbox("TRUE"), "RIGHT_LED")
-            .appendField("  ");
-	var left_led_colors = new Blockly.FieldColour("#000000");
-	var center_led_colors = new Blockly.FieldColour("#000000");
-	var right_led_colors = new Blockly.FieldColour("#000000");
-	left_led_colors.setColours(['#FF0000','#00FF00','#FF7F00','#000000']).setColumns(2);
-	center_led_colors.setColours(['#FF0000','#00FF00','#FF7F00','#000000']).setColumns(2);
-	right_led_colors.setColours(['#FF0000','#00FF00','#FF7F00','#000000']).setColumns(2);
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("change these LEDs:   ")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "LEFT_LED")
+                .appendField("  ")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "CENTER_LED")
+                .appendField("  ")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "RIGHT_LED")
+                .appendField("  ");
+        var left_led_colors = new Blockly.FieldColour("#000000");
+        var center_led_colors = new Blockly.FieldColour("#000000");
+        var right_led_colors = new Blockly.FieldColour("#000000");
+        left_led_colors.setColours(['#FF0000', '#00FF00', '#FF7F00', '#000000']).setColumns(2);
+        center_led_colors.setColours(['#FF0000', '#00FF00', '#FF7F00', '#000000']).setColumns(2);
+        right_led_colors.setColours(['#FF0000', '#00FF00', '#FF7F00', '#000000']).setColumns(2);
         this.appendDummyInput()
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField("to these colors:  ")
-            .appendField(left_led_colors, "LEFT_COLOR")
-            .appendField(center_led_colors, "CENTER_COLOR")
-            .appendField(right_led_colors, "RIGHT_COLOR")
-            .appendField(" ");
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("to these colors:  ")
+                .appendField(left_led_colors, "LEFT_COLOR")
+                .appendField(center_led_colors, "CENTER_COLOR")
+                .appendField(right_led_colors, "RIGHT_COLOR")
+                .appendField(" ");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_LEDS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LED_TOOLTIP);
     }
 };
 
@@ -392,13 +392,13 @@ Blockly.propc.scribbler_LED = function () {
     var code = '';
 
     if (this.getFieldValue('LEFT_LED') === 'TRUE') {
-        code += 's3_setLED(S3_LEFT, S3_COLOR_' + left_color.substr(1,6).toUpperCase() + ');\n';
+        code += 's3_setLED(S3_LEFT, S3_COLOR_' + left_color.substr(1, 6).toUpperCase() + ');\n';
     }
     if (this.getFieldValue('CENTER_LED') === 'TRUE') {
-        code += 's3_setLED(S3_CENTER, S3_COLOR_' + center_color.substr(1,6).toUpperCase() + ');\n';
+        code += 's3_setLED(S3_CENTER, S3_COLOR_' + center_color.substr(1, 6).toUpperCase() + ');\n';
     }
     if (this.getFieldValue('RIGHT_LED') === 'TRUE') {
-        code += 's3_setLED(S3_RIGHT, S3_COLOR_' + right_color.substr(1,6).toUpperCase() + ');\n';
+        code += 's3_setLED(S3_RIGHT, S3_COLOR_' + right_color.substr(1, 6).toUpperCase() + ');\n';
     }
 
     return code;
@@ -407,20 +407,20 @@ Blockly.propc.scribbler_LED = function () {
 Blockly.Blocks.scribbler_play = {
     init: function () {
         this.appendDummyInput()
-            .appendField("play a")
-            .appendField(new Blockly.FieldDropdown([['soprano', '4'], ['tenor', '8'], ['middle', '16'], ['low', '32'], ['deep', '64']]), 'NOTE_OCTAVE')
-            //.appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
-            .appendField(new Blockly.FieldDropdown([['A\u266D', '3322'], ['A', '3520'], ['A\u266F/B\u266D', '3729'], ['B', '3951'], ['C', '4186'], ['C\u266F/D\u266D', '4435'], ['D', '4699'], ['D\u266F/E\u266D', '4978'], ['E', '5274'], ['F', '5588'], ['F\u266F/G\u266D', '5920'], ['G', '6272'], ['G\u266F', '6645']]), 'NOTE_FREQUENCY')
-            .appendField("for a")
-            .appendField(new Blockly.FieldDropdown([['sixteenth', '63'], ['dotted sixteenth', '94'], ['eighth', '125'], ['dotted eighth', '188'], ['quarter', '250'], ['dotted quarter', '375'], ['half', '500'], ['dotted half', '750'], ['whole', '1000'], ['dotted whole', '1500']]), 'NOTE_DURATION')
-            .appendField("note at a")
-            .appendField(new Blockly.FieldDropdown([['loud', '50'], ['medium', '30'], ['quiet', '15']]), 'NOTE_VOLUME')
-            .appendField("volume");
+                .appendField("play a")
+                .appendField(new Blockly.FieldDropdown([['soprano', '4'], ['tenor', '8'], ['middle', '16'], ['low', '32'], ['deep', '64']]), 'NOTE_OCTAVE')
+                //.appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
+                .appendField(new Blockly.FieldDropdown([['A\u266D', '3322'], ['A', '3520'], ['A\u266F/B\u266D', '3729'], ['B', '3951'], ['C', '4186'], ['C\u266F/D\u266D', '4435'], ['D', '4699'], ['D\u266F/E\u266D', '4978'], ['E', '5274'], ['F', '5588'], ['F\u266F/G\u266D', '5920'], ['G', '6272'], ['G\u266F', '6645']]), 'NOTE_FREQUENCY')
+                .appendField("for a")
+                .appendField(new Blockly.FieldDropdown([['sixteenth', '63'], ['dotted sixteenth', '94'], ['eighth', '125'], ['dotted eighth', '188'], ['quarter', '250'], ['dotted quarter', '375'], ['half', '500'], ['dotted half', '750'], ['whole', '1000'], ['dotted whole', '1500']]), 'NOTE_DURATION')
+                .appendField("note at a")
+                .appendField(new Blockly.FieldDropdown([['loud', '50'], ['medium', '30'], ['quiet', '15']]), 'NOTE_VOLUME')
+                .appendField("volume");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SOUND_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PLAY_TOOLTIP);
     }
 };
 
@@ -433,33 +433,39 @@ Blockly.propc.scribbler_play = function () {
     var note_frequency = this.getFieldValue('NOTE_FREQUENCY');
     var note_duration = this.getFieldValue('NOTE_DURATION');
     var note_volume = this.getFieldValue('NOTE_VOLUME');
-    
+
     return 's3_simplePlay((' + note_frequency + ' / ' + note_octave + '), ' + note_duration + ', ' + note_volume + ');\n';
 };
 
 // Move the motors for 0 to ? ms, or indefinately
 Blockly.Blocks.move_motors = {
     init: function () {
-	this.appendValueInput("LEFT_MOTOR_SPEED")
-		.setCheck("Number")
-		.appendField("set left motor speed to (-100 to 100)%");
-	this.appendValueInput("RIGHT_MOTOR_SPEED")
-		.setCheck("Number")
-		.appendField("set right motor speed to (-100 to 100)%");
-	this.appendValueInput("MOTOR_DURATION")
-		.setCheck("Number")
-		.appendField("for a duration of (1 to 65,535) ms");
-		// TODO: Find duration
-	this.appendDummyInput()
-		.appendField("use 0 ms for continuous operation");
-
-	this.setInputsInline(false);
+        this.appendDummyInput()
+                .appendField("drive at speeds of (%)");
+        this.appendValueInput("LEFT_MOTOR_SPEED")
+                .appendField('R,-100,100,0', 'RANGEVALS0')
+                .setCheck("Number")
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("left motor");
+        this.appendValueInput("RIGHT_MOTOR_SPEED")
+                .appendField('R,-100,100,0', 'RANGEVALS1')
+                .setCheck("Number")
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("right motor");
+        this.appendValueInput("MOTOR_DURATION")
+                .appendField('R,0,15000,0', 'RANGEVALS2')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("for (milliseconds, 0 is continuous)", "OPS");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.getField('RANGEVALS2').setVisible(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Speeds are a range of -100 (full reverse) to 100 (full forward) with a duration of 1 to 15,000 milliseconds, or a duration of 0 for continuous operation');
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_TOOLTIP);
     }
 };
 
@@ -476,26 +482,69 @@ Blockly.propc.move_motors = function () {
 // Move the motors...
 Blockly.Blocks.move_motors_distance = {
     init: function () {
-	this.appendDummyInput()
-		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (-633 to 633)', ' * 100000 / 1933'], ['tenths of an inch (-6,333 to 6,333)', ' * 10000 / 1933'], ['centimeters (-1,608 to 1,608)', ' * 10000 / 491'], ['millimeters (-16,088 to 16,088)', ' * 1000 / 491'], ['encoder counts (-32,767 to 32,767)', '']]), 'MULTIPLIER');
-	this.appendValueInput("LEFT_MOTOR_DISTANCE")
-		.setCheck("Number")
-		.appendField("move the left motor");
-	this.appendValueInput("RIGHT_MOTOR_DISTANCE")
-		.setCheck("Number")
-		.appendField("move the right motor");
-	this.appendValueInput("MOTOR_SPEED")
-		.setCheck("Number")
-		.appendField("at a top speed of (1 to 100)%");
-
-	this.setInputsInline(false);
+        this.appendDummyInput()
+                .appendField("drive distances in ")
+                .appendField(new Blockly.FieldDropdown([
+                    ['inches', ' * 100000 / 1933'],
+                    ['tenths of an inch', ' * 10000 / 1933'],
+                    ['centimeters', ' * 10000 / 491'],
+                    ['millimeters', ' * 1000 / 491'],
+                    ['encoder counts', '']
+                ], function (unit) {
+                    this.sourceBlock_.newUnit(unit);
+                }), 'MULTIPLIER');
+        this.appendValueInput("LEFT_MOTOR_DISTANCE")
+                .appendField('R,-633,633,0', 'RANGEVALS0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("left motor distance");
+        this.appendValueInput("RIGHT_MOTOR_DISTANCE")
+                .appendField('R,-633,633,0', 'RANGEVALS1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("right motor distance");
+        this.appendValueInput("MOTOR_SPEED")
+                .appendField('R,-100,100,0', 'RANGEVALS2')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("at speed (%)");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.getField('RANGEVALS2').setVisible(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setTooltip('Maximum millimeters: +/- 15,937, Maximum centimeters: +/- 1,593, Maximum inches: +/- 643\n Maximum tenths of an inch: +/- 6,431, Maximum encoder counts: +/- 32,767');
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_DISTANCE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_DISTANCE_TOOLTIP);
+        this.newUnit(this.getFieldValue('MULTIPLIER'));
+    },
+    newUnit: function (unit) {
+        var connectionRight_ = this.getInput('RIGHT_MOTOR_DISTANCE').connection;
+        var connectionLeft_ = this.getInput('LEFT_MOTOR_DISTANCE').connection;
+        var blockLeft_ = connectionLeft_.targetBlock();
+        var blockRight_ = connectionRight_.targetBlock();
+        var rangeText = 'R,-633,633,0';
+
+        if (unit === ' * 10000 / 1933') {
+            rangeText = 'R,-6333,6333,0';
+        } else if (unit === ' * 10000 / 491') {
+            rangeText = 'R,-1608,1608,0';
+        } else if (unit === ' * 1000 / 491') {
+            rangeText = 'R,-16088,16088,0';
+        } else if (unit === '') {
+            rangeText = 'R,-32767,32767,0';
+        }
+
+        this.setFieldValue(rangeText, 'RANGEVALS0');
+        this.setFieldValue(rangeText, 'RANGEVALS1');
+
+        if (blockLeft_)
+            if (blockLeft_.onchange)
+                blockLeft_.onchange.call(blockLeft_);
+        if (blockRight_)
+            if (blockRight_.onchange)
+                blockRight_.onchange.call(blockRight_);
     }
 };
 
@@ -512,27 +561,71 @@ Blockly.propc.move_motors_distance = function () {
 
 Blockly.Blocks.move_motors_xy = {
     init: function () {
-	this.appendDummyInput()
-		.appendField("in ")
-		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
         this.appendDummyInput()
-            .appendField("move the Scribbler to a new coordinate (X,Y)");
-	this.appendValueInput("X_DISTANCE")
-		.setCheck("Number")
-		.appendField("change (+/-) in X");
-	this.appendValueInput("Y_DISTANCE")
-		.setCheck("Number")
-		.appendField("change (+/-) in Y");
-	this.appendValueInput("MOTOR_SPEED")
-		.setCheck("Number")
-		.appendField("at a top speed of (1 to 100)%");
-
-	this.setInputsInline(false);
+                .appendField("drive to a location");
+        this.appendValueInput("X_DISTANCE")
+                .appendField('R,-20755429,20755429,0', 'RANGEVALS0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("change (+/-) in X");
+        this.appendValueInput("Y_DISTANCE")
+                .appendField('R,-20755429,20755429,0', 'RANGEVALS1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("change (+/-) in Y");
+        this.appendValueInput("MOTOR_SPEED")
+                .appendField('R,-100,100,0', 'RANGEVALS2')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("at speed (%)");
+        this.appendDummyInput()
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("in")
+                .appendField(new Blockly.FieldDropdown([
+                    ['inches', ' * 100000 / 1933'],
+                    ['tenths of an inch', ' * 10000 / 1933'],
+                    ['centimeters', ' * 10000 / 491'],
+                    ['millimeters', ' * 1000 / 491'],
+                    ['encoder counts', '']
+                ], function (unit) {
+                    this.sourceBlock_.newUnit(unit);
+                }), 'MULTIPLIER');
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.getField('RANGEVALS2').setVisible(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_XY_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_XY_TOOLTIP);
+    },
+    newUnit: function (unit) {
+        var connectionRight_ = this.getInput('X_DISTANCE').connection;
+        var connectionLeft_ = this.getInput('Y_DISTANCE').connection;
+        var blockLeft_ = connectionLeft_.targetBlock();
+        var blockRight_ = connectionRight_.targetBlock();
+        var rangeText = 'R,-20755429,20755429,0';
+
+        if (unit === ' * 10000 / 1933') {
+            rangeText = 'R,-207554294,207554294,0';
+        } else if (unit === ' * 10000 / 491') {
+            rangeText = 'R,-52720723,52720723,0';
+        } else if (unit === ' * 1000 / 491') {
+            rangeText = 'R,-527207235,527207235,0';
+        } else if (unit === '') {
+            rangeText = 'R,-1073741823,1073741823,0';
+        }
+
+        this.setFieldValue(rangeText, 'RANGEVALS0');
+        this.setFieldValue(rangeText, 'RANGEVALS1');
+
+        if (blockLeft_)
+            if (blockLeft_.onchange)
+                blockLeft_.onchange.call(blockLeft_);
+        if (blockRight_)
+            if (blockRight_.onchange)
+                blockRight_.onchange.call(blockRight_);
     }
 };
 
@@ -551,23 +644,62 @@ Blockly.propc.move_motors_xy = function () {
 // Move the motors...
 Blockly.Blocks.move_motors_angle = {
     init: function () {
-	this.appendValueInput("ROTATE_ANGLE")
-		.setCheck("Number")
-		.appendField("rotate the Scribbler robot (-1,080 to 1,080)\u00B0");
-	this.appendValueInput("ROTATE_RADIUS")
-		.setCheck("Number")
-		.appendField("around a radius to the left(-)/right(+) in")
-		.appendField(new Blockly.FieldDropdown([['inches (-85 to 85) of', ' * 100000 / 1933'], ['tenths of an inch (-850 to 850) of', ' * 10000 / 1933'], ['centimeters (-216 to 216) of', ' * 10000 / 491'], ['millimeters (-2,160 to 2,160) of', ' * 1000 / 491'], ['encoder counts (-4,400 to 4,400) of', '']]), 'RADIUS_MULTIPLIER');
-	this.appendValueInput("ROTATE_SPEED")
-		.setCheck("Number")
-		.appendField("at a top speed of (1 to 100)%");
-
-	this.setInputsInline(false);
+        this.appendDummyInput()
+                .appendField("drive a turn");
+        this.appendValueInput("ROTATE_ANGLE")
+                .appendField('R,-1080,1080,0', 'RANGEVALS0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("that is (degrees)");
+        this.appendValueInput("ROTATE_RADIUS")
+                .appendField('R,-85,85,0', 'RANGEVALS1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("around a radius (left-/right+) in")
+                .appendField(new Blockly.FieldDropdown([
+                    ['inches of', ' * 100000 / 1933'],
+                    ['tenths of an inch of', ' * 10000 / 1933'],
+                    ['centimeters of', ' * 10000 / 491'],
+                    ['millimeters of', ' * 1000 / 491'],
+                    ['encoder counts of', '']
+                ], function (unit) {
+                    this.sourceBlock_.newUnit(unit);
+                }), 'RADIUS_MULTIPLIER');
+        this.appendValueInput("ROTATE_SPEED")
+                .appendField('R,-100,100,0', 'RANGEVALS2')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("at speed (%)");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.getField('RANGEVALS2').setVisible(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_ANGLE_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_ANGLE_TOOLTIP);
+    },
+    newUnit: function (unit) {
+        var thisConnection_ = this.getInput('ROTATE_RADIUS').connection;
+        var thisBlock_ = thisConnection_.targetBlock();
+        var rangeText = 'R,-85,85,0';
+
+        if (unit === ' * 10000 / 1933') {
+            rangeText = 'R,-850,850,0';
+        } else if (unit === ' * 10000 / 491') {
+            rangeText = 'R,-216,216,0';
+        } else if (unit === ' * 1000 / 491') {
+            rangeText = 'R,-2160,2160,0';
+        } else if (unit === '') {
+            rangeText = 'R,-4400,4400,0';
+        }
+
+        this.setFieldValue(rangeText, 'RANGEVALS1');
+
+        if (thisBlock_)
+            if (thisBlock_.onchange)
+                thisBlock_.onchange.call(thisBlock_);
     }
 };
 
@@ -584,36 +716,49 @@ Blockly.propc.move_motors_angle = function () {
 
 Blockly.Blocks.play_polyphony = {
     init: function () {
-	this.appendValueInput("FREQUENCY_1")
-		.setCheck("Number")
-		.appendField("play a tone of (1 to 2,000) Hz");
-	this.appendValueInput("FREQUENCY_2")
-		.setCheck("Number")
-		.appendField("and a tone of (1 to 2,000) Hz");
-	this.appendValueInput("POLYPHONY_DURATION")
-		.setCheck("Number")
-		.appendField("for a duration of (1 to 8,000) ms");
-	this.appendValueInput("POLYPHONY_VOLUME")
-		.setCheck("Number")
-		.appendField("at a volume of (0 to 100)%");
-
-	this.setInputsInline(false);
+        this.appendDummyInput()
+                .appendField("play tones");
+        this.appendValueInput("FREQUENCY_1")
+                .appendField('R,0,2000,0', 'RANGEVALS0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("tone 1 (Hz)");
+        this.appendValueInput("FREQUENCY_2")
+                .appendField('R,0,2000,0', 'RANGEVALS1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("tone 2 (Hz)");
+        this.appendValueInput("POLYPHONY_DURATION")
+                .appendField('R,0,15000,0', 'RANGEVALS2')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("for (milliseconds)");
+        this.appendValueInput("POLYPHONY_VOLUME")
+                .appendField('R,0,100,0', 'RANGEVALS3')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck("Number")
+                .appendField("at volume (%)");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
+        this.getField('RANGEVALS2').setVisible(false);
+        this.getField('RANGEVALS3').setVisible(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setHelpUrl(Blockly.MSG_S3_SOUND_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_PLAY_POLYPHONY_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_SOUND_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_PLAY_POLYPHONY_TOOLTIP);
     }
 };
 
-Blockly.propc.play_polyphony = function() {
+Blockly.propc.play_polyphony = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
-    var fq1 = Blockly.propc.valueToCode(this, 'FREQUENCY_1', Blockly.propc.ORDER_ATOMIC) || 522;
-    var fq2 = Blockly.propc.valueToCode(this, 'FREQUENCY_2', Blockly.propc.ORDER_ATOMIC) || 784;
-    var dur = Blockly.propc.valueToCode(this, 'POLYPHONY_DURATION', Blockly.propc.ORDER_ATOMIC) || 250;
-    var vol = Blockly.propc.valueToCode(this, 'POLYPHONY_VOLUME', Blockly.propc.ORDER_ATOMIC) || 50;
+    var fq1 = Blockly.propc.valueToCode(this, 'FREQUENCY_1', Blockly.propc.ORDER_ATOMIC) || '522';
+    var fq2 = Blockly.propc.valueToCode(this, 'FREQUENCY_2', Blockly.propc.ORDER_ATOMIC) || '784';
+    var dur = Blockly.propc.valueToCode(this, 'POLYPHONY_DURATION', Blockly.propc.ORDER_ATOMIC) || '250';
+    var vol = Blockly.propc.valueToCode(this, 'POLYPHONY_VOLUME', Blockly.propc.ORDER_ATOMIC) || '50';
 
     return 's3_setVolume((' + vol + ' / 2));\ns3_playNote(' + fq1 + ', ' + fq2 + ', ' + dur + ');\n';
 };
@@ -624,15 +769,15 @@ Blockly.Blocks.line_sensor = {
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["right", "RIGHT"]]), "LINE_SENSOR_CHOICE")
                 .appendField("line sensor reflectivity (0% to 100%)");
 
-	this.setInputsInline(false);
-	this.setOutput(true, "Number");
+        this.setInputsInline(false);
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_LINE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_LINE_SENSOR_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_LINE_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_LINE_SENSOR_TOOLTIP);
     }
 };
 
-Blockly.propc.line_sensor = function() {
+Blockly.propc.line_sensor = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
@@ -647,14 +792,14 @@ Blockly.Blocks.obstacle_sensor = {
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["right", "RIGHT"]]), "OBSTACLE_SENSOR_CHOICE")
                 .appendField("(true or false)");
 
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_OBSTACLE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_OBSTACLE_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP);
     }
 };
 
-Blockly.propc.obstacle_sensor = function() {
+Blockly.propc.obstacle_sensor = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
@@ -667,14 +812,14 @@ Blockly.Blocks.stall_sensor = {
         this.appendDummyInput("")
                 .appendField("tail wheel is currently stalled (true or false)");
 
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_STALL_SENSOR_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_STALL_SENSOR_TOOLTIP);
     }
 };
 
-Blockly.propc.stall_sensor = function() {
+Blockly.propc.stall_sensor = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
@@ -689,7 +834,7 @@ Blockly.Blocks.button_pressed = {
         this.appendDummyInput("")
                 .appendField("(true or false)");
 
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
     }
 };
@@ -698,14 +843,14 @@ Blockly.Blocks.spinning_sensor = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("drive wheels are currently stalled (true or false)");
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SPINNING_SENSOR_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_SPINNING_SENSOR_TOOLTIP);
     }
 };
 
-Blockly.propc.spinning_sensor = function() {
+Blockly.propc.spinning_sensor = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
@@ -719,14 +864,14 @@ Blockly.Blocks.light_sensor = {
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["center", "CENTER"], ["right", "RIGHT"]]), "LGHT_SENSOR_CHOICE")
                 .appendField("light sensor reading (0% to 100%)");
 
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP);
     }
 };
 
-Blockly.propc.light_sensor = function() {
+Blockly.propc.light_sensor = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
@@ -738,14 +883,14 @@ Blockly.Blocks.reset_button_presses = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("reset button presses during last reset (0 to 8)");
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_RESET_BUTTON_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_RESET_BUTTON_PRESSES_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_RESET_BUTTON_PRESSES_TOOLTIP);
     }
 };
 
-Blockly.propc.reset_button_presses = function() {
+Blockly.propc.reset_button_presses = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
@@ -759,7 +904,7 @@ Blockly.Blocks.button_presses = {
         this.appendDummyInput("")
                 .appendField("last reading \u2013 in a range of 0 to 255");
 
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
     }
 };
@@ -769,15 +914,15 @@ Blockly.Blocks.scribbler_servo = {
         this.appendDummyInput("")
                 .appendField("rotate servo on")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN");
-	this.appendValueInput("SERVO_ANGLE")
-		.setCheck("Number")
-		.appendField("to an angle of (0 to 180)\u00B0");
-	this.setInputsInline(false);
+        this.appendValueInput("SERVO_ANGLE")
+                .setCheck("Number")
+                .appendField("to an angle of (0 to 180)\u00B0");
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP);
     }
 };
 
@@ -801,12 +946,12 @@ Blockly.Blocks.scribbler_stop_servo = {
         this.appendDummyInput("")
                 .appendField("disable servo on")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN");
-	this.setInputsInline(false);
+        this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
     }
 };
 
@@ -823,14 +968,14 @@ Blockly.Blocks.scribbler_ping = {
                 .appendField("from Ping))) sensor on")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
 
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_PING_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_PING_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_ping = function() {
+Blockly.propc.scribbler_ping = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var unit = this.getFieldValue('SCALE');
 
@@ -845,14 +990,14 @@ Blockly.Blocks.digital_input = {
         this.appendDummyInput("")
                 .appendField("Digital reading on")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_DIGITAL_INPUT_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_DIGITAL_INPUT_TOOLTIP);
     }
 };
 
-Blockly.propc.digital_input = function() {
+Blockly.propc.digital_input = function () {
     var pin = this.getFieldValue('PIN');
     return ['input(' + pin + ')', Blockly.propc.ORDER_NONE];
 };
@@ -865,16 +1010,16 @@ Blockly.Blocks.digital_output = {
         this.appendDummyInput("")
                 .appendField("to")
                 .appendField(new Blockly.FieldDropdown([['high', "HIGH"], ['low', "LOW"], ['input', "INPUT"], ['toggle state', "TOGGLE"], ['toggle direction', "REVERSE"]]), "ACTION");
-	this.setInputsInline(true);
+        this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
-	this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_DIGITAL_OUTPUT_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_DIGITAL_OUTPUT_TOOLTIP);
     }
 };
 
-Blockly.propc.digital_output = function() {
+Blockly.propc.digital_output = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var dropdown_action = this.getFieldValue('ACTION');
     switch (dropdown_action) {
@@ -896,32 +1041,167 @@ Blockly.Blocks.analog_input = {
         this.appendDummyInput("")
                 .appendField("Analog reading on")
                 .appendField(new Blockly.FieldDropdown([['A0', '0'], ['A1', '1']]), "ANALOG_PIN");
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-	this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_ANALOG_INPUT_TOOLTIP);
+        this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_ANALOG_INPUT_TOOLTIP);
     }
 };
 
 // TODO: create this function in s3 library.
-Blockly.propc.analog_input = function() {
+Blockly.propc.analog_input = function () {
     var pin = this.getFieldValue('PIN');
     return ['s3_readADC(S3_ADC_A' + pin + ')', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.spin_integer = {
     init: function () {
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
+        this.appendDummyInput('MAIN')
+                .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
 
-        this.setOutput(true, 'Number');
         this.setColour(colorPalette.getColor('math'));
         this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP);
+        this.appendDummyInput('HIDDENVALS')
+                .appendField('', 'RVALS')
+                .appendField('', 'CONN')
+                .setVisible(false);
+        this.setOutput(true, 'Number');
+        this.connection_id_ = null;
+        this.onchange();
+    },
+    onchange: function () {
+        var rangeVals = ['N', '-100', '100', '0'];
+        var range = [-100, 100, 0];
+        var data = this.getFieldValue('INT_VALUE');
+
+        if (this.outputConnection) {
+            if (this.outputConnection.targetBlock() !== null) {
+                var key, inputvalue, _connectedField;
+                var _blockFields = this.outputConnection.targetBlock().getInputWithBlock(this).fieldRow;
+                for (key in _blockFields) {
+                    if (_blockFields.hasOwnProperty(key) && !isNaN(parseInt(key, 10))) {
+                        inputvalue = _blockFields[key].name || ' ';
+                        if (inputvalue.substring(0, 9) === "RANGEVALS") {
+                            _connectedField = inputvalue;
+                            break;
+                        }
+                    }
+                }
+                var sourceBlock_ = this.outputConnection.targetBlock();
+                if (sourceBlock_) {
+                    var fieldListing = sourceBlock_.getFieldValue(_connectedField);
+                    if (fieldListing) {
+                        rangeVals = fieldListing.split(',');
+                        if (rangeVals[0] === 'S' || rangeVals[0] === 'R' || rangeVals[0] === 'A') {
+                            var idx;
+                            for (idx = 1; idx <= rangeVals.length; idx++)
+                                range[idx - 1] = Number(rangeVals[idx]);
+                        }
+                    }
+                }
+                if (this.outputConnection.targetBlock().getInputWithBlock(this) !== this.connection_id_) {
+                    var theVal = this.getFieldValue('INT_VALUE');
+                    this.removeInput('MAIN');
+                    if (rangeVals[0] === 'S') {
+                        var theNum = Number(theVal);
+                        if (theNum > range[1])
+                            theNum = range[1];
+                        if (theNum < range[0])
+                            theNum = range[0];
+                        this.setWarningText(null);
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldRange(theNum.toString(10),
+                                        range[0].toString(10), range[1].toString(10)), 'INT_VALUE');
+                    } else {
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldTextInput(theVal,
+                                        Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
+                    }
+                }
+                this.connection_id_ = this.outputConnection.targetBlock().getInputWithBlock(this);
+            } else {
+                if (this.connection_id_) {
+                    var theVal = this.getFieldValue('INT_VALUE');
+                    this.removeInput('MAIN');
+                    this.appendDummyInput('MAIN')
+                            .appendField(new Blockly.FieldTextInput(theVal,
+                                    Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
+                }
+                this.connection_id_ = null;
+                rangeVals = ['N', '-100', '100', '0'];
+            }
+        }
+        range[2] = Number(this.getFieldValue('INT_VALUE'));
+        if (rangeVals) {
+            if (rangeVals[0] === 'R') {
+                if (range[2] < range[0]) {
+                    this.setWarningText('WARNING: Your value is too small!  It must be greater than or equal to ' + range[0].toString(10));
+                } else if (range[2] > range[1]) {
+                    this.setWarningText('WARNING: Your value is too large!  It must be less than or equal to ' + range[1].toString(10));
+                } else {
+                    this.setWarningText(null);
+                }
+            } else if (rangeVals[0] === 'A') {
+                var warnMsg = 'none';
+                var idx;
+                for (idx = 0; idx < range.length; idx++)
+                    if (range[2] === Number(rangeVals[idx]))
+                        warnMsg = 'match';
+                if (warnMsg === 'none') {
+                    this.setWarningText('WARNING: The value you entered is not available or not allowed!');
+                } else {
+                    this.setWarningText(null);
+                }
+            } else if (rangeVals[0] === 'S') {
+                this.setWarningText(null);
+            } else {
+                this.setWarningText(null);
+            }
+            if (rangeVals[0] === 'R' && (range[2] < range[0] || range[2] > range[1]) && Math.abs(range[0] - range[1]) <= 10000000) {
+                if (this.getField('TITLE')) {
+                    if (range[1] >= 2147483647) {
+                        this.setFieldValue('(\u2265 ' + range[0].toString(10) + ')', 'TITLE');
+                    } else if (range[0] <= -2147483647) {
+                        this.setFieldValue('(\u2264' + range[1].toString(10) + ')', 'TITLE');
+                    } else {
+                        this.setFieldValue('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
+                    }
+                } else {
+                    this.removeInput('MAIN');
+                    this.appendDummyInput('MAIN')
+                            .appendField(new Blockly.FieldTextInput(data,
+                                    Blockly.FieldTextInput.numberValidator), 'INT_VALUE')
+                            .appendField('', 'TITLE');
+                }
+            } else {
+                if (this.getField('TITLE')) {
+                    this.removeInput('MAIN');
+                    if (rangeVals[0] === 'S') {
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldRange(data, range[0].toString(10), range[1].toString(10)), 'INT_VALUE');
+                    } else {
+                        this.appendDummyInput('MAIN')
+                                .appendField(new Blockly.FieldTextInput(data,
+                                        Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
+                    }
+                }
+            }
+            this.setFieldValue(rangeVals.toString(), 'RVALS');
+        } else {
+            if (this.getField('TITLE')) {
+                this.removeInput('MAIN');
+                this.appendDummyInput('MAIN')
+                        .appendField(new Blockly.FieldTextInput(data,
+                                Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
+            }
+            this.setFieldValue('', 'RVALS');
+            this.setWarningText(null);
+        }
     }
 };
 
-Blockly.propc.spin_integer = function() {
+Blockly.propc.spin_integer = function () {
     var code = window.parseInt(this.getFieldValue('INT_VALUE'));
     var order = code < 0 ? Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
     return [code, order];
@@ -930,9 +1210,9 @@ Blockly.propc.spin_integer = function() {
 Blockly.Blocks.math_int_angle = {
     init: function () {
         this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP);
         this.appendDummyInput()
-            .appendField(new Blockly.FieldAngle('90', Blockly.FieldTextInput.numberValidator), 'ANGLE_VALUE');
+                .appendField(new Blockly.FieldAngle('90', Blockly.FieldTextInput.numberValidator), 'ANGLE_VALUE');
 
         this.setOutput(true, 'Number');
         this.setColour(colorPalette.getColor('math'));
@@ -950,14 +1230,14 @@ Blockly.Blocks.scribbler_boolean = {
     init: function () {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([['true', '1'], ['false', '0']]), 'BOOL');
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('math'));
         this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_BOOLEAN_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_BOOLEAN_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_boolean = function() {
+Blockly.propc.scribbler_boolean = function () {
     return [this.getFieldValue('BOOL'), Blockly.propc.ORDER_ATOMIC];
 };
 
@@ -965,14 +1245,14 @@ Blockly.Blocks.scribbler_random_boolean = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("random true/false");
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('math'));
         this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_RANDOM_BOOLEAN_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_RANDOM_BOOLEAN_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_random_boolean = function() {
+Blockly.propc.scribbler_random_boolean = function () {
     Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
     return ['(rand() % 2)', Blockly.propc.ORDER_NONE];
 };
@@ -981,21 +1261,21 @@ Blockly.Blocks.scribbler_random_number = {
     init: function () {
         this.appendValueInput("A")
                 .setCheck("Number")
-		.setAlign(Blockly.ALIGN_RIGHT)
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("random number from");
         this.appendValueInput("B")
                 .setCheck("Number")
-		.setAlign(Blockly.ALIGN_RIGHT)
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("to");
         this.setInputsInline(true);
-	this.setOutput(true, "Number");
+        this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('math'));
         this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP);
     }
 };
 
-Blockly.propc.scribbler_random_number = function() {
+Blockly.propc.scribbler_random_number = function () {
     Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
     var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
     var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
@@ -1013,11 +1293,11 @@ Blockly.Blocks.spin_comment = {
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP);
     }
 };
 
-Blockly.propc.spin_comment = function() {
+Blockly.propc.spin_comment = function () {
     var text = this.getFieldValue("COMMENT");
 
     return '// ' + text + '\n';
@@ -1026,10 +1306,10 @@ Blockly.propc.spin_comment = function() {
 Blockly.Blocks.factory_reset = {
     init: function () {
         this.appendDummyInput()
-            .appendField("restore_s3_demo");
+                .appendField("restore_s3_demo");
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_FACTORY_RESET_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_FACTORY_RESET_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_FACTORY_RESET_TOOLTIP);
     }
 };
 
@@ -1045,14 +1325,14 @@ Blockly.Blocks.scribbler_serial_send_text = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP);
     }
 };
 
 Blockly.propc.scribbler_serial_send_text = function () {
     Blockly.propc.serial_terminal_ = true;
     Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
-    
+
     var message = this.getFieldValue('MESSAGE_TEXT');
 
     return 'print("' + message + '");\n';
@@ -1069,7 +1349,7 @@ Blockly.Blocks.scribbler_serial_send_char = {
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CHAR_TOOLTIP);
     }
 };
 
@@ -1093,7 +1373,7 @@ Blockly.Blocks.scribbler_serial_send_decimal = {
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_DECIMAL_TOOLTIP);
     }
 };
 
@@ -1117,7 +1397,7 @@ Blockly.Blocks.scribbler_serial_send_ctrl = {
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_CTRL_TOOLTIP);
     }
 };
 
@@ -1126,7 +1406,7 @@ Blockly.propc.scribbler_serial_send_ctrl = function () {
     Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
 
     var message = this.getFieldValue('SERIAL_CHAR');
-    if(message === '256') {
+    if (message === '256') {
         return 'term_cmd(CLS);\n';
     } else {
         return 'print("%c", ' + message + ');\n';
@@ -1141,7 +1421,7 @@ Blockly.Blocks.scribbler_serial_rx_byte = {
                 .appendField("receive character");
         this.setOutput(true, 'Number');
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SERIAL_RX_BYTE_TOOLTIP);
     }
 };
 
@@ -1151,23 +1431,23 @@ Blockly.propc.scribbler_serial_rx_byte = function () {
 
     return ['getChar()', Blockly.propc.ORDER_NONE];
 };
-    
+
 Blockly.Blocks.scribbler_serial_cursor_xy = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("Y")
                 .setCheck("Number")
-		.setAlign(Blockly.ALIGN_RIGHT)
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("Terminal set cursor position to row");
         this.appendValueInput("X")
                 .setCheck("Number")
-		.setAlign(Blockly.ALIGN_RIGHT)
+                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("column");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
-	this.setTooltip(Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP);
+        this.setTooltip(Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP);
     }
 };
 
@@ -1195,14 +1475,14 @@ Blockly.propc.scribbler_serial_cursor_xy = function () {
 
 Blockly.Blocks.sirc_s3_get = {
     helpUrl: Blockly.MSG_S3_SIRC_HELPURL,
-    init: function() {
-	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SIRC_TOOLTIP);
+    init: function () {
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SIRC_TOOLTIP);
         var addPin = [["Onboard IR sensor", "SCRIBBLER_OBS_RX"]];
         var thePins = addPin.concat(profile.default.digital);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-            .appendField("Sony Remote value received from")
-            .appendField(new Blockly.FieldDropdown(thePins), "PIN");
+                .appendField("Sony Remote value received from")
+                .appendField(new Blockly.FieldDropdown(thePins), "PIN");
 
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
@@ -1211,7 +1491,7 @@ Blockly.Blocks.sirc_s3_get = {
     }
 };
 
-Blockly.propc.sirc_s3_get = function() {
+Blockly.propc.sirc_s3_get = function () {
     var pin = this.getFieldValue('PIN');
 
     Blockly.propc.definitions_["sirc"] = '#include "sirc.h"';
