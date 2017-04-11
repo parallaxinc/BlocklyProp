@@ -967,6 +967,11 @@ Blockly.Blocks.ab_drive_init = {
                 func.call(blocks[x], bot);
             }
         }
+
+        if (bot === 'arlodrive.h')
+            this.setWarningText('The Arlo robot is only partially supported in BlocklyProp at this time. Most blocks will work, some will not.');
+        else
+            this.setWarningText(null);
     }
 };
 
@@ -995,8 +1000,13 @@ Blockly.Blocks.ab_drive_ramping = {
     init: function () {
         this.setTooltip(Blockly.MSG_ROBOT_RAMPING_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
-        this.appendDummyInput()
-                .appendField("Robot set acceleration")
+        this.appendDummyInput('ACCEL')
+                .appendField("Robot set acceleration for", "TITLE")
+                .appendField(new Blockly.FieldDropdown([
+                    ["speed", "FOR_SPEED"],
+                    ["distance", "FOR_GOTO"]
+                ]), "OPS")
+                .appendField("blocks to", "TITLE_2")
                 .appendField(new Blockly.FieldDropdown([
                     ["2000 ticks/s\u00B2", "2000"],
                     ["1600 ticks/s\u00B2 (jerky)", "1600"],
@@ -1011,20 +1021,52 @@ Blockly.Blocks.ab_drive_ramping = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+
+        var whichRobot = '';
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
+            whichRobot = 'abdrive.h';
+        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+            whichRobot = 'arlodrive.h';
+        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
+            whichRobot = 'servodiffdrive.h';
+        this.newRobot(whichRobot);
+    },
+    newRobot: function (robot) {
+        if (robot === 'abdrive.h' || robot === 'arlodrive.h') {
+            this.setFieldValue("Robot set acceleration for", "TITLE");
+            this.getField("TITLE_2").setVisible(true);
+            this.getField("OPS").setVisible(true);
+            this.getField("RAMPING").setVisible(true);
+        } else if (robot === '') {
+            this.setFieldValue("Robot set acceleration", "TITLE");
+            this.getField("TITLE_2").setVisible(false);
+            this.getField("OPS").setVisible(false);
+            this.getField("RAMPING").setVisible(false);
+        } else {
+            this.setFieldValue("Robot set acceleration to", "TITLE");
+            this.getField("TITLE_2").setVisible(false);
+            this.getField("OPS").setVisible(true);
+            this.getField("OPS").setVisible(false);
+        }
+        this.render();
     }
 };
 
 Blockly.propc.ab_drive_ramping = function () {
     var ramping = Number(this.getFieldValue('RAMPING'));
+    var ops = this.getFieldValue('OPS');
 
     var code = '';
 
     if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
-        //Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
         code += 'drive_setRampStep(' + (ramping / 50).toString(10)
                 + ',' + (ramping / 50).toString(10) + ');\n';
+    } else if (Blockly.propc.definitions_["include abdrive"] === '#include "abdrive.h"' ||
+            Blockly.propc.definitions_["include abdrive"] === '#include "arlodrive.h"') {
+        code += 'drive_setAcceleration(' + ops + ', ' + ramping.toString(10) + ');\n';
     } else {
-        code += 'drive_setAcceleration(' + ramping + ');\n';
+        code += '// Robot drive system is not initialized!\n';
     }
 
     return code;
@@ -1116,7 +1158,13 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
         this.setTooltip(Blockly.MSG_ROBOT_DISTANCE_MAX_SPEED_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendValueInput("SPEED")
-                .appendField('Robot drive max speed (+/-)')
+                .appendField('Robot set max speed (+/-) for', 'TITLE')
+                .appendField(new Blockly.FieldDropdown([
+                    ["speed blocks", "FOR_SPEED"],
+                    ["distance blocks", "FOR_GOTO"]
+                ], function (ops) {
+                    this.sourceBlock_.applyTo(ops);
+                }), "OPS")
                 .appendField('R,0,128,0', 'RANGEVALS0')
                 .setCheck('Number');
         this.getField('RANGEVALS0').setVisible(false);
@@ -1136,27 +1184,38 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
     },
     newRobot: function (robot) {
         if (robot === 'servodiffdrive.h') {
-            this.setWarningText('WARNING: Servo Differential Drive\ndoes not support "Robot drive distance"!');
+            this.setWarningText('WARNING: Servo Differential Drive\ndoes not support this block');
         } else if (robot === '') {
             this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
         } else {
             this.setWarningText(null);
         }
+    },
+    applyTo: function (ops) {
+
+        if (ops === 'FOR_SPEED') {
+            this.setFieldValue('Robot set max speed (+/-) for', 'TITLE');
+        } else if (ops === 'FOR_GOTO') {
+            this.setFieldValue('Robot set speed (+/-) for', 'TITLE');
+        }
+
     }
 };
 
 Blockly.propc.ab_drive_goto_max_speed = function () {
     var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE) || '128';
+    var ops = this.getFieldValue("OPS");
     var bot = Blockly.propc.definitions_["include abdrive"];
 
     var code = '';
 
     if (bot === '#include "servodiffdrive.h"') {
-        code += '// Servo Differential Drive does not support "Drive Distance"\n';
+        code += '// Servo Differential Drive does not support this block\n';
     } else if (bot === '#include "abdrive.h"') {
-        code += 'drive_setMaxSpeed(' + speed + ');\n';
+        code += 'drive_setMaxVelocity(' + ops + ', ' + speed + ');\n';
     } else {
-        code += 'drive_setMaxSpeed(' + speed + ');\n';
+        code += '// Set max speed is not supported for this robot\n';
+        //code += 'drive_setMaxVelocity(' + speed + ');\n';
     }
 
     if (bot === undefined) {

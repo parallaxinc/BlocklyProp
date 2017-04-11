@@ -1384,6 +1384,7 @@ Blockly.Blocks.keypad_initialize = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "P1")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "P2")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "P3")
+                .appendField('|')
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "P4")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "P5")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "P6")

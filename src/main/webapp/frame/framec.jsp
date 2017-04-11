@@ -1224,7 +1224,9 @@
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
             <block type="ab_drive_init"></block>
-            <block type="ab_drive_ramping"></block>
+            <block type="ab_drive_ramping">
+                <field name="RAMPING">600</field>
+            </block>
             <block type="ab_drive_speed">
                 <value name="LEFT">
                     <block type="math_number">
@@ -1250,6 +1252,7 @@
                 </value>
             </block>
             <block type="ab_drive_goto_max_speed">
+                <field name="OPS">FOR_GOTO</field>
                 <value name="SPEED">
                     <block type="math_number">
                         <field name="NUM">64</field>
