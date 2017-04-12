@@ -29,6 +29,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import org.apache.shiro.authz.AuthorizationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -38,6 +41,8 @@ import org.apache.shiro.authz.AuthorizationException;
 @Group(name = "/project", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestProject {
+    // Get a logger instance
+    private static final Logger LOG = LoggerFactory.getLogger(RestProject.class);
 
     private ProjectService projectService;
     private ProjectConverter projectConverter;
@@ -101,15 +106,24 @@ public class RestProject {
     @Name("Save project code")
     @Produces("application/json")
     public Response saveProjectCode(@FormParam("id") Long idProject, @FormParam("code") String code) {
+        LOG.debug("Saving project code");
         try {
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
+            LOG.debug("Code for project {} has been saved", idProject);
+
             JsonObject result = projectConverter.toJson(savedProject);
+            LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
 
             return Response.ok(result.toString()).build();
         } catch (AuthorizationException ae) {
+            LOG.error("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        catch (Exception ex) {
+            LOG.error("General exception encountered. Message is: ", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
