@@ -1015,8 +1015,7 @@ Blockly.Blocks.ab_drive_ramping = {
                     ["600 ticks/s\u00B2", "600"],
                     ["400 ticks/s\u00B2 (smooth)", "400"],
                     ["200 ticks/s\u00B2", "200"],
-                    ["100 ticks/s\u00B2 (sluggish)", "100"],
-                    ["50 ticks/s\u00B2", "50"]
+                    ["100 ticks/s\u00B2 (sluggish)", "100"]
                 ]), "RAMPING");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
