@@ -387,8 +387,8 @@ Blockly.Blocks.math_arithmetic_multiple = {
                 var currentBlock = this.getInput(String.fromCharCode(inCount)).connection.targetBlock();
                 var previousBlock = this.getInput(String.fromCharCode(inCount + 1)).connection.targetBlock();
                 if (currentBlock === null && previousBlock === null) {
-                        this.getInput(String.fromCharCode(inCount + 1)).connection.unhighlight();
-                        this.removeInput(String.fromCharCode(inCount + 1));
+                    this.getInput(String.fromCharCode(inCount + 1)).connection.unhighlight();
+                    this.removeInput(String.fromCharCode(inCount + 1));
                 } else if (currentBlock !== null)
                     break;
             }
@@ -419,20 +419,20 @@ Blockly.propc.math_arithmetic_multiple = function () {
 
 
     for (var k = 0; k < 26; k++) {//&& !isNaN(argument[k])
-        if (operator[k] === ' p ' ) {
+        if (operator[k] === ' p ') {
             code += 'pow(' + argument[k] + ', ';
         } else {
             if (k > 0) {
                 if (operator[k - 1] === ' p ') {
                     //if (!isNaN(argument[k]))
-                        code += argument[k] + ')' + operator[k];
+                    code += argument[k] + ')' + operator[k];
                 } else {
                     //if (!isNaN(argument[k]))
-                        code += argument[k] + operator[k];
+                    code += argument[k] + operator[k];
                 }
             } else {
                 //if (!isNaN(argument[k]))
-                    code += argument[k];
+                code += argument[k];
                 code += operator[k];
             }
         }
@@ -1621,7 +1621,7 @@ Blockly.propc.constrain_value = function () {
     setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
     Blockly.propc.methods_["constrain_function"] = setup_code;
     Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-    
+
     var code = 'constrain(' + num + ', ' + min + ', ' + max + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
@@ -1717,4 +1717,260 @@ Blockly.propc.math_inv_trig = function () {
     var code = store + ' = (int) (180.0 * ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + ')) / PI + 0.5);\n';
 
     return code;
+};
+
+Blockly.Blocks.custom_code_multiple = {
+    helpUrl: Blockly.MSG_AWX_HELPURL,
+    init: function () {
+        this.setTooltip('User defined code: Set label, color, code, block type, and inputs.\n' +
+                'Add correctly formatted Propeller C code to the includes,\n' +
+                'globals, setups, main, and functions sections.\n' +
+                'Use "@#@" to insert values from inputs into your custom C code.\n' +
+                'Use "\\n" to insert line breaks in the code');
+        //this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox('FALSE', function (blockEdit) {
+                    this.sourceBlock_.hideInputs(blockEdit);
+                }), 'EDIT')
+                .appendField('  User defined code', 'LABEL');
+        this.appendDummyInput('SET_LABEL')
+                .appendField('label')
+                .appendField(new Blockly.FieldTextInput('User defined code', function (blockLabel) {
+                    this.sourceBlock_.setFieldValue('  ' + blockLabel, 'LABEL');
+                }), 'LABEL_SET');
+        this.appendDummyInput('SET_COLOR')
+                .appendField('block color')
+                .appendField(new Blockly.FieldColour('#266999').setColours([
+                    "#26994D", "#268F99", "#266999",
+                    "#264399", "#392699", "#692699",
+                    "#8F2699", "#992673", "#99264C"
+                ]).setColumns(3), 'COLOR');
+        this.appendDummyInput('INCL')
+                .appendField('includes code')
+                .appendField(new Blockly.FieldTextInput(''), 'INCLUDES');
+        this.appendDummyInput('GLOB')
+                .appendField('globals code')
+                .appendField(new Blockly.FieldTextInput(''), 'GLOBALS');
+        this.appendDummyInput('SETS')
+                .appendField('setups code')
+                .appendField(new Blockly.FieldTextInput(''), 'SETUPS');
+        this.appendDummyInput('MAIN')
+                .appendField('main code')
+                .appendField(new Blockly.FieldTextInput(''), 'MAIN');
+        this.appendDummyInput('OUTS')
+                .appendField('main code is')
+                .appendField(new Blockly.FieldDropdown([
+                    ['inline', 'INL'],
+                    ['a numeric value', 'NUM'],
+                    ['a string value', 'STR']
+                ], function (outType) {
+                    if (outType === 'INL') {
+                        this.sourceBlock_.setPreviousStatement(true);
+                        this.sourceBlock_.setNextStatement(true);
+                        this.sourceBlock_.setOutput(false);
+                    } else if (outType === 'NUM') {
+                        this.sourceBlock_.setPreviousStatement(false);
+                        this.sourceBlock_.setNextStatement(false);
+                        this.sourceBlock_.setOutput(true, 'Number');
+                    } else {
+                        this.sourceBlock_.setPreviousStatement(false);
+                        this.sourceBlock_.setNextStatement(false);
+                        this.sourceBlock_.setOutput(true, 'String');
+                    }
+                }), 'TYPE');
+        this.appendDummyInput('FUNC')
+                .appendField('functions code')
+                .appendField(new Blockly.FieldTextInput(''), 'FUNCTIONS');
+        this.appendDummyInput('ARGS')
+                .appendField(new Blockly.FieldDropdown([
+                    ['no inputs', '0'],
+                    ['add 1 input', '1'],
+                    ['add 2 inputs', '2'],
+                    ['add 3 inputs', '3'],
+                    ['add 4 inputs', '4'],
+                    ['add 5 inputs', '5']
+                ], function (inSet) {
+                    this.sourceBlock_.setupInputs(inSet);
+                }), 'ARG_COUNT');
+        this.setInputsInline(false);
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setFieldValue('FALSE', 'EDIT');
+        this.hideInputs('FALSE');
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        //this.setFieldValue('FALSE', 'EDIT');
+        for (var i = 1; i <= 5; i++) {
+            if (this.getInput('ARG' + i.toString(10))) {
+                var currentLabel = this.getFieldValue('LABEL_ARG' + i.toString(10));
+                this.setFieldValue(currentLabel, 'EDIT_ARG' + i.toString(10));
+                this.getField('LABEL_ARG' + i.toString(10)).setVisible(false);
+            }
+        }
+        //this.hideInputs('FALSE');
+        var args = this.getFieldValue('ARG_COUNT') || '0';
+        container.setAttribute('args', args);
+        container.setAttribute('a1', this.getFieldValue('EDIT_ARG1'));
+        container.setAttribute('a2', this.getFieldValue('EDIT_ARG2'));
+        container.setAttribute('a3', this.getFieldValue('EDIT_ARG3'));
+        container.setAttribute('a4', this.getFieldValue('EDIT_ARG4'));
+        container.setAttribute('a5', this.getFieldValue('EDIT_ARG5'));
+        container.setAttribute('color', this.getFieldValue('COLOR'));
+        container.setAttribute('type', this.getFieldValue('TYPE'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var args = xmlElement.getAttribute('args');
+        this.setupInputs(args);
+        this.getField('EDIT').setValue('FALSE');
+        if (this.getField('EDIT_ARG1'))
+            this.setFieldValue(xmlElement.getAttribute('a1'), 'EDIT_ARG1');
+        if (this.getField('EDIT_ARG2'))
+            this.setFieldValue(xmlElement.getAttribute('a2'), 'EDIT_ARG2');
+        if (this.getField('EDIT_ARG3'))
+            this.setFieldValue(xmlElement.getAttribute('a3'), 'EDIT_ARG3');
+        if (this.getField('EDIT_ARG4'))
+            this.setFieldValue(xmlElement.getAttribute('a4'), 'EDIT_ARG4');
+        if (this.getField('EDIT_ARG5'))
+            this.setFieldValue(xmlElement.getAttribute('a5'), 'EDIT_ARG5');
+        this.setFieldValue(xmlElement.getAttribute('color'), 'COLOR');
+        var outType = xmlElement.getAttribute('type');
+        if (outType === 'INL') {
+            this.setPreviousStatement(true);
+            this.setNextStatement(true);
+            this.setOutput(false);
+        } else if (outType === 'NUM') {
+            this.setPreviousStatement(false);
+            this.setNextStatement(false);
+            this.setOutput(true, 'Number');
+        } else {
+            this.setPreviousStatement(false);
+            this.setNextStatement(false);
+            this.setOutput(true, 'String');
+        }
+        this.setFieldValue('FALSE', 'EDIT');
+        this.hideInputs('FALSE');
+    },
+    setupInputs: function (argsCount) {
+        for (var i = 1; i <= Number(argsCount); i++) {
+            if (!this.getInput('ARG' + i.toString(10))) {
+                this.appendValueInput('ARG' + i.toString(10))
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .appendField('input "@' + i.toString(10) + '" label', 'EDIT_ARG' + i.toString(10))
+                        .appendField(new Blockly.FieldTextInput(''), 'LABEL_ARG' + i.toString(10));
+            }
+        }
+        for (var i = 5; i > Number(argsCount); i--) {
+            if (this.getInput('ARG' + i.toString(10))) {
+                this.removeInput('ARG' + i.toString(10));
+            }
+        }
+        //this.render();
+    },
+    hideInputs: function (hideState) {
+        if (hideState === true || hideState === 'true' || hideState === 'TRUE') {
+            this.setColour('#909090');
+            this.getInput('SET_LABEL').setVisible(true);
+            this.getInput('SET_COLOR').setVisible(true);
+            this.getInput('INCL').setVisible(true);
+            this.getInput('GLOB').setVisible(true);
+            this.getInput('SETS').setVisible(true);
+            this.getInput('MAIN').setVisible(true);
+            this.getInput('OUTS').setVisible(true);
+            this.getInput('FUNC').setVisible(true);
+            this.getInput('ARGS').setVisible(true);
+            for (var i = 1; i <= 5; i++) {
+                if (this.getInput('ARG' + i.toString(10))) {
+                    this.getField('LABEL_ARG' + i.toString(10)).setVisible(true);
+                    var currentLabel = this.getFieldValue('EDIT_ARG' + i.toString(10));
+                    if (currentLabel !== 'input "@' + i.toString(10) + '" label')
+                        this.setFieldValue(currentLabel, 'LABEL_ARG' + i.toString(10));
+                    this.setFieldValue('input "@' + i.toString(10) + '" label', 'EDIT_ARG' + i.toString(10));
+                }
+            }
+        } else {
+            //this.removeSelect();
+            this.setColour(this.getFieldValue('COLOR'));
+            this.getInput('SET_LABEL').setVisible(false);
+            this.getInput('SET_COLOR').setVisible(false);
+            this.getInput('INCL').setVisible(false);
+            this.getInput('GLOB').setVisible(false);
+            this.getInput('SETS').setVisible(false);
+            this.getInput('MAIN').setVisible(false);
+            this.getInput('OUTS').setVisible(false);
+            this.getInput('FUNC').setVisible(false);
+            this.getInput('ARGS').setVisible(false);
+            for (var i = 1; i <= 5; i++) {
+                if (this.getInput('ARG' + i.toString(10))) {
+                    var currentLabel = this.getFieldValue('LABEL_ARG' + i.toString(10));
+                    this.setFieldValue(currentLabel, 'EDIT_ARG' + i.toString(10));
+                    this.getField('LABEL_ARG' + i.toString(10)).setVisible(false);
+                }
+            }
+        }
+        this.render();
+    }
+};
+
+Blockly.propc.custom_code_multiple = function () {
+    var in_arg = [];
+    in_arg.push(Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '');
+    in_arg.push(Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '');
+    in_arg.push(Blockly.propc.valueToCode(this, 'ARG3', Blockly.propc.ORDER_ATOMIC) || '');
+    in_arg.push(Blockly.propc.valueToCode(this, 'ARG4', Blockly.propc.ORDER_ATOMIC) || '');
+    in_arg.push(Blockly.propc.valueToCode(this, 'ARG5', Blockly.propc.ORDER_ATOMIC) || '');
+    var incl = (this.getFieldValue("INCLUDES") || '')
+            .replace(/\@1/g, in_arg[0])
+            .replace(/\@2/g, in_arg[1])
+            .replace(/\@3/g, in_arg[2])
+            .replace(/\@4/g, in_arg[3])
+            .replace(/\@5/g, in_arg[4]);
+    var glob = (this.getFieldValue("GLOBALS") || '')
+            .replace(/\@1/g, in_arg[0])
+            .replace(/\@2/g, in_arg[1])
+            .replace(/\@3/g, in_arg[2])
+            .replace(/\@4/g, in_arg[3])
+            .replace(/\@5/g, in_arg[4]);
+    var sets = (this.getFieldValue("SETUPS") || '')
+            .replace(/\@1/g, in_arg[0])
+            .replace(/\@2/g, in_arg[1])
+            .replace(/\@3/g, in_arg[2])
+            .replace(/\@4/g, in_arg[3])
+            .replace(/\@5/g, in_arg[4]);
+    var main = (this.getFieldValue("MAIN") || '')
+            .replace(/\@1/g, in_arg[0])
+            .replace(/\@2/g, in_arg[1])
+            .replace(/\@3/g, in_arg[2])
+            .replace(/\@4/g, in_arg[3])
+            .replace(/\@5/g, in_arg[4]);
+    var func = (this.getFieldValue("FUNCTIONS") || '')
+            .replace(/\@1/g, in_arg[0])
+            .replace(/\@2/g, in_arg[1])
+            .replace(/\@3/g, in_arg[2])
+            .replace(/\@4/g, in_arg[3])
+            .replace(/\@5/g, in_arg[4]);
+
+    var code = '';
+
+    if (incl !== '')
+        Blockly.propc.definitions_["cCode" + cCode] = incl + '\n';
+    if (glob !== '')
+        Blockly.propc.global_vars_["cCode" + cCode] = glob + '\n';
+    if (sets !== '')
+        Blockly.propc.setups_["cCode" + cCode] = sets + '\n';
+    if (main !== '')
+        code += main;
+    if (this.getFieldValue('TYPE') === 'INL')
+        code += '\n';
+    if (func !== '')
+        Blockly.propc.methods_["cCode" + cCode] = func + '\n';
+
+    cCode++;
+
+    if (this.getFieldValue('TYPE') === 'INL')
+        return code;
+    else
+        return [code, Blockly.propc.ORDER_ATOMIC];
 };

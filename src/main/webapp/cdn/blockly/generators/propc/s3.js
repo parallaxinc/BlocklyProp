@@ -3,8 +3,8 @@
  */
 
 /**
- * @fileoverview 
- * @author 
+ * @fileoverview
+ * @author
  */
 'use strict';
 
@@ -79,41 +79,74 @@ Blockly.Blocks.scribbler_simple_wait = {
         this.appendDummyInput()
                 .appendField("wait")
                 .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'WAITTIME')
-                .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1000'], ['tenth(s) of a second (1 to 535)', '100'], ['millisecond(s) (1 to 53,500)', '1']]), 'TIMESCALE');
+                .appendField(new Blockly.FieldDropdown([['seconds', '1000'], ['tenths of a second', '100'], ['milliseconds', '1']]), 'TIMESCALE');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SIMPLE_WAIT_TOOLTIP);
+        this.onchange();
+    },
+    onchange: function () {
+        var wait_time = Number(this.getFieldValue('WAITTIME') || '1');
+        var time_scale = Number(this.getFieldValue('TIMESCALE'));
+        if (time_scale === 1 && wait_time > 15000)
+            this.setWarningText('WARNING: If the units are in milliseconds,\nthe wait time must be less than 15000');
+        else
+            this.setWarningText(null);
     }
 };
 
 Blockly.propc.scribbler_simple_wait = function () {
     var wait_time = this.getFieldValue('WAITTIME') || '1';
     var time_scale = this.getFieldValue('TIMESCALE');
-    return 'pause(' + wait_time + ' * ' + time_scale + ');\n';
+    if (time_scale !== '1')
+        return 'for(int __i = 0; __i < ' + wait_time + '; __i++) pause(' + time_scale + ');\n';
+    else
+        return 'pause(' + wait_time + ');\n';
 };
 
 Blockly.Blocks.scribbler_wait = {
     init: function () {
         this.appendValueInput("WAITTIME", 'Number')
+                .appendField('N,0,0,0', 'RANGEVALS0')
                 .appendField("wait")
                 .setCheck('Number');
         this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown([['second(s) (1 to 53)', '1000'], ['tenth(s) of a second (1 to 535)', '100'], ['millisecond(s) (1 to 53,500)', '1']]), 'TIMESCALE');
+                .appendField(new Blockly.FieldDropdown([['seconds', '1000'], ['tenths of a second', '100'], ['milliseconds', '1']], function (unit) {
+                    this.sourceBlock_.newUnit(unit);
+                }), 'TIMESCALE');
+        this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP);
+    },
+    newUnit: function (unit) {
+        var thisConnection_ = this.getInput('ROTATE_RADIUS').connection;
+        var thisBlock_ = thisConnection_.targetBlock();
+        var rangeText = 'N,0,0,0';
+
+        if (unit !== '1')
+            rangeText = 'R,0,15000,0';
+
+        this.setFieldValue(rangeText, 'RANGEVALS0');
+
+        if (thisBlock_)
+            if (thisBlock_.onchange)
+                thisBlock_.onchange.call(thisBlock_);
     }
 };
 
 Blockly.propc.scribbler_wait = function () {
     var wait_time = Blockly.propc.valueToCode(this, 'WAITTIME', Blockly.propc.ORDER_NONE) || '1';
     var time_scale = this.getFieldValue('TIMESCALE');
-    return 'pause(' + wait_time + ' * ' + time_scale + ');\n';
+    if (time_scale !== '1')
+        return 'for(int __i = 0; __i < ' + wait_time + '; __i++) pause(' + time_scale + ');\n';
+    else
+        return 'pause(' + wait_time + ');\n';
 };
 
 Blockly.Blocks.scribbler_if_line = {
@@ -767,7 +800,7 @@ Blockly.Blocks.line_sensor = {
     init: function () {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["right", "RIGHT"]]), "LINE_SENSOR_CHOICE")
-                .appendField("line sensor reflectivity (0% to 100%)");
+                .appendField("line sensor reflectivity");
 
         this.setInputsInline(false);
         this.setOutput(true, "Number");
@@ -810,8 +843,11 @@ Blockly.propc.obstacle_sensor = function () {
 Blockly.Blocks.stall_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("tail wheel is currently stalled (true or false)");
-
+                .appendField("stall sensor")
+                .appendField(new Blockly.FieldDropdown([
+            ["tail wheel", "s3_stalled()"], 
+            ["drive wheels", "!s3_motorsMoving()"]
+        ]), "STALL_SENSOR_CHOICE");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
@@ -822,8 +858,8 @@ Blockly.Blocks.stall_sensor = {
 Blockly.propc.stall_sensor = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
-
-    return ['s3_stalled()', Blockly.propc.ORDER_NONE];
+    var choice = this.getFieldValue('STALL_SENSOR_CHOICE');
+    return [choice, Blockly.propc.ORDER_NONE];
 };
 
 
@@ -842,7 +878,7 @@ Blockly.Blocks.button_pressed = {
 Blockly.Blocks.spinning_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("drive wheels are currently stalled (true or false)");
+                .appendField("drive wheels stalled");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
@@ -862,7 +898,7 @@ Blockly.Blocks.light_sensor = {
     init: function () {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["center", "CENTER"], ["right", "RIGHT"]]), "LGHT_SENSOR_CHOICE")
-                .appendField("light sensor reading (0% to 100%)");
+                .appendField("light sensor reading");
 
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
@@ -882,7 +918,7 @@ Blockly.propc.light_sensor = function () {
 Blockly.Blocks.reset_button_presses = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("reset button presses during last reset (0 to 8)");
+                .appendField("reset button presses on last reset");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_RESET_BUTTON_HELPURL);
@@ -895,18 +931,6 @@ Blockly.propc.reset_button_presses = function () {
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
     return ['s3_resetButtonCount()', Blockly.propc.ORDER_NONE];
-};
-
-Blockly.Blocks.button_presses = {
-    init: function () {
-        this.appendDummyInput("")
-                .appendField("the number of red button presses, since the");
-        this.appendDummyInput("")
-                .appendField("last reading \u2013 in a range of 0 to 255");
-
-        this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('input'));
-    }
 };
 
 Blockly.Blocks.scribbler_servo = {
@@ -963,10 +987,10 @@ Blockly.propc.scribbler_stop_servo = function () {
 Blockly.Blocks.scribbler_ping = {
     init: function () {
         this.appendDummyInput("")
+                .appendField("Ping))) sensor on")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN")
                 .appendField("distance in")
-                .appendField(new Blockly.FieldDropdown([['inches (1 to 124)', '_inches'], ['centimeters (4 to 315)', '_cm']]), "SCALE")
-                .appendField("from Ping))) sensor on")
-                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
+                .appendField(new Blockly.FieldDropdown([['inches', '_inches'], ['centimeters', '_cm']]), "SCALE");
 
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
