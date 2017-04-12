@@ -34,9 +34,11 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- *
+ * REST endpoints for project persistence
+ * 
  * @author Michel
  */
+
 @Path("/project")
 @Group(name = "/project", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
@@ -62,9 +64,18 @@ public class RestProject {
     @Detail("Get all projects for the authenticated user")
     @Name("Get all projects for the authenticated user")
     @Produces("application/json")
-    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+    public Response get(
+            @QueryParam("sort") TableSort sort, 
+            @QueryParam("order") TableOrder order, 
+            @QueryParam("limit") Integer limit, 
+            @QueryParam("offset") Integer offset) {
+        
+        LOG.info("Retreiving project list");
+
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        List<ProjectRecord> userProjects = projectService.getUserProjects(idUser, sort, order, limit, offset);
+        List<ProjectRecord> userProjects = 
+                projectService.getUserProjects(idUser, sort, order, limit, offset);
+        
         int projectCount = projectService.countUserProjects(idUser);
 
         JsonObject result = new JsonObject();
@@ -85,17 +96,22 @@ public class RestProject {
     @Name("Get project by id")
     @Produces("application/json")
     public Response get(@PathParam("id") Long idProject) {
+        LOG.info("Retreiving project {}", idProject);
+
         ProjectRecord project = projectService.getProject(idProject);
 
         if (project != null) {
             if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+                LOG.info("User not authorized to get project {}", idProject);
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
         } else {
+            LOG.info("Project {} was not found", idProject);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         JsonObject result = projectConverter.toJson(project);
+        LOG.debug("Returning JSON: {}", result);
 
         return Response.ok(result.toString()).build();
     }
@@ -105,8 +121,12 @@ public class RestProject {
     @Detail("Save project code")
     @Name("Save project code")
     @Produces("application/json")
-    public Response saveProjectCode(@FormParam("id") Long idProject, @FormParam("code") String code) {
-        LOG.debug("Saving project code");
+    public Response saveProjectCode(
+            @FormParam("id") Long idProject, 
+            @FormParam("code") String code) {
+        
+        LOG.info("Saving project {} code", idProject);
+        
         try {
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
             LOG.debug("Code for project {} has been saved", idProject);
@@ -118,7 +138,7 @@ public class RestProject {
 
             return Response.ok(result.toString()).build();
         } catch (AuthorizationException ae) {
-            LOG.error("Project code not saved. Not Authorized");
+            LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         catch (Exception ex) {
@@ -132,16 +152,33 @@ public class RestProject {
     @Detail("Save project code")
     @Name("Save project code")
     @Produces("application/json")
-    public Response saveProjectCodeAs(@FormParam("id") Long idProject, @FormParam("code") String code, @FormParam("name") String newName) {
+    public Response saveProjectCodeAs(
+            @FormParam("id") Long idProject, 
+            @FormParam("code") String code, 
+            @FormParam("name") String newName) {
+        
+        LOG.info("Saving project {} code as new {}", idProject, newName);
+
         try {
-            ProjectRecord savedProject = projectService.saveProjectCodeAs(idProject, code, newName);
+            ProjectRecord savedProject = projectService.saveProjectCodeAs(
+                    idProject, 
+                    code, 
+                    newName);
+            LOG.debug("Code for project {} has been saved as {}", idProject, newName);
+            
             JsonObject result = projectConverter.toJson(savedProject);
+            LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
 
             return Response.ok(result.toString()).build();
         } catch (AuthorizationException ae) {
+            LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        catch (Exception ex) {
+            LOG.error("General exception encountered. Message is: ", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -150,23 +187,51 @@ public class RestProject {
     @Detail("Save project")
     @Name("Save project")
     @Produces("application/json")
-    public Response saveProject(@FormParam("id") Long idProject, @FormParam("name") String name, @FormParam("description") String description, @FormParam("description-html") String descriptionHtml, @FormParam("sharing") String projectSharing, @FormParam("type") ProjectType type, @FormParam("board") String board) {
+    public Response saveProject(
+            @FormParam("id") Long idProject, 
+            @FormParam("name") String name, 
+            @FormParam("description") String description, 
+            @FormParam("description-html") String descriptionHtml, 
+            @FormParam("sharing") String projectSharing, 
+            @FormParam("type") ProjectType type, 
+            @FormParam("board") String board) {
+        
+        LOG.info("Saving project {}.", idProject);
+
         try {
             boolean privateProject = false;
             boolean sharedProject = false;
+
             if ("private".equalsIgnoreCase(projectSharing)) {
                 privateProject = true;
             } else if ("shared".equalsIgnoreCase(projectSharing)) {
                 sharedProject = true;
             }
-            ProjectRecord savedProject = projectService.saveProject(idProject, name, description, descriptionHtml, privateProject, sharedProject, type, board);
+
+            ProjectRecord savedProject = projectService.saveProject(
+                    idProject, 
+                    name, 
+                    description, 
+                    descriptionHtml, 
+                    privateProject, 
+                    sharedProject, 
+                    type, 
+                    board);
+            LOG.debug("Project {} has been saved.", idProject);
+
             JsonObject result = projectConverter.toJson(savedProject);
+            LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
 
             return Response.ok(result.toString()).build();
         } catch (AuthorizationException ae) {
+            LOG.warn("Project not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        catch (Exception ex) {
+            LOG.error("General exception encountered. Message is: ", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
