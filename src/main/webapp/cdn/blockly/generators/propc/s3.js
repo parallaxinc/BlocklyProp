@@ -152,8 +152,13 @@ Blockly.propc.scribbler_wait = function () {
 Blockly.Blocks.scribbler_if_line = {
     init: function () {
         this.appendDummyInput()
-                .appendField("if the Scribbler robot")
-                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LINE_CONDITION')
+                .appendField("if the Scribbler")
+                .appendField(new Blockly.FieldDropdown([
+                    ['is', 'IS'],
+                    ['is not', 'IS_NOT']
+                ], function (state) {
+                    this.sourceBlock_.checkForWas(state);
+                }), 'LINE_CONDITION')
                 .appendField("over")
                 .appendField(new Blockly.FieldDropdown([['the center', 'CENTER'], ['the left edge', 'LEFT'], ['the right edge', 'RIGHT'], ['any part', 'DETECTED']]), 'LINE_POSITION')
                 .appendField("of a")
@@ -167,6 +172,24 @@ Blockly.Blocks.scribbler_if_line = {
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP);
+    },
+    checkForWas: function (state) {
+        if (state === 'WAS' || state === 'WAS_NOT') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+        } else {
+            this.setColour(colorPalette.getColor('input'));
+            this.setWarningText(null);
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('state', this.getFieldValue('LINE_CONDITION'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var state = xmlElement.getAttribute('state');
+        this.checkForWas(state);
     }
 };
 
@@ -185,9 +208,11 @@ Blockly.Blocks.scribbler_if_obstacle = {
     init: function () {
         this.appendDummyInput()
                 .appendField("if an obstacle")
-                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'OBSTACLE_CONDITION')
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT']], function (state) {
+                    this.sourceBlock_.checkForWas(state);
+                }), 'OBSTACLE_CONDITION')
                 .appendField(new Blockly.FieldDropdown([['in front of', 'CENTER'], ['to the left of', 'LEFT'], ['to the right of', 'RIGHT'], ['detected by', 'DETECTED']]), 'OBSTACLE_POSITION')
-                .appendField("the Scribbler robot");
+                .appendField("the Scribbler");
         this.appendStatementInput("IF_OBSTACLE")
                 .appendField();
         this.setPreviousStatement(true);
@@ -196,6 +221,24 @@ Blockly.Blocks.scribbler_if_obstacle = {
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP);
+    },
+    checkForWas: function (state) {
+        if (state === 'WAS' || state === 'WAS_NOT') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+        } else {
+            this.setColour(colorPalette.getColor('input'));
+            this.setWarningText(null);
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('state', this.getFieldValue('OBSTACLE_CONDITION'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var state = xmlElement.getAttribute('state');
+        this.checkForWas(state);
     }
 };
 
@@ -213,9 +256,11 @@ Blockly.Blocks.scribbler_if_light = {
     init: function () {
         this.appendDummyInput()
                 .appendField("if the most light")
-                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'LIGHT_CONDITION')
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT']], function (state) {
+                    this.sourceBlock_.checkForWas(state);
+                }), 'LIGHT_CONDITION')
                 .appendField(new Blockly.FieldDropdown([['in front', 'CENTER'], ['to the left', 'LEFT'], ['to the right', 'RIGHT'], ['on all sides', 'DETECTED']]), 'LIGHT_POSITION')
-                .appendField("of the Scribbler robot");
+                .appendField("of the Scribbler");
         this.appendStatementInput("IF_LIGHT")
                 .appendField();
         this.setPreviousStatement(true);
@@ -224,6 +269,24 @@ Blockly.Blocks.scribbler_if_light = {
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP);
+    },
+    checkForWas: function (state) {
+        if (state === 'WAS' || state === 'WAS_NOT') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+        } else {
+            this.setColour(colorPalette.getColor('input'));
+            this.setWarningText(null);
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('state', this.getFieldValue('LIGHT_CONDITION'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var state = xmlElement.getAttribute('state');
+        this.checkForWas(state);
     }
 };
 
@@ -240,8 +303,10 @@ Blockly.propc.scribbler_if_light = function () {
 Blockly.Blocks.scribbler_if_stalled = {
     init: function () {
         this.appendDummyInput()
-                .appendField("if the Scribbler robot")
-                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'STALLED_CONDITION')
+                .appendField("if the Scribbler")
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT']], function (state) {
+                    this.sourceBlock_.checkForWas(state);
+                }), 'STALLED_CONDITION')
                 .appendField("stuck");
         this.appendStatementInput("IF_STALLED")
                 .appendField();
@@ -251,6 +316,24 @@ Blockly.Blocks.scribbler_if_stalled = {
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_STALLED_TOOLTIP);
+    },
+    checkForWas: function (state) {
+        if (state === 'WAS' || state === 'WAS_NOT') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+        } else {
+            this.setColour(colorPalette.getColor('input'));
+            this.setWarningText(null);
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('state', this.getFieldValue('STALLED_CONDITION'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var state = xmlElement.getAttribute('state');
+        this.checkForWas(state);
     }
 };
 
@@ -266,13 +349,33 @@ Blockly.Blocks.scribbler_if_button = {
     init: function () {
         this.appendDummyInput()
                 .appendField("if the red button")
-                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT'], ['was', 'WAS'], ['was not', 'WAS_NOT']]), 'BUTTON_CONDITION')
+                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['is not', 'IS_NOT']], function (state) {
+                    this.sourceBlock_.checkForWas(state);
+                }), 'BUTTON_CONDITION')
                 .appendField("pressed");
         this.appendStatementInput("IF_BUTTON");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
+    },
+    checkForWas: function (state) {
+        if (state === 'WAS' || state === 'WAS_NOT') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+        } else {
+            this.setColour(colorPalette.getColor('input'));
+            this.setWarningText(null);
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('state', this.getFieldValue('BUTTON_CONDITION'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var state = xmlElement.getAttribute('state');
+        this.checkForWas(state);
     }
 };
 
@@ -287,8 +390,7 @@ Blockly.propc.scribbler_if_button = function () {
 Blockly.Blocks.scribbler_if_random = {
     init: function () {
         this.appendDummyInput()
-                .appendField("if a virtual coin flip")
-                .appendField(new Blockly.FieldDropdown([['is', 'IS'], ['was', 'WAS']]), 'RANDOM_CONDITION')
+                .appendField("if a virtual coin flip is")
                 .appendField(new Blockly.FieldDropdown([['heads', ''], ['tails', '_NOT']]), 'RANDOM_INVERT');
         this.appendStatementInput("IF_RANDOM");
         this.setPreviousStatement(true);
@@ -304,7 +406,7 @@ Blockly.propc.scribbler_if_random = function () {
     Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
-    var code = 'if(s3_simpleRandom(S3_' + this.getFieldValue('RANDOM_CONDITION') + this.getFieldValue('RANDOM_INVERT') + ')) {\n';
+    var code = 'if(s3_simpleRandom(S3_IS' + this.getFieldValue('RANDOM_INVERT') + ')) {\n';
     return code + Blockly.propc.statementToCode(this, 'IF_RANDOM') + '\n}';
 };
 
@@ -442,7 +544,6 @@ Blockly.Blocks.scribbler_play = {
         this.appendDummyInput()
                 .appendField("play a")
                 .appendField(new Blockly.FieldDropdown([['soprano', '4'], ['tenor', '8'], ['middle', '16'], ['low', '32'], ['deep', '64']]), 'NOTE_OCTAVE')
-                //.appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
                 .appendField(new Blockly.FieldDropdown([['A\u266D', '3322'], ['A', '3520'], ['A\u266F/B\u266D', '3729'], ['B', '3951'], ['C', '4186'], ['C\u266F/D\u266D', '4435'], ['D', '4699'], ['D\u266F/E\u266D', '4978'], ['E', '5274'], ['F', '5588'], ['F\u266F/G\u266D', '5920'], ['G', '6272'], ['G\u266F', '6645']]), 'NOTE_FREQUENCY')
                 .appendField("for a")
                 .appendField(new Blockly.FieldDropdown([['sixteenth', '63'], ['dotted sixteenth', '94'], ['eighth', '125'], ['dotted eighth', '188'], ['quarter', '250'], ['dotted quarter', '375'], ['half', '500'], ['dotted half', '750'], ['whole', '1000'], ['dotted whole', '1500']]), 'NOTE_DURATION')
@@ -600,12 +701,12 @@ Blockly.Blocks.move_motors_xy = {
                 .appendField('R,-20755429,20755429,0', 'RANGEVALS0')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck("Number")
-                .appendField("change (+/-) in X");
+                .appendField("change (+/\u2212) in X");
         this.appendValueInput("Y_DISTANCE")
                 .appendField('R,-20755429,20755429,0', 'RANGEVALS1')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck("Number")
-                .appendField("change (+/-) in Y");
+                .appendField("change (+/\u2212) in Y");
         this.appendValueInput("MOTOR_SPEED")
                 .appendField('R,-100,100,0', 'RANGEVALS2')
                 .setAlign(Blockly.ALIGN_RIGHT)
@@ -688,7 +789,7 @@ Blockly.Blocks.move_motors_angle = {
                 .appendField('R,-85,85,0', 'RANGEVALS1')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck("Number")
-                .appendField("around a radius (left-/right+) in")
+                .appendField("around a radius (\u2212\u21B6 \u21B7+) in")
                 .appendField(new Blockly.FieldDropdown([
                     ['inches of', ' * 100000 / 1933'],
                     ['tenths of an inch of', ' * 10000 / 1933'],
@@ -821,9 +922,13 @@ Blockly.propc.line_sensor = function () {
 Blockly.Blocks.obstacle_sensor = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("an obstacle is present to the")
-                .appendField(new Blockly.FieldDropdown([["left", "LEFT"], ["right", "RIGHT"]]), "OBSTACLE_SENSOR_CHOICE")
-                .appendField("(true or false)");
+                .appendField("obstacle detected")
+                .appendField(new Blockly.FieldDropdown([
+                    ["on the left", "LEFT"],
+                    ["on the right", "RIGHT"],
+                    ["in front", "&&"],
+                    ["by either sensor", "||"]
+                ]), "OBSTACLE_SENSOR_CHOICE");
 
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
@@ -837,7 +942,10 @@ Blockly.propc.obstacle_sensor = function () {
     Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
 
     var dir = this.getFieldValue("OBSTACLE_SENSOR_CHOICE");
-    return ['s3_readObstacle(S3_' + dir + ')', Blockly.propc.ORDER_NONE];
+    if (dir === 'LEFT' || dir === 'RIGHT')
+        return ['s3_readObstacle(S3_' + dir + ')', Blockly.propc.ORDER_NONE];
+    else
+        return ['(s3_readObstacle(S3_LEFT) ' + dir + ' s3_readObstacle(S3_RIGHT))', Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.Blocks.stall_sensor = {
@@ -845,9 +953,9 @@ Blockly.Blocks.stall_sensor = {
         this.appendDummyInput("")
                 .appendField("stall sensor")
                 .appendField(new Blockly.FieldDropdown([
-            ["tail wheel", "s3_stalled()"], 
-            ["drive wheels", "!s3_motorsMoving()"]
-        ]), "STALL_SENSOR_CHOICE");
+                    ["tail wheel", "s3_stalled()"],
+                    ["drive wheels", "!s3_motorsMoving()"]
+                ]), "STALL_SENSOR_CHOICE");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
         this.setHelpUrl(Blockly.MSG_S3_STALL_HELPURL);
@@ -935,12 +1043,11 @@ Blockly.propc.reset_button_presses = function () {
 
 Blockly.Blocks.scribbler_servo = {
     init: function () {
-        this.appendDummyInput("")
-                .appendField("rotate servo on")
-                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN");
         this.appendValueInput("SERVO_ANGLE")
                 .setCheck("Number")
-                .appendField("to an angle of (0 to 180)\u00B0");
+                .appendField("rotate servo on")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN")
+                .appendField("to angle (degrees)");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -1524,3 +1631,27 @@ Blockly.propc.sirc_s3_get = function () {
     var code = 'sirc_button(' + pin + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
+
+Blockly.Blocks.mic_s3_get = {
+    helpUrl: Blockly.MSG_S3_MIC_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_MIC_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("microphone");
+        this.setInputsInline(true);
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.mic_s3_get = function () {
+    Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
+    Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
+    Blockly.propc.setups_[ 's3_mic' ] = 's3_enableMic();';
+
+    var code = 's3_readMic()';
+    return [code, Blockly.propc.ORDER_NONE];
+};
+

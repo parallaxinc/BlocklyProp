@@ -1063,10 +1063,12 @@
                 </block>
                 <block type="fp_scanner_scan"></block>
             </category>
+<!--
             <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
                 <block type="HMC5883L_init"></block>
                 <block type="HMC5883L_read"></block>
             </category>
+-->
             <category name="<fmt:message key="category.sensor-input.LSM9DS1" />">
                 <block type="lsm9ds1_init"></block>
                 <block type="lsm9ds1_mag_calibrate"></block>
@@ -1081,10 +1083,12 @@
                 <block type="MX2125_tilt_xaxis"></block>
                 <block type="MX2125_tilt_yaxis"></block>
             </category>
+<!--
             <category name="<fmt:message key="category.sensor-input.mma7455" />">
                 <block type="MMA7455_init"></block>
                 <block type="MMA7455_acceleration"></block>
             </category>
+-->
             <category name="<fmt:message key="category.sensor-input.pir" />">
                 <block type="PIR_Sensor"></block>
             </category>
@@ -1308,6 +1312,9 @@
 <!--
                 <block type="spinning_sensor"></block>
 -->
+            </category>
+            <category name="<fmt:message key="category.sensor-input.s3-mic" />">
+                <block type="mic_s3_get"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-button" />">
                 <block type="reset_button_presses"></block>
