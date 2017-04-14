@@ -1377,7 +1377,8 @@ Blockly.Blocks.activitybot_display_calibration = {
         this.setTooltip(Blockly.MSG_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
-                .appendField("ActivityBot display calibration");
+                .appendField("ActivityBot display calibration")
+                .appendField(new Blockly.FieldDropdown([['results', 'result'], ['interpolation table', 'table']]), 'TYPE');
     }
 };
 
@@ -1387,13 +1388,7 @@ Blockly.propc.activitybot_display_calibration = function () {
     Blockly.propc.serial_terminal_ = true;
 
     var code = '';
-    code += 'int abd_intTabSetup;\n';
-    code += 'volatile int abd_elCntL, abd_elCntR, abd_elCntL, abd_elCntR, abd_cntrLidx, abd_cntrRidx;\n';
-    code += 'int abd_spdrL[120], abd_spdmL[120], abd_spdrR[120], abd_spdmR[120];\n';
 
-    Blockly.propc.global_vars_["activitybot_display_calibration"] = code;
-
-    code = '';
     code += 'if(!abd_intTabSetup) interpolation_table_setup();\n';
     code += 'print("=== LEFT SERVO ===\\r");\n';
     code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCntL, abd_cntrLidx);\n';
@@ -1404,7 +1399,18 @@ Blockly.propc.activitybot_display_calibration = function () {
     code += 'print("Index, Servo Drive, Encoder Ticks/Second\\r");\n';
     code += 'for(int __rIdx = 0; __rIdx < abd_elCntR; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
 
-    return code;
+    if (this.getFieldValue('TYPE') === 'table') {
+        var global_code = '';
+        global_code += 'int abd_intTabSetup;\n';
+        global_code += 'volatile int abd_elCntL, abd_elCntR, abd_elCntL, abd_elCntR, abd_cntrLidx, abd_cntrRidx;\n';
+        global_code += 'int abd_spdrL[120], abd_spdmL[120], abd_spdrR[120], abd_spdmR[120];\n';
+
+        Blockly.propc.global_vars_["activitybot_display_calibration"] = global_code;
+
+        return code;
+    } else {
+        return 'drive_calibrationResults();\n';
+    }
 };
 
 Blockly.Blocks.mcp320x_read = {
