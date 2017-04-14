@@ -64,7 +64,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getUserScreenName(Long idUser) {
-        return userDao.getUser(idUser).getScreenname();
+        
+        String name = "";
+        
+        try {
+            name = userDao.getUser(idUser).getScreenname();
+        }
+        catch (NullPointerException ex) {
+            LOG.error("Error retreiving name for userID: {}", idUser);
+        }
+        return name;
     }
 
     @Override
