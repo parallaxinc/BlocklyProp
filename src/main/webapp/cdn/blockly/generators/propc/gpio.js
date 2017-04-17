@@ -1403,7 +1403,7 @@ Blockly.propc.activitybot_display_calibration = function () {
         var global_code = '';
         global_code += 'int abd_intTabSetup;\n';
         global_code += 'volatile int abd_elCntL, abd_elCntR, abd_elCntL, abd_elCntR, abd_cntrLidx, abd_cntrRidx;\n';
-        global_code += 'int abd_spdrL[120], abd_spdmL[120], abd_spdrR[120], abd_spdmR[120];\n';
+        global_code += 'int abd_spdrL[120], abd_spdmL[120], abd_spdrR[120], abd_spdmR[120];\n\nvoid interpolation_table_setup(void);';
 
         Blockly.propc.global_vars_["activitybot_display_calibration"] = global_code;
 
