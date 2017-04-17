@@ -150,7 +150,13 @@
                 <block type="logic_negate"></block>
                 <block type="logic_compare"></block>
                 <block type="math_advanced"></block>
-                <block type="math_inv_trig"></block>
+                <block type="math_inv_trig">
+                    <value name="ARG3">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.operators.strings" />" >
                 <block type="string_compare"></block>
@@ -1051,6 +1057,11 @@
                 <block type="GPS_altitude"></block>
                 <block type="GPS_velocity"></block>
                 <block type="GPS_satsTracked"></block>
+                    <c:choose>
+                        <c:when test="${experimental == true}">
+                        <block type="GPS_date_time"></block>
+                        </c:when>
+                    </c:choose>
             </category>
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
@@ -1063,12 +1074,12 @@
                 </block>
                 <block type="fp_scanner_scan"></block>
             </category>
-<!--
-            <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
-                <block type="HMC5883L_init"></block>
-                <block type="HMC5883L_read"></block>
-            </category>
--->
+            <!--
+                        <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
+                            <block type="HMC5883L_init"></block>
+                            <block type="HMC5883L_read"></block>
+                        </category>
+            -->
             <category name="<fmt:message key="category.sensor-input.LSM9DS1" />">
                 <block type="lsm9ds1_init"></block>
                 <block type="lsm9ds1_mag_calibrate"></block>
@@ -1083,12 +1094,12 @@
                 <block type="MX2125_tilt_xaxis"></block>
                 <block type="MX2125_tilt_yaxis"></block>
             </category>
-<!--
-            <category name="<fmt:message key="category.sensor-input.mma7455" />">
-                <block type="MMA7455_init"></block>
-                <block type="MMA7455_acceleration"></block>
-            </category>
--->
+            <!--
+                        <category name="<fmt:message key="category.sensor-input.mma7455" />">
+                            <block type="MMA7455_init"></block>
+                            <block type="MMA7455_acceleration"></block>
+                        </category>
+            -->
             <category name="<fmt:message key="category.sensor-input.pir" />">
                 <block type="PIR_Sensor"></block>
             </category>
@@ -1291,7 +1302,13 @@
             <block type="logic_compare"></block>
             <block type="constrain_value"></block>
             <block type="math_advanced"></block>
-            <block type="math_inv_trig"></block>
+            <block type="math_inv_trig">
+                <value name="ARG3">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+            </block>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" include="s3" colour=140>
             <category name="<fmt:message key="category.sensor-input.s3-line" />">
@@ -1309,9 +1326,9 @@
             <category name="<fmt:message key="category.sensor-input.s3-stall" />">
                 <block type="scribbler_if_stalled"></block>
                 <block type="stall_sensor"></block>
-<!--
-                <block type="spinning_sensor"></block>
--->
+                <!--
+                                <block type="spinning_sensor"></block>
+                -->
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-mic" />">
                 <block type="mic_s3_get"></block>
