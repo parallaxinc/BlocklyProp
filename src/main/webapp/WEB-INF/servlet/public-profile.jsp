@@ -19,10 +19,12 @@
                 <div class="col-md-9 col-sm-12">
                     <h2><fmt:message key="public-profile.title" />: <span class="user"><%= request.getAttribute("screenname")%></span></h2>
                     <div>
+                        <!--
                         <ul class="nav nav-pills" role="tablist">
-                            <li role="presentation" id="select-projects" class="active"><a data-toggle="tab" href="#projects"><fmt:message key="public-profile.nav.projects" /></a></li>
-                            <li role="presentation" id="select-profile"><a data-toggle="tab" href="#profile"><fmt:message key="public-profile.nav.profile" /></a></li>
-                        </ul> 
+                               <li role="presentation" id="select-projects" class="active"><a data-toggle="tab" href="#projects"><fmt:message key="public-profile.nav.projects" /></a></li>
+                               <li role="presentation" id="select-profile"><a data-toggle="tab" href="#profile"><fmt:message key="public-profile.nav.profile" /></a></li>
+                        </ul>
+                        -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane" id="profile">
                                 <h3><fmt:message key="public-profile.friends" /></h3>
@@ -32,7 +34,7 @@
                                 <hr>
                                 <ul class="latest-projects"></ul>
                                 <hr>
-                                <span id="project-list-pages">Projects: </span>
+                                <span id="project-list-pages"><fmt:message key="public-profile.projects" />: </span>
 
                                 <script>
                                     var getUrlParameter = function getUrlParameter(sParam) {
@@ -65,51 +67,61 @@
                                             "class": "editor-spin-link"
                                         }
                                     };
-                                    
+
+                                    var projectBoard = {
+                                        "activity-board": "icon-board-ab",
+                                        "s3": "icon-board-s3",
+                                        "heb": "icon-board-heb",
+                                        "flip": "icon-board-flip",
+                                        "other": "icon-board-other"
+                                    };
+
                                     var page = 0;
-                                    if(getUrlParameter('page') === undefined) page = 0;
+                                    if (getUrlParameter('page') === undefined)
+                                        page = 0;
                                     else {
-                                        $('#profile').removeClass('active');                 
-                                        $('#projects').addClass('active');                 
+                                        $('#profile').removeClass('active');
+                                        $('#projects').addClass('active');
                                         $('#select-projects').tab('show');
                                         page = parseInt(getUrlParameter('page')) * 10;
                                     }
-                                    
+
                                     $.get(baseUrl + "/rest/shared/project/list/user/" + getUrlParameter('id-user') + "?sort=modified&order=desc&limit=10&offset=" + page.toString(10), function (data) {
                                         $.each(data['rows'], function (index, project) {
                                             var projectItem = $("<li/>", {
                                                 "class": "project"
                                             });
                                             $("<a/>", {
-                                                "class": "editor-view-link editor-icon " + projectTypes[project['type']]['class'],
+                                                "class": "editor-view-link editor-icon " + projectBoard[project['board']],
                                                 "href": baseUrl + "/projects.jsp#" + project['id'],
                                                 "text": project['name']
                                             }).appendTo(projectItem);
                                             $(".latest-projects").append(projectItem);
                                         });
                                         var projPages = parseInt(data['total']);
-                                        for(var idx = 1; idx <= projPages; idx += 10) {
+                                        for (var idx = 1; idx <= projPages; idx += 10) {
                                             var startNum = idx.toString(10);
                                             var endNum = (idx + 9).toString(10);
-                                            if(endNum > projPages) endNum = projPages;
-                                 
-                                            var linkPage = parseInt(idx/10).toString(10);
+                                            if (endNum > projPages)
+                                                endNum = projPages;
+
+                                            var linkPage = parseInt(idx / 10).toString(10);
                                             var btnLink = '';
                                             btnLink += '<a href="?id-user=' + getUrlParameter('id-user');
                                             btnLink += '&page=' + linkPage + '" class="btn btn-secondary btn-sm" ';
                                             btnLink += 'role="button" id="projPage-' + linkPage + '">';
-                                            
+
                                             $("#project-list-pages").append(btnLink + startNum + "-" + endNum + "</a>");
 
-                                            if(linkPage === getUrlParameter('page')) {
+                                            if (linkPage === getUrlParameter('page')) {
                                                 $('#projPage-' + linkPage).removeClass('btn-secondary').addClass('btn-primary');
-                                            } else if( getUrlParameter('page') === undefined && linkPage === '0') {
+                                            } else if (getUrlParameter('page') === undefined && linkPage === '0') {
                                                 $('#projPage-' + linkPage).removeClass('btn-secondary').addClass('btn-primary');
                                             }// Use to add active to button class
                                         }
                                     });
 
-                                </script>    
+                                </script>
 
                             </div>
                         </div>

@@ -22,8 +22,23 @@ import com.parallax.client.cloudsession.objects.User;
  */
 public interface SecurityService {
 
-    Long register(String screenname, String email, String password, String passwordConfirm) throws NonUniqueEmailException, PasswordVerifyException, PasswordComplexityException, ScreennameUsedException;
+    Long register(
+            String screenname, 
+            String email, 
+            String password, 
+            String passwordConfirm) throws 
+                NonUniqueEmailException, 
+                PasswordVerifyException, 
+                PasswordComplexityException, 
+                ScreennameUsedException;
 
-    User authenticateLocalUser(String email, String password) throws UnknownUserException, UserBlockedException, EmailNotConfirmedException, InsufficientBucketTokensException, WrongAuthenticationSourceException;
+    User authenticateLocalUser(
+            String email, 
+            String password) throws 
+                UnknownUserException, 
+                UserBlockedException, 
+                EmailNotConfirmedException, 
+                InsufficientBucketTokensException, 
+                WrongAuthenticationSourceException;
 
 }

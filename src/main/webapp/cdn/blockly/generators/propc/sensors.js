@@ -1067,7 +1067,7 @@ Blockly.Blocks.GPS_init = {
         this.appendDummyInput()
                 .appendField("GPS module initialize TX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN")
-               .appendField("baud")
+                .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"]]), "BAUD");
 
         this.setNextStatement(true, null);
@@ -1236,6 +1236,120 @@ Blockly.propc.GPS_velocity = function () {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
+Blockly.Blocks.GPS_date_time = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_GPS_VELOCITY_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("GPS current ")
+                .appendField(new Blockly.FieldDropdown([
+                    ["year", "GPS_UNIT_YEAR"],
+                    ["month", "GPS_UNIT_MONTH"],
+                    ["day", "GPS_UNIT_DAY"],
+                    ["hour", "GPS_UNIT_HOUR"],
+                    ["minute", "GPS_UNIT_MINUTE"],
+                    ["second", "GPS_UNIT_SECOND"]
+                ], function (unit) {
+                    var zone_label = this.sourceBlock_.getField('ZONE_LABEL');
+                    var zone_value = this.sourceBlock_.getField('ZONE_VALUE');
+                    if (unit === 'GPS_UNIT_HOUR') {
+                        zone_label.setVisible(true);
+                        zone_value.setVisible(true);
+                    } else {
+                        zone_label.setVisible(false);
+                        zone_value.setVisible(false);
+                    }
+                    this.sourceBlock_.render();
+                }), "TIME_UNIT")
+                .appendField("time zone", 'ZONE_LABEL')
+                .appendField(new Blockly.FieldDropdown([
+                    ['UTC+0', '0'],
+                    ['UTC-1', '-1'],
+                    ['UTC-2', '-2'],
+                    ['UTC-3', '-3'],
+                    ['UTC-4', '-4'],
+                    ['UTC-5', '-5'],
+                    ['UTC-6', '-6'],
+                    ['UTC-7', '-7'],
+                    ['UTC-8', '-8'],
+                    ['UTC-9', '-9'],
+                    ['UTC-10', '-10'],
+                    ['UTC-11', '-11'],
+                    ['UTC-12', '-12'],
+                    ['UTC+14', '14'],
+                    ['UTC+13', '13'],
+                    ['UTC+12', '12'],
+                    ['UTC+11', '11'],
+                    ['UTC+10', '10'],
+                    ['UTC+9', '9'],
+                    ['UTC+8', '8'],
+                    ['UTC+7', '7'],
+                    ['UTC+6', '6'],
+                    ['UTC+5', '5'],
+                    ['UTC+4', '4'],
+                    ['UTC+3', '3'],
+                    ['UTC+2', '2'],
+                    ['UTC+1', '1']
+                ]), "ZONE_VALUE");
+        this.setOutput(true, 'Number');
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.getField('ZONE_LABEL').setVisible(false);
+        this.getField('ZONE_VALUE').setVisible(false);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('unit', this.getFieldValue('TIME_UNIT'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        if (xmlElement.getAttribute('unit') === 'GPS_UNIT_HOUR') {
+            this.getField('ZONE_LABEL').setVisible(true);
+            this.getField('ZONE_VALUE').setVisible(true);
+        } else {
+            this.getField('ZONE_LABEL').setVisible(false);
+            this.getField('ZONE_VALUE').setVisible(false);
+        }
+    }
+};
+
+Blockly.propc.GPS_date_time = function () {
+    var time_unit = this.getFieldValue('TIME_UNIT');
+    var zone_unit = '0';
+    if(time_unit === 'GPS_UNIT_HOUR')
+        zone_unit = this.getFieldValue('ZONE_VALUE');
+
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
+
+    var dt_defines = '#define GPS_UNIT_YEAR     1\n';
+    dt_defines += '#define GPS_UNIT_DAY      2\n';
+    dt_defines += '#define GPS_UNIT_MONTH    3\n';
+    dt_defines += '#define GPS_UNIT_HOUR     4\n';
+    dt_defines += '#define GPS_UNIT_MINUTE   5\n';
+    dt_defines += '#define GPS_UNIT_SECOND   6\n';
+    Blockly.propc.definitions_["GPS_dateTime_units"] = dt_defines;
+
+    var dt_declare = 'int gps_dateTimeByUnit(char __u, int __z);\n';
+    var dt_function = 'int gps_dateTimeByUnit(char __u, int __z){int __gpsTime = gps_rawTime();\n';
+    dt_function += 'int __gpsDate = gps_rawDate();\n';
+    dt_function += 'int __gpsHour = __gpsTime/10000 + __z;\nif(__gpsHour < 0) __gpsHour += 24;\n';
+    dt_function += 'if(__gpsHour > 23) __gpsHour -= 24;\n\nswitch (__u) {\n';
+    dt_function += 'case GPS_UNIT_YEAR:\nreturn __gpsDate/10000;\n';
+    dt_function += 'break;\ncase GPS_UNIT_MONTH:\nreturn __gpsDate/100 - (__gpsDate/10000)*100;\n';
+    dt_function += 'break;\ncase GPS_UNIT_DAY:\nreturn __gpsDate - (__gpsDate/100)*100;\n';
+    dt_function += 'break;\ncase GPS_UNIT_HOUR:\nreturn __gpsHour;\nbreak;\ncase GPS_UNIT_MINUTE:\n';
+    dt_function += 'return __gpsTime/100 - (__gpsTime/10000)*100;\nbreak;\ncase GPS_UNIT_SECOND:\n';
+    dt_function += 'return __gpsTime - (__gpsTime/100)*100;\nbreak;\ndefault:\nreturn -1;\nbreak;}}';
+    Blockly.propc.methods_["gps_time_func"] = dt_function;
+    Blockly.propc.method_declarations_["gps_time_func"] = dt_declare;
+
+    var code = 'gps_dateTimeByUnit(' + time_unit + ', ' + zone_unit + ')';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+
+
 // ------------------ RFID Reader Blocks ---------------------------------------
 Blockly.Blocks.rfid_get = {
     helpUrl: Blockly.MSG_RFID_HELPURL,
@@ -1370,4 +1484,101 @@ Blockly.propc.sirc_get = function () {
 
     var code = 'sirc_button(' + pin + ')';
     return [code, Blockly.propc.ORDER_NONE];
+};
+
+// ------------------ 4x4 Keypad Blocks ----------------------------------------
+Blockly.Blocks.keypad_initialize = {
+    helpUrl: Blockly.MSG_KEYPAD_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_KEYPAD_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("4x4 Keypad initialize PINS left")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P0")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P1")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P2")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P3")
+                .appendField('|')
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P4")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P5")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P6")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "P7")
+                .appendField("right");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.keypadPins_ = '0,1,2,3,4,5,6,7,';
+        this.onchange();
+    },
+    onchange: function () {
+        this.keypadPins_ = '';
+        for (var i = 0; i < 8; i++)
+            this.keypadPins_ += this.getFieldValue('P' + i) + ',';
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+        // Iterate through every block.
+        for (var x = 0; x < blocks.length; x++) {
+            var func = blocks[x].keypadSetPins;
+            if (func) {
+                func.call(blocks[x]);
+            }
+        }
+    }
+};
+
+Blockly.propc.keypad_initialize = function () {
+    var keyFunc = 'int keypad_button(int __a, int __b, int __c, int __d, int __e, ';
+    keyFunc += 'int __f, int __g, int __h) {int __press = 0, __k, __j, ';
+    keyFunc += '__keytimeout = CNT + CLKFREQ/10;\nint __keypad[] = {__a, __b, ';
+    keyFunc += '__c, __d, __e, __f, __g, __h};\nint __keyval[] = {1,4,7,15,2,5,';
+    keyFunc += '8,0,3,6,9,14,10,11,12,13};\nwhile(CNT < __keytimeout) {';
+    keyFunc += 'for(__k = 4; __k < 8; __k++) input(__keypad[__k]);\n';
+    keyFunc += 'for(__k = 0; __k < 4; __k++) {';
+    keyFunc += 'for(__j = 0; __j < 4; __j++) low(__keypad[__j]);\n';
+    keyFunc += 'high(__keypad[__k]);\nfor(__j = 4; __j < 8; __j++) {';
+    keyFunc += '__press = input(__keypad[__j]);\nif(__press) break;}';
+    keyFunc += 'if(__press) return __keyval[__k | ((__j - 4) << 2)];}}';
+    keyFunc += 'return -1;}';
+
+    Blockly.propc.global_vars_["4x4keypad"] = keyFunc;
+
+    return '';
+};
+
+Blockly.Blocks.keypad_read = {
+    helpUrl: Blockly.MSG_KEYPAD_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_KEYPAD_READ_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("4x4 Keypad")
+                .appendField('', "PINS");
+        this.getField('PINS').setVisible(false);
+        this.setOutput(true, null);
+        this.keypadSetPins_ = '';
+        this.keypadSetPins();
+    },
+    onchange: function () {
+        this.keypadSetPins();
+    },
+    keypadSetPins: function () {
+        var warnText = 'WARNING: You must use a 4X4 Keypad initialize\nblock at the beginning of your program!';
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+        for (var x = 0; x < blocks.length; x++) {
+            var pins = blocks[x].keypadPins_;
+            if (pins) {
+                this.keypadSetPins_ = pins;
+                this.setFieldValue(pins, "PINS");
+                warnText = null;
+                break;
+            }
+        }
+        this.setWarningText(warnText);
+    }
+};
+
+Blockly.propc.keypad_read = function () {
+    var pins = this.getFieldValue('PINS');
+    pins = pins.substr(0, pins.length - 1);
+
+    return ['keypad_button(' + pins + ')', Blockly.propc.ORDER_ATOMIC];
 };

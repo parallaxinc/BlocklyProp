@@ -120,10 +120,16 @@
             </block>
             <block type="cog_new"></block>
             <block type="controls_return"></block>
+                <c:choose>
+                    <c:when test="${experimental == true}">
+                    <block type="custom_code_multiple"></block>
+                    </c:when>
+                </c:choose>
         </category>
         <category name="<fmt:message key="category.operators" />" exclude="s3" colour="275">
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
+                <!--<block type="math_arithmetic_multiple"></block> -->
                 <block type="math_limit"></block>
                 <block type="constrain_value"></block>
                 <block type="math_crement"></block>
@@ -144,7 +150,13 @@
                 <block type="logic_negate"></block>
                 <block type="logic_compare"></block>
                 <block type="math_advanced"></block>
-                <block type="math_inv_trig"></block>
+                <block type="math_inv_trig">
+                    <value name="ARG3">
+                        <block type="math_number">
+                            <field name="NUM">1</field>
+                        </block>
+                    </value>
+                </block>
             </category>
             <category name="<fmt:message key="category.operators.strings" />" >
                 <block type="string_compare"></block>
@@ -265,7 +277,7 @@
             </block>
             <block type="system_counter"></block>
         </category>
-        <category name="<fmt:message key="category.operators.arrays" />"  colour="250">
+        <category name="<fmt:message key="category.operators.arrays" />" exclude="s3" colour="250">
             <block type="array_init"></block>
             <block type="array_fill"></block>
             <block type="array_get">
@@ -370,6 +382,30 @@
             <block type="spin_comment"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
+        <category name="<fmt:message key="category.operators.arrays" />" include="s3" colour="250">
+            <block type="array_init"></block>
+            <block type="array_fill"></block>
+            <block type="array_get">
+                <value name="NUM">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="array_set">
+                <value name="NUM">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+                <value name="VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="array_clear"></block>
+        </category>
         <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
         <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3,heb" colour="200">
             <block type="make_pin"></block>
@@ -1000,6 +1036,10 @@
                 <block type="joystick_input_xaxis"></block>
                 <block type="joystick_input_yaxis"></block>
             </category>
+            <category name="<fmt:message key="category.sensor-input.4x4-keypad" />">
+                <block type="keypad_initialize"></block>
+                <block type="keypad_read"></block>
+            </category>
             <category name="<fmt:message key="category.sensor-input.colorpal" />">
                 <block type="colorpal_enable"></block>
                 <block type="colorpal_get_colors_raw"></block>
@@ -1017,6 +1057,11 @@
                 <block type="GPS_altitude"></block>
                 <block type="GPS_velocity"></block>
                 <block type="GPS_satsTracked"></block>
+                    <c:choose>
+                        <c:when test="${experimental == true}">
+                        <block type="GPS_date_time"></block>
+                        </c:when>
+                    </c:choose>
             </category>
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
@@ -1029,10 +1074,12 @@
                 </block>
                 <block type="fp_scanner_scan"></block>
             </category>
-            <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
-                <block type="HMC5883L_init"></block>
-                <block type="HMC5883L_read"></block>
-            </category>
+            <!--
+                        <category name="<fmt:message key="category.sensor-input.hmc5883l" />">
+                            <block type="HMC5883L_init"></block>
+                            <block type="HMC5883L_read"></block>
+                        </category>
+            -->
             <category name="<fmt:message key="category.sensor-input.LSM9DS1" />">
                 <block type="lsm9ds1_init"></block>
                 <block type="lsm9ds1_mag_calibrate"></block>
@@ -1047,10 +1094,12 @@
                 <block type="MX2125_tilt_xaxis"></block>
                 <block type="MX2125_tilt_yaxis"></block>
             </category>
-            <category name="<fmt:message key="category.sensor-input.mma7455" />">
-                <block type="MMA7455_init"></block>
-                <block type="MMA7455_acceleration"></block>
-            </category>
+            <!--
+                        <category name="<fmt:message key="category.sensor-input.mma7455" />">
+                            <block type="MMA7455_init"></block>
+                            <block type="MMA7455_acceleration"></block>
+                        </category>
+            -->
             <category name="<fmt:message key="category.sensor-input.pir" />">
                 <block type="PIR_Sensor"></block>
             </category>
@@ -1191,7 +1240,9 @@
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
             <block type="ab_drive_init"></block>
-            <block type="ab_drive_ramping"></block>
+            <block type="ab_drive_ramping">
+                <field name="RAMPING">600</field>
+            </block>
             <block type="ab_drive_speed">
                 <value name="LEFT">
                     <block type="math_number">
@@ -1211,6 +1262,13 @@
                     </block>
                 </value>
                 <value name="RIGHT">
+                    <block type="math_number">
+                        <field name="NUM">64</field>
+                    </block>
+                </value>
+            </block>
+            <block type="ab_drive_goto_max_speed">
+                <value name="SPEED">
                     <block type="math_number">
                         <field name="NUM">64</field>
                     </block>
@@ -1244,7 +1302,13 @@
             <block type="logic_compare"></block>
             <block type="constrain_value"></block>
             <block type="math_advanced"></block>
-            <block type="math_inv_trig"></block>
+            <block type="math_inv_trig">
+                <value name="ARG3">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
+                    </block>
+                </value>
+            </block>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" include="s3" colour=140>
             <category name="<fmt:message key="category.sensor-input.s3-line" />">
@@ -1262,7 +1326,12 @@
             <category name="<fmt:message key="category.sensor-input.s3-stall" />">
                 <block type="scribbler_if_stalled"></block>
                 <block type="stall_sensor"></block>
-                <block type="spinning_sensor"></block>
+                <!--
+                                <block type="spinning_sensor"></block>
+                -->
+            </category>
+            <category name="<fmt:message key="category.sensor-input.s3-mic" />">
+                <block type="mic_s3_get"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-button" />">
                 <block type="reset_button_presses"></block>
@@ -1399,18 +1468,20 @@
                 <block type="scribbler_serial_send_decimal"></block>
                 <block type="scribbler_serial_send_char"></block>
                 <block type="scribbler_serial_send_ctrl"></block>
-                <block type="scribbler_serial_cursor_xy">
-                    <value name="X">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
-                        </block>
-                    </value>
-                    <value name="Y">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
-                        </block>
-                    </value>
-                </block>
+                <!--
+                                <block type="scribbler_serial_cursor_xy">
+                                    <value name="X">
+                                        <block type="spin_integer">
+                                            <field name="INT_VALUE">0</field>
+                                        </block>
+                                    </value>
+                                    <value name="Y">
+                                        <block type="spin_integer">
+                                            <field name="INT_VALUE">0</field>
+                                        </block>
+                                    </value>
+                                </block>
+                -->
                 <block type="scribbler_serial_rx_byte"></block>
             </category>
             <%--
@@ -1419,21 +1490,26 @@
                         </category>
             --%>
         </category>
-        <category name="<fmt:message key="category.system" />" include="other" colour="320">
-            <block type="waitcnt">
-                <value name="TARGET">
-                    <block type="math_arithmetic">
-                        <value name="A">
-                            <block type="system_counter"></block>
+
+        <c:choose>
+            <c:when test="${experimental == true}">
+                <category name="<fmt:message key="category.system" />" include="other" colour="320">
+                    <block type="waitcnt">
+                        <value name="TARGET">
+                            <block type="math_arithmetic">
+                                <value name="A">
+                                    <block type="system_counter"></block>
+                                </value>
+                            </block>
                         </value>
                     </block>
-                </value>
-            </block>
-            <block type="register_set"></block>
-            <block type="register_get"></block>
-            <block type="system_counter"></block>
-            <block type="custom_code"></block>
-        </category>
+                    <block type="register_set"></block>
+                    <block type="register_get"></block>
+                    <block type="system_counter"></block>
+                    <block type="custom_code"></block>
+                </category>
+            </c:when>
+        </c:choose>
 
     </xml>
 </body>

@@ -28,7 +28,8 @@ import com.parallax.server.blocklyprop.services.impl.UUIDTokenGeneratorServiceIm
 import com.parallax.server.blocklyprop.services.impl.UserServiceImpl;
 
 /**
- *
+ * Bind abstract service classes to their implementations
+ * 
  * @author Michel
  */
 public class ServiceModule extends AbstractModule {

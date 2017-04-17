@@ -403,12 +403,12 @@ Blockly.propc.control_repeat_for_loop = function () {
         if (isNaN(parseFloat(step)) || !isFinite(step)) {
             code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
         } else {
-            if (Number(step) < 1)
+            if (Number(step) < 0)
                 code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' += (' + step + ')) {\n' + repeat_code + '\n}';
-            else if (Number(step) > 1)
+            else if (Number(step) > 0)
                 code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += (' + step + ')) {\n' + repeat_code + '\n}';
             else if (Number(step) === 0)
-                code += '// ERROR: Your "step" size cannot be 0 (zero)!';
+                code += '// ERROR: Your "step" size cannot be 0 (zero)!\n' + repeat_code;
         }
     } else {
         if (Number(start) < Number(end)) {

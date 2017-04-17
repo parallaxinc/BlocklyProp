@@ -58,14 +58,22 @@ public class RestSharedProject {
     @Detail("Get all shared projects")
     @Name("Get all shared projects")
     @Produces("application/json")
-    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset) {
+    public Response get(
+            @QueryParam("sort") TableSort sort, 
+            @QueryParam("order") TableOrder order, 
+            @QueryParam("limit") Integer limit, 
+            @QueryParam("offset") Integer offset) {
+        
         LOG.info("Sort: {}", sort);
 
-        List<ProjectRecord> projects = projectService.getSharedProjects(sort, order, limit, offset);
+        List<ProjectRecord> projects 
+                = projectService.getSharedProjects(sort, order, limit, offset);
+        
         int projectCount = projectService.countSharedProjects();
 
         JsonObject result = new JsonObject();
         JsonArray jsonProjects = new JsonArray();
+        
         for (ProjectRecord project : projects) {
             jsonProjects.add(projectConverter.toListJson(project));
         }
