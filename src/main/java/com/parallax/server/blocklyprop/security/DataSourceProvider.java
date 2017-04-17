@@ -15,6 +15,11 @@ import org.apache.shiro.util.Factory;
  */
 public class DataSourceProvider implements Factory<DataSource> {
 
+    /**
+     * Get a data source instance
+     * 
+     * @return 
+     */
     @Override
     public DataSource getInstance() {
         return DataSourceSetup.getDataSource();

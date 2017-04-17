@@ -90,9 +90,16 @@ function renderContent() {
         codeXml.gotoLine(0);
     } else if (content.id === 'content_propc') {
         var code = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
-        codePropC.setValue(js_beautify(code, {
+        code = js_beautify(code, {
             'brace_style': 'expand'
-        }));
+        });
+        code = code.replace(/,\n[\s\xA0]+/g, ", ");
+        code = code.replace(/, & /g, ", &");
+        code = code.replace(/, \* /g, ", *");
+        code = code.replace(/\( & /g, "(&");
+        code = code.replace(/\( \* /g, "(*");
+        code = code.replace(/char \* /g, "char *");
+        codePropC.setValue(code);
         codePropC.gotoLine(0);
     }
 }

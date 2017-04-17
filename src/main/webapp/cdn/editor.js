@@ -28,6 +28,13 @@ $(document).ready(function () {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init(data['board'], []);
             }
+            if (projectData['board'] === 's3' && type === 'PROPC') {
+                $('#load-ram-button').addClass('hidden');
+                document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+            } else {
+                $('#load-ram-button').removeClass('hidden');
+                document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+            }
         });
     }
 
@@ -106,6 +113,10 @@ saveProjectAs = function () {
     });
 };
 
+editProjectDetails = function () {
+    window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
+};
+
 blocklyReady = function () {
     if (projectLoaded) {
         window.frames["content_blocks"].setProfile(projectData['board']);
@@ -122,8 +133,7 @@ loadProject = function () {
     if (projectData['board'] === 's3' && type === 'PROPC') {
         $('#load-ram-button').addClass('hidden');
         document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-    }
-    else {
+    } else {
         $('#load-ram-button').removeClass('hidden');
         document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
     }

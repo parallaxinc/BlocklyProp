@@ -31,6 +31,41 @@ body {
     line-height: 22px;
 }
 
+.icon-board-s3.editor-icon {
+    background-image: url('images/board-icons/IconS3.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
+.icon-board-ab.editor-icon {
+    background-image: url('images/board-icons/IconActivityBoard.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
+.icon-board-flip.editor-icon {
+    background-image: url('images/board-icons/IconFlip.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
+.icon-board-heb.editor-icon {
+    background-image: url('images/board-icons/IconBadge.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
+.icon-board-other.editor-icon {
+    background-image: url('images/board-icons/IconOtherBoards.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
 .navbar-brand#nav-logo {
     background-image: url('images/logo_small.png');
     background-repeat: no-repeat;

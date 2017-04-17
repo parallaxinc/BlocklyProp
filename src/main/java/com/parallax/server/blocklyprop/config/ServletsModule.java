@@ -23,6 +23,7 @@ import com.parallax.server.blocklyprop.servlets.ProjectLinkServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.PublicProfileServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
+import com.parallax.server.blocklyprop.servlets.SessionStateServlet;
 import com.parallax.server.blocklyprop.servlets.TextileChangeLogServlet;
 import com.parallax.server.blocklyprop.servlets.TextileClientDownloadServlet;
 import com.parallax.server.blocklyprop.servlets.TextileClientInstructionsServlet;
@@ -74,6 +75,10 @@ public class ServletsModule extends ServletModule {
         serve("/oauth/newuser").with(NewOAuthUserServlet.class);
         // OAuth providers
         serve("/oauth/google").with(OAuthGoogleServlet.class);
+        
+        // API Endpoints
+        // Get the time left in a session
+        serve("/sessionapi").with(SessionStateServlet.class);        
     }
 
 }
