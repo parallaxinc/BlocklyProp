@@ -1664,6 +1664,8 @@ Blockly.propc.math_advanced = function () {
     var store = Blockly.propc.variableDB_.getName(this.getFieldValue('STORE'), Blockly.Variables.NAME_TYPE);
     var arg1 = Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '1';
     var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
+    arg1 = arg1.replace(/([0-9]) /g, "$1.0 ").replace(/([0-9])\)/g, "$1.0)").replace(/\(int\)/g, "");
+    arg2 = arg2.replace(/([0-9]) /g, "$1.0 ").replace(/([0-9])\)/g, "$1.0)").replace(/\(int\)/g, "");
     var operator = this.getFieldValue('OP');
     var opTrig = '';
     if (operator === 'sin' || operator === 'cos' || operator === 'tan')
@@ -1709,6 +1711,8 @@ Blockly.propc.math_inv_trig = function () {
     var store = Blockly.propc.variableDB_.getName(this.getFieldValue('STORE'), Blockly.Variables.NAME_TYPE);
     var arg1 = Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '1';
     var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
+    arg1 = arg1.replace(/([0-9]) /g, "$1.0 ").replace(/([0-9])\)/g, "$1.0)").replace(/\(int\)/g, "");
+    arg2 = arg2.replace(/([0-9]) /g, "$1.0 ").replace(/([0-9])\)/g, "$1.0)").replace(/\(int\)/g, "");
     var operator = this.getFieldValue('OP');
     var opTrig = '/';
     if (operator === 'atan2')
