@@ -1236,6 +1236,120 @@ Blockly.propc.GPS_velocity = function () {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
+Blockly.Blocks.GPS_date_time = {
+    helpUrl: Blockly.MSG_GPS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_GPS_VELOCITY_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("GPS current ")
+                .appendField(new Blockly.FieldDropdown([
+                    ["year", "GPS_UNIT_YEAR"],
+                    ["month", "GPS_UNIT_MONTH"],
+                    ["day", "GPS_UNIT_DAY"],
+                    ["hour", "GPS_UNIT_HOUR"],
+                    ["minute", "GPS_UNIT_MINUTE"],
+                    ["second", "GPS_UNIT_SECOND"]
+                ], function (unit) {
+                    var zone_label = this.sourceBlock_.getField('ZONE_LABEL');
+                    var zone_value = this.sourceBlock_.getField('ZONE_VALUE');
+                    if (unit === 'GPS_UNIT_HOUR') {
+                        zone_label.setVisible(true);
+                        zone_value.setVisible(true);
+                    } else {
+                        zone_label.setVisible(false);
+                        zone_value.setVisible(false);
+                    }
+                    this.sourceBlock_.render();
+                }), "TIME_UNIT")
+                .appendField("time zone", 'ZONE_LABEL')
+                .appendField(new Blockly.FieldDropdown([
+                    ['UTC+0', '0'],
+                    ['UTC-1', '-1'],
+                    ['UTC-2', '-2'],
+                    ['UTC-3', '-3'],
+                    ['UTC-4', '-4'],
+                    ['UTC-5', '-5'],
+                    ['UTC-6', '-6'],
+                    ['UTC-7', '-7'],
+                    ['UTC-8', '-8'],
+                    ['UTC-9', '-9'],
+                    ['UTC-10', '-10'],
+                    ['UTC-11', '-11'],
+                    ['UTC-12', '-12'],
+                    ['UTC+14', '14'],
+                    ['UTC+13', '13'],
+                    ['UTC+12', '12'],
+                    ['UTC+11', '11'],
+                    ['UTC+10', '10'],
+                    ['UTC+9', '9'],
+                    ['UTC+8', '8'],
+                    ['UTC+7', '7'],
+                    ['UTC+6', '6'],
+                    ['UTC+5', '5'],
+                    ['UTC+4', '4'],
+                    ['UTC+3', '3'],
+                    ['UTC+2', '2'],
+                    ['UTC+1', '1']
+                ]), "ZONE_VALUE");
+        this.setOutput(true, 'Number');
+        this.setNextStatement(false, null);
+        this.setPreviousStatement(false, null);
+        this.getField('ZONE_LABEL').setVisible(false);
+        this.getField('ZONE_VALUE').setVisible(false);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('unit', this.getFieldValue('TIME_UNIT'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        if (xmlElement.getAttribute('unit') === 'GPS_UNIT_HOUR') {
+            this.getField('ZONE_LABEL').setVisible(true);
+            this.getField('ZONE_VALUE').setVisible(true);
+        } else {
+            this.getField('ZONE_LABEL').setVisible(false);
+            this.getField('ZONE_VALUE').setVisible(false);
+        }
+    }
+};
+
+Blockly.propc.GPS_date_time = function () {
+    var time_unit = this.getFieldValue('TIME_UNIT');
+    var zone_unit = '0';
+    if(time_unit === 'GPS_UNIT_HOUR')
+        zone_unit = this.getFieldValue('ZONE_VALUE');
+
+    Blockly.propc.definitions_["include GPS"] = '#include "gps.h"';
+
+    var dt_defines = '#define GPS_UNIT_YEAR     1\n';
+    dt_defines += '#define GPS_UNIT_DAY      2\n';
+    dt_defines += '#define GPS_UNIT_MONTH    3\n';
+    dt_defines += '#define GPS_UNIT_HOUR     4\n';
+    dt_defines += '#define GPS_UNIT_MINUTE   5\n';
+    dt_defines += '#define GPS_UNIT_SECOND   6\n';
+    Blockly.propc.definitions_["GPS_dateTime_units"] = dt_defines;
+
+    var dt_declare = 'int gps_dateTimeByUnit(char __u, int __z);\n';
+    var dt_function = 'int gps_dateTimeByUnit(char __u, int __z){int __gpsTime = gps_rawTime();\n';
+    dt_function += 'int __gpsDate = gps_rawDate();\n';
+    dt_function += 'int __gpsHour = __gpsTime/10000 + __z;\nif(__gpsHour < 0) __gpsHour += 24;\n';
+    dt_function += 'if(__gpsHour > 23) __gpsHour -= 24;\n\nswitch (__u) {\n';
+    dt_function += 'case GPS_UNIT_YEAR:\nreturn __gpsDate/10000;\n';
+    dt_function += 'break;\ncase GPS_UNIT_MONTH:\nreturn __gpsDate/100 - (__gpsDate/10000)*100;\n';
+    dt_function += 'break;\ncase GPS_UNIT_DAY:\nreturn __gpsDate - (__gpsDate/100)*100;\n';
+    dt_function += 'break;\ncase GPS_UNIT_HOUR:\nreturn __gpsHour;\nbreak;\ncase GPS_UNIT_MINUTE:\n';
+    dt_function += 'return __gpsTime/100 - (__gpsTime/10000)*100;\nbreak;\ncase GPS_UNIT_SECOND:\n';
+    dt_function += 'return __gpsTime - (__gpsTime/100)*100;\nbreak;\ndefault:\nreturn -1;\nbreak;}}';
+    Blockly.propc.methods_["gps_time_func"] = dt_function;
+    Blockly.propc.method_declarations_["gps_time_func"] = dt_declare;
+
+    var code = 'gps_dateTimeByUnit(' + time_unit + ', ' + zone_unit + ')';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+
+
 // ------------------ RFID Reader Blocks ---------------------------------------
 Blockly.Blocks.rfid_get = {
     helpUrl: Blockly.MSG_RFID_HELPURL,
@@ -1422,7 +1536,7 @@ Blockly.propc.keypad_initialize = function () {
     keyFunc += 'for(__j = 0; __j < 4; __j++) low(__keypad[__j]);\n';
     keyFunc += 'high(__keypad[__k]);\nfor(__j = 4; __j < 8; __j++) {';
     keyFunc += '__press = input(__keypad[__j]);\nif(__press) break;}';
-    keyFunc += 'if(__press) return __keyval[__k | ((__j - 4) << 2)];}}';   
+    keyFunc += 'if(__press) return __keyval[__k | ((__j - 4) << 2)];}}';
     keyFunc += 'return -1;}';
 
     Blockly.propc.global_vars_["4x4keypad"] = keyFunc;

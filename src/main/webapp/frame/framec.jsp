@@ -1051,7 +1051,12 @@
                 <block type="GPS_altitude"></block>
                 <block type="GPS_velocity"></block>
                 <block type="GPS_satsTracked"></block>
-            </category>
+                <c:choose>
+                    <c:when test="${experimental == true}">
+                        <block type="GPS_date_time"></block>
+                    </c:when>
+                </c:choose>
+                </category>
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
                 <block type="fp_scanner_add">
