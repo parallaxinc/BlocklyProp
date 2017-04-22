@@ -74,7 +74,7 @@ Blockly.Blocks.make_pin_input = {
                 .setCheck('Number')
                 .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
         this.getField('RANGEVALS0').setVisible(false);
-        this.appendDummyInput("")
+        this.appendDummyInput('ACTION')
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
     }
 };

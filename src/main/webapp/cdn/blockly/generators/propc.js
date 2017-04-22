@@ -46,24 +46,24 @@ var quotes = {
 };
 
 /*
-var directionArrow = {
-    /**
-     * Create an image of a arrow pointing toward or away.
-     * @param {string} direction 'forward' or 'backward'.
-     * @return {!Blockly.FieldImage} The field image of the arrow.
-     * @this Blockly.Block
-     *
-    newArrow_: function (direction) {
-        if (direction === 'forward') {
-            var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C3 L2%2C10 L4%2C10 z M3%2C.5 L.5%2C3 L5.5%2C3 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
-            return new Blockly.FieldImage(file, 8, 12, '&#8593;');
-        } else {
-            var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C0 L2%2C7 L4%2C7 z M3%2C10 L0.2%2C6.5 L5.8%2C6.5 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
-            return new Blockly.FieldImage(file, 8, 12, '&#8595;');
-        }
-    }
-};
-*/
+ var directionArrow = {
+ /**
+ * Create an image of a arrow pointing toward or away.
+ * @param {string} direction 'forward' or 'backward'.
+ * @return {!Blockly.FieldImage} The field image of the arrow.
+ * @this Blockly.Block
+ *
+ newArrow_: function (direction) {
+ if (direction === 'forward') {
+ var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C3 L2%2C10 L4%2C10 z M3%2C.5 L.5%2C3 L5.5%2C3 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
+ return new Blockly.FieldImage(file, 8, 12, '&#8593;');
+ } else {
+ var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C0 L2%2C7 L4%2C7 z M3%2C10 L0.2%2C6.5 L5.8%2C6.5 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
+ return new Blockly.FieldImage(file, 8, 12, '&#8595;');
+ }
+ }
+ };
+ */
 
 /**
  * Color Palette - Created by Michel on 30-4-2016.
@@ -303,12 +303,12 @@ Blockly.propc.finish = function (code) {
     for (var declaration in Blockly.propc.method_declarations_) {
         declarations.push(Blockly.propc.method_declarations_[declaration]);
     }
-    
+
     var spacer_defs = '\n\n';
-    if(definitions.toString().trim().length > 0)
+    if (definitions.toString().trim().length > 0)
         spacer_defs += '// ------ Global Variables and Objects ------\n';
 
-    var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') + 
+    var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') +
             spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
     // Indent every line.
@@ -322,18 +322,18 @@ Blockly.propc.finish = function (code) {
     if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
         setup += "/* EMPTY_PROJECT */\n";
     }
-    
+
     var spacer_decs = '';
-    if(declarations.length > 0)
+    if (declarations.length > 0)
         spacer_decs += '// ------ Function Declarations ------\n';
-    
+
     var spacer_funcs = '\n\n';
-    if(methods.length > 0)
+    if (methods.length > 0)
         spacer_funcs += '// ------ Functions ------\n';
 
     //return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
-    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + 
-            spacer_decs + declarations.join('\n\n').replace(/\n\n+/g, '\n').replace(/\n*$/, '\n') + 
+    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') +
+            spacer_decs + declarations.join('\n\n').replace(/\n\n+/g, '\n').replace(/\n*$/, '\n') +
             '\n// ------ Main Program ------\n' + code + spacer_funcs + methods.join('\n');
 };
 /**
@@ -431,3 +431,35 @@ if (!Object.keys) {
     }());
 }
 ;
+
+// NOTE: Replaces core function!
+Blockly.BlockSvg.prototype.setCollapsed = function (b) {
+    if (this.collapsed_ !== b) {
+        for (var c = [], a = 0, d; d = this.inputList[a]; a++)
+            c.push.apply(c, d.setVisible(!b));
+        for (a = 0; 10 > a; a++)
+            this.getField("RANGEVALS" + a) && this.getField("RANGEVALS" + a).setVisible(!1);
+        if (b) {
+            d = this.getIcons();
+            for (a = 0; a < d.length; a++)
+                d[a].setVisible(!1);
+            a = this.toString().replace(/[ANRS],.[0-9,-]+[ \xa0]/g, "\u00a0");
+            a.length > Blockly.COLLAPSE_CHARS && (a = a.substr(0, Blockly.COLLAPSE_CHARS) + "...");
+            this.appendDummyInput("_TEMP_COLLAPSED_INPUT").appendField(a).init();
+        } else
+            this.removeInput("_TEMP_COLLAPSED_INPUT"),
+                    this.setWarningText(null);
+        Blockly.BlockSvg.superClass_.setCollapsed.call(this, b);
+        if (!c.length) {
+            // No child blocks, just render this block.
+            c[0] = this;
+        }
+        if (this.rendered) {
+            for (var x = 0, block; block = c[x]; x++) {
+                block.render();
+            }
+            this.bumpNeighbours_();
+        }
+    }
+};
+

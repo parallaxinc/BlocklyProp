@@ -448,7 +448,7 @@ Blockly.Blocks.math_limit = {
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('A')
                 .setCheck('Number')
-                .appendField(new Blockly.FieldDropdown([["highest of", " #> "], ["lowest of", " <# "]]), 'OP');
+                .appendField(new Blockly.FieldDropdown([["highest of", " > "], ["lowest of", " < "]]), 'OP');
         this.appendValueInput('B')
                 .setCheck('Number')
                 .appendField("and");
@@ -466,14 +466,18 @@ Blockly.propc.math_limit = function () {
     var argument1 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ASSIGNMENT) || '0';
     var code;
 
-    code = argument0 + operator + argument1;
+    code = '(' + argument0 + operator + argument1 + ' ? ' + argument0 + ' : ' + argument1 + ')';
     return [code, Blockly.propc.ORDER_ASSIGNMENT];
 };
 
 Blockly.Blocks.math_crement = {
     // Increment/decrement
-    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
         this.setTooltip(Blockly.MSG_MATH_CREMENT_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('VAR')
