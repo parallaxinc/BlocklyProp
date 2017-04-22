@@ -236,6 +236,17 @@
             </block>
         </category>
         <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE PREVIOUS MENU AS WELL -->
+        <category name="<fmt:message key="category.values" />" include="heb" colour="220">
+            <block type="math_number"></block>
+            <block type="string_type_block"></block>
+            <block type="char_type_block"></block>
+            <block type="number_binary"></block>
+            <block type="number_hex"></block>
+            <block type="logic_boolean"></block>
+            <block type="high_low_value"></block>
+            <block type="heb_color_val"></block>
+            <block type="system_counter"></block>
+        </category>
         <category name="<fmt:message key="category.values" />" include="activity-board,flip" colour="220">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
@@ -300,17 +311,6 @@
                 </value>
             </block>
             <block type="array_clear"></block>
-        </category>
-        <category name="<fmt:message key="category.values" />" include="heb" colour="220">
-            <block type="math_number"></block>
-            <block type="string_type_block"></block>
-            <block type="char_type_block"></block>
-            <block type="number_binary"></block>
-            <block type="number_hex"></block>
-            <block type="logic_boolean"></block>
-            <block type="high_low_value"></block>
-            <block type="heb_color_val"></block>
-            <block type="system_counter"></block>
         </category>
         <category name="<fmt:message key="category.s3-simple" />" include="s3" colour=185>
             <category name="<fmt:message key="category.s3-simple.simple-control" />" colour=205>
@@ -1032,7 +1032,7 @@
             <block type="heb_erase_all_contacts"></block>
         </category>
         <category name="<fmt:message key="category.sensor-input" />" exclude="s3,heb" colour="155">
-            <category name="<fmt:message key="category.sensor-input.2axis-joystick" />">
+            <category name="<fmt:message key="category.sensor-input.2axis-joystick" />" include="activity-board">
                 <block type="joystick_input_xaxis"></block>
                 <block type="joystick_input_yaxis"></block>
             </category>
@@ -1298,6 +1298,7 @@
             <block type="math_arithmetic"></block>
             <block type="math_limit"></block>
             <block type="logic_operation"></block>
+            <block type="math_crement"></block>
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
             <block type="constrain_value"></block>
