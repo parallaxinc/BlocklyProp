@@ -254,7 +254,8 @@ Blockly.propc.finish = function (code) {
 
     for (var name in Blockly.propc.definitions_) {
         var def = Blockly.propc.definitions_[name];
-        if (def.match(/^#include/) || def.match(/^#define/) || def.match(/^#if/) || def.match(/^#end/) || def.match(/^#else/)) {
+        if (def.match(/^#include/) || def.match(/^#define/) || def.match(/^#if/) ||
+                def.match(/^#end/) || def.match(/^#else/) || def.match(/^#pragma/)) {
             imports.push(def);
         } else {
             definitions.push(def);

@@ -1485,11 +1485,9 @@
                 -->
                 <block type="scribbler_serial_rx_byte"></block>
             </category>
-            <%--
-                        <category name="<fmt:message key="category.s3-actions.reset" />" include="s3">
+            <category name="<fmt:message key="category.s3-actions.reset" />" include="s3">
                             <block type="factory_reset"></block>
-                        </category>
-            --%>
+            </category>
         </category>
 
         <c:choose>
