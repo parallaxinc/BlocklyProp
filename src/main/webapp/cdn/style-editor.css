@@ -390,3 +390,53 @@ nav .nav > li > a:first-child {
     overflow-x: scroll;
 }
 
+/* Graphing Output */
+
+.ct-series-a .ct-line {
+  stroke-width: 1px;
+  stroke: #00f;
+}
+
+.ct-series-b .ct-line {
+  stroke-width: 1px;
+  stroke: #0bb;
+}
+
+.ct-series-c .ct-line {
+  stroke-width: 1px;
+  stroke: #0d0;
+}
+
+.ct-series-d .ct-line {
+  stroke-width: 1px;
+  stroke: #dd0;
+}
+
+.ct-series-e .ct-line {
+  stroke-width: 1px;
+  stroke: #f90;
+}
+
+.ct-series-f .ct-line {
+  stroke-width: 1px;
+  stroke: #f00;
+}
+
+.ct-series-g .ct-line {
+  stroke-width: 1px;
+  stroke: #c0c;
+}
+
+.ct-series-h .ct-line {
+  stroke-width: 1px;
+  stroke: #000;
+}
+
+.ct-series-i .ct-line {
+  stroke-width: 1px;
+  stroke: #777;
+}
+
+.ct-series-j .ct-line {
+  stroke-width: 1px;
+}

@@ -9,11 +9,51 @@ var TABS_ = ['blocks', 'propc', 'xml'];
 var selected = 'blocks';
 
 var term = null;
+var graph = null;
 
 var codePropC = null;
 var codeXml = null;
 
 var baudrate = 115200;
+
+var graph_temp_data = new Array;
+var graph_data_ready = false;
+var graph_connection_string = '';
+var graph_timestamp_start = null;
+var graph_temp_string = new String;
+var graph_time_multiplier = 0;
+var graph_interval_id = null;
+var fullCycleTime = 4294967296 / 80000000;
+
+var console_header_arrived = false;
+var console_header = null;
+
+var graph_options = {
+    showPoint: false,
+    fullWidth: true,
+    axisX: {
+        type: Chartist.AutoScaleAxis,
+        onlyInteger: true
+    },
+    refreshRate: 250,
+    sampleTotal: 40
+};
+
+var graph_data = {
+    series: [// add more here for more possible lines...
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ]
+};
+
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -154,7 +194,13 @@ function cloudCompile(text, action, successHandler) {
         propcCode = js_beautify(propcCode, {
             'brace_style': 'expand'
         });
-        var terminalNeeded = propcCode.indexOf("SERIAL_TERMINAL USED") > -1;
+
+        var terminalNeeded = false;
+        if (propcCode.indexOf("SERIAL_TERMINAL USED") > -1)
+            terminalNeeded = 'term';
+        else if (propcCode.indexOf("SERIAL_GRAPHING USED") > -1)
+            terminalNeeded = 'graph';
+
         $.ajax({
             'method': 'POST',
             'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
@@ -163,10 +209,10 @@ function cloudCompile(text, action, successHandler) {
             if (data.error) {
                 if (typeof data['message'] === "string")
                     alert("BlocklyProp was unable to compile your project:\n" + data['message']
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
                 else
                     alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
             } else {
                 if (data.success) {
                     $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
@@ -204,14 +250,16 @@ function loadIntoRam() {
             $.post(client_url + 'load.action', {action: "RAM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                 $("#compile-console").val($("#compile-console").val() + loaddata.message);
                 console.log(loaddata);
-                if (terminalNeeded && loaddata.success) {
+                if (terminalNeeded === 'term' && loaddata.success) {
                     serial_console();
+                } else if (terminalNeeded === 'graph' && loaddata.success) {
+                    graphing_console();
                 }
             });
         });
     } else {
         alert("BlocklyPropClient not available to communicate with a microcontroller"
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
     }
 }
 
@@ -224,14 +272,16 @@ function loadIntoEeprom() {
             $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                 $("#compile-console").val($("#compile-console").val() + loaddata.message);
                 console.log(loaddata);
-                if (terminalNeeded && loaddata.success) {
+                if (terminalNeeded === 'term' && loaddata.success) {
                     serial_console();
+                } else if (terminalNeeded === 'graph' && loaddata.success) {
+                    graphing_console();
                 }
             });
         });
     } else {
         alert("BlocklyPropClient not available to communicate with a microcontroller"
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
     }
 }
 
@@ -308,6 +358,89 @@ function serial_console() {
     $('#console-dialog').modal('show');
 }
 
+function graphing_console() {
+    var newGraph = false;
+    var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+
+    // If there are graph settings, extract them
+    var graph_settings_start = propcCode.indexOf("// GRAPH_SETTINGS_START:");
+    if (graph_settings_start > -1) {
+        var graph_settings_end = propcCode.indexOf(":GRAPH_SETTINGS_END //") + 22;
+        var graph_settings_temp = propcCode.substring(graph_settings_start, graph_settings_end).split(':');
+        var graph_settings_str = graph_settings_temp[1].split(',');
+
+        // GRAPH_SETTINGS:rate,x_axis_val,x_axis_type,y_min,y_max:GRAPH_SETTINGS_END //
+
+        graph_options.refreshRate = Number(graph_settings_str[0]);
+
+        if (graph_settings_str[3] === '0' && graph_settings_str[4] === '0')
+            graph_options.axisY = {
+                type: Chartist.AutoScaleAxis,
+            };
+        else
+            graph_options.axisY = {
+                type: Chartist.AutoScaleAxis,
+                low: Number(graph_settings_str[3]),
+                high: Number(graph_settings_str[4])
+            };
+
+        if (graph_settings_str[2] === 'S')
+            graph_options.sampleTotal = Number(graph_settings_str[1]);
+    }
+
+    if (graph === null) {
+        graph_reset();
+        graph_temp_string = '';
+        graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
+        newGraph = true;
+    }
+
+    if (client_available) {
+        var url = client_url + 'serial.connect';
+        url = url.replace('http', 'ws');
+        var connection = new WebSocket(url);
+        
+        // When the connection is open, open com port
+        connection.onopen = function () {
+            if (baud_rate_compatible && baudrate) {
+                connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
+            } else {
+                connection.send('+++ open port ' + getComPort());
+            }
+
+        };
+        // Log errors
+        connection.onerror = function (error) {
+            console.log('WebSocket Error');
+            console.log(error);
+            //connection.close();
+            //connection = new WebSocket(url);
+        };
+        
+        // Log messages from the server
+        connection.onmessage = function (e) {
+           graph_new_data(e.data);
+        };
+        
+        if (newGraph || graph !== null) {
+            graph_interval_id = setInterval(function () {graph.update(graph_data);}, graph_options.refreshRate);
+        }
+
+        connection.onClose = function () {
+            graph_reset();
+        };
+        
+        $('#graphing-dialog').on('hidden.bs.modal', function () {
+            connection.close();
+            graph_reset();
+        });
+    } else {
+        /*  Create simulated graph?  */
+    }
+
+    $('#graphing-dialog').modal('show');
+}
+
 check_com_ports = function () {
     if (client_url !== undefined) {
         var selected_port = $("#comPort").val();
@@ -323,23 +456,13 @@ check_com_ports = function () {
         }).fail(function () {
             $("#comPort").empty();
             $("#comPort").append($('<option>', {
-                //text: 'COM1'
                 text: 'Searching...'
             }));
-            /*
-             $("#comPort").append($('<option>', {
-             text: 'COM3'
-             }));
-             $("#comPort").append($('<option>', {
-             text: 'COM4'
-             }));
-             */
             select_com_port(selected_port);
             client_available = false;
         });
     }
 };
-
 select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);
@@ -348,16 +471,12 @@ select_com_port = function (com_port) {
         $("#comPort").val($('#comPort option:first').text());
     }
 };
-
 $(document).ready(function () {
     check_com_ports();
-
 });
-
 getComPort = function () {
     return $('#comPort').find(":selected").text();
 };
-
 function downloadPropC() {
     var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
     var isEmptyProject = propcCode.indexOf("EMPTY_PROJECT") > -1;
@@ -372,7 +491,6 @@ function downloadPropC() {
                         var sideFileContent = ".c\n>compiler=C\n>memtype=cmm main ram compact\n";
                         sideFileContent += ">optimize=-Os\n>-m32bit-doubles\n>-fno-exceptions\n>defs::-std=c99\n";
                         sideFileContent += ">-lm\n>BOARD::ACTIVITYBOARD";
-
                         var saveData = (function () {
                             var a = document.createElement("a");
                             document.body.appendChild(a);
@@ -386,7 +504,6 @@ function downloadPropC() {
                                 window.URL.revokeObjectURL(url);
                             };
                         }());
-
                         // Check for any file extentions at the end of the submitted name, and truncate if any
                         if (value.indexOf(".") !== -1)
                             value = value.substring(0, value.indexOf("."));
@@ -395,7 +512,6 @@ function downloadPropC() {
                             value = value.substring(0, 29);
                         // Replace any illegal characters
                         value = value.replace(/[\\/:*?\"<>|]/g, '_');
-
                         saveData(propcCode, value + ".c");
                         saveData(value + sideFileContent, value + ".side");
                     }
@@ -403,6 +519,93 @@ function downloadPropC() {
             }
         });
     }
+}
 
+function graph_new_data(stream) {
 
+    /*
+     // Attempt to capture connection information:
+    
+     var j = 0;
+     while (!graph_data_ready) {
+        if (stream[0] === '\n')
+            stream[0] = '\r';
+        graph_connection_string[j] = stream[0];
+        stream = stream.slice(1);
+        if (graph_connection_string[j] === '\r' && graph_connection_string[j - 1] === '\r')
+            graph_data_ready = true;
+        j++;
+        }
+    */
+
+    // Check for a failed connection:
+    if (stream.indexOf('ailed') > -1) {
+        $("#serial_graphing").html(stream);
+        
+    } else {
+        for (k = 0; k < stream.length; k++) {
+            if (stream[k] === '\n')
+                stream[k] = '\r';
+            if (stream[k] === '\r') {
+                graph_temp_data.push(graph_temp_string.split(','));
+                var row = graph_temp_data.length - 1;
+                var ts = Number(graph_temp_data[row][0]) || 0;
+                ts = ts / 1220.703125; // convert to seconds - Propeller system clock left shifted by 16;
+                if (!graph_timestamp_start)
+                    graph_timestamp_start = ts;
+                if (row > 0) {
+                    if (parseFloat(graph_temp_data[row][0]) < parseFloat(graph_temp_data[row - 1][1])) {
+                        graph_time_multiplier += fullCycleTime;
+                    }
+                }
+                graph_temp_data[row].unshift(ts + graph_time_multiplier - graph_timestamp_start);
+                for (j = 2; j < graph_temp_data[row].length; j++) {
+                    graph_data.series[j - 2].push({
+                        x: graph_temp_data[row][0],
+                        y: graph_temp_data[row][j] || null
+                    });
+                    if (graph_temp_data[row][0] > graph_options.sampleTotal)
+                        graph_data.series[j - 2].shift();
+                }
+                
+                /*
+                 var read_serial_to_div = '';
+                 for (var l = 0; l < graph_temp_data[row].length; l++)
+                 read_serial_to_div += graph_temp_data[row].toString() + '\n';
+                 $( "#serial_graphing" ).html(read_serial_to_div);
+                 */
+
+                graph_temp_string = '';
+            } else {
+                graph_temp_string += stream[k];
+            }
+        }
+    }
+}
+
+function graph_reset() {
+    clearInterval(graph_interval_id);
+    graph_interval_id = null;
+    graph_temp_data.length = 0;
+    graph_data = {
+        series: [// add more here for more possible lines...
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ]
+    };
+    graph_temp_string = '';
+    graph_timestamp_start = null;
+    $("#serial_graphing").html('');
+}
+
+function graph_redraw() {
+    graph.update(graph_data);
 }

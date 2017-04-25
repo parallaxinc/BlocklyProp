@@ -47,6 +47,7 @@
                         </c:if>
                     <a onclick="loadIntoEeprom()" data-toggle="tooltip" title="Load and run (save code to EEPROM)" data-placement="bottom" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-save"></i></a>
                     <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list-alt"></i></a>
+                    <a onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-equalizer"></i></a>
                 </div>
                 <div style="display:inline; clear:right; float:right;  padding-right: 10px;" align="right">
 

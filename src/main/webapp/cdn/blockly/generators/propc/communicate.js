@@ -3153,3 +3153,227 @@ Blockly.propc.wx_ip = function () {
         return '// Missing Simple WX initialize block!\n';
     }
 };
+
+// ---------------- Graphing Output Blocks -------------------------------------
+Blockly.Blocks.graph_output = {
+//    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
+    init: function () {
+//        this.setTooltip(Blockly.MSG_GRAPH_OUTPUT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('Graphing output');
+        this.appendValueInput('PRINTa')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField('value');
+        this.appendValueInput('PRINTb')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField('value');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setMutator(new Blockly.Mutator(['graph_dec']));
+        this.optionList_ = ['dec', 'dec'];
+    },
+    mutationToDom: function (workspace) {
+        // Create XML to represent menu options.
+        var container = document.createElement('mutation');
+        container.setAttribute('options', JSON.stringify(this.optionList_));
+        return container;
+    },
+    domToMutation: function (container) {
+        // Parse XML to restore the menu options.
+        var value = JSON.parse(container.getAttribute('options'));
+        this.optionList_ = value;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            this.appendValueInput('PRINT' + i)
+                    .setAlign(Blockly.ALIGN_RIGHT)
+                    .appendField('value');
+        }
+    },
+    decompose: function (workspace) {
+        var containerBlock = Blockly.Block.obtain(workspace, 'graphing_container');
+        containerBlock.initSvg();
+        var connection = containerBlock.getInput('STACK').connection;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var optionBlock = workspace.newBlock('graph_dec');
+            optionBlock.initSvg();
+            connection.connect(optionBlock.previousConnection);
+            connection = optionBlock.nextConnection;
+        }
+        return containerBlock;
+
+    },
+    compose: function (containerBlock) {
+        // Delete everything.
+        var i = 0;
+        while (this.getInput('PRINT' + i)) {
+            this.removeInput('PRINT' + i);
+            i++;
+        }
+
+        i = 0;
+        this.optionList_.length = 0;
+        // Rebuild the block's optional inputs.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        while (clauseBlock) {
+            this.optionList_.push('dec');
+
+            var printInput = this.appendValueInput('PRINT' + i)
+                    .setAlign(Blockly.ALIGN_RIGHT)
+                    .setCheck('Number')
+                    .appendField('value');
+
+            if (clauseBlock.valueConnection_) {
+                printInput.connection.connect(clauseBlock.valueConnection_);
+            }
+            i++;
+
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+    },
+    saveConnections: function (containerBlock) {
+        // Store a pointer to any connected child blocks.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        var x = 0;
+        while (clauseBlock) {
+            //this.optionList_.push('dec');
+            var printInput = this.getInput('PRINT' + x);
+            clauseBlock.valueConnection_ =
+                    printInput && printInput.connection.targetConnection;
+            x++;
+            break;
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+    },
+    onchange: function () {
+        if (this.workspace && this.optionList_.length < 1) {
+            this.setWarningText('Graphing output must have at least one value.');
+        } else {
+            if (this.optionList_.length > 10)
+                this.setWarningText('Graphing output only supports up to 10 values.');
+            else
+                this.setWarningText(null);
+        }
+        if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
+            this.removeInput('PRINTa');
+            this.removeInput('PRINTb');
+        }
+    },
+    getVars: function () {
+        return [this.getFieldValue('HANDLE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
+            this.setTitleValue(newName, 'HANDLE');
+        }
+    }
+};
+
+Blockly.Blocks.graphing_container = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('send');
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.graph_dec = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('value');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.propc.graph_output = function () {
+    var handle = this.getFieldValue('HANDLE');
+    var conn = this.getFieldValue('CONNECTION');
+
+    var code = 'print("%u';
+    var varList = '';
+    var i = 0;
+    var orIt = '';
+    while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
+        code += ',%d';
+        varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || '0');
+        i++;
+        if (i > 10)
+            break;
+    }
+    code += '\\r", (CNT >> 16)' + varList + ');\n';
+
+    Blockly.propc.serial_graphing_ = true;
+
+    return code;
+};
+
+Blockly.Blocks.graph_settings = {
+//    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
+    init: function () {
+//        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Graphing output settings");
+        this.appendDummyInput()
+                .appendField("maximum refresh rate")
+                .appendField(new Blockly.FieldDropdown([
+                    ["40 Hz", "25"],
+                    ["10 Hz", "100"],
+                    ["4 Hz", "250"],
+                    ["1 Hz", "1000"],
+                    ["0.5 Hz", "2000"],
+                    ["0.2 Hz", "5000"]
+                ]), "RATE");
+        this.appendDummyInput()
+                .appendField("x-axis")
+                .appendField(new Blockly.FieldDropdown([
+                    ["keep 10 seconds of data", "10,S"],
+                    ["keep 20 seconds of data", "20,S"],
+                    ["keep 30 seconds of data", "30,S"],
+                    ["keep 40 seconds of data", "40,S"],
+                    ["keep 50 seconds of data", "50,S"],
+                    ["keep 60 seconds of data", "60,S"],
+                    ["keep 90 seconds of data", "90,S"],
+                            //        ["trigger on value 1 rising edge", "1,TU"],
+                            //        ["trigger on value 1 falling edge", "1,TD"],
+                            //        ["trigger on value 1 zero crossing", "1,TZ"]
+                ]), "XAXIS");
+        this.appendDummyInput()
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("y-axis (set both to 0 for autoscale)");
+        this.appendDummyInput()
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("minimum")
+                .appendField(new Blockly.FieldTextInput('0',
+                        Blockly.FieldTextInput.numberValidator), "YMIN");
+        this.appendDummyInput()
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("maximum")
+                .appendField(new Blockly.FieldTextInput('0',
+                        Blockly.FieldTextInput.numberValidator), "YMAX");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.graph_settings = function () {
+    var rate = this.getFieldValue('RATE');
+    var x_axis = this.getFieldValue('XAXIS');
+    var y_min = this.getFieldValue('YMIN');
+    var y_max = this.getFieldValue('YMAX');
+
+    Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:' +
+            rate + ',' + x_axis + ',' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
+
+    return '';
+};
+
