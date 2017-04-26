@@ -1469,7 +1469,7 @@ Blockly.propc.scribbler_serial_send_text = function () {
     Blockly.propc.serial_terminal_ = true;
     Blockly.propc.setups_["s3_serial_baud"] = "simpleterm_reopen(31,30,0,9600);";
 
-    var message = this.getFieldValue('MESSAGE_TEXT');
+    var message = this.getFieldValue('MESSAGE_TEXT').replace(/"/g, '\\"').replace(/%/g, "%%");
 
     return 'print("' + message + '");\n';
 };

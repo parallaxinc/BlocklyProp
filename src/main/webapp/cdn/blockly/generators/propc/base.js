@@ -588,7 +588,7 @@ Blockly.Blocks.string_type_block = {
 };
 
 Blockly.propc.string_type_block = function () {
-    var text = this.getFieldValue("TEXT");
+    var text = this.getFieldValue("TEXT").replace(/"/g, '\\"').replace(/%/g, "%%");
 
     var code = '"' + text + '"';
     return [code, Blockly.propc.ORDER_NONE];
