@@ -34,6 +34,7 @@ import java.util.Random;
 @Singleton
 public class ProjectDaoImpl implements ProjectDao {
 
+    private static final int Min_BlocklyCodeSize = 48;
     private static final Logger LOG = LoggerFactory.getLogger(ProjectDao.class);
     private DSLContext create;
 
@@ -63,9 +64,11 @@ public class ProjectDaoImpl implements ProjectDao {
                 .where(Tables.PROJECT.ID.equal(idProject))
                 .fetchOne();
 
+        if (record == null) {
+            LOG.warn("Unable to retreive project {}", idProject);
+            return null;
+        }
         // Return the project after checking if for depricated blocks
-        //
-        // Todo: Verify that the record was fetched - it sometimes is not.
         return alterReadRecord(record);
     }
 
@@ -652,21 +655,25 @@ public class ProjectDaoImpl implements ProjectDao {
     // horribly wrong with the string conversions.
     //
     private ProjectRecord alterReadRecord(ProjectRecord record) {
-        LOG.info("Verify project block characteristics");
         String currentCode, newCode;
 
         if (record == null) {
-            LOG.error("Null project record detected.");
-            throw new NullPointerException("Cannot alter a null project record.");
+            LOG.error("alterReadRecod detected a null project record.");
+            return null;
         }
 
         try {
+            LOG.info("Verify project {} block characteristics", record.getId());
             currentCode = record.getCode();
 
             // Return immediately if there is no code to adjust
             if (currentCode == null) {
                 LOG.warn("Project () code block is empty.", record.getId());
                 return record;
+            }
+            
+            if (currentCode.length() < Min_BlocklyCodeSize ) {
+                LOG.warn("Project code appears to be missing");
             }
 
             /*
