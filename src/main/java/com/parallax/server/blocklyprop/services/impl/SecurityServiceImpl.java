@@ -30,6 +30,7 @@ import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,11 +150,23 @@ public class SecurityServiceImpl implements SecurityService {
         Preconditions.checkNotNull(email, "Email cannot be null");
         Preconditions.checkNotNull(password, "Password cannot be null");
         Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
+//        Preconditions.checkNotNull(birthMonth, "Month cannot be empty");
+//        Preconditions.checkNotNull(birthYear, "Year cannot be empty");
+        
+//        if (proxyEmail.length > 0) {
+//            Preconditions.checkArgument();
+//        }
 
         try {
             // Attempt to register the user account data
             Long id = registerService.registerUser(
                     email, password, passwordConfirm, "en", screenname);
+/*
+            Long id = registerService.registerUser(
+                    email, password, passwordConfirm, "en", screenname,
+                    birthMonth, birthYear, proxyEmail, proxyEmailType);
+            
+*/
             userDao.create(id);
             return id;
         } catch (ServerException se) {

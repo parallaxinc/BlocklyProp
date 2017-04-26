@@ -14,6 +14,7 @@ import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import java.io.IOException;
+// import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,13 +52,23 @@ public class RegisterServlet extends HttpServlet {
         String email = Strings.emptyToNull(req.getParameter("email"));
         String password = Strings.emptyToNull(req.getParameter("password"));
         String confirmPassword = Strings.emptyToNull(req.getParameter("confirmpassword"));
+        String birthMonth = Strings.emptyToNull(req.getParameter("bdmonth"));
+        String birthYear = Strings.emptyToNull(req.getParameter("bdyear"));
+        
 
         req.setAttribute("screenname", screenname == null ? "" : screenname);
         req.setAttribute("email", email == null ? "" : email);
-
+        req.setAttribute("bdmonth", birthMonth == null ? "" : birthMonth );
+        req.setAttribute("bdyear", birthYear == null ? "" : birthYear );
+        
         Long idUser;
+        
         try {
-            idUser = securityService.register(screenname, email, password, confirmPassword);
+            // Obtain month and year date components
+//            birthMonth = getMonthFromDate(birthDate);
+//            birthYear = getYearFromDate(birthDate);
+            
+            idUser = securityService.register(screenname, email, password, confirmPassword, birthMonth, birthYear);
             if (idUser != null && idUser > 0) {
                 req.getRequestDispatcher("WEB-INF/servlet/register/registered.jsp").forward(req, resp);
             } else {
@@ -80,6 +91,38 @@ public class RegisterServlet extends HttpServlet {
             req.setAttribute("screennameUsed", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
+    }
+    
+    private String getMonthFromDate(String date) {
+        String[] dates = date.split("/");
+        int month = 0;
+
+        try {
+            if (dates.length == 2) {
+                month = Integer.parseInt(dates[0]);
+            }
+        }
+        catch (NumberFormatException ex) {
+            month = 0;
+        }
+        
+        return Integer.toString(month);
+    }
+
+    private String getYearFromDate(String date) {
+        String[] dates = date.split("/");
+        int year = 0;
+
+        try {
+            if (dates.length == 2) {
+                year = Integer.parseInt(dates[1]);
+            }
+        }
+        catch (NumberFormatException ex) {
+            year = 0;
+        }
+        
+        return Integer.toString(year);
     }
 
 }

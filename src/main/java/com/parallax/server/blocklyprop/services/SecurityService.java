@@ -19,8 +19,12 @@ import com.parallax.client.cloudsession.objects.User;
 /**
  *
  * @author Michel
+ * 
+ * Interface to the Cloud Session service to create new user accounts and to
+ * authenticate existing accounts.
  */
 public interface SecurityService {
+
 
     Long register(
             String screenname, 
