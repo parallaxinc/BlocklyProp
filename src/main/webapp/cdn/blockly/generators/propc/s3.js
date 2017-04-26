@@ -1437,11 +1437,16 @@ Blockly.propc.spin_comment = function () {
 Blockly.Blocks.factory_reset = {
     init: function () {
         this.appendDummyInput()
-                .appendField("restore_s3_demo");
+                .appendField("restore s3 demo");
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_FACTORY_RESET_HELPURL);
         this.setTooltip(Blockly.MSG_S3_FACTORY_RESET_TOOLTIP);
     }
+};
+
+Blockly.propc.factory_reset = function () {
+    Blockly.propc.definitions_["s3_factory_reset"] = '#pragma load_default_scribbler_binary';
+    return '';
 };
 
 Blockly.Blocks.scribbler_serial_send_text = {
@@ -1654,4 +1659,3 @@ Blockly.propc.mic_s3_get = function () {
     var code = 's3_readMic()';
     return [code, Blockly.propc.ORDER_NONE];
 };
-
