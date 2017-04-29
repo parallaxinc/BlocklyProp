@@ -30,7 +30,7 @@ import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
 import org.apache.commons.configuration.Configuration;
-
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,20 +44,51 @@ import org.slf4j.LoggerFactory;
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
 
-    private static final Logger log = LoggerFactory.getLogger(SecurityServiceImpl.class);
+    /**
+     * 
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityServiceImpl.class);
     
+    /**
+     * 
+     */
     private static SecurityServiceImpl instance;
 
+    /**
+     * 
+     */
     private Provider<SessionData> sessionData;
 
+    /**
+     * 
+     */
     private Configuration configuration;
+    
+    /**
+     * 
+     */
+    private EmailValidator emailValidator;
 
+    /**
+     * 
+     */
     private CloudSessionRegisterService registerService;
+    
+    /**
+     * 
+     */
     private CloudSessionAuthenticateService authenticateService;
+    
+    /**
+     * 
+     */
     private CloudSessionUserService userService;
 
+    /**
+     * 
+     */
     private UserDao userDao;
-
+    
     /**
      * Constructor
      * 
@@ -100,7 +131,7 @@ public class SecurityServiceImpl implements SecurityService {
      */
     @Inject
     public void setConfiguration(Configuration configuration) {
-        log.debug("Setting cloud session configuration");
+        LOG.debug("Setting cloud session configuration");
         this.configuration = configuration;
 
         // Set the source for the cloud session registration services
@@ -120,13 +151,15 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     /**
-     * Register a user account
      * 
      * @param screenname
      * @param email
      * @param password
      * @param passwordConfirm
-     * @return An ID for the new account or null if unsuccessful
+     * @param birthMonth
+     * @param birthYear
+     * @param parentEmail
+     * @return
      * @throws NonUniqueEmailException
      * @throws PasswordVerifyException
      * @throws PasswordComplexityException
@@ -137,43 +170,65 @@ public class SecurityServiceImpl implements SecurityService {
             String screenname, 
             String email, 
             String password, 
-            String passwordConfirm) throws 
+            String passwordConfirm,
+            int birthMonth,
+            int birthYear,
+            String parentEmail,
+            int parentEmailSource) throws 
                 NonUniqueEmailException, 
                 PasswordVerifyException, 
                 PasswordComplexityException, 
                 ScreennameUsedException {
-
-        log.info("Resgistering new user: {}", screenname);
         
         // Perform basic sanity checks on inputs
+        LOG.info("Resgistering new user: {}", screenname);
         Preconditions.checkNotNull(screenname, "Screenname cannot be null");
+
+        // User email address is required and must be reasonably valid
+        LOG.info("Verifying email address has been supplied");
         Preconditions.checkNotNull(email, "Email cannot be null");
-        Preconditions.checkNotNull(password, "Password cannot be null");
-        Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
-//        Preconditions.checkNotNull(birthMonth, "Month cannot be empty");
-//        Preconditions.checkNotNull(birthYear, "Year cannot be empty");
         
-//        if (proxyEmail.length > 0) {
-//            Preconditions.checkArgument();
-//        }
+        LOG.info("Verifying email address is reasonable");
+        Preconditions.checkState(emailValidator.isValid(email),"Email address format is incorrect");
+
+        LOG.info("Verifying that a password was provided");
+        Preconditions.checkNotNull(password, "Password cannot be null");
+        
+        LOG.info("Verify that second copy of password was provided");
+        Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
+        
+        LOG.info("Verify that month is provided");
+        Preconditions.checkNotNull(birthMonth, "Month cannot be empty");
+        
+        LOG.info("Verify that year is provided");
+        Preconditions.checkNotNull(birthYear, "Year cannot be empty");
+
+        // Looking for a reasonably valid email address
+        if (parentEmail.length() > 0) {
+            LOG.info("Verify that sponsor address is reasonable");
+            Preconditions.checkState(
+                    emailValidator.isValid(parentEmail),
+                    "Email address format is incorrect");
+        }
 
         try {
             // Attempt to register the user account data
-            Long id = registerService.registerUser(
-                    email, password, passwordConfirm, "en", screenname);
-/*
+            LOG.info("Registering user account with cloud-service");
             Long id = registerService.registerUser(
                     email, password, passwordConfirm, "en", screenname,
-                    birthMonth, birthYear, proxyEmail, proxyEmailType);
+                    birthMonth, birthYear, parentEmail, parentEmailSource);
             
-*/
-            userDao.create(id);
+            if (id > 0) {
+                userDao.create(id);
+            }
+            
             return id;
         } catch (ServerException se) {
-            log.error("Server error detected");
-            return null;
+            LOG.error("Server error detected");
+            return 0L;
         }
     }
+
 
     /**
      *  Get instance of the authenticated user object
@@ -187,6 +242,7 @@ public class SecurityServiceImpl implements SecurityService {
      * @throws InsufficientBucketTokensException
      * @throws WrongAuthenticationSourceException 
      */
+    @Inject
     public static User authenticateLocalUserStatic(
             String email, 
             String password) throws
@@ -196,7 +252,7 @@ public class SecurityServiceImpl implements SecurityService {
                 InsufficientBucketTokensException, 
                 WrongAuthenticationSourceException {
 
-        log.info("Authenticating user from email address");
+        LOG.info("Authenticating user from email address");
         return instance.authenticateLocalUser(email, password);
     }
 
@@ -210,12 +266,13 @@ public class SecurityServiceImpl implements SecurityService {
      * @throws UserBlockedException
      * @throws EmailNotConfirmedException 
      */
+    @Inject
     public static User authenticateLocalUserStatic(Long idUser) throws 
             UnknownUserIdException, 
             UserBlockedException, 
             EmailNotConfirmedException {
         
-        log.info("Authenticating user from userID");
+        LOG.info("Authenticating user from userID");
         return instance.authenticateLocalUser(idUser);
     }
 
@@ -240,14 +297,14 @@ public class SecurityServiceImpl implements SecurityService {
         
         try {
             User user = authenticateService.authenticateLocalUser(email, password);
-            log.info("User authenticated");
+            LOG.info("User authenticated");
             return user;
 
         } catch (NullPointerException npe) {
             throw npe;
 
         } catch (ServerException se) {
-            log.error("Server error encountered: {}", se.getMessage());
+            LOG.error("Server error encountered: {}", se.getMessage());
             return null;
         }
     }
@@ -267,14 +324,14 @@ public class SecurityServiceImpl implements SecurityService {
         
         try {
             User user = userService.getUser(idUser);
-            log.info("User authenticated");
+            LOG.info("User authenticated");
             return user;
 
         } catch (NullPointerException npe) {
             throw npe;
 
         } catch (ServerException se) {
-            log.error("Server error detected. {}", se.getMessage());
+            LOG.error("Server error detected. {}", se.getMessage());
             return null;
         }
     }
@@ -285,7 +342,7 @@ public class SecurityServiceImpl implements SecurityService {
      * @return SessionData object containing user session details or null
      */
     public static SessionData getSessionData() {
-        log.debug("Getting user session data");
+        LOG.debug("Getting user session data");
         SessionData sessionData = instance.sessionData.get();
         
         if (sessionData.getIdUser() == null) {
@@ -305,7 +362,7 @@ public class SecurityServiceImpl implements SecurityService {
                                     user = instance.userService.changeUserLocale(
                                             user.getId(), sessionData.getLocale());
                                 } catch (UnknownUserIdException ex) {
-                                    log.error("UnknownUserId exception detected. {}", ex.getMessage());
+                                    LOG.error("UnknownUserId exception detected. {}", ex.getMessage());
                                 }
                             }
                         }
@@ -319,9 +376,9 @@ public class SecurityServiceImpl implements SecurityService {
                                 user.getScreenname());
                     }
                 } catch (UnknownUserException ex) {
-                    log.error("Unknown user ID. {}", ex);
+                    LOG.error("Unknown user ID. {}", ex);
                 } catch (ServerException se) {
-                    log.error("Server error detected. {}", se.getMessage());
+                    LOG.error("Server error detected. {}", se.getMessage());
                 }
             }
         }
