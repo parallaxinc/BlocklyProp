@@ -31,6 +31,7 @@
                     <div class="alert alert-danger">
                         <p><fmt:message key="error.generic" /></p>
                     </div>
+
                     <%
                         }
                         Boolean emailAlreadyUsed = (Boolean) request.getAttribute("emailAlreadyUsed");
@@ -39,6 +40,17 @@
                     <div class="alert alert-danger">
                         <p><fmt:message key="register.error.email_already_used" /></p>
                     </div>
+
+                    <%
+                        }
+                        Boolean emailMalformed = (Boolean) request.getAttribute("emailMalformed");
+                        if (emailMalformed != null && emailMalformed) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.email_format_error" /></p>
+                    </div>
+                    
+                    
                     <%
                         }
                         Boolean passwordsDontMatch = (Boolean) request.getAttribute("passwordsDontMatch");
@@ -47,6 +59,7 @@
                     <div class="alert alert-danger">
                         <p><fmt:message key="register.error.passwords_dont_match" /></p>
                     </div>
+                    
                     <%
                         }
                         Boolean missingFields = (Boolean) request.getAttribute("missingFields");
@@ -55,6 +68,7 @@
                     <div class="alert alert-danger">
                         <p><fmt:message key="register.error.missing_fields" /></p>
                     </div>
+                    
                     <%
                         }
                         Boolean passwordComplexity = (Boolean) request.getAttribute("passwordComplexity");
@@ -63,6 +77,7 @@
                     <div class="alert alert-danger">
                         <p><fmt:message key="password.complexity.error" /></p>
                     </div>
+                    
                     <%
                         }
                         Boolean screennameUsed = (Boolean) request.getAttribute("screennameUsed");
@@ -71,6 +86,7 @@
                     <div class="alert alert-danger">
                         <p><fmt:message key="register.error.screenname_used" /></p>
                     </div>
+                    
                     <%
                         }
                     %>
@@ -221,11 +237,11 @@
                             </p>
                         </div>
                         <div class="form-group">
-                            <label for="email" ><fmt:message key="register.do.proxyemail" /></label>
-                            <input class="form-control" type="text" name="email" maxlength="255" value="<%= request.getAttribute("proxyemail")%>">
-                            <label for="proxyemailtype"><fmt:message key="register.do.proxyemailtype" /></label>
-                            <select name="proxyemailtype">
-                                <option value="1">Parent</option>
+                            <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
+                            <input class="form-control" type="text" name="sponsoremail" maxlength="255" value="<%= request.getAttribute("parentemail")%>">
+                            <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
+                            <select name="sponsoremailtype">
+                                <option value="1" selected="selected">Parent</option>
                                 <option value="2">Legal Guardian</option>
                                 <option value="3">Instructor</option>
                             </select>
