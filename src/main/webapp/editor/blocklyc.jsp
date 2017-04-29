@@ -142,8 +142,8 @@
                         <div id="graph_x-axis_label" align="center">Time (seconds)</div>
                     </div>
                     <div class="modal-footer clearfix">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">&nbsp;&#9654;&nbsp;</button>
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">&#9616;&nbsp;&#9612;</button>
+                        <button type="button" id="btn-graph-play" class="btn btn-default pull-left hidden" onclick="graph_play();">&nbsp;&#9654;&nbsp;</button>
+                        <button type="button" id="btn-graph-pause" class="btn btn-default pull-left" onclick="graph_pause();">&#9616;&nbsp;&#9612;</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
                     </div>
                 </div><!-- /.modal-content -->
