@@ -53,5 +53,6 @@ public interface SecurityService {
                 NonUniqueEmailException, 
                 PasswordVerifyException, 
                 PasswordComplexityException, 
-                ScreennameUsedException;
+                ScreennameUsedException,
+                IllegalStateException;
 }

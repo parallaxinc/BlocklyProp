@@ -91,7 +91,16 @@ public class RegisterServlet extends HttpServlet {
         String parentEmail = Strings.emptyToNull(req.getParameter("sponsoremail"));
         String sponsorEmailType = Strings.emptyToNull(req.getParameter("sponsoremailtype"));
        
-        
+        LOG.info("Raw birthday year is: {}", birthYear);
+
+        // Clean up any possible null fields
+        req.setAttribute("screenname", screenname == null ? "" : screenname);
+        req.setAttribute("email", email == null ? "" : email);
+        req.setAttribute("bdmonth", birthMonth == null ? "" : birthMonth );
+        req.setAttribute("bdyear", birthYear == null ? "" : birthYear );
+        req.setAttribute("sponsoremail", parentEmail == null ? "" : parentEmail);
+        req.setAttribute("sponsoremailtype", sponsorEmailType == null ? "0" : sponsorEmailType);
+                
         // Log a few things
         LOG.info("Registering screen name: {}", screenname);
         LOG.info("Registering email: {}", email);
@@ -100,13 +109,20 @@ public class RegisterServlet extends HttpServlet {
         LOG.info("Registering sponsor email: {}", parentEmail);
         LOG.info("Registering sponsor type selection: {}", sponsorEmailType);
 
+        LOG.info("Checking REQ Year setting: {}",req.getAttribute("bdmonth"));
+        LOG.info("Checking email details");
+        if (email == null) {
+            LOG.info("Email is Null");
+        }
+        else {
+            LOG.info("Email is not Null");
+        }
         
-        req.setAttribute("screenname", screenname == null ? "" : screenname);
-        req.setAttribute("email", email == null ? "" : email);
-        req.setAttribute("bdmonth", birthMonth == null ? "" : birthMonth );
-        req.setAttribute("bdyear", birthYear == null ? "" : birthYear );
-        
-        if (email == null || emailValid.isValid(email) == false){
+        LOG.info("Checking for valid email address");
+        if (emailValid.isValid(email)){
+            LOG.info("Email appears to be valid");
+        }
+        else {
             LOG.warn("Email address is not in the correct format: {}", email);
             req.setAttribute("emailMalformed", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
@@ -152,6 +168,18 @@ public class RegisterServlet extends HttpServlet {
         } catch (ScreennameUsedException sue) {
             LOG.info("Attempt to use already assigned screen name: {}", screenname);
             req.setAttribute("screennameUsed", true);
+            req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
+        } catch (IllegalStateException ex) {
+            LOG.warn("Possible email address issue");
+            LOG.warn("Exception message is: {}", ex.getMessage());
+
+            if (ex.getMessage() == "SponsorEmail") {
+                req.setAttribute("sponsorEmailMalformed", true);
+            }
+            else // User email issue
+            {
+                req.setAttribute("emailMalformed", true);
+            }
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
     }

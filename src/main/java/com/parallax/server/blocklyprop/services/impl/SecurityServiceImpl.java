@@ -67,7 +67,7 @@ public class SecurityServiceImpl implements SecurityService {
     /**
      * 
      */
-    private EmailValidator emailValidator;
+    private EmailValidator emailValidator = EmailValidator.getInstance();
 
     /**
      * 
@@ -178,7 +178,10 @@ public class SecurityServiceImpl implements SecurityService {
                 NonUniqueEmailException, 
                 PasswordVerifyException, 
                 PasswordComplexityException, 
-                ScreennameUsedException {
+                ScreennameUsedException,
+                IllegalStateException{
+        
+        LOG.info("Registering birthday year as: {}", birthYear);
         
         // Perform basic sanity checks on inputs
         LOG.info("Resgistering new user: {}", screenname);
@@ -208,7 +211,7 @@ public class SecurityServiceImpl implements SecurityService {
             LOG.info("Verify that sponsor address is reasonable");
             Preconditions.checkState(
                     emailValidator.isValid(parentEmail),
-                    "Email address format is incorrect");
+                    "SponsorEmail");
         }
 
         try {
