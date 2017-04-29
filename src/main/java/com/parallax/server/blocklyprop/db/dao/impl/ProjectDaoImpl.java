@@ -34,8 +34,19 @@ import java.util.Random;
 @Singleton
 public class ProjectDaoImpl implements ProjectDao {
 
+    /**
+     * 
+     */
     private static final int Min_BlocklyCodeSize = 48;
+    
+    /**
+     * 
+     */
     private static final Logger LOG = LoggerFactory.getLogger(ProjectDao.class);
+    
+    /**
+     * 
+     */
     private DSLContext create;
 
     @Inject
@@ -97,8 +108,10 @@ public class ProjectDaoImpl implements ProjectDao {
         LOG.info("Creating a new project with existing code.");
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
-
-        ProjectRecord record = create
+        ProjectRecord record = null;
+        try {
+            
+            record = create
                 .insertInto(Tables.PROJECT,
                         Tables.PROJECT.ID_USER,
                         Tables.PROJECT.ID_CLOUDUSER,
@@ -122,8 +135,13 @@ public class ProjectDaoImpl implements ProjectDao {
                         sharedProject)
                 .returning()
                 .fetchOne();
-
-        return record;
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database error encountered {}", sqex.getMessage());
+        }
+        finally {
+            return record;
+        }
     }
 
     /**
