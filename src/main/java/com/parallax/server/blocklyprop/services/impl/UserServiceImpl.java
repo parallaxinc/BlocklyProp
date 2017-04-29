@@ -18,6 +18,7 @@ import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.UserService;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private static UserService USER_SERVICE;
 
