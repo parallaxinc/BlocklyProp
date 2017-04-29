@@ -47,11 +47,19 @@ public class SessionDaoImpl implements SessionDao {
         this.create = dsl;
     }
 
+    /**
+     * 
+     * @param configuration 
+     */
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * 
+     * @param session 
+     */
     @Override
     public void create(SessionRecord session) {
         LOG.info("Create a session. Timeout set to: {}", session.getTimeout());
@@ -82,6 +90,12 @@ public class SessionDaoImpl implements SessionDao {
         }
     }
 
+    /**
+     * 
+     * @param idSession
+     * @return
+     * @throws NullPointerException 
+     */
     @Override
     public SessionRecord readSession(String idSession) throws NullPointerException {
         LOG.debug("Getting session details");
@@ -99,44 +113,65 @@ public class SessionDaoImpl implements SessionDao {
             LOG.error("Database exception {}", sqex.getMessage());
         }
         finally {
-        return sessionRecord;
+            return sessionRecord;
         }
    }
 
+    /**
+     * 
+     * @param session
+     * @throws NullPointerException 
+     */
     @Override
     public void updateSession(SessionRecord session) throws NullPointerException {
         LOG.debug("Update a session");
+
+        try {
+            // Get the current session record
+            SessionRecord dbRecord = readSession(session.getIdsession());
+            
+            if (dbRecord == null) {
+                throw new NullPointerException("Session not found");
+            }
+      
+            dbRecord.setStarttimestamp(session.getStarttimestamp());
+            dbRecord.setLastaccesstime(session.getLastaccesstime());
+            dbRecord.setTimeout(session.getTimeout());
+            dbRecord.setHost(session.getHost());
+            dbRecord.setAttributes(session.getAttributes());
         
-        SessionRecord dbRecord = readSession(session.getIdsession());
+            // Log session details if the configuration file permits it
+            printSessionInfo("update from", session);
+            printSessionInfo("update to", dbRecord);
         
-        if (dbRecord == null) {
-            throw new NullPointerException();
+            dbRecord.update();
         }
-        
-        dbRecord.setStarttimestamp(session.getStarttimestamp());
-        dbRecord.setLastaccesstime(session.getLastaccesstime());
-        dbRecord.setTimeout(session.getTimeout());
-        dbRecord.setHost(session.getHost());
-        dbRecord.setAttributes(session.getAttributes());
-        
-        // Log session details if the configuration file permits it
-        printSessionInfo("update from", session);
-        printSessionInfo("update to", dbRecord);
-        
-        dbRecord.update();
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database exception {}", sqex.getMessage());
+            throw new NullPointerException("Database error");
+        }
     }
 
+    /**
+     * 
+     * @param idSession 
+     */
     @Override
     public void deleteSession(String idSession) {
         LOG.info("Deleting session {}", idSession);
         create.deleteFrom(Tables.SESSION).where(Tables.SESSION.IDSESSION.eq(idSession)).execute();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public Collection<SessionRecord> getActiveSessions() {
         return Arrays.asList(create.selectFrom(Tables.SESSION).fetchArray());
     }
 
+    
     private void printSessionInfo(String action, SessionRecord session) {
         if (configuration.getBoolean("debug.session", false)) {
             try {
