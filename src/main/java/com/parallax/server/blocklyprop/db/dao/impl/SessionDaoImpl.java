@@ -17,8 +17,6 @@ import java.io.ObjectInputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import org.apache.commons.configuration.Configuration;
 import org.jooq.DSLContext;
 import org.slf4j.Logger;
@@ -34,8 +32,14 @@ public class SessionDaoImpl implements SessionDao {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(SessionDaoImpl.class);
 
+    /**
+     * 
+     */
     private DSLContext create;
 
+    /**
+     * An instance of the application configuration settings
+     */
     private Configuration configuration;
 
     @Inject
@@ -55,39 +59,49 @@ public class SessionDaoImpl implements SessionDao {
         // Log session details if the configuration file permits it
         printSessionInfo("create", session);
         
-        create.insertInto(Tables.SESSION)
-               .columns(
-                       Tables.SESSION.IDSESSION, 
-                       Tables.SESSION.STARTTIMESTAMP, 
-                       Tables.SESSION.LASTACCESSTIME, 
-                       Tables.SESSION.TIMEOUT, 
-                       Tables.SESSION.HOST, 
-                       Tables.SESSION.ATTRIBUTES)
-                .values(
-                        session.getIdsession(), 
-                        session.getStarttimestamp(), 
-                        session.getLastaccesstime(), 
-                        session.getTimeout(), 
-                        session.getHost(), 
-                        session.getAttributes())
-                .execute();
+        try {
+            create.insertInto(Tables.SESSION)
+                   .columns(
+                           Tables.SESSION.IDSESSION, 
+                           Tables.SESSION.STARTTIMESTAMP, 
+                           Tables.SESSION.LASTACCESSTIME, 
+                           Tables.SESSION.TIMEOUT, 
+                           Tables.SESSION.HOST, 
+                           Tables.SESSION.ATTRIBUTES)
+                    .values(
+                            session.getIdsession(), 
+                            session.getStarttimestamp(), 
+                            session.getLastaccesstime(), 
+                            session.getTimeout(), 
+                            session.getHost(), 
+                            session.getAttributes())
+                    .execute();
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database exception {}", sqex.getMessage());
+        }
     }
 
     @Override
     public SessionRecord readSession(String idSession) throws NullPointerException {
         LOG.debug("Getting session details");
+        SessionRecord sessionRecord = null;
+        
+        try {
+            sessionRecord = create.selectFrom(Tables.SESSION)
+                    .where(Tables.SESSION.IDSESSION.eq(idSession))
+                    .fetchOne();
 
-        SessionRecord sessionRecord 
-                = create.selectFrom(Tables.SESSION)
-                        .where(Tables.SESSION.IDSESSION
-                                .eq(idSession))
-                        .fetchOne();
-
-        // Log session details if the configuration file permits it
-        printSessionInfo("read", sessionRecord);
-
+            // Log session details if the configuration file permits it
+            printSessionInfo("read", sessionRecord);
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database exception {}", sqex.getMessage());
+        }
+        finally {
         return sessionRecord;
-    }
+        }
+   }
 
     @Override
     public void updateSession(SessionRecord session) throws NullPointerException {
