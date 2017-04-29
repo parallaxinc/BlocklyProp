@@ -3321,17 +3321,7 @@ Blockly.Blocks.graph_settings = {
 //        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Graphing output settings");
-        this.appendDummyInput()
-                .appendField("maximum refresh rate")
-                .appendField(new Blockly.FieldDropdown([
-                    ["40 Hz", "25"],
-                    ["10 Hz", "100"],
-                    ["4 Hz", "250"],
-                    ["1 Hz", "1000"],
-                    ["0.5 Hz", "2000"],
-                    ["0.2 Hz", "5000"]
-                ]), "RATE");
+                .appendField("Graph settings");
         this.appendDummyInput()
                 .appendField("x-axis")
                 .appendField(new Blockly.FieldDropdown([
@@ -3341,38 +3331,64 @@ Blockly.Blocks.graph_settings = {
                     ["keep 40 seconds of data", "40,S"],
                     ["keep 50 seconds of data", "50,S"],
                     ["keep 60 seconds of data", "60,S"],
-                    ["keep 90 seconds of data", "90,S"],
+                    ["keep 90 seconds of data", "90,S"]    // Add comma back when resetting
                             //        ["trigger on value 1 rising edge", "1,TU"],
                             //        ["trigger on value 1 falling edge", "1,TD"],
                             //        ["trigger on value 1 zero crossing", "1,TZ"]
                 ]), "XAXIS");
         this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("y-axis (set both to 0 for autoscale)");
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("minimum")
+                .appendField(new Blockly.FieldDropdown([
+                    ["y-axis autoscale", "AUTO"],
+                    ["y-axis range", "FIXED"]]), "YSETTING")
+                .appendField("minimum", 'LABELMIN')
                 .appendField(new Blockly.FieldTextInput('0',
-                        Blockly.FieldTextInput.numberValidator), "YMIN");
-        this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("maximum")
+                        Blockly.FieldTextInput.numberValidator), "YMIN")
+                .appendField(" maximum", 'LABELMAX')
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), "YMAX");
+        if (this.getFieldValue('YSETTING') === 'AUTO') {
+            this.getField('YMIN').setVisible(false);
+            this.setFieldValue('0', 'YMIN');
+            this.getField('YMAX').setVisible(false);
+            this.setFieldValue('0', 'YMAX');
+            this.getField('LABELMIN').setVisible(false);
+            this.getField('LABELMAX').setVisible(false);
+        } else {
+            this.getField('YMIN').setVisible(true);
+            this.getField('YMAX').setVisible(true);
+            this.getField('LABELMIN').setVisible(true);
+            this.getField('LABELMAX').setVisible(true);
+        }
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    onchange: function () {
+        if (this.getFieldValue('YSETTING') === 'AUTO') {
+            this.getField('YMIN').setVisible(false);
+            this.setFieldValue('0', 'YMIN');
+            this.getField('YMAX').setVisible(false);
+            this.setFieldValue('0', 'YMAX');
+            this.getField('LABELMIN').setVisible(false);
+            this.getField('LABELMAX').setVisible(false);
+        } else {
+            this.getField('YMIN').setVisible(true);
+            this.getField('YMAX').setVisible(true);
+            this.getField('LABELMIN').setVisible(true);
+            this.getField('LABELMAX').setVisible(true);
+        }
+        this.render();
     }
 };
 
 Blockly.propc.graph_settings = function () {
     var rate = this.getFieldValue('RATE');
     var x_axis = this.getFieldValue('XAXIS');
-    var y_min = this.getFieldValue('YMIN');
-    var y_max = this.getFieldValue('YMAX');
+    var y_min = this.getFieldValue('YMIN') || '0';
+    var y_max = this.getFieldValue('YMAX') || '0';
 
-    Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:' +
-            rate + ',' + x_axis + ',' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
+    Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:100,' +
+            x_axis + ',' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
 
     return '';
 };

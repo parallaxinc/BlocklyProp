@@ -141,7 +141,9 @@
                         <div id="serial_graphing" class="ct-chart ct-perfect-fourth"></div>
                         <div id="graph_x-axis_label" align="center">Time (seconds)</div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer clearfix">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">&nbsp;&#9654;&nbsp;</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">&#9616;&nbsp;&#9612;</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
                     </div>
                 </div><!-- /.modal-content -->
