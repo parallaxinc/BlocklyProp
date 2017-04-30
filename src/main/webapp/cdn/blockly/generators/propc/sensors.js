@@ -932,7 +932,7 @@ Blockly.Blocks.lsm9ds1_tilt = {
 };
 
 Blockly.propc.lsm9ds1_tilt = function () {
-    var t1_axis = '__imu' + this.getFieldValue('A1')[0].toUpperCase();
+    var t1_axis = '__imu' + this.getFieldValue('A1')[6].toUpperCase();
     var t2_axis = '__imu' + this.getFieldValue('A2')[0].toUpperCase();
     var g_axis = '__imu' + this.getFieldValue('G_AXIS');
     var storage1 = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR1'), Blockly.Variables.NAME_TYPE);

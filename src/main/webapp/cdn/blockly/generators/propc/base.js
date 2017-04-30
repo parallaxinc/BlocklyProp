@@ -76,7 +76,7 @@ Blockly.Blocks.math_number = {
             this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
             this.setColour(colorPalette.getColor('math'));
         } else {
-            this.setHelpUrl(Blockly.Blockly.MSG_VALUES_HELPURL);
+            this.setHelpUrl(Blockly.MSG_VALUES_HELPURL);
             this.setColour(colorPalette.getColor('programming'));
         }
         this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
