@@ -312,7 +312,7 @@
             </block>
             <block type="array_clear"></block>
         </category>
-        <category name="<fmt:message key="category.s3-simple" />" include="s3" colour=185>
+ <!--   <category name="<fmt:message key="category.s3-simple" />" include="s3" colour=185>      
             <category name="<fmt:message key="category.s3-simple.simple-control" />" colour=205>
                 <block type="scribbler_loop"></block>
                 <block type="scribbler_limited_loop">
@@ -322,7 +322,6 @@
                         </block>
                     </value>
                 </block>
-                <block type="scribbler_exit_loop"></block>
                 <block type="scribbler_simple_wait">
                     <field name="WAITTIME">5</field>
                 </block>
@@ -349,9 +348,19 @@
                 <block type="scribbler_LED"></block>
             </category>
         </category>
+-->
         <category name="<fmt:message key="category.control" />" include="s3" colour=205>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
+            </block>
+            <block type="controls_repeat">
+                <mutation type="TIMES"></mutation>
+                <field name="TYPE">TIMES</field>
+                <value name="TIMES">
+                    <block type="math_number">
+                        <field name="NUM">10</field>
+                    </block>
+                </value>
             </block>
             <block type="control_repeat_for_loop">
                 <value name="START">
@@ -370,16 +379,17 @@
                     </block>
                 </value>
             </block>
+            <block type="scribbler_exit_loop"></block>
             <block type="controls_if"></block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
-                    <block type="spin_integer">
-                        <field name="INT_VALUE">500</field>
+                    <block type="math_number">
+                        <field name="NUM">500</field>
                     </block>
                 </value>
-                <field name="TIMESCALE">1000</field>
+                <field name="TIMESCALE">1</field>
             </block>
-            <block type="spin_comment"></block>
+            <block type="comment"></block>
         </category>
         <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
         <category name="<fmt:message key="category.operators.arrays" />" include="s3" colour="250">
@@ -1279,19 +1289,18 @@
             <block type="activitybot_display_calibration"></block>
         </category>
         <category name="<fmt:message key="category.s3-math" />" include="s3" colour=275>
-            <block type="spin_integer"></block>
-            <block type="math_int_angle"></block>
+            <block type="math_number"></block>
             <block type="scribbler_boolean"></block>
             <block type="scribbler_random_boolean"></block>
-            <block type="scribbler_random_number">
-                <value name="LOW">
-                    <block type="spin_integer">
-                        <field name="INT_VALUE">1</field>
+            <block type="math_random">
+                <value name="A">
+                    <block type="math_number">
+                        <field name="NUM">1</field>
                     </block>
                 </value>
-                <value name="HIGH">
-                    <block type="spin_integer">
-                        <field name="INT_VALUE">10</field>
+                <value name="B">
+                    <block type="math_number">
+                        <field name="NUM">10</field>
                     </block>
                 </value>
             </block>
@@ -1337,17 +1346,8 @@
             <category name="<fmt:message key="category.sensor-input.s3-button" />">
                 <block type="reset_button_presses"></block>
             </category>
-            <category name="<fmt:message key="category.sensor-input.s3-ping" />">
-                <block type="scribbler_ping"></block>
-            </category>
-            <category name="<fmt:message key="category.sensor-input.s3-pins" />">
-                <block type="sirc_s3_get"></block>
-                <block type="digital_input"></block>
-                <block type="analog_input"></block>
-            </category>
         </category>
         <category name="<fmt:message key="category.s3-actions" />" include="s3" colour=185>
-            <block type="digital_output"></block>
             <category name="<fmt:message key="category.s3-actions.motors" />">
                 <block type="scribbler_drive">
                     <field name="DRIVE_ANGLE">STRAIGHT</field>
@@ -1356,80 +1356,72 @@
                 <block type="scribbler_stop"></block>
                 <block type="move_motors">
                     <value name="LEFT_MOTOR_SPEED">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RIGHT_MOTOR_SPEED">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="MOTOR_DURATION">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="move_motors_distance">
                     <value name="LEFT_MOTOR_DISTANCE">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="RIGHT_MOTOR_DISTANCE">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="MOTOR_SPEED">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="move_motors_xy">
                     <value name="X_DISTANCE">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="Y_DISTANCE">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="MOTOR_SPEED">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
                 <block type="move_motors_angle">
                     <value name="ROTATE_ANGLE">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ROTATE_RADIUS">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="ROTATE_SPEED">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
-                <block type="scribbler_servo">
-                    <value name="SERVO_ANGLE">
-                        <block type="spin_integer">
-                            <field name="ANGLE_VALUE">90</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="scribbler_stop_servo"></block>
             </category>
             <category name="<fmt:message key="category.s3-actions.sound" />" include="s3">
                 <block type="scribbler_play">
@@ -1440,23 +1432,23 @@
                 </block>
                 <block type="play_polyphony">
                     <value name="FREQUENCY_1">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="FREQUENCY_2">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POLYPHONY_DURATION">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                     <value name="POLYPHONY_VOLUME">
-                        <block type="spin_integer">
-                            <field name="INT_VALUE">0</field>
+                        <block type="math_number">
+                            <field name="NUM">0</field>
                         </block>
                     </value>
                 </block>
@@ -1486,7 +1478,27 @@
                 <block type="scribbler_serial_rx_byte"></block>
             </category>
             <category name="<fmt:message key="category.s3-actions.reset" />" include="s3">
-                            <block type="factory_reset"></block>
+                <block type="factory_reset"></block>
+            </category>
+        </category>
+        <category name="<fmt:message key="category.s3-hacker-port" />" include="s3" colour="295">
+            <category name="<fmt:message key="category.s3-hacker-port.sensors" />">
+                <block type="scribbler_ping"></block>
+            </category>
+            <category name="<fmt:message key="category.s3-hacker-port.pins" />">
+                <block type="digital_output"></block>
+                <block type="digital_input"></block>
+                <block type="analog_input"></block>
+            </category>
+            <category name="<fmt:message key="category.s3-hacker-port.servo" />">
+            <block type="scribbler_servo">
+                <value name="SERVO_ANGLE">
+                    <block type="math_number">
+                        <field name="NUM">90</field>
+                    </block>
+                </value>
+            </block>
+            <block type="scribbler_stop_servo"></block>
             </category>
         </category>
 
