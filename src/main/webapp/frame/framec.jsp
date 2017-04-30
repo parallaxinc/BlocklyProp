@@ -1322,6 +1322,7 @@
         </category>
         <category name="<fmt:message key="category.sensor-input" />" include="s3" colour=140>
             <category name="<fmt:message key="category.sensor-input.s3-line" />">
+                <block type="calibrate_line_sensor"></block>
                 <block type="scribbler_if_line"></block>
                 <block type="line_sensor"></block>
             </category>

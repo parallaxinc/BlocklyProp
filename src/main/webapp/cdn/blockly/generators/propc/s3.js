@@ -1659,3 +1659,41 @@ Blockly.propc.mic_s3_get = function () {
     var code = 's3_readMic()';
     return [code, Blockly.propc.ORDER_NONE];
 };
+
+Blockly.Blocks.calibrate_line_sensor = {
+    init: function () {
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+                .appendField("line sensor calibrate");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
+        this.setTooltip(Blockly.MSG_S3_LINE_CALIBRATE_TOOLTIP);
+    }
+};
+
+Blockly.propc.calibrate_line_sensor = function () {
+    Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
+    Blockly.propc.setups_[ 's3_setup' ] = 's3_setup();pause(1000);';
+
+    var func = 'void s3_calibrate_line_sensor(void) {int __lineSenCal[4];\n__lineSenCal[0] = ';
+    func += 's3_lineSensor(S3_LEFT);\n__lineSenCal[1] = s3_lineSensor(S3_RIGHT);\n__lineSenCal[2] = ';
+    func += 's3_lineSensor(S3_LEFT);\n__lineSenCal[3] = s3_lineSensor(S3_RIGHT);\n';
+    func += 'int __calibrate_timer = CNT + (CLKFREQ/1000) * 3672;\ns3_motorSet(75, -75, 0);';
+    func += '\nwhile(CNT < __calibrate_timer) {int __tempLineSen = s3_lineSensor(S3_LEFT);\n';
+    func += 'if (__tempLineSen < __lineSenCal[0]) __lineSenCal[0] = __tempLineSen;\n';
+    func += 'if (__tempLineSen > __lineSenCal[1]) __lineSenCal[1] = __tempLineSen;\n';
+    func += '__tempLineSen = s3_lineSensor(S3_RIGHT);\nif (__tempLineSen < __lineSenCal[2]) ';
+    func += '__lineSenCal[2] = __tempLineSen;\nif (__tempLineSen > __lineSenCal[3]) ';
+    func += '__lineSenCal[3] = __tempLineSen;}s3_motorSet(0, 0, 0);\n';
+    func += 'if (__lineSenCal[2] > __lineSenCal[0]) __lineSenCal[0] = __lineSenCal[2];\n';
+    func += 'if (__lineSenCal[3] < __lineSenCal[1]) __lineSenCal[1] = __lineSenCal[3];\n';
+    func += 'scribbler_set_line_threshold((__lineSenCal[0] + __lineSenCal[1]) / 2);\n';
+    func += 'scribbler_write_line_threshold();\n}';
+
+    Blockly.propc.methods_["s3_calibrate_line_sensor"] = func;
+    Blockly.propc.method_declarations_["s3_calibrate_line_sensor"] = 
+            'void s3_calibrate_line_sensor(void);';
+
+    return 's3_calibrate_line_sensor();';
+};

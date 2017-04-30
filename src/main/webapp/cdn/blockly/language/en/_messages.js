@@ -489,6 +489,7 @@ Blockly.MSG_S3_LOGIC_OPERATION_TOOLTIP = "boolean comparison: and, or, and not, 
 Blockly.MSG_S3_LOGIC_NEGATE_TOOLTIP = "not: returns false if input is true and true if input is false";
 Blockly.MSG_S3_LOGIC_COMPARE_TOOLTIP = "compare values: boolean comparison returns true or false";
 Blockly.MSG_S3_LINE_SENSOR_TOOLTIP = "line sensor reading: detection of a line by the sensors under the Scribbler";
+Blockly.MSG_S3_LINE_CALIBRATE_TOOLTIP = "line sensor calibrate: Use this block at the top of a line following program.\nSpins the Scribbler robot in place and calibrates the\nline following sensors by scanning the surface beneath it."
 Blockly.MSG_S3_OBSTACLE_SENSOR_TOOLTIP = "obstacle sensor reading: detection of obstacles from the front sensors";
 Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP = "light sensor reading: measurements of light from the front sensors";
 Blockly.MSG_S3_STALL_SENSOR_TOOLTIP = "tail wheel stall: returns true of tail wheel is not spinning";
