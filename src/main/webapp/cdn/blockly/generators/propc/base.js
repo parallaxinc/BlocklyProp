@@ -71,10 +71,15 @@ if (!Blockly.Blocks)
 // Will eventually move this functionality into the
 // "spin_integer" block for the S3.
 Blockly.Blocks.math_number = {
-    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+            this.setColour(colorPalette.getColor('math'));
+        } else {
+            this.setHelpUrl(Blockly.Blockly.MSG_VALUES_HELPURL);
+            this.setColour(colorPalette.getColor('programming'));
+        }
         this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput('MAIN')
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), 'NUM');
@@ -497,8 +502,12 @@ Blockly.propc.math_crement = function () {
 };
 
 Blockly.Blocks.math_random = {
-    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
         this.setTooltip(Blockly.MSG_MATH_RANDOM_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput("A")

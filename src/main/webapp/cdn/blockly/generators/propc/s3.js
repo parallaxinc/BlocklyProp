@@ -1051,7 +1051,7 @@ Blockly.Blocks.scribbler_servo = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('robot'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP);
     }
@@ -1080,7 +1080,7 @@ Blockly.Blocks.scribbler_stop_servo = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour(colorPalette.getColor('robot'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
     }
@@ -1119,10 +1119,10 @@ Blockly.propc.scribbler_ping = function () {
 Blockly.Blocks.digital_input = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("Digital reading on")
+                .appendField("check PIN")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
         this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
         this.setTooltip(Blockly.MSG_S3_DIGITAL_INPUT_TOOLTIP);
     }
@@ -1136,10 +1136,10 @@ Blockly.propc.digital_input = function () {
 Blockly.Blocks.digital_output = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("set")
+                .appendField("make PIN")
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
         this.appendDummyInput("")
-                .appendField("to")
+                .appendField(" ")
                 .appendField(new Blockly.FieldDropdown([['high', "HIGH"], ['low', "LOW"], ['input', "INPUT"], ['toggle state', "TOGGLE"], ['toggle direction', "REVERSE"]]), "ACTION");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -1170,10 +1170,10 @@ Blockly.propc.digital_output = function () {
 Blockly.Blocks.analog_input = {
     init: function () {
         this.appendDummyInput("")
-                .appendField("Analog reading on")
+                .appendField("check analog PIN")
                 .appendField(new Blockly.FieldDropdown([['A0', '0'], ['A1', '1']]), "ANALOG_PIN");
         this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
         this.setTooltip(Blockly.MSG_S3_ANALOG_INPUT_TOOLTIP);
     }

@@ -786,6 +786,16 @@ public class ProjectDaoImpl implements ProjectDao {
         // Fix a small issue with calling the wrong project type.
         newCode = newCode.replaceAll("block type=\"spin_integer\"",
                 "block type=\"math_number\"");
+        
+        //Change all math number blocks to the same kind
+        newCode = newCode.replaceAll("block type=\"math_int_angle\"",
+                "block type=\"math_number\"");
+        newCode = newCode.replaceAll("block type=\"scribbler_random_number\"",
+                "block type=\"math_random\"");
+        newCode = newCode.replaceAll("field name=\"INT_VALUE\"",
+                "field name=\"NUM\"");
+        newCode = newCode.replaceAll("field name=\"ANGLE_VALUE\"",
+                "field name=\"NUM\"");
 
         // Replace the Robot init block with two blocks, need to generate unique 20-digit blockID:
         newCode = newCode.replaceAll("</field><field name=\"RAMPING\">", 
