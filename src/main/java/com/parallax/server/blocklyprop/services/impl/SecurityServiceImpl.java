@@ -29,6 +29,7 @@ import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
+import java.util.Calendar;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
@@ -152,18 +153,20 @@ public class SecurityServiceImpl implements SecurityService {
 
     /**
      * 
-     * @param screenname
-     * @param email
-     * @param password
-     * @param passwordConfirm
-     * @param birthMonth
-     * @param birthYear
-     * @param parentEmail
+     * @param screenname String user screen name
+     * @param email String user email address
+     * @param password String user password
+     * @param passwordConfirm String user password confirmation
+     * @param birthMonth int Month component of user's birthday. COPPA field
+     * @param birthYear int Year component of the user's birthday. COPPA field
+     * @param parentEmail String Sponsor's email address. COPPA field
+     * @param parentEmailSource int Sponsor classification. COPPA
      * @return
      * @throws NonUniqueEmailException
      * @throws PasswordVerifyException
      * @throws PasswordComplexityException
-     * @throws ScreennameUsedException 
+     * @throws ScreennameUsedException
+     * @throws IllegalStateException 
      */
     @Override
     public Long register(
@@ -180,34 +183,77 @@ public class SecurityServiceImpl implements SecurityService {
                 PasswordComplexityException, 
                 ScreennameUsedException,
                 IllegalStateException{
-        
-        LOG.info("Registering birthday year as: {}", birthYear);
+
+        // Log a few things
+        LOG.info("In register: parameter screen name: {}", screenname);
+        LOG.info("In register: parameter email: {}", email);
+        LOG.info("In register: parameter month: {}", birthMonth);
+        LOG.info("In register: parameter year: {}", birthYear);
+        LOG.info("In register: parameter sponsor email: {}", parentEmail);
+        LOG.info("In register: parameter sponsor type selection: {}", parentEmailSource);
         
         // Perform basic sanity checks on inputs
+        // Throws NullPointerException if screenname is null
         LOG.info("Resgistering new user: {}", screenname);
-        Preconditions.checkNotNull(screenname, "Screenname cannot be null");
-
-        // User email address is required and must be reasonably valid
-        LOG.info("Verifying email address has been supplied");
-        Preconditions.checkNotNull(email, "Email cannot be null");
-        
-        LOG.info("Verifying email address is reasonable");
-        Preconditions.checkState(emailValidator.isValid(email),"Email address format is incorrect");
+        Preconditions.checkNotNull(screenname, "ScreenNameNull");
 
         LOG.info("Verifying that a password was provided");
-        Preconditions.checkNotNull(password, "Password cannot be null");
+        Preconditions.checkNotNull(password, "PasswordIsNull");
         
         LOG.info("Verify that second copy of password was provided");
-        Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
+        Preconditions.checkNotNull(passwordConfirm, "PasswordConfirmIsNull");
+ 
+        // Verify that we have valid COPPA data before continuing
+        Preconditions.checkNotNull(birthMonth, "BirthMonthNull");
+        LOG.info("Verify that month is provided: {}", birthMonth);
+        Preconditions.checkState((birthMonth != 0), "BirthMonthNotSet");
         
-        LOG.info("Verify that month is provided");
-        Preconditions.checkNotNull(birthMonth, "Month cannot be empty");
-        
-        LOG.info("Verify that year is provided");
-        Preconditions.checkNotNull(birthYear, "Year cannot be empty");
+        Preconditions.checkNotNull(birthYear, "BirthYearNull");
 
-        // Looking for a reasonably valid email address
-        if (parentEmail.length() > 0) {
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        LOG.info("Verify that year is provided: {}", birthYear);
+        Preconditions.checkState((thisYear != birthYear), "BirthYearNotSet");
+
+        // The user email field is optional if the user is under 13 years old
+        if (isCoppaEligible(birthMonth, birthYear)) {
+            LOG.info("User is COPPA eligible!");
+
+            // We must have a sponsor email address for COPPA eligible users
+            Preconditions.checkNotNull(
+                    parentEmail,
+                    "SponsorEmailNull");
+            
+            // This email address is optional
+            if (email != null && email.length() > 0) {
+                LOG.info("Verify that optional user email address is reasonable");
+                Preconditions.checkState(
+                    emailValidator.isValid(parentEmail),
+                    "SponsorEmail");
+            }
+
+            // Looking for a reasonably valid email address
+            if (parentEmail.length() > 0) {
+                LOG.info("Verify that sponsor address is reasonable");
+                Preconditions.checkState(
+                        emailValidator.isValid(parentEmail),
+                        "SponsorEmail");
+            }
+        }
+        else {
+            LOG.info("User is NOT COPPA eligible!");
+            
+            // User email address is required and must be reasonably valid
+            LOG.info("Verifying email address has been supplied");
+            Preconditions.checkNotNull(email, "UserEmailNull");
+
+            LOG.info("Verifying email address is reasonable");
+            Preconditions.checkState(emailValidator.isValid(email),"Email address format is incorrect");
+        }
+        
+        // The sponsor email address is not required for anyone
+        // 13 years old or older. If an address is provided, verify
+        // that it is reasonable before saving it.
+        if (parentEmail != null && parentEmail.length() > 0) {
             LOG.info("Verify that sponsor address is reasonable");
             Preconditions.checkState(
                     emailValidator.isValid(parentEmail),
@@ -226,8 +272,13 @@ public class SecurityServiceImpl implements SecurityService {
             }
             
             return id;
-        } catch (ServerException se) {
+        }
+        catch (ServerException se) {
             LOG.error("Server error detected");
+            return 0L;
+        }
+        catch (NullPointerException npe) {
+            LOG.error("New user registration failed with: {}", npe.getMessage() );
             return 0L;
         }
     }
@@ -386,6 +437,22 @@ public class SecurityServiceImpl implements SecurityService {
             }
         }
         return sessionData;
+    }
+    
+    private Boolean isCoppaEligible(int month, int year) {
+        int cap = 156;
+        int user_age = (year * 12) + month;
+        
+        Calendar cal = Calendar.getInstance();
+        int current_month = cal.get(Calendar.MONTH);
+        int current_year = cal.getInstance().get(Calendar.YEAR);
+        int current_cap = (current_year * 12) + current_month;
+        
+        if ((current_cap - user_age) > cap) {
+            return false;
+        }
+        
+        return true;
     }
 
 }

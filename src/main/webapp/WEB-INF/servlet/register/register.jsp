@@ -21,15 +21,17 @@
                 <div class="col-md-6 col-sm-12"></div>
                 <div class="col-md-6 col-sm-12">
                     <h2><fmt:message key="register.do.title" /></h2>
-                    <%
+                    <%  // Test for a generic error
                         Boolean error = (Boolean) request.getAttribute("error");
                         if (error != null && error) {
                     %>
                     <div class="alert alert-danger">
-                        <p><fmt:message key="error.generic" /></p>
+                        <p><fmt:message key="register.error.generic" /></p>
                     </div>
                     <%
                         }
+
+                        // Email address has already been claimed by another user
                         Boolean emailAlreadyUsed = (Boolean) request.getAttribute("emailAlreadyUsed");
                         if (emailAlreadyUsed != null && emailAlreadyUsed) {
                     %>
@@ -38,6 +40,8 @@
                     </div>
                     <%
                         }
+
+                        // The user email address fields contains a poorly formed address
                         Boolean emailMalformed = (Boolean) request.getAttribute("emailMalformed");
                         if (emailMalformed != null && emailMalformed) {
                     %>
@@ -46,6 +50,8 @@
                     </div>
                     <%
                         }
+
+                        // The sponsor email address contains a poorly formed address
                         Boolean sponsorEmailMalformed = (Boolean) request.getAttribute("sponsorEmailMalformed");
                         if (sponsorEmailMalformed != null && sponsorEmailMalformed) {
                     %>
@@ -54,6 +60,18 @@
                     </div>
                     <%
                         }
+
+                        // The user email address contains a poorly formed address
+                        Boolean userEmailMalformed = (Boolean) request.getAttribute("UserEmailNull");
+                        if (userEmailMalformed != null && userEmailMalformed) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.user_email_empty" /></p>
+                    </div>
+                    <%
+                        }
+
+                        // The contents of the two password fields do not match
                         Boolean passwordsDontMatch = (Boolean) request.getAttribute("passwordsDontMatch");
                         if (passwordsDontMatch != null && passwordsDontMatch) {
                     %>
@@ -62,6 +80,9 @@
                     </div>
                     <%
                         }
+
+                        // We are missing data in a field. This is another generic
+                        // error and is probably a Bad Thing.
                         Boolean missingFields = (Boolean) request.getAttribute("missingFields");
                         if (missingFields != null && missingFields) {
                     %>
@@ -70,6 +91,28 @@
                     </div>
                     <%
                         }
+
+                        // The submitted password is too simple and easily compromised
+                        Boolean passwordIsEmpty = (Boolean) request.getAttribute("PasswordIsNull");
+                        if (passwordIsEmpty != null && passwordIsEmpty) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.password_empty" /></p>
+                    </div>
+                    <%
+                        }
+
+                        // The submitted password is too simple and easily compromised
+                        Boolean passwordConfirmIsEmpty = (Boolean) request.getAttribute("PasswordConfirmIsNull");
+                        if (passwordConfirmIsEmpty != null && passwordConfirmIsEmpty) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.password_confirm_empty" /></p>
+                    </div>
+                    <%
+                        }
+
+                        // The submitted password is too simple and easily compromised
                         Boolean passwordComplexity = (Boolean) request.getAttribute("passwordComplexity");
                         if (passwordComplexity != null && passwordComplexity) {
                     %>
@@ -78,6 +121,18 @@
                     </div>
                     <%
                         }
+
+                        // The screen name field is required but is empty
+                        Boolean screenNameEmpty = (Boolean) request.getAttribute("ScreenNameNull");
+                        if (screenNameEmpty != null && screenNameEmpty) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.screenname_empty" /></p>
+                    </div>
+                    <%
+                        }
+
+                        // The selected screen name has already been claimed by another user
                         Boolean screennameUsed = (Boolean) request.getAttribute("screennameUsed");
                         if (screennameUsed != null && screennameUsed) {
                     %>
@@ -86,6 +141,26 @@
                     </div>
                     <%
                         }
+
+                        // The birth month selector has not been updated
+                        Boolean birthMonthSelectorZero = (Boolean) request.getAttribute("BirthMonthNotSet");
+                        if (birthMonthSelectorZero != null && birthMonthSelectorZero) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.birth_month_not_selected" /></p>
+                    </div>
+                    <%
+                        } //BirthYearNotSet
+                        // The birth month selector has not been updated
+                        Boolean birthYearSelectorZero = (Boolean) request.getAttribute("BirthYearNotSet");
+                        if (birthYearSelectorZero != null && birthYearSelectorZero) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.birth_year_not_selected" /></p>
+                    </div>
+                    <%
+                        } //BirthYearNotSet
+
                     %>
                     <form name="registerForm" action="" method="post">
                         <div class="form-group">
@@ -172,7 +247,9 @@
                         </div>
                         <div class="form-group">
                             <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
-                            <input class="form-control" type="text" name="sponsoremail" maxlength="255" value="<%= request.getAttribute("parentemail")%>">
+                            <input class="form-control" type="text" name="sponsoremail" maxlength="255" value="<%= request.getAttribute("sponsoremail")%>">
+                        </div>
+                        <div class="form-group">
                             <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
                             <select name="sponsoremailtype">
                                 <option value="1" selected="selected">Parent</option>

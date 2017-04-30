@@ -51,7 +51,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     /**
-     * Clear the user screen name and email addresses from the user registration form
+     * Clear the user registration form data and present the form
      * 
      * @param req
      * @param resp
@@ -63,12 +63,35 @@ public class RegisterServlet extends HttpServlet {
             HttpServletRequest req, 
             HttpServletResponse resp) throws ServletException, IOException {
 
+        // Initialize the form fields to reasonable defaults
         req.setAttribute("screenname", "");
         req.setAttribute("email", "");
+        req.setAttribute("sponsoremail", "");
+        
+        // Send the new form to the client
         req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
     }
 
     /**
+     * Process the user registration page
+     * <p>
+     * This retrieves the form values and pass them on to another method
+     * that will actually create the user account.
+     * <p>
+     * The register() method will throw an exception if the data collected from
+     * the form is considered invalid. The exact exception depends on the nature
+     * of the error. For example, null values in required fields will throw a
+     * NullPointerException or a poorly formatted email address will cause a
+     * IllegalStateException to be thrown.
+     * <p>
+     * This method traps those exceptions and resubmits the form with a helpful
+     * error message to guide the user to a successful registration experience.
+     * Each exception contains a mnemonic that is used here to identify the
+     * exact error. The exception handler in this method then sets an attribute
+     * on the form and resubmits it. The form is then presented to the user to
+     * provide him or her with an opportunity to correct the data and resubmit
+     * the registration.
+     * <p>
      * 
      * @param req
      * @param resp
@@ -79,7 +102,7 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(
             HttpServletRequest req, 
             HttpServletResponse resp) throws ServletException, IOException {
-    
+        
         resp.setContentType("application/json");
 
         String screenname = Strings.emptyToNull(req.getParameter("screenname"));
@@ -88,17 +111,18 @@ public class RegisterServlet extends HttpServlet {
         String confirmPassword = Strings.emptyToNull(req.getParameter("confirmpassword"));
         String birthMonth = Strings.emptyToNull(req.getParameter("bdmonth"));
         String birthYear = Strings.emptyToNull(req.getParameter("bdyear"));
-        String parentEmail = Strings.emptyToNull(req.getParameter("sponsoremail"));
+        String sponsorEmail = Strings.emptyToNull(req.getParameter("sponsoremail"));
         String sponsorEmailType = Strings.emptyToNull(req.getParameter("sponsoremailtype"));
        
-        LOG.info("Raw birthday year is: {}", birthYear);
+        LOG.info("Raw screen name: {}", screenname);
+        LOG.info("Raw sponsor email address is: {}", sponsorEmail);
 
         // Clean up any possible null fields
         req.setAttribute("screenname", screenname == null ? "" : screenname);
         req.setAttribute("email", email == null ? "" : email);
         req.setAttribute("bdmonth", birthMonth == null ? "" : birthMonth );
         req.setAttribute("bdyear", birthYear == null ? "" : birthYear );
-        req.setAttribute("sponsoremail", parentEmail == null ? "" : parentEmail);
+        req.setAttribute("sponsoremail", sponsorEmail == null ? "" : sponsorEmail);
         req.setAttribute("sponsoremailtype", sponsorEmailType == null ? "0" : sponsorEmailType);
                 
         // Log a few things
@@ -106,27 +130,10 @@ public class RegisterServlet extends HttpServlet {
         LOG.info("Registering email: {}", email);
         LOG.info("Registering month: {}", birthMonth);
         LOG.info("Registering year: {}", birthYear);
-        LOG.info("Registering sponsor email: {}", parentEmail);
+        LOG.info("Registering sponsor email: {}", sponsorEmail);
         LOG.info("Registering sponsor type selection: {}", sponsorEmailType);
 
         LOG.info("Checking REQ Year setting: {}",req.getAttribute("bdmonth"));
-        LOG.info("Checking email details");
-        if (email == null) {
-            LOG.info("Email is Null");
-        }
-        else {
-            LOG.info("Email is not Null");
-        }
-        
-        LOG.info("Checking for valid email address");
-        if (emailValid.isValid(email)){
-            LOG.info("Email appears to be valid");
-        }
-        else {
-            LOG.warn("Email address is not in the correct format: {}", email);
-            req.setAttribute("emailMalformed", true);
-            req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
-        }
         
         Long idUser;
         
@@ -136,7 +143,7 @@ public class RegisterServlet extends HttpServlet {
                     screenname, email, password, confirmPassword,
                     Integer.parseInt(birthMonth),
                     Integer.parseInt(birthYear),
-                    parentEmail,
+                    sponsorEmail,
                     Integer.parseInt(sponsorEmailType));
 
             LOG.info("Returning from register(). ID assigned is: {}", idUser);
@@ -158,9 +165,51 @@ public class RegisterServlet extends HttpServlet {
             req.setAttribute("passwordsDontMatch", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         } catch (NullPointerException npe) {
-            LOG.warn("Null pointer exception. Missing field data");
-            req.setAttribute("missingFields", true);
+            LOG.warn("Null Pointer Exception. Data is: {}", npe.getMessage());
+
+            // Figure out which data field triggered the exception
+            switch(npe.getMessage()) {
+                case "ScreenNameNull":
+                    LOG.warn("Null screen name trigger exception");
+                    req.setAttribute("ScreenNameNull", true);
+                    break;
+                    
+                case "PasswordIsNull":
+                    LOG.warn("Null password trigger exception");
+                    req.setAttribute("PasswordIsNull", true);
+                    break;
+                    
+                case "PasswordConfirmIsNull":
+                    LOG.warn("Null confirmation password trigger exception");
+                    req.setAttribute("PasswordConfirmIsNull", true);
+                    break;
+                    
+                case "BirthMonthNull":
+                    LOG.warn("Null birth month trigger exception");
+                    req.setAttribute("BirthMonthNull", true);
+                    break;
+                
+                case "BirthYearNull":
+                    LOG.warn("Null birth yeartrigger exception");
+                    req.setAttribute("BirthYearNull", true);
+                    break;
+                    
+                case "UserEmailNull":
+                    LOG.warn("Null user email");
+                    req.setAttribute("UserEmailNull", true);
+                    break;
+                    
+                case "SponsorEmailNull":
+                    LOG.warn("Null sponsor email");
+                    req.setAttribute("SponsorEmailNull", true);
+                    break;
+                    
+                default:
+                    LOG.warn("Unknown exception trigger");
+                    req.setAttribute("missingFields", true);
+            }
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
+
         } catch (PasswordComplexityException pce) {
             LOG.info("Paswword is not complex enough");
             req.setAttribute("passwordComplexity", true);
@@ -170,12 +219,24 @@ public class RegisterServlet extends HttpServlet {
             req.setAttribute("screennameUsed", true);
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         } catch (IllegalStateException ex) {
-            LOG.warn("Possible email address issue");
             LOG.warn("Exception message is: {}", ex.getMessage());
 
-            if (ex.getMessage() == "SponsorEmail") {
+            if ("BirthMonthNotSet".equals(ex.getMessage())) {
+                req.setAttribute("BirthMonthNotSet", true);
+            }
+
+            // Birth year is still at the default. Infants probably are not users
+            else if ("BirthYearNotSet".equals(ex.getMessage())) {
+                req.setAttribute("BirthYearNotSet", true);
+            }
+            
+            // Set the on-screen error message numonic. Code in the 
+            // register.jsp page will map the numonic to a language sting and
+            // display that to the user
+            else if ("SponsorEmail".equals(ex.getMessage())) {
                 req.setAttribute("sponsorEmailMalformed", true);
             }
+            
             else // User email issue
             {
                 req.setAttribute("emailMalformed", true);
