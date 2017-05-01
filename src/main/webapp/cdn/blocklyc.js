@@ -20,6 +20,8 @@ var graph_temp_data = new Array;
 var graph_data_ready = false;
 var graph_connection_string = '';
 var graph_timestamp_start = null;
+var graph_timestamp_restart = 0;
+var graph_paused = false;
 var graph_temp_string = new String;
 var graph_time_multiplier = 0;
 var graph_interval_id = null;
@@ -439,6 +441,9 @@ function graphing_console() {
     }
 
     $('#graphing-dialog').modal('show');
+    $("#btn-graph-play").hide();
+    $("#btn-graph-pause").show();
+
 }
 
 check_com_ports = function () {
@@ -558,14 +563,19 @@ function graph_new_data(stream) {
                         graph_time_multiplier += fullCycleTime;
                     }
                 }
-                graph_temp_data[row].unshift(ts + graph_time_multiplier - graph_timestamp_start);
-                for (j = 2; j < graph_temp_data[row].length; j++) {
-                    graph_data.series[j - 2].push({
-                        x: graph_temp_data[row][0],
-                        y: graph_temp_data[row][j] || null
-                    });
-                    if (graph_temp_data[row][0] > graph_options.sampleTotal)
-                        graph_data.series[j - 2].shift();
+                if(graph_paused) {
+                    graph_timestamp_restart = ts + graph_time_multiplier - graph_timestamp_start;
+                } else {
+                    graph_temp_data[row].unshift(ts + graph_time_multiplier - 
+                            graph_timestamp_start + graph_timestamp_restart);
+                    for (j = 2; j < graph_temp_data[row].length; j++) {
+                        graph_data.series[j - 2].push({
+                            x: graph_temp_data[row][0],
+                            y: graph_temp_data[row][j] || null
+                        });
+                        if (graph_temp_data[row][0] > graph_options.sampleTotal)
+                            graph_data.series[j - 2].shift();
+                    }
                 }
                 
                 /*
@@ -608,4 +618,16 @@ function graph_reset() {
 
 function graph_redraw() {
     graph.update(graph_data);
+}
+
+function graph_pause() {
+    $("#btn-graph-pause").hide();
+    $("#btn-graph-play").show();
+    clearInterval(graph_interval_id);
+}
+
+function graph_play() {
+    $("#btn-graph-play").hide();
+    $("#btn-graph-pause").show();
+    graph_interval_id = setInterval(function () {graph.update(graph_data);}, graph_options.refreshRate);
 }
