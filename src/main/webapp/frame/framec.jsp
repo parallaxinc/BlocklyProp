@@ -1323,23 +1323,24 @@
         <category name="<fmt:message key="category.sensor-input" />" include="s3" colour=140>
             <category name="<fmt:message key="category.sensor-input.s3-line" />">
                 <block type="calibrate_line_sensor"></block>
-                <block type="scribbler_if_line"></block>
+                <!-- <block type="scribbler_if_line"></block> -->
+                <block type="scribbler_simple_line"></block>
                 <block type="line_sensor"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-obstacle" />">
-                <block type="scribbler_if_obstacle"></block>
-                <block type="obstacle_sensor"></block>
+                <!-- <block type="scribbler_if_obstacle"></block>
+                <block type="obstacle_sensor"></block> -->
+                <block type="scribbler_simple_obstacle"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-light" />">
-                <block type="scribbler_if_light"></block>
+                <!-- <block type="scribbler_if_light"></block> -->
+                <block type="scribbler_simple_light"></block>
                 <block type="light_sensor"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-stall" />">
-                <block type="scribbler_if_stalled"></block>
+                <!-- <block type="scribbler_if_stalled"></block> -->
                 <block type="stall_sensor"></block>
-                <!--
-                                <block type="spinning_sensor"></block>
-                -->
+                <!-- <block type="spinning_sensor"></block> -->
             </category>
             <category name="<fmt:message key="category.sensor-input.s3-mic" />">
                 <block type="mic_s3_get"></block>
