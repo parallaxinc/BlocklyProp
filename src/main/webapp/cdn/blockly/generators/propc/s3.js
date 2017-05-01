@@ -1773,7 +1773,7 @@ Blockly.Blocks.sirc_s3_get = {
         var thePins = addPin.concat(profile.default.digital);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
-                .appendField("Sony Remote value received from")
+                .appendField("Sony Remote value")
                 .appendField(new Blockly.FieldDropdown(thePins), "PIN");
 
         this.setInputsInline(true);

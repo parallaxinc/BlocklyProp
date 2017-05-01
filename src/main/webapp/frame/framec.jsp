@@ -1342,6 +1342,9 @@
                 <block type="stall_sensor"></block>
                 <!-- <block type="spinning_sensor"></block> -->
             </category>
+            <category name="<fmt:message key="category.sensor-input.s3-sirc" />">
+                <block type="sirc_s3_get"></block>
+            </category>
             <category name="<fmt:message key="category.sensor-input.s3-mic" />">
                 <block type="mic_s3_get"></block>
             </category>
