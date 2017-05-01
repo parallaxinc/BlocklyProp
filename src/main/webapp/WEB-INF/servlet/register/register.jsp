@@ -69,7 +69,18 @@
                         <p><fmt:message key="register.error.user_email_empty" /></p>
                     </div>
                     <%
-                        }
+                        } //SponsorEmailNull
+
+                        // The user email address contains a poorly formed address
+                        Boolean sponsorEmailIsEmpty = (Boolean) request.getAttribute("SponsorEmailNull");
+                        if (sponsorEmailIsEmpty != null && sponsorEmailIsEmpty) {
+                    %>
+                    <div class="alert alert-danger">
+                        <p><fmt:message key="register.error.sponsor_email_empty" /></p>
+                    </div>
+                    <%
+                        } //SponsorEmailNull
+
 
                         // The contents of the two password fields do not match
                         Boolean passwordsDontMatch = (Boolean) request.getAttribute("passwordsDontMatch");

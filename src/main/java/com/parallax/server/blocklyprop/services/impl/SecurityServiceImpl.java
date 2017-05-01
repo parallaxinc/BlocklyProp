@@ -184,6 +184,8 @@ public class SecurityServiceImpl implements SecurityService {
                 ScreennameUsedException,
                 IllegalStateException{
 
+        User user = new User();
+
         // Log a few things
         LOG.info("In register: parameter screen name: {}", screenname);
         LOG.info("In register: parameter email: {}", email);
@@ -215,7 +217,7 @@ public class SecurityServiceImpl implements SecurityService {
         Preconditions.checkState((thisYear != birthYear), "BirthYearNotSet");
 
         // The user email field is optional if the user is under 13 years old
-        if (isCoppaEligible(birthMonth, birthYear)) {
+        if (user.isCoppaEligible(birthMonth, birthYear)) {
             LOG.info("User is COPPA eligible!");
 
             // We must have a sponsor email address for COPPA eligible users
@@ -438,21 +440,4 @@ public class SecurityServiceImpl implements SecurityService {
         }
         return sessionData;
     }
-    
-    private Boolean isCoppaEligible(int month, int year) {
-        int cap = 156;
-        int user_age = (year * 12) + month;
-        
-        Calendar cal = Calendar.getInstance();
-        int current_month = cal.get(Calendar.MONTH);
-        int current_year = cal.getInstance().get(Calendar.YEAR);
-        int current_cap = (current_year * 12) + current_month;
-        
-        if ((current_cap - user_age) > cap) {
-            return false;
-        }
-        
-        return true;
-    }
-
 }
