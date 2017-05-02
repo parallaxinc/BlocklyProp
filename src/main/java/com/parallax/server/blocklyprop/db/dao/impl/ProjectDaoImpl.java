@@ -775,6 +775,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
         newCode = newCode.replaceAll("block type=\"logic_boolean_negate\"",
                 "block type=\"logic_negate\"");
+        
+        newCode = newCode.replaceAll("_000 / ", "000 / ");
 
         // Fix a small issue with calling the wrong project type.
         newCode = newCode.replaceAll("block type=\"spin_integer\"",
@@ -782,6 +784,8 @@ public class ProjectDaoImpl implements ProjectDao {
         
         // Change all math number blocks to the same kind
         newCode = newCode.replaceAll("block type=\"math_int_angle\"",
+                "block type=\"math_number\"");
+        newCode = newCode.replaceAll("block type=\"math_integer\"",
                 "block type=\"math_number\"");
         newCode = newCode.replaceAll("block type=\"scribbler_random_number\"",
                 "block type=\"math_random\"");
@@ -799,6 +803,8 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll("scribbler_if_line\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"LINE_CONDITION\">(.*)</field><field name=\"LINE_POSITION\">(.*)</field><field name=\"LINE_COLOR\">(.*)</field><statement name=\"IF_LINE",
                 "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_line\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"LINE_CONDITION\">$3</field><field name=\"LINE_POSITION\">$4</field><field name=\"LINE_COLOR\">$5</field></block></value><statement name=\"DO0");
 
+        newCode = newCode.replaceAll("scribbler_if_obstacle\" id=(.*)><field name=\"OBSTACLE_CONDITION\">(.*)</field><field name=\"OBSTACLE_POSITION\">(.*)</field><statement name=\"IF_OBSTACLE",
+                "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_obstacle\" id=\"" + randomString(20) + "\"><field name=\"OBSTACLE_CONDITION\">$2</field><field name=\"OBSTACLE_POSITION\">$3</field></block></value><statement name=\"DO0");
         newCode = newCode.replaceAll("scribbler_if_obstacle\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"OBSTACLE_CONDITION\">(.*)</field><field name=\"OBSTACLE_POSITION\">(.*)</field><statement name=\"IF_OBSTACLE",
                 "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_obstacle\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"OBSTACLE_CONDITION\">$3</field><field name=\"OBSTACLE_POSITION\">$4</field></block></value><statement name=\"DO0");
         
