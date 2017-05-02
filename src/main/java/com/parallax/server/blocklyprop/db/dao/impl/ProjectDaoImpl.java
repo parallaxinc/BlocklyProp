@@ -801,6 +801,8 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll("field name=\"ANGLE_VALUE\"",
                 "field name=\"NUM\"");
         
+/*
+        // These aren't working consistently - so the fallback to to leave the old blocks alone, 
         // Replace old "simple" s3 blocks with equavalent block combinations
         newCode = newCode.replaceAll("<block type=\"scribbler_loop\" id=(.*)><statement name=\"LOOP\">",       
         "<block type=\"controls_repeat\" id=$1><mutation type=\"FOREVER\"></mutation><field name=\"TYPE\">FOREVER</field><statement name=\"DO\">");
@@ -830,7 +832,8 @@ public class ProjectDaoImpl implements ProjectDao {
         
         newCode = newCode.replaceAll("scribbler_if_light\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"LIGHT_CONDITION\">(.*)</field><field name=\"LIGHT_POSITION\">(.*)</field><statement name=\"IF_LIGHT",
                 "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_light\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"LIGHT_CONDITION\">$3</field><field name=\"LIGHT_POSITION\">$4</field></block></value><statement name=\"DO0");
-
+*/
+        
         // Replace the Robot init block with two blocks, need to generate unique 20-digit blockID:
         newCode = newCode.replaceAll("</field><field name=\"RAMPING\">", 
                 "</field></block><block type=\"ab_drive_ramping\" id=\"" + randomString(20) + "\"><field name=\"RAMPING\">");

@@ -79,7 +79,11 @@ Blockly.Blocks.scribbler_simple_wait = {
         this.appendDummyInput()
                 .appendField("wait")
                 .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'WAITTIME')
-                .appendField(new Blockly.FieldDropdown([['seconds', '1000'], ['tenths of a second', '100'], ['milliseconds', '1']]), 'TIMESCALE');
+                .appendField(new Blockly.FieldDropdown([
+            ['seconds', '1000'], 
+            ['tenths of a second', '100'], 
+            ['milliseconds', '1']
+        ]), 'TIMESCALE');
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
@@ -125,7 +129,7 @@ Blockly.Blocks.scribbler_wait = {
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_WAIT_TOOLTIP);
     },
     newUnit: function (unit) {
-        var thisConnection_ = this.getInput('ROTATE_RADIUS').connection;
+        var thisConnection_ = this.getInput('WAITTIME').connection;
         var thisBlock_ = thisConnection_.targetBlock();
         var rangeText = 'N,0,0,0';
 
