@@ -36,7 +36,7 @@
                     </span>
                 </div>
                 <div class="project-name-wrapper" align="right">        
-                    <span class="project-name"></span> <span class="project-owner"></span>
+                    <span id="project-icon" class="editor-icon"></span> <span class="project-name"></span> <span class="project-owner"></span>
                 </div>
             </div>
             <div style="width:100%; padding-bottom: 5px;">
