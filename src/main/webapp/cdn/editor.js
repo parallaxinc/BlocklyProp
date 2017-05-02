@@ -79,6 +79,18 @@ showInfo = function (data) {
     if (!data['yours']) {
         $(".project-owner").text("(" + data['user'] + ")");
     }
+    var projectBoardIcon = {
+        "activity-board": "/cdn/images/board-icons/IconActivityBoard.png",
+        "s3": "/cdn/images/board-icons/IconS3.png",
+        "heb": "/cdn/images/board-icons/IconBadge.png",
+        "flip": "/cdn/images/board-icons/IconFlip.png",
+        "other": "/cdn/images/board-icons/IconOther.png"
+    };
+    
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+    
+    $("#project-icon").html('<img src="' + baseUrl + projectBoardIcon[data['board']] + '"/>');
 };
 
 saveProject = function () {

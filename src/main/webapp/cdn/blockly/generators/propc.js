@@ -204,6 +204,8 @@ Blockly.propc.init = function (workspace) {
 // Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
+    if (profile.default.description === "Scribbler Robot")
+        Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
     Blockly.propc.methods_ = {};
     Blockly.propc.method_declarations_ = {};
     // Create a dictionary of setups to be printed before the code.
@@ -289,13 +291,11 @@ Blockly.propc.finish = function (code) {
 
     // Convert the setups dictionary into a list.
     var setups = [];
-    for (var name in Blockly.propc.setups_) {
-        if (name !== 's3_setup') {
-            setups.push('  ' + Blockly.propc.setups_[name]);
-        } else {
-            setups.unshift('  ' + Blockly.propc.setups_[name]);
-        }
-    }
+    for (var name in Blockly.propc.setups_)
+        setups.push('  ' + Blockly.propc.setups_[name]);
+
+    if (profile.default.description === "Scribbler Robot")
+        setups.unshift('  s3_setup();pause(100);');
 
     for (var method in Blockly.propc.methods_) {
         methods.push(Blockly.propc.methods_[method]);
