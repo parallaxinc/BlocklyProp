@@ -62,7 +62,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
             if (sessionRecord != null) {
                 return convert(sessionRecord);
             } else {
-                LOG.warn("Unable to fin session: {}", sessionId);
+                LOG.warn("Unable to find session: {}", sessionId);
                 throw new UnknownSessionException();
             }
         } catch (NullPointerException npe) {
@@ -74,7 +74,14 @@ public class BlocklyPropSessionDao implements SessionDAO {
     @Override
     public void update(Session session) throws UnknownSessionException {
         LOG.debug("Update session: {}", session.getId());
-        SessionServiceImpl.getSessionService().updateSession(convert(session));
+        try {
+            // updateSession() can throw a NullPointerException if something goes wrong
+            SessionServiceImpl.getSessionService().updateSession(convert(session));
+        }
+        catch (NullPointerException npe) {
+            LOG.error("Unable to update the session. Error message: {}", npe.getMessage());
+            throw new UnknownSessionException("Unable to update the session");
+        }
     }
 
     @Override

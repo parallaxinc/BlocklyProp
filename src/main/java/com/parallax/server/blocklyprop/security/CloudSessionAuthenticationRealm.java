@@ -63,9 +63,7 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                 String credentials = new String((char[]) token.getCredentials());
 
                 User user = SecurityServiceImpl.authenticateLocalUserStatic(principal, credentials);
-                if (user != null) {
-                    // System.out.println("USER = " + user);
-                } else {
+                if (user == null) {
                     log.info("No exception but user object is null");
                     return null;
                 }

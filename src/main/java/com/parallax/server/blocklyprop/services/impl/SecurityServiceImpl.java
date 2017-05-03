@@ -287,7 +287,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 
     /**
-     *  Get instance of the authenticated user object
+     *  Get instance of an authenticated user object
      * 
      * @param email
      * @param password
