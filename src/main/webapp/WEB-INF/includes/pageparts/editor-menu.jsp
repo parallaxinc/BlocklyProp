@@ -68,8 +68,7 @@
                             <li><a id="edit-project-details" href="#" onclick="editProjectDetails()"><fmt:message key="editor.edit-details" /></a></li>
                             <li><a id="save-project-as" href="#"><fmt:message key="editor.save-as" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
-                            <li><a href="<url:getUrl url="/projectcreate.jsp?lang=SPIN"/>">New <fmt:message key="editor.newproject.spin" /> project</a></li>
-                            <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>">New <fmt:message key="editor.newproject.c" /> project</a></li>
+                            <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a></li>
                             <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a></li>
                             <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a></li>
                             <hr style="line-height:5px; margin:5px;">

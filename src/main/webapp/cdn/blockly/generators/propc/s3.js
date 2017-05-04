@@ -8,7 +8,7 @@
  */
 'use strict';
 
-/*
+
 Blockly.Blocks.scribbler_loop = {
     init: function () {
         this.appendDummyInput()
@@ -59,7 +59,7 @@ Blockly.propc.scribbler_limited_loop = function () {
     var repeats = this.getFieldValue('LOOP_COUNT') || '0';
     return 'for (int __n = 0; __n < ' + repeats + '; __n++) {\n' + branch + '}\n';
 };
-*/
+
 
 Blockly.Blocks.scribbler_exit_loop = {
     init: function () {
@@ -274,6 +274,7 @@ Blockly.Blocks.scribbler_if_obstacle = {
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_OBSTACLE_TOOLTIP);
     },
     checkForWas: function (state) {
+        if (state === undefined) state = this.getFieldValue('OBSTACLE_CONDITION');
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
             this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');

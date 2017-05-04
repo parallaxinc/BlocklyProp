@@ -676,12 +676,12 @@ public class ProjectDaoImpl implements ProjectDao {
              */
             newCode = currentCode;
 
-            if (record.getType() == ProjectType.SPIN) {
-                newCode = fixSpinProjectBlocks(newCode);
+            //if (record.getType() == ProjectType.SPIN) {
+            //    newCode = fixSpinProjectBlocks(newCode);
 
-            } else if (record.getType() == ProjectType.PROPC) {
-                newCode = fixPropcProjectBlocks(newCode);
-            }
+            //} else if (record.getType() == ProjectType.PROPC) {
+                newCode = fixPropcProjectBlocks(newCode, record.getType());
+            //}
 
             // Check for any difference from the original code
             if (!currentCode.equals(newCode)) {
@@ -716,7 +716,7 @@ public class ProjectDaoImpl implements ProjectDao {
         return newCode;
     }
 
-    private String fixPropcProjectBlocks(String newCode) {
+    private String fixPropcProjectBlocks(String newCode, ProjectType projType) {
         LOG.info("Looking for depricated PropC blocks.");
 
         newCode = newCode.replaceAll("field name=\"OP\">ADD</field",
@@ -782,62 +782,83 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll("block type=\"spin_integer\"",
                 "block type=\"math_number\"");
         
-        // Change all math number blocks to the same kind
-        newCode = newCode.replaceAll("block type=\"math_int_angle\"",
-                "block type=\"math_number\"");
-        newCode = newCode.replaceAll("block type=\"math_integer\"",
-                "block type=\"math_number\"");
-        newCode = newCode.replaceAll("block type=\"scribbler_random_number\"",
-                "block type=\"math_random\"");
-        newCode = newCode.replaceAll("field name=\"INT_VALUE\"",
-                "field name=\"NUM\"");
-        newCode = newCode.replaceAll("field name=\"ANGLE_VALUE\"",
-                "field name=\"NUM\"");
-        
-        newCode = newCode.replaceAll("block type=\"digital_input\"",
-                "block type=\"check_pin\"");
-        newCode = newCode.replaceAll("block type=\"digital_output\"",
-                "block type=\"make_pin\"");
-        newCode = newCode.replaceAll("block type=\"scribbler_servo\"",
-                "block type=\"servo_move\"");
-        newCode = newCode.replaceAll("field name=\"SERVO_PIN\"",
-                "field name=\"PIN\"");
-        newCode = newCode.replaceAll("field name=\"SERVO_ANGLE\"",
-                "field name=\"ANGLE\"");
-        
+        if (projType == ProjectType.SPIN) {
+            // Change all math number blocks to the same kind
+            newCode = newCode.replaceAll("block type=\"math_int_angle\"",
+                    "block type=\"math_number\"");
+            newCode = newCode.replaceAll("block type=\"math_integer\"",
+                    "block type=\"math_number\"");
+            newCode = newCode.replaceAll("block type=\"scribbler_random_number\"",
+                    "block type=\"math_random\"");
+            newCode = newCode.replaceAll("field name=\"INT_VALUE\"",
+                    "field name=\"NUM\"");
+            newCode = newCode.replaceAll("field name=\"ANGLE_VALUE\"",
+                    "field name=\"NUM\"");
+
+            newCode = newCode.replaceAll("block type=\"digital_input\"",
+                    "block type=\"check_pin\"");
+            newCode = newCode.replaceAll("block type=\"digital_output\"",
+                    "block type=\"make_pin\"");
+            newCode = newCode.replaceAll("block type=\"scribbler_servo\"",
+                    "block type=\"servo_move\"");
+            newCode = newCode.replaceAll("field name=\"SERVO_PIN\"",
+                    "field name=\"PIN\"");
+            newCode = newCode.replaceAll("field name=\"SERVO_ANGLE\"",
+                    "field name=\"ANGLE\"");
+            newCode = newCode.replaceAll("<block type=\"serial_",
+                    "<block type=\"scribbler_serial_");
+            newCode = newCode.replaceAll("field name=\"TIMESCALE\">1000<",
+                    "field name=\"TIMESCALE\">Z1<");
+            newCode = newCode.replaceAll("field name=\"TIMESCALE\">1<",
+                    "field name=\"TIMESCALE\">Z1000<");
+            newCode = newCode.replaceAll("field name=\"TIMESCALE\">10<",
+                    "field name=\"TIMESCALE\">100<");
+            newCode = newCode.replaceAll("field name=\"TIMESCALE\">Z",
+                    "field name=\"TIMESCALE\">");
+            
+            newCode = newCode.replaceAll("Scribbler#CS","256");
+            newCode = newCode.replaceAll("Scribbler#NL","10");
+            newCode = newCode.replaceAll("Scribbler#LF","13");
+            newCode = newCode.replaceAll("Scribbler#BS","127");
+            
+            newCode = newCode.replaceAll("block type=\"scribbler_loop\"",
+                    "block type=\"controls_repeat\"");
+            newCode = newCode.replaceAll("statement name=\"LOOP\"",
+                    "statement name=\"DO\"");
+            //newCode = newCode.replaceAll("<block type=\"scribbler_loop\" id=(.*)><statement name=\"LOOP\">",       
+            //"<block type=\"controls_repeat\" id=$1><mutation type=\"FOREVER\"></mutation><field name=\"TYPE\">FOREVER</field><statement name=\"DO\">");
+            //newCode = newCode.replaceAll("<block type=\"scribbler_limited_loop\" id=(.*)><field name=\"LOOP_COUNT\">(.*)</field><statement name=\"LOOP\">",       
+            //"<block type=\"controls_repeat\" id=$1><mutation type=\"TIMES\"></mutation><field name=\"TYPE\">TIMES</field><value name=\"TIMES\"><block type=\"math_number\" id=\"" + randomString(20) + "\"><field name=\"NUM\">$2</field></block></value><statement name=\"DO\">");      
 
 /*
-        // These aren't working consistently - so the fallback to to leave the old blocks alone, 
-        // Replace old "simple" s3 blocks with equavalent block combinations
-        newCode = newCode.replaceAll("<block type=\"scribbler_loop\" id=(.*)><statement name=\"LOOP\">",       
-        "<block type=\"controls_repeat\" id=$1><mutation type=\"FOREVER\"></mutation><field name=\"TYPE\">FOREVER</field><statement name=\"DO\">");
-        newCode = newCode.replaceAll("<block type=\"scribbler_limited_loop\" id=(.*)><field name=\"LOOP_COUNT\">(.*)</field><statement name=\"LOOP\">",       
-        "<block type=\"controls_repeat\" id=$1><mutation type=\"TIMES\"></mutation><field name=\"TYPE\">TIMES</field><value name=\"TIMES\"><block type=\"math_number\" id=\"" + randomString(20) + "\"><field name=\"NUM\">$2</field></block></value><statement name=\"DO\">");
-        
-        newCode = newCode.replaceAll("scribbler_if_line\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"LINE_CONDITION\">(.*)</field><field name=\"LINE_POSITION\">(.*)</field><field name=\"LINE_COLOR\">(.*)</field><statement name=\"IF_LINE",
-                "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_line\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"LINE_CONDITION\">$3</field><field name=\"LINE_POSITION\">$4</field><field name=\"LINE_COLOR\">$5</field></block></value><statement name=\"DO0");
+            // These aren't working consistently - so the fallback to to leave the old blocks alone, 
+            // Replace old "simple" s3 blocks with equavalent block combinations
 
-        // Not sure if I need non-mutation replacers - if not included, they will likely get cleaned on the second save (first one adds them, second one replaces)
-        //newCode = newCode.replaceAll("scribbler_if_obstacle\" id=(.*)><field name=\"OBSTACLE_CONDITION\">(.*)</field><field name=\"OBSTACLE_POSITION\">(.*)</field><statement name=\"IF_OBSTACLE",
-        //        "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_obstacle\" id=\"" + randomString(20) + "\"><field name=\"OBSTACLE_CONDITION\">$2</field><field name=\"OBSTACLE_POSITION\">$3</field></block></value><statement name=\"DO0");
+            newCode = newCode.replaceAll("scribbler_if_line\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"LINE_CONDITION\">(.*)</field><field name=\"LINE_POSITION\">(.*)</field><field name=\"LINE_COLOR\">(.*)</field><statement name=\"IF_LINE",
+                    "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_line\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"LINE_CONDITION\">$3</field><field name=\"LINE_POSITION\">$4</field><field name=\"LINE_COLOR\">$5</field></block></value><statement name=\"DO0");
 
-        newCode = newCode.replaceAll("scribbler_if_obstacle\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"OBSTACLE_CONDITION\">(.*)</field><field name=\"OBSTACLE_POSITION\">(.*)</field><statement name=\"IF_OBSTACLE",
-                "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_obstacle\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"OBSTACLE_CONDITION\">$3</field><field name=\"OBSTACLE_POSITION\">$4</field></block></value><statement name=\"DO0");
-        
-        newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">RIGHT</field>",
-                "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">RIGHT</field>");
-        newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">LEFT</field>",
-                "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">LEFT</field>");
-        newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">&amp;&amp;</field>",
-                "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">CENTER</field>");
-        newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">\\|\\|</field>",
-                "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">DETECTED</field>");
-        newCode = newCode.replaceAll("<block type=\"obstacle_sensor\"",
-                "<block type=\"scribbler_simple_obstacle\"");
-        
-        newCode = newCode.replaceAll("scribbler_if_light\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"LIGHT_CONDITION\">(.*)</field><field name=\"LIGHT_POSITION\">(.*)</field><statement name=\"IF_LIGHT",
-                "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_light\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"LIGHT_CONDITION\">$3</field><field name=\"LIGHT_POSITION\">$4</field></block></value><statement name=\"DO0");
+            // Not sure if I need non-mutation replacers - if not included, they will likely get cleaned on the second save (first one adds them, second one replaces)
+            //newCode = newCode.replaceAll("scribbler_if_obstacle\" id=(.*)><field name=\"OBSTACLE_CONDITION\">(.*)</field><field name=\"OBSTACLE_POSITION\">(.*)</field><statement name=\"IF_OBSTACLE",
+            //        "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_obstacle\" id=\"" + randomString(20) + "\"><field name=\"OBSTACLE_CONDITION\">$2</field><field name=\"OBSTACLE_POSITION\">$3</field></block></value><statement name=\"DO0");
+
+            newCode = newCode.replaceAll("scribbler_if_obstacle\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"OBSTACLE_CONDITION\">(.*)</field><field name=\"OBSTACLE_POSITION\">(.*)</field><statement name=\"IF_OBSTACLE",
+                    "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_obstacle\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"OBSTACLE_CONDITION\">$3</field><field name=\"OBSTACLE_POSITION\">$4</field></block></value><statement name=\"DO0");
+
+            newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">RIGHT</field>",
+                    "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">RIGHT</field>");
+            newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">LEFT</field>",
+                    "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">LEFT</field>");
+            newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">&amp;&amp;</field>",
+                    "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">CENTER</field>");
+            newCode = newCode.replaceAll("<field name=\"OBSTACLE_SENSOR_CHOICE\">\\|\\|</field>",
+                    "<mutation state=\"IS\"></mutation><field name=\"OBSTACLE_CONDITION\">IS</field><field name=\"OBSTACLE_POSITION\">DETECTED</field>");
+            newCode = newCode.replaceAll("<block type=\"obstacle_sensor\"",
+                    "<block type=\"scribbler_simple_obstacle\"");
+
+            newCode = newCode.replaceAll("scribbler_if_light\" id=(.*)><mutation state=\"(.*)\"></mutation><field name=\"LIGHT_CONDITION\">(.*)</field><field name=\"LIGHT_POSITION\">(.*)</field><statement name=\"IF_LIGHT",
+                    "controls_if\" id=$1><value name=\"IF0\"><block type=\"scribbler_simple_light\" id=\"" + randomString(20) + "\"><mutation state=\"$2\"></mutation><field name=\"LIGHT_CONDITION\">$3</field><field name=\"LIGHT_POSITION\">$4</field></block></value><statement name=\"DO0");
 */
+        }
         
         // Replace the Robot init block with two blocks, need to generate unique 20-digit blockID:
         newCode = newCode.replaceAll("</field><field name=\"RAMPING\">", 

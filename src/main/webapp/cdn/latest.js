@@ -4,8 +4,8 @@ var projectTypes = {
         "class": "editor-c-link"
     },
     "SPIN": {
-        "editor": "blocklyspin.jsp",
-        "class": "editor-spin-link"
+        "editor": "blocklyc.jsp",
+        "class": "editor-c-link"
     }
 };
 
