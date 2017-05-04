@@ -827,8 +827,8 @@ public class ProjectDaoImpl implements ProjectDao {
                     "statement name=\"DO\"");
             //newCode = newCode.replaceAll("<block type=\"scribbler_loop\" id=(.*)><statement name=\"LOOP\">",       
             //"<block type=\"controls_repeat\" id=$1><mutation type=\"FOREVER\"></mutation><field name=\"TYPE\">FOREVER</field><statement name=\"DO\">");
-            //newCode = newCode.replaceAll("<block type=\"scribbler_limited_loop\" id=(.*)><field name=\"LOOP_COUNT\">(.*)</field><statement name=\"LOOP\">",       
-            //"<block type=\"controls_repeat\" id=$1><mutation type=\"TIMES\"></mutation><field name=\"TYPE\">TIMES</field><value name=\"TIMES\"><block type=\"math_number\" id=\"" + randomString(20) + "\"><field name=\"NUM\">$2</field></block></value><statement name=\"DO\">");      
+            newCode = newCode.replaceAll("<block type=\"scribbler_limited_loop\" id=(.*)><field name=\"LOOP_COUNT\">(.*)</field><statement name=\"LOOP\">",       
+            "<block type=\"controls_repeat\" id=$1><mutation type=\"TIMES\"></mutation><field name=\"TYPE\">TIMES</field><value name=\"TIMES\"><block type=\"math_number\" id=\"" + randomString(20) + "\"><field name=\"NUM\">$2</field></block></value><statement name=\"DO\">");      
 
 /*
             // These aren't working consistently - so the fallback to to leave the old blocks alone, 
