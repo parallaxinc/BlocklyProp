@@ -8,6 +8,7 @@
  */
 'use strict';
 
+/*
 Blockly.Blocks.scribbler_loop = {
     init: function () {
         this.appendDummyInput()
@@ -58,6 +59,7 @@ Blockly.propc.scribbler_limited_loop = function () {
     var repeats = this.getFieldValue('LOOP_COUNT') || '0';
     return 'for (int __n = 0; __n < ' + repeats + '; __n++) {\n' + branch + '}\n';
 };
+*/
 
 Blockly.Blocks.scribbler_exit_loop = {
     init: function () {
@@ -1126,6 +1128,7 @@ Blockly.propc.reset_button_presses = function () {
     return ['s3_resetButtonCount()', Blockly.propc.ORDER_ATOMIC];
 };
 
+/*
 Blockly.Blocks.scribbler_servo = {
     init: function () {
         this.appendValueInput("SERVO_ANGLE")
@@ -1156,12 +1159,13 @@ Blockly.propc.scribbler_servo = function () {
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
     return code;
 };
+*/
 
 Blockly.Blocks.scribbler_stop_servo = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("servo on")
-                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SERVO_PIN")
                 .appendField("disble");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
@@ -1181,7 +1185,7 @@ Blockly.Blocks.scribbler_ping = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("Ping))) sensor on")
-                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField("distance in")
                 .appendField(new Blockly.FieldDropdown([['inches', '_inches'], ['centimeters', '_cm']]), "SCALE");
 
@@ -1257,7 +1261,7 @@ Blockly.Blocks.analog_input = {
     init: function () {
         this.appendDummyInput("")
                 .appendField("check analog PIN")
-                .appendField(new Blockly.FieldDropdown([['A0', '0'], ['A1', '1']]), "ANALOG_PIN");
+                .appendField(new Blockly.FieldDropdown(profile.default.analog), "ANALOG_PIN");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);

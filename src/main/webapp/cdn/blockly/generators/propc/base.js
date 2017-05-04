@@ -1239,9 +1239,11 @@ Blockly.Blocks.cog_new = {
 
 Blockly.propc.cog_new = function () {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
-    method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
-
-    var code = 'cog_run(' + method + ', 128);\n';
+    var method_name = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
+    
+    Blockly.propc.cog_methods_[method_name] = method;
+    
+    var code = 'cog_run(' + method_name + ', 128);\n';
     return code;
 };
 

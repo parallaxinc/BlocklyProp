@@ -794,6 +794,18 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll("field name=\"ANGLE_VALUE\"",
                 "field name=\"NUM\"");
         
+        newCode = newCode.replaceAll("block type=\"digital_input\"",
+                "block type=\"check_pin\"");
+        newCode = newCode.replaceAll("block type=\"digital_output\"",
+                "block type=\"make_pin\"");
+        newCode = newCode.replaceAll("block type=\"scribbler_servo\"",
+                "block type=\"servo_move\"");
+        newCode = newCode.replaceAll("field name=\"SERVO_PIN\"",
+                "field name=\"PIN\"");
+        newCode = newCode.replaceAll("field name=\"SERVO_ANGLE\"",
+                "field name=\"ANGLE\"");
+        
+
 /*
         // These aren't working consistently - so the fallback to to leave the old blocks alone, 
         // Replace old "simple" s3 blocks with equavalent block combinations

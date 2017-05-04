@@ -1491,13 +1491,13 @@
                 <block type="scribbler_ping"></block>
             </category>
             <category name="<fmt:message key="category.s3-hacker-port.pins" />">
-                <block type="digital_output"></block>
-                <block type="digital_input"></block>
+                <block type="make_pin"></block>
+                <block type="check_pin"></block>
                 <block type="analog_input"></block>
             </category>
             <category name="<fmt:message key="category.s3-hacker-port.servo" />">
-            <block type="scribbler_servo">
-                <value name="SERVO_ANGLE">
+            <block type="servo_move">
+                <value name="ANGLE">
                     <block type="math_number">
                         <field name="NUM">90</field>
                     </block>

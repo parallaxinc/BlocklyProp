@@ -45,6 +45,33 @@ var quotes = {
 
 };
 
+var array_contains = function (needle) {
+    // Per spec, the way to identify NaN is that it is not equal to itself
+    var findNaN = needle !== needle;
+    var indexOf;
+
+    if (!findNaN && typeof Array.prototype.indexOf === 'function') {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function (needle) {
+            var i = -1, index = -1;
+
+            for (i = 0; i < this.length; i++) {
+                var item = this[i];
+
+                if ((findNaN && item !== item) || item === needle) {
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
+        };
+    }
+
+    return indexOf.call(this, needle) > -1;
+};
+
 /*
  var directionArrow = {
  /**
@@ -211,6 +238,7 @@ Blockly.propc.init = function (workspace) {
     // Create a dictionary of setups to be printed before the code.
     Blockly.propc.setups_ = {};
     Blockly.propc.global_vars_ = {};
+    Blockly.propc.cog_methods_ = {};
     // Create a list of stacks
     Blockly.propc.stacks_ = [];
     Blockly.propc.vartype_ = {};
@@ -231,7 +259,9 @@ Blockly.propc.init = function (workspace) {
                     Blockly.Variables.NAME_TYPE);
             defvars[x] = '{{$var_type_' + varName + '}} ' + varName + '{{$var_length_' + varName + '}};';
         }
-        Blockly.propc.definitions_['variables'] = defvars.join('\n');
+
+        for (var vardef in defvars)
+            Blockly.propc.definitions_['variable' + vardef.toString(10)] = defvars[vardef];
     }
 };
 /**
@@ -246,6 +276,9 @@ Blockly.propc.finish = function (code) {
     var declarations = [];
     var objects = [];
     var definitions = [];
+    var function_vars = [];
+    var cog_function = [];
+    var user_var_start, user_var_end;
 
     // Gives BlocklyProp developers the ability to add global variables
     for (var name in Blockly.propc.global_vars_) {
@@ -253,6 +286,7 @@ Blockly.propc.finish = function (code) {
 
         definitions.push(def);
     }
+    user_var_start = definitions.length;
 
     for (var name in Blockly.propc.definitions_) {
         var def = Blockly.propc.definitions_[name];
@@ -262,6 +296,30 @@ Blockly.propc.finish = function (code) {
         } else {
             definitions.push(def);
         }
+    }
+    user_var_end = definitions.length;
+
+    for (var declaration in Blockly.propc.method_declarations_) {
+        declarations.push(Blockly.propc.method_declarations_[declaration]);
+        for (var func_index in Blockly.propc.cog_methods_) {
+            if (Blockly.propc.cog_methods_[func_index].replace(/[^\w]+/g, '') === Blockly.propc.method_declarations_[declaration].replace(/void/g, '').replace(/[^\w]+/g, '')) {
+                cog_function.push(declaration);
+            }
+        }
+    }
+
+    for (var method in Blockly.propc.methods_) {
+        if (array_contains.call(cog_function, method) === true) {
+            var var_group_str = (Blockly.propc.methods_[method].match(/[;|\n](.*) = /g) || '').toString().replace(/ = /g, '').replace(/[\n| ]/g, '') || '';
+            if (var_group_str)
+                var_group_str += ',';
+            var_group_str += (Blockly.propc.methods_[method].match(/&(.*)[;|/)]/g) || '').toString().replace(/[;|&|/)|\n| ]/g, '') || '';
+            var var_group = var_group_str.split(',');
+
+            for (var a_var in var_group)
+                function_vars.push(var_group[a_var]);
+        }
+        methods.push(Blockly.propc.methods_[method]);
     }
 
     for (var def in definitions) {
@@ -283,6 +341,11 @@ Blockly.propc.finish = function (code) {
         if (definitions[def].indexOf("{{$var_type_") > -1) {
             definitions[def] = definitions[def].replace(/\{\{\$var_type_.*?\}\}/ig, "int").replace(/\{\{\$var_length_.*?\}\}/ig, '');
         }
+        
+        // This is for when we are ready to switch from pointers to character arrays
+        //if (definitions[def].indexOf("char *") > -1) {
+        //    definitions[def] = definitions[def].replace("char *", "char ").replace(";", "[128];");
+        //}
     }
 
     for (var stack in Blockly.propc.stacks_) {
@@ -297,12 +360,13 @@ Blockly.propc.finish = function (code) {
     if (profile.default.description === "Scribbler Robot")
         setups.unshift('  s3_setup();pause(100);');
 
-    for (var method in Blockly.propc.methods_) {
-        methods.push(Blockly.propc.methods_[method]);
-    }
-
-    for (var declaration in Blockly.propc.method_declarations_) {
-        declarations.push(Blockly.propc.method_declarations_[declaration]);
+    // Add volatile to variable declarations in cogs
+    for (var idx = user_var_start; idx < user_var_end; idx++) {
+        for (var idk in function_vars) {
+            if (definitions[idx].indexOf(function_vars[idk]) > 2 && definitions[idx].indexOf('volatile') === -1) {
+                //definitions[idx] = 'volatile ' + definitions[idx];
+            }
+        }
     }
 
     var spacer_defs = '\n\n';

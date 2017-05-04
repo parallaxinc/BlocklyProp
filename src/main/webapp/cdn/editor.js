@@ -84,7 +84,7 @@ showInfo = function (data) {
         "s3": "/cdn/images/board-icons/IconS3.png",
         "heb": "/cdn/images/board-icons/IconBadge.png",
         "flip": "/cdn/images/board-icons/IconFlip.png",
-        "other": "/cdn/images/board-icons/IconOther.png"
+        "other": "/cdn/images/board-icons/IconOtherBoards.png"
     };
     
     var getUrl = window.location;

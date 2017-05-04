@@ -31,8 +31,12 @@ if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
 Blockly.Blocks.make_pin = {
-    helpUrl: Blockly.MSG_PINS_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_PINS_HELPURL);
+        }
         this.setTooltip(Blockly.MSG_MAKE_PIN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
@@ -97,8 +101,12 @@ Blockly.propc.make_pin_input = function () {
 };
 
 Blockly.Blocks.check_pin = {
-    helpUrl: Blockly.MSG_PINS_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_PINS_HELPURL);
+        }
         this.setTooltip(Blockly.MSG_CHECK_PIN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
@@ -587,10 +595,15 @@ Blockly.propc.eeprom_read = function () {
 
 // ------------------ Servo motor blocks ---------------------------------------
 Blockly.Blocks.servo_move = {
-    helpUrl: Blockly.MSG_SERVO_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
         this.setTooltip(Blockly.MSG_SERVO_MOVE_TOOLTIP);
-        this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
                 .appendField("Servo PIN")
                 .setAlign(Blockly.ALIGN_RIGHT)
@@ -611,12 +624,7 @@ Blockly.propc.servo_move = function () {
     var degrees = Blockly.propc.valueToCode(this, 'ANGLE', Blockly.propc.ORDER_NONE);
 
     Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
-    if (degrees < 0) {
-        degrees = 0;
-    }
-    if (degrees > 180) {
-        degrees = 180;
-    }
+
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
     return code;
 };
