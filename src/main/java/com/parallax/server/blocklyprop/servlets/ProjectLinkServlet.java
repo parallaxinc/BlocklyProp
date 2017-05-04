@@ -70,9 +70,9 @@ public class ProjectLinkServlet extends HttpServlet {
             result.addProperty("code", project.getCode());
             req.setAttribute("project", result.toString());
             //if (ProjectType.PROPC == project.getType()) {
-            //    req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-c.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-c.jsp").forward(req, resp);
             //} else if (ProjectType.SPIN == project.getType()) {
-                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
+            //    req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
             //}
         }
     }
