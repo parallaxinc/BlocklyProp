@@ -36,11 +36,12 @@ Blockly.Blocks.controls_repeat = {
         var block_label = 'repeat';
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP);
             block_label = 'loop';
         } else {
             this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
         }
-        this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         // ["with", "WITH"]
         var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
@@ -360,11 +361,12 @@ Blockly.Blocks.control_repeat_for_loop = {
         var block_label = 'repeat';
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP);
             block_label = 'loop';
         } else {
             this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
         }
-        this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(block_label)
