@@ -243,6 +243,7 @@ Blockly.propc.init = function (workspace) {
     Blockly.propc.stacks_ = [];
     Blockly.propc.vartype_ = {};
     Blockly.propc.varlength_ = {};
+    Blockly.propc.serial_graphing_ = false;
     Blockly.propc.serial_terminal_ = false;
     if (Blockly.Variables) {
         if (!Blockly.propc.variableDB_) {
@@ -383,6 +384,9 @@ Blockly.propc.finish = function (code) {
     var setup = '';
     if (Blockly.propc.serial_terminal_) {
         setup += "/* SERIAL_TERMINAL USED */\n";
+    }
+    if (Blockly.propc.serial_graphing_) {
+        setup += "/* SERIAL_GRAPHING USED */\n";
     }
     if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
         setup += "/* EMPTY_PROJECT */\n";

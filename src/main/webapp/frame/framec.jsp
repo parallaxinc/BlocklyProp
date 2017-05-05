@@ -441,6 +441,13 @@
                     <block type="number_binary"></block>
                 </value>
         </category>
+        <category name="<fmt:message key="category.communicate.graphing" />" graphing="1" include="activity-board,flip,other" colour="320">
+            <block type="graph_settings">
+                <field name="RATE">250</field>
+                <field name="XAXIS">40,S</field>
+            </block>                
+            <block type="graph_output"></block>
+        </category>
         <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="320">
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>

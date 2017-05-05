@@ -26,6 +26,11 @@ function filterToolbox(profileName, peripherals) {
                 toolboxEntry.remove();
             }
         }
+        if (document.referrer.split('?')[1].indexOf('graphing=1') === -1) {
+            var graphing = toolboxEntry.attr('graphing');
+            if (graphing)
+                toolboxEntry.remove();
+        }
     });
     $("#toolbox").find('sep').each(function () {
         var toolboxEntry = $(this);
@@ -60,3 +65,8 @@ var findOne = function (haystack, arr) {
         return haystack.indexOf(v) >= 0;
     });
 };
+
+// http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
