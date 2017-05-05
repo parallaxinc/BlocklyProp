@@ -432,6 +432,7 @@
                 </value>
         </category>
         <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="320">
+            <% if ("1".equals(request.getParameter("graphing"))) {%>
             <category name="<fmt:message key="category.communicate.graphing" />">
                 <block type="graph_settings">
                     <field name="RATE">250</field>
@@ -439,6 +440,7 @@
                 </block>                
                 <block type="graph_output"></block>
             </category>
+            <% } %>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>

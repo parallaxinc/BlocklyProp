@@ -47,7 +47,11 @@
                         </c:if>
                     <a onclick="loadIntoEeprom()" data-toggle="tooltip" title="Load and run (save code to EEPROM)" data-placement="bottom" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-save"></i></a>
                     <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list-alt"></i></a>
-                    <a onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-equalizer"></i></a>
+                    <% if ("1".equals(request.getParameter("graphing"))) {%>
+                    <a onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
+                        <path d="M.5,0 L.5,13.5 L12.5,13.5 M3.5,0 L3.5,13.5 M6.5,0 L6.5,13.5 M9.5,0 L9.5,13.5 M12.5,0 L12.5,13.5 M.5,3.5 L12.5,3.5 M.5,7 L12.5,7 M.5,10.5 L12.5,10.5 M.5,.5 L12.5,.5" style="stroke:rgba(255,255,255,.6);stroke-width:1;fill:none;"/>
+                        <path d="M0,13 L6,5 L9,8 L14,2" style="stroke:#fff;stroke-width:2;fill:none;"/>
+                        </svg></a><% } %>
                 </div>
                 <div style="display:inline; clear:right; float:right;  padding-right: 10px;" align="right">
 
