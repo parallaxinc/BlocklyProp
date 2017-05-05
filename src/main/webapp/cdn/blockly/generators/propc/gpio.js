@@ -1399,18 +1399,17 @@ Blockly.propc.activitybot_display_calibration = function () {
 
     code += 'if(!abd_intTabSetup) interpolation_table_setup();\n';
     code += 'print("=== LEFT SERVO ===\\r");\n';
-    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCntL, abd_cntrLidx);\n';
+    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCnt[ABD_L], abd_cntrIdx[ABD_L]);\n';
     code += 'print("Index, Servo Drive, Encoder Ticks/Second\\r");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCntL; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
+    code += 'for(int __rIdx = 0; __rIdx < abd_elCnt[ABD_L]; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
     code += 'print("\\r\\r=== RIGHT SERVO ===\\r");\n';
-    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCntR, abd_cntrRidx);\n';
+    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCnt[ABD_R], abd_cntrIdx[ABD_R]);\n';
     code += 'print("Index, Servo Drive, Encoder Ticks/Second\\r");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCntR; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
+    code += 'for(int __rIdx = 0; __rIdx < abd_elCnt[ABD_R]; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
 
     if (this.getFieldValue('TYPE') === 'table') {
         var global_code = '';
-        global_code += 'int abd_intTabSetup;\n';
-        global_code += 'volatile int abd_elCntL, abd_elCntR, abd_elCntL, abd_elCntR, abd_cntrLidx, abd_cntrRidx;\n';
+        global_code += 'int abd_intTabSetup;\nvolatile int abd_elCnt[2], abd_cntrIdx[2];\n';
         global_code += 'int abd_spdrL[120], abd_spdmL[120], abd_spdrR[120], abd_spdmR[120];\n\nvoid interpolation_table_setup(void);';
 
         Blockly.propc.global_vars_["activitybot_display_calibration"] = global_code;

@@ -46,7 +46,7 @@
                         <a onclick="loadIntoRam()" data-toggle="tooltip" title="Run once (load code to RAM)" data-placement="bottom" class="btn btn-success btn-circle" id="load-ram-button"><i class="glyphicon glyphicon-arrow-down"></i></a>
                         </c:if>
                     <a onclick="loadIntoEeprom()" data-toggle="tooltip" title="Load and run (save code to EEPROM)" data-placement="bottom" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-save"></i></a>
-                    <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list-alt"></i></a>
+                    <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><rect x="1" y="1" width="12" height="13" rx="1" ry="1" style="stroke:#fff;stroke-width:2;fill:none;"/><path d="M3,4.5 L10,4.5 M3,6.5 L6,6.5 M3,8.5 L8,8.5" style="stroke:#fff;stroke-width:1;fill:none;"/></svg></a>
                 </div>
                 <div style="display:inline; clear:right; float:right;  padding-right: 10px;" align="right">
 
