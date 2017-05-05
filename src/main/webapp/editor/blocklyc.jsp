@@ -23,8 +23,7 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/chartist.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/xterm.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/beautify.js"/>"></script>
@@ -35,8 +34,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
 
-        <link href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
-
+        <link href="<url:getCdnUrl url="/lib/chartist.min.css" />" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
