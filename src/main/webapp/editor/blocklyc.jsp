@@ -23,6 +23,8 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/xterm.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/beautify.js"/>"></script>
@@ -32,6 +34,9 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blocklyc.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
+
+        <link href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css" rel="stylesheet" type="text/css" />
+
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
@@ -64,7 +69,7 @@
             </table>
         </div>
 
-                        
+
         <div class="modal fade" id="upload-dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -73,7 +78,7 @@
                         <h4 class="modal-title" id="upload-dialog-title"><fmt:message key="editor.upload" /></h4>
                     </div>
                     <div class="modal-body">
-                        
+
                         <label class="control-label"><fmt:message key="editor.upload.selectfile" /></label>
                         <input id="selectfile" type="file" onchange="uploadHandler(this.files);">
                         <div id="selectfile-verify-valid" class="alert alert-success" style="display: none;"><span class="glyphicon glyphicon-ok"></span> <fmt:message key="editor.upload.valid" /></div>
@@ -119,6 +124,25 @@
                         <div id="serial_console" class="console"></div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade" id="graphing-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="graphing-dialog-title"><fmt:message key="editor.title.graphing" /></h4>
+                    </div>
+                    <div class="modal-body" style="height: 430px;">
+                        <div id="serial_graphing" class="ct-chart ct-perfect-fourth"></div>
+                        <div id="graph_x-axis_label" align="center">Time (seconds)</div>
+                    </div>
+                    <div class="modal-footer clearfix">
+                        <button type="button" id="btn-graph-play" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><i class="glyphicon glyphicon-pause"></i></button><button type="button" id="btn-graph-pause" class="btn btn-primary btn-circle pull-left" onclick="graph_pause();"><i class="glyphicon glyphicon-play"></i></button>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
                     </div>
                 </div><!-- /.modal-content -->
