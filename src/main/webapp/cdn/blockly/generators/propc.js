@@ -112,6 +112,21 @@ var colorPalette = {
         'protocols': 340,
         'system': 320
     },
+    grayscaleColors: {
+        'input': '#AAAAAA',
+        'output': '#222222',
+        'io': '#333333',
+        'programming': '#444444',
+        'functions': '#555555',
+        'variables': '#666666',
+        'math': '#777777',
+        'binary': '#777777',
+        'robot': '#888888',
+        'heb': '#888888',
+        'ab': '#999999',
+        'protocols': '#111111',
+        'system': '#999999'
+    },
     activePalette: null,
     getColor: function (type) {
         if (colorPalette.activePalette && colorPalette.activePalette[type] !== undefined) {
@@ -123,7 +138,11 @@ var colorPalette = {
 
 };
 
-colorPalette.activePalette = colorPalette.defaultColors;
+if (document.referrer.split('?')[1].indexOf('grayscale=1') === -1 ) {
+    colorPalette.activePalette = colorPalette.defaultColors;
+} else {
+    colorPalette.activePalette = colorPalette.grayscaleColors;
+}
 
 
 

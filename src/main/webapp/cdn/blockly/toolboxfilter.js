@@ -31,6 +31,23 @@ function filterToolbox(profileName, peripherals) {
             if (graphing)
                 toolboxEntry.remove();
         }
+        if (document.referrer.split('?')[1].indexOf('grayscale=1') > -1) {
+            var colorChanges = {
+                '140': '#AAAAAA',
+                '165': '#222222',
+                '185': '#333333',
+                '205': '#444444',
+                '225': '#555555',
+                '250': '#666666',
+                '275': '#777777',
+                '295': '#888888',
+                '320': '#999999',
+                '340': '#111111'
+            };
+            var colour = toolboxEntry.attr('colour');
+            if (colour)
+                toolboxEntry.attr('colour', colorChanges[colour]);
+        }
     });
     $("#toolbox").find('sep').each(function () {
         var toolboxEntry = $(this);

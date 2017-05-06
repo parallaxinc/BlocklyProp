@@ -140,7 +140,7 @@ Blockly.Blocks.console_scan_text = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 
@@ -179,7 +179,7 @@ Blockly.Blocks.console_scan_number = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 
@@ -410,7 +410,7 @@ Blockly.Blocks.serial_rx = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -452,7 +452,7 @@ Blockly.Blocks.serial_receive_text = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -903,7 +903,7 @@ Blockly.Blocks.xbee_receive = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -2259,10 +2259,10 @@ Blockly.Blocks.wx_scan_multiple = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         for (var i = 0; i < this.optionList_.length; i++) {
             if (Blockly.Names.equals(oldName, this.getFieldValue('CPU' + i)))
-                this.setTitleValue(newName, 'CPU' + i);
+                this.setFieldValue(newName, 'CPU' + i);
 
         }
     }
@@ -2470,7 +2470,7 @@ Blockly.Blocks.wx_print_multiple = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
         }
     }
 };
@@ -2588,9 +2588,9 @@ Blockly.Blocks.wx_scan_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
         if (Blockly.Names.equals(oldName, this.getFieldValue('VARNAME')))
-            this.setTitleValue(newName, 'VARNAME');
+            this.setFieldValue(newName, 'VARNAME');
     }
 };
 
@@ -2636,7 +2636,7 @@ Blockly.Blocks.wx_send_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
         }
     }
 };
@@ -2680,11 +2680,11 @@ Blockly.Blocks.wx_receive_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('DATA')))
-            this.setTitleValue(newName, 'DATA');
+            this.setFieldValue(newName, 'DATA');
         if (Blockly.Names.equals(oldName, this.getFieldValue('BYTES')))
-            this.setTitleValue(newName, 'BYTES');
+            this.setFieldValue(newName, 'BYTES');
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
     }
 };
 
@@ -2725,11 +2725,11 @@ Blockly.Blocks.wx_poll = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID')))
-            this.setTitleValue(newName, 'ID');
+            this.setFieldValue(newName, 'ID');
         if (Blockly.Names.equals(oldName, this.getFieldValue('EVENT')))
-            this.setTitleValue(newName, 'EVENT');
+            this.setFieldValue(newName, 'EVENT');
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
     }
 };
 
@@ -2812,15 +2812,15 @@ Blockly.Blocks.wx_listen = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID')))
-            this.setTitleValue(newName, 'ID');
+            this.setFieldValue(newName, 'ID');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID1')))
-            this.setTitleValue(newName, 'ID1');
+            this.setFieldValue(newName, 'ID1');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID2')))
-            this.setTitleValue(newName, 'ID2');
+            this.setFieldValue(newName, 'ID2');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID3')))
-            this.setTitleValue(newName, 'ID3');
+            this.setFieldValue(newName, 'ID3');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID4')))
-            this.setTitleValue(newName, 'ID4');
+            this.setFieldValue(newName, 'ID4');
     }
 };
 
@@ -3048,7 +3048,7 @@ Blockly.Blocks.wx_buffer = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
-            this.setTitleValue(newName, 'BUFFER');
+            this.setFieldValue(newName, 'BUFFER');
         }
     }
 };
@@ -3115,7 +3115,7 @@ Blockly.Blocks.wx_disconnect = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID'))) {
-            this.setTitleValue(newName, 'ID');
+            this.setFieldValue(newName, 'ID');
         }
     }
 };
@@ -3267,14 +3267,6 @@ Blockly.Blocks.graph_output = {
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
             this.removeInput('PRINTa');
             this.removeInput('PRINTb');
-        }
-    },
-    getVars: function () {
-        return [this.getFieldValue('HANDLE')];
-    },
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
-            this.setTitleValue(newName, 'HANDLE');
         }
     }
 };

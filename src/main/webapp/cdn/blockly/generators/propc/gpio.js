@@ -556,7 +556,7 @@ Blockly.Blocks.eeprom_read = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };

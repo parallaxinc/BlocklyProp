@@ -545,9 +545,9 @@ Blockly.Blocks.heb_ir_read_signal = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER')))
-            this.setTitleValue(newName, 'BUFFER');
+            this.setFieldValue(newName, 'BUFFER');
         if (Blockly.Names.equals(oldName, this.getFieldValue('LENGTH')))
-            this.setTitleValue(newName, 'LENGTH');
+            this.setFieldValue(newName, 'LENGTH');
     }
 };
 
@@ -644,7 +644,7 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
-            this.setTitleValue(newName, 'BUFFER');
+            this.setFieldValue(newName, 'BUFFER');
         }
     }
 };

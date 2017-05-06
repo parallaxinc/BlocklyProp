@@ -82,7 +82,7 @@
     </head>
     <body  onload="ready()" >
     <xml id="toolbox" style="display: none">
-        <category name="<fmt:message key="category.control" />" exclude="s3" colour="220">
+        <category name="<fmt:message key="category.control" />" exclude="s3" colour="205">
             <block type="comment"></block>
             <block type="controls_if"></block>
             <block type="controls_repeat">
@@ -195,7 +195,7 @@
         </category>
         <sep></sep>
         <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE FOLLOWING MENU AS WELL -->
-        <category name="<fmt:message key="category.values" />" include="other" colour="220">
+        <category name="<fmt:message key="category.values" />" include="other" colour="275">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
@@ -236,7 +236,7 @@
             </block>
         </category>
         <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE PREVIOUS MENU AS WELL -->
-        <category name="<fmt:message key="category.values" />" include="heb" colour="220">
+        <category name="<fmt:message key="category.values" />" include="heb" colour="205">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
@@ -247,7 +247,7 @@
             <block type="heb_color_val"></block>
             <block type="system_counter"></block>
         </category>
-        <category name="<fmt:message key="category.values" />" include="activity-board,flip" colour="220">
+        <category name="<fmt:message key="category.values" />" include="activity-board,flip" colour="205">
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
@@ -391,7 +391,7 @@
             </block>
             <block type="comment"></block>
         </category>
-        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="260"></category>
+        <category name="<fmt:message key="category.variables" />" custom="VARIABLE" colour="250"></category>
         <category name="<fmt:message key="category.operators.arrays" />" include="s3" colour="250">
             <block type="array_init"></block>
             <block type="array_fill"></block>
@@ -416,8 +416,8 @@
             </block>
             <block type="array_clear"></block>
         </category>
-        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="240"></category>
-        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3,heb" colour="200">
+        <category name="<fmt:message key="category.functions" />" custom="PROCEDURE" colour="225"></category>
+        <category name="<fmt:message key="category.input-output.pin-states" />" exclude="s3,heb" colour="185">
             <block type="make_pin"></block>
             <block type="make_pin_input">
                 <value name="PIN">
@@ -441,14 +441,14 @@
                     <block type="number_binary"></block>
                 </value>
         </category>
-        <category name="<fmt:message key="category.communicate.graphing" />" graphing="1" include="activity-board,flip,other" colour="320">
+        <category name="<fmt:message key="category.communicate.graphing" />" graphing="1" include="activity-board,flip,other" colour="340">
             <block type="graph_settings">
                 <field name="RATE">250</field>
                 <field name="XAXIS">40,S</field>
             </block>                
             <block type="graph_output"></block>
         </category>
-        <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="320">
+        <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="340">
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>
@@ -797,7 +797,7 @@
 
         <sep include="heb"></sep>
 
-        <category name="<fmt:message key="category.communicate" />" include="heb" colour="320">
+        <category name="<fmt:message key="category.communicate" />" include="heb" colour="340">
             <category name="<fmt:message key="category.communicate.serial-terminal" />">
                 <block type="console_print">
                     <value name="MESSAGE">
@@ -976,7 +976,7 @@
                 <block type="heb_ir_clear_buffer"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.audio" />" include="heb" colour="290">
+        <category name="<fmt:message key="category.audio" />" include="heb" colour="295">
             <category name="<fmt:message key="category.hackable-electronic-badge.text-to-speech" />">
                 <block type="heb_text_to_speech_say">
                     <value name="STRING">
@@ -1048,7 +1048,7 @@
             <block type="heb_count_contacts"></block>
             <block type="heb_erase_all_contacts"></block>
         </category>
-        <category name="<fmt:message key="category.sensor-input" />" exclude="s3,heb" colour="155">
+        <category name="<fmt:message key="category.sensor-input" />" exclude="s3,heb" colour="140">
             <category name="<fmt:message key="category.sensor-input.2axis-joystick" />" include="activity-board">
                 <block type="joystick_input_xaxis"></block>
                 <block type="joystick_input_yaxis"></block>
@@ -1135,7 +1135,7 @@
                 <block type="sound_impact_end"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.memory" />" include="activity-board,flip,other" colour="155">
+        <category name="<fmt:message key="category.memory" />" include="activity-board,flip,other" colour="165">
             <category name="<fmt:message key="category.memory.eeprom" />">
                 <block type="eeprom_read">
                     <value name="ADDRESS">
@@ -1153,7 +1153,7 @@
                 </block>
             </category>
         </category>
-        <category name="<fmt:message key="category.analog-pulses" />" exclude="s3,heb" colour="200">
+        <category name="<fmt:message key="category.analog-pulses" />" exclude="s3,heb" colour="185">
             <category name="<fmt:message key="category.analog-pulses.pulse-in-out" />" exclude="s3">
                 <block type="pulse_in"></block>
                 <block type="pulse_out">
@@ -1200,7 +1200,7 @@
                 <block type="mcp320x_set_vref"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.audio" />" exclude="s3,heb" colour="200">
+        <category name="<fmt:message key="category.audio" />" exclude="s3,heb" colour="185">
             <category name="<fmt:message key="category.audio.freqout" />" exclude="s3">
                 <block type="base_freqout">
                     <value name="DURATION">
@@ -1228,7 +1228,7 @@
                 <block type="wav_stop"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.servo" />" exclude="s3,heb" colour="180">
+        <category name="<fmt:message key="category.servo" />" exclude="s3,heb" colour="165">
             <category name="<fmt:message key="category.servo.standard-servo" />">
                 <block type="servo_move">
                     <value name="ANGLE">
@@ -1295,7 +1295,7 @@
             <block type="activitybot_calibrate"></block>
             <block type="activitybot_display_calibration"></block>
         </category>
-        <category name="<fmt:message key="category.s3-math" />" include="s3" colour=275>
+        <category name="<fmt:message key="category.s3-math" />" include="s3" colour="275">
             <block type="math_number"></block>
             <block type="scribbler_boolean"></block>
             <block type="scribbler_random_boolean"></block>
@@ -1359,7 +1359,7 @@
                 <block type="reset_button_presses"></block>
             </category>
         </category>
-        <category name="<fmt:message key="category.s3-actions" />" include="s3" colour=185>
+        <category name="<fmt:message key="category.s3-actions" />" include="s3" colour="185">
             <category name="<fmt:message key="category.s3-actions.motors" />">
                 <block type="scribbler_drive">
                     <field name="DRIVE_ANGLE">STRAIGHT</field>

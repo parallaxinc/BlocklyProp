@@ -596,7 +596,8 @@ function graph_new_data(stream) {
 function graph_reset() {
     clearInterval(graph_interval_id);
     graph_interval_id = null;
-    graph_temp_data.length = 0;
+    graph_temp_data = null;
+    graph_temp_data = new Array;
     graph_data = {
         series: [// add more here for more possible lines...
             [],
