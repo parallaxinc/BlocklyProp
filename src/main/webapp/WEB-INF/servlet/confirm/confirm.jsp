@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h2><fmt:message key="confirm.do.title" /></h2>
+                    <h3><fmt:message key="confirm.do.title" /></h3>
                     <%
                         String serverError = (String) request.getAttribute("server-error");
                         if (serverError != null) {

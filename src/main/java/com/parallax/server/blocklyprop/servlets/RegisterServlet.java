@@ -76,7 +76,7 @@ public class RegisterServlet extends HttpServlet {
      * Process the user registration page
      * <p>
      * This retrieves the form values and pass them on to another method
-     * that will actually create the user account.
+     * that validates the information and creates the user account.
      * <p>
      * The register() method will throw an exception if the data collected from
      * the form is considered invalid. The exact exception depends on the nature
@@ -139,6 +139,7 @@ public class RegisterServlet extends HttpServlet {
         
         try {
             LOG.info("Calling securityService.register()");
+            // Validate the collected information
             idUser = securityService.register(
                     screenname, email, password, confirmPassword,
                     Integer.parseInt(birthMonth),

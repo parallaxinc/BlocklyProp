@@ -26,7 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ *  Confirm account registration request
+ * 
  * @author Michel
  */
 @Singleton
@@ -49,31 +50,43 @@ public class ConfirmServlet extends HttpServlet {
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
-        cloudSessionLocalUserService = new CloudSessionLocalUserService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
+        cloudSessionLocalUserService = new CloudSessionLocalUserService(
+                configuration.getString("cloudsession.server"), 
+                configuration.getString("cloudsession.baseurl"));
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+            throws ServletException, IOException {
         confirmToken(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         confirmToken(req, resp);
     }
 
-    public void confirmToken(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void confirmToken(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        // Retreive the registration token
         String token = req.getParameter("token");
-        String email = req.getParameter("email");
         req.setAttribute("token", token == null ? "" : token);
+
+        // Retreive the requestor's email address
+        String email = req.getParameter("email");
         req.setAttribute("email", email == null ? "" : email);
+
+        // Return to the confirmation web page is we're missing data
         if (Strings.isNullOrEmpty(token) || Strings.isNullOrEmpty(email)) {
-            req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp")
+                    .forward(req, resp);
         } else {
             try {
+                // Validate the email and token with the Cloud Session server
                 if (cloudSessionLocalUserService.doConfirm(email, token)) {
                     // req.getRequestDispatcher("WEB-INF/servlet/confirm/confirmed.jsp").forward(req, resp);
-
                     showTextilePage(req, resp, ConfirmPage.CONFIRMED);
                 } else {
                     req.setAttribute("invalidToken", "Invalid token");

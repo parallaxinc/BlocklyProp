@@ -152,6 +152,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     /**
+     * Validate new user data and create a new user account
      * 
      * @param screenname String user screen name
      * @param email String user email address
@@ -185,6 +186,7 @@ public class SecurityServiceImpl implements SecurityService {
                 IllegalStateException{
 
         User user = new User();
+        assert(!user.isCoppaEligible(1,2017));
 
         // Log a few things
         LOG.info("In register: parameter screen name: {}", screenname);
@@ -199,6 +201,15 @@ public class SecurityServiceImpl implements SecurityService {
         LOG.info("Resgistering new user: {}", screenname);
         Preconditions.checkNotNull(screenname, "ScreenNameNull");
 
+        // User email address is required and must be reasonably valid
+        LOG.info("Verifying email address has been supplied");
+        Preconditions.checkNotNull(email, "UserEmailNull");
+
+        LOG.info("Verifying email address is reasonable");
+        Preconditions.checkState(
+                emailValidator.isValid(email),
+                "Email address format is incorrect");
+
         LOG.info("Verifying that a password was provided");
         Preconditions.checkNotNull(password, "PasswordIsNull");
         
@@ -206,64 +217,39 @@ public class SecurityServiceImpl implements SecurityService {
         Preconditions.checkNotNull(passwordConfirm, "PasswordConfirmIsNull");
  
         // Verify that we have valid COPPA data before continuing
+        // Birth month
         Preconditions.checkNotNull(birthMonth, "BirthMonthNull");
         LOG.info("Verify that month is provided: {}", birthMonth);
         Preconditions.checkState((birthMonth != 0), "BirthMonthNotSet");
-        
+
+        // Birth year
         Preconditions.checkNotNull(birthYear, "BirthYearNull");
-
-        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
         LOG.info("Verify that year is provided: {}", birthYear);
-        Preconditions.checkState((thisYear != birthYear), "BirthYearNotSet");
+        Preconditions.checkState(
+                (Calendar.getInstance().get(Calendar.YEAR) != birthYear),
+                "BirthYearNotSet");
 
-        // The user email field is optional if the user is under 13 years old
+        // Get additional information if the registrant is under 13 years old
         if (user.isCoppaEligible(birthMonth, birthYear)) {
-            LOG.info("User is COPPA eligible!");
+            LOG.info("User is subject to COPPA regulations");
 
             // We must have a sponsor email address for COPPA eligible users
             Preconditions.checkNotNull(
                     parentEmail,
                     "SponsorEmailNull");
             
-            // This email address is optional
-            if (email != null && email.length() > 0) {
+            // Verify that the sponsor email address is reasonable
+            if (parentEmail != null && parentEmail.length() > 0) {
                 LOG.info("Verify that optional user email address is reasonable");
                 Preconditions.checkState(
                     emailValidator.isValid(parentEmail),
                     "SponsorEmail");
             }
-
-            // Looking for a reasonably valid email address
-            if (parentEmail.length() > 0) {
-                LOG.info("Verify that sponsor address is reasonable");
-                Preconditions.checkState(
-                        emailValidator.isValid(parentEmail),
-                        "SponsorEmail");
-            }
-        }
-        else {
-            LOG.info("User is NOT COPPA eligible!");
-            
-            // User email address is required and must be reasonably valid
-            LOG.info("Verifying email address has been supplied");
-            Preconditions.checkNotNull(email, "UserEmailNull");
-
-            LOG.info("Verifying email address is reasonable");
-            Preconditions.checkState(emailValidator.isValid(email),"Email address format is incorrect");
-        }
-        
-        // The sponsor email address is not required for anyone
-        // 13 years old or older. If an address is provided, verify
-        // that it is reasonable before saving it.
-        if (parentEmail != null && parentEmail.length() > 0) {
-            LOG.info("Verify that sponsor address is reasonable");
-            Preconditions.checkState(
-                    emailValidator.isValid(parentEmail),
-                    "SponsorEmail");
         }
 
         try {
-            // Attempt to register the user account data
+            // Attempt to register the user account data with the cloud session
+            // service
             LOG.info("Registering user account with cloud-service");
             Long id = registerService.registerUser(
                     email, password, passwordConfirm, "en", screenname,

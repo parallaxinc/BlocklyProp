@@ -180,7 +180,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email" ><fmt:message key="register.do.email" /></label>
-                            <input class="form-control" type="text" name="email" maxlength="255" value="<%= request.getAttribute("email")%>">
+                            <input class="form-control" type="email" name="email" maxlength="255" value="<%= request.getAttribute("email")%>">
                         </div>
                         <div class="form-group">
                             <label for="password" ><fmt:message key="register.do.password" /></label>
@@ -256,9 +256,13 @@
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
                             </p>
                         </div>
+                        <!-- 
+                            TODO: Use javascript to hide these details until the registrant's age is selected  
+                        -->
                         <div class="form-group">
                             <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
-                            <input class="form-control" type="text" name="sponsoremail" maxlength="255" value="<%= request.getAttribute("sponsoremail")%>">
+                            <input class="form-control" type="text" name="sponsoremail" maxlength="255"
+                                   value="<%= request.getAttribute("sponsoremail")%>" placeholder="Enter an parent or teacher email address">
                         </div>
                         <div class="form-group">
                             <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
