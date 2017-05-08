@@ -338,11 +338,15 @@ public class SecurityServiceImpl implements SecurityService {
             WrongAuthenticationSourceException {
         
         try {
+            LOG.debug("Attempting to authenticate {}",email);
+            
+            // Query Cloud Session interface
             User user = authenticateService.authenticateLocalUser(email, password);
             LOG.info("User authenticated");
             return user;
 
         } catch (NullPointerException npe) {
+            LOG.debug("Authetication threw Null Pointer Exception");
             throw npe;
 
         } catch (ServerException se) {

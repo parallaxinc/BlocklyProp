@@ -82,7 +82,7 @@ public class ServletsModule extends ServletModule {
         serve("/sessionapi").with(SessionStateServlet.class);      
         
         // COPPA support
-        serve("/kids-privacy").with(ChildPrivacyServlet.class);
+        serve("/child-privacy-policy").with(ChildPrivacyServlet.class);
     }
 
 }

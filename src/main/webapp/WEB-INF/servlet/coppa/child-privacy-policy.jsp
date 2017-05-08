@@ -1,7 +1,7 @@
 <%--
-    Document   : login
-    Created on : 24-mei-2015, 18:41:02
-    Author     : Michel
+    Document   : COPPA policy page
+    Created on : 08-MAY-2017
+    Author     : J. Ewald
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

@@ -35,6 +35,23 @@
                 </li>
             </ul>
 
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <shiro:notAuthenticated>
+                    <li>
+                        <a href="<url:getUrl url="/child-privacy-policy"/>">
+                            <fmt:message key="menu.child_privacy" /></a>
+                    </li>
+                </shiro:notAuthenticated>
+                <shiro:authenticated>
+                    <li>
+                        <a href="<url:getUrl url="/child-privacy-policy"/>">
+                            <fmt:message key="menu.child_privacy" /></a>
+                    </li>
+                </shiro:authenticated>
+            </ul>
+
+
             <ul class="nav navbar-nav navbar-right">
                 <shiro:notAuthenticated>
                     <li><a href="<url:getUrl url="/login.jsp"/>"><fmt:message key="menu.login_and_register" /></a></li>
