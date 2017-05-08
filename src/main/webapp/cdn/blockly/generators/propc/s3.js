@@ -1049,8 +1049,12 @@ Blockly.Blocks.stall_sensor = {
         this.appendDummyInput("")
                 .appendField("stall sensor")
                 .appendField(new Blockly.FieldDropdown([
-                    ["tail wheel", "s3_stalled()"],
-                    ["drive wheels", "!s3_motorsMoving()"]
+                    ["tail wheel is stopped", "s3_stalled()"],
+                    ["tail wheel is spinning", "!s3_stalled()"],
+                    ["drive wheels stalled", "!s3_motorsMoving()"],
+                    ["drive wheels turning", "s3_motorsMoving()"],
+                    ["Scribbler is stuck", "s3_simpleStalled(S3_IS)"],
+                    ["Scribbler is not stuck", "s3_simpleStalled(S3_IS_NOT)"]
                 ]), "STALL_SENSOR_CHOICE");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
@@ -1207,6 +1211,7 @@ Blockly.propc.scribbler_ping = function () {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
+/*
 Blockly.Blocks.digital_input = {
     init: function () {
         this.appendDummyInput("")
@@ -1257,6 +1262,7 @@ Blockly.propc.digital_output = function () {
             return 'reverse(' + dropdown_pin + ');\n';
     }
 };
+*/
 
 Blockly.Blocks.analog_input = {
     init: function () {
@@ -1276,6 +1282,7 @@ Blockly.propc.analog_input = function () {
     return ['s3_readADC(S3_ADC_A' + pin + ')', Blockly.propc.ORDER_ATOMIC];
 };
 
+/*
 Blockly.Blocks.spin_integer = {
     init: function () {
         this.appendDummyInput('MAIN')
@@ -1446,6 +1453,7 @@ Blockly.propc.math_int_angle = function () {
             Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
     return [code, order];
 };
+*/
 
 Blockly.Blocks.scribbler_boolean = {
     init: function () {
@@ -1496,6 +1504,7 @@ Blockly.Blocks.scribbler_random_number = {
     }
 };
 
+/*
 Blockly.propc.scribbler_random_number = function () {
     Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
     var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
@@ -1523,6 +1532,7 @@ Blockly.propc.spin_comment = function () {
 
     return '// ' + text + '\n';
 };
+*/
 
 Blockly.Blocks.factory_reset = {
     init: function () {

@@ -31,31 +31,6 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-/*
- Blockly.Blocks.number_range = {
- helpUrl: Blockly.MSG_VALUES_HELPURL,
- init: function () {
- this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
- this.setColour(colorPalette.getColor('programming'));
- this.appendDummyInput()
- .appendField(new Blockly.FieldTextInput('0',
- Blockly.FieldTextInput.numberValidator), 'NUM');
- this.setOutput(true, 'Number');
- }
- };
- 
- Blockly.propc.number_range = function () {
- // Numeric value.
- var code = window.parseInt(this.getFieldValue('NUM'));
- // -4.abs() returns -4 in Dart due to strange order of operation choices.
- // -4 is actually an operator and a number.  Reflect this in the order.
- var order = code < 0 ?
- Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
- return [code, order];
- };
- */
-
-
 // Number block that can mutate to show a range or if a value
 // is out bounds or not available.  Gets values from the block its connected
 // to by looking for a hidden field starting with "RANGEVALS".
@@ -1270,7 +1245,7 @@ Blockly.Blocks.combine_strings = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -1350,7 +1325,7 @@ Blockly.Blocks.get_char_at_position = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -1392,7 +1367,7 @@ Blockly.Blocks.set_char_at_position = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -1431,9 +1406,9 @@ Blockly.Blocks.get_substring = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('FROM_STR')))
-            this.setTitleValue(newName, 'FROM_STR');
+            this.setFieldValue(newName, 'FROM_STR');
         if (Blockly.Names.equals(oldName, this.getFieldValue('TO_STR')))
-            this.setTitleValue(newName, 'TO_STR');
+            this.setFieldValue(newName, 'TO_STR');
     }
 };
 
@@ -1515,7 +1490,7 @@ Blockly.Blocks.string_to_number = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -1556,7 +1531,7 @@ Blockly.Blocks.number_to_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -1670,7 +1645,7 @@ Blockly.Blocks.math_advanced = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
-            this.setTitleValue(newName, 'STORE');
+            this.setFieldValue(newName, 'STORE');
         }
     }
 };
@@ -1719,7 +1694,7 @@ Blockly.Blocks.math_inv_trig = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
-            this.setTitleValue(newName, 'STORE');
+            this.setFieldValue(newName, 'STORE');
         }
     }
 };
