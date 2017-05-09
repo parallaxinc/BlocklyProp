@@ -3168,19 +3168,17 @@ Blockly.Blocks.graph_output = {
 //        this.setTooltip(Blockly.MSG_GRAPH_OUTPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField('Graphing output');
+                .appendField('Graph');
         this.appendValueInput('PRINTa')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
-                .appendField('value');
-        this.appendValueInput('PRINTb')
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .setCheck('Number')
+                .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABELa')
                 .appendField('value');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['graph_dec']));
-        this.optionList_ = ['dec', 'dec'];
+        this.optionList_ = ['dec'];
+        this.graph_labels_ = [];
     },
     mutationToDom: function (workspace) {
         // Create XML to represent menu options.
@@ -3195,6 +3193,7 @@ Blockly.Blocks.graph_output = {
         for (var i = 0; i < this.optionList_.length; i++) {
             this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
+                    .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABEL' + i)
                     .appendField('value');
         }
     },
@@ -3208,6 +3207,13 @@ Blockly.Blocks.graph_output = {
             connection.connect(optionBlock.previousConnection);
             connection = optionBlock.nextConnection;
         }
+        var i = 0;
+        this.graph_labels_ = null;
+        this.graph_labels_ = [];
+        while (this.getFieldValue('GRAPH_LABEL' + i)) {
+            this.graph_labels_.push(this.getFieldValue('GRAPH_LABEL' + i));
+            i++;
+        }
         return containerBlock;
 
     },
@@ -3218,7 +3224,6 @@ Blockly.Blocks.graph_output = {
             this.removeInput('PRINT' + i);
             i++;
         }
-
         i = 0;
         this.optionList_.length = 0;
         // Rebuild the block's optional inputs.
@@ -3229,6 +3234,7 @@ Blockly.Blocks.graph_output = {
             var printInput = this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .setCheck('Number')
+                    .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
                     .appendField('value');
 
             if (clauseBlock.valueConnection_) {
@@ -3238,6 +3244,11 @@ Blockly.Blocks.graph_output = {
 
             clauseBlock = clauseBlock.nextConnection &&
                     clauseBlock.nextConnection.targetBlock();
+        }
+        i = this.graph_labels_.length;
+        for (i = 0; i < this.graph_labels_.length; i++) {
+            if (this.getFieldValue('GRAPH_LABEL' + i))
+                this.setFieldValue(this.graph_labels_[i], 'GRAPH_LABEL' + i);
         }
     },
     saveConnections: function (containerBlock) {
@@ -3254,6 +3265,14 @@ Blockly.Blocks.graph_output = {
             clauseBlock = clauseBlock.nextConnection &&
                     clauseBlock.nextConnection.targetBlock();
         }
+        var i = 0;
+        this.graph_labels_ = null;
+        this.graph_labels_ = [];
+        while (this.getFieldValue('GRAPH_LABEL' + i)) {
+            this.graph_labels_.push(this.getFieldValue('GRAPH_LABEL' + i));
+            i++;
+        }
+
     },
     onchange: function () {
         if (this.workspace && this.optionList_.length < 1) {
@@ -3266,7 +3285,7 @@ Blockly.Blocks.graph_output = {
         }
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
             this.removeInput('PRINTa');
-            this.removeInput('PRINTb');
+            //this.removeInput('PRINTb');
         }
     }
 };
@@ -3298,11 +3317,15 @@ Blockly.propc.graph_output = function () {
 
     var code = 'print("%u';
     var varList = '';
+    var labelList = '';
     var i = 0;
     var orIt = '';
     while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
         code += ',%d';
         varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || '0');
+        labelList += this.getFieldValue("GRAPH_LABEL" + i);
+        if (Blockly.propc.valueToCode(this, 'PRINT' + (i + 1), Blockly.propc.ORDER_NONE) && i < 9)
+            labelList += ',';
         i++;
         if (i > 10)
             break;
@@ -3310,6 +3333,7 @@ Blockly.propc.graph_output = function () {
     code += '\\r", (CNT >> 16)' + varList + ');\n';
 
     Blockly.propc.serial_graphing_ = true;
+    Blockly.propc.definitions_['graphing_labels'] = '// GRAPH_LABELS_START:' + labelList + ':GRAPH_LABELS_END //';
 
     return code;
 };
@@ -3320,25 +3344,23 @@ Blockly.Blocks.graph_settings = {
 //        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Graph settings");
-        this.appendDummyInput()
-                .appendField("x-axis")
+                .appendField("Graph initialize  x-axis")
                 .appendField(new Blockly.FieldDropdown([
-                    ["keep 10 seconds of data", "10,S"],
-                    ["keep 20 seconds of data", "20,S"],
-                    ["keep 30 seconds of data", "30,S"],
-                    ["keep 40 seconds of data", "40,S"],
-                    ["keep 50 seconds of data", "50,S"],
-                    ["keep 60 seconds of data", "60,S"],
-                    ["keep 90 seconds of data", "90,S"]    // Add comma back when resetting
+                    ["10 seconds", "10,S"],
+                    ["20 seconds", "20,S"],
+                    ["30 seconds", "30,S"],
+                    ["40 seconds", "40,S"],
+                    ["50 seconds", "50,S"],
+                    ["60 seconds", "60,S"],
+                    ["90 seconds", "90,S"]    // Add comma back when resetting
                             //        ["trigger on value 1 rising edge", "1,TU"],
                             //        ["trigger on value 1 falling edge", "1,TD"],
                             //        ["trigger on value 1 zero crossing", "1,TZ"]
-                ]), "XAXIS");
-        this.appendDummyInput()
+                ]), "XAXIS")
+                .appendField('y-axis ')
                 .appendField(new Blockly.FieldDropdown([
-                    ["y-axis autoscale", "AUTO"],
-                    ["y-axis range", "FIXED"]]), "YSETTING")
+                    ["autoscale", "AUTO"],
+                    ["range", "FIXED"]]), "YSETTING")
                 .appendField("minimum", 'LABELMIN')
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), "YMIN")
@@ -3361,6 +3383,7 @@ Blockly.Blocks.graph_settings = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.render();
     },
     onchange: function () {
         if (this.getFieldValue('YSETTING') === 'AUTO') {

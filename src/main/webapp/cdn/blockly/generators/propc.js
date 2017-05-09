@@ -403,8 +403,7 @@ Blockly.propc.finish = function (code) {
     var setup = '';
     if (Blockly.propc.serial_terminal_) {
         setup += "/* SERIAL_TERMINAL USED */\n";
-    }
-    if (Blockly.propc.serial_graphing_) {
+    } else if (Blockly.propc.serial_graphing_) {
         setup += "/* SERIAL_GRAPHING USED */\n";
     }
     if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
