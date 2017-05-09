@@ -139,7 +139,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <div id="serial_graphing" class="ct-chart ct-perfect-fourth"></div>
+                                    <div id="serial_graphing" class="ct-chart ct-perfect-fourth" style="width:500px;"></div>
                                     <div id="graph_x-axis_label" align="center">Time (seconds)</div>
                                 </td>
                                 <td valign="top">
