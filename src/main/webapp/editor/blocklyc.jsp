@@ -140,7 +140,8 @@
                         <div id="graph_x-axis_label" align="center">Time (seconds)</div>
                     </div>
                     <div class="modal-footer clearfix">
-                        <button type="button" id="btn-graph-play" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><i class="glyphicon glyphicon-pause"></i></button><button type="button" id="btn-graph-pause" class="btn btn-primary btn-circle pull-left" onclick="graph_pause();"><i class="glyphicon glyphicon-play"></i></button>
+                        <button type="button" id="btn-graph-play" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><i class="glyphicon glyphicon-pause"></i></button>&nbsp;
+                        <button type="button" id="btn-graph-snapshot" class="btn btn-success btn-circle pull-left" onclick="downloadGraph();"><i class="glyphicon glyphicon-camera"></i></button>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
                     </div>
                 </div><!-- /.modal-content -->

@@ -3168,19 +3168,15 @@ Blockly.Blocks.graph_output = {
 //        this.setTooltip(Blockly.MSG_GRAPH_OUTPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField('Graphing output');
+                .appendField('Graph');
         this.appendValueInput('PRINTa')
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .setCheck('Number')
-                .appendField('value');
-        this.appendValueInput('PRINTb')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
                 .appendField('value');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['graph_dec']));
-        this.optionList_ = ['dec', 'dec'];
+        this.optionList_ = ['dec'];
     },
     mutationToDom: function (workspace) {
         // Create XML to represent menu options.
@@ -3266,7 +3262,7 @@ Blockly.Blocks.graph_output = {
         }
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
             this.removeInput('PRINTa');
-            this.removeInput('PRINTb');
+            //this.removeInput('PRINTb');
         }
     }
 };
@@ -3320,25 +3316,23 @@ Blockly.Blocks.graph_settings = {
 //        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Graph settings");
-        this.appendDummyInput()
-                .appendField("x-axis")
+                .appendField("Graph initialize  x-axis")
                 .appendField(new Blockly.FieldDropdown([
-                    ["keep 10 seconds of data", "10,S"],
-                    ["keep 20 seconds of data", "20,S"],
-                    ["keep 30 seconds of data", "30,S"],
-                    ["keep 40 seconds of data", "40,S"],
-                    ["keep 50 seconds of data", "50,S"],
-                    ["keep 60 seconds of data", "60,S"],
-                    ["keep 90 seconds of data", "90,S"]    // Add comma back when resetting
+                    ["10 seconds", "10,S"],
+                    ["20 seconds", "20,S"],
+                    ["30 seconds", "30,S"],
+                    ["40 seconds", "40,S"],
+                    ["50 seconds", "50,S"],
+                    ["60 seconds", "60,S"],
+                    ["90 seconds", "90,S"]    // Add comma back when resetting
                             //        ["trigger on value 1 rising edge", "1,TU"],
                             //        ["trigger on value 1 falling edge", "1,TD"],
                             //        ["trigger on value 1 zero crossing", "1,TZ"]
-                ]), "XAXIS");
-        this.appendDummyInput()
+                ]), "XAXIS")
+                .appendField('y-axis ')
                 .appendField(new Blockly.FieldDropdown([
-                    ["y-axis autoscale", "AUTO"],
-                    ["y-axis range", "FIXED"]]), "YSETTING")
+                    ["autoscale", "AUTO"],
+                    ["range", "FIXED"]]), "YSETTING")
                 .appendField("minimum", 'LABELMIN')
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), "YMIN")
@@ -3361,6 +3355,7 @@ Blockly.Blocks.graph_settings = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.render();
     },
     onchange: function () {
         if (this.getFieldValue('YSETTING') === 'AUTO') {

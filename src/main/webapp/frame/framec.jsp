@@ -348,7 +348,7 @@
                 <block type="scribbler_LED"></block>
             </category>
         </category>
--->
+        -->
         <category name="<fmt:message key="category.control" />" include="s3" colour=205>
             <block type="controls_repeat">
                 <mutation TYPE="FOREVER"></mutation>
@@ -441,14 +441,17 @@
                     <block type="number_binary"></block>
                 </value>
         </category>
-        <category name="<fmt:message key="category.communicate.graphing" />" graphing="1" include="activity-board,flip,other" colour="340">
-            <block type="graph_settings">
-                <field name="RATE">250</field>
-                <field name="XAXIS">40,S</field>
-            </block>                
-            <block type="graph_output"></block>
-        </category>
         <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="340">
+            <c:choose>
+                <c:when test="${experimental == true}">
+                    <category name="<fmt:message key="category.communicate.graphing" />" include="activity-board,flip,other">
+                        <block type="graph_settings">
+                            <field name="XAXIS">40,S</field>
+                        </block>                
+                        <block type="graph_output"></block>
+                    </category>
+                </c:when>
+            </c:choose>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>
@@ -1503,14 +1506,14 @@
                 <block type="analog_input"></block>
             </category>
             <category name="<fmt:message key="category.s3-hacker-port.servo" />">
-            <block type="servo_move">
-                <value name="ANGLE">
-                    <block type="math_number">
-                        <field name="NUM">90</field>
-                    </block>
-                </value>
-            </block>
-            <block type="scribbler_stop_servo"></block>
+                <block type="servo_move">
+                    <value name="ANGLE">
+                        <block type="math_number">
+                            <field name="NUM">90</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="scribbler_stop_servo"></block>
             </category>
         </category>
 
