@@ -26,6 +26,7 @@ var graph_temp_string = new String;
 var graph_time_multiplier = 0;
 var graph_interval_id = null;
 var fullCycleTime = 4294967296 / 80000000;
+var graph_labels = null;
 
 var console_header_arrived = false;
 var console_header = null;
@@ -373,6 +374,13 @@ function graphing_console() {
 
         // GRAPH_SETTINGS:rate,x_axis_val,x_axis_type,y_min,y_max:GRAPH_SETTINGS_END //
 
+        var graph_labels_start = propcCode.indexOf("// GRAPH_LABELS_START:");
+        if (graph_labels_start > -1) {
+            var graph_labels_end = propcCode.indexOf(":GRAPH_LABELS_END //") + 20;
+            var graph_labels_temp = propcCode.substring(graph_labels_start, graph_labels_end).split(':');
+            graph_labels = graph_labels_temp[1].split(',');
+        }
+
         graph_options.refreshRate = Number(graph_settings_str[0]);
 
         if (graph_settings_str[3] === '0' && graph_settings_str[4] === '0')
@@ -425,8 +433,10 @@ function graphing_console() {
         };
 
         if (newGraph || graph !== null) {
+            graph_new_labels();
             graph_interval_id = setInterval(function () {
                 graph.update(graph_data);
+                graph_update_labels();
             }, graph_options.refreshRate);
         }
 
@@ -623,7 +633,9 @@ function graph_reset() {
     graph_temp_string = '';
     graph_timestamp_start = null;
     graph_data_ready = false;
+    // graph_labels = null;
     $("#serial_graphing").html('');
+    //$("#serial_graphing_labels").html('');
 }
 
 function graph_redraw() {
@@ -683,4 +695,21 @@ function downloadGraph() {
             saveData(svgxml, value + '.svg');
         }
     });
+}
+
+function graph_new_labels() {
+    var labelsvg = '<svg width="60" height="300">';
+    for (var t = 0; t < graph_labels.length; t++) {
+        labelsvg += '<g id="labelgroup' + (t+1) + '" transform="translate(0,' + (t*25+35) + ')">';
+        labelsvg += '<path id="label' + (t+1) + '" class="ct-marker-' + (t+1);
+        labelsvg += '" d="M0,6 L5,0 58,0 59,1 60,2 60,10 59,11 58,12 5,12 Z"/>';
+        labelsvg += '<text id="label' + (t+1) + 'text" x="6" y="10" style="font-family:';
+        labelsvg += 'Arial;font-size: 10px;fill:#fff; font-weight:bold;">' + graph_labels[t] + '</text></g>';
+    }
+    labelsvg += '</svg>';
+    $('#serial_graphing_labels').html(labelsvg);
+}
+
+function graph_update_labels() {
+
 }

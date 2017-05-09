@@ -136,8 +136,17 @@
                         <h4 class="modal-title" id="graphing-dialog-title"><fmt:message key="editor.title.graphing" /></h4>
                     </div>
                     <div class="modal-body" style="height: 430px;">
-                        <div id="serial_graphing" class="ct-chart ct-perfect-fourth"></div>
-                        <div id="graph_x-axis_label" align="center">Time (seconds)</div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <div id="serial_graphing" class="ct-chart ct-perfect-fourth"></div>
+                                    <div id="graph_x-axis_label" align="center">Time (seconds)</div>
+                                </td>
+                                <td valign="top">
+                                    <div id="serial_graphing_labels"></div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="modal-footer clearfix">
                         <button type="button" id="btn-graph-play" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><i class="glyphicon glyphicon-pause"></i></button>&nbsp;
@@ -153,7 +162,7 @@
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script>
-            var type = 'PROPC';
+                            var type = 'PROPC';
         </script>
     </body>
 </html>

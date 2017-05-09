@@ -3172,11 +3172,13 @@ Blockly.Blocks.graph_output = {
         this.appendValueInput('PRINTa')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
+                .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABELa')
                 .appendField('value');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['graph_dec']));
         this.optionList_ = ['dec'];
+        this.graph_labels_ = [];
     },
     mutationToDom: function (workspace) {
         // Create XML to represent menu options.
@@ -3191,6 +3193,7 @@ Blockly.Blocks.graph_output = {
         for (var i = 0; i < this.optionList_.length; i++) {
             this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
+                    .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABEL' + i)
                     .appendField('value');
         }
     },
@@ -3204,6 +3207,13 @@ Blockly.Blocks.graph_output = {
             connection.connect(optionBlock.previousConnection);
             connection = optionBlock.nextConnection;
         }
+        var i = 0;
+        this.graph_labels_ = null;
+        this.graph_labels_ = [];
+        while (this.getFieldValue('GRAPH_LABEL' + i)) {
+            this.graph_labels_.push(this.getFieldValue('GRAPH_LABEL' + i));
+            i++;
+        }
         return containerBlock;
 
     },
@@ -3214,7 +3224,6 @@ Blockly.Blocks.graph_output = {
             this.removeInput('PRINT' + i);
             i++;
         }
-
         i = 0;
         this.optionList_.length = 0;
         // Rebuild the block's optional inputs.
@@ -3225,6 +3234,7 @@ Blockly.Blocks.graph_output = {
             var printInput = this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .setCheck('Number')
+                    .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
                     .appendField('value');
 
             if (clauseBlock.valueConnection_) {
@@ -3234,6 +3244,11 @@ Blockly.Blocks.graph_output = {
 
             clauseBlock = clauseBlock.nextConnection &&
                     clauseBlock.nextConnection.targetBlock();
+        }
+        i = this.graph_labels_.length;
+        for (i = 0; i < this.graph_labels_.length; i++) {
+            if (this.getFieldValue('GRAPH_LABEL' + i))
+                this.setFieldValue(this.graph_labels_[i], 'GRAPH_LABEL' + i);
         }
     },
     saveConnections: function (containerBlock) {
@@ -3250,6 +3265,14 @@ Blockly.Blocks.graph_output = {
             clauseBlock = clauseBlock.nextConnection &&
                     clauseBlock.nextConnection.targetBlock();
         }
+        var i = 0;
+        this.graph_labels_ = null;
+        this.graph_labels_ = [];
+        while (this.getFieldValue('GRAPH_LABEL' + i)) {
+            this.graph_labels_.push(this.getFieldValue('GRAPH_LABEL' + i));
+            i++;
+        }
+
     },
     onchange: function () {
         if (this.workspace && this.optionList_.length < 1) {
@@ -3294,11 +3317,15 @@ Blockly.propc.graph_output = function () {
 
     var code = 'print("%u';
     var varList = '';
+    var labelList = '';
     var i = 0;
     var orIt = '';
     while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
         code += ',%d';
         varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || '0');
+        labelList += this.getFieldValue("GRAPH_LABEL" + i);
+        if (Blockly.propc.valueToCode(this, 'PRINT' + (i + 1), Blockly.propc.ORDER_NONE) && i < 9)
+            labelList += ',';
         i++;
         if (i > 10)
             break;
@@ -3306,6 +3333,7 @@ Blockly.propc.graph_output = function () {
     code += '\\r", (CNT >> 16)' + varList + ');\n';
 
     Blockly.propc.serial_graphing_ = true;
+    Blockly.propc.definitions_['graphing_labels'] = '// GRAPH_LABELS_START:' + labelList + ':GRAPH_LABELS_END //';
 
     return code;
 };
