@@ -33,7 +33,8 @@ import com.parallax.server.blocklyprop.servlets.TextileLibrariesServlet;
 import com.parallax.server.blocklyprop.servlets.TextileLicenseServlet;
 
 /**
- *
+ * Map each URI to a class that will handle the request
+ * 
  * @author Michel
  */
 public class ServletsModule extends ServletModule {
