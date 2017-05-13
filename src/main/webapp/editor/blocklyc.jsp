@@ -149,8 +149,8 @@
                         </table>
                     </div>
                     <div class="modal-footer clearfix">
-                        <button type="button" id="btn-graph-play" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><i class="glyphicon glyphicon-pause"></i></button>&nbsp;
-                        <button type="button" id="btn-graph-snapshot" class="btn btn-success btn-circle pull-left" onclick="downloadGraph();"><i class="glyphicon glyphicon-camera"></i></button>
+                        <button type="button" id="btn-graph-play" data-toggle="tooltip" title="Pause/Resume the graph" data-placement="bottom" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><i class="glyphicon glyphicon-pause"></i></button>&nbsp;
+                        <button type="button" id="btn-graph-snapshot" data-toggle="tooltip" title="Download a snapshot of the graph" data-placement="bottom" class="btn btn-success btn-circle pull-left" onclick="downloadGraph();"><i class="glyphicon glyphicon-camera"></i></button>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
                     </div>
                 </div><!-- /.modal-content -->

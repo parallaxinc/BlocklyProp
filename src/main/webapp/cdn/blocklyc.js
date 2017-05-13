@@ -700,11 +700,14 @@ function downloadGraph() {
 function graph_new_labels() {
     var labelsvg = '<svg width="60" height="300">';
     for (var t = 0; t < graph_labels.length; t++) {
-        labelsvg += '<g id="labelgroup' + (t+1) + '" transform="translate(0,' + (t*25+35) + ')">';
-        labelsvg += '<path id="label' + (t+1) + '" class="ct-marker-' + (t+1);
-        labelsvg += '" d="M0,6 L5,0 58,0 59,1 60,2 60,10 59,11 58,12 5,12 Z"/>';
-        labelsvg += '<text id="label' + (t+1) + 'text" x="6" y="10" style="font-family:';
-        labelsvg += 'Arial;font-size: 10px;fill:#fff; font-weight:bold;">' + graph_labels[t] + '</text></g>';
+        labelsvg += '<g id="labelgroup' + (t+1) + '" transform="translate(0,' + (t*30+25) + ')">';
+        labelsvg += '<rect x="0" y = "0" width="60" height="26" rx="3" ry="3" id="label' + (t+1) + '" ';
+        labelsvg += 'style="stroke:1px;stroke-color:blue;" class="ct-marker-' + (t+1) + '"/><rect x="3" y = "12"';
+        labelsvg += 'width="54" height="11" rx="3" ry="3" id="value' + (t+1) + 'bkg" style="fill:rgba';
+        labelsvg += '(255,255,255,.7);stroke:none;"/><text id="label' + (t+1) + 'text" x="3" ';
+        labelsvg += 'y="9" style="font-family:Arial;font-size: 9px;fill:#fff;font-weight:bold;">' + graph_labels[t];
+        labelsvg += '</text><text id="value' + (t+1) + 'text" x="5" y="21" style="align:right;';
+        labelsvg += 'font-family:Arial;font-size: 10px;fill:#000;"></text></g>';
     }
     labelsvg += '</svg>';
     $('#serial_graphing_labels').html(labelsvg);
