@@ -706,7 +706,7 @@ function graph_new_labels() {
         labelsvg += 'width="54" height="11" rx="3" ry="3" id="value' + (t+1) + 'bkg" style="fill:rgba';
         labelsvg += '(255,255,255,.7);stroke:none;"/><text id="label' + (t+1) + 'text" x="3" ';
         labelsvg += 'y="9" style="font-family:Arial;font-size: 9px;fill:#fff;font-weight:bold;">' + graph_labels[t];
-        labelsvg += '</text><text id="value' + (t+1) + 'text" x="5" y="21" style="align:right;';
+        labelsvg += '</text><text id="gValue' + (t+1) + '" x="5" y="21" style="align:right;';
         labelsvg += 'font-family:Arial;font-size: 10px;fill:#000;"></text></g>';
     }
     labelsvg += '</svg>';
@@ -714,5 +714,9 @@ function graph_new_labels() {
 }
 
 function graph_update_labels() {
-
+    var row = graph_temp_data.length - 1;
+    var col = graph_temp_data[row].length;
+    for(var w = 2; w < col; w++) {
+        document.getElementById('gValue' + (w-1).toString(10)).textContent = graph_temp_data[row][w];
+    }
 }
