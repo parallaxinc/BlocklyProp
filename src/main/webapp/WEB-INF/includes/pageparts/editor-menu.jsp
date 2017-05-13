@@ -51,7 +51,7 @@
                     <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><rect x="1" y="1" width="12" height="13" rx="1" ry="1" style="stroke:#fff;stroke-width:2;fill:none;"/><path d="M3,4.5 L10,4.5 M3,6.5 L6,6.5 M3,8.5 L8,8.5" style="stroke:#fff;stroke-width:1;fill:none;"/></svg></a>
                         <c:choose>
                             <c:when test="${experimental == true}">
-                            <a onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
+                            <a onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle" id="open-graph-output"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
                                 <path d="M.5,0 L.5,13.5 L12.5,13.5 M3.5,0 L3.5,13.5 M6.5,0 L6.5,13.5 M9.5,0 L9.5,13.5 M12.5,0 L12.5,13.5 M.5,3.5 L12.5,3.5 M.5,7 L12.5,7 M.5,10.5 L12.5,10.5 M.5,.5 L12.5,.5" style="stroke:rgba(255,255,255,.6);stroke-width:1;fill:none;"/>
                                 <path d="M0,13 L6,5 L9,8 L14,2" style="stroke:#fff;stroke-width:2;fill:none;"/>
                                 </svg></a>
