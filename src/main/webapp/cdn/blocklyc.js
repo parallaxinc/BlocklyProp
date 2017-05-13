@@ -27,6 +27,7 @@ var graph_time_multiplier = 0;
 var graph_interval_id = null;
 var fullCycleTime = 4294967296 / 80000000;
 var graph_labels = null;
+var graph_csv_data = new Array;
 
 var console_header_arrived = false;
 var console_header = null;
@@ -581,7 +582,9 @@ function graph_new_data(stream) {
                 } else {
                     graph_temp_data[row].unshift(ts + graph_time_multiplier -
                             graph_timestamp_start + graph_timestamp_restart);
-                    for (j = 2; j < graph_temp_data[row].length; j++) {
+                    var graph_csv_temp = graph_temp_data[row][0] + ',';
+                    for (var j = 2; j < graph_temp_data[row].length; j++) {
+                        graph_csv_temp += graph_temp_data[row][j] + ',';
                         graph_data.series[j - 2].push({
                             x: graph_temp_data[row][0],
                             y: graph_temp_data[row][j] || null
@@ -589,7 +592,10 @@ function graph_new_data(stream) {
                         if (graph_temp_data[row][0] > graph_options.sampleTotal)
                             graph_data.series[j - 2].shift();
                     }
+                    graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
                 }
+
+
 
                 /*
                  var read_serial_to_div = '';
@@ -616,6 +622,8 @@ function graph_reset() {
     graph_interval_id = null;
     graph_temp_data = null;
     graph_temp_data = new Array;
+    graph_csv_data = null;
+    graph_csv_data = new Array;
     graph_data = {
         series: [// add more here for more possible lines...
             [],
@@ -697,26 +705,58 @@ function downloadGraph() {
     });
 }
 
+function downloadCSV() {
+    utils.prompt("Download Graph data as CSV - Filename:", 'graph_data' + idProject, function (value) {
+        if (value) {
+
+            // put all of the pieces together into a downloadable file
+            var saveData = (function () {
+                var a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+                return function (data, fileName) {
+                    var blob = new Blob([data], {type: "octet/stream"});
+                    var url = window.URL.createObjectURL(blob);
+                    a.href = url;
+                    a.download = fileName;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                };
+            }());
+            var graph_csv_temp = graph_csv_data.join('\n');
+            var idx1 = graph_csv_temp.indexOf('\n') + 1;
+            var idx2 = graph_csv_temp.indexOf('\n', idx1 + 1);
+            saveData(graph_csv_temp.substring(0, idx1) + graph_csv_temp.substring(idx2 + 1, graph_csv_temp.length - 1), value + '.csv');
+        }
+    });
+}
+
 function graph_new_labels() {
+    var graph_csv_temp = '';
     var labelsvg = '<svg width="60" height="300">';
+    graph_csv_temp += '"time",';
     for (var t = 0; t < graph_labels.length; t++) {
-        labelsvg += '<g id="labelgroup' + (t+1) + '" transform="translate(0,' + (t*30+25) + ')">';
-        labelsvg += '<rect x="0" y = "0" width="60" height="26" rx="3" ry="3" id="label' + (t+1) + '" ';
-        labelsvg += 'style="stroke:1px;stroke-color:blue;" class="ct-marker-' + (t+1) + '"/><rect x="3" y = "12"';
-        labelsvg += 'width="54" height="11" rx="3" ry="3" id="value' + (t+1) + 'bkg" style="fill:rgba';
-        labelsvg += '(255,255,255,.7);stroke:none;"/><text id="label' + (t+1) + 'text" x="3" ';
+        labelsvg += '<g id="labelgroup' + (t + 1) + '" transform="translate(0,' + (t * 30 + 25) + ')">';
+        labelsvg += '<rect x="0" y = "0" width="60" height="26" rx="3" ry="3" id="label' + (t + 1) + '" ';
+        labelsvg += 'style="stroke:1px;stroke-color:blue;" class="ct-marker-' + (t + 1) + '"/><rect x="3" y = "12"';
+        labelsvg += 'width="54" height="11" rx="3" ry="3" id="value' + (t + 1) + 'bkg" style="fill:rgba';
+        labelsvg += '(255,255,255,.7);stroke:none;"/><text id="label' + (t + 1) + 'text" x="3" ';
         labelsvg += 'y="9" style="font-family:Arial;font-size: 9px;fill:#fff;font-weight:bold;">' + graph_labels[t];
-        labelsvg += '</text><text id="gValue' + (t+1) + '" x="5" y="21" style="align:right;';
+        labelsvg += '</text><text id="gValue' + (t + 1) + '" x="5" y="21" style="align:right;';
         labelsvg += 'font-family:Arial;font-size: 10px;fill:#000;"></text></g>';
+        graph_csv_temp += '"' + graph_labels[t].replace(/"/g, '_') + '",';
     }
     labelsvg += '</svg>';
+    graph_csv_data.push(graph_csv_temp.slice(0, -1));
     $('#serial_graphing_labels').html(labelsvg);
 }
 
 function graph_update_labels() {
     var row = graph_temp_data.length - 1;
-    var col = graph_temp_data[row].length;
-    for(var w = 2; w < col; w++) {
-        document.getElementById('gValue' + (w-1).toString(10)).textContent = graph_temp_data[row][w];
+    if (graph_temp_data[row]) {
+        var col = graph_temp_data[row].length;
+        for (var w = 2; w < col; w++) {
+            document.getElementById('gValue' + (w - 1).toString(10)).textContent = graph_temp_data[row][w];
+        }
     }
 }
