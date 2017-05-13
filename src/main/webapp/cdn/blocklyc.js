@@ -582,7 +582,7 @@ function graph_new_data(stream) {
                 } else {
                     graph_temp_data[row].unshift(ts + graph_time_multiplier -
                             graph_timestamp_start + graph_timestamp_restart);
-                    var graph_csv_temp = graph_temp_data[row][0] + ',';
+                    var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
                     for (var j = 2; j < graph_temp_data[row].length; j++) {
                         graph_csv_temp += graph_temp_data[row][j] + ',';
                         graph_data.series[j - 2].push({
