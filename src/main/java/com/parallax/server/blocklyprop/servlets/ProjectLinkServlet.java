@@ -69,11 +69,11 @@ public class ProjectLinkServlet extends HttpServlet {
             JsonObject result = projectConverter.toJson(project);
             result.addProperty("code", project.getCode());
             req.setAttribute("project", result.toString());
-            if (ProjectType.PROPC == project.getType()) {
+            //if (ProjectType.PROPC == project.getType()) {
                 req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-c.jsp").forward(req, resp);
-            } else if (ProjectType.SPIN == project.getType()) {
-                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
-            }
+            //} else if (ProjectType.SPIN == project.getType()) {
+            //    req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
+            //}
         }
     }
 

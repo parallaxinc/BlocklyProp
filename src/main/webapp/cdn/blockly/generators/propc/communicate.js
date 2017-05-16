@@ -140,7 +140,7 @@ Blockly.Blocks.console_scan_text = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 
@@ -179,7 +179,7 @@ Blockly.Blocks.console_scan_number = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 
@@ -293,8 +293,15 @@ Blockly.Blocks.serial_open = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.appendDummyInput()
                 .appendField("baud")
-                .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["4800", "4800"], ["9600", "9600"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
-
+                .appendField(new Blockly.FieldDropdown([
+                    ["2400", "2400"],
+                    ["4800", "4800"],
+                    ["9600", "9600"],
+                    ["19200", "19200"],
+                    ["38400", "38400"],
+                    ["57600", "57600"],
+                    ["115200", "115200"]
+                ]), "BAUD");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -403,7 +410,7 @@ Blockly.Blocks.serial_rx = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -445,7 +452,7 @@ Blockly.Blocks.serial_receive_text = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -896,7 +903,7 @@ Blockly.Blocks.xbee_receive = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -2252,10 +2259,10 @@ Blockly.Blocks.wx_scan_multiple = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         for (var i = 0; i < this.optionList_.length; i++) {
             if (Blockly.Names.equals(oldName, this.getFieldValue('CPU' + i)))
-                this.setTitleValue(newName, 'CPU' + i);
+                this.setFieldValue(newName, 'CPU' + i);
 
         }
     }
@@ -2463,7 +2470,7 @@ Blockly.Blocks.wx_print_multiple = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
         }
     }
 };
@@ -2581,9 +2588,9 @@ Blockly.Blocks.wx_scan_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
         if (Blockly.Names.equals(oldName, this.getFieldValue('VARNAME')))
-            this.setTitleValue(newName, 'VARNAME');
+            this.setFieldValue(newName, 'VARNAME');
     }
 };
 
@@ -2629,7 +2636,7 @@ Blockly.Blocks.wx_send_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
         }
     }
 };
@@ -2673,11 +2680,11 @@ Blockly.Blocks.wx_receive_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('DATA')))
-            this.setTitleValue(newName, 'DATA');
+            this.setFieldValue(newName, 'DATA');
         if (Blockly.Names.equals(oldName, this.getFieldValue('BYTES')))
-            this.setTitleValue(newName, 'BYTES');
+            this.setFieldValue(newName, 'BYTES');
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
     }
 };
 
@@ -2718,11 +2725,11 @@ Blockly.Blocks.wx_poll = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID')))
-            this.setTitleValue(newName, 'ID');
+            this.setFieldValue(newName, 'ID');
         if (Blockly.Names.equals(oldName, this.getFieldValue('EVENT')))
-            this.setTitleValue(newName, 'EVENT');
+            this.setFieldValue(newName, 'EVENT');
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setTitleValue(newName, 'HANDLE');
+            this.setFieldValue(newName, 'HANDLE');
     }
 };
 
@@ -2805,15 +2812,15 @@ Blockly.Blocks.wx_listen = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID')))
-            this.setTitleValue(newName, 'ID');
+            this.setFieldValue(newName, 'ID');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID1')))
-            this.setTitleValue(newName, 'ID1');
+            this.setFieldValue(newName, 'ID1');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID2')))
-            this.setTitleValue(newName, 'ID2');
+            this.setFieldValue(newName, 'ID2');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID3')))
-            this.setTitleValue(newName, 'ID3');
+            this.setFieldValue(newName, 'ID3');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID4')))
-            this.setTitleValue(newName, 'ID4');
+            this.setFieldValue(newName, 'ID4');
     }
 };
 
@@ -3041,7 +3048,7 @@ Blockly.Blocks.wx_buffer = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
-            this.setTitleValue(newName, 'BUFFER');
+            this.setFieldValue(newName, 'BUFFER');
         }
     }
 };
@@ -3108,7 +3115,7 @@ Blockly.Blocks.wx_disconnect = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID'))) {
-            this.setTitleValue(newName, 'ID');
+            this.setFieldValue(newName, 'ID');
         }
     }
 };
@@ -3153,3 +3160,258 @@ Blockly.propc.wx_ip = function () {
         return '// Missing Simple WX initialize block!\n';
     }
 };
+
+// ---------------- Graphing Output Blocks -------------------------------------
+Blockly.Blocks.graph_output = {
+//    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
+    init: function () {
+//        this.setTooltip(Blockly.MSG_GRAPH_OUTPUT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('Graph');
+        this.appendValueInput('PRINTa')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABELa')
+                .appendField('value');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setMutator(new Blockly.Mutator(['graph_dec']));
+        this.optionList_ = ['dec'];
+        this.graph_labels_ = [];
+    },
+    mutationToDom: function (workspace) {
+        // Create XML to represent menu options.
+        var container = document.createElement('mutation');
+        container.setAttribute('options', JSON.stringify(this.optionList_));
+        return container;
+    },
+    domToMutation: function (container) {
+        // Parse XML to restore the menu options.
+        var value = JSON.parse(container.getAttribute('options'));
+        this.optionList_ = value;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            this.appendValueInput('PRINT' + i)
+                    .setAlign(Blockly.ALIGN_RIGHT)
+                    .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABEL' + i)
+                    .appendField('value');
+        }
+    },
+    decompose: function (workspace) {
+        var containerBlock = Blockly.Block.obtain(workspace, 'graphing_container');
+        containerBlock.initSvg();
+        var connection = containerBlock.getInput('STACK').connection;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var optionBlock = workspace.newBlock('graph_dec');
+            optionBlock.initSvg();
+            connection.connect(optionBlock.previousConnection);
+            connection = optionBlock.nextConnection;
+        }
+        var i = 0;
+        this.graph_labels_ = null;
+        this.graph_labels_ = [];
+        while (this.getFieldValue('GRAPH_LABEL' + i)) {
+            this.graph_labels_.push(this.getFieldValue('GRAPH_LABEL' + i));
+            i++;
+        }
+        return containerBlock;
+
+    },
+    compose: function (containerBlock) {
+        // Delete everything.
+        var i = 0;
+        while (this.getInput('PRINT' + i)) {
+            this.removeInput('PRINT' + i);
+            i++;
+        }
+        i = 0;
+        this.optionList_.length = 0;
+        // Rebuild the block's optional inputs.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        while (clauseBlock) {
+            this.optionList_.push('dec');
+
+            var printInput = this.appendValueInput('PRINT' + i)
+                    .setAlign(Blockly.ALIGN_RIGHT)
+                    .setCheck('Number')
+                    .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
+                    .appendField('value');
+
+            if (clauseBlock.valueConnection_) {
+                printInput.connection.connect(clauseBlock.valueConnection_);
+            }
+            i++;
+
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+        i = this.graph_labels_.length;
+        for (i = 0; i < this.graph_labels_.length; i++) {
+            if (this.getFieldValue('GRAPH_LABEL' + i))
+                this.setFieldValue(this.graph_labels_[i], 'GRAPH_LABEL' + i);
+        }
+    },
+    saveConnections: function (containerBlock) {
+        // Store a pointer to any connected child blocks.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        var x = 0;
+        while (clauseBlock) {
+            //this.optionList_.push('dec');
+            var printInput = this.getInput('PRINT' + x);
+            clauseBlock.valueConnection_ =
+                    printInput && printInput.connection.targetConnection;
+            x++;
+            break;
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+        var i = 0;
+        this.graph_labels_ = null;
+        this.graph_labels_ = [];
+        while (this.getFieldValue('GRAPH_LABEL' + i)) {
+            this.graph_labels_.push(this.getFieldValue('GRAPH_LABEL' + i));
+            i++;
+        }
+
+    },
+    onchange: function () {
+        if (this.workspace && this.optionList_.length < 1) {
+            this.setWarningText('Graphing output must have at least one value.');
+        } else {
+            if (this.optionList_.length > 10)
+                this.setWarningText('Graphing output only supports up to 10 values.');
+            else
+                this.setWarningText(null);
+        }
+        if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
+            this.removeInput('PRINTa');
+            //this.removeInput('PRINTb');
+        }
+    }
+};
+
+Blockly.Blocks.graphing_container = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('send');
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.graph_dec = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('value');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.propc.graph_output = function () {
+    var handle = this.getFieldValue('HANDLE');
+    var conn = this.getFieldValue('CONNECTION');
+
+    var code = 'print("%u';
+    var varList = '';
+    var labelList = '';
+    var i = 0;
+    var orIt = '';
+    while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
+        code += ',%d';
+        varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || '0');
+        labelList += this.getFieldValue("GRAPH_LABEL" + i);
+        if (Blockly.propc.valueToCode(this, 'PRINT' + (i + 1), Blockly.propc.ORDER_NONE) && i < 9)
+            labelList += ',';
+        i++;
+        if (i > 10)
+            break;
+    }
+    code += '\\r", (CNT >> 16)' + varList + ');\n';
+
+    Blockly.propc.serial_graphing_ = true;
+    Blockly.propc.definitions_['graphing_labels'] = '// GRAPH_LABELS_START:' + labelList + ':GRAPH_LABELS_END //';
+
+    return code;
+};
+
+Blockly.Blocks.graph_settings = {
+//    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
+    init: function () {
+//        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Graph initialize  x-axis")
+                .appendField(new Blockly.FieldDropdown([
+                    ["10 seconds", "10,S"],
+                    ["20 seconds", "20,S"],
+                    ["30 seconds", "30,S"],
+                    ["40 seconds", "40,S"],
+                    ["50 seconds", "50,S"],
+                    ["60 seconds", "60,S"],
+                    ["90 seconds", "90,S"]    // Add comma back when resetting
+                            //        ["trigger on value 1 rising edge", "1,TU"],
+                            //        ["trigger on value 1 falling edge", "1,TD"],
+                            //        ["trigger on value 1 zero crossing", "1,TZ"]
+                ]), "XAXIS")
+                .appendField('y-axis ')
+                .appendField(new Blockly.FieldDropdown([
+                    ["autoscale", "AUTO"],
+                    ["range", "FIXED"]]), "YSETTING")
+                .appendField("minimum", 'LABELMIN')
+                .appendField(new Blockly.FieldTextInput('0',
+                        Blockly.FieldTextInput.numberValidator), "YMIN")
+                .appendField(" maximum", 'LABELMAX')
+                .appendField(new Blockly.FieldTextInput('0',
+                        Blockly.FieldTextInput.numberValidator), "YMAX");
+        if (this.getFieldValue('YSETTING') === 'AUTO') {
+            this.getField('YMIN').setVisible(false);
+            this.setFieldValue('0', 'YMIN');
+            this.getField('YMAX').setVisible(false);
+            this.setFieldValue('0', 'YMAX');
+            this.getField('LABELMIN').setVisible(false);
+            this.getField('LABELMAX').setVisible(false);
+        } else {
+            this.getField('YMIN').setVisible(true);
+            this.getField('YMAX').setVisible(true);
+            this.getField('LABELMIN').setVisible(true);
+            this.getField('LABELMAX').setVisible(true);
+        }
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.render();
+    },
+    onchange: function () {
+        if (this.getFieldValue('YSETTING') === 'AUTO') {
+            this.getField('YMIN').setVisible(false);
+            this.setFieldValue('0', 'YMIN');
+            this.getField('YMAX').setVisible(false);
+            this.setFieldValue('0', 'YMAX');
+            this.getField('LABELMIN').setVisible(false);
+            this.getField('LABELMAX').setVisible(false);
+        } else {
+            this.getField('YMIN').setVisible(true);
+            this.getField('YMAX').setVisible(true);
+            this.getField('LABELMIN').setVisible(true);
+            this.getField('LABELMAX').setVisible(true);
+        }
+        this.render();
+    }
+};
+
+Blockly.propc.graph_settings = function () {
+    var rate = this.getFieldValue('RATE');
+    var x_axis = this.getFieldValue('XAXIS');
+    var y_min = this.getFieldValue('YMIN') || '0';
+    var y_max = this.getFieldValue('YMAX') || '0';
+
+    Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:100,' +
+            x_axis + ',' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
+
+    return '';
+};
+

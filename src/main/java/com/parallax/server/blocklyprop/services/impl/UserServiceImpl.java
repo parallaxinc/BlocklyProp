@@ -55,12 +55,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Long idUser) {
-        return userDao.getUser(idUser).into(User.class);
+        if (userDao != null) {
+            return userDao.getUser(idUser).into(User.class);
+        }
+        else {
+            LOG.error("UserDAO is not initialized before first use!");
+            return null;
+        }
+        
     }
 
     @Override
     public List<UserRecord> getAllUsers() {
-        return userDao.getAll();
+        if (userDao != null) {
+            return userDao.getAll();
+        }
+        else {
+            LOG.error("UserDAO is not initialized before first use!");
+            return null;
+        }
     }
 
     @Override
@@ -69,7 +82,12 @@ public class UserServiceImpl implements UserService {
         String name = "";
         
         try {
-            name = userDao.getUser(idUser).getScreenname();
+            if (userDao != null) {
+                name = userDao.getUser(idUser).getScreenname();
+            }
+            else {
+                LOG.error("UserDAO is not initialized before first use!");
+            }
         }
         catch (NullPointerException ex) {
             LOG.error("Error retreiving name for userID: {}", idUser);

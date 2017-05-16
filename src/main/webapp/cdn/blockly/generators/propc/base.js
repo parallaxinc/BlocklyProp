@@ -31,31 +31,6 @@
 if (!Blockly.Blocks)
     Blockly.Blocks = {};
 
-/*
- Blockly.Blocks.number_range = {
- helpUrl: Blockly.MSG_VALUES_HELPURL,
- init: function () {
- this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
- this.setColour(colorPalette.getColor('programming'));
- this.appendDummyInput()
- .appendField(new Blockly.FieldTextInput('0',
- Blockly.FieldTextInput.numberValidator), 'NUM');
- this.setOutput(true, 'Number');
- }
- };
- 
- Blockly.propc.number_range = function () {
- // Numeric value.
- var code = window.parseInt(this.getFieldValue('NUM'));
- // -4.abs() returns -4 in Dart due to strange order of operation choices.
- // -4 is actually an operator and a number.  Reflect this in the order.
- var order = code < 0 ?
- Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
- return [code, order];
- };
- */
-
-
 // Number block that can mutate to show a range or if a value
 // is out bounds or not available.  Gets values from the block its connected
 // to by looking for a hidden field starting with "RANGEVALS".
@@ -71,10 +46,15 @@ if (!Blockly.Blocks)
 // Will eventually move this functionality into the
 // "spin_integer" block for the S3.
 Blockly.Blocks.math_number = {
-    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+            this.setColour(colorPalette.getColor('math'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_VALUES_HELPURL);
+            this.setColour(colorPalette.getColor('programming'));
+        }
         this.setTooltip(Blockly.MSG_MATH_NUMBER_TOOLTIP);
-        this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput('MAIN')
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), 'NUM');
@@ -497,8 +477,12 @@ Blockly.propc.math_crement = function () {
 };
 
 Blockly.Blocks.math_random = {
-    helpUrl: Blockly.MSG_NUMBERS_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
         this.setTooltip(Blockly.MSG_MATH_RANDOM_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput("A")
@@ -1230,9 +1214,11 @@ Blockly.Blocks.cog_new = {
 
 Blockly.propc.cog_new = function () {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
-    method = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
-
-    var code = 'cog_run(' + method + ', 128);\n';
+    var method_name = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
+    
+    Blockly.propc.cog_methods_[method_name] = method;
+    
+    var code = 'cog_run(' + method_name + ', 128);\n';
     return code;
 };
 
@@ -1259,7 +1245,7 @@ Blockly.Blocks.combine_strings = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -1339,7 +1325,7 @@ Blockly.Blocks.get_char_at_position = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -1381,7 +1367,7 @@ Blockly.Blocks.set_char_at_position = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setTitleValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'VALUE');
         }
     }
 };
@@ -1420,9 +1406,9 @@ Blockly.Blocks.get_substring = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('FROM_STR')))
-            this.setTitleValue(newName, 'FROM_STR');
+            this.setFieldValue(newName, 'FROM_STR');
         if (Blockly.Names.equals(oldName, this.getFieldValue('TO_STR')))
-            this.setTitleValue(newName, 'TO_STR');
+            this.setFieldValue(newName, 'TO_STR');
     }
 };
 
@@ -1504,7 +1490,7 @@ Blockly.Blocks.string_to_number = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -1545,7 +1531,7 @@ Blockly.Blocks.number_to_string = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -1659,7 +1645,7 @@ Blockly.Blocks.math_advanced = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
-            this.setTitleValue(newName, 'STORE');
+            this.setFieldValue(newName, 'STORE');
         }
     }
 };
@@ -1708,7 +1694,7 @@ Blockly.Blocks.math_inv_trig = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('STORE'))) {
-            this.setTitleValue(newName, 'STORE');
+            this.setFieldValue(newName, 'STORE');
         }
     }
 };

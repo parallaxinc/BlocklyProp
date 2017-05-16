@@ -50,7 +50,7 @@ Blockly.Blocks.variables_get = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -75,7 +75,7 @@ Blockly.Blocks.variables_declare = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -99,7 +99,7 @@ Blockly.Blocks.variables_set = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
