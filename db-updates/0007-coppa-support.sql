@@ -28,3 +28,4 @@ ALTER TABLE cloudsession.user ADD birth_month INT NOT NULL;
 ALTER TABLE cloudsession.user ADD birth_year INT NOT NULL;
 ALTER TABLE cloudsession.user ADD parent_email VARCHAR(250) NULL;
 ALTER TABLE cloudsession.user ADD parent_email_source INT DEFAULT 0 NULL;
+ALTER TABLE cloudsession.user DROP coach_email;
