@@ -269,13 +269,13 @@ Blockly.Blocks.scribbler_play = {
     init: function () {
         this.appendDummyInput()
             .appendField("play a")
-            .appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
+            .appendField(new Blockly.FieldDropdown([['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6']]), 'NOTE_OCTAVE')
             //.appendField(new Blockly.FieldDropdown([['double high', '1'], ['soprano', '2'], ['tenor', '3'], ['middle', '4'], ['low', '5'], ['deep', '6'], ['pedal', '7']]), 'NOTE_OCTAVE')
             .appendField(new Blockly.FieldDropdown([['A\u266D', '3322'], ['A', '3520'], ['A\u266F/B\u266D', '3729'], ['B', '3951'], ['C', '4186'], ['C\u266F/D\u266D', '4435'], ['D', '4699'], ['D\u266F/E\u266D', '4978'], ['E', '5274'], ['F', '5588'], ['F\u266F/G\u266D', '5920'], ['G', '6272'], ['G\u266F', '6645']]), 'NOTE_FREQUENCY')
             .appendField("for a")
             .appendField(new Blockly.FieldDropdown([['sixteenth', '63'], ['dotted sixteenth', '94'], ['eighth', '125'], ['dotted eighth', '188'], ['quarter', '250'], ['dotted quarter', '375'], ['half', '500'], ['dotted half', '750'], ['whole', '1000'], ['dotted whole', '1500']]), 'NOTE_DURATION')
             .appendField("note at a")
-            .appendField(new Blockly.FieldDropdown([['loud', '100'], ['medium', '50'], ['quiet', '25']]), 'NOTE_VOLUME')
+            .appendField(new Blockly.FieldDropdown([['loud', '50'], ['medium', '30'], ['quiet', '15']]), 'NOTE_VOLUME')
             .appendField("volume");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -338,6 +338,32 @@ Blockly.Blocks.move_motors_distance = {
     }
 };
 
+Blockly.Blocks.move_motors_xy = {
+    init: function () {
+	this.appendDummyInput()
+		.appendField("in ")
+		.appendField(new Blockly.FieldDropdown([['inches (-20,755,429 to 20,755,429)', ' * 100_000 / 1933'], ['tenths of an inch (-207,554,294 to 207,554,294)', ' * 10_000 / 1933'], ['centimeters (-52,720,723 to 52,720,723)', ' * 10_000 / 491'], ['millimeters (-527,207,235 to 527,207,235)', ' * 1_000 / 491'], ['encoder counts (-1,073,741,823 to 1,073,741,823)', '']]), 'MULTIPLIER');
+        this.appendDummyInput()
+            .appendField("move the Scribbler to a new coordinate (X,Y)");
+	this.appendValueInput("X_DISTANCE")
+		.setCheck("Number")
+		.appendField("change (+/-) in X");
+	this.appendValueInput("Y_DISTANCE")
+		.setCheck("Number")
+		.appendField("change (+/-) in Y");
+	this.appendValueInput("MOTOR_SPEED")
+		.setCheck("Number")
+		.appendField("at a top speed of (1 to 100)%");
+
+	this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('io'));
+        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+	this.setTooltip(Blockly.MSG_S3_MOVE_MOTORS_XY_TOOLTIP);
+    }
+};
+
 // Move the motors...
 Blockly.Blocks.move_motors_angle = {
     init: function () {
@@ -346,7 +372,7 @@ Blockly.Blocks.move_motors_angle = {
 		.appendField("rotate the Scribbler robot (-1,080 to 1,080)\u00B0");
 	this.appendValueInput("ROTATE_RADIUS")
 		.setCheck("Number")
-		.appendField("around a radius in")
+		.appendField("around a radius to the left(-)/right(+) in")
 		.appendField(new Blockly.FieldDropdown([['inches (-85 to 85) of', ' * 100_000 / 1933'], ['tenths of an inch (-850 to 850) of', ' * 10_000 / 1933'], ['centimeters (-216 to 216) of', ' * 10_000 / 491'], ['millimeters (-2,160 to 2,160) of', ' * 1_000 / 491'], ['encoder counts (-4,400 to 4,400) of', '']]), 'RADIUS_MULTIPLIER');
 	this.appendValueInput("ROTATE_SPEED")
 		.setCheck("Number")
@@ -365,10 +391,10 @@ Blockly.Blocks.play_polyphony = {
     init: function () {
 	this.appendValueInput("FREQUENCY_1")
 		.setCheck("Number")
-		.appendField("play a tone of (1 to 10,000) Hz");
+		.appendField("play a tone of (1 to 2,000) Hz");
 	this.appendValueInput("FREQUENCY_2")
 		.setCheck("Number")
-		.appendField("and a tone of (1 to 10,000) Hz");
+		.appendField("and a tone of (1 to 2,000) Hz");
 	this.appendValueInput("POLYPHONY_DURATION")
 		.setCheck("Number")
 		.appendField("for a duration of (1 to 8,000) ms");
@@ -533,6 +559,41 @@ Blockly.Blocks.scribbler_ping = {
         this.setColour(colorPalette.getColor('input'));
 	this.setHelpUrl(Blockly.MSG_S3_PING_HELPURL);
 	this.setTooltip(Blockly.MSG_S3_SCRIBBLER_PING_TOOLTIP);
+    }
+};
+
+Blockly.Blocks.digital_input = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("Digital reading on")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "DIGITAL_PIN");
+	this.setOutput(true, "Boolean");
+        this.setColour(colorPalette.getColor('input'));
+    }
+};
+
+Blockly.Blocks.digital_output = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("set")
+                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "OUTPUT_PIN");
+        this.appendDummyInput("")
+                .appendField("to")
+                .appendField(new Blockly.FieldDropdown([['high', "HIGH"], ['low', "LOW"], ['input', "INPUT"], ['output', "OUTPUT"], ['toggle state', "TOGGLE_STATE"], ['toggle direction', "TOGGLE_DIRECTION"]]), "OUTPUT_ACTION");
+	this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('io'));
+    }
+};
+
+Blockly.Blocks.analog_input = {
+    init: function () {
+        this.appendDummyInput("")
+                .appendField("Analog reading on")
+                .appendField(new Blockly.FieldDropdown([['A0', '0'], ['A1', '1']]), "ANALOG_PIN");
+	this.setOutput(true, "Number");
+        this.setColour(colorPalette.getColor('input'));
     }
 };
 
@@ -805,6 +866,19 @@ Blockly.Spin.move_motors_distance = function () {
     return 'Scribbler.MotorSetDistance(' + left_distance + distance_multiplier + ', ' + right_distance + distance_multiplier + ', ' + top_speed + ')\n';
 };
 
+Blockly.Spin.move_motors_xy = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
+    var distance_multiplier = this.getFieldValue('MULTIPLIER');
+    var x_distance = Blockly.Spin.valueToCode(this, 'X_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var y_distance = Blockly.Spin.valueToCode(this, 'Y_DISTANCE', Blockly.Spin.ORDER_ATOMIC) || '0';
+    var top_speed = Blockly.Spin.valueToCode(this, 'MOTOR_SPEED', Blockly.Spin.ORDER_ATOMIC) || '0';
+    return 'Scribbler.MoveXY(' + x_distance + distance_multiplier + ', ' + y_distance + distance_multiplier + ', ' + top_speed + ')\n';
+};
+
 Blockly.Spin.move_motors_angle = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
     if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
@@ -837,7 +911,7 @@ Blockly.Spin.play_tone = function () {
     var Frequency = Blockly.Spin.valueToCode(this, 'FREQUENCY', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Note_Duration = Blockly.Spin.valueToCode(this, 'NOTE_DURATION', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Volume = Blockly.Spin.valueToCode(this, 'NOTE_VOLUME', Blockly.Spin.ORDER_ATOMIC) || '0';
-    return 'Scribbler.SetVolume(' + Volume + ')\nScribbler.PlayNote(' + Frequency + ', 0, ' + Note_Duration + ')\n';
+    return 'Scribbler.SetVolume((' + Volume + ' / 2))\nScribbler.PlayNote(' + Frequency + ', 0, ' + Note_Duration + ')\n';
 };
 
 Blockly.Spin.play_polyphony = function () {
@@ -850,7 +924,7 @@ Blockly.Spin.play_polyphony = function () {
     var Frequency2 = Blockly.Spin.valueToCode(this, 'FREQUENCY_2', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Polyphony_Duration = Blockly.Spin.valueToCode(this, 'POLYPHONY_DURATION', Blockly.Spin.ORDER_ATOMIC) || '0';
     var Volume = Blockly.Spin.valueToCode(this, 'POLYPHONY_VOLUME', Blockly.Spin.ORDER_ATOMIC) || '0';
-    return 'Scribbler.SetVolume(' + Volume + ')\nScribbler.PlayNote(' + Frequency1 + ', ' + Frequency2 + ', ' + Polyphony_Duration + ')\n';
+    return 'Scribbler.SetVolume((' + Volume + ' / 2))\nScribbler.PlayNote(' + Frequency1 + ', ' + Frequency2 + ', ' + Polyphony_Duration + ')\n';
 };
 
 Blockly.Spin.line_sensor = function () {
@@ -955,6 +1029,29 @@ Blockly.Spin.scribbler_ping = function () {
     return [code, Blockly.Spin.ORDER_ATOMIC];
 };
 
+Blockly.Spin.digital_input = function () {
+    var Pin = window.parseInt(this.getFieldValue('DIGITAL_PIN'));
+    var Code = 'Scribbler.DigitalInput(' + Pin + ')';
+    return [Code, Blockly.Spin.ORDER_ATOMIC];
+};
+
+Blockly.Spin.digital_output = function () {
+    var Pin = window.parseInt(this.getFieldValue('OUTPUT_PIN'));
+    var Action = this.getFieldValue('OUTPUT_ACTION');
+    return 'Scribbler.DigitalOutput(' + Pin + ', Scribbler#' + Action + ')\n';
+};
+
+Blockly.Spin.analog_input = function () {
+    Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
+    if (Blockly.Spin.setups_[ 'setup_scribbler' ] === undefined) {
+        Blockly.Spin.setups_[ 'setup_scribbler' ] = 'Scribbler.Start';
+    }
+
+    var Pin = window.parseInt(this.getFieldValue('ANALOG_PIN'));
+    var Code = 'Scribbler.ADC(' + Pin + ')';
+    return [Code, Blockly.Spin.ORDER_ATOMIC];
+};
+
 Blockly.Spin.scribbler_servo = function () {
     Blockly.Spin.definitions_[ "include_scribbler" ] = 'OBJscribbler    : "Block_Wrapper"';
     if (Blockly.Spin.setups_[ 'setup_scribbler_servo' ] === undefined) {
@@ -1009,6 +1106,5 @@ Blockly.Spin.factory_reset = function () {
         Blockly.Spin.setups_[ 'setup_scribbler_default' ] = 'Scribbler_Default.Start';
     }
 
-    return
-    
+    return    
 };

@@ -7,6 +7,7 @@ package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
 import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
+import com.parallax.server.blocklyprop.servlets.ChildPrivacyServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
 import com.parallax.server.blocklyprop.servlets.HelpSearchServlet;
@@ -23,6 +24,7 @@ import com.parallax.server.blocklyprop.servlets.ProjectLinkServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.PublicProfileServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
+import com.parallax.server.blocklyprop.servlets.SessionStateServlet;
 import com.parallax.server.blocklyprop.servlets.TextileChangeLogServlet;
 import com.parallax.server.blocklyprop.servlets.TextileClientDownloadServlet;
 import com.parallax.server.blocklyprop.servlets.TextileClientInstructionsServlet;
@@ -31,7 +33,8 @@ import com.parallax.server.blocklyprop.servlets.TextileLibrariesServlet;
 import com.parallax.server.blocklyprop.servlets.TextileLicenseServlet;
 
 /**
- *
+ * Map each URI to a class that will handle the request
+ * 
  * @author Michel
  */
 public class ServletsModule extends ServletModule {
@@ -74,6 +77,13 @@ public class ServletsModule extends ServletModule {
         serve("/oauth/newuser").with(NewOAuthUserServlet.class);
         // OAuth providers
         serve("/oauth/google").with(OAuthGoogleServlet.class);
+        
+        // API Endpoints
+        // Get the time left in a session
+        serve("/sessionapi").with(SessionStateServlet.class);      
+        
+        // COPPA support
+        serve("/child-privacy-policy").with(ChildPrivacyServlet.class);
     }
 
 }

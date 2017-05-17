@@ -51,22 +51,31 @@ public class ProjectConverter {
 
     public JsonObject toListJson(ProjectRecord project) {
         JsonObject result = new JsonObject();
-        result.addProperty("id", project.getId());
-        result.addProperty("name", project.getName());
-        result.addProperty("description", project.getDescription());
-        result.addProperty("type", project.getType().name());
-        result.addProperty("board", project.getBoard());
-        result.addProperty("private", project.getPrivate());
-        result.addProperty("shared", project.getShared());
-        result.addProperty("created", DateConversion.toDateTimeString(project.getCreated().getTime()));
-        result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
-        boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
-        result.addProperty("yours", isYours);
-        // if (!isYours) {
-        result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
-        result.addProperty("id-user", project.getIdUser());
-        // }
 
+        if (project != null) {
+            result.addProperty("id", project.getId());
+            result.addProperty("name", project.getName());
+            result.addProperty("description", project.getDescription());
+            result.addProperty("type", project.getType().name());
+            result.addProperty("board", project.getBoard());
+            result.addProperty("private", project.getPrivate());
+            result.addProperty("shared", project.getShared());
+            result.addProperty("created", DateConversion.toDateTimeString(project.getCreated().getTime()));
+            result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
+        
+            boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+            result.addProperty("yours", isYours);
+
+            // Get user screen name only if it's a registered user
+            if (project.getId() > 0) {
+                result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+                result.addProperty("id-user", project.getIdUser());
+            }
+            else {
+                result.addProperty("user", "anonymous");
+                result.addProperty("id-user", 0);
+            }
+        }
         return result;
     }
 
@@ -84,10 +93,8 @@ public class ProjectConverter {
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
-        if (!isYours) {
-            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
-
-        } else {
+        result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+        if (isYours) {
             List<ProjectSharingRecord> projectSharingRecords = projectSharingService.getSharingInfo(project.getId());
             if (projectSharingRecords != null && !projectSharingRecords.isEmpty()) {
                 result.addProperty("share-key", projectSharingRecords.get(0).getSharekey());
@@ -109,7 +116,6 @@ public class ProjectConverter {
             }
         }
 
-        System.out.println("project to json" + result.get("name").getAsString());
         return result;
     }
 
@@ -126,9 +132,7 @@ public class ProjectConverter {
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
-        if (!isYours) {
-            result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
-        }
+        result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
 
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();

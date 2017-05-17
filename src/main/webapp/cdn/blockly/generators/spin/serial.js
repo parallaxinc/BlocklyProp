@@ -51,7 +51,7 @@ Blockly.Blocks.serial_send_text = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("send message")
+                .appendField("Terminal / XBee / WX send text")
                 .appendField(this.newQuote_(true))
                 .appendField(new Blockly.FieldTextInput(''), 'MESSAGE_TEXT')
                 .appendField(this.newQuote_(false));
@@ -81,7 +81,7 @@ Blockly.Blocks.serial_send_char = {
     init: function () {
         this.appendValueInput("CHAR_VALUE")
                 .setCheck("Number")
-                .appendField("send character (0 to 255)");
+                .appendField("Terminal / XBee / WX send character (0 to 255)");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -95,7 +95,7 @@ Blockly.Blocks.serial_send_decimal = {
     init: function () {
         this.appendValueInput("DECIMAL_VALUE")
                 .setCheck("Number")
-                .appendField("send number (32-bit signed)");
+                .appendField("Terminal / XBee / WX send number (32-bit signed)");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -108,8 +108,16 @@ Blockly.Blocks.serial_send_decimal = {
 Blockly.Blocks.serial_send_ctrl = {
     init: function () {
         this.appendDummyInput()
-                .appendField("send control character")
-                .appendField(new Blockly.FieldDropdown([["position cursor (x,y)", "Scribbler#PC"], ["backspace", "Scribbler#BS"], ["line feed", "Scribbler#LF"], ["carriage return", "Scribbler#NL"], ["position cursor (x)", "Scribbler#PX"], ["position cursor (y)", "Scribbler#PY"], ["clear screen", "Scribbler#CS"] ]), "SERIAL_CHAR");
+                .appendField("Terminal / XBee / WX send control character")
+                .appendField(new Blockly.FieldDropdown([
+            ["clear screen", "Scribbler#CS"],
+            ["carriage return", "Scribbler#NL"], 
+            ["line feed", "Scribbler#LF"], 
+            ["backspace", "Scribbler#BS"], 
+            ["position cursor (x)", "Scribbler#PX"], 
+            ["position cursor (y)", "Scribbler#PY"], 
+            ["position cursor (x,y)", "Scribbler#PC"]
+        ]), "SERIAL_CHAR");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -123,7 +131,7 @@ Blockly.Blocks.serial_rx_byte = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput("")
-                .appendField("receive character (0 to 255)");
+                .appendField("Terminal / XBee / WX receive character (0 to 255)");
         this.setOutput(true, 'Number');
 //        this.setInputsInline(true);
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
@@ -150,7 +158,7 @@ Blockly.Blocks.serial_cursor_xy = {
         this.appendValueInput("Y")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)
-                .appendField("set cursor position to row");
+                .appendField("Terminal set cursor position to row");
         this.appendValueInput("X")
                 .setCheck("Number")
 		.setAlign(Blockly.ALIGN_RIGHT)

@@ -25,22 +25,42 @@ $(document).ready(function () {
 
 var check_com_ports_interval = null;
 
+version_as_number = function (rawVersion) {
+    var tempVersion = rawVersion.toString().split(".");
+    tempVersion.push('0');
+
+    if (tempVersion.length < 3) {
+        bootbox.alert("BlocklyProp is unable to determine what version of " +
+                "BlocklyPropClient is installed on your computer.\nYou may need to install" +
+                "or reinstall the BlocklyPropClient.");
+        if (tempVersion.length === 1)
+            tempVersion = '0.0.0';
+        else
+            tempVersion.unshift('0');
+    }
+
+    // Allow for any of the three numbers to be between 0 and 1023.
+    // Equivalent to: (Major * 104856) + (Minor * 1024) + Revision.
+    return (Number(tempVersion[0]) << 20 | Number(tempVersion[1]) << 10 | Number(tempVersion[2]));
+};
+
 check_client = function () {
     $.get(client_url, function (data) {
         if (!client_available) {
             console.log(data);
             if (!data.server || data.server !== 'BlocklyPropHTTP') {
                 // wrong server
-            } else if (data.version < client_min_version) {
+            } else if (version_as_number(data.version) < version_as_number(client_min_version)) {
                 bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
             }
 
-            if (data.version >= client_baud_rate_min_version) {
+            if (version_as_number(data.version) >= version_as_number(client_baud_rate_min_version)) {
                 baud_rate_compatible = true;
             }
 
             client_available = true;
             $("#client-available").removeClass("hidden");
+            $("#client-searching").addClass("hidden");
             $("#client-unavailable").addClass("hidden");
             // $("#client_status").text($("#client_status").data('available')).removeClass("not_available").addClass("available");
             if (check_com_ports && typeof (check_com_ports) === "function") {
@@ -52,7 +72,7 @@ check_client = function () {
     }).fail(function () {
         clearInterval(check_com_ports_interval);
         client_available = false;
-        $("#client_status").text($("#client_status").data('not-available')).removeClass("available").addClass("not_available");
+        $("#client-searching").addClass("hidden");
         $("#client-available").addClass("hidden");
         $("#client-unavailable").removeClass("hidden");
         setTimeout(check_client, 2000);

@@ -23,14 +23,25 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
  */
 public class DataSourceSetup {
 
+    // SQL database source
     private static DataSource dataSource;
 
+    // 
     private static List<NeedsDataSource> dataSourceUsers = new ArrayList<NeedsDataSource>();
 
+    /**
+     * Get the static data source instance
+     * 
+     * @return A static DataSource object. The object may be null.
+     */
     public static DataSource getDataSource() {
         return dataSource;
     }
 
+    /**
+     * 
+     * @param dataSourceUser 
+     */
     public static void registerDataSourceUsers(NeedsDataSource dataSourceUser) {
         if (dataSource != null) {
             dataSourceUser.setDataSource(dataSource);
@@ -39,12 +50,21 @@ public class DataSourceSetup {
         }
     }
 
-    public static PoolingDataSource connect(Configuration configuration) throws ClassNotFoundException {
+    public static PoolingDataSource connect(Configuration configuration)
+            throws ClassNotFoundException {
+        
         String driver = configuration.getString("database.driver");
         String url = configuration.getString("database.url");
         String username = configuration.getString("database.username");
         String password = configuration.getString("database.password");
 
+        //
+        // Returns the Class object associated with the class or interface 
+        // with the given string name. Invoking this method is equivalent to:
+        // Class.forName(className, true, currentLoader)
+        // where currentLoader denotes the defining class loader of the 
+        // current class.
+        //
         Class.forName(driver);
 
         //
@@ -87,7 +107,9 @@ public class DataSourceSetup {
         for (NeedsDataSource dataSourceUser : dataSourceUsers) {
             dataSourceUser.setDataSource(dataSourceInstance);
         }
+        
         DataSourceSetup.dataSource = dataSourceInstance;
+        
         return dataSourceInstance;
     }
 

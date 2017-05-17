@@ -1,3 +1,4 @@
-h2. Email already confirmed
+h3. Email already confirmed
+This account has already been activated.
 
 "Go to home":/blockly/index
