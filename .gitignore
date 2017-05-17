@@ -13,6 +13,7 @@ nbactions.xml
 target/
 *.log*
 BlocklyProp.iml
+pom.xml
 
 #################
 ## IntelliJ
