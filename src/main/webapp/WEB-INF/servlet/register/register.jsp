@@ -11,8 +11,26 @@
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
+        <script>  
+            function checkDate() {
+               var currYear = parseInt(document.getElementByName('currYear').value);
+               var userYear = parseInt(document.getElementByName('bdyear').value);
+               var currMonth = parseInt(document.getElementByName('currMonth').value);
+               var userMonth = parseInt(document.getElementByName('bdmonth').value);
+               
+               if(currYear > userYear + 13 || (currYear > userYear + 12 && currMonth > userMonth)) {
+                   $('#sponsor-info').hide();
+               } else {
+                   $('#sponsor-info').show();
+               }
+            }
+            
+            function hideSponsorInfo() {
+                $('#sponsor-info').hide();
+            }
+        </script>
     </head>
-    <body>
+    <body onload="hideSponsorInfo();">
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
@@ -193,60 +211,67 @@
                         </div>
                         <div class="form-group">
                             <label for="bdmonth"><fmt:message key="register.do.birth.month" /></label>
-                            <select name="bdmonth">
-                    <%
-                        int bdLoop;
-                        String[] months={
-                            "Select month",
-                            "January", "February", "March", "April", "May",
-                            "June", "July", "August", "September", "October",
-                            "November", "December"};
+                            <select name="bdmonth" onchange="checkDate();">
+                                <%
+                                    int bdLoop;
+                                    String[] months={
+                                        "Select month",
+                                        "January", "February", "March", "April", "May",
+                                        "June", "July", "August", "September", "October",
+                                        "November", "December"};
 
-                        String bdMonth = (String) request.getAttribute("bdmonth");
-                        if (bdMonth == null) {
-                                bdMonth = "0";
-                        }
+                                    String bdMonth = (String) request.getAttribute("bdmonth");
+                                    if (bdMonth == null) {
+                                            bdMonth = "0";
+                                    }
 
-                        for (bdLoop = 0; bdLoop <= 12; bdLoop++) {
-                            out.print("<option value=\"");
-                            out.print(String.valueOf(bdLoop));
-                            out.print("\"");
+                                    for (bdLoop = 0; bdLoop <= 12; bdLoop++) {
+                                        out.print("<option value=\"");
+                                        out.print(String.valueOf(bdLoop));
+                                        out.print("\"");
                         
-                            if (Integer.parseInt(bdMonth) == bdLoop) {
-                                out.print(" selected=\"selected\"");
-                            }
+                                        if (Integer.parseInt(bdMonth) == bdLoop) {
+                                            out.print(" selected=\"selected\"");
+                                        }
                             
-                            out.println(">" + months[bdLoop] + "</option>");
-                        } // End for loop
-                    %>
+                                        out.println(">" + months[bdLoop] + "</option>");
+                                    } // End for loop
+                                %>
                             </select>
                             <label for="bdyear"><fmt:message key="register.do.birth.year" /></label>
-                            <select name="bdyear">
-                    <%
-                        int byLoop;
-                        int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+                            <select name="bdyear" onchange="checkDate();">
+                                <%
+                                    int byLoop;
+                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
 
-                        String bdYear = (String) request.getAttribute("bdyear");
-                        if (bdYear == null) {
-                                bdYear = String.valueOf(thisYear);
-                        }
+                                    String bdYear = (String) request.getAttribute("bdyear");
+                                    if (bdYear == null) {
+                                            bdYear = String.valueOf(thisYear);
+                                    }
                         
-                        for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
-                            out.print("<option value=\"");
-                            out.print(String.valueOf(byLoop));
-                            out.print("\"");
+                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
+                                        out.print("<option value=\"");
+                                        out.print(String.valueOf(byLoop));
+                                        out.print("\"");
 
-                            if (Integer.parseInt(bdYear) == byLoop) {
-                                out.print(" selected=\"selected\"");
-                            }
+                                        if (Integer.parseInt(bdYear) == byLoop) {
+                                            out.print(" selected=\"selected\"");
+                                        }
 
-                            out.println(">" + String.valueOf(byLoop) + "</option>");
-                        }
-                    %>
+                                        out.println(">" + String.valueOf(byLoop) + "</option>");
+                                    }
+                                %>
                             </select>
+                            <input type="hidden" name="currYear" value="<%
+                                        out.print(String.valueOf(thisYear));
+                                   %>"/>
+                            <input type="hidden" name="currMonth" value="<%
+                                    int thisMonth = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
+                                        out.print(String.valueOf(thisMonth));
+                                   %>"/>
                             <a id="coppa-msg-1" 
                                onclick="$('#coppa-msg-1').hide(); $('#coppa-msg-2').removeClass('hidden');">
-                               <fmt:message key="register.do.coppa.msg0" /></a>
+                                <fmt:message key="register.do.coppa.msg0" /></a>
                         </div>
                         <div class="alert alert-info hidden" id="coppa-msg-2">
                             <p>
@@ -259,18 +284,20 @@
                         <!-- 
                             TODO: Use javascript to hide these details until the registrant's age is selected  
                         -->
-                        <div class="form-group">
-                            <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
-                            <input class="form-control" type="text" name="sponsoremail" maxlength="255"
-                                   value="<%= request.getAttribute("sponsoremail")%>" placeholder="Enter an parent or teacher email address">
-                        </div>
-                        <div class="form-group">
-                            <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
-                            <select name="sponsoremailtype">
-                                <option value="1" selected="selected">Parent</option>
-                                <option value="2">Legal Guardian</option>
-                                <option value="3">Instructor</option>
-                            </select>
+                        <div class="form-group hidden" id="sponsor-info">
+                            <p>
+                                <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
+                                <input class="form-control" type="text" name="sponsoremail" maxlength="255"
+                                       value="<%= request.getAttribute("sponsoremail")%>" placeholder="Enter an parent or teacher email address">
+                            </p>
+                            <p>
+                                <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
+                                <select name="sponsoremailtype">
+                                    <option value="1" selected="selected">Parent</option>
+                                    <option value="2">Legal Guardian</option>
+                                    <option value="3">Instructor</option>
+                                </select>
+                            </p>
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="register.do.submit" />">
                     </form>
