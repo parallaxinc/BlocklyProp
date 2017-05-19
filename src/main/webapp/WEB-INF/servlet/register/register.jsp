@@ -11,26 +11,40 @@
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
-        <script>  
-            function checkDate() {
-               var currYear = parseInt(document.getElementByName('currYear').value);
-               var userYear = parseInt(document.getElementByName('bdyear').value);
-               var currMonth = parseInt(document.getElementByName('currMonth').value);
-               var userMonth = parseInt(document.getElementByName('bdmonth').value);
+        <script>
+            function initCoppaElements() {
                
-               if(currYear > userYear + 13 || (currYear > userYear + 12 && currMonth > userMonth)) {
-                   $('#sponsor-info').hide();
-               } else {
-                   $('#sponsor-info').show();
+                var bdmElement = document.getElementById("birthdayMonth");
+                var bdyElement = document.getElementById("birthdayYear");
+                
+                bdyElement.onchange = checkDate;
+                bdmElement.onchange = checkDate;
+                hideSponsorInfo();
+            };
+            
+            function checkDate() {
+                // Return today's date and time
+                var currentTime = new Date();
+
+                var currYear = currentTime.getFullYear();
+                var currMonth = currentTime.getMonth() + 1;
+                
+                var userYear = parseInt(document.getElementById('birthdayYear').value);
+                var userMonth = parseInt(document.getElementById('birthdayMonth').value);
+               
+                if(currYear > userYear + 13 || (currYear > userYear + 12 && currMonth > userMonth)) {
+                    $('#sponsor-info').hide();
+                } else {
+                    $('#sponsor-info').show();
                }
-            }
+            };
             
             function hideSponsorInfo() {
                 $('#sponsor-info').hide();
-            }
+            };
         </script>
     </head>
-    <body onload="hideSponsorInfo();">
+    <body onload="initCoppaElements()">
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
@@ -211,7 +225,7 @@
                         </div>
                         <div class="form-group">
                             <label for="bdmonth"><fmt:message key="register.do.birth.month" /></label>
-                            <select name="bdmonth" onchange="checkDate();">
+                            <select name="bdmonth" id="birthdayMonth">
                                 <%
                                     int bdLoop;
                                     String[] months={
@@ -239,7 +253,7 @@
                                 %>
                             </select>
                             <label for="bdyear"><fmt:message key="register.do.birth.year" /></label>
-                            <select name="bdyear" onchange="checkDate();">
+                            <select name="bdyear" id="birthdayYear">
                                 <%
                                     int byLoop;
                                     int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
@@ -262,13 +276,6 @@
                                     }
                                 %>
                             </select>
-                            <input type="hidden" name="currYear" value="<%
-                                        out.print(String.valueOf(thisYear));
-                                   %>"/>
-                            <input type="hidden" name="currMonth" value="<%
-                                    int thisMonth = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
-                                        out.print(String.valueOf(thisMonth));
-                                   %>"/>
                             <a id="coppa-msg-1" 
                                onclick="$('#coppa-msg-1').hide(); $('#coppa-msg-2').removeClass('hidden');">
                                 <fmt:message key="register.do.coppa.msg0" /></a>
@@ -281,10 +288,7 @@
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
                             </p>
                         </div>
-                        <!-- 
-                            TODO: Use javascript to hide these details until the registrant's age is selected  
-                        -->
-                        <div class="form-group hidden" id="sponsor-info">
+                        <div class="form-group" id="sponsor-info">
                             <p>
                                 <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
                                 <input class="form-control" type="text" name="sponsoremail" maxlength="255"
