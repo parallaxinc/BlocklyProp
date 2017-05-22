@@ -33,8 +33,10 @@
                 var userMonth = parseInt(document.getElementById('birthdayMonth').value);
                
                 if(currYear > userYear + 13 || (currYear > userYear + 12 && currMonth > userMonth)) {
+                    document.getElementById('sponsor-info').style = "visibility: hidden;";
                     $('#sponsor-info').hide();
                 } else {
+                    document.getElementById('sponsor-info').style = "visibility: visible;";
                     $('#sponsor-info').show();
                }
             };
@@ -288,7 +290,7 @@
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
                             </p>
                         </div>
-                        <div class="form-group" id="sponsor-info">
+                        <div class="form-group" id="sponsor-info" style="visibility: hidden;">
                             <p>
                                 <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
                                 <input class="form-control" type="text" name="sponsoremail" maxlength="255"
