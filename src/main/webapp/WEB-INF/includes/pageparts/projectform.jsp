@@ -15,6 +15,7 @@
                 <fmt:message key="project.details_title" />
                 <a class="btn btn-primary open-project-link editor-view-link" href="#" ><fmt:message key="project.viewcode" /></a>
             </h2>
+            <!-- Post the form contents to /blockly/rest/project  -->
             <form id="project-form" action="<url:getUrl url="/rest/project"/>" method="post">
                 <div class="alert alert-success alert-dismissible hidden project-changed" id="project-changed">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -56,14 +57,13 @@
                     <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default">
-                            <input type="radio" name="sharing" class="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
+                            <input type="radio" name="sharing" class="sharing" value="private" 
+                                   id="project-form-private"/><fmt:message key="project.sharing.private" />
                         </label>
                         <label class="btn btn-default">
-                            <input type="radio" name="sharing" class="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
+                            <input type="radio" name="sharing" class="sharing" value="shared" 
+                                   id="project-form-shared"/><fmt:message key="project.sharing.shared" />
                         </label>
-                        <!--        <label class="btn btn-default">
-                                    <input type="radio" name="sharing" class="sharing" value="friends" id="project-form-friends"/><fmt:message key="project.sharing.friends" />
-                                </label> -->
                     </div>
                 </div>
 

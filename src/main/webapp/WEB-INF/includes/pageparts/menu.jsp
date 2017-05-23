@@ -3,11 +3,8 @@
     Created on : 4-nov-2015, 20:39:22
     Author     : Michel
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
-
 <nav class="navbar navbar-default">
     <div class="container">
         <div class="navbar-header">
@@ -29,24 +26,21 @@
                 <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a></li>
             </ul>
         </div>
-
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
                 <shiro:notAuthenticated>
                     <li>
-                        <a href="<url:getUrl url="/child-privacy-policy"/>">
-                            <fmt:message key="menu.child_privacy" /></a>
+                        <a href="<url:getUrl url="/privacy-policy"/>">
+                            <fmt:message key="menu.privacy" /></a>
                     </li>
                 </shiro:notAuthenticated>
                 <shiro:authenticated>
                     <li>
-                        <a href="<url:getUrl url="/child-privacy-policy"/>">
-                            <fmt:message key="menu.child_privacy" /></a>
+                        <a href="<url:getUrl url="/privacy-policy"/>">
+                            <fmt:message key="menu.privacy" /></a>
                     </li>
                 </shiro:authenticated>
             </ul>
-
-
             <ul class="nav navbar-nav navbar-right">
                 <shiro:notAuthenticated>
                     <li><a href="<url:getUrl url="/login.jsp"/>"><fmt:message key="menu.login_and_register" /></a></li>

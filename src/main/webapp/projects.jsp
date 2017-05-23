@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 <!DOCTYPE html>
+<!-- Display community projects -->
 <html>
     <head>
         <meta name="application-name" content="&nbsp;"/>
@@ -34,32 +35,23 @@
         <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
     </head>
     <body>
-
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
-
         <div id="project-table-container" class="container collapse">
             <div class="row">
                 <div class="col-md-12">
-
                     <h2><fmt:message key="project.list.title"/></h2>
-
                     <jsp:include page="/WEB-INF/includes/pageparts/projecttable.jsp">
                         <jsp:param name="url" value="/rest/shared/project/list" />
                         <jsp:param name="showuser" value="true" />
                     </jsp:include>
-
                 </div>
             </div>
         </div>
-
         <jsp:include page="/WEB-INF/includes/pageparts/projectform.jsp">
             <jsp:param name="mine" value="false" />
             <jsp:param name="shared" value="true" />
         </jsp:include>
-
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
-
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
-
     </body>
 </html>

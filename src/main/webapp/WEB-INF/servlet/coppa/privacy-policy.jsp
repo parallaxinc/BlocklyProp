@@ -1,28 +1,25 @@
 <%--
-    Document   : COPPA policy page
+    Document   : Parallax Online Privacy Policies page
     Created on : 08-MAY-2017
     Author     : J. Ewald
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
     </head>
     <body>
-
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
-
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h3><fmt:message key="coppa.policy.title" /></h3>
+                    <h3>Parallax BlocklyProp Privacy Policies</h3>
                     <div>
-                        <h2>Parallax BlocklyProp Privacy Policies</h2>
                         <p>Parallax Inc., including the BlocklyProp system, is committed to protecting the privacy of children who use our sites and applications. This online privacy policy explains our information collection, disclosure, and parental notification and consent practices with respect to information provided by children under the age of 13 (“child” or “children”). This policy is in accordance with the U.S. Children’s Online Privacy Protection Act ("COPPA") and the Family Education Records Privacy Act ("FERPA"), and outlines our practices in the United States and Latin America regarding children’s personal information.</p>
-                        <h3>The Information We Collect From Children, How We Use It, and How and When We Communicate With Parents</h3>
+                        <h4>The Information We Collect From Children, How We Use It, and How and When We Communicate With Parents</h4>
                         <p>In any instance that we collect personal information from a child, we will retain that information only so long as reasonably necessary to fulfill the activity request or allow the child to continue to participate in the activity, and ensure the security of our users and our services, or as required by law. In the event we discover we have collected information from a child in a manner inconsistent with COPPA’s requirements, we will either delete the information or immediately seek the parent’s consent for that collection.</p>
                         <h4>Registration</h4>
                         <p>Children can register with our site to learn and create with the BlocklyProp system. During the registration process, we may ask the child to provide certain information for notification and security purposes, including a parent or guardian’s email address, the child’s member or account username, and password. We also may ask for birth dates from children to validate their ages. We strongly advise children never to provide any personal information in their usernames. We will not require a child to provide more information than is reasonably necessary in order to use the BlocklyProp system.</p>
