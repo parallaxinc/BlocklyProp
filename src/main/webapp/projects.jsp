@@ -7,7 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 <!DOCTYPE html>
-<!-- Display community projects -->
 <html>
     <head>
         <meta name="application-name" content="&nbsp;"/>
@@ -36,6 +35,7 @@
     </head>
     <body>
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
+        <!-- Display community projects -->
         <div id="project-table-container" class="container collapse">
             <div class="row">
                 <div class="col-md-12">
@@ -47,10 +47,12 @@
                 </div>
             </div>
         </div>
+        <!-- Display community shared project form -->
         <jsp:include page="/WEB-INF/includes/pageparts/projectform.jsp">
             <jsp:param name="mine" value="false" />
             <jsp:param name="shared" value="true" />
         </jsp:include>
+        <!-- Login modal dialog -->
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
     </body>
