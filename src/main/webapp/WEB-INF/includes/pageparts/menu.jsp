@@ -16,36 +16,36 @@
             </button>
             <a class="navbar-brand" id="nav-logo" href="<url:getUrl url="/"/>"><strong>BETA</strong> BlocklyProp</a>
         </div>
-
+        <!-- Projects -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a></li>
+                <li>
+                    <a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a>
+                </li>
                 <shiro:authenticated>
-                <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a></li>
+                <li>
+                    <a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a>
+                </li>
                 </shiro:authenticated>
-                <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a></li>
+                <li>
+                    <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a>
+                </li>
+                <li>
+                    <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
+                </li>
             </ul>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
-            <ul class="nav navbar-nav">
+            <!-- Register / Login -->
+            <ul class="nav navbar-nav navbar-right">
                 <shiro:notAuthenticated>
+                    <!-- Anonymous user -->
                     <li>
-                        <a href="<url:getUrl url="/privacy-policy"/>">
-                            <fmt:message key="menu.privacy" /></a>
+                        <a href="<url:getUrl url="/login.jsp"/>"><fmt:message key="menu.login_and_register" /></a>
                     </li>
                 </shiro:notAuthenticated>
                 <shiro:authenticated>
-                    <li>
-                        <a href="<url:getUrl url="/privacy-policy"/>">
-                            <fmt:message key="menu.privacy" /></a>
-                    </li>
-                </shiro:authenticated>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <shiro:notAuthenticated>
-                    <li><a href="<url:getUrl url="/login.jsp"/>"><fmt:message key="menu.login_and_register" /></a></li>
-                    </shiro:notAuthenticated>
-                    <shiro:authenticated>
+                    <!-- Authenticated user -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"><shiro:principal></shiro:principal> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -61,8 +61,10 @@
                     <form style="margin-bottom: 0;">
                         <select id="language" name="language" onchange="submit()">
                             <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-                            <%--      <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
-                             <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>--%>
+                            <%-- Multi-lingual support is under development
+                            <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
+                            <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>
+                            --%>
                         </select>
                     </form>
                 </li>
