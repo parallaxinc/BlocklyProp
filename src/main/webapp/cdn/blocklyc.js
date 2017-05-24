@@ -213,25 +213,25 @@ function cloudCompile(text, action, successHandler) {
             if (data.error) {
                 if (typeof data['message'] === "string")
                     alert("BlocklyProp was unable to compile your project:\n" + data['message']
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
                 else
                     alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
                 if (data.success) {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + '\nLoading program on the Propeller - Please Wait...\n');
                     successHandler(data, terminalNeeded);
                 } else {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error']);
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + '\nLoading program on the Propeller - Please Wait...\n');
                 }
             }
         }).fail(function (data) {
             if (typeof data === "string")
                 alert("BlocklyProp was unable to compile your project:\n----------\n" + data
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             else
                 alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString()
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
         });
     }
 }
@@ -250,7 +250,33 @@ function compile() {
  */
 function loadIntoRam() {
     if (client_available) {
-        cloudCompile('Load into ram', 'bin', function (data, terminalNeeded) {
+        cloudCompile('Load into RAM', 'bin', function (data, terminalNeeded) {
+            
+// Uncomment to grab a copy of the binary being sent to the BPC 
+/*
+            utils.prompt("Download propeller elf file:", 'propelf', function (value) {
+                if (value) {
+
+                    // put all of the pieces together into a downloadable file
+                    var saveData = (function () {
+                        var a = document.createElement("a");
+                        document.body.appendChild(a);
+                        a.style = "display: none";
+                        return function (data, fileName) {
+                            var blob = new Blob([data], {type: "octet/stream"});
+                            var url = window.URL.createObjectURL(blob);
+                            a.href = url;
+                            a.download = fileName;
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        };
+                    }());
+                    
+                    saveData(btoa(data.binary), value + '.eif');
+                }
+            });
+*/
+
             $.post(client_url + 'load.action', {action: "RAM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                 $("#compile-console").val($("#compile-console").val() + loaddata.message);
                 console.log(loaddata);
@@ -263,7 +289,7 @@ function loadIntoRam() {
         });
     } else {
         alert("BlocklyPropClient not available to communicate with a microcontroller"
-                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
     }
 }
 
@@ -272,7 +298,7 @@ function loadIntoRam() {
  */
 function loadIntoEeprom() {
     if (client_available) {
-        cloudCompile('Load into eeprom', 'eeprom', function (data, terminalNeeded) {
+        cloudCompile('Load into EEPROM', 'eeprom', function (data, terminalNeeded) {
             $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                 $("#compile-console").val($("#compile-console").val() + loaddata.message);
                 console.log(loaddata);
@@ -285,7 +311,7 @@ function loadIntoEeprom() {
         });
     } else {
         alert("BlocklyPropClient not available to communicate with a microcontroller"
-                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-\u2381-R (Mac)");
+                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
     }
 }
 
@@ -455,33 +481,33 @@ function graphing_console() {
 
     $('#graphing-dialog').modal('show');
     document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
-    //$("#btn-graph-play").hide();
-    //$("#btn-graph-pause").show();
-
 }
 
 check_com_ports = function () {
-    if (client_url !== undefined) {
-        var selected_port = $("#comPort").val();
-        $.get(client_url + "ports.json", function (data) {
-            $("#comPort").empty();
-            data.forEach(function (port) {
+    if(client_use_websockets === false) {
+        if (client_url !== undefined) {
+            var selected_port = $("#comPort").val();
+            $.get(client_url + "ports.json", function (data) {
+                $("#comPort").empty();
+                data.forEach(function (port) {
+                    $("#comPort").append($('<option>', {
+                        text: port
+                    }));
+                });
+                select_com_port(selected_port);
+                client_available = true;
+            }).fail(function () {
+                $("#comPort").empty();
                 $("#comPort").append($('<option>', {
-                    text: port
+                    text: 'Searching...'
                 }));
+                select_com_port(selected_port);
+                client_available = false;
             });
-            select_com_port(selected_port);
-            client_available = true;
-        }).fail(function () {
-            $("#comPort").empty();
-            $("#comPort").append($('<option>', {
-                text: 'Searching...'
-            }));
-            select_com_port(selected_port);
-            client_available = false;
-        });
+        }
     }
 };
+
 select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);
@@ -490,12 +516,14 @@ select_com_port = function (com_port) {
         $("#comPort").val($('#comPort option:first').text());
     }
 };
+
 $(document).ready(function () {
     check_com_ports();
 });
 getComPort = function () {
     return $('#comPort').find(":selected").text();
 };
+
 function downloadPropC() {
     var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
     var isEmptyProject = propcCode.indexOf("EMPTY_PROJECT") > -1;

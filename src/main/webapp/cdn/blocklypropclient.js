@@ -14,16 +14,23 @@ var client_domain_port = 6009;
 var client_min_version = 0.2;
 var client_baud_rate_min_version = 0.4;
 
+var client_use_websockets = false;
+var client_ws_connection = null;
+
 var baud_rate_compatible = false;
 
 $(document).ready(function () {
-    check_client();
+    establish_socket();
+    if (client_use_websockets === false) {
+        check_client();
+    }
     $.get($("#client-instructions").data('url'), function (data) {
         $("#client-instructions").html(data);
     });
 });
 
 var check_com_ports_interval = null;
+var check_ws_socket_interval = null;
 
 version_as_number = function (rawVersion) {
     var tempVersion = rawVersion.toString().split(".");
@@ -62,13 +69,14 @@ check_client = function () {
             $("#client-available").removeClass("hidden");
             $("#client-searching").addClass("hidden");
             $("#client-unavailable").addClass("hidden");
-            // $("#client_status").text($("#client_status").data('available')).removeClass("not_available").addClass("available");
+ 
             if (check_com_ports && typeof (check_com_ports) === "function") {
                 check_com_ports();
                 check_com_ports_interval = setInterval(check_com_ports, 5000);
             }
         }
         setTimeout(check_client, 20000);
+        
     }).fail(function () {
         clearInterval(check_com_ports_interval);
         client_available = false;
@@ -128,3 +136,115 @@ configure_client = function () {
         }
     });
 };
+
+// checks for and, if found, uses a newer WebSocekts-only client
+function establish_socket() {
+
+    // TODO: set/clear and load buttons based on status
+    
+    if (!client_available) {
+        
+        // Clear the port list
+        var selected_port = $("#comPort").val();
+        $("#comPort").empty();
+        $("#comPort").append($('<option>', {
+            text: 'Searching...'
+        }));
+        select_com_port(selected_port);
+
+
+        var url = client_url + 'serial.connect';
+        url = url.replace('http', 'ws');
+        var connection = new WebSocket(url);
+
+        connection.onopen = function () {
+            var ws_msg = {type: 'hello-browser', baud: baudrate};
+            connection.send(JSON.stringify(ws_msg));
+        };
+
+        // Log errors
+        connection.onerror = function (error) {
+            console.log('WebSocket Error');
+            console.log(error);
+
+            $("#client-searching").removeClass("hidden");
+            $("#client-available").addClass("hidden");
+            $("#client-unavailable").addClass("hidden");
+            
+            // TODO: Should we shutdown and try again?
+        };
+
+        // handle messages from the client
+        connection.onmessage = function (e) {
+            var ws_msg = JSON.parse(e.data);
+
+            // --- hello handshake - establish new connection
+            if (ws_msg.type === 'hello-client') {
+                if (version_as_number(ws_msg.version) < version_as_number(client_min_version)) {
+                    bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
+                }
+                if (version_as_number(ws_msg.version) >= version_as_number(client_baud_rate_min_version)) {
+                    baud_rate_compatible = true;
+                }
+                client_use_websockets = true;
+                client_ws_connection = connection;
+                client_available = true;
+
+                $("#client-available").removeClass("hidden");
+                $("#client-searching").addClass("hidden");
+                $("#client-unavailable").addClass("hidden");
+                
+            }
+
+            // --- com port list/change
+            else if (ws_msg.type === 'port-list') {  // type: 'port-list', ports: ['port1', 'port2', 'port3'...]
+                
+                selected_port = $("#comPort").val();
+                $("#comPort").empty();
+                ws_msg.ports.forEach(function (port) {
+                    $("#comPort").append($('<option>', {
+                        text: port
+                    }));
+                });
+                select_com_port(selected_port);
+            }
+
+            // --- serial terminal/graph
+            else if (ws_msg.type === 'serial-debug') {
+                if (ws_msg.target === 'terminal') { // 'terminal'
+
+                } else { // 'graph'
+
+                }
+            }
+
+            // --- Response from programming the Prop
+            else if (ws_msg.type === 'prop-load') {
+
+            }
+
+            // --- older client - disconnect it!
+            else {
+                connection.close();
+            }
+
+        };
+
+        connection.onClose = function () {
+            client_available = false;
+
+            $("#client-searching").addClass("hidden");
+            $("#client-available").addClass("hidden");
+            $("#client-unavailable").removeClass("hidden");
+            
+            selected_port = $("#comPort").val();
+            $("#comPort").empty();
+            $("#comPort").append($('<option>', {
+                text: 'Searching...'
+            }));
+            select_com_port(selected_port);
+
+            check_ws_socket_interval = setTimeout(function() {establish_socket();}, 4000);
+        };
+    }
+}
