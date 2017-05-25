@@ -11,7 +11,7 @@ var simplemde = null;
 $(document).ready(function () {
     /*  Activate the tooltips      */
     $('[rel="tooltip"]').tooltip();
-    simplemde = new SimpleMDE({element: document.getElementById("project-description")});
+    simplemde = new SimpleMDE({element: document.getElementById("project-description"), hideIcons: ["link"], spellChecker: false});
 
     $('#project-type').val(utils.getUrlParameters('lang'));
 
