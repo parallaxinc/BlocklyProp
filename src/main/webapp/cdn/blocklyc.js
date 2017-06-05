@@ -218,11 +218,15 @@ function cloudCompile(text, action, successHandler) {
                     alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
                             + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
+                var loadWaitMsg = '';
+                if (action !== 'compile') {
+                    loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
+                }
                 if (data.success) {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + '\nLoading program on the Propeller - Please Wait...\n');
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
                 } else {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + '\nLoading program on the Propeller - Please Wait...\n');
+                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
             }
         }).fail(function (data) {
@@ -240,52 +244,50 @@ function cloudCompile(text, action, successHandler) {
  *
  */
 function compile() {
-    cloudCompile('Compile', 'compile', function (data, terminalNeeded) {
-
-    });
+    cloudCompile('Compile', 'compile', function (data, terminalNeeded) {});
 }
 
 /**
- *
+ * begins loading process
+ * @param modal_message message shown at the top of the compile/load modal.
+ * @param compile_command command for the cloud compiler (bin/eeprom).
+ * @param load_action command for the loader (RAM/EEPROM).
+ * 
  */
-function loadIntoRam() {
+function loadInto(modal_message, compile_command, load_action) {
     if (client_available) {
-        cloudCompile('Load into RAM', 'bin', function (data, terminalNeeded) {
-            
-// Uncomment to grab a copy of the binary being sent to the BPC 
-/*
-            utils.prompt("Download propeller elf file:", 'propelf', function (value) {
-                if (value) {
+        cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
-                    // put all of the pieces together into a downloadable file
-                    var saveData = (function () {
-                        var a = document.createElement("a");
-                        document.body.appendChild(a);
-                        a.style = "display: none";
-                        return function (data, fileName) {
-                            var blob = new Blob([data], {type: "octet/stream"});
-                            var url = window.URL.createObjectURL(blob);
-                            a.href = url;
-                            a.download = fileName;
-                            a.click();
-                            window.URL.revokeObjectURL(url);
-                        };
-                    }());
-                    
-                    saveData(btoa(data.binary), value + '.eif');
+            if (client_use_websockets === true) {
+                
+                var db = 'none';
+                if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
+                    db = terminalNeeded;
                 }
-            });
-*/
+                
+                var prog_to_send = {
+                    type: 'load-prop',
+                    action: load_action, 
+                    payload: data.binary, 
+                    debug: db,
+                    extension: data.extension, 
+                    portPath: getComPort()
+                };
+                
+                client_ws_connection.send(JSON.stringify(prog_to_send));
+                
+            } else {
 
-            $.post(client_url + 'load.action', {action: "RAM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
-                $("#compile-console").val($("#compile-console").val() + loaddata.message);
-                console.log(loaddata);
-                if (terminalNeeded === 'term' && loaddata.success) {
-                    serial_console();
-                } else if (terminalNeeded === 'graph' && loaddata.success) {
-                    graphing_console();
-                }
-            });
+                $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                    $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                    console.log(loaddata);
+                    if (terminalNeeded === 'term' && loaddata.success) {
+                        serial_console();
+                    } else if (terminalNeeded === 'graph' && loaddata.success) {
+                        graphing_console();
+                    }
+                });
+            }
         });
     } else {
         alert("BlocklyPropClient not available to communicate with a microcontroller"
@@ -295,7 +297,7 @@ function loadIntoRam() {
 
 /**
  *
- */
+
 function loadIntoEeprom() {
     if (client_available) {
         cloudCompile('Load into EEPROM', 'eeprom', function (data, terminalNeeded) {
@@ -314,75 +316,128 @@ function loadIntoEeprom() {
                 + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
     }
 }
+*/
+
 
 function serial_console() {
     var newTerminal = false;
-    if (term === null) {
+
+    if (client_use_websockets !== true) {
+        if (term === null) {
+            term = new Terminal({
+                cols: 256,
+                rows: 24,
+                useStyle: true,
+                screenKeys: true,
+                portPath: getComPort()
+            });
+
+            newTerminal = true;
+        }
+
+        if (client_available) {
+            var url = client_url + 'serial.connect';
+            url = url.replace('http', 'ws');
+            var connection = new WebSocket(url);
+
+            // When the connection is open, open com port
+            connection.onopen = function () {
+                if (baud_rate_compatible && baudrate) {
+                    connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
+                } else {
+                    connection.send('+++ open port ' + getComPort());
+                }
+
+            };
+            // Log errors
+            connection.onerror = function (error) {
+                console.log('WebSocket Error');
+                console.log(error);
+                // term.destroy();
+            };
+            // Log messages from the server
+            connection.onmessage = function (e) {
+                //console.log('Server: ' + e.data);
+                term.write(e.data);
+            };
+
+            term.on('data', function (data) {
+                //console.log(data);
+                connection.send(data);
+            });
+
+            if (newTerminal) {
+                term.open(document.getElementById("serial_console"));
+            } else {
+                term.reset();
+            }
+            connection.onClose = function () {
+                //  term.destroy();
+            };
+
+            $('#console-dialog').on('hidden.bs.modal', function () {
+                connection.close();
+            });
+        } else {
+            term.on('data', function (data) {
+                data = data.replace('\r', '\r\n');
+                term.write(data);
+            });
+
+            if (newTerminal) {
+                term.open(document.getElementById("serial_console"));
+                term.write("Simulated terminal because you are in demo mode\n\r");
+
+                term.write("Connection established with: " + getComPort() + "\n\r");
+            }
+        }
+    } else {
+        
+        term === null;
         term = new Terminal({
             cols: 256,
             rows: 24,
             useStyle: true,
-            screenKeys: true
+            screenKeys: true,
+            portPath: getComPort()
         });
 
         newTerminal = true;
-    }
 
-    if (client_available) {
-        var url = client_url + 'serial.connect';
-        url = url.replace('http', 'ws');
-        var connection = new WebSocket(url);
-
-        // When the connection is open, open com port
-        connection.onopen = function () {
-            if (baud_rate_compatible && baudrate) {
-                connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
-            } else {
-                connection.send('+++ open port ' + getComPort());
-            }
-
-        };
-        // Log errors
-        connection.onerror = function (error) {
-            console.log('WebSocket Error');
-            console.log(error);
-            // term.destroy();
-        };
-        // Log messages from the server
-        connection.onmessage = function (e) {
-            //console.log('Server: ' + e.data);
-            term.write(e.data);
+        // using Websocket-only client
+        var msg_to_send = {
+            type: 'serial-terminal',
+            portPath: getComPort(),
+            baudrate: baudrate.toString(10),
+            msg: 'none',
+            action: 'msg'
         };
 
         term.on('data', function (data) {
-            //console.log(data);
-            connection.send(data);
+            msg_to_send.msg = data;
+            msg_to_send.action = 'msg';
+            client_ws_connection.send(JSON.stringify(msg_to_send));
+            //console.log('sending: ' + JSON.stringify(msg_to_send));
         });
 
-        if (newTerminal) {
+        if (newTerminal === true) {
             term.open(document.getElementById("serial_console"));
+            msg_to_send.action = 'open';
+            client_ws_connection.send(JSON.stringify(msg_to_send));
+            //console.log('opening: ' + JSON.stringify(msg_to_send));
         } else {
             term.reset();
         }
-        connection.onClose = function () {
-            //  term.destroy();
-        };
 
         $('#console-dialog').on('hidden.bs.modal', function () {
-            connection.close();
+            if(msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
+                msg_to_send.action = 'close';
+                client_ws_connection.send(JSON.stringify(msg_to_send));
+                //console.log('closing: ' + JSON.stringify(msg_to_send));
+            }
+            newTerminal = false;
+            term.destroy();
         });
-    } else {
-        term.on('data', function (data) {
-            data = data.replace('\r', '\r\n');
-            term.write(data);
-        });
-
-        if (newTerminal) {
-            term.open(document.getElementById("serial_console"));
-            term.write("Simulated terminal because you are in demo mode\n\r");
-
-            term.write("Connection established with: " + getComPort() + "\n\r");
-        }
     }
 
     $('#console-dialog').modal('show');
@@ -484,7 +539,7 @@ function graphing_console() {
 }
 
 check_com_ports = function () {
-    if(client_use_websockets === false) {
+    if (client_use_websockets === false) {
         if (client_url !== undefined) {
             var selected_port = $("#comPort").val();
             $.get(client_url + "ports.json", function (data) {

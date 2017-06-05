@@ -56,7 +56,7 @@ Blockly.propc.console_print = function () {
 
     Blockly.propc.serial_terminal_ = true;
 
-    var code = 'print(' + text.replace("%", "%%") + ');\n';
+    var code = 'print(' + text.replace(/%/g, "%%") + ');\n';
     if (checkbox === 'TRUE') {
         code += 'print("\\r");\n';
     }
@@ -380,7 +380,7 @@ Blockly.propc.serial_send_text = function () {
     if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
         return '//Missing serial port initialize block\n';
     } else {
-        var code = 'dprint(fdser, ' + text.replace("%", "%%") + ');\n';
+        var code = 'dprint(fdser, ' + text.replace(/%/g, "%%") + ');\n';
         code += 'while(!fdserial_txEmpty(fdser));\n';
         code += 'pause(5);\n';
 
@@ -694,7 +694,7 @@ Blockly.propc.debug_lcd_print = function () {
     if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
         return '//Missing Serial LCD initialize block\n';
     } else {
-        return 'dprint(debug_lcd, ' + msg.replace("%", "%%") + ');\n';
+        return 'dprint(debug_lcd, ' + msg.replace(/%/g, "%%") + ');\n';
     }
 };
 
@@ -875,7 +875,7 @@ Blockly.propc.xbee_transmit = function () {
         } else if (type === "INT") {
             return 'dprint(xbee, "%d\\r", ' + data + ');\n';
         } else {
-            var code = 'dprint(xbee, "%s\\r", ' + data.replace("%", "%%") + ');\n';
+            var code = 'dprint(xbee, "%s\\r", ' + data.replace(/%/g, "%%") + ');\n';
             code += 'while(!fdserial_txEmpty(xbee));\n';
             code += 'pause(5);\n';
 
@@ -3344,20 +3344,10 @@ Blockly.Blocks.graph_settings = {
 //        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Graph initialize  x-axis")
-                .appendField(new Blockly.FieldDropdown([
-                    ["10 seconds", "10,S"],
-                    ["20 seconds", "20,S"],
-                    ["30 seconds", "30,S"],
-                    ["40 seconds", "40,S"],
-                    ["50 seconds", "50,S"],
-                    ["60 seconds", "60,S"],
-                    ["90 seconds", "90,S"]    // Add comma back when resetting
-                            //        ["trigger on value 1 rising edge", "1,TU"],
-                            //        ["trigger on value 1 falling edge", "1,TD"],
-                            //        ["trigger on value 1 zero crossing", "1,TZ"]
-                ]), "XAXIS")
-                .appendField('y-axis ')
+                .appendField("Graph initialize  keep")
+                .appendField(new Blockly.FieldTextInput('40',
+                        Blockly.FieldTextInput.numberValidator), "XAXIS")
+                .appendField('seconds of data  y-axis ')
                 .appendField(new Blockly.FieldDropdown([
                     ["autoscale", "AUTO"],
                     ["range", "FIXED"]]), "YSETTING")
@@ -3405,10 +3395,14 @@ Blockly.Blocks.graph_settings = {
 
 Blockly.propc.graph_settings = function () {
     var rate = this.getFieldValue('RATE');
-    var x_axis = this.getFieldValue('XAXIS');
+    var x_axis = this.getFieldValue('XAXIS') || '10';
     var y_min = this.getFieldValue('YMIN') || '0';
-    var y_max = this.getFieldValue('YMAX') || '0';
+    var y_max = this.getFieldValue('YMAX') || '100';
 
+    if (parseInt(x_axis) < 10) {
+        x_axis = '10';
+    }
+    
     Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:100,' +
             x_axis + ',' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
 

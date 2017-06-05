@@ -890,12 +890,12 @@ Blockly.Blocks.move_motors_angle = {
                 .appendField('R,-1080,1080,0', 'RANGEVALS0')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck("Number")
-                .appendField("that is (degrees)");
+                .appendField("that is (+/\u2212 degrees)");
         this.appendValueInput("ROTATE_RADIUS")
                 .appendField('R,-85,85,0', 'RANGEVALS1')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck("Number")
-                .appendField("around a radius (\u2212\u21BA \u21BB+) in")
+                .appendField("around a radius in (+/\u2212)")
                 .appendField(new Blockly.FieldDropdown([
                     ['inches of', ' * 100000 / 1933'],
                     ['tenths of an inch of', ' * 10000 / 1933'],

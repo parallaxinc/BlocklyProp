@@ -52,8 +52,8 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-sm-12"></div>
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-5 col-sm-10"></div>
+                <div class="col-md-7 col-sm-14">
                     <h2><fmt:message key="register.do.title" /></h2>
                     <%  // Test for a generic error
                         Boolean error = (Boolean) request.getAttribute("error");
@@ -226,6 +226,30 @@
                             <input class="form-control" type="password" name="confirmpassword" maxlength="255">
                         </div>
                         <div class="form-group">
+                            <label for="bdyear"><fmt:message key="register.do.birth.year" /></label>
+                            <select name="bdyear" id="birthdayYear">
+                                <%
+                                    int byLoop;
+                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+
+                                    String bdYear = (String) request.getAttribute("bdyear");
+                                    if (bdYear == null) {
+                                            bdYear = String.valueOf(thisYear);
+                                    }
+                        
+                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
+                                        out.print("<option value=\"");
+                                        out.print(String.valueOf(byLoop));
+                                        out.print("\"");
+
+                                        if (Integer.parseInt(bdYear) == byLoop) {
+                                            out.print(" selected=\"selected\"");
+                                        }
+
+                                        out.println(">" + String.valueOf(byLoop) + "</option>");
+                                    }
+                                %>
+                            </select>&nbsp;&nbsp;
                             <label for="bdmonth"><fmt:message key="register.do.birth.month" /></label>
                             <select name="bdmonth" id="birthdayMonth">
                                 <%
@@ -253,31 +277,7 @@
                                         out.println(">" + months[bdLoop] + "</option>");
                                     } // End for loop
                                 %>
-                            </select>
-                            <label for="bdyear"><fmt:message key="register.do.birth.year" /></label>
-                            <select name="bdyear" id="birthdayYear">
-                                <%
-                                    int byLoop;
-                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-
-                                    String bdYear = (String) request.getAttribute("bdyear");
-                                    if (bdYear == null) {
-                                            bdYear = String.valueOf(thisYear);
-                                    }
-                        
-                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
-                                        out.print("<option value=\"");
-                                        out.print(String.valueOf(byLoop));
-                                        out.print("\"");
-
-                                        if (Integer.parseInt(bdYear) == byLoop) {
-                                            out.print(" selected=\"selected\"");
-                                        }
-
-                                        out.println(">" + String.valueOf(byLoop) + "</option>");
-                                    }
-                                %>
-                            </select>
+                            </select>&nbsp;&nbsp;
                             <a id="coppa-msg-1" 
                                onclick="$('#coppa-msg-1').hide(); $('#coppa-msg-2').removeClass('hidden');">
                                 <fmt:message key="register.do.coppa.msg0" /></a>
@@ -299,9 +299,8 @@
                             <p>
                                 <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
                                 <select name="sponsoremailtype">
-                                    <option value="1" selected="selected">Parent</option>
-                                    <option value="2">Legal Guardian</option>
-                                    <option value="3">Instructor</option>
+                                    <option value="1" selected="selected">Parent/Guardian</option>
+                                    <option value="3">Teacher/Instructor</option>
                                 </select>
                             </p>
                         </div>

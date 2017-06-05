@@ -18,6 +18,7 @@
         </div>
         <!-- Projects -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
+            <span>
             <ul class="nav navbar-nav">
                 <li>
                     <a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a>
@@ -34,9 +35,9 @@
                     <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
                 </li>
             </ul>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <!-- Register / Login -->
+            </span><span>
+                
+                <!-- Register / Login -->
             <ul class="nav navbar-nav navbar-right">
                 <shiro:notAuthenticated>
                     <!-- Anonymous user -->
@@ -57,6 +58,7 @@
                 </shiro:authenticated>
 
                 <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
+                <!--
                 <li class="navbar-text">
                     <form style="margin-bottom: 0;">
                         <select id="language" name="language" onchange="submit()">
@@ -68,7 +70,9 @@
                         </select>
                     </form>
                 </li>
+                -->
             </ul>
+            </span>
         </div>
     </div>
 </nav>
