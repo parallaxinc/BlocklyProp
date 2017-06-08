@@ -146,6 +146,10 @@ configure_client = function () {
 // checks for and, if found, uses a newer WebSocekts-only client
 function establish_socket() {
     check_ws_socket_interval = null;
+    
+    if(client_ws_connection !== null) {
+        client_ws_connection.close();
+    }
 
     // TODO: set/clear and load buttons based on status
 

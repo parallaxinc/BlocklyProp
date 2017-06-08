@@ -259,23 +259,23 @@ function loadInto(modal_message, compile_command, load_action) {
         cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
             if (client_use_websockets === true) {
-                
+
                 var db = 'none';
                 if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
                     db = terminalNeeded;
                 }
-                
+
                 var prog_to_send = {
                     type: 'load-prop',
-                    action: load_action, 
-                    payload: data.binary, 
+                    action: load_action,
+                    payload: data.binary,
                     debug: db,
-                    extension: data.extension, 
+                    extension: data.extension,
                     portPath: getComPort()
                 };
-                
+
                 client_ws_connection.send(JSON.stringify(prog_to_send));
-                
+
             } else {
 
                 $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
@@ -297,26 +297,26 @@ function loadInto(modal_message, compile_command, load_action) {
 
 /**
  *
-
-function loadIntoEeprom() {
-    if (client_available) {
-        cloudCompile('Load into EEPROM', 'eeprom', function (data, terminalNeeded) {
-            $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
-                $("#compile-console").val($("#compile-console").val() + loaddata.message);
-                console.log(loaddata);
-                if (terminalNeeded === 'term' && loaddata.success) {
-                    serial_console();
-                } else if (terminalNeeded === 'graph' && loaddata.success) {
-                    graphing_console();
-                }
-            });
-        });
-    } else {
-        alert("BlocklyPropClient not available to communicate with a microcontroller"
-                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-    }
-}
-*/
+ 
+ function loadIntoEeprom() {
+ if (client_available) {
+ cloudCompile('Load into EEPROM', 'eeprom', function (data, terminalNeeded) {
+ $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+ $("#compile-console").val($("#compile-console").val() + loaddata.message);
+ console.log(loaddata);
+ if (terminalNeeded === 'term' && loaddata.success) {
+ serial_console();
+ } else if (terminalNeeded === 'graph' && loaddata.success) {
+ graphing_console();
+ }
+ });
+ });
+ } else {
+ alert("BlocklyPropClient not available to communicate with a microcontroller"
+ + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+ }
+ }
+ */
 
 
 function serial_console() {
@@ -392,7 +392,7 @@ function serial_console() {
             }
         }
     } else {
-        
+
         term === null;
         term = new Terminal({
             cols: 256,
@@ -430,7 +430,7 @@ function serial_console() {
         }
 
         $('#console-dialog').on('hidden.bs.modal', function () {
-            if(msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
+            if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
                 msg_to_send.action = 'close';
                 client_ws_connection.send(JSON.stringify(msg_to_send));
                 //console.log('closing: ' + JSON.stringify(msg_to_send));
@@ -449,19 +449,18 @@ function graphing_console() {
 
     // If there are graph settings, extract them
     var graph_settings_start = propcCode.indexOf("// GRAPH_SETTINGS_START:");
-    if (graph_settings_start > -1) {
+    var graph_labels_start = propcCode.indexOf("// GRAPH_LABELS_START:");
+
+    if (graph_settings_start > -1 && graph_labels_start > -1) {
         var graph_settings_end = propcCode.indexOf(":GRAPH_SETTINGS_END //") + 22;
         var graph_settings_temp = propcCode.substring(graph_settings_start, graph_settings_end).split(':');
         var graph_settings_str = graph_settings_temp[1].split(',');
 
         // GRAPH_SETTINGS:rate,x_axis_val,x_axis_type,y_min,y_max:GRAPH_SETTINGS_END //
 
-        var graph_labels_start = propcCode.indexOf("// GRAPH_LABELS_START:");
-        if (graph_labels_start > -1) {
-            var graph_labels_end = propcCode.indexOf(":GRAPH_LABELS_END //") + 20;
-            var graph_labels_temp = propcCode.substring(graph_labels_start, graph_labels_end).split(':');
-            graph_labels = graph_labels_temp[1].split(',');
-        }
+        var graph_labels_end = propcCode.indexOf(":GRAPH_LABELS_END //") + 20;
+        var graph_labels_temp = propcCode.substring(graph_labels_start, graph_labels_end).split(':');
+        graph_labels = graph_labels_temp[1].split(',');
 
         graph_options.refreshRate = Number(graph_settings_str[0]);
 
@@ -478,64 +477,67 @@ function graphing_console() {
 
         if (graph_settings_str[2] === 'S')
             graph_options.sampleTotal = Number(graph_settings_str[1]);
-    }
 
-    if (graph === null) {
-        graph_reset();
-        graph_temp_string = '';
-        graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
-        newGraph = true;
-    }
-
-    if (client_available) {
-        var url = client_url + 'serial.connect';
-        url = url.replace('http', 'ws');
-        var connection = new WebSocket(url);
-
-        // When the connection is open, open com port
-        connection.onopen = function () {
-            if (baud_rate_compatible && baudrate) {
-                connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
-            } else {
-                connection.send('+++ open port ' + getComPort());
-            }
-
-        };
-        // Log errors
-        connection.onerror = function (error) {
-            console.log('WebSocket Error');
-            console.log(error);
-            //connection.close();
-            //connection = new WebSocket(url);
-        };
-
-        // Log messages from the server
-        connection.onmessage = function (e) {
-            graph_new_data(e.data);
-        };
-
-        if (newGraph || graph !== null) {
-            graph_new_labels();
-            graph_interval_id = setInterval(function () {
-                graph.update(graph_data);
-                graph_update_labels();
-            }, graph_options.refreshRate);
+        if (graph === null) {
+            graph_reset();
+            graph_temp_string = '';
+            graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
+            newGraph = true;
         }
 
-        connection.onClose = function () {
-            graph_reset();
-        };
+        if (client_available) {
+            var url = client_url + 'serial.connect';
+            url = url.replace('http', 'ws');
+            var connection = new WebSocket(url);
 
-        $('#graphing-dialog').on('hidden.bs.modal', function () {
-            connection.close();
-            graph_reset();
-        });
+            // When the connection is open, open com port
+            connection.onopen = function () {
+                if (baud_rate_compatible && baudrate) {
+                    connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
+                } else {
+                    connection.send('+++ open port ' + getComPort());
+                }
+
+            };
+            // Log errors
+            connection.onerror = function (error) {
+                console.log('WebSocket Error');
+                console.log(error);
+                //connection.close();
+                //connection = new WebSocket(url);
+            };
+
+            // Log messages from the server
+            connection.onmessage = function (e) {
+                graph_new_data(e.data);
+            };
+
+            if (newGraph || graph !== null) {
+                graph_new_labels();
+                graph_interval_id = setInterval(function () {
+                    graph.update(graph_data);
+                    graph_update_labels();
+                }, graph_options.refreshRate);
+            }
+
+            connection.onClose = function () {
+                graph_reset();
+            };
+
+            $('#graphing-dialog').on('hidden.bs.modal', function () {
+                connection.close();
+                graph_reset();
+            });
+        } else {
+            /*  Create simulated graph?  */
+        }
+
+        $('#graphing-dialog').modal('show');
+        document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
+        
     } else {
-        /*  Create simulated graph?  */
+        alert('To use the graphing feature, your program must have both a graph initialize block and a graph value block.');
     }
-
-    $('#graphing-dialog').modal('show');
-    document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
 }
 
 check_com_ports = function () {
