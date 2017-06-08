@@ -8,8 +8,10 @@
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
 <c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
+<c:set var="copparestricted" scope="page" value="${properties:copparestricted()}" />
 
-<html><!-- manifest=node.manifest> -->
+<html>
+    <!-- manifest=node.manifest> -->
     <head>
         <meta name="application-name" content="&nbsp;"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
@@ -79,15 +81,30 @@
                         <div class="col-sm-5 col-sm-offset-1">
                             <div class="form-group">
                                 <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
+                            
+                            <c:if test="${copparestricted == true}">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-default active">
-                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/><fmt:message key="project.sharing.private" />
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <input type="radio" name="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
+                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                            <fmt:message key="project.sharing.private" />
                                     </label>
                                 </div>
+                            </c:if>
+
+                            <c:if test="${copparestricted == false}">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default active">
+                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                            <fmt:message key="project.sharing.private" />
+                                    </label>
+                                    <label class="btn btn-default">
+                                        <input type="radio" name="sharing" value="shared" id="project-form-shared"/>
+                                            <fmt:message key="project.sharing.shared" />
+                                    </label>
+                                </div>
+                            </c:if>
                             </div>
+                                
                         </div>
                         <div class="col-sm-5">
                             <div class="form-group">

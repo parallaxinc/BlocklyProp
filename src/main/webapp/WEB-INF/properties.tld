@@ -29,4 +29,11 @@
         <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
         <function-signature>boolean isExperimentalMenu(java.lang.Boolean)</function-signature>
     </function>
+
+    <!-- Return flag to indicate if COPPA restrictions are anabled -->
+    <function>
+        <name>copparestricted</name>
+        <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
+        <function-signature>boolean isCoppaRestricted()</function-signature>
+    </function>
 </taglib>
