@@ -138,10 +138,14 @@ var colorPalette = {
 
 };
 
-if (document.referrer.split('?')[1].indexOf('grayscale=1') === -1 ) {
+if (document.referrer.indexOf('?') === -1) {
     colorPalette.activePalette = colorPalette.defaultColors;
 } else {
-    colorPalette.activePalette = colorPalette.grayscaleColors;
+    if (document.referrer.split('?')[1].indexOf('grayscale=1') === -1) {
+        colorPalette.activePalette = colorPalette.defaultColors;
+    } else {
+        colorPalette.activePalette = colorPalette.grayscaleColors;
+    }
 }
 
 
@@ -361,7 +365,7 @@ Blockly.propc.finish = function (code) {
         if (definitions[def].indexOf("{{$var_type_") > -1) {
             definitions[def] = definitions[def].replace(/\{\{\$var_type_.*?\}\}/ig, "int").replace(/\{\{\$var_length_.*?\}\}/ig, '');
         }
-        
+
         // This is for when we are ready to switch from pointers to character arrays
         //if (definitions[def].indexOf("char *") > -1) {
         //    definitions[def] = definitions[def].replace("char *", "char ").replace(";", "[128];");

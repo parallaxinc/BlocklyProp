@@ -258,18 +258,18 @@ function loadInto(modal_message, compile_command, load_action) {
     if (client_available) {
         cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
-            if (client_use_websockets === true) {
+            if (client_use_type === 'ws') {
 
-                var db = 'none';
+                var dbug = 'none';
                 if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
-                    db = terminalNeeded;
+                    dbug = terminalNeeded;
                 }
 
                 var prog_to_send = {
                     type: 'load-prop',
                     action: load_action,
                     payload: data.binary,
-                    debug: db,
+                    debug: dbug,
                     extension: data.extension,
                     portPath: getComPort()
                 };
@@ -295,34 +295,10 @@ function loadInto(modal_message, compile_command, load_action) {
     }
 }
 
-/**
- *
- 
- function loadIntoEeprom() {
- if (client_available) {
- cloudCompile('Load into EEPROM', 'eeprom', function (data, terminalNeeded) {
- $.post(client_url + 'load.action', {action: "EEPROM", binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
- $("#compile-console").val($("#compile-console").val() + loaddata.message);
- console.log(loaddata);
- if (terminalNeeded === 'term' && loaddata.success) {
- serial_console();
- } else if (terminalNeeded === 'graph' && loaddata.success) {
- graphing_console();
- }
- });
- });
- } else {
- alert("BlocklyPropClient not available to communicate with a microcontroller"
- + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
- }
- }
- */
-
-
 function serial_console() {
     var newTerminal = false;
 
-    if (client_use_websockets !== true) {
+    if (client_use_type !== 'ws') {
         if (term === null) {
             term = new Terminal({
                 cols: 256,
@@ -541,7 +517,7 @@ function graphing_console() {
 }
 
 check_com_ports = function () {
-    if (client_use_websockets === false) {
+    if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
             var selected_port = $("#comPort").val();
             $.get(client_url + "ports.json", function (data) {

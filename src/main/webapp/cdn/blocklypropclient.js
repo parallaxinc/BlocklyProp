@@ -14,7 +14,7 @@ var client_domain_port = 6009;
 var client_min_version = 0.2;
 var client_baud_rate_min_version = 0.4;
 
-var client_use_websockets = false;
+var client_use_type = 'none';
 var client_ws_connection = null;
 
 var baud_rate_compatible = false;
@@ -31,7 +31,7 @@ var check_ws_socket_interval = null;
 
 find_client = function () {
     establish_socket();
-    if (client_use_websockets === false) {
+    if (client_use_type !== 'ws') {
         check_client();
     }
 };
@@ -56,7 +56,7 @@ version_as_number = function (rawVersion) {
 };
 
 check_client = function () {
-    if (client_use_websockets !== true) {
+    if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
                 console.log(data);
@@ -80,11 +80,14 @@ check_client = function () {
                     check_com_ports_interval = setInterval(check_com_ports, 5000);
                 }
             }
+            client_use_type =  'http';
             setTimeout(check_client, 20000);
 
         }).fail(function () {
             clearInterval(check_com_ports_interval);
-            client_available = false;
+            if(client_use_type !== 'ws') {
+                client_available = false;
+            }
             $("#client-searching").addClass("hidden");
             $("#client-available").addClass("hidden");
             $("#client-unavailable").removeClass("hidden");
@@ -201,7 +204,7 @@ function establish_socket() {
                 if (version_as_number(ws_msg.version) >= version_as_number(client_baud_rate_min_version)) {
                     baud_rate_compatible = true;
                 }
-                client_use_websockets = true;
+                client_use_type = 'ws';
                 client_ws_connection = connection;
                 client_available = true;
 
@@ -237,9 +240,7 @@ function establish_socket() {
             else if (ws_msg.type === 'serial-terminal' &&
                     (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes som weird stuff comes through...
                 if (term !== null) { // is the terminal open?
-                    //console.log('got serial message: ' + ws_msg.msg);
                     term.write(ws_msg.msg);
-                    //}
                 } else if (graph) { // is the graph open?
 
                 }
@@ -265,22 +266,24 @@ function establish_socket() {
         };
 
         connection.onClose = function () {
-            client_available = false;
-            client_use_websockets = false;
+            if(client_use_type !== 'http') {
+                client_available = false;
+                client_use_type = 'none';
 
-            $("#client-searching").addClass("hidden");
-            $("#client-available").addClass("hidden");
-            $("#client-unavailable").removeClass("hidden");
+                $("#client-searching").addClass("hidden");
+                $("#client-available").addClass("hidden");
+                $("#client-unavailable").removeClass("hidden");
 
-            term = null;
-            newTerminal = false;
+                term = null;
+                newTerminal = false;
 
-            selected_port = $("#comPort").val();
-            $("#comPort").empty();
-            $("#comPort").append($('<option>', {
-                text: 'Searching...'
-            }));
-            select_com_port(selected_port);
+                selected_port = $("#comPort").val();
+                $("#comPort").empty();
+                $("#comPort").append($('<option>', {
+                    text: 'Searching...'
+                }));
+                select_com_port(selected_port);
+            }
 
             check_ws_socket_interval = setTimeout(find_client, 3000);
         };
