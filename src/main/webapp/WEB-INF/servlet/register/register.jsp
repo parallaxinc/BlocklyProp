@@ -12,38 +12,69 @@
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
         <script>
-            function initCoppaElements() {
+    function initCoppaElements() {
                
-                var bdmElement = document.getElementById("birthdayMonth");
-                var bdyElement = document.getElementById("birthdayYear");
-                
-                bdyElement.onchange = checkDate;
-                bdmElement.onchange = checkDate;
-                hideSponsorInfo();
-            };
+        document.getElementById("birthdayMonth").onchange = checkCoppaDate;
+        document.getElementById("birthdayYear").onchange = checkCoppaDate;
+        if (document.getElementById('birthdayYear').value == 2017) {
+            hideSponsorInfo();
+        }
+        else {
+            checkCoppaDate();
+        }
+    };
             
-            function checkDate() {
-                // Return today's date and time
-                var currentTime = new Date();
+    function checkCoppaDate() {
+        // Show sponsor inputs if Coppa restriction is enabled
+        if (checkCoppaRestriction() === true) {
+            showSponsorInfo();
+        } else {
+            hideSponsorInfo();
+        }
+    };
+    
+    // Return true if age is < 13
+    function checkCoppaRestriction() {
+        // Validate form data
+        var formYearValue = document.getElementById('birthdayYear');
+        if (formYearValue === null) {
+            return false;
+        }
+        var userYear = parseInt(formYearValue.value);
 
-                var currYear = currentTime.getFullYear();
-                var currMonth = currentTime.getMonth() + 1;
-                
-                var userYear = parseInt(document.getElementById('birthdayYear').value);
-                var userMonth = parseInt(document.getElementById('birthdayMonth').value);
-               
-                if(currYear > userYear + 13 || (currYear > userYear + 12 && currMonth > userMonth)) {
-                    document.getElementById('sponsor-info').style = "visibility: hidden;";
-                    $('#sponsor-info').hide();
-                } else {
-                    document.getElementById('sponsor-info').style = "visibility: visible;";
-                    $('#sponsor-info').show();
-               }
-            };
-            
-            function hideSponsorInfo() {
-                $('#sponsor-info').hide();
-            };
+        // Validate the month component
+        var formMonthValue = document.getElementById('birthdayMonth');
+        if (formMonthValue === null) {
+            return false;
+        }
+        var userMonth = parseInt(formMonthValue.value);
+ 
+        // Return today's date and time
+        var currentTime = new Date();
+        var currYear = currentTime.getFullYear();
+        var currMonth = currentTime.getMonth() + 1;
+
+        // Is the user 13 years old this year?
+        if ((userYear + 13) >= currYear ) {
+            // The user is restricted if their birth month is less than
+            // or equal the current month.
+            if (userMonth <= currMonth) {
+                return true;
+            }
+        }
+        
+        return false;
+   };
+ 
+   function hideSponsorInfo() {
+        document.getElementById('sponsor-info').style = "display:none;";
+        $('#sponsor-info').hide();
+    };
+    
+    function showSponsorInfo() {
+        document.getElementById('sponsor-info').style = "display:inherit;";
+        $('#sponsor-info').show();
+    }
         </script>
     </head>
     <body onload="initCoppaElements()">
@@ -290,7 +321,7 @@
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
                             </p>
                         </div>
-                        <div class="form-group" id="sponsor-info" style="visibility: hidden;">
+                        <div class="form-group" id="sponsor-info" style="display:none;">
                             <p>
                                 <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
                                 <input class="form-control" type="text" name="sponsoremail" maxlength="255"
