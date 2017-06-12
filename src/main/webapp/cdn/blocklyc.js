@@ -367,7 +367,7 @@ function serial_console() {
                 term.write("Connection established with: " + getComPort() + "\n\r");
             }
         }
-    } else {
+    } else if (client_use_type === 'ws') {
 
         term === null;
         term = new Terminal({
@@ -383,6 +383,7 @@ function serial_console() {
         // using Websocket-only client
         var msg_to_send = {
             type: 'serial-terminal',
+            outTo: 'terminal',
             portPath: getComPort(),
             baudrate: baudrate.toString(10),
             msg: 'none',
@@ -461,7 +462,7 @@ function graphing_console() {
             newGraph = true;
         }
 
-        if (client_available) {
+        if (client_use_type !== 'ws' && client_available) {
             var url = client_url + 'serial.connect';
             url = url.replace('http', 'ws');
             var connection = new WebSocket(url);
@@ -504,13 +505,43 @@ function graphing_console() {
                 connection.close();
                 graph_reset();
             });
+            
+        } else if (client_use_type === 'ws' && client_available) {
+            var msg_to_send = {
+                type: 'serial-terminal',
+                outTo: 'graph',
+                portPath: getComPort(),
+                baudrate: baudrate.toString(10),
+                msg: 'none',
+                action: 'msg'
+            };
+
+            if (newGraph || graph !== null) {
+                graph_new_labels();
+                graph_interval_id = setInterval(function () {
+                    graph.update(graph_data);
+                    graph_update_labels();
+                }, graph_options.refreshRate);
+                msg_to_send.action = 'open';
+                client_ws_connection.send(JSON.stringify(msg_to_send));
+            }
+
+            $('#graphing-dialog').on('hidden.bs.modal', function () {
+                if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
+                    msg_to_send.action = 'close';
+                    client_ws_connection.send(JSON.stringify(msg_to_send));
+                    //console.log('closing: ' + JSON.stringify(msg_to_send));
+                }
+                graph_reset();
+            });
+            
         } else {
-            /*  Create simulated graph?  */
+            // create simulated graph?
         }
 
         $('#graphing-dialog').modal('show');
         document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
-        
+
     } else {
         alert('To use the graphing feature, your program must have both a graph initialize block and a graph value block.');
     }
