@@ -3404,7 +3404,7 @@ Blockly.propc.graph_settings = function () {
     }
     
     Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:100,' +
-            x_axis + ',' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
+            x_axis + ',S,' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
 
     return '';
 };

@@ -1777,9 +1777,9 @@ Blockly.propc.calibrate_line_sensor = function () {
     func += 'int __calibrate_timer = CNT + (CLKFREQ/1000) * 3672;\ns3_motorSet(75, -75, 0);';
     func += '\nwhile(CNT < __calibrate_timer) {int __tempLineSen = s3_lineSensor(S3_LEFT);\n';
     func += 'if (__tempLineSen < __lineSenCal[0]) __lineSenCal[0] = __tempLineSen;\n';
-    func += 'if (__tempLineSen > __lineSenCal[1]) __lineSenCal[1] = __tempLineSen;\n';
-    func += '__tempLineSen = s3_lineSensor(S3_RIGHT);\nif (__tempLineSen < __lineSenCal[2]) ';
-    func += '__lineSenCal[2] = __tempLineSen;\nif (__tempLineSen > __lineSenCal[3]) ';
+    func += 'if (__tempLineSen > __lineSenCal[2]) __lineSenCal[2] = __tempLineSen;\n';
+    func += '__tempLineSen = s3_lineSensor(S3_RIGHT);\nif (__tempLineSen < __lineSenCal[1]) ';
+    func += '__lineSenCal[1] = __tempLineSen;\nif (__tempLineSen > __lineSenCal[3]) ';
     func += '__lineSenCal[3] = __tempLineSen;}s3_motorSet(0, 0, 0);\n';
     func += 'if (__lineSenCal[2] > __lineSenCal[0]) __lineSenCal[0] = __lineSenCal[2];\n';
     func += 'if (__lineSenCal[3] < __lineSenCal[1]) __lineSenCal[1] = __lineSenCal[3];\n';
