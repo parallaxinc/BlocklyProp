@@ -196,6 +196,9 @@ function establish_socket() {
 
             // --- hello handshake - establish new connection
             if (ws_msg.type === 'hello-client') {
+                // type: 'hello-client', 
+                // version: [String version (semantic versioning)]
+                
                 console.log("Websocket client found - version " + ws_msg.version);
 
                 if (version_as_number(ws_msg.version) < version_as_number(client_min_version)) {
@@ -218,7 +221,9 @@ function establish_socket() {
             }
 
             // --- com port list/change
-            else if (ws_msg.type === 'port-list') {  // type: 'port-list', ports: ['port1', 'port2', 'port3'...]
+            else if (ws_msg.type === 'port-list') {  
+                // type: 'port-list', 
+                // ports: ['port1', 'port2', 'port3'...]
 
                 selected_port = $("#comPort").val();
                 $("#comPort").empty();
@@ -239,22 +244,50 @@ function establish_socket() {
             // --- serial terminal/graph
             else if (ws_msg.type === 'serial-terminal' &&
                     (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes som weird stuff comes through...
+                // type: 'serial-terminal'
+                // msg: [String message]
+                
                 if (term !== null) { // is the terminal open?
                     term.write(ws_msg.msg);
-                } else if (graph) { // is the graph open?
-
+                } else if (graph !== null) { // is the graph open?
+                    graph_new_data(ws_msg.msg);
                 }
-            }
-
-            // --- Response from programming the Prop
-            else if (ws_msg.type === 'prop-load') {
-
             }
             
             // --- UI Commands coming from the client
-            else if (ws_msg.type === 'ui-command') {
-                // open/close/message the compiler modal, terminal, or graph
-            
+            else if (ws_msg.type === 'ui-command') { 
+                // type: 'ui-command', 
+                // action: ['open-terminal','open-graph','close-terminal','close-graph','close-compile','clear-compile','message-compile','alert']
+                // msg: [String message]
+                
+                if (ws_msg.action === 'open-terminal') {
+                    serial_console();
+                    
+                } else if (ws_msg.action === 'open-graph') {
+                    graphing_console();
+                    
+                } else if (ws_msg.action === 'close-terminal') {
+                    $('#console-dialog').modal('hide');
+                    newTerminal = false;
+                    term.destroy();
+                    
+                } else if (ws_msg.action === 'close-graph') {
+                    $('#graphing-dialog').modal('hide');
+                    graph_reset();
+                    
+                } else if (ws_msg.action === 'clear-compile') {
+                    $('#compile-dialog').val('');
+                    
+                } else if (ws_msg.action === 'message-compile') {
+                    $('#compile-dialog').val($('#compile-dialog').val + ws_msg.msg);
+                    
+                } else if (ws_msg.action === 'close-compile') {
+                    $('#compile-dialog').modal('hide');
+                    $('#compile-dialog').val('');
+                    
+                } else if (ws_msg.action === 'alert') {
+                    alert(ws_msg.msg);
+                }
             }
 
             // --- older client - disconnect it?
@@ -262,7 +295,6 @@ function establish_socket() {
                 console.log('Unknown WS msg: ' + JSON.stringify(ws_msg));
                 //connection.close();
             }
-
         };
 
         connection.onClose = function () {

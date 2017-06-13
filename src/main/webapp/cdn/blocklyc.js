@@ -135,7 +135,8 @@ function renderContent() {
     } else if (content.id === 'content_propc') {
         var code = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
         code = js_beautify(code, {
-            'brace_style': 'expand'
+            'brace_style': 'expand',
+            'indent_size': 2
         });
         code = code.replace(/,\n[\s\xA0]+/g, ", ");
         code = code.replace(/, & /g, ", &");
@@ -196,7 +197,8 @@ function cloudCompile(text, action, successHandler) {
 
 
         propcCode = js_beautify(propcCode, {
-            'brace_style': 'expand'
+            'brace_style': 'expand',
+            'indent_size': 2
         });
 
         var terminalNeeded = false;
