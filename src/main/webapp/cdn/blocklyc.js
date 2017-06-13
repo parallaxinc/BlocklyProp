@@ -713,6 +713,7 @@ function graph_new_data(stream) {
 
 function graph_reset() {
     clearInterval(graph_interval_id);
+    graph = null;
     graph_interval_id = null;
     graph_temp_data = null;
     graph_temp_data = new Array;
