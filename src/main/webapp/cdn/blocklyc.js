@@ -718,6 +718,7 @@ function graph_reset() {
     graph_temp_data = new Array;
     graph_csv_data = null;
     graph_csv_data = new Array;
+    graph_data = null;
     graph_data = {
         series: [// add more here for more possible lines...
             [],
