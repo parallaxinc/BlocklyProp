@@ -280,11 +280,11 @@ Blockly.Blocks.colorpal_get_colors_raw = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('R_STORAGE'))) {
-            this.setTitleValue(newName, 'R_STORAGE');
+            this.setFieldValue(newName, 'R_STORAGE');
         } else if (Blockly.Names.equals(oldName, this.getFieldValue('G_STORAGE'))) {
-            this.setTitleValue(newName, 'G_STORAGE');
+            this.setFieldValue(newName, 'G_STORAGE');
         } else if (Blockly.Names.equals(oldName, this.getFieldValue('B_STORAGE'))) {
-            this.setTitleValue(newName, 'B_STORAGE');
+            this.setFieldValue(newName, 'B_STORAGE');
         }
     }
 };
@@ -315,7 +315,7 @@ Blockly.Blocks.colorpal_get_colors = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('COLOR'))) {
-            this.setTitleValue(newName, 'COLOR');
+            this.setFieldValue(newName, 'COLOR');
         }
     }
 };
@@ -670,11 +670,11 @@ Blockly.Blocks.MMA7455_acceleration = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('X_VAR'))) {
-            this.setTitleValue(newName, 'X_VAR');
+            this.setFieldValue(newName, 'X_VAR');
         } else if (Blockly.Names.equals(oldName, this.getFieldValue('Y_VAR'))) {
-            this.setTitleValue(newName, 'Y_VAR');
+            this.setFieldValue(newName, 'Y_VAR');
         } else if (Blockly.Names.equals(oldName, this.getFieldValue('Z_VAR'))) {
-            this.setTitleValue(newName, 'Z_VAR');
+            this.setFieldValue(newName, 'Z_VAR');
         }
     }
 };
@@ -737,7 +737,7 @@ Blockly.Blocks.HMC5883L_read = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HEADING'))) {
-            this.setTitleValue(newName, 'HEADING');
+            this.setFieldValue(newName, 'HEADING');
         }
     }
 };
@@ -831,11 +831,11 @@ Blockly.Blocks.lsm9ds1_read = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('X_VAR'))) {
-            this.setTitleValue(newName, 'X_VAR');
+            this.setFieldValue(newName, 'X_VAR');
         } else if (Blockly.Names.equals(oldName, this.getFieldValue('Y_VAR'))) {
-            this.setTitleValue(newName, 'Y_VAR');
+            this.setFieldValue(newName, 'Y_VAR');
         } else if (Blockly.Names.equals(oldName, this.getFieldValue('Z_VAR'))) {
-            this.setTitleValue(newName, 'Z_VAR');
+            this.setFieldValue(newName, 'Z_VAR');
         }
     }
 };
@@ -925,14 +925,14 @@ Blockly.Blocks.lsm9ds1_tilt = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR1')))
-            this.setTitleValue(newName, 'VAR1');
+            this.setFieldValue(newName, 'VAR1');
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR2')))
-            this.setTitleValue(newName, 'VAR2');
+            this.setFieldValue(newName, 'VAR2');
     }
 };
 
 Blockly.propc.lsm9ds1_tilt = function () {
-    var t1_axis = '__imu' + this.getFieldValue('A1')[0].toUpperCase();
+    var t1_axis = '__imu' + this.getFieldValue('A1')[6].toUpperCase();
     var t2_axis = '__imu' + this.getFieldValue('A2')[0].toUpperCase();
     var g_axis = '__imu' + this.getFieldValue('G_AXIS');
     var storage1 = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR1'), Blockly.Variables.NAME_TYPE);
@@ -1035,7 +1035,7 @@ Blockly.Blocks.lsm9ds1_heading = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -1368,7 +1368,7 @@ Blockly.Blocks.rfid_get = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
-            this.setTitleValue(newName, 'BUFFER');
+            this.setFieldValue(newName, 'BUFFER');
         }
     }
 };

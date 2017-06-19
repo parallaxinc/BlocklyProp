@@ -28,16 +28,17 @@ var check_com_ports_interval = null;
 version_as_number = function (rawVersion) {
     var tempVersion = rawVersion.toString().split(".");
     tempVersion.push('0');
-    
-    if(tempVersion.length < 3) {
-        bootbox.alert("BlocklyProp is unable to determine what version of " + 
+
+    if (tempVersion.length < 3) {
+        bootbox.alert("BlocklyProp is unable to determine what version of " +
                 "BlocklyPropClient is installed on your computer.\nYou may need to install" +
                 "or reinstall the BlocklyPropClient.");
-        if(tempVersion.length === 1) tempVersion = '0.0.0';
+        if (tempVersion.length === 1)
+            tempVersion = '0.0.0';
         else
-        tempVersion.unshift('0');
+            tempVersion.unshift('0');
     }
-    
+
     // Allow for any of the three numbers to be between 0 and 1023.
     // Equivalent to: (Major * 104856) + (Minor * 1024) + Revision.
     return (Number(tempVersion[0]) << 20 | Number(tempVersion[1]) << 10 | Number(tempVersion[2]));

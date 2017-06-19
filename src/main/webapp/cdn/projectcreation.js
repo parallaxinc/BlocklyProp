@@ -3,7 +3,7 @@
 
 var projectTypes = {
     "PROPC": "blocklyc.jsp",
-    "SPIN": "blocklyspin.jsp"
+    "SPIN": "blocklyc.jsp"
 };
 
 var simplemde = null;

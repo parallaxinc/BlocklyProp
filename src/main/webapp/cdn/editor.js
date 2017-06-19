@@ -79,6 +79,18 @@ showInfo = function (data) {
     if (!data['yours']) {
         $(".project-owner").text("(" + data['user'] + ")");
     }
+    var projectBoardIcon = {
+        "activity-board": "/cdn/images/board-icons/IconActivityBoard.png",
+        "s3": "/cdn/images/board-icons/IconS3.png",
+        "heb": "/cdn/images/board-icons/IconBadge.png",
+        "flip": "/cdn/images/board-icons/IconFlip.png",
+        "other": "/cdn/images/board-icons/IconOtherBoards.png"
+    };
+    
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+    
+    $("#project-icon").html('<img src="' + baseUrl + projectBoardIcon[data['board']] + '"/>');
 };
 
 saveProject = function () {
@@ -132,9 +144,11 @@ loadProject = function () {
     }
     if (projectData['board'] === 's3' && type === 'PROPC') {
         $('#load-ram-button').addClass('hidden');
+        $('#open-graph-output').addClass('hidden');
         document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
     } else {
         $('#load-ram-button').removeClass('hidden');
+        $('#open-graph-output').removeClass('hidden');
         document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
     }
 };

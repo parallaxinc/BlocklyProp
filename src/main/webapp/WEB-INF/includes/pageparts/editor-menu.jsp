@@ -7,6 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
+<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
+
 <nav class="navbar navbar-default clearfix" role="navigation">
     <div style="width:100%;">
         <div style="display:inline;"><span><a id="nav-logo" href="<url:getUrl url="/"/>">BlocklyProp<br><strong>BETA</strong></a></span>
@@ -36,7 +38,7 @@
                     </span>
                 </div>
                 <div class="project-name-wrapper" align="right">        
-                    <span class="project-name"></span> <span class="project-owner"></span>
+                    <span id="project-icon" class="editor-icon"></span> <span class="project-name"></span> <span class="project-owner"></span>
                 </div>
             </div>
             <div style="width:100%; padding-bottom: 5px;">
@@ -46,7 +48,15 @@
                         <a onclick="loadIntoRam()" data-toggle="tooltip" title="Run once (load code to RAM)" data-placement="bottom" class="btn btn-success btn-circle" id="load-ram-button"><i class="glyphicon glyphicon-arrow-down"></i></a>
                         </c:if>
                     <a onclick="loadIntoEeprom()" data-toggle="tooltip" title="Load and run (save code to EEPROM)" data-placement="bottom" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-save"></i></a>
-                    <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list-alt"></i></a>
+                    <a onclick="serial_console()" data-toggle="tooltip" title="Open Serial Terminal" data-placement="bottom" class="btn btn-primary btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><rect x="1" y="1" width="12" height="13" rx="1" ry="1" style="stroke:#fff;stroke-width:2;fill:none;"/><path d="M3,4.5 L10,4.5 M3,6.5 L6,6.5 M3,8.5 L8,8.5" style="stroke:#fff;stroke-width:1;fill:none;"/></svg></a>
+                        <c:choose>
+                            <c:when test="${experimental == true}">
+                            <a onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle" id="open-graph-output"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
+                                <path d="M.5,0 L.5,13.5 L12.5,13.5 M3.5,0 L3.5,13.5 M6.5,0 L6.5,13.5 M9.5,0 L9.5,13.5 M12.5,0 L12.5,13.5 M.5,3.5 L12.5,3.5 M.5,7 L12.5,7 M.5,10.5 L12.5,10.5 M.5,.5 L12.5,.5" style="stroke:rgba(255,255,255,.6);stroke-width:1;fill:none;"/>
+                                <path d="M0,13 L6,5 L9,8 L14,2" style="stroke:#fff;stroke-width:2;fill:none;"/>
+                                </svg></a>
+                            </c:when>
+                        </c:choose>
                 </div>
                 <div style="display:inline; clear:right; float:right;  padding-right: 10px;" align="right">
 
@@ -68,8 +78,7 @@
                             <li><a id="edit-project-details" href="#" onclick="editProjectDetails()"><fmt:message key="editor.edit-details" /></a></li>
                             <li><a id="save-project-as" href="#"><fmt:message key="editor.save-as" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
-                            <li><a href="<url:getUrl url="/projectcreate.jsp?lang=SPIN"/>">New <fmt:message key="editor.newproject.spin" /> project</a></li>
-                            <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>">New <fmt:message key="editor.newproject.c" /> project</a></li>
+                            <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a></li>
                             <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a></li>
                             <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
@@ -84,7 +93,6 @@
                             <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
                             <li><a href="#" onclick="configure_client()"><fmt:message key="editor.run.configure" /></a></li>
-
                         </ul></span>
                 </div>
             </div>

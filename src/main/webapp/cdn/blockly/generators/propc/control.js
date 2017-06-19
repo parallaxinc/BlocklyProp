@@ -33,12 +33,15 @@ if (!Blockly.Blocks)
 
 Blockly.Blocks.controls_repeat = {
     init: function () {
+        var block_label = 'repeat';
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LOOP_TOOLTIP);
+            block_label = 'loop';
         } else {
             this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
         }
-        this.setTooltip(Blockly.MSG_CONTROLS_REPEAT_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         // ["with", "WITH"]
         var PROPERTIES = [["forever", "FOREVER"], ["x times", "TIMES"], ["until", "UNTIL"], ["while", "WHILE"]];
@@ -46,7 +49,7 @@ Blockly.Blocks.controls_repeat = {
             this.sourceBlock_.updateShape_(type);
         });
         this.appendDummyInput()
-                .appendField("repeat");
+                .appendField(block_label);
         this.appendDummyInput("REPEAT")
                 .appendField(fieldDropdown, "TYPE");
         this.appendStatementInput("DO")
@@ -355,15 +358,18 @@ Blockly.propc.controls_if = function () {
 Blockly.Blocks.control_repeat_for_loop = {
     //helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function () {
+        var block_label = 'repeat';
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_S3_SCRIBBLER_LIMITED_LOOP_TOOLTIP);
+            block_label = 'loop';
         } else {
             this.setHelpUrl(Blockly.MSG_CONTROL_HELPURL);
+            this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
         }
-        this.setTooltip(Blockly.MSG_CONTROL_REPEAT_FOR_LOOP_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField("repeat")
+                .appendField(block_label)
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         this.appendValueInput('START')
                 .setCheck('Number')
@@ -386,7 +392,7 @@ Blockly.Blocks.control_repeat_for_loop = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };

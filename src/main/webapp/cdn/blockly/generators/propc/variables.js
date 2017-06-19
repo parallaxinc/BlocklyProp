@@ -50,7 +50,7 @@ Blockly.Blocks.variables_get = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -75,7 +75,7 @@ Blockly.Blocks.variables_declare = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -99,7 +99,7 @@ Blockly.Blocks.variables_set = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
-            this.setTitleValue(newName, 'VAR');
+            this.setFieldValue(newName, 'VAR');
         }
     }
 };
@@ -112,7 +112,7 @@ Blockly.Blocks.variables_set = {
 
 Blockly.propc.variables_get = function () {
     // Variable getter.
-    var code = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
+    var code = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR').replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_'),
             Blockly.Variables.NAME_TYPE);
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
@@ -123,7 +123,7 @@ Blockly.propc.variables_declare = function () {
     //TODO: settype to variable
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';
-    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
+    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR').replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_'),
             Blockly.Variables.NAME_TYPE);
     Blockly.propc.setups_['setup_var' + varName] = varName + ' = ' + argument0 + ';\n';
     Blockly.propc.vartype_[varName] = dropdown_type;
@@ -134,7 +134,7 @@ Blockly.propc.variables_set = function () {
     // Variable setter.
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';
-    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'),
+    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR').replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
         if (argument0.indexOf("int") > -1) {
@@ -192,8 +192,7 @@ Blockly.Blocks.array_get = {
 
 Blockly.propc.array_get = function () {
     var varName = this.getFieldValue('VAR');
-    varName = varName.replace(" ", "_");
-    varName = varName.replace(/\W/g, "");
+    varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var list = Blockly.propc.global_vars_;
 
@@ -226,13 +225,12 @@ Blockly.Blocks.array_init = {
 
 Blockly.propc.array_init = function () {
     var varName = this.getFieldValue('VAR');
-    varName = varName.replace(" ", "_");
-    varName = varName.replace(/\W/g, "");
+    varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var element = this.getFieldValue('NUM') || '10';
 
     Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];';
 
-    return '';
+    return '';                
 };
 
 Blockly.Blocks.array_fill = {
@@ -252,8 +250,7 @@ Blockly.Blocks.array_fill = {
 
 Blockly.propc.array_fill = function () {
     var varName = this.getFieldValue('VAR');
-    varName = varName.replace(" ", "_");
-    varName = varName.replace(/\W/g, "");
+    varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var varVals = this.getFieldValue('NUM');
     
     varVals = varVals.replace(/[^0-9,-\.]/g, "");
@@ -329,8 +326,7 @@ Blockly.Blocks.array_set = {
 
 Blockly.propc.array_set = function () {
     var varName = this.getFieldValue('VAR');
-    varName = varName.replace(" ", "_");
-    varName = varName.replace(/\W/g, "");
+    varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
     var list = Blockly.propc.global_vars_;
@@ -366,8 +362,7 @@ Blockly.Blocks.array_clear = {
 
 Blockly.propc.array_clear = function () {
     var varName = this.getFieldValue('VAR');
-    varName = varName.replace(" ", "_");
-    varName = varName.replace(/\W/g, "");
+    varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var list = Blockly.propc.global_vars_;
 
     if (Object.keys(list).indexOf('__ARRAY' + varName) < 0) {

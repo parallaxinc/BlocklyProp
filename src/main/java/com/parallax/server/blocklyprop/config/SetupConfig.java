@@ -73,8 +73,14 @@ public class SetupConfig extends GuiceServletContextListener {
     */
     private void readConfiguration() {
         try {
-            LOG.info("Looking for blocklyprop.properties in: {}", System.getProperty("user.home"));
-            DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(getClass().getResource("/config.xml"));
+            LOG.info(
+                    "Looking for blocklyprop.properties in: {}", 
+                    System.getProperty("user.home"));
+            
+            DefaultConfigurationBuilder configurationBuilder 
+                    = new DefaultConfigurationBuilder(getClass()
+                            .getResource("/config.xml"));
+            
             configuration = configurationBuilder.getConfiguration();
         } catch (ConfigurationException ce) {
             LOG.error("{}", ce.getMessage());
@@ -86,8 +92,11 @@ public class SetupConfig extends GuiceServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
-        // This manually deregisters JDBC driver, which prevents Tomcat 7 from complaining about memory leaks wrto this class
+        
         Enumeration<Driver> drivers = DriverManager.getDrivers();
+
+        // This manually deregisters JDBC driver, which prevents Tomcat 7 from
+        // complaining about memory leaks into this class
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();
             try {
