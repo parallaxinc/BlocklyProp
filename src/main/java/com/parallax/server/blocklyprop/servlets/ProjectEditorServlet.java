@@ -54,11 +54,11 @@ public class ProjectEditorServlet extends HttpServlet {
             // Project not found, or invalid share key
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         } else {
-            if (ProjectType.PROPC == project.getType()) {
+            //if (ProjectType.PROPC == project.getType()) {
                 resp.sendRedirect(req.getContextPath() + "/editor/blocklyc.jsp?project=" + project.getId());
-            } else if (ProjectType.SPIN == project.getType()) {
-                resp.sendRedirect(req.getContextPath() + "/editor/blocklyspin.jsp?project=" + project.getId());
-            }
+            //} else if (ProjectType.SPIN == project.getType()) {
+            //    resp.sendRedirect(req.getContextPath() + "/editor/blocklyspin.jsp?project=" + project.getId());
+            //}
         }
     }
 

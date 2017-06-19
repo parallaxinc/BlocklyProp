@@ -23,6 +23,7 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
+        <script type="text/javascript" src="<url:getCdnUrl url="/lib/chartist.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/xterm.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/beautify.js"/>"></script>
@@ -32,6 +33,8 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blocklyc.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
+
+        <link href="<url:getCdnUrl url="/lib/chartist.min.css" />" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
@@ -64,7 +67,7 @@
             </table>
         </div>
 
-                        
+
         <div class="modal fade" id="upload-dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -73,7 +76,7 @@
                         <h4 class="modal-title" id="upload-dialog-title"><fmt:message key="editor.upload" /></h4>
                     </div>
                     <div class="modal-body">
-                        
+
                         <label class="control-label"><fmt:message key="editor.upload.selectfile" /></label>
                         <input id="selectfile" type="file" onchange="uploadHandler(this.files);">
                         <div id="selectfile-verify-valid" class="alert alert-success" style="display: none;"><span class="glyphicon glyphicon-ok"></span> <fmt:message key="editor.upload.valid" /></div>
@@ -125,12 +128,42 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div class="modal fade" id="graphing-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="graphing-dialog-title"><fmt:message key="editor.title.graphing" /></h4>
+                    </div>
+                    <div class="modal-body" style="height: 430px;">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div id="serial_graphing" class="ct-chart ct-perfect-fourth" style="width:500px;"></div>
+                                    <div id="graph_x-axis_label" align="center">Time (seconds)</div>
+                                </td>
+                                <td valign="top">
+                                    <div id="serial_graphing_labels"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer clearfix">
+                        <button type="button" id="btn-graph-play" data-toggle="tooltip" title="Pause/Resume the graph" data-placement="bottom" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><i class="glyphicon glyphicon-pause"></i></button>&nbsp;
+                        <button type="button" id="btn-graph-snapshot" data-toggle="tooltip" title="Download a snapshot of the graph" data-placement="bottom" class="btn btn-success btn-circle pull-left" onclick="downloadGraph();"><i class="glyphicon glyphicon-camera"></i></button>&nbsp;
+                        <button type="button" id="btn-graph-csv" data-toggle="tooltip" title="Download graph data as CSV" data-placement="bottom" class="btn btn-success btn-circle pull-left" onclick="downloadCSV();"><i class="glyphicon glyphicon-file"></i></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <%@ include file="/WEB-INF/includes/pageparts/clientdownload.jsp"%>
 
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootbox.min.js"/>"></script>
         <script>
-            var type = 'PROPC';
+                            var type = 'PROPC';
         </script>
     </body>
 </html>
