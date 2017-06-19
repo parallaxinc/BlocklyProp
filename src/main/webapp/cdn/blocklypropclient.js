@@ -150,7 +150,7 @@ configure_client = function () {
 function establish_socket() {
     check_ws_socket_interval = null;
     
-    if(client_ws_connection !== null) {
+    if(client_ws_connection !== null && client_use_type !== 'ws') {
         client_ws_connection.close();
     }
 
