@@ -442,16 +442,12 @@
                 </value>
         </category>
         <category name="<fmt:message key="category.communicate" />" include="activity-board,flip,other" colour="340">
-            <c:choose>
-                <c:when test="${experimental == true}">
-                    <category name="<fmt:message key="category.communicate.graphing" />" include="activity-board,flip,other">
-                        <block type="graph_settings">
-                            <field name="XAXIS">40,S</field>
-                        </block>                
-                        <block type="graph_output"></block>
-                    </category>
-                </c:when>
-            </c:choose>
+            <category name="<fmt:message key="category.communicate.graphing" />" include="activity-board,flip,other">
+                <block type="graph_settings">
+                    <field name="XAXIS">40,S</field>
+                </block>                
+                <block type="graph_output"></block>
+            </category>
             <category name="<fmt:message key="category.communicate.oled" />">
                 <block type="oled_initialize"></block>
                 <block type="oled_font_loader"></block>
