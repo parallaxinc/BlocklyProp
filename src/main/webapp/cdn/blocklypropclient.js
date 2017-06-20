@@ -279,7 +279,7 @@ function establish_socket() {
                     $('#compile-dialog').val('');
                     
                 } else if (ws_msg.action === 'message-compile') {
-                    $('#compile-dialog').val($('#compile-dialog').val + ws_msg.msg);
+                    $('#compile-dialog').val($('#compile-dialog').val() + ws_msg.msg);
                     
                 } else if (ws_msg.action === 'close-compile') {
                     $('#compile-dialog').modal('hide');
@@ -298,6 +298,7 @@ function establish_socket() {
         };
 
         connection.onClose = function () {
+            client_ws_connection = null;
             if(client_use_type !== 'http') {
                 client_available = false;
                 client_use_type = 'none';
