@@ -7,7 +7,7 @@ package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
 import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
-import com.parallax.server.blocklyprop.servlets.ChildPrivacyServlet;
+import com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
 import com.parallax.server.blocklyprop.servlets.HelpSearchServlet;
@@ -83,7 +83,7 @@ public class ServletsModule extends ServletModule {
         serve("/sessionapi").with(SessionStateServlet.class);      
         
         // COPPA support
-        serve("/child-privacy-policy").with(ChildPrivacyServlet.class);
+        serve("/privacy-policy").with(PrivacyPolicyServlet.class);
     }
 
 }

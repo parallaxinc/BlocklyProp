@@ -69,7 +69,7 @@
     <!-- URL of the visual REST API documentation -->
     <servlet>
         <servlet-name>ChildPrivacy</servlet-name>
-        <servlet-class>com.parallax.server.blocklyprop.servlets.ChildPrivacyServlet</servlet-class>
+        <servlet-class>com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>vapi_servlet</servlet-name>

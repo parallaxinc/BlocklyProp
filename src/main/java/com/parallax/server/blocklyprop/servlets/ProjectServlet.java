@@ -18,7 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
 
 /**
- *
+ * Handler for the /project REST endpoint
+ * 
  * @author Michel
  */
 @Singleton

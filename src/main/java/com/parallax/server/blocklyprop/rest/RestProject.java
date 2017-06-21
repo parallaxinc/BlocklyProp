@@ -196,7 +196,7 @@ public class RestProject {
             @FormParam("type") ProjectType type, 
             @FormParam("board") String board) {
         
-        LOG.info("Saving project {}.", idProject);
+        LOG.info("Received POST REST call. Saving project {}.", idProject);
 
         try {
             boolean privateProject = false;

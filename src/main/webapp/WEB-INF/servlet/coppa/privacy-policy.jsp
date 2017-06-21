@@ -1,28 +1,27 @@
 <%--
-    Document   : COPPA policy page
+    Document   : Parallax Online Privacy Policies page
     Created on : 08-MAY-2017
     Author     : J. Ewald
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
     </head>
     <body>
-
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
-
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <h3><fmt:message key="coppa.policy.title" /></h3>
+                    <h3>Parallax BlocklyProp Privacy Policies</h3>
                     <div>
                         <h2>Parallax BlocklyProp Privacy Policies</h2>
                         <p>Parallax Inc., including the BlocklyProp system, is committed to protecting the privacy of children who use our sites and applications. This online privacy policy explains our information collection, disclosure, and parental notification and consent practices with respect to information provided by children under the age of 13 (“child” or “children”). This policy is in accordance with the U.S. Children’s Online Privacy Protection Act ("COPPA") and the Family Education Records Privacy Act ("FERPA"), and outlines our practices in the United States and Latin America regarding children’s personal information.</p>
-                        <h3>The Information We Collect From Children, How We Use It, and How and When We Communicate With Parents</h3>                        <p>In any instance that we collect personal information from a child, we will retain that information only so long as reasonably necessary to fulfill the activity request or allow the child to continue to participate in the activity, and ensure the security of our users and our services, or as required by law. In the event we discover we have collected information from a child in a manner inconsistent with COPPA’s requirements, we will either delete the information or immediately seek the parent’s consent for that collection.</p>
+                        <h4>The Information We Collect From Children, How We Use It, and How and When We Communicate With Parents</h4>
+                        <p>In any instance that we collect personal information from a child, we will retain that information only so long as reasonably necessary to fulfill the activity request or allow the child to continue to participate in the activity, and ensure the security of our users and our services, or as required by law. In the event we discover we have collected information from a child in a manner inconsistent with COPPA’s requirements, we will either delete the information or immediately seek the parent’s consent for that collection.</p>
                         <h4>Registration</h4>
                         <p>Children can register with our site to learn and create with the BlocklyProp system. During the registration process, we may ask the child to provide certain information for notification and security purposes, including a parent or guardian’s email address, the child’s member or account username, and password. We also may ask for birth dates from children to validate their ages. We strongly advise children never to provide any personal information in their usernames. We will not require a child to provide more information than is reasonably necessary in order to use the BlocklyProp system.</p>
                         <p>About the collection of parent email address: Consistent with the requirements of COPPA, on any child-targeted site or application, or in any instance where we ask for age and determine the user is age 12 or under, we will ask for a parent or guardian email address before we collect any personal information from the child. If you believe your child is participating in an activity that collects personal information and you or another parent/guardian have NOT received an email providing notice or seeking your consent, please feel free to contact us at education@parallax.com. We will not use parent e-mails provided for parental consent purposes to market to the parent unless the parent has expressly opted in to email marketing or has separately participated in an activity that allows for such email contact.</p>
@@ -34,6 +33,8 @@
                         <p>Teacher consent in lieu of a parent. With regard to school-based activities, COPPA allows teachers and school administrators to act in the stead of parents to provide consent for the collection of personal information from children. Schools should always notify parents about these activities. For more information on parental rights with respect to a child’s educational record under the Family Educational Rights and Privacy Act (FERPA), please visit the FERPA site.</p>
                         <h4>Email Contact with a Child</h4>
                         <p>On occasion, in order to respond to a question or request from a child, Parallax may need to ask for the child’s online contact information, such as an email address. Parallax will delete this information immediately after responding to the question or request.</p>
+                        <h4>Third-parties and outside entities</h4>
+                        <p>Parallax Inc. does not share, sell, or disclose any user or customer information with third-parties or outside entities, unless that entity is a law-enforcement agency that has obtained the legal authority to collect it.</p>
                         <h4>Persistent Identifiers</h4>
                         <p>When children interact with us, certain information may automatically be collected to make more useful and secure. Examples include the type of computer operating system, the child’s IP address or mobile device identifier, the web browser, and information regarding the online or mobile service provider. This information is collected using technologies such as cookies, flash cookies, web beacons, and other unique identifiers. This data is principally used for internal purposes only, in order to:</p>                        
                         <ul>

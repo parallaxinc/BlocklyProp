@@ -11,15 +11,80 @@
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
+        <script>
+    function initCoppaElements() {
+               
+        document.getElementById("birthdayMonth").onchange = checkCoppaDate;
+        document.getElementById("birthdayYear").onchange = checkCoppaDate;
+        if (document.getElementById('birthdayYear').value == 2017) {
+            hideSponsorInfo();
+        }
+        else {
+            checkCoppaDate();
+        }
+    };
+            
+    function checkCoppaDate() {
+        // Show sponsor inputs if Coppa restriction is enabled
+        if (checkCoppaRestriction() === true) {
+            showSponsorInfo();
+        } else {
+            hideSponsorInfo();
+        }
+    };
+    
+    // Return true if age is < 13
+    function checkCoppaRestriction() {
+        // Validate form data
+        var formYearValue = document.getElementById('birthdayYear');
+        if (formYearValue === null) {
+            return false;
+        }
+        var userYear = parseInt(formYearValue.value);
+
+        // Validate the month component
+        var formMonthValue = document.getElementById('birthdayMonth');
+        if (formMonthValue === null) {
+            return false;
+        }
+        var userMonth = parseInt(formMonthValue.value);
+ 
+        // Return today's date and time
+        var currentTime = new Date();
+        var currYear = currentTime.getFullYear();
+        var currMonth = currentTime.getMonth() + 1;
+
+        // Is the user 13 years old this year?
+        if ((userYear + 13) >= currYear ) {
+            // The user is restricted if their birth month is less than
+            // or equal the current month.
+            if (userMonth <= currMonth) {
+                return true;
+            }
+        }
+        
+        return false;
+   };
+ 
+   function hideSponsorInfo() {
+        document.getElementById('sponsor-info').style = "display:none;";
+        $('#sponsor-info').hide();
+    };
+    
+    function showSponsorInfo() {
+        document.getElementById('sponsor-info').style = "display:inherit;";
+        $('#sponsor-info').show();
+    }
+        </script>
     </head>
-    <body>
+    <body onload="initCoppaElements()">
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
             <div class="row">
-                <div class="col-md-6 col-sm-12"></div>
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-5 col-sm-10"></div>
+                <div class="col-md-7 col-sm-14">
                     <h2><fmt:message key="register.do.title" /></h2>
                     <%  // Test for a generic error
                         Boolean error = (Boolean) request.getAttribute("error");
@@ -192,61 +257,61 @@
                             <input class="form-control" type="password" name="confirmpassword" maxlength="255">
                         </div>
                         <div class="form-group">
-                            <label for="bdmonth"><fmt:message key="register.do.birth.month" /></label>
-                            <select name="bdmonth">
-                    <%
-                        int bdLoop;
-                        String[] months={
-                            "Select month",
-                            "January", "February", "March", "April", "May",
-                            "June", "July", "August", "September", "October",
-                            "November", "December"};
-
-                        String bdMonth = (String) request.getAttribute("bdmonth");
-                        if (bdMonth == null) {
-                                bdMonth = "0";
-                        }
-
-                        for (bdLoop = 0; bdLoop <= 12; bdLoop++) {
-                            out.print("<option value=\"");
-                            out.print(String.valueOf(bdLoop));
-                            out.print("\"");
-                        
-                            if (Integer.parseInt(bdMonth) == bdLoop) {
-                                out.print(" selected=\"selected\"");
-                            }
-                            
-                            out.println(">" + months[bdLoop] + "</option>");
-                        } // End for loop
-                    %>
-                            </select>
                             <label for="bdyear"><fmt:message key="register.do.birth.year" /></label>
-                            <select name="bdyear">
-                    <%
-                        int byLoop;
-                        int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+                            <select name="bdyear" id="birthdayYear">
+                                <%
+                                    int byLoop;
+                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
 
-                        String bdYear = (String) request.getAttribute("bdyear");
-                        if (bdYear == null) {
-                                bdYear = String.valueOf(thisYear);
-                        }
+                                    String bdYear = (String) request.getAttribute("bdyear");
+                                    if (bdYear == null) {
+                                            bdYear = String.valueOf(thisYear);
+                                    }
                         
-                        for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
-                            out.print("<option value=\"");
-                            out.print(String.valueOf(byLoop));
-                            out.print("\"");
+                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
+                                        out.print("<option value=\"");
+                                        out.print(String.valueOf(byLoop));
+                                        out.print("\"");
 
-                            if (Integer.parseInt(bdYear) == byLoop) {
-                                out.print(" selected=\"selected\"");
-                            }
+                                        if (Integer.parseInt(bdYear) == byLoop) {
+                                            out.print(" selected=\"selected\"");
+                                        }
 
-                            out.println(">" + String.valueOf(byLoop) + "</option>");
-                        }
-                    %>
-                            </select>
+                                        out.println(">" + String.valueOf(byLoop) + "</option>");
+                                    }
+                                %>
+                            </select>&nbsp;&nbsp;
+                            <label for="bdmonth"><fmt:message key="register.do.birth.month" /></label>
+                            <select name="bdmonth" id="birthdayMonth">
+                                <%
+                                    int bdLoop;
+                                    String[] months={
+                                        "Select month",
+                                        "January", "February", "March", "April", "May",
+                                        "June", "July", "August", "September", "October",
+                                        "November", "December"};
+
+                                    String bdMonth = (String) request.getAttribute("bdmonth");
+                                    if (bdMonth == null) {
+                                            bdMonth = "0";
+                                    }
+
+                                    for (bdLoop = 0; bdLoop <= 12; bdLoop++) {
+                                        out.print("<option value=\"");
+                                        out.print(String.valueOf(bdLoop));
+                                        out.print("\"");
+                        
+                                        if (Integer.parseInt(bdMonth) == bdLoop) {
+                                            out.print(" selected=\"selected\"");
+                                        }
+                            
+                                        out.println(">" + months[bdLoop] + "</option>");
+                                    } // End for loop
+                                %>
+                            </select>&nbsp;&nbsp;
                             <a id="coppa-msg-1" 
                                onclick="$('#coppa-msg-1').hide(); $('#coppa-msg-2').removeClass('hidden');">
-                               <fmt:message key="register.do.coppa.msg0" /></a>
+                                <fmt:message key="register.do.coppa.msg0" /></a>
                         </div>
                         <div class="alert alert-info hidden" id="coppa-msg-2">
                             <p>
@@ -256,21 +321,19 @@
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
                             </p>
                         </div>
-                        <!-- 
-                            TODO: Use javascript to hide these details until the registrant's age is selected  
-                        -->
-                        <div class="form-group">
-                            <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
-                            <input class="form-control" type="text" name="sponsoremail" maxlength="255"
-                                   value="<%= request.getAttribute("sponsoremail")%>" placeholder="Enter an parent or teacher email address">
-                        </div>
-                        <div class="form-group">
-                            <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
-                            <select name="sponsoremailtype">
-                                <option value="1" selected="selected">Parent</option>
-                                <option value="2">Legal Guardian</option>
-                                <option value="3">Instructor</option>
-                            </select>
+                        <div class="form-group" id="sponsor-info" style="display:none;">
+                            <p>
+                                <label for="sponsoremail" ><fmt:message key="register.do.sponsor.email" /></label>
+                                <input class="form-control" type="text" name="sponsoremail" maxlength="255"
+                                       value="<%= request.getAttribute("sponsoremail")%>" placeholder="Enter an parent or teacher email address">
+                            </p>
+                            <p>
+                                <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
+                                <select name="sponsoremailtype">
+                                    <option value="1" selected="selected">Parent/Guardian</option>
+                                    <option value="3">Teacher/Instructor</option>
+                                </select>
+                            </p>
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="register.do.submit" />">
                     </form>

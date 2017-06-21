@@ -127,7 +127,7 @@
                             <includes>.*</includes>
                             <excludes></excludes>
                             <inputSchema>blocklyprop</inputSchema>
-
+                            
                             <customTypes>
                                 <customType>
                                     <name>GregorianCalendar</name>

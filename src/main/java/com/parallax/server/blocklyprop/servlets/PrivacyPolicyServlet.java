@@ -20,12 +20,12 @@ import org.slf4j.LoggerFactory;
  * @author developer
  */
 @Singleton
-public class ChildPrivacyServlet extends HttpServlet {
+public class PrivacyPolicyServlet extends HttpServlet {
     
     /**
      * Application logging system access
      */
-     private static Logger LOG = LoggerFactory.getLogger(ChildPrivacyServlet.class);
+     private static Logger LOG = LoggerFactory.getLogger(PrivacyPolicyServlet.class);
      
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -45,7 +45,7 @@ public class ChildPrivacyServlet extends HttpServlet {
         LOG.debug("Requesting child privacy page");
         
         request.getRequestDispatcher(
-                "WEB-INF/servlet/coppa/child-privacy-policy.jsp")
+                "WEB-INF/servlet/coppa/privacy-policy.jsp")
                     .forward(request, response);
     }
 
