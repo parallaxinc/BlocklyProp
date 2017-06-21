@@ -151,7 +151,7 @@ function establish_socket() {
     check_ws_socket_interval = null;
     
     if(client_ws_connection !== null && client_use_type !== 'ws') {
-        client_ws_connection.close();
+        //client_ws_connection.close();
     }
 
     // TODO: set/clear and load buttons based on status
@@ -285,6 +285,9 @@ function establish_socket() {
                     $('#compile-dialog').modal('hide');
                     $('#compile-dialog').val('');
                     
+                } else if (ws_msg.action === 'console-log') {
+                    console.log(ws_msg.msg);
+
                 } else if (ws_msg.action === 'alert') {
                     alert(ws_msg.msg);
                 }
