@@ -249,6 +249,7 @@ Blockly.MSG_ARRAY_FILL_TOOLTIP = "array fill: fills the array with the specified
 Blockly.MSG_ARRAY_SET_TOOLTIP = "array set element: sets the value of the specified element in the array.";
 Blockly.MSG_ARRAY_CLEAR_TOOLTIP = "array clear: sets all of the elements of the array to 0 (zero).";
 Blockly.MSG_BASE_DELAY_TOOLTIP = "pause: wait for specified time (in milliseconds) then continue.";
+Blockly.MSG_BASE_COUNT_TOOLTIP = "count pulses: counts the number of times the selected pin detects high pulses during the specified duration.";
 Blockly.MSG_COG_NEW_TOOLTIP = "new processor: launch attached “run function” block if processor is available.";
 Blockly.MSG_CONTROLS_RETURN_TOOLTIP = "return: Required at the end of code enclosed in a “define function” block.";
 Blockly.MSG_MATH_ARITHMETIC_TOOLTIP = "math operation: + addition, - subtraction, x multiplication, / division, or % modulus.";

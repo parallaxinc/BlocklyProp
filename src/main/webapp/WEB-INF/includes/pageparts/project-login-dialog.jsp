@@ -23,13 +23,11 @@
                     </div>
                     <div class="col-md-6">
                         <h2><fmt:message key="not_loggedin.login.title" /></h2>
-
+                        <p><a href="<url:getUrl url="/register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a></p>
                         <%@ include file="/WEB-INF/includes/pageparts/loginform.jsp"%>
-
                         <c:if test="${properties:oauth('google')}">
                             <a href="<url:getUrl url="/oauth/google" />?url=" target="oauth" class="oauth" id="oauth-google">Log in using Google</a>
                         </c:if>
-                        <a href="<url:getUrl url="/register"/>" ><fmt:message key="not_loggedin.login.registerlink" /></a>
                     </div>
                 </div>
                 <div class="modal-footer">
