@@ -172,6 +172,7 @@ function establish_socket() {
 
         connection.onopen = function () {
             var ws_msg = {type: 'hello-browser', baud: baudrate};
+            client_ws_connection = connection;
             connection.send(JSON.stringify(ws_msg));
         };
 
@@ -208,7 +209,6 @@ function establish_socket() {
                     baud_rate_compatible = true;
                 }
                 client_use_type = 'ws';
-                client_ws_connection = connection;
                 client_available = true;
 
                 $("#client-available").removeClass("hidden");
