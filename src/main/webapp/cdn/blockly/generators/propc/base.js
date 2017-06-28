@@ -563,7 +563,9 @@ Blockly.Blocks.string_type_block = {
         this.setTooltip(Blockly.MSG_STRING_TYPE_BLOCK_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
+                .appendField("\u201C")
+                .appendField(new Blockly.FieldTextInput('Hello'), "TEXT")
+                .appendField("\u201D");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);

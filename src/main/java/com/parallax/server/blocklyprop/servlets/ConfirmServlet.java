@@ -106,8 +106,16 @@ public class ConfirmServlet extends HttpServlet {
         }
     }
 
-    public void showTextilePage(HttpServletRequest req, HttpServletResponse resp, ConfirmPage confirmPage) throws ServletException, IOException {
-        String html = textileFileReader.readFile("confirm/" + confirmPage.getPage(), ServletUtils.getLocale(req), req.isSecure());
+    public void showTextilePage(
+            HttpServletRequest req, 
+            HttpServletResponse resp, 
+            ConfirmPage confirmPage) throws ServletException, IOException {
+        
+        String html = textileFileReader.readFile(
+                "confirm/" + confirmPage.getPage(), 
+                ServletUtils.getLocale(req),
+                req.isSecure());
+
         req.setAttribute("html", html);
         req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
     }

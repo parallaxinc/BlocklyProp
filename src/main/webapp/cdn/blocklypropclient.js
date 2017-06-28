@@ -150,8 +150,8 @@ configure_client = function () {
 function establish_socket() {
     check_ws_socket_interval = null;
     
-    if(client_ws_connection !== null) {
-        client_ws_connection.close();
+    if(client_ws_connection !== null && client_use_type !== 'ws') {
+        //client_ws_connection.close();
     }
 
     // TODO: set/clear and load buttons based on status
@@ -172,6 +172,7 @@ function establish_socket() {
 
         connection.onopen = function () {
             var ws_msg = {type: 'hello-browser', baud: baudrate};
+            client_ws_connection = connection;
             connection.send(JSON.stringify(ws_msg));
         };
 
@@ -208,7 +209,6 @@ function establish_socket() {
                     baud_rate_compatible = true;
                 }
                 client_use_type = 'ws';
-                client_ws_connection = connection;
                 client_available = true;
 
                 $("#client-available").removeClass("hidden");
@@ -279,12 +279,15 @@ function establish_socket() {
                     $('#compile-dialog').val('');
                     
                 } else if (ws_msg.action === 'message-compile') {
-                    $('#compile-dialog').val($('#compile-dialog').val + ws_msg.msg);
+                    $('#compile-dialog').val($('#compile-dialog').val() + ws_msg.msg);
                     
                 } else if (ws_msg.action === 'close-compile') {
                     $('#compile-dialog').modal('hide');
                     $('#compile-dialog').val('');
                     
+                } else if (ws_msg.action === 'console-log') {
+                    console.log(ws_msg.msg);
+
                 } else if (ws_msg.action === 'alert') {
                     alert(ws_msg.msg);
                 }
@@ -298,6 +301,7 @@ function establish_socket() {
         };
 
         connection.onClose = function () {
+            client_ws_connection = null;
             if(client_use_type !== 'http') {
                 client_available = false;
                 client_use_type = 'none';
