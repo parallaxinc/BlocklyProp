@@ -284,17 +284,20 @@ function establish_socket() {
                     graph_reset();
                     
                 } else if (ws_msg.action === 'clear-compile') {
-                    $('#compile-dialog').val('');
+                    $('#compile-console').val('');
                     
                 } else if (ws_msg.action === 'message-compile') {
-                    $('#compile-dialog').val($('#compile-dialog').val() + ws_msg.msg);
+                    $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
                     
                 } else if (ws_msg.action === 'close-compile') {
                     $('#compile-dialog').modal('hide');
-                    $('#compile-dialog').val('');
+                    $('#compile-console').val('');
                     
                 } else if (ws_msg.action === 'console-log') {
                     console.log(ws_msg.msg);
+
+                } else if (ws_msg.action === 'websocket-close') {
+                    client_ws_connection.close();
 
                 } else if (ws_msg.action === 'alert') {
                     alert(ws_msg.msg);
@@ -329,6 +332,9 @@ function establish_socket() {
                 select_com_port(selected_port);
             }
 
+            if (check_ws_socket_interval) {
+                clearTimeout(check_ws_socket_interval);
+            }
             check_ws_socket_interval = setTimeout(find_client, 3000);
         };
     }
