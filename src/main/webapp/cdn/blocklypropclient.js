@@ -148,7 +148,7 @@ configure_client = function () {
 
 // checks for and, if found, uses a newer WebSocekts-only client
 function establish_socket() {
-    check_ws_socket_interval = null;
+    //check_ws_socket_interval = null;
     
     // TODO: needs testing - is it better to do this here, or in the next TODO
     if(client_ws_connection !== null && client_use_type !== 'ws') {
@@ -194,9 +194,9 @@ function establish_socket() {
             //$("#client-unavailable").addClass("hidden");
 
             // TODO: Should we shutdown and try again? - needs testing
-            check_ws_socket_interval = setTimeout(function () {
-                find_client();
-            }, 3000);
+            //check_ws_socket_interval = setTimeout(function () {
+            //    find_client();
+            //}, 3000);
         };
 
         // handle messages from the client
