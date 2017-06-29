@@ -636,21 +636,6 @@ function downloadPropC() {
 
 function graph_new_data(stream) {
 
-    /*
-     // Attempt to capture connection information:
-     
-     var j = 0;
-     while (!graph_data_ready) {
-     if (stream[0] === '\n')
-     stream[0] = '\r';
-     graph_connection_string[j] = stream[0];
-     stream = stream.slice(1);
-     if (graph_connection_string[j] === '\r' && graph_connection_string[j - 1] === '\r')
-     graph_data_ready = true;
-     j++;
-     }
-     */
-
     // Check for a failed connection:
     if (stream.indexOf('ailed') > -1) {
         $("#serial_graphing").html(stream);
@@ -687,16 +672,12 @@ function graph_new_data(stream) {
                             graph_data.series[j - 2].shift();
                     }
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
+                    
+                    // limits total number of data point collected to prevent memory issues
+                    if(graph_csv_data.length > 65000) {
+                        graph_csv_data.shift();
+                    }
                 }
-
-
-
-                /*
-                 var read_serial_to_div = '';
-                 for (var l = 0; l < graph_temp_data[row].length; l++)
-                 read_serial_to_div += graph_temp_data[row].toString() + '\n';
-                 $( "#serial_graphing" ).html(read_serial_to_div);
-                 */
 
                 graph_temp_string = '';
             } else {
@@ -713,7 +694,9 @@ function graph_new_data(stream) {
 
 function graph_reset() {
     clearInterval(graph_interval_id);
-    graph = null;
+    graph.detach();
+    $("#serial_graphing").html('');
+
     graph_interval_id = null;
     graph_temp_data = null;
     graph_temp_data = new Array;
@@ -737,9 +720,6 @@ function graph_reset() {
     graph_temp_string = '';
     graph_timestamp_start = null;
     graph_data_ready = false;
-    // graph_labels = null;
-    $("#serial_graphing").html('');
-    //$("#serial_graphing_labels").html('');
 }
 
 function graph_redraw() {

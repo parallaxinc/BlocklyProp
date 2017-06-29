@@ -150,6 +150,7 @@ configure_client = function () {
 function establish_socket() {
     check_ws_socket_interval = null;
     
+    // TODO: needs testing - is it better to do this here, or in the next TODO
     if(client_ws_connection !== null && client_use_type !== 'ws') {
         //client_ws_connection.close();
     }
@@ -171,6 +172,13 @@ function establish_socket() {
         var connection = new WebSocket(url);
 
         connection.onopen = function () {
+            
+            // TODO: needs testing - is it better to do this here or in the previous TODO
+            // Is there already a connection?  If so, close it:
+            if (client_ws_connection !== null) {
+                client_ws_connection.close();
+            }
+                
             var ws_msg = {type: 'hello-browser', baud: baudrate};
             client_ws_connection = connection;
             connection.send(JSON.stringify(ws_msg));
@@ -181,11 +189,11 @@ function establish_socket() {
             console.log('WebSocket Error');
             console.log(error);
 
-            $("#client-searching").removeClass("hidden");
-            $("#client-available").addClass("hidden");
-            $("#client-unavailable").addClass("hidden");
+            //$("#client-searching").removeClass("hidden");
+            //$("#client-available").addClass("hidden");
+            //$("#client-unavailable").addClass("hidden");
 
-            // TODO: Should we shutdown and try again?
+            // TODO: Should we shutdown and try again? - needs testing
             check_ws_socket_interval = setTimeout(function () {
                 find_client();
             }, 3000);
