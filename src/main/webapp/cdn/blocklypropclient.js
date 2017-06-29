@@ -16,6 +16,8 @@ var client_baud_rate_min_version = 0.4;
 
 var client_use_type = 'none';
 var client_ws_connection = null;
+var client_ws_heartbeat;
+var client_ws_heartbeat_interval;
 
 var baud_rate_compatible = false;
 
@@ -93,6 +95,21 @@ check_client = function () {
             $("#client-unavailable").removeClass("hidden");
             setTimeout(find_client, 3000);
         });
+    }
+};
+
+connection_heartbeat = function () {
+    // Check the last time the port list was recieved.
+    // If it's been too, close out the connection.
+    if (client_use_type === 'ws') {
+        var d = new Date();
+        var heartbeat_check = d.getTime();
+        if (client_ws_heartbeat + 12000 < heartbeat_check) {
+            // Client is taking too long to check in - close the connection
+            client_ws_connection.close();
+            clearInterval(client_ws_heartbeat_interval);
+            client_ws_heartbeat_interval = null;
+        }
     }
 };
 
@@ -232,6 +249,14 @@ function establish_socket() {
             else if (ws_msg.type === 'port-list') {  
                 // type: 'port-list', 
                 // ports: ['port1', 'port2', 'port3'...]
+                
+                // mark the time that this was received
+                var d = new Date();
+                client_ws_heartbeat = d.getTime();
+                
+                if (!client_ws_heartbeat_interval) {
+                    client_ws_heartbeat_interval = setInterval(connection_heartbeat, 4000);
+                }
 
                 selected_port = $("#comPort").val();
                 $("#comPort").empty();
@@ -334,7 +359,14 @@ function establish_socket() {
 
             if (check_ws_socket_interval) {
                 clearTimeout(check_ws_socket_interval);
+                check_ws_socket_interval = null;
             }
+            
+            if (client_ws_heartbeat_interval) {
+                clearInterval(client_ws_heartbeat_interval);
+                client_ws_heartbeat_interval = null;
+            }
+
             check_ws_socket_interval = setTimeout(find_client, 3000);
         };
     }
