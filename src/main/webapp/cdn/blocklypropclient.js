@@ -276,9 +276,10 @@ function establish_socket() {
 
             // --- serial terminal/graph
             else if (ws_msg.type === 'serial-terminal' &&
-                    (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes som weird stuff comes through...
+                    (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes some weird stuff comes through...
                 // type: 'serial-terminal'
                 // msg: [String message]
+                
                 
                 if (term !== null) { // is the terminal open?
                     term.write(ws_msg.msg);

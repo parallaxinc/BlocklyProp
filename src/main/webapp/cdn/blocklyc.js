@@ -694,7 +694,9 @@ function graph_new_data(stream) {
 
 function graph_reset() {
     clearInterval(graph_interval_id);
-    graph.detach();
+    if(graph) {
+        graph.detach();
+    }
     $("#serial_graphing").html('');
 
     graph_interval_id = null;
