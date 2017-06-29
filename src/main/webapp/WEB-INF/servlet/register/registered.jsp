@@ -24,6 +24,7 @@
                     </div>
                 </div>
             </div>
+            <p><a href="<url:getUrl url="/index"/>">Go to home</a></p>
         </div>
 
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
