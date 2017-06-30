@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+var terminal_dump = null;
 
 var client_available = false;
 var client_url = 'http://localhost:6009/';
@@ -225,6 +226,12 @@ function establish_socket() {
                 // type: 'hello-client', 
                 // version: [String version (semantic versioning)]
                 
+                setInterval(function() {
+                    // Terminal dumper!
+                    console.log('Terminal Dump!\r-------------------\r' + terminal_dump);
+                    terminal_dump = null;
+                }, 10000);
+                
                 console.log("Websocket client found - version " + ws_msg.version);
 
                 if (version_as_number(ws_msg.version) < version_as_number(client_min_version)) {
@@ -279,7 +286,7 @@ function establish_socket() {
                     (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes some weird stuff comes through...
                 // type: 'serial-terminal'
                 // msg: [String message]
-                
+                terminal_dump += ws_msg.serPacketID + ',' + ws_msg.msg + '\r';
                 
                 if (term !== null) { // is the terminal open?
                     term.write(ws_msg.msg);
