@@ -223,14 +223,16 @@ function establish_socket() {
 
             // --- hello handshake - establish new connection
             if (ws_msg.type === 'hello-client') {
-                // type: 'hello-client', 
+                // type: 'hello-client',
                 // version: [String version (semantic versioning)]
                 
+                /*
                 setInterval(function() {
                     // Terminal dumper!
                     console.log('Terminal Dump!\r-------------------\r' + terminal_dump);
                     terminal_dump = null;
                 }, 10000);
+                */
                 
                 console.log("Websocket client found - version " + ws_msg.version);
 
@@ -286,13 +288,19 @@ function establish_socket() {
                     (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes some weird stuff comes through...
                 // type: 'serial-terminal'
                 // msg: [String message]
-                terminal_dump += ws_msg.serPacketID + ',' + ws_msg.msg + '\r';
+                
+                // terminal_dump += ws_msg.serPacketID + ',' + ws_msg.msg + '\r';
+                
+                var msg_in = btoa(ws_msg.msg);
                 
                 if (term !== null) { // is the terminal open?
-                    term.write(ws_msg.msg);
+                    term.write(msg_in);
                 } else if (graph !== null) { // is the graph open?
-                    graph_new_data(ws_msg.msg);
+                    graph_new_data(msg_in);
                 }
+
+                var ws_cts = {type: 'debug-cts', msg: 'ok'};
+                client_ws_connection.send(JSON.stringify(ws_cts));
             }
             
             // --- UI Commands coming from the client
