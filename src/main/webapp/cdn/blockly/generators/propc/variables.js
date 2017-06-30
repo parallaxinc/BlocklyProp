@@ -112,7 +112,8 @@ Blockly.Blocks.variables_set = {
 
 Blockly.propc.variables_get = function () {
     // Variable getter.
-    var code = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR').replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_'),
+    var code = Blockly.propc.variableDB_.getName(
+            this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
@@ -123,7 +124,8 @@ Blockly.propc.variables_declare = function () {
     //TODO: settype to variable
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';
-    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR').replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_'),
+    var varName = Blockly.propc.variableDB_.getName(
+            this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     Blockly.propc.setups_['setup_var' + varName] = varName + ' = ' + argument0 + ';\n';
     Blockly.propc.vartype_[varName] = dropdown_type;
@@ -134,7 +136,8 @@ Blockly.propc.variables_set = function () {
     // Variable setter.
     var argument0 = Blockly.propc.valueToCode(this, 'VALUE',
             Blockly.propc.ORDER_ASSIGNMENT) || '0';
-    var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR').replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_'),
+    var varName = Blockly.propc.variableDB_.getName(
+            this.getFieldValue('VAR'),
             Blockly.Variables.NAME_TYPE);
     if (Blockly.propc.vartype_[varName] === undefined) {
         if (argument0.indexOf("int") > -1) {
