@@ -291,14 +291,14 @@ function establish_socket() {
                 
                 // terminal_dump += ws_msg.serPacketID + ',' + ws_msg.msg + '\r';
                 
-                var msg_in = btoa(ws_msg.msg);
+                var msg_in = atob(ws_msg.msg);
                 
                 if (term !== null) { // is the terminal open?
                     term.write(msg_in);
                 } else if (graph !== null) { // is the graph open?
                     graph_new_data(msg_in);
                 }
-
+                                                                                   
                 var ws_cts = {type: 'debug-cts', msg: 'ok'};
                 client_ws_connection.send(JSON.stringify(ws_cts));
             }
