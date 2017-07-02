@@ -226,13 +226,13 @@ function establish_socket() {
                 // type: 'hello-client',
                 // version: [String version (semantic versioning)]
                 
-                /*
+                
                 setInterval(function() {
                     // Terminal dumper!
-                    console.log('Terminal Dump!\r-------------------\r' + terminal_dump);
+                    console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
                     terminal_dump = null;
                 }, 10000);
-                */
+                
                 
                 console.log("Websocket client found - version " + ws_msg.version);
 
@@ -289,14 +289,16 @@ function establish_socket() {
                 // type: 'serial-terminal'
                 // msg: [String message]
                 
-                // terminal_dump += ws_msg.serPacketID + ',' + ws_msg.msg + '\r';
-                
                 var msg_in = atob(ws_msg.msg);
+
+                terminal_dump += ws_msg.serPacketID + ', ' + ws_msg.msg + ', ' + msg_in + '\n';
                 
-                if (term !== null) { // is the terminal open?
-                    term.write(msg_in);
-                } else if (graph !== null) { // is the graph open?
-                    graph_new_data(msg_in);
+                if (ws_msg.msg !== undefined) {
+                    if (term !== null) { // is the terminal open?
+                        term.write(msg_in);
+                    } else if (graph !== null) { // is the graph open?
+                        graph_new_data(msg_in);
+                    }
                 }
                                                                                    
                 var ws_cts = {type: 'debug-cts', msg: 'ok'};
