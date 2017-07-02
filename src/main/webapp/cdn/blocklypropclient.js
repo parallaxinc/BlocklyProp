@@ -291,7 +291,7 @@ function establish_socket() {
                 
                 var msg_in = atob(ws_msg.msg);
 
-                terminal_dump += ws_msg.serPacketID + ', ' + ws_msg.msg + ', ' + msg_in + '\n';
+                terminal_dump += ws_msg.packetID + ', ' + ws_msg.msg + ', ' + msg_in + '\n';
                 
                 if (ws_msg.msg !== undefined) {
                     if (term !== null) { // is the terminal open?
