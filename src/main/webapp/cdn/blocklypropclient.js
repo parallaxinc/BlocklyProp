@@ -301,8 +301,8 @@ function establish_socket() {
                     }
                 }
                                                                                    
-                var ws_cts = {type: 'debug-cts', msg: 'ok'};
-                client_ws_connection.send(JSON.stringify(ws_cts));
+                // var ws_cts = {type: 'debug-cts', msg: 'ok'};
+                // client_ws_connection.send(JSON.stringify(ws_cts));
             }
             
             // --- UI Commands coming from the client

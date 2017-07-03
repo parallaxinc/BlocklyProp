@@ -838,3 +838,4 @@ function graph_update_labels() {
         }
     }
 }
+
