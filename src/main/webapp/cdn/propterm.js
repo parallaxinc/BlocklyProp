@@ -33,9 +33,9 @@ $(document).ready(function () {
         if (keycode === 8 || keycode === 13) {
 
             if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
-                active_connection.send(keycode);
+                active_connection.send(String.fromCharCode(keycode));
             } else if (active_connection === 'simulated') {
-                updateTermBox(keycode);
+                updateTermBox(String.fromCharCode(keycode));
             } else if (active_connection === 'websocket') {
                 msg_to_send.msg = String.fromCharCode(keycode);
                 msg_to_send.action = 'msg';
@@ -59,9 +59,9 @@ $(document).ready(function () {
         var charcode = e.charCode;
 
         if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
-            active_connection.send(charcode);
+            active_connection.send(String.fromCharCode(charcode));
         } else if (active_connection === 'simulated') {
-            updateTermBox(charcode);
+            updateTermBox(String.fromCharCode(charcode));
         } else if (active_connection === 'websocket') {
             msg_to_send.msg = String.fromCharCode(charcode);
             msg_to_send.action = 'msg';
