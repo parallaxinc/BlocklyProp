@@ -67,125 +67,6 @@ $(document).ready(function () {
         }
     });
 
-    function displayInTerm(str) {
-        for (var f = 0; f < str.length; f++) {
-            updateTermBox(str.charCodeAt(f));
-        }
-    }
-
-    function updateTermBox(c) {
-        cursorGotoY = cursorY;
-        if (termSetCursor !== 4)
-            cursorGotoX = cursorX;
-        c = parseInt(c);
-        switch (termSetCursor) {
-            case 3:
-                cursorGotoX = parseInt(c);
-                termSetCursor = 4;
-                break;
-            case 2:
-            case 4:
-                cursorGotoY = parseInt(c);
-                termSetCursor = 0;
-                setCursor(cursorGotoX, cursorGotoY);
-                break;
-            case 1:
-                cursorGotoX = parseInt(c);
-                termSetCursor = 0;
-                setCursor(cursorGotoX, cursorGotoY);
-                break;
-            case 0:
-                switch (c) {
-                    case 127:
-                    case 8:
-                        if (cursorX + cursorY > -1) {
-                            if (textContainer[cursorY].length > 1) {
-                                if (cursorX === textContainer[cursorY].length) {
-                                    textContainer[cursorY] = textContainer[cursorY].slice(0, -1);
-                                } else if (cursorX > 0) {
-                                    var the_line = textContainer[cursorY];
-                                    textContainer[cursorY] = the_line.substr(0, cursorX - 1) + ' ' + the_line.substr(cursorX);
-                                }
-                            } else if (textContainer[cursorY].length === 1) {
-                                textContainer[cursorY] = textContainer[cursorY] = '';
-                            }
-                            changeCursor(-1, 0);
-                            break;
-                        }
-                    case 13:
-                    case 10:
-                        changeCursor(0, 1);
-                        break;
-                    case 9:
-                        var l = 5 - (cursorX) % 5;
-                        for (k = 0; k < l; k++) {
-                            textContainer[cursorY] += ' ';
-                            changeCursor(1, 0);
-                        }
-                        break;
-                    case 0:
-                        textContainer = null;
-                        textContainer = new Array;
-                        textContainer[0] = '';
-                    case 1:
-                        cursorX = 0;
-                        cursorY = 0;
-                        changeCursor(0, 0);
-                        break;
-                    case 3:
-                        changeCursor(-1, 0);
-                        break;
-                    case 4:
-                        changeCursor(1, 0);
-                        break;
-                    case 5:
-                        changeCursor(0, -1);
-                        break;
-                    case 6:
-                        changeCursor(0, 1);
-                        break;
-                    case 7: // Beep
-                        document.getElementById("serial_console").classList.remove("visual-beep");
-                        void document.getElementById("serial_console").offsetWidth;
-                        document.getElementById("serial_console").classList.add("visual-beep");
-                        var sound = document.getElementById("term-beep");
-                        sound.play();
-                        break;
-                    case 11: // clear to end of line
-                        textContainer[cursorY] = textContainer[cursorY].substr(0, cursorX);
-                        break;
-                    case 12: // clear down
-                        for (var n = cursorY + 1; n < textContainer.length; n++) {
-                            textContainer[n].pop();
-                        }
-                        break;
-                    case 2:
-                        termSetCursor = 3;
-                        break;
-                    case 14:
-                    case 15:
-                        termSetCursor = c - 13;
-                        break;
-                    default:
-                        var char = '';
-                        if (c > 127 && c < 256) {
-                            char = ascii2unicode[c - 128];
-                        } else {
-                            char = String.fromCharCode(c);
-                        }
-                        //console.log(char);
-                        if ((textContainer[cursorY] || '').length > cursorX) {
-                            var the_line = textContainer[cursorY] || '';
-                            textContainer[cursorY] = the_line.substr(0, cursorX) + char + the_line.substr(cursorX + 1);
-                        } else {
-                            textContainer[cursorY] += char;
-                        }
-                        changeCursor(1, 0);
-                        break;
-                }
-        }
-    }
-
     $("#serial_console").click(function () {
         var the_div = document.getElementById('serial_console').innerHTML;
         if (the_div[the_div.length - 1] !== '\u258D') {
@@ -202,73 +83,192 @@ $(document).ready(function () {
             }
         }
     });
+});
 
-    function changeCursor(x, y) {
-        if (y === 1 && textContainer[cursorY].length >= cursorX) {
+function displayInTerm(str) {
+    for (var f = 0; f < str.length; f++) {
+        updateTermBox(str.charCodeAt(f));
+    }
+}
+
+function updateTermBox(c) {
+    cursorGotoY = cursorY;
+    if (termSetCursor !== 4)
+        cursorGotoX = cursorX;
+    c = parseInt(c);
+    switch (termSetCursor) {
+        case 3:
+            cursorGotoX = parseInt(c);
+            termSetCursor = 4;
+            break;
+        case 2:
+        case 4:
+            cursorGotoY = parseInt(c);
+            termSetCursor = 0;
+            setCursor(cursorGotoX, cursorGotoY);
+            break;
+        case 1:
+            cursorGotoX = parseInt(c);
+            termSetCursor = 0;
+            setCursor(cursorGotoX, cursorGotoY);
+            break;
+        case 0:
+            switch (c) {
+                case 127:
+                case 8:
+                    if (cursorX + cursorY > -1) {
+                        if (textContainer[cursorY].length > 1) {
+                            if (cursorX === textContainer[cursorY].length) {
+                                textContainer[cursorY] = textContainer[cursorY].slice(0, -1);
+                            } else if (cursorX > 0) {
+                                var the_line = textContainer[cursorY];
+                                textContainer[cursorY] = the_line.substr(0, cursorX - 1) + ' ' + the_line.substr(cursorX);
+                            }
+                        } else if (textContainer[cursorY].length === 1) {
+                            textContainer[cursorY] = textContainer[cursorY] = '';
+                        }
+                        changeCursor(-1, 0);
+                        break;
+                    }
+                case 13:
+                case 10:
+                    changeCursor(0, 1);
+                    break;
+                case 9:
+                    var l = 5 - (cursorX) % 5;
+                    for (k = 0; k < l; k++) {
+                        textContainer[cursorY] += ' ';
+                        changeCursor(1, 0);
+                    }
+                    break;
+                case 0:
+                    textContainer = null;
+                    textContainer = new Array;
+                    textContainer[0] = '';
+                case 1:
+                    cursorX = 0;
+                    cursorY = 0;
+                    changeCursor(0, 0);
+                    break;
+                case 3:
+                    changeCursor(-1, 0);
+                    break;
+                case 4:
+                    changeCursor(1, 0);
+                    break;
+                case 5:
+                    changeCursor(0, -1);
+                    break;
+                case 6:
+                    changeCursor(0, 1);
+                    break;
+                case 7: // Beep
+                    document.getElementById("serial_console").classList.remove("visual-beep");
+                    void document.getElementById("serial_console").offsetWidth;
+                    document.getElementById("serial_console").classList.add("visual-beep");
+                    var sound = document.getElementById("term-beep");
+                    sound.play();
+                    break;
+                case 11: // clear to end of line
+                    textContainer[cursorY] = textContainer[cursorY].substr(0, cursorX);
+                    break;
+                case 12: // clear down
+                    for (var n = cursorY + 1; n < textContainer.length; n++) {
+                        textContainer[n].pop();
+                    }
+                    break;
+                case 2:
+                    termSetCursor = 3;
+                    break;
+                case 14:
+                case 15:
+                    termSetCursor = c - 13;
+                    break;
+                default:
+                    var char = '';
+                    if (c > 127 && c < 256) {
+                        char = ascii2unicode[c - 128];
+                    } else {
+                        char = String.fromCharCode(c);
+                    }
+                    //console.log(char);
+                    if ((textContainer[cursorY] || '').length > cursorX) {
+                        var the_line = textContainer[cursorY] || '';
+                        textContainer[cursorY] = the_line.substr(0, cursorX) + char + the_line.substr(cursorX + 1);
+                    } else {
+                        textContainer[cursorY] += char;
+                    }
+                    changeCursor(1, 0);
+                    break;
+            }
+    }
+}
+
+function changeCursor(x, y) {
+    if (y === 1 && textContainer[cursorY].length >= cursorX) {
+        textContainer[cursorY] = textContainer[cursorY].substr(0, cursorX);
+    }
+    cursorX += x;
+    cursorY += y;
+    if (cursorX > term_width - 1) {
+        cursorX -= term_width;
+        cursorY++;
+        if (!textContainer[cursorY])
+            textContainer[cursorY] = '';
+    }
+    if (cursorX < 0) {
+        cursorY--;
+        cursorX = textContainer[cursorY].length;
+        if (cursorX > term_width - 1) {
+            cursorX = term_width - 1;
             textContainer[cursorY] = textContainer[cursorY].substr(0, cursorX);
         }
-        cursorX += x;
-        cursorY += y;
-        if (cursorX > term_width - 1) {
-            cursorX -= term_width;
-            cursorY++;
-            if (!textContainer[cursorY])
-                textContainer[cursorY] = '';
+    }
+    if (cursorY < 0) {
+        cursorY = 0;
+        cursorX = 0;
+    }
+    if (y === 1) {
+        cursorX = 0;
+        if (!textContainer[cursorY]) {
+            textContainer[cursorY] = '';
         }
-        if (cursorX < 0) {
-            cursorY--;
-            cursorX = textContainer[cursorY].length;
-            if (cursorX > term_width - 1) {
-                cursorX = term_width - 1;
-                textContainer[cursorY] = textContainer[cursorY].substr(0, cursorX);
-            }
-        }
-        if (cursorY < 0) {
-            cursorY = 0;
-            cursorX = 0;
-        }
-        if (y === 1) {
-            cursorX = 0;
-            if (!textContainer[cursorY]) {
-                textContainer[cursorY] = '';
-            }
-        }
-
-        if (cursorY < textContainer.length - 1 && textContainer[textContainer.length - 1] === '') {
-            textContainer.pop();
-        }
-        var tH = Math.floor(term_height / lineHeight);
-        var cursorChar = '';
-        var to_div = '';
-        if (document.getElementById('serial_console') === document.activeElement) {
-            cursorChar = '\u258D';
-        }
-        to_div = textContainer.join('\r') + cursorChar;
-        if (textContainer.join('') === '') {
-            to_div = cursorChar;
-        }
-        if (cursorY >= tH) {
-            $('#serial_console').css('overflow-y', 'hidden');
-            $('#serial_console').scrollTop((cursorY - tH + 1) * lineHeight);
-            $('#serial_console').css('overflow-y', 'scroll');
-        }
-
-        document.getElementById('serial_console').innerHTML = to_div.replace(/ /g, '&nbsp;').replace(/\r/g, '<br>');
     }
 
-    function setCursor(cx, cy) {
-        if (cx > term_width - 1)
-            cx = cx % term_width;
-        if (!textContainer[cy]) {
-            for (t = textContainer.length; t <= cy; t++) {
-                textContainer[t] = '';
-            }
-        }
-        while (!textContainer[cy][cx]) {
-            textContainer[cy] += ' ';
-        }
-        cursorX = cx;
-        cursorY = cy;
-        changeCursor(0, 0);
+    if (cursorY < textContainer.length - 1 && textContainer[textContainer.length - 1] === '') {
+        textContainer.pop();
     }
-});
+    var tH = Math.floor(term_height / lineHeight);
+    var cursorChar = '';
+    var to_div = '';
+    if (document.getElementById('serial_console') === document.activeElement) {
+        cursorChar = '\u258D';
+    }
+    to_div = textContainer.join('\r') + cursorChar;
+    if (textContainer.join('') === '') {
+        to_div = cursorChar;
+    }
+    if (cursorY >= tH) {
+        $('#serial_console').css('overflow-y', 'hidden');
+        $('#serial_console').scrollTop((cursorY - tH + 1) * lineHeight);
+        $('#serial_console').css('overflow-y', 'scroll');
+    }
+
+    document.getElementById('serial_console').innerHTML = to_div.replace(/ /g, '&nbsp;').replace(/\r/g, '<br>');
+}
+
+function setCursor(cx, cy) {
+    if (cx > term_width - 1)
+        cx = cx % term_width;
+    if (!textContainer[cy]) {
+        for (t = textContainer.length; t <= cy; t++) {
+            textContainer[t] = '';
+        }
+    }
+    while (!textContainer[cy][cx]) {
+        textContainer[cy] += ' ';
+    }
+    cursorX = cx;
+    cursorY = cy;
+    changeCursor(0, 0);
+}
