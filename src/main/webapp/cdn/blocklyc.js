@@ -304,6 +304,7 @@ function serial_console() {
 
     if (client_use_type !== 'ws') {
         if (term === null) {
+            /*
             term = new Terminal({
                 cols: 256,
                 rows: 24,
@@ -311,6 +312,10 @@ function serial_console() {
                 screenKeys: true,
                 portPath: getComPort()
             });
+            */
+            term = {
+               portPath: getComPort()
+            };
 
             newTerminal = true;
         }
@@ -336,17 +341,21 @@ function serial_console() {
             };
 
             connection.onmessage = function (e) {
-                term.write(e.data);
+                //term.write(e.data);
+                displayInTerm(e.data);
             };
 
+            /*
             term.on('data', function (data) {
                 connection.send(data);
             });
+            */
 
             if (newTerminal) {
-                term.open(document.getElementById("serial_console"));
+                //term.open(document.getElementById("serial_console"));
             } else {
-                term.reset();
+                //term.reset();
+                updateTermBox(0);
             }
 
             connection.onClose = function () {
@@ -355,10 +364,15 @@ function serial_console() {
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
+                
+                // for prop-term:
+                updateTermBox(0);
+                term = null;
                 active_connection = null;
             });
         } else {
             active_connection = 'simulated';
+            /*
             term.on('data', function (data) {
                 data = data.replace('\r', '\r\n');
                 term.write(data);
@@ -370,14 +384,23 @@ function serial_console() {
 
                 term.write("Connection established with: " + getComPort() + "\n\r");
             }
-            
+            */
+           
+            if (newTerminal) {
+                displayInTerm("Simulated terminal because you are in demo mode\n");
+                displayInTerm("Connection established with: " + getComPort() + "\n");
+            }
+           
             $('#console-dialog').on('hidden.bs.modal', function () {
                 active_connection = null;
+                updateTermBox(0);
+                term = null;
             });
         }
     } else if (client_use_type === 'ws') {
     // using Websocket-only client
 
+        /*
         term = new Terminal({
             cols: 256,
             rows: 24,
@@ -385,6 +408,10 @@ function serial_console() {
             screenKeys: true,
             portPath: getComPort()
         });
+        */
+        term = {
+            portPath: getComPort()
+        };
 
         newTerminal = true;
 
@@ -397,19 +424,22 @@ function serial_console() {
             action: 'msg'
         };
 
+        /*
         term.on('data', function (data) {
             msg_to_send.msg = data;
             msg_to_send.action = 'msg';
             client_ws_connection.send(JSON.stringify(msg_to_send));
         });
+        */
 
         if (newTerminal === true) {
-            term.open(document.getElementById("serial_console"));
+            //term.open(document.getElementById("serial_console"));
             msg_to_send.action = 'open';
             active_connection = 'websocket';
             client_ws_connection.send(JSON.stringify(msg_to_send));
         } else {
-            term.reset();
+            //term.reset();
+            updateTermBox(0);
         }
 
         $('#console-dialog').on('hidden.bs.modal', function () {
@@ -419,7 +449,8 @@ function serial_console() {
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
             newTerminal = false;
-            term.destroy();
+            //term.destroy();
+            updateTermBox(0);
         });
     }
 
