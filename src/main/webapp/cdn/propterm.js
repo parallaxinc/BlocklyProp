@@ -42,6 +42,8 @@ $(document).ready(function () {
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
         }
+        
+        console.log('sending: ' + keycode);
 
         var valid =
                 (keycode > 47 && keycode < 58) || // number keys
@@ -65,6 +67,8 @@ $(document).ready(function () {
             msg_to_send.action = 'msg';
             client_ws_connection.send(JSON.stringify(msg_to_send));
         }
+        console.log('sending: ' + charcode);
+
     });
 
     $("#serial_console").click(function () {
