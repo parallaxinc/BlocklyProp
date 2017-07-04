@@ -32,6 +32,8 @@ var graph_csv_data = new Array;
 var console_header_arrived = false;
 var console_header = null;
 
+var active_connection = null;
+
 var graph_options = {
     showPoint: false,
     fullWidth: true,
@@ -325,22 +327,19 @@ function serial_console() {
                 } else {
                     connection.send('+++ open port ' + getComPort());
                 }
-
+                active_connection = connection;
             };
             // Log errors
             connection.onerror = function (error) {
                 console.log('WebSocket Error');
                 console.log(error);
-                // term.destroy();
             };
-            // Log messages from the server
+
             connection.onmessage = function (e) {
-                //console.log('Server: ' + e.data);
                 term.write(e.data);
             };
 
             term.on('data', function (data) {
-                //console.log(data);
                 connection.send(data);
             });
 
@@ -349,14 +348,17 @@ function serial_console() {
             } else {
                 term.reset();
             }
+
             connection.onClose = function () {
-                //  term.destroy();
+                active_connection = null;
             };
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
+                active_connection = null;
             });
         } else {
+            active_connection = 'simulated';
             term.on('data', function (data) {
                 data = data.replace('\r', '\r\n');
                 term.write(data);
@@ -368,10 +370,14 @@ function serial_console() {
 
                 term.write("Connection established with: " + getComPort() + "\n\r");
             }
+            
+            $('#console-dialog').on('hidden.bs.modal', function () {
+                active_connection = null;
+            });
         }
     } else if (client_use_type === 'ws') {
+    // using Websocket-only client
 
-        term === null;
         term = new Terminal({
             cols: 256,
             rows: 24,
@@ -382,7 +388,6 @@ function serial_console() {
 
         newTerminal = true;
 
-        // using Websocket-only client
         var msg_to_send = {
             type: 'serial-terminal',
             outTo: 'terminal',
@@ -396,23 +401,22 @@ function serial_console() {
             msg_to_send.msg = data;
             msg_to_send.action = 'msg';
             client_ws_connection.send(JSON.stringify(msg_to_send));
-            //console.log('sending: ' + JSON.stringify(msg_to_send));
         });
 
         if (newTerminal === true) {
             term.open(document.getElementById("serial_console"));
             msg_to_send.action = 'open';
+            active_connection = 'websocket';
             client_ws_connection.send(JSON.stringify(msg_to_send));
-            //console.log('opening: ' + JSON.stringify(msg_to_send));
         } else {
             term.reset();
         }
 
         $('#console-dialog').on('hidden.bs.modal', function () {
-            if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
+            if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
                 msg_to_send.action = 'close';
+                active_connection = null;                
                 client_ws_connection.send(JSON.stringify(msg_to_send));
-                //console.log('closing: ' + JSON.stringify(msg_to_send));
             }
             newTerminal = false;
             term.destroy();

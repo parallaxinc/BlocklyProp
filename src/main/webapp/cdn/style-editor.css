@@ -122,8 +122,8 @@ button:hover {
     font-size: 14px;
     font-family: Andale Mono, Droid Sans Mono, Consolas, monospace;
     color: white;
-    width: 420px;
-    height: 250px;
+    width: 560px;
+    height: 380px;
     overflow-y: scroll;
     overflow-x: hidden;
     line-height: 110%;

@@ -22,11 +22,15 @@ $("#serial_console").keydown(function (e) {
     var keycode = e.keyCode || e.which;
     if (keycode === 8 || keycode === 13) {
 
-        // --------- REPLACE WITH CODE TO SEND TO PROP ------------------
-        document.getElementById('prop-mcu').innerHTML = keycode;
-        updateTermBox(document.getElementById('prop-mcu').innerHTML);
-        // --------------------------------------------------------------
-        
+        if (activeConnection !== null && activeConnection !== 'simulated' && activeConnection !== 'websocket') {
+            activeConnection.send(keycode);
+        } else if (activeConnection === 'simulated') {
+            updateTermBox(keycode);
+        } else if (activeConnection === 'websocket') {
+            msg_to_send.msg = String.fromCharCode(keycode);
+            msg_to_send.action = 'msg';
+            client_ws_connection.send(JSON.stringify(msg_to_send));
+        }
     }
     
     var valid =
@@ -42,11 +46,15 @@ $("#serial_console").keydown(function (e) {
 $("#serial_console").keypress(function (e) {
     var charcode = e.charCode;
     
-    // --------- REPLACE WITH CODE TO SEND TO PROP ------------------
-    document.getElementById('prop-mcu').innerHTML = keycode;
-    updateTermBox(document.getElementById('prop-mcu').innerHTML);
-    // --------------------------------------------------------------
-    
+    if (activeConnection !== null && activeConnection !== 'simulated' && activeConnection !== 'websocket') {
+        activeConnection.send(charcode);
+    } else if (activeConnection === 'simulated') {
+        updateTermBox(charcode);
+    } else if (activeConnection === 'websocket') {
+        msg_to_send.msg = String.fromCharCode(charcode);
+        msg_to_send.action = 'msg';
+        client_ws_connection.send(JSON.stringify(msg_to_send));
+    }
 });
 
 function displayInTerm(str) {
