@@ -32,11 +32,11 @@ $(document).ready(function () {
         var keycode = e.keyCode || e.which;
         if (keycode === 8 || keycode === 13) {
 
-            if (activeConnection !== null && activeConnection !== 'simulated' && activeConnection !== 'websocket') {
-                activeConnection.send(keycode);
-            } else if (activeConnection === 'simulated') {
+            if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
+                active_connection.send(keycode);
+            } else if (active_connection === 'simulated') {
                 updateTermBox(keycode);
-            } else if (activeConnection === 'websocket') {
+            } else if (active_connection === 'websocket') {
                 msg_to_send.msg = String.fromCharCode(keycode);
                 msg_to_send.action = 'msg';
                 client_ws_connection.send(JSON.stringify(msg_to_send));
@@ -58,11 +58,11 @@ $(document).ready(function () {
     $("#serial_console").keypress(function (e) {
         var charcode = e.charCode;
 
-        if (activeConnection !== null && activeConnection !== 'simulated' && activeConnection !== 'websocket') {
-            activeConnection.send(charcode);
-        } else if (activeConnection === 'simulated') {
+        if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
+            active_connection.send(charcode);
+        } else if (active_connection === 'simulated') {
             updateTermBox(charcode);
-        } else if (activeConnection === 'websocket') {
+        } else if (active_connection === 'websocket') {
             msg_to_send.msg = String.fromCharCode(charcode);
             msg_to_send.action = 'msg';
             client_ws_connection.send(JSON.stringify(msg_to_send));
