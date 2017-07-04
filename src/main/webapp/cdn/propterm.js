@@ -9,9 +9,9 @@ var cursorGotoX = 0, cursorGotoY = 0;
 var termSetCursor = 0; // 0 = normal, 1 = set X, 2 = set Y, 3 = set X then to 2 to set Y.
 var textContainer = new Array;
 textContainer[0] = '';
-var fontSize = $('#serial_console').css('font-size');
-var termPxWide = $('#serial_console').css('width');
-var termPxHigh = $('#serial_console').css('height');
+var fontSize = '14px'; //$('#serial_console').css('font-size');
+var termPxWide = '560px'; //$('#serial_console').css('width');
+var termPxHigh = '380px'; //$('#serial_console').css('height');
 var lineHeight = Math.floor(parseInt(fontSize.replace('px', '')) * 1.1);
 var term_width = Math.floor(parseInt(fontSize.replace('px', ''))) / 1.65;
 var term_height = Math.floor(parseInt(termPxHigh.replace('px', '')));
