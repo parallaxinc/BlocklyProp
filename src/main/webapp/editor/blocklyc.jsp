@@ -122,7 +122,7 @@
                         <h4 class="modal-title" id="console-dialog-title"><fmt:message key="editor.title.terminal" /></h4>
                     </div>
                     <div class="modal-body" style="height: 430px;">
-                        <div id="serial_console" class="prop-term"></div>
+                        <div id="serial_console" class="prop-term" type="text" tabindex="1"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
