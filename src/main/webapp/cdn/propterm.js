@@ -121,10 +121,11 @@ function sendBufferToTerm() {
         //var o = echo_trap;
         //echo_trap = echo_trap.replace(terminal_buffer[0], '');
         //if (echo_trap.length >= o.length) {
-            updateTermBox(terminal_buffer.charCodeAt(0));
+        updateTermBox(terminal_buffer.charCodeAt(0));
         //}
         terminal_buffer = terminal_buffer.substr(1);
     }
+    displayTerm();
 }
 
 function updateTermBox(c) {
@@ -238,6 +239,9 @@ function updateTermBox(c) {
                     break;
             }
     }
+    if (c === 0) {
+        displayTerm();
+    }
 }
 
 function changeCursor(x, y) {
@@ -270,7 +274,9 @@ function changeCursor(x, y) {
             textContainer[cursorY] = '';
         }
     }
+}
 
+function displayTerm() {
     if (cursorY < textContainer.length - 1 && textContainer[textContainer.length - 1] === '') {
         textContainer.pop();
     }
