@@ -295,7 +295,8 @@ function establish_socket() {
                 
                 if (ws_msg.msg !== undefined) {
                     if (term !== null) { // is the terminal open?
-                        term.write(msg_in);
+                        //term.write(msg_in);
+                        displayInTerm(msg_in)
                     } else if (graph !== null) { // is the graph open?
                         graph_new_data(msg_in);
                     }
@@ -320,7 +321,8 @@ function establish_socket() {
                 } else if (ws_msg.action === 'close-terminal') {
                     $('#console-dialog').modal('hide');
                     newTerminal = false;
-                    term.destroy();
+                    //term.destroy();
+                    updateTermBox(0);
                     
                 } else if (ws_msg.action === 'close-graph') {
                     $('#graphing-dialog').modal('hide');
