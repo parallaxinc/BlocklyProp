@@ -110,7 +110,7 @@ function displayInTerm(str) {
      }
      */
     var termStatus = terminal_buffer.length;
-    terminal_buffer += str;
+    terminal_buffer.push(str);
     if (termStatus === 0) {
         sendBufferToTerm();
     }
@@ -173,7 +173,7 @@ function updateTermBox(c) {
                 case 9:
                     var l = 5 - (cursorX) % 5;
                     for (k = 0; k < l; k++) {
-                        textContainer[cursorY] += ' ';
+                        textContainer[cursorY].push(' ');
                         changeCursor(1, 0);
                     }
                     break;
@@ -232,7 +232,7 @@ function updateTermBox(c) {
                         var the_line = textContainer[cursorY] || '';
                         textContainer[cursorY] = the_line.substr(0, cursorX) + char + the_line.substr(cursorX + 1);
                     } else {
-                        textContainer[cursorY] += char;
+                        textContainer[cursorY].push(char);
                     }
                     changeCursor(1, 0);
                     break;
@@ -302,7 +302,7 @@ function setCursor(cx, cy) {
         }
     }
     while (!textContainer[cy][cx]) {
-        textContainer[cy] += ' ';
+        textContainer[cy].push(' ');
     }
     cursorX = cx;
     cursorY = cy;
