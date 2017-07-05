@@ -30,6 +30,15 @@ $(document).ready(function () {
     term_height = Math.floor(parseInt(termPxHigh.replace('px', '')));
     term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 25) / term_width);
 
+    var msg_to_send = {
+        type: 'serial-terminal',
+        outTo: 'terminal',
+        portPath: getComPort(),
+        baudrate: baudrate.toString(10),
+        msg: 'none',
+        action: 'msg'
+    };
+
     $("#serial_console").keydown(function (e) {
         var keycode = e.keyCode || e.which;
         if (keycode === 8 || keycode === 13) {
@@ -44,7 +53,7 @@ $(document).ready(function () {
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
         }
-        
+
         //console.log('sending: ' + keycode);
 
         var valid =
@@ -93,10 +102,10 @@ $(document).ready(function () {
 
 function displayInTerm(str) {
     /*
-    for (var f = 0; f < str.length; f++) {
-        updateTermBox(str.charCodeAt(f));
-    }
-    */
+     for (var f = 0; f < str.length; f++) {
+     updateTermBox(str.charCodeAt(f));
+     }
+     */
     var termStatus = terminal_buffer.length;
     terminal_buffer += str;
     if (termStatus === 0) {
