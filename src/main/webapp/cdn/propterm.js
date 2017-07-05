@@ -29,7 +29,7 @@ $(document).ready(function () {
     lineHeight = Math.floor(parseInt(fontSize.replace('px', '')) * 1.1);
     term_width = Math.floor(parseInt(fontSize.replace('px', ''))) / 1.65;
     term_height = Math.floor(parseInt(termPxHigh.replace('px', '')));
-    term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 25) / term_width);
+    term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 20) / term_width);
 
     var msg_to_send = {
         type: 'serial-terminal',
