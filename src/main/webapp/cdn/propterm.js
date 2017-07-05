@@ -110,7 +110,7 @@ function displayInTerm(str) {
      }
      */
     var termStatus = terminal_buffer.length;
-    terminal_buffer.push(str);
+    terminal_buffer = terminal_buffer.concat(str.split(''));
     if (termStatus === 0) {
         sendBufferToTerm();
     }
