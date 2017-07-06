@@ -349,7 +349,7 @@ function serial_console() {
                     displayInTerm(e.data);
                 } else {
                     connString += e.data;
-                    if (connString.endsWith('00\r\r')) {
+                    if (connString.indexOf('115200') > -1 || connString.indexOf('9600') > -1) {
                         connStrYet = true;
                     }
                 }
