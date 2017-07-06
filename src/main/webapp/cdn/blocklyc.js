@@ -353,6 +353,7 @@ function serial_console() {
                     connString += e.data;
                     if (connString.indexOf('115200') > -1 || connString.indexOf('9600') > -1) {
                         connStrYet = true;
+                        document.getElementById('serial-conn-info').innerHTML = connString.trim();
                     }
                 }
             };
@@ -378,7 +379,7 @@ function serial_console() {
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
-                
+                document.getElementById('serial-conn-info').innerHTML = '';
                 // for prop-term:
                 updateTermBox(0);
                 term = null;
