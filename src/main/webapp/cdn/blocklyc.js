@@ -34,6 +34,9 @@ var console_header = null;
 
 var active_connection = null;
 
+var connString = '';
+var connStrYet = false;
+
 var graph_options = {
     showPoint: false,
     fullWidth: true,
@@ -342,7 +345,14 @@ function serial_console() {
 
             connection.onmessage = function (e) {
                 //term.write(e.data);
-                displayInTerm(e.data);
+                if(connStrYet) {
+                    displayInTerm(e.data);
+                } else {
+                    connString += e.data;
+                    if (connString.endsWith('00\r\r')) {
+                        connStrYet = true;
+                    }
+                }
             };
 
             /*
@@ -360,6 +370,8 @@ function serial_console() {
 
             connection.onClose = function () {
                 active_connection = null;
+                connString = '';
+                connStrYet = false;
             };
 
             $('#console-dialog').on('hidden.bs.modal', function () {
