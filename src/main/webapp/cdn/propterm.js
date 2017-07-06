@@ -116,7 +116,7 @@ function displayInTerm(str) {
     if (termStatus === 0) {
         sendBufferToTerm();
     } else if (termStatus > 1000 && bufferAlert === false) {
-        // termBufferWarning()
+        termBufferWarning();
     }
 }
 
