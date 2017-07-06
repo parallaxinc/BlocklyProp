@@ -20,6 +20,7 @@ var ascii2unicode = ['\u00C7', '\u00FC', '\u00E9', '\u00E2', '\u00E4', '\u00E0',
 
 var echo_trap = '';
 var terminal_buffer = '';
+var updateTermInterval = null;
 
 $(document).ready(function () {
 
@@ -113,7 +114,11 @@ function displayInTerm(str) {
     terminal_buffer += str;
     if (termStatus === 0) {
         sendBufferToTerm();
+    } 
+    if (updateTermInterval) {
+        clearInterval(updateTermInterval);
     }
+    updateTermInterval = setInterval(displayTerm, 100);
 }
 
 function sendBufferToTerm() {
@@ -277,6 +282,7 @@ function changeCursor(x, y) {
 }
 
 function displayTerm() {
+    updateTermInterval = null;
     if (cursorY < textContainer.length - 1 && textContainer[textContainer.length - 1] === '') {
         textContainer.pop();
     }
