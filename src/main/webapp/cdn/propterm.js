@@ -243,10 +243,10 @@ function updateTermBox(c) {
     if (c === 0) {
         displayTerm();
     }
-    if (updateTermInterval) {
-        clearTimeout(updateTermInterval);
-    }
-    updateTermInterval = setTimeout(function() {sendBufferToTerm();}, 250);
+    //if (updateTermInterval) {
+    //    clearTimeout(updateTermInterval);
+    //}
+    //updateTermInterval = setTimeout(function() {sendBufferToTerm();}, 250);
 }
 
 function changeCursor(x, y) {
