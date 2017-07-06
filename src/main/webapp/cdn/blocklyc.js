@@ -351,7 +351,7 @@ function serial_console() {
                     displayInTerm(e.data);
                 } else {
                     connString += e.data;
-                    if (connString.indexOf('115200') > -1 || connString.indexOf('9600') > -1) {
+                    if (connString.indexOf(baudrate.toString(10)) > -1) {
                         connStrYet = true;
                         document.getElementById('serial-conn-info').innerHTML = connString.trim();
                     }

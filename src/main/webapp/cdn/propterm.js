@@ -21,6 +21,7 @@ var ascii2unicode = ['\u00C7', '\u00FC', '\u00E9', '\u00E2', '\u00E4', '\u00E0',
 var echo_trap = '';
 var terminal_buffer = '';
 var updateTermInterval = null;
+var bufferAlert = false;
 
 $(document).ready(function () {
 
@@ -114,7 +115,20 @@ function displayInTerm(str) {
     terminal_buffer += str;
     if (termStatus === 0) {
         sendBufferToTerm();
-    } 
+    } else if (termStatus > 1000 && bufferAlert === false) {
+        // termBufferWarning()
+    }
+}
+
+function termBufferWarning() {
+    bufferAlert = true;
+    var wrn = document.getElementById('serial-conn-info');
+    var ptx = wrn.innerHTML;
+    wrn.innerHTML = '<span class="alert-danger">Your program is sending too much data to the terminal at once.<br>Try adding pauses or sending less data.</span>';
+    setTimeout(function() {
+        wrn.innerHTML = ptx; 
+        bufferAlert = false;
+    }, 5000);
 }
 
 function sendBufferToTerm() {
