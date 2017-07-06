@@ -115,7 +115,7 @@ function displayInTerm(str) {
     terminal_buffer += str;
     if (termStatus === 0) {
         sendBufferToTerm();
-    } else if (termStatus > 1000 && bufferAlert === false) {
+    } else if (termStatus > 255 && bufferAlert === false) {
         termBufferWarning();
     }
 }
