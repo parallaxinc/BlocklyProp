@@ -451,6 +451,8 @@ function serial_console() {
             //term.open(document.getElementById("serial_console"));
             msg_to_send.action = 'open';
             active_connection = 'websocket';
+            document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
+                    msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
             client_ws_connection.send(JSON.stringify(msg_to_send));
         } else {
             //term.reset();
@@ -460,6 +462,7 @@ function serial_console() {
         $('#console-dialog').on('hidden.bs.modal', function () {
             if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
                 msg_to_send.action = 'close';
+                document.getElementById('serial-conn-info').innerHTML = '';
                 active_connection = null;                
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
@@ -570,8 +573,6 @@ function graphing_console() {
 
             if (newGraph || graph !== null) {
                 graph_new_labels();
-                document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
-                        msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
                 graph_interval_id = setInterval(function () {
                     graph.update(graph_data);
                     graph_update_labels();
@@ -583,7 +584,6 @@ function graphing_console() {
             $('#graphing-dialog').on('hidden.bs.modal', function () {
                 if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
                     msg_to_send.action = 'close';
-                    document.getElementById('serial-conn-info').innerHTML = '';
                     client_ws_connection.send(JSON.stringify(msg_to_send));
                     //console.log('closing: ' + JSON.stringify(msg_to_send));
                 }
