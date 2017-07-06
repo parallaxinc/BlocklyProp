@@ -330,6 +330,8 @@ function serial_console() {
 
             // When the connection is open, open com port
             connection.onopen = function () {
+                connString = '';
+                connStrYet = false;
                 if (baud_rate_compatible && baudrate) {
                     connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
                 } else {

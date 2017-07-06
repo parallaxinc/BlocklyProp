@@ -116,9 +116,9 @@ function displayInTerm(str) {
         sendBufferToTerm();
     } 
     if (updateTermInterval) {
-        clearInterval(updateTermInterval);
+        clearTimeout(updateTermInterval);
     }
-    updateTermInterval = setInterval(displayTerm, 100);
+    updateTermInterval = setTimeout(function() {displayInTerm('');}, 250);
 }
 
 function sendBufferToTerm() {
