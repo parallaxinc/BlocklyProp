@@ -115,21 +115,17 @@ function displayInTerm(str) {
     if (termStatus === 0) {
         sendBufferToTerm();
     } 
-    if (updateTermInterval) {
-        clearTimeout(updateTermInterval);
-    }
-    updateTermInterval = setTimeout(function() {displayInTerm('');}, 250);
 }
 
 function sendBufferToTerm() {
-    while (terminal_buffer.length > 0) {
+    do {
         //var o = echo_trap;
         //echo_trap = echo_trap.replace(terminal_buffer[0], '');
         //if (echo_trap.length >= o.length) {
         updateTermBox(terminal_buffer.charCodeAt(0));
         //}
         terminal_buffer = terminal_buffer.substr(1);
-    }
+    } while (terminal_buffer.length > 0)
     displayTerm();
 }
 
@@ -247,6 +243,10 @@ function updateTermBox(c) {
     if (c === 0) {
         displayTerm();
     }
+    if (updateTermInterval) {
+        clearTimeout(updateTermInterval);
+    }
+    updateTermInterval = setTimeout(function() {sendBufferToTerm();}, 250);
 }
 
 function changeCursor(x, y) {
