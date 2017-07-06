@@ -150,6 +150,14 @@ button:hover {
     }
 }
 
+#serial-conn-info {
+    color: #bbb;
+    font-size: 11px;
+    font-family: Andale Mono, Droid Sans Mono, Consolas, monospace;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
 #console-dialog .modal-dialog {
     /* new custom width */
     width: 610px;
