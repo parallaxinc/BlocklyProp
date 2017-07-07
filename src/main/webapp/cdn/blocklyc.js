@@ -786,10 +786,10 @@ function graph_redraw() {
 function graph_play() {
     var play_state = document.getElementById('btn-graph-play').innerHTML;
     if (play_state.indexOf('pause') > -1) {
-        document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-play"></i>';
+        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
         clearInterval(graph_interval_id);
     } else {
-        document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
+        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
         graph_interval_id = setInterval(function () {
             graph.update(graph_data);
         }, graph_options.refreshRate);
