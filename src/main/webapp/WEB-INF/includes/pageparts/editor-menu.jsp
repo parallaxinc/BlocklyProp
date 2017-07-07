@@ -72,7 +72,7 @@
                     <a href="#" class="btn btn-sm btn-primary" id="tab_xml" onclick="tabClick('tab_xml')"><fmt:message key="editor.view.xml" /></a>
                     <%   }%>
                     <a href="#" class="demo-function" id="save-project"><fmt:message key="editor.save" /></a>
-                    <span class="dropdown"><button class="btn btn-sm btn-default dropdown-toggle" id="options-menu" type="button" data-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,0 L8.5,0 8.5,6 12.5,6 7,11.5 1.5,6 5.5,6 Z M0.5,12 L13.5,12 13.5,14.5 0.5,14.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>
+                    <span class="dropdown"><button class="btn btn-sm btn-default dropdown-toggle" id="options-menu" type="button" data-toggle="dropdown"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="14"><path d="M0.5,12.25 L11.5,12.25 11.5,13.5 0.5,13.5 Z M0.5,7.25 L11.5,7.25 11.5,8.5 0.5,8.5 Z M0.5,2.25 L11.5,2.25 11.5,3.5 0.5,3.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu pull-right btn-sm">
                             <li><a id="edit-project-details" href="#" onclick="editProjectDetails()"><fmt:message key="editor.edit-details" /></a></li>
