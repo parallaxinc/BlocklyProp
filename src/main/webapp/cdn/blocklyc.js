@@ -515,6 +515,8 @@ function graphing_console() {
             graph_temp_string = '';
             graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
             newGraph = true;
+        } else {
+            graph.update(graph_data, graph_options);
         }
 
         if (client_use_type !== 'ws' && client_available) {
@@ -727,7 +729,7 @@ function graph_new_data(stream) {
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
                     
                     // limits total number of data point collected to prevent memory issues
-                    if(graph_csv_data.length > 65000) {
+                    if(graph_csv_data.length > 15000) {
                         graph_csv_data.shift();
                     }
                 }
