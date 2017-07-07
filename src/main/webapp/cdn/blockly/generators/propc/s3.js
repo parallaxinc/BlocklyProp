@@ -1171,7 +1171,7 @@ Blockly.Blocks.scribbler_stop_servo = {
         this.appendDummyInput("")
                 .appendField("servo on")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SERVO_PIN")
-                .appendField("disble");
+                .appendField("disable");
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
