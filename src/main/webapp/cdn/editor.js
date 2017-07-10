@@ -343,9 +343,7 @@ function uploadHandler(files) {
                     document.getElementById("selectfile-verify-boardtype").style.display = "none";
                 }
             }
-        }
-        ;
-
+        };
 
         if (xmlValid === true) {
             document.getElementById("selectfile-verify-valid").style.display = "block";
@@ -363,10 +361,8 @@ function uploadHandler(files) {
     UploadReader.readAsText(files[0]);
 
     if (uploadedXML !== '') {
-
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
-    }
-    ;
+    };
 }
 
 function clearUploadInfo() {
@@ -389,7 +385,7 @@ function replaceCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
-        window.frames["content_blocks"].load(projectData['code']);
+        setTimeout(function() {window.frames["content_blocks"].load(projectData['code']);}, 2000);
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
@@ -411,7 +407,7 @@ function appendCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
-        window.frames["content_blocks"].load(projectData['code']);
+        setTimeout(function() {window.frames["content_blocks"].load(projectData['code']);}, 2000);
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
@@ -425,7 +421,7 @@ function clearWorkspace() {
             window.frames["content_blocks"].setProfile(projectData['board']);
             window.frames["content_blocks"].init(projectData['board'], []);
             projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
-            window.frames["content_blocks"].load(projectData['code']);
+            setTimeout(function() {window.frames["content_blocks"].load(projectData['code']);}, 2000);
         }
     });
 }

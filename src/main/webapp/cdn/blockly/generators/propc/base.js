@@ -563,7 +563,9 @@ Blockly.Blocks.string_type_block = {
         this.setTooltip(Blockly.MSG_STRING_TYPE_BLOCK_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldTextInput('Hello'), "TEXT");
+                .appendField("\u201C")
+                .appendField(new Blockly.FieldTextInput('Hello'), "TEXT")
+                .appendField("\u201D");
 
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -572,7 +574,7 @@ Blockly.Blocks.string_type_block = {
 };
 
 Blockly.propc.string_type_block = function () {
-    var text = this.getFieldValue("TEXT").replace(/"/g, '\\"').replace(/%/g, "%%");
+    var text = this.getFieldValue("TEXT").replace(/"/g, '\\"');
 
     var code = '"' + text + '"';
     return [code, Blockly.propc.ORDER_NONE];
@@ -727,7 +729,7 @@ Blockly.Blocks.waitcnt = {
         this.setTooltip(Blockly.MSG_WAITCNT_TOOLTIP);
         this.setColour(colorPalette.getColor('system'));
         this.appendValueInput('TARGET')
-                .appendField("Pause until");
+                .appendField("Wait until");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);

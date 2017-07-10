@@ -842,9 +842,9 @@ Blockly.Blocks.lsm9ds1_read = {
 
 Blockly.propc.lsm9ds1_read = function () {
     var sensor = this.getFieldValue('SENSOR');
-    var xstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('X_VAR'), Blockly.Variables.NAME_TYPE);
-    var ystorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Y_VAR'), Blockly.Variables.NAME_TYPE);
-    var zstorage = Blockly.propc.variableDB_.getName(this.getFieldValue('Z_VAR'), Blockly.Variables.NAME_TYPE);
+    var xstorage = this.getFieldValue('X_VAR');
+    var ystorage = this.getFieldValue('Y_VAR');
+    var zstorage = this.getFieldValue('Z_VAR');
 
     var code = '';
     if (Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
@@ -935,8 +935,8 @@ Blockly.propc.lsm9ds1_tilt = function () {
     var t1_axis = '__imu' + this.getFieldValue('A1')[6].toUpperCase();
     var t2_axis = '__imu' + this.getFieldValue('A2')[0].toUpperCase();
     var g_axis = '__imu' + this.getFieldValue('G_AXIS');
-    var storage1 = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR1'), Blockly.Variables.NAME_TYPE);
-    var storage2 = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR2'), Blockly.Variables.NAME_TYPE);
+    var storage1 = this.getFieldValue('VAR1');
+    var storage2 = this.getFieldValue('VAR2');
 
     var code = '';
     if (Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
@@ -1043,7 +1043,7 @@ Blockly.Blocks.lsm9ds1_heading = {
 Blockly.propc.lsm9ds1_heading = function () {
     var fb_axis = this.getFieldValue('FB_AXIS');
     var lr_axis = this.getFieldValue('LR_AXIS');
-    var storage = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+    var storage = this.getFieldValue('VAR');
 
     var code = '';
     if (Blockly.propc.definitions_["include_lsm9ds1"] === '#include "lsm9ds1.h"') {
@@ -1336,8 +1336,8 @@ Blockly.propc.GPS_date_time = function () {
     dt_function += 'int __gpsHour = __gpsTime/10000 + __z;\nif(__gpsHour < 0) __gpsHour += 24;\n';
     dt_function += 'if(__gpsHour > 23) __gpsHour -= 24;\n\nswitch (__u) {\n';
     dt_function += 'case GPS_UNIT_YEAR:\nreturn __gpsDate/10000;\n';
-    dt_function += 'break;\ncase GPS_UNIT_MONTH:\nreturn __gpsDate/100 - (__gpsDate/10000)*100;\n';
-    dt_function += 'break;\ncase GPS_UNIT_DAY:\nreturn __gpsDate - (__gpsDate/100)*100;\n';
+    dt_function += 'break;\ncase GPS_UNIT_DAY:\nreturn __gpsDate/100 - (__gpsDate/10000)*100;\n';
+    dt_function += 'break;\ncase GPS_UNIT_MONTH:\nreturn __gpsDate - (__gpsDate/100)*100;\n';
     dt_function += 'break;\ncase GPS_UNIT_HOUR:\nreturn __gpsHour;\nbreak;\ncase GPS_UNIT_MINUTE:\n';
     dt_function += 'return __gpsTime/100 - (__gpsTime/10000)*100;\nbreak;\ncase GPS_UNIT_SECOND:\n';
     dt_function += 'return __gpsTime - (__gpsTime/100)*100;\nbreak;\ndefault:\nreturn -1;\nbreak;}}';

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <!-- This is the he Web Application Deployment Descriptor for the   -->
     <!-- BlocklyProp application. This file describes the servlets and  -->
     <!-- other components that make up your application, along with any -->
@@ -10,26 +7,21 @@
     <!-- constraints that the server should enforce.                    -->
     <!-- Reference:                                                     -->
     <!-- http://tomcat.apache.org/tomcat-7.0-doc/appdev/deployment.html -->
-    
-    
     <!-- WARNING: The order in which the filters appear in this file    -->
     <!--          are critical.                                         -->
     <!--                                                                -->
     <!--                      ORDER MATTERS!!                           -->
     <!--                                                                -->
     <!-- ============================================================== -->
- 
     <!-- Shiro - Apache application security framework                  -->
     <!-- no init-param means the configuration will be loaded from the  -->
-    <!-- config located in classpath:shiro.ini                          --> 
+    <!-- config located in classpath:shiro.ini                          -->
     <!-- Reference:                                                     -->
     <!-- https://shiro.apache.org/documentation.html                    -->
-    
     <filter>
         <filter-name>ShiroFilter</filter-name>
         <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>ShiroFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -38,7 +30,6 @@
         <dispatcher>INCLUDE</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
-
     <!-- Guice - A lightweight dependency injection framework           -->
     <!-- Reference:                                                     -->
     <!-- https://github.com/google/guice                                -->
@@ -46,25 +37,20 @@
         <filter-name>GuiceFilter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>GuiceFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <!-- Listeners -->
     <!-- Guice -->
     <listener>
         <listener-class>com.parallax.server.blocklyprop.config.SetupConfig</listener-class>
     </listener>
-
     <!-- Shiro -->
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
-
     <!-- Rest API Visualizer -->
-
     <!-- Cuubez API Visualizer configurations -->
     <!-- Created alternate implementation because of a bug on windows in coodez API visualizer version 1.0.1 -->
     <!-- https://code.google.com/p/cuubez/issues/detail?id=5  -->
@@ -73,28 +59,27 @@
             <listener-class>com.cuubez.visualizer.servlet.VzBootstrapContextListener</listener-class>
         </listener>
     -->
-
     <listener>
         <listener-class>com.parallax.server.blocklyprop.config.RestAPIVisualizeBootstrap</listener-class>
     </listener>
-
     <servlet>
         <servlet-name>vapi_servlet</servlet-name>
         <servlet-class>com.cuubez.visualizer.servlet.VzHttpServletDispatcher</servlet-class>
     </servlet>
-
     <!-- URL of the visual REST API documentation -->
+    <servlet>
+        <servlet-name>ChildPrivacy</servlet-name>
+        <servlet-class>com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>vapi_servlet</servlet-name>
         <url-pattern>/apidoc</url-pattern>
     </servlet-mapping>
-
     <!-- Monitor -->
     <listener>
         <description>Add Metrics to context</description>
         <listener-class>com.parallax.server.blocklyprop.monitoring.BlocklyPropInstrumentedFilterContextListener</listener-class>
     </listener>
-
     <filter>
         <filter-name>instrumentedFilter</filter-name>
         <filter-class>com.codahale.metrics.servlet.InstrumentedFilter</filter-class>
@@ -103,13 +88,14 @@
         <filter-name>instrumentedFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <!-- Other servlets -->
-
+    <servlet-mapping>
+        <servlet-name>ChildPrivacy</servlet-name>
+        <url-pattern>/ChildPrivacy</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index</welcome-file>
     </welcome-file-list>
-
     <jsp-config>
         <taglib>
             <taglib-uri>http://blocklyprop.parallax.com/properties</taglib-uri>
@@ -124,5 +110,4 @@
             <taglib-location>/WEB-INF/url.tld</taglib-location>
         </taglib>
     </jsp-config>
-
 </web-app>

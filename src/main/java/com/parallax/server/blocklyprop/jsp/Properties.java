@@ -6,7 +6,10 @@
 package com.parallax.server.blocklyprop.jsp;
 
 import com.google.inject.Inject;
+import com.parallax.client.cloudsession.objects.User;
+import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -77,4 +80,25 @@ public class Properties {
         return false;
     }
 
+     public static boolean isCoppaRestricted() {
+        LoggerFactory.getLogger(Properties.class).info("Checking for COPPA restrictions");
+        
+        // Get the current user context
+        User user = BlocklyPropSecurityUtils.getUserInfo();
+        LoggerFactory.getLogger(Properties.class).info("Completed call to getUserInfo()");
+
+        // Do not restrict is we do not have a valid user id
+
+        if (user == null) {
+            LoggerFactory.getLogger(Properties.class).info("Anonymous user. No COPPA restrictions");
+            return false;
+        }
+        
+//        LoggerFactory.getLogger(Properties.class).info("User screen name is: {}.", user.getScreenname());
+//        LoggerFactory.getLogger(Properties.class).info("User COPPA requirement: {}.", user.isCoppaEligible());
+//        LoggerFactory.getLogger(Properties.class).info("User COPPA month: {}.", user.getBirthMonth());
+//        LoggerFactory.getLogger(Properties.class).info("User COPPA year: {}.", user.getBirthYear());
+        
+        return user.isCoppaEligible();
+     }
 }
