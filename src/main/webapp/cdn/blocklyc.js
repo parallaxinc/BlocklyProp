@@ -32,6 +32,11 @@ var graph_csv_data = new Array;
 var console_header_arrived = false;
 var console_header = null;
 
+var active_connection = null;
+
+var connString = '';
+var connStrYet = false;
+
 var graph_options = {
     showPoint: false,
     fullWidth: true,
@@ -302,6 +307,7 @@ function serial_console() {
 
     if (client_use_type !== 'ws') {
         if (term === null) {
+            /*
             term = new Terminal({
                 cols: 256,
                 rows: 24,
@@ -309,6 +315,10 @@ function serial_console() {
                 screenKeys: true,
                 portPath: getComPort()
             });
+            */
+            term = {
+               portPath: getComPort()
+            };
 
             newTerminal = true;
         }
@@ -320,43 +330,64 @@ function serial_console() {
 
             // When the connection is open, open com port
             connection.onopen = function () {
+                connString = '';
+                connStrYet = false;
                 if (baud_rate_compatible && baudrate) {
                     connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
                 } else {
                     connection.send('+++ open port ' + getComPort());
                 }
-
+                active_connection = connection;
             };
             // Log errors
             connection.onerror = function (error) {
                 console.log('WebSocket Error');
                 console.log(error);
-                // term.destroy();
-            };
-            // Log messages from the server
-            connection.onmessage = function (e) {
-                //console.log('Server: ' + e.data);
-                term.write(e.data);
             };
 
+            connection.onmessage = function (e) {
+                //term.write(e.data);
+                if(connStrYet) {
+                    displayInTerm(e.data);
+                } else {
+                    connString += e.data;
+                    if (connString.indexOf(baudrate.toString(10)) > -1) {
+                        connStrYet = true;
+                        document.getElementById('serial-conn-info').innerHTML = connString.trim();
+                    }
+                }
+            };
+
+            /*
             term.on('data', function (data) {
-                //console.log(data);
                 connection.send(data);
             });
+            */
 
             if (newTerminal) {
-                term.open(document.getElementById("serial_console"));
+                //term.open(document.getElementById("serial_console"));
             } else {
-                term.reset();
+                //term.reset();
+                updateTermBox(0);
             }
+
             connection.onClose = function () {
-                //  term.destroy();
+                active_connection = null;
+                connString = '';
+                connStrYet = false;
             };
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
+                document.getElementById('serial-conn-info').innerHTML = '';
+                // for prop-term:
+                updateTermBox(0);
+                term = null;
+                active_connection = null;
             });
         } else {
+            active_connection = 'simulated';
+            /*
             term.on('data', function (data) {
                 data = data.replace('\r', '\r\n');
                 term.write(data);
@@ -368,10 +399,23 @@ function serial_console() {
 
                 term.write("Connection established with: " + getComPort() + "\n\r");
             }
+            */
+           
+            if (newTerminal) {
+                displayInTerm("Simulated terminal because you are in demo mode\n");
+                displayInTerm("Connection established with: " + getComPort() + "\n");
+            }
+           
+            $('#console-dialog').on('hidden.bs.modal', function () {
+                active_connection = null;
+                updateTermBox(0);
+                term = null;
+            });
         }
     } else if (client_use_type === 'ws') {
+    // using Websocket-only client
 
-        term === null;
+        /*
         term = new Terminal({
             cols: 256,
             rows: 24,
@@ -379,10 +423,13 @@ function serial_console() {
             screenKeys: true,
             portPath: getComPort()
         });
+        */
+        term = {
+            portPath: getComPort()
+        };
 
         newTerminal = true;
 
-        // using Websocket-only client
         var msg_to_send = {
             type: 'serial-terminal',
             outTo: 'terminal',
@@ -392,30 +439,36 @@ function serial_console() {
             action: 'msg'
         };
 
+        /*
         term.on('data', function (data) {
             msg_to_send.msg = data;
             msg_to_send.action = 'msg';
             client_ws_connection.send(JSON.stringify(msg_to_send));
-            //console.log('sending: ' + JSON.stringify(msg_to_send));
         });
+        */
 
         if (newTerminal === true) {
-            term.open(document.getElementById("serial_console"));
+            //term.open(document.getElementById("serial_console"));
             msg_to_send.action = 'open';
+            active_connection = 'websocket';
+            document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
+                    msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
             client_ws_connection.send(JSON.stringify(msg_to_send));
-            //console.log('opening: ' + JSON.stringify(msg_to_send));
         } else {
-            term.reset();
+            //term.reset();
+            updateTermBox(0);
         }
 
         $('#console-dialog').on('hidden.bs.modal', function () {
-            if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
+            if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
                 msg_to_send.action = 'close';
+                document.getElementById('serial-conn-info').innerHTML = '';
+                active_connection = null;                
                 client_ws_connection.send(JSON.stringify(msg_to_send));
-                //console.log('closing: ' + JSON.stringify(msg_to_send));
             }
             newTerminal = false;
-            term.destroy();
+            //term.destroy();
+            updateTermBox(0);
         });
     }
 
@@ -462,6 +515,8 @@ function graphing_console() {
             graph_temp_string = '';
             graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
             newGraph = true;
+        } else {
+            graph.update(graph_data, graph_options);
         }
 
         if (client_use_type !== 'ws' && client_available) {
@@ -636,21 +691,6 @@ function downloadPropC() {
 
 function graph_new_data(stream) {
 
-    /*
-     // Attempt to capture connection information:
-     
-     var j = 0;
-     while (!graph_data_ready) {
-     if (stream[0] === '\n')
-     stream[0] = '\r';
-     graph_connection_string[j] = stream[0];
-     stream = stream.slice(1);
-     if (graph_connection_string[j] === '\r' && graph_connection_string[j - 1] === '\r')
-     graph_data_ready = true;
-     j++;
-     }
-     */
-
     // Check for a failed connection:
     if (stream.indexOf('ailed') > -1) {
         $("#serial_graphing").html(stream);
@@ -687,16 +727,12 @@ function graph_new_data(stream) {
                             graph_data.series[j - 2].shift();
                     }
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
+                    
+                    // limits total number of data point collected to prevent memory issues
+                    if(graph_csv_data.length > 15000) {
+                        graph_csv_data.shift();
+                    }
                 }
-
-
-
-                /*
-                 var read_serial_to_div = '';
-                 for (var l = 0; l < graph_temp_data[row].length; l++)
-                 read_serial_to_div += graph_temp_data[row].toString() + '\n';
-                 $( "#serial_graphing" ).html(read_serial_to_div);
-                 */
 
                 graph_temp_string = '';
             } else {
@@ -713,7 +749,11 @@ function graph_new_data(stream) {
 
 function graph_reset() {
     clearInterval(graph_interval_id);
-    graph = null;
+    if(graph) {
+        graph.detach();
+    }
+    $("#serial_graphing").html('');
+
     graph_interval_id = null;
     graph_temp_data = null;
     graph_temp_data = new Array;
@@ -737,9 +777,6 @@ function graph_reset() {
     graph_temp_string = '';
     graph_timestamp_start = null;
     graph_data_ready = false;
-    // graph_labels = null;
-    $("#serial_graphing").html('');
-    //$("#serial_graphing_labels").html('');
 }
 
 function graph_redraw() {
@@ -749,10 +786,10 @@ function graph_redraw() {
 function graph_play() {
     var play_state = document.getElementById('btn-graph-play').innerHTML;
     if (play_state.indexOf('pause') > -1) {
-        document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-play"></i>';
+        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
         clearInterval(graph_interval_id);
     } else {
-        document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
+        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
         graph_interval_id = setInterval(function () {
             graph.update(graph_data);
         }, graph_options.refreshRate);
@@ -856,3 +893,4 @@ function graph_update_labels() {
         }
     }
 }
+

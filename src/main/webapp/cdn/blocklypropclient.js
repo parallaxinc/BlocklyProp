@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+var terminal_dump = null;
 
 var client_available = false;
 var client_url = 'http://localhost:6009/';
@@ -16,6 +17,8 @@ var client_baud_rate_min_version = 0.4;
 
 var client_use_type = 'none';
 var client_ws_connection = null;
+var client_ws_heartbeat;
+var client_ws_heartbeat_interval;
 
 var baud_rate_compatible = false;
 
@@ -96,6 +99,21 @@ check_client = function () {
     }
 };
 
+connection_heartbeat = function () {
+    // Check the last time the port list was recieved.
+    // If it's been too, close out the connection.
+    if (client_use_type === 'ws') {
+        var d = new Date();
+        var heartbeat_check = d.getTime();
+        if (client_ws_heartbeat + 12000 < heartbeat_check) {
+            // Client is taking too long to check in - close the connection
+            client_ws_connection.close();
+            clearInterval(client_ws_heartbeat_interval);
+            client_ws_heartbeat_interval = null;
+        }
+    }
+};
+
 configure_client = function () {
     var url_input = $("<form/>", {
         class: "form-inline"
@@ -148,8 +166,9 @@ configure_client = function () {
 
 // checks for and, if found, uses a newer WebSocekts-only client
 function establish_socket() {
-    check_ws_socket_interval = null;
+    //check_ws_socket_interval = null;
     
+    // TODO: needs testing - is it better to do this here, or in the next TODO
     if(client_ws_connection !== null && client_use_type !== 'ws') {
         //client_ws_connection.close();
     }
@@ -171,6 +190,13 @@ function establish_socket() {
         var connection = new WebSocket(url);
 
         connection.onopen = function () {
+            
+            // TODO: needs testing - is it better to do this here or in the previous TODO
+            // Is there already a connection?  If so, close it:
+            if (client_ws_connection !== null) {
+                client_ws_connection.close();
+            }
+                
             var ws_msg = {type: 'hello-browser', baud: baudrate};
             client_ws_connection = connection;
             connection.send(JSON.stringify(ws_msg));
@@ -181,14 +207,14 @@ function establish_socket() {
             console.log('WebSocket Error');
             console.log(error);
 
-            $("#client-searching").removeClass("hidden");
-            $("#client-available").addClass("hidden");
-            $("#client-unavailable").addClass("hidden");
+            //$("#client-searching").removeClass("hidden");
+            //$("#client-available").addClass("hidden");
+            //$("#client-unavailable").addClass("hidden");
 
-            // TODO: Should we shutdown and try again?
-            check_ws_socket_interval = setTimeout(function () {
-                find_client();
-            }, 3000);
+            // TODO: Should we shutdown and try again? - needs testing
+            //check_ws_socket_interval = setTimeout(function () {
+            //    find_client();
+            //}, 3000);
         };
 
         // handle messages from the client
@@ -197,8 +223,16 @@ function establish_socket() {
 
             // --- hello handshake - establish new connection
             if (ws_msg.type === 'hello-client') {
-                // type: 'hello-client', 
+                // type: 'hello-client',
                 // version: [String version (semantic versioning)]
+                
+                
+                setInterval(function() {
+                    // Terminal dumper!
+                    console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
+                    terminal_dump = null;
+                }, 10000);
+                
                 
                 console.log("Websocket client found - version " + ws_msg.version);
 
@@ -224,6 +258,14 @@ function establish_socket() {
             else if (ws_msg.type === 'port-list') {  
                 // type: 'port-list', 
                 // ports: ['port1', 'port2', 'port3'...]
+                
+                // mark the time that this was received
+                var d = new Date();
+                client_ws_heartbeat = d.getTime();
+                
+                if (!client_ws_heartbeat_interval) {
+                    client_ws_heartbeat_interval = setInterval(connection_heartbeat, 4000);
+                }
 
                 selected_port = $("#comPort").val();
                 $("#comPort").empty();
@@ -243,15 +285,25 @@ function establish_socket() {
 
             // --- serial terminal/graph
             else if (ws_msg.type === 'serial-terminal' &&
-                    (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes som weird stuff comes through...
+                    (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes some weird stuff comes through...
                 // type: 'serial-terminal'
                 // msg: [String message]
                 
-                if (term !== null) { // is the terminal open?
-                    term.write(ws_msg.msg);
-                } else if (graph !== null) { // is the graph open?
-                    graph_new_data(ws_msg.msg);
+                var msg_in = atob(ws_msg.msg);
+
+                terminal_dump += ws_msg.packetID + ', ' + ws_msg.msg + ', ' + msg_in + '\n';
+                
+                if (ws_msg.msg !== undefined) {
+                    if (term !== null) { // is the terminal open?
+                        //term.write(msg_in);
+                        displayInTerm(msg_in)
+                    } else if (graph !== null) { // is the graph open?
+                        graph_new_data(msg_in);
+                    }
                 }
+                                                                                   
+                // var ws_cts = {type: 'debug-cts', msg: 'ok'};
+                // client_ws_connection.send(JSON.stringify(ws_cts));
             }
             
             // --- UI Commands coming from the client
@@ -269,24 +321,28 @@ function establish_socket() {
                 } else if (ws_msg.action === 'close-terminal') {
                     $('#console-dialog').modal('hide');
                     newTerminal = false;
-                    term.destroy();
+                    //term.destroy();
+                    updateTermBox(0);
                     
                 } else if (ws_msg.action === 'close-graph') {
                     $('#graphing-dialog').modal('hide');
                     graph_reset();
                     
                 } else if (ws_msg.action === 'clear-compile') {
-                    $('#compile-dialog').val('');
+                    $('#compile-console').val('');
                     
                 } else if (ws_msg.action === 'message-compile') {
-                    $('#compile-dialog').val($('#compile-dialog').val() + ws_msg.msg);
+                    $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
                     
                 } else if (ws_msg.action === 'close-compile') {
                     $('#compile-dialog').modal('hide');
-                    $('#compile-dialog').val('');
+                    $('#compile-console').val('');
                     
                 } else if (ws_msg.action === 'console-log') {
                     console.log(ws_msg.msg);
+
+                } else if (ws_msg.action === 'websocket-close') {
+                    client_ws_connection.close();
 
                 } else if (ws_msg.action === 'alert') {
                     alert(ws_msg.msg);
@@ -319,6 +375,16 @@ function establish_socket() {
                     text: 'Searching...'
                 }));
                 select_com_port(selected_port);
+            }
+
+            if (check_ws_socket_interval) {
+                clearTimeout(check_ws_socket_interval);
+                check_ws_socket_interval = null;
+            }
+            
+            if (client_ws_heartbeat_interval) {
+                clearInterval(client_ws_heartbeat_interval);
+                client_ws_heartbeat_interval = null;
             }
 
             check_ws_socket_interval = setTimeout(find_client, 3000);

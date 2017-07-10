@@ -116,6 +116,47 @@ button:hover {
     margin-right: 10px;
 }
 
+.prop-term {
+    vertical-align: text-top;
+    background: black;
+    font-size: 13px;
+    font-family: Andale Mono, Droid Sans Mono, Consolas, monospace;
+    color: white;
+    width: 575px;
+    height: 380px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    line-height: 110%;
+    border: 2px solid black;
+}
+
+.prop-term:focus {
+    outline-width: 0;
+}
+
+.visual-beep {
+    animation-name: vbeep;
+    animation-duration: .25s;
+}
+
+@keyframes vbeep {
+    0% {
+        background: white;
+        color: black;
+    }
+    100% {
+        background: black;
+        color: white;
+    }
+}
+
+#serial-conn-info {
+    color: #bbb;
+    font-size: 11px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
 #console-dialog .modal-dialog {
     /* new custom width */
     width: 610px;
@@ -393,91 +434,91 @@ nav .nav > li > a:first-child {
 /* Graphing Output */
 
 .ct-series-a .ct-line {
-  stroke-width: 1px;
-  stroke: #00f;
+    stroke-width: 1px;
+    stroke: #00f;
 }
 
 .ct-series-b .ct-line {
-  stroke-width: 1px;
-  stroke: #0bb;
+    stroke-width: 1px;
+    stroke: #0bb;
 }
 
 .ct-series-c .ct-line {
-  stroke-width: 1px;
-  stroke: #0d0;
+    stroke-width: 1px;
+    stroke: #0d0;
 }
 
 .ct-series-d .ct-line {
-  stroke-width: 1px;
-  stroke: #dd0;
+    stroke-width: 1px;
+    stroke: #dd0;
 }
 
 .ct-series-e .ct-line {
-  stroke-width: 1px;
-  stroke: #f90;
+    stroke-width: 1px;
+    stroke: #f90;
 }
 
 .ct-series-f .ct-line {
-  stroke-width: 1px;
-  stroke: #f00;
+    stroke-width: 1px;
+    stroke: #f00;
 }
 
 .ct-series-g .ct-line {
-  stroke-width: 1px;
-  stroke: #d09;
+    stroke-width: 1px;
+    stroke: #d09;
 }
 
 .ct-series-h .ct-line {
-  stroke-width: 1px;
-  stroke: #90d;
+    stroke-width: 1px;
+    stroke: #90d;
 }
 
 .ct-series-i .ct-line {
-  stroke-width: 1px;
-  stroke: #777;
+    stroke-width: 1px;
+    stroke: #777;
 }
 
 .ct-series-j .ct-line {
-  stroke-width: 1px;
-  stroke: #000
+    stroke-width: 1px;
+    stroke: #000
 }
 
 .ct-marker-1 {
-  fill: #00f;
+    fill: #00f;
 }
 
 .ct-marker-2 {
-  fill: #0bb;
+    fill: #0bb;
 }
 
 .ct-marker-3 {
-  fill: #0d0;
+    fill: #0d0;
 }
 
 .ct-marker-4 {
-  fill: #dd0;
+    fill: #dd0;
 }
 
 .ct-marker-5 {
-  fill: #f90;
+    fill: #f90;
 }
 
 .ct-marker-6 {
-  fill: #f00;
+    fill: #f00;
 }
 
 .ct-marker-7 {
-  fill: #d09;
+    fill: #d09;
 }
 
 .ct-marker-8 {
-  fill: #90d;
+    fill: #90d;
 }
 
 .ct-marker-9 {
-  fill: #777;
+    fill: #777;
 }
 
 .ct-marker-10 {
-  fill: #000
+    fill: #000
 }
