@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var terminal_dump = null;
+//var terminal_dump = null;
 
 var client_available = false;
 var client_url = 'http://localhost:6009/';
@@ -230,7 +230,7 @@ function establish_socket() {
                 setInterval(function() {
                     // Terminal dumper!
                     console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
-                    terminal_dump = null;
+                    //terminal_dump = null;
                 }, 10000);
                 
                 
@@ -291,7 +291,7 @@ function establish_socket() {
                 
                 var msg_in = atob(ws_msg.msg);
 
-                terminal_dump += ws_msg.packetID + ', ' + ws_msg.msg + ', ' + msg_in + '\n';
+                //terminal_dump += ws_msg.packetID + ', ' + ws_msg.msg + ', ' + msg_in + '\n';
                 
                 if (ws_msg.msg !== undefined) {
                     if (term !== null) { // is the terminal open?
