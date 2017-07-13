@@ -9,6 +9,7 @@ var baseUrl = $("meta[name=base]").attr("content");
 var projectData = null;
 var ready = false;
 var projectLoaded = false;
+var uploadStaged = false;
 
 var idProject = 0;
 
@@ -139,7 +140,7 @@ blocklyReady = function () {
 };
 
 loadProject = function () {
-    if (projectData !== null) {
+    if (projectData !== null && uploadStaged === false) {
         window.frames["content_blocks"].load(projectData['code']);
     }
     if (projectData['board'] === 's3' && type === 'PROPC') {
@@ -362,6 +363,7 @@ function uploadHandler(files) {
 
     if (uploadedXML !== '') {
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
+        uploadStaged = true;
     };
 }
 
@@ -385,7 +387,10 @@ function replaceCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
-        setTimeout(function() {window.frames["content_blocks"].load(projectData['code']);}, 2000);
+        $(window).load(function() {
+            window.frames["content_blocks"].load(projectData['code']);
+            uploadStaged = false;
+        });
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
@@ -407,7 +412,10 @@ function appendCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
-        setTimeout(function() {window.frames["content_blocks"].load(projectData['code']);}, 2000);
+        $(window).load(function() {
+            window.frames["content_blocks"].load(projectData['code']);
+            uploadStaged = false;
+        });
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
