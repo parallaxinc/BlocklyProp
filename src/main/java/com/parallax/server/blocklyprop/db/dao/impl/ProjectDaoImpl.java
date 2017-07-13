@@ -789,6 +789,12 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll("field name=\"UNIT\">CM</field",
                 "field name=\"UNIT\">_cm</field");
 
+        newCode = newCode.replaceAll("block type=\"spin_comment\"",
+                "block type=\"comment\"");
+
+        newCode = newCode.replaceAll("field name=\"COMMENT\">",
+                "field name=\"COMMENT_TEXT\">");
+
         newCode = newCode.replaceAll("block type=\"controls_boolean_if\"",
                 "block type=\"controls_if\"");
 
