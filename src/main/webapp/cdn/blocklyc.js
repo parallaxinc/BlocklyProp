@@ -347,6 +347,12 @@ function serial_console() {
             };
 
             connection.onmessage = function (e) {
+                var c_buf;
+                if (version_as_number('0.7.0') > version_as_number(client_version)) {
+                    c_buf = e.data;
+                } else {
+                    c_buf = atob(e.data);
+                }
                 //term.write(e.data);
                 if(connStrYet) {
                     displayInTerm(e.data);
@@ -357,6 +363,7 @@ function serial_console() {
                         document.getElementById('serial-conn-info').innerHTML = connString.trim();
                     }
                 }
+                
             };
 
             /*
