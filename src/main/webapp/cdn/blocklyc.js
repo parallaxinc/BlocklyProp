@@ -10,6 +10,7 @@ var selected = 'blocks';
 
 var term = null;
 var graph = null;
+var term_been_scrolled = false;
 
 var codePropC = null;
 var codeXml = null;
@@ -407,6 +408,7 @@ function serial_console() {
             }
            
             $('#console-dialog').on('hidden.bs.modal', function () {
+                term_been_scrolled = false;
                 active_connection = null;
                 updateTermBox(0);
                 term = null;
@@ -466,6 +468,7 @@ function serial_console() {
                 active_connection = null;                
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
+            term_been_scrolled = false;
             newTerminal = false;
             //term.destroy();
             updateTermBox(0);

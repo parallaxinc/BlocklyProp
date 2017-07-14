@@ -23,6 +23,7 @@ var trap_echos = true;
 var terminal_buffer = '';
 var updateTermInterval = null;
 var bufferAlert = false;
+var scrollerTimeout = null;
 
 $(document).ready(function () {
 
@@ -50,7 +51,7 @@ $(document).ready(function () {
             if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
                 active_connection.send(String.fromCharCode(keycode));
                 if (trap_echos) {
-                    echo_trap(keycode);
+                    echo_trap.push(keycode);
                 }
             } else if (active_connection === 'simulated') {
                 updateTermBox(String.fromCharCode(keycode));
@@ -97,6 +98,14 @@ $(document).ready(function () {
         if (the_div[the_div.length - 1] !== '\u258D') {
             document.getElementById('serial_console').innerHTML = the_div + '\u258D';
         }
+        
+        term_been_scrolled = true;
+        if(scrollerTimeout) {
+            clearTimeout(scrollerTimeout);
+        }
+        scrollerTimeout = setTimeout(function() {
+           term_been_scrolled = false;
+        },15000);
     });
 
     $("#serial_console").blur(function () {
@@ -322,7 +331,7 @@ function displayTerm() {
     if (textContainer.join('') === '') {
         to_div = cursorChar;
     }
-    if (cursorY >= tH) {
+    if (cursorY >= tH && !term_been_scrolled) {
         $('#serial_console').css('overflow-y', 'hidden');
         $('#serial_console').scrollTop((cursorY - tH + 1) * lineHeight);
         $('#serial_console').css('overflow-y', 'scroll');
