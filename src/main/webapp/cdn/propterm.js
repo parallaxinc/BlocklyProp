@@ -214,6 +214,7 @@ function updateTermBox(c) {
                     }
                     break;
                 case 0:
+                case 16:
                     textContainer = null;
                     textContainer = new Array;
                     textContainer[0] = '';
