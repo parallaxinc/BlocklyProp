@@ -50,7 +50,7 @@ $(document).ready(function () {
             if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
                 active_connection.send(String.fromCharCode(keycode));
                 if (trap_echos) {
-                    echo_trap(keycode);
+                    echo_trap.push(keycode);
                 }
             } else if (active_connection === 'simulated') {
                 updateTermBox(String.fromCharCode(keycode));
