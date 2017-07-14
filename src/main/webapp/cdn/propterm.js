@@ -31,9 +31,10 @@ $(document).ready(function () {
     termPxWide = $('#serial_console').css('width');
     termPxHigh = $('#serial_console').css('height');
     lineHeight = Math.floor(parseInt(fontSize.replace('px', '')) * 1.1);
-    term_width = Math.floor(parseInt(fontSize.replace('px', ''))) / 1.65;
+    term_width = 256; //Math.floor(parseInt(fontSize.replace('px', ''))) / 1.65;
+    $('#serial_console').css({'overflow-x':'scroll'});
     term_height = Math.floor(parseInt(termPxHigh.replace('px', '')));
-    term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 20) / term_width);
+    //term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 20) / term_width);
 
     var msg_to_send = {
         type: 'serial-terminal',
