@@ -348,7 +348,7 @@ function serial_console() {
 
             connection.onmessage = function (e) {
                 var c_buf;
-                if (version_as_number('0.7.0') > version_as_number(client_version)) {
+                if (version_as_number('0.7.0') > client_version) {
                     c_buf = e.data;
                 } else {
                     c_buf = atob(e.data);
