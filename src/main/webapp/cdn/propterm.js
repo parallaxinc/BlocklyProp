@@ -9,6 +9,7 @@ var cursorGotoX = 0, cursorGotoY = 0;
 var termSetCursor = 0; // 0 = normal, 1 = set X, 2 = set Y, 3 = set X then to 2 to set Y.
 var textContainer = new Array;
 textContainer[0] = '';
+var term_been_scrolled = false;
 var fontSize = '14px'; //$('#serial_console').css('font-size');
 var termPxWide = '560px'; //$('#serial_console').css('width');
 var termPxHigh = '380px'; //$('#serial_console').css('height');
@@ -100,6 +101,7 @@ $(document).ready(function () {
             document.getElementById('serial_console').innerHTML = the_div + '\u258D';
         }
         
+        /*
         term_been_scrolled = true;
         if(scrollerTimeout) {
             clearTimeout(scrollerTimeout);
@@ -107,6 +109,7 @@ $(document).ready(function () {
         scrollerTimeout = setTimeout(function() {
            term_been_scrolled = false;
         },15000);
+        */
     });
 
     $("#serial_console").blur(function () {
@@ -205,6 +208,7 @@ function updateTermBox(c) {
                     }
                 case 13:
                 case 10:
+                    term_been_scrolled = true;
                     changeCursor(0, 1);
                     break;
                 case 9:
@@ -333,10 +337,11 @@ function displayTerm() {
     if (textContainer.join('') === '') {
         to_div = cursorChar;
     }
-    if (cursorY >= tH && !term_been_scrolled) {
+    if (cursorY >= tH && term_been_scrolled) {
         $('#serial_console').css('overflow-y', 'hidden');
         $('#serial_console').scrollTop((cursorY - tH + 1) * lineHeight);
         $('#serial_console').css('overflow-y', 'scroll');
+        term_been_scrolled = false;
     }
 
     document.getElementById('serial_console').innerHTML = to_div.replace(/ /g, '&nbsp;').replace(/\r/g, '<br>');

@@ -141,6 +141,9 @@ blocklyReady = function () {
 
 loadProject = function () {
     if (projectData !== null && uploadStaged === false) {
+        if(projectData['code'].length < 43) {
+            projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
+        }
         window.frames["content_blocks"].load(projectData['code']);
     }
     if (projectData['board'] === 's3' && type === 'PROPC') {

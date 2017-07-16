@@ -10,7 +10,6 @@ var selected = 'blocks';
 
 var term = null;
 var graph = null;
-var term_been_scrolled = false;
 
 var codePropC = null;
 var codeXml = null;
