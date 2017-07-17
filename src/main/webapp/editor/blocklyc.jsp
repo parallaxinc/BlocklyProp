@@ -37,6 +37,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
 
+        <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
         <link href="<url:getCdnUrl url="/lib/chartist.min.css" />" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
@@ -95,6 +96,24 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div class="modal fade" id="save-check-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" onclick="timestampSaveTime();" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="save-check-title"><fmt:message key="editor.save-check" /></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="save-check-warning" class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> <fmt:message key="editor.save-check.warning" /></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" onclick="timestampSaveTime();" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
+                        <button type="button" class="btn btn-primary" onclick="saveProjectAs();"><fmt:message key="project.saveaslink" /></button>
+                        <button type="button" class="btn btn-default" onclick="saveProject();" data-dismiss="modal"><fmt:message key="project.savelink" /></button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
         <div class="modal fade" id="compile-dialog">
             <div class="modal-dialog">
