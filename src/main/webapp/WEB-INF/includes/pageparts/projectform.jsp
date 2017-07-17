@@ -57,12 +57,10 @@
                     <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default">
-                            <input type="radio" name="sharing" class="sharing" value="private" 
-                                   id="project-form-private"/><fmt:message key="project.sharing.private" />
+                            <input type="radio" name="sharing" data-toggle="tooltip" title="<fmt:message key="project.sharing.tooltip.shared" />" data-placement="top" class="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
                         </label>
                         <label class="btn btn-default">
-                            <input type="radio" name="sharing" class="sharing" value="shared" 
-                                   id="project-form-shared"/><fmt:message key="project.sharing.shared" />
+                            <input type="radio" name="sharing" data-toggle="tooltip" title="<fmt:message key="project.sharing.tooltip.private" />" data-placement="top" class="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
                         </label>
                     </div>
                 </div>
