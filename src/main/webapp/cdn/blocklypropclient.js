@@ -18,7 +18,7 @@ var client_baud_rate_min_version = 0.4;
 var client_use_type = 'none';
 var client_ws_connection = null;
 var client_ws_heartbeat;
-var client_ws_heartbeat_interval;
+var client_ws_heartbeat_interval = null;
 
 var baud_rate_compatible = false;
 
@@ -72,7 +72,8 @@ check_client = function () {
                 if (version_as_number(data.version) >= version_as_number(client_baud_rate_min_version)) {
                     baud_rate_compatible = true;
                 }
-
+                
+                client_use_type =  'http';
                 client_available = true;
                 $("#client-available").removeClass("hidden");
                 $("#client-searching").addClass("hidden");
@@ -83,14 +84,14 @@ check_client = function () {
                     check_com_ports_interval = setInterval(check_com_ports, 5000);
                 }
             }
-            client_use_type =  'http';
+            
             setTimeout(check_client, 20000);
 
         }).fail(function () {
             clearInterval(check_com_ports_interval);
-            if(client_use_type !== 'ws') {
-                client_available = false;
-            }
+            client_use_type = 'none';
+            client_available = false;
+
             $("#client-searching").addClass("hidden");
             $("#client-available").addClass("hidden");
             $("#client-unavailable").removeClass("hidden");
@@ -101,7 +102,7 @@ check_client = function () {
 
 connection_heartbeat = function () {
     // Check the last time the port list was recieved.
-    // If it's been too, close out the connection.
+    // If it's been too long, close the connection.
     if (client_use_type === 'ws') {
         var d = new Date();
         var heartbeat_check = d.getTime();
@@ -164,7 +165,7 @@ configure_client = function () {
     });
 };
 
-// checks for and, if found, uses a newer WebSocekts-only client
+// checks for and, if found, uses a newer WebSockets-only client
 function establish_socket() {
     //check_ws_socket_interval = null;
     
@@ -188,7 +189,7 @@ function establish_socket() {
 
         var url = client_url.replace('http', 'ws');
         var connection = new WebSocket(url);
-
+        
         connection.onopen = function () {
             
             // TODO: needs testing - is it better to do this here or in the previous TODO
@@ -226,12 +227,12 @@ function establish_socket() {
                 // type: 'hello-client',
                 // version: [String version (semantic versioning)]
                 
-                
-                setInterval(function() {
+                //Test code: Terminal dump
+                //setInterval(function() {
                     // Terminal dumper!
-                    console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
+                //    console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
                     //terminal_dump = null;
-                }, 10000);
+                //}, 10000);
                 
                 
                 console.log("Websocket client found - version " + ws_msg.version);
@@ -358,24 +359,25 @@ function establish_socket() {
 
         connection.onClose = function () {
             client_ws_connection = null;
-            if(client_use_type !== 'http') {
-                client_available = false;
-                client_use_type = 'none';
+              //Removed 'if(...http)' since this code should not be called when using BP Client
+//            if(client_use_type !== 'http') {
+            client_use_type = 'none';
+            client_available = false;
 
-                $("#client-searching").addClass("hidden");
-                $("#client-available").addClass("hidden");
-                $("#client-unavailable").removeClass("hidden");
+            $("#client-searching").addClass("hidden");
+            $("#client-available").addClass("hidden");
+            $("#client-unavailable").removeClass("hidden");
 
-                term = null;
-                newTerminal = false;
+            term = null;
+            newTerminal = false;
 
-                selected_port = $("#comPort").val();
-                $("#comPort").empty();
-                $("#comPort").append($('<option>', {
-                    text: 'Searching...'
-                }));
-                select_com_port(selected_port);
-            }
+            selected_port = $("#comPort").val();
+            $("#comPort").empty();
+            $("#comPort").append($('<option>', {
+                text: 'Searching...'
+            }));
+            select_com_port(selected_port);
+//            }
 
             if (check_ws_socket_interval) {
                 clearTimeout(check_ws_socket_interval);
