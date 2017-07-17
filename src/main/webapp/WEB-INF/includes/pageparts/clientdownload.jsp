@@ -37,7 +37,7 @@
                     <!-- Chrome OS client -->
                     <div class="client ChromeOS">
                         <img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>
-                        <a onclick="chrome.webstore.install()" id="install-button"><fmt:message key="clientdownload.client.chromeos.installer" /></a>
+                        <a href="#" onclick="chrome.webstore.install()" id="install-button"><fmt:message key="clientdownload.client.chromeos.installer" /></a>
                         <script>
                         if (chrome.app.isInstalled) {
                           document.getElementById('install-button').innherHTML = '<fmt:message key="clientdownload.client.chromeos.alreadyinstalled" />';
