@@ -11,6 +11,8 @@ var ready = false;
 var projectLoaded = false;
 var uploadStaged = false;
 
+var last_saved_timestamp = 0;
+
 var idProject = 0;
 
 var uploadedXML = '';
@@ -36,6 +38,9 @@ $(document).ready(function () {
                 $('#load-ram-button').removeClass('hidden');
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
+            
+            timestampSaveTime();
+            setInterval(checkLastSavedTime, 60000);
         });
     }
 
@@ -74,6 +79,21 @@ $(document).ready(function () {
 
 });
 
+timestampSaveTime = function () {
+    // Mark the time when the project was opened, add 20 minutes to it.
+    var d_save = new Date();
+    last_saved_timestamp = d_save.getTime() + 1200000;
+};
+
+checkLastSavedTime = function () {
+    var d_now = new Date();
+    var t_now = d_now.getTime();
+    if (t_now > last_saved_timestamp && checkLeave()) {
+        // It's been 30 minutes since the project was lasted saved and it has changed - time to pop up a modal.
+        $('#save-check-dialog').modal('show');
+    }
+};
+
 showInfo = function (data) {
     console.log(data);
     $(".project-name").text(data['name']);
@@ -106,6 +126,9 @@ saveProject = function () {
             window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
         }
     });
+    
+    // Mark the time when saved, add 30 minutes to it.
+    timestampSaveTime();
 };
 
 saveProjectAs = function () {
