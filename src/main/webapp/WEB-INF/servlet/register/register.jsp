@@ -55,12 +55,12 @@
         var currMonth = currentTime.getMonth() + 1;
 
         // Is the user 13 years old this year?
-        if ((userYear + 13) >= currYear ) {
+        if (((userYear + 13) + ((userMonth - 1) / 12)) >= (currYear + ((currMonth - 1) / 12))) {
             // The user is restricted if their birth month is less than
             // or equal the current month.
-            if (userMonth <= currMonth) {
+            //if (userMonth <= currMonth) {
                 return true;
-            }
+            //}
         }
         
         return false;
