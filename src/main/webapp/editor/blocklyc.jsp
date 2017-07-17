@@ -37,7 +37,6 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
 
-        <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
         <link href="<url:getCdnUrl url="/lib/chartist.min.css" />" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />

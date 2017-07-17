@@ -12,7 +12,6 @@
 <link type="image/png" rel="apple-touch-icon-precomposed" sizes="152x152" href="<url:getCdnUrl url="/images/apple-touch-icon-152x152.png"/>" />
 <link type="image/png" rel="icon" sizes="32x32" href="<url:getCdnUrl url="/images/favicon-32x32.png"/>" />
 <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
-<link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
 <link type="text/css"  rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
 <link type="text/css"  rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
 <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
