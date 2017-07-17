@@ -8,6 +8,7 @@
 
 var client_available = false;
 var client_url = 'http://localhost:6009/';
+var client_version = 0;
 
 var client_domain_name = "localhost";
 var client_domain_port = 6009;
@@ -63,9 +64,10 @@ check_client = function () {
         $.get(client_url, function (data) {
             if (!client_available) {
                 console.log(data);
+                client_version = version_as_number(data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
                     // wrong server
-                } else if (version_as_number(data.version) < version_as_number(client_min_version)) {
+                } else if (client_version < version_as_number(client_min_version)) {
                     bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
                 }
 
@@ -226,14 +228,15 @@ function establish_socket() {
             if (ws_msg.type === 'hello-client') {
                 // type: 'hello-client',
                 // version: [String version (semantic versioning)]
+                client_version = version_as_number(ws_msg.version);
                 
-                //Test code: Terminal dump
-                //setInterval(function() {
-                    // Terminal dumper!
-                //    console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
-                    //terminal_dump = null;
-                //}, 10000);
-                
+                /* Test code: Terminal dump
+                setInterval(function() {
+                    Terminal dumper!
+                    console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
+                    terminal_dump = null;
+                }, 10000);
+                */
                 
                 console.log("Websocket client found - version " + ws_msg.version);
 

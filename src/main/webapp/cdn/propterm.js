@@ -9,6 +9,7 @@ var cursorGotoX = 0, cursorGotoY = 0;
 var termSetCursor = 0; // 0 = normal, 1 = set X, 2 = set Y, 3 = set X then to 2 to set Y.
 var textContainer = new Array;
 textContainer[0] = '';
+var term_been_scrolled = false;
 var fontSize = '14px'; //$('#serial_console').css('font-size');
 var termPxWide = '560px'; //$('#serial_console').css('width');
 var termPxHigh = '380px'; //$('#serial_console').css('height');
@@ -23,6 +24,7 @@ var trap_echos = true;
 var terminal_buffer = '';
 var updateTermInterval = null;
 var bufferAlert = false;
+var scrollerTimeout = null;
 
 $(document).ready(function () {
 
@@ -30,9 +32,10 @@ $(document).ready(function () {
     termPxWide = $('#serial_console').css('width');
     termPxHigh = $('#serial_console').css('height');
     lineHeight = Math.floor(parseInt(fontSize.replace('px', '')) * 1.1);
-    term_width = Math.floor(parseInt(fontSize.replace('px', ''))) / 1.65;
+    term_width = 256; //Math.floor(parseInt(fontSize.replace('px', ''))) / 1.65;
+    $('#serial_console').css({'overflow-x':'scroll'});
     term_height = Math.floor(parseInt(termPxHigh.replace('px', '')));
-    term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 20) / term_width);
+    //term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 20) / term_width);
 
     var msg_to_send = {
         type: 'serial-terminal',
@@ -50,7 +53,7 @@ $(document).ready(function () {
             if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
                 active_connection.send(String.fromCharCode(keycode));
                 if (trap_echos) {
-                    echo_trap(keycode);
+                    echo_trap.push(keycode);
                 }
             } else if (active_connection === 'simulated') {
                 updateTermBox(String.fromCharCode(keycode));
@@ -97,6 +100,16 @@ $(document).ready(function () {
         if (the_div[the_div.length - 1] !== '\u258D') {
             document.getElementById('serial_console').innerHTML = the_div + '\u258D';
         }
+        
+        /*
+        term_been_scrolled = true;
+        if(scrollerTimeout) {
+            clearTimeout(scrollerTimeout);
+        }
+        scrollerTimeout = setTimeout(function() {
+           term_been_scrolled = false;
+        },15000);
+        */
     });
 
     $("#serial_console").blur(function () {
@@ -195,6 +208,7 @@ function updateTermBox(c) {
                     }
                 case 13:
                 case 10:
+                    term_been_scrolled = true;
                     changeCursor(0, 1);
                     break;
                 case 9:
@@ -205,6 +219,7 @@ function updateTermBox(c) {
                     }
                     break;
                 case 0:
+                case 16:
                     textContainer = null;
                     textContainer = new Array;
                     textContainer[0] = '';
@@ -322,10 +337,11 @@ function displayTerm() {
     if (textContainer.join('') === '') {
         to_div = cursorChar;
     }
-    if (cursorY >= tH) {
+    if (cursorY >= tH && term_been_scrolled) {
         $('#serial_console').css('overflow-y', 'hidden');
         $('#serial_console').scrollTop((cursorY - tH + 1) * lineHeight);
         $('#serial_console').css('overflow-y', 'scroll');
+        term_been_scrolled = false;
     }
 
     document.getElementById('serial_console').innerHTML = to_div.replace(/ /g, '&nbsp;').replace(/\r/g, '<br>');
