@@ -38,7 +38,6 @@
         <shiro:notAuthenticated>
             <script type="text/javascript" src="<url:getCdnUrl url="/editor/shared-editor-demo.js"/>"></script>
         </shiro:notAuthenticated>
-        <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />

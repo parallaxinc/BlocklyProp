@@ -57,17 +57,10 @@
                                 <fmt:message key="clientdownload.client.windows64.installer" /></a>
                         </div>
 
-                        <div class="client ChromeOS" id="CrOS-link">
+                        <div class="client ChromeOS">
                             <img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>
-                            <button onclick="chrome.webstore.install()" id="install-buttons"><fmt:message key="clientdownload.client.chromeos.installer" /></button>
-                            <script>
-                            if (chrome.app.isInstalled) {
-                              document.getElementById('install-buttons').style.display = 'none';
-                              document.getElementById('CrOS-link').innerHTML = 
-                                      '<img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>' + 
-                                      ' <fmt:message key="clientdownload.client.chromeos.alreadyinstalled" />';
-                            }
-                            </script>
+                            <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
+                                <fmt:message key="clientdownload.client.chromeos.installer" /></a>
                         </div>
                     </div>
                     <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');">
