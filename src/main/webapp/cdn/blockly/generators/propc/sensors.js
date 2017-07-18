@@ -1322,12 +1322,12 @@ Blockly.Blocks.GPS_date_time = {
 };
 
 Blockly.propc.GPS_date_time = function () {
-    var ut = this.getFieldValue('TIME_UNIT');
+    var time_unit = this.getFieldValue('TIME_UNIT');
     var zone_unit = '0';
-    if(ut === 'GPS_UNIT_HOUR' || 
-                ut === 'GPS_UNIT_DAY' || 
-                ut === 'GPS_UNIT_MONTH' || 
-                ut === 'GPS_UNIT_YEAR') {
+    if(time_unit === 'GPS_UNIT_HOUR' || 
+                time_unit === 'GPS_UNIT_DAY' || 
+                time_unit === 'GPS_UNIT_MONTH' || 
+                time_unit === 'GPS_UNIT_YEAR') {
         zone_unit = this.getFieldValue('ZONE_VALUE');
     }
 
