@@ -103,12 +103,12 @@
                         <h4 class="modal-title" id="save-check-title"><fmt:message key="editor.save-check" /></h4>
                     </div>
                     <div class="modal-body">
-                        <div id="save-check-warning" class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> <fmt:message key="editor.save-check.warning" /></div>
+                        <div id="save-check-warning"><span class="glyphicon glyphicon-warning-sign"></span> <fmt:message key="editor.save-check.warning" /></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" onclick="timestampSaveTime();" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
-                        <button type="button" class="btn btn-primary" onclick="saveProjectAs();"><fmt:message key="project.saveaslink" /></button>
-                        <button type="button" class="btn btn-default" onclick="saveProject();" data-dismiss="modal"><fmt:message key="project.savelink" /></button>
+                        <button type="button" class="btn btn-default" onclick="timestampSaveTime();" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
+                        <button type="button" class="btn btn-default" onclick="saveProjectAs();"><fmt:message key="project.saveaslink" /></button>
+                        <button type="button" class="btn btn-primary" onclick="saveProject();" data-dismiss="modal"><fmt:message key="project.savelink" /></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

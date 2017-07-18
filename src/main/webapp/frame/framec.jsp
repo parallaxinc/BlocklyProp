@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
+
 <!-- Support for experimental blocks in Demo builds  -->
 <!-- See developer notes to use this feature         -->
 <c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
@@ -8,7 +9,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Blockly</title>
+        <title>BlocklyProp</title>
 
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/polyfill.js"/>"></script>
@@ -122,7 +123,7 @@
             <block type="controls_return"></block>
                 <c:choose>
                     <c:when test="${experimental == true}">
-                    <block type="custom_code_multiple"></block>
+                        <block type="custom_code_multiple"></block>
                     </c:when>
                 </c:choose>
         </category>
@@ -1073,11 +1074,7 @@
                 <block type="GPS_altitude"></block>
                 <block type="GPS_velocity"></block>
                 <block type="GPS_satsTracked"></block>
-                    <c:choose>
-                        <c:when test="${experimental == true}">
-                        <block type="GPS_date_time"></block>
-                        </c:when>
-                    </c:choose>
+                <block type="GPS_date_time"></block>
             </category>
             <category name="<fmt:message key="category.sensor-input.fingerprint" />">
                 <block type="fp_scanner_init"></block>
@@ -1513,26 +1510,25 @@
             </category>
         </category>
 
-        <c:choose>
-            <c:when test="${experimental == true}">
-                <category name="<fmt:message key="category.system" />" include="other" colour="320">
-                    <block type="waitcnt">
-                        <value name="TARGET">
-                            <block type="math_arithmetic">
-                                <value name="A">
-                                    <block type="system_counter"></block>
-                                </value>
-                            </block>
+        <category name="<fmt:message key="category.system" />" include="other" colour="320">
+            <block type="waitcnt">
+                <value name="TARGET">
+                    <block type="math_arithmetic">
+                        <value name="A">
+                            <block type="system_counter"></block>
                         </value>
                     </block>
-                    <block type="register_set"></block>
-                    <block type="register_get"></block>
-                    <block type="system_counter"></block>
-                    <block type="custom_code"></block>
-                </category>
-            </c:when>
-        </c:choose>
-
+                </value>
+            </block>
+            <block type="register_set"></block>
+            <block type="register_get"></block>
+            <block type="system_counter"></block>
+                <c:choose>
+                    <c:when test="${experimental == true}">
+                        <block type="custom_code"></block>
+                    </c:when>
+                </c:choose>
+        </category>
     </xml>
 </body>
 </html>
