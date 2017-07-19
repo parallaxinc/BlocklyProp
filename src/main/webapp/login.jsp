@@ -17,10 +17,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <a href="register" ><fmt:message key="login.registerlink" /></a>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <h2><fmt:message key="login.title" /></h2>
+                    <h3><fmt:message key="login.title" /></h3>
                     <%
                         String errorDescription = (String) request.getAttribute("shiroLoginFailure");
                         if (errorDescription != null) {
@@ -33,6 +32,7 @@
                     <%
                         }
                     %>
+                    <p><a href="register" ><fmt:message key="login.registerlink" /></a></p>
                     <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
                     <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
                     <form id="loginform" name="loginform" action="<url:getUrl url="/login.jsp" />" method="post">

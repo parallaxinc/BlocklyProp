@@ -17,6 +17,7 @@ nav("appVersion", "Win", "Windows");
 nav("userAgent", "Windows");
 nav("platform", "Win", "Windows");
 nav("oscpu", "Windows");
+nav("appVersion", "CrOS", "ChromeOS");
 
 $(document).ready(function () {
     $("body").addClass(osName);

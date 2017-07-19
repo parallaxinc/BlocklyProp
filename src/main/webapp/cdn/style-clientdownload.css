@@ -24,6 +24,10 @@ body.MacOS .clients .client.MacOS {
     display: block;
 }
 
+body.ChromeOS .clients .client.ChromeOS {
+    display: block;
+}
+
 body.Linux .clients .client.Linux {
     display: block;
 }

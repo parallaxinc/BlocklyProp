@@ -29,10 +29,17 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class UserDaoImpl implements UserDao {
 
-    private static final Logger log = LoggerFactory.getLogger(UserDao.class);
+    /**
+     * Logging facility
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(UserDao.class);
 
+    /**
+     * Database connection context
+     */
     private DSLContext create;
 
+    
     @Inject
     public void setDSLContext(DSLContext dsl) {
         this.create = dsl;
@@ -41,8 +48,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     public UserRecord create(Long idCloudSession) {
         //create.insertInto(Tables.PROJECT).set(project).execute();
-        UserRecord record = create.insertInto(Tables.USER, Tables.USER.IDCLOUDSESSION)
-                .values(idCloudSession).returning().fetchOne();
+        
+        if (idCloudSession == 0) {
+            LOG.warn("Cannot create cloud session user. Invalid cloud session ID.");
+            return null;
+        }
+        
+        UserRecord record = create.insertInto(
+                Tables.USER, 
+                Tables.USER.IDCLOUDSESSION).values(idCloudSession).returning().fetchOne();
 
         if (record != null && record.getId() != null && record.getId() > 0) {
             Set<Role> roles = new HashSet<>();
@@ -52,7 +66,7 @@ public class UserDaoImpl implements UserDao {
             } catch (UnauthorizedException ue) {
                 // Can be dismissed because of hard coded user role
                 // Print exception in case anything should change
-                log.error("Creating a user should have no problem with creating its role (only USER role)", ue);
+                LOG.error("Creating a user should have no problem with creating its role (only USER role)", ue);
             }
 
         }
