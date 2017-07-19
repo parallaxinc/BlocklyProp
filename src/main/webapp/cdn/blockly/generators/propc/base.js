@@ -724,7 +724,7 @@ Blockly.propc.system_counter = function () {
 };
 
 Blockly.Blocks.waitcnt = {
-    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WAITCNT_TOOLTIP);
         this.setColour(colorPalette.getColor('system'));
@@ -742,14 +742,13 @@ Blockly.propc.waitcnt = function () {
 };
 
 Blockly.Blocks.register_set = {
-    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_REGISTER_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('system'));
         this.appendValueInput('TARGET')
                 .appendField("cog")
                 .appendField(new Blockly.FieldDropdown([
-                    ['pin input', 'INA'],
                     ['pin output', 'OUTA'],
                     ['pin direction', 'DIRA'],
                     ['counter A', 'CTRA'],
@@ -773,7 +772,7 @@ Blockly.propc.register_set = function () {
 };
 
 Blockly.Blocks.register_get = {
-    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_REGISTER_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('system'));
@@ -803,7 +802,7 @@ Blockly.propc.register_get = function () {
 var cCode;
 
 Blockly.Blocks.custom_code = {
-    //helpUrl: Blockly.MSG_SYSTEM_HELPURL,
+    helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_CUSTOM_CODE_TOOLTIP);
         this.setColour(colorPalette.getColor('system'));

@@ -234,6 +234,7 @@ Blockly.MSG_SERVO_HELPURL = "http://learn.parallax.com/ab-blocks/servo";
 Blockly.MSG_ROBOT_HELPURL = "http://learn.parallax.com/ab-blocks/robot";
 Blockly.MSG_IMU_HELPURL = "http://learn.parallax.com/ab-blocks/lsm9ds1";
 Blockly.MSG_WS2812B_HELPURL = "http://learn.parallax.com/ab-blocks/ws2812b";
+Blockly.MSG_SYSTEM_HELPURL = "http://learn.parallax.com/ab-blocks/system";
 
 
 //----------Activity Board (Propeller C) block tooltips ----------------------------

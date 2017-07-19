@@ -552,8 +552,8 @@ Blockly.Blocks.heb_ir_read_signal = {
 };
 
 Blockly.propc.heb_ir_read_signal = function () {
-    var buffer = this.getFieldValue('BUFFER');
-    var len = this.getFieldValue('LENGTH');
+    var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
+    var len = Blockly.propc.variableDB_.getName(this.getFieldValue('LENGTH'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -651,7 +651,7 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
 
 Blockly.propc.heb_badge_eeprom_retrieve = function () {
     var index = Blockly.propc.valueToCode(this, "INDEX", Blockly.propc.ORDER_NONE);
-    var buffer = this.getFieldValue("BUFFER");
+    var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
     var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
     setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';

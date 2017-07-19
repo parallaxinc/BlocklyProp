@@ -2259,7 +2259,7 @@ Blockly.Blocks.wx_scan_multiple = {
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
-            this.setFieldValue(newName, 'VALUE');
+            this.setFieldValue(newName, 'HANDLE');
         for (var i = 0; i < this.optionList_.length; i++) {
             if (Blockly.Names.equals(oldName, this.getFieldValue('CPU' + i)))
                 this.setFieldValue(newName, 'CPU' + i);
@@ -2304,7 +2304,7 @@ Blockly.Blocks.wx_scan_char = {
 };
 
 Blockly.propc.wx_scan_multiple = function () {
-    var handle = this.getFieldValue('HANDLE');
+    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
     var conn = this.getFieldValue('CONNECTION');
     var start = this.getFieldValue('START');
     start.replace(/['"]+/g, '');
@@ -2315,13 +2315,13 @@ Blockly.propc.wx_scan_multiple = function () {
     var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start;
     var varList = '';
     var i = 0;
-    while (this.getFieldValue('CPU' + i)) {
+    while (Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE)) {
         if (this.getFieldValue('TYPE' + i).includes('integer')) {
             code += '%d';
         } else {
             code += '%c';
         }
-        varList += ', &' + this.getFieldValue('CPU' + i);
+        varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
         i++;
     }
     code += '"' + varList + ');\n';
@@ -2519,7 +2519,7 @@ Blockly.Blocks.wx_print_char = {
 };
 
 Blockly.propc.wx_print_multiple = function () {
-    var handle = this.getFieldValue('HANDLE');
+    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
     var conn = this.getFieldValue('CONNECTION');
 
     var code = 'wifi_print(' + conn + ', ' + handle + ', "';
@@ -2595,11 +2595,11 @@ Blockly.Blocks.wx_scan_string = {
 };
 
 Blockly.propc.wx_scan_string = function () {
-    var handle = this.getFieldValue('HANDLE');
+    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
     var conn = this.getFieldValue('CONNECTION');
     var start = this.getFieldValue('START');
     start.replace(/['"]+/g, '');
-    var store = this.getFieldValue('VARNAME');
+    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VARNAME'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.vartype_[store] = 'char *';
 
@@ -2643,7 +2643,7 @@ Blockly.Blocks.wx_send_string = {
 
 Blockly.propc.wx_send_string = function () {
     var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_NONE);
-    var handle = this.getFieldValue('HANDLE');
+    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
 
     var code = 'wifi_send(' + handle + ', ' + data + ', sizeof(' + data + '));\n';
 
@@ -2689,10 +2689,10 @@ Blockly.Blocks.wx_receive_string = {
 };
 
 Blockly.propc.wx_receive_string = function () {
-    var data = this.getFieldValue('DATA');
-    var handle = this.getFieldValue('HANDLE');
+    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('DATA'), Blockly.Variables.NAME_TYPE);
+    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
     var max = Blockly.propc.valueToCode(this, 'MAX', Blockly.propc.NONE) || '64';
-    var bytes = this.getFieldValue('BYTES');
+    var bytes = Blockly.propc.variableDB_.getName(this.getFieldValue('BYTES'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.vartype_[data] = 'char *';
 
@@ -2734,9 +2734,9 @@ Blockly.Blocks.wx_poll = {
 };
 
 Blockly.propc.wx_poll = function () {
-    var id = this.getFieldValue('ID');
-    var event = this.getFieldValue('EVENT');
-    var handle = this.getFieldValue('HANDLE');
+    var id = Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE);
+    var event = Blockly.propc.variableDB_.getName(this.getFieldValue('EVENT'), Blockly.Variables.NAME_TYPE);
+    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
 
     var code = 'wifi_poll(&' + event + ', &' + id + ', &' + handle + ');\n';
 
@@ -2827,7 +2827,7 @@ Blockly.Blocks.wx_listen = {
 Blockly.propc.wx_listen = function () {
     var path = Blockly.propc.valueToCode(this, 'PATH', Blockly.propc.ORDER_NONE);
     var protocol = this.getFieldValue('PROTOCOL');
-    var id = this.getFieldValue('ID');
+    var id = Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE);
     var port = Blockly.propc.valueToCode(this, 'PORT', Blockly.propc.ORDER_NONE) || '80';
 
     var code = '';
@@ -3056,7 +3056,7 @@ Blockly.Blocks.wx_buffer = {
 Blockly.propc.wx_buffer = function () {
     var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
     var def = this.getFieldValue('DEFAULT');
-    var buffer = this.getFieldValue('BUFFER');
+    var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.vartype_[buffer] = 'char *';
 
@@ -3121,7 +3121,7 @@ Blockly.Blocks.wx_disconnect = {
 };
 
 Blockly.propc.wx_disconnect = function () {
-    var code = 'wifi_disconnect(' + this.getFieldValue('ID') + ');\n';
+    var code = 'wifi_disconnect(' + Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE) + ');\n';
 
     if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
