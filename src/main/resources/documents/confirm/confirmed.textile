@@ -1,3 +1,5 @@
-h2. Email confirmed
+h3. Registration Complete
+Congratulations! your account has been activated. You are ready to build
+your own projects. 
 
 "Go to home":/blockly/index

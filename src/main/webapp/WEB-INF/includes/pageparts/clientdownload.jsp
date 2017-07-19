@@ -34,6 +34,13 @@
                         <a href="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
                             <fmt:message key="clientdownload.client.windows64.installer" /></a>
                     </div>
+                    <!-- Chrome OS client -->
+                    <div class="client ChromeOS">
+                        <img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>
+                        <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
+                            <fmt:message key="clientdownload.client.chromeos.installer" /></a>
+                    </div>
+
                     <%--
                         <div class="client Windows">
                             Windows service

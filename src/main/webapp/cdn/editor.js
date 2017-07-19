@@ -9,6 +9,9 @@ var baseUrl = $("meta[name=base]").attr("content");
 var projectData = null;
 var ready = false;
 var projectLoaded = false;
+var uploadStaged = false;
+
+var last_saved_timestamp = 0;
 
 var idProject = 0;
 
@@ -35,6 +38,9 @@ $(document).ready(function () {
                 $('#load-ram-button').removeClass('hidden');
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
+            
+            timestampSaveTime();
+            setInterval(checkLastSavedTime, 60000);
         });
     }
 
@@ -73,6 +79,21 @@ $(document).ready(function () {
 
 });
 
+timestampSaveTime = function () {
+    // Mark the time when the project was opened, add 20 minutes to it.
+    var d_save = new Date();
+    last_saved_timestamp = d_save.getTime() + 1200000;
+};
+
+checkLastSavedTime = function () {
+    var d_now = new Date();
+    var t_now = d_now.getTime();
+    if (t_now > last_saved_timestamp && checkLeave()) {
+        // It's been 30 minutes since the project was lasted saved and it has changed - time to pop up a modal.
+        $('#save-check-dialog').modal('show');
+    }
+};
+
 showInfo = function (data) {
     console.log(data);
     $(".project-name").text(data['name']);
@@ -105,6 +126,9 @@ saveProject = function () {
             window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
         }
     });
+    
+    // Mark the time when saved, add 30 minutes to it.
+    timestampSaveTime();
 };
 
 saveProjectAs = function () {
@@ -139,7 +163,10 @@ blocklyReady = function () {
 };
 
 loadProject = function () {
-    if (projectData !== null) {
+    if (projectData !== null && uploadStaged === false) {
+        if(projectData['code'].length < 43) {
+            projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
+        }
         window.frames["content_blocks"].load(projectData['code']);
     }
     if (projectData['board'] === 's3' && type === 'PROPC') {
@@ -343,9 +370,7 @@ function uploadHandler(files) {
                     document.getElementById("selectfile-verify-boardtype").style.display = "none";
                 }
             }
-        }
-        ;
-
+        };
 
         if (xmlValid === true) {
             document.getElementById("selectfile-verify-valid").style.display = "block";
@@ -363,10 +388,9 @@ function uploadHandler(files) {
     UploadReader.readAsText(files[0]);
 
     if (uploadedXML !== '') {
-
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
-    }
-    ;
+        uploadStaged = true;
+    };
 }
 
 function clearUploadInfo() {
@@ -389,7 +413,10 @@ function replaceCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
-        window.frames["content_blocks"].load(projectData['code']);
+        $(window).load(function() {
+            window.frames["content_blocks"].load(projectData['code']);
+            uploadStaged = false;
+        });
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
@@ -411,7 +438,10 @@ function appendCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
-        window.frames["content_blocks"].load(projectData['code']);
+        $(window).load(function() {
+            window.frames["content_blocks"].load(projectData['code']);
+            uploadStaged = false;
+        });
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
@@ -425,7 +455,7 @@ function clearWorkspace() {
             window.frames["content_blocks"].setProfile(projectData['board']);
             window.frames["content_blocks"].init(projectData['board'], []);
             projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
-            window.frames["content_blocks"].load(projectData['code']);
+            setTimeout(function() {window.frames["content_blocks"].load(projectData['code']);}, 2000);
         }
     });
 }

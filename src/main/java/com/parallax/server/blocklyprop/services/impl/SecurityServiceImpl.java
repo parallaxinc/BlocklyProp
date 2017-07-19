@@ -29,7 +29,9 @@ import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
+import java.util.Calendar;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,20 +45,51 @@ import org.slf4j.LoggerFactory;
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
 
-    private static final Logger log = LoggerFactory.getLogger(SecurityServiceImpl.class);
+    /**
+     * 
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityServiceImpl.class);
     
+    /**
+     * 
+     */
     private static SecurityServiceImpl instance;
 
+    /**
+     * 
+     */
     private Provider<SessionData> sessionData;
 
+    /**
+     * 
+     */
     private Configuration configuration;
+    
+    /**
+     * 
+     */
+    private EmailValidator emailValidator = EmailValidator.getInstance();
 
+    /**
+     * 
+     */
     private CloudSessionRegisterService registerService;
+    
+    /**
+     * 
+     */
     private CloudSessionAuthenticateService authenticateService;
+    
+    /**
+     * 
+     */
     private CloudSessionUserService userService;
 
+    /**
+     * 
+     */
     private UserDao userDao;
-
+    
     /**
      * Constructor
      * 
@@ -99,7 +132,7 @@ public class SecurityServiceImpl implements SecurityService {
      */
     @Inject
     public void setConfiguration(Configuration configuration) {
-        log.debug("Setting cloud session configuration");
+        LOG.debug("Setting cloud session configuration");
         this.configuration = configuration;
 
         // Set the source for the cloud session registration services
@@ -119,51 +152,128 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     /**
-     * Register a user account
+     * Validate new user data and create a new user account
      * 
-     * @param screenname
-     * @param email
-     * @param password
-     * @param passwordConfirm
-     * @return An ID for the new account or null if unsuccessful
+     * @param screenname String user screen name
+     * @param email String user email address
+     * @param password String user password
+     * @param passwordConfirm String user password confirmation
+     * @param birthMonth int Month component of user's birthday. COPPA field
+     * @param birthYear int Year component of the user's birthday. COPPA field
+     * @param parentEmail String Sponsor's email address. COPPA field
+     * @param parentEmailSource int Sponsor classification. COPPA
+     * @return
      * @throws NonUniqueEmailException
      * @throws PasswordVerifyException
      * @throws PasswordComplexityException
-     * @throws ScreennameUsedException 
+     * @throws ScreennameUsedException
+     * @throws IllegalStateException 
      */
     @Override
     public Long register(
             String screenname, 
             String email, 
             String password, 
-            String passwordConfirm) throws 
+            String passwordConfirm,
+            int birthMonth,
+            int birthYear,
+            String parentEmail,
+            int parentEmailSource) throws 
                 NonUniqueEmailException, 
                 PasswordVerifyException, 
                 PasswordComplexityException, 
-                ScreennameUsedException {
+                ScreennameUsedException,
+                IllegalStateException{
 
-        log.info("Resgistering new user: {}", screenname);
+        User user = new User();
+        assert(!user.isCoppaEligible(1,2017));
+
+        // Log a few things
+        LOG.info("In register: parameter screen name: {}", screenname);
+        LOG.info("In register: parameter email: {}", email);
+        LOG.info("In register: parameter month: {}", birthMonth);
+        LOG.info("In register: parameter year: {}", birthYear);
+        LOG.info("In register: parameter sponsor email: {}", parentEmail);
+        LOG.info("In register: parameter sponsor type selection: {}", parentEmailSource);
         
         // Perform basic sanity checks on inputs
-        Preconditions.checkNotNull(screenname, "Screenname cannot be null");
-        Preconditions.checkNotNull(email, "Email cannot be null");
-        Preconditions.checkNotNull(password, "Password cannot be null");
-        Preconditions.checkNotNull(passwordConfirm, "PasswordConfirm cannot be null");
+        // Throws NullPointerException if screenname is null
+        LOG.info("Resgistering new user: {}", screenname);
+        Preconditions.checkNotNull(screenname, "ScreenNameNull");
+
+        // User email address is required and must be reasonably valid
+        LOG.info("Verifying email address has been supplied");
+        Preconditions.checkNotNull(email, "UserEmailNull");
+
+        LOG.info("Verifying email address is reasonable");
+        Preconditions.checkState(
+                emailValidator.isValid(email),
+                "Email address format is incorrect");
+
+        LOG.info("Verifying that a password was provided");
+        Preconditions.checkNotNull(password, "PasswordIsNull");
+        
+        LOG.info("Verify that second copy of password was provided");
+        Preconditions.checkNotNull(passwordConfirm, "PasswordConfirmIsNull");
+ 
+        // Verify that we have valid COPPA data before continuing
+        // Birth month
+        Preconditions.checkNotNull(birthMonth, "BirthMonthNull");
+        LOG.info("Verify that month is provided: {}", birthMonth);
+        Preconditions.checkState((birthMonth != 0), "BirthMonthNotSet");
+
+        // Birth year
+        Preconditions.checkNotNull(birthYear, "BirthYearNull");
+        LOG.info("Verify that year is provided: {}", birthYear);
+        Preconditions.checkState(
+                (Calendar.getInstance().get(Calendar.YEAR) != birthYear),
+                "BirthYearNotSet");
+
+        // Get additional information if the registrant is under 13 years old
+        if (user.isCoppaEligible(birthMonth, birthYear)) {
+            LOG.info("User is subject to COPPA regulations");
+
+            // We must have a sponsor email address for COPPA eligible users
+            Preconditions.checkNotNull(
+                    parentEmail,
+                    "SponsorEmailNull");
+            
+            // Verify that the sponsor email address is reasonable
+            if (parentEmail != null && parentEmail.length() > 0) {
+                LOG.info("Verify that optional user email address is reasonable");
+                Preconditions.checkState(
+                    emailValidator.isValid(parentEmail),
+                    "SponsorEmail");
+            }
+        }
 
         try {
-            // Attempt to register the user account data
+            // Attempt to register the user account data with the cloud session
+            // service
+            LOG.info("Registering user account with cloud-service");
             Long id = registerService.registerUser(
-                    email, password, passwordConfirm, "en", screenname);
-            userDao.create(id);
+                    email, password, passwordConfirm, "en", screenname,
+                    birthMonth, birthYear, parentEmail, parentEmailSource);
+            
+            if (id > 0) {
+                userDao.create(id);
+            }
+            
             return id;
-        } catch (ServerException se) {
-            log.error("Server error detected");
-            return null;
+        }
+        catch (ServerException se) {
+            LOG.error("Server error detected");
+            return 0L;
+        }
+        catch (NullPointerException npe) {
+            LOG.error("New user registration failed with: {}", npe.getMessage() );
+            return 0L;
         }
     }
 
+
     /**
-     *  Get instance of the authenticated user object
+     *  Get instance of an authenticated user object
      * 
      * @param email
      * @param password
@@ -174,6 +284,7 @@ public class SecurityServiceImpl implements SecurityService {
      * @throws InsufficientBucketTokensException
      * @throws WrongAuthenticationSourceException 
      */
+    @Inject
     public static User authenticateLocalUserStatic(
             String email, 
             String password) throws
@@ -183,7 +294,7 @@ public class SecurityServiceImpl implements SecurityService {
                 InsufficientBucketTokensException, 
                 WrongAuthenticationSourceException {
 
-        log.info("Authenticating user from email address");
+        LOG.info("Authenticating user from email address");
         return instance.authenticateLocalUser(email, password);
     }
 
@@ -197,12 +308,13 @@ public class SecurityServiceImpl implements SecurityService {
      * @throws UserBlockedException
      * @throws EmailNotConfirmedException 
      */
+    @Inject
     public static User authenticateLocalUserStatic(Long idUser) throws 
             UnknownUserIdException, 
             UserBlockedException, 
             EmailNotConfirmedException {
         
-        log.info("Authenticating user from userID");
+        LOG.info("Authenticating user from userID");
         return instance.authenticateLocalUser(idUser);
     }
 
@@ -226,15 +338,19 @@ public class SecurityServiceImpl implements SecurityService {
             WrongAuthenticationSourceException {
         
         try {
+            LOG.debug("Attempting to authenticate {}",email);
+            
+            // Query Cloud Session interface
             User user = authenticateService.authenticateLocalUser(email, password);
-            log.info("User authenticated");
+            LOG.info("User authenticated");
             return user;
 
         } catch (NullPointerException npe) {
+            LOG.debug("Authetication threw Null Pointer Exception");
             throw npe;
 
         } catch (ServerException se) {
-            log.error("Server error encountered: {}", se.getMessage());
+            LOG.error("Server error encountered: {}", se.getMessage());
             return null;
         }
     }
@@ -254,14 +370,14 @@ public class SecurityServiceImpl implements SecurityService {
         
         try {
             User user = userService.getUser(idUser);
-            log.info("User authenticated");
+            LOG.info("User authenticated");
             return user;
 
         } catch (NullPointerException npe) {
             throw npe;
 
         } catch (ServerException se) {
-            log.error("Server error detected. {}", se.getMessage());
+            LOG.error("Server error detected. {}", se.getMessage());
             return null;
         }
     }
@@ -272,7 +388,7 @@ public class SecurityServiceImpl implements SecurityService {
      * @return SessionData object containing user session details or null
      */
     public static SessionData getSessionData() {
-        log.debug("Getting user session data");
+        LOG.debug("Getting user session data");
         SessionData sessionData = instance.sessionData.get();
         
         if (sessionData.getIdUser() == null) {
@@ -292,7 +408,7 @@ public class SecurityServiceImpl implements SecurityService {
                                     user = instance.userService.changeUserLocale(
                                             user.getId(), sessionData.getLocale());
                                 } catch (UnknownUserIdException ex) {
-                                    log.error("UnknownUserId exception detected. {}", ex.getMessage());
+                                    LOG.error("UnknownUserId exception detected. {}", ex.getMessage());
                                 }
                             }
                         }
@@ -306,13 +422,12 @@ public class SecurityServiceImpl implements SecurityService {
                                 user.getScreenname());
                     }
                 } catch (UnknownUserException ex) {
-                    log.error("Unknown user ID. {}", ex);
+                    LOG.error("Unknown user ID. {}", ex);
                 } catch (ServerException se) {
-                    log.error("Server error detected. {}", se.getMessage());
+                    LOG.error("Server error detected. {}", se.getMessage());
                 }
             }
         }
         return sessionData;
     }
-
 }

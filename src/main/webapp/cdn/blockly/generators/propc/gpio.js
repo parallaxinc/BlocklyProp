@@ -386,7 +386,7 @@ Blockly.propc.base_freqout = function () {
 Blockly.Blocks.base_count = {
     helpUrl: Blockly.MSG_ANALOG_PULSE_IN_OUT_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_BASE_FREQOUT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_BASE_COUNT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput("")
                 .appendField("count pulses PIN")

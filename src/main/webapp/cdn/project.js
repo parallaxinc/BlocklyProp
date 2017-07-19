@@ -19,7 +19,7 @@ var projectTypes = {
 var simplemde = null;
 
 $(document).ready(function () {
-    simplemde = new SimpleMDE({element: document.getElementById("project-form-description")});
+    simplemde = new SimpleMDE({element: document.getElementById("project-form-description"), hideIcons: ["link"], spellChecker: false});
 
     cloneUrl = $('.clone-project').data('href');
     deleteUrl = $('.delete-project').data('href');

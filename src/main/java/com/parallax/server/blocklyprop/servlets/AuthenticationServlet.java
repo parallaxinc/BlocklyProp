@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -25,27 +28,53 @@ import org.apache.shiro.web.util.WebUtils;
  */
 @Singleton
 public class AuthenticationServlet extends HttpServlet {
+        /**
+     * Handle for any logging activity
+     */
+    private final Logger LOG = LoggerFactory.getLogger(AuthenticationServlet.class);
 
+    /**
+     * Application configuration settings
+     */
     private Configuration configuration;
+    
+    /**
+     * An instance of this class
+     */
     private AuthenticationService authenticationService;
 
+    /**
+     * Initialize the application configuration
+     * 
+     * @param configuration 
+     */
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * Initialize an instance of the Authentication service
+     * 
+     * @param authenticationService 
+     */
     @Inject
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
         resp.setContentType("application/json");
 
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
+        LOG.debug("Reveived user name: {}", username);
+        
+        LOG.debug("Authenticating user");
         User user = authenticationService.authenticate(username, password);
 
         if (user != null) {
@@ -60,6 +89,13 @@ public class AuthenticationServlet extends HttpServlet {
                 userJson.addProperty("id-user", user.getId());
                 userJson.addProperty("screenname", user.getScreenname());
                 userJson.addProperty("email", user.getEmail());
+                
+                // COPPA required fields
+                userJson.addProperty("bdmonth",user.getBirthMonth());
+                userJson.addProperty("bdyear", user.getBirthYear());
+                userJson.addProperty("parent-email", user.getCoachEmail());
+                userJson.addProperty("sponsoremail", user.getCoachEmailSource());
+ 
                 response.add("user", userJson);
                 resp.getWriter().write(response.toString());
             }
