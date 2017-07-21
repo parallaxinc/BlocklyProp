@@ -2069,7 +2069,7 @@ Blockly.Blocks.wx_reconnect = {
 Blockly.propc.wx_reconnect = function () {
 
     if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
-        var code = '__wsId = wifi_listen(WS, "/ws/a");\n';
+        var code = '__wsId = wifi_listen(WS, "/ws/a"); __wsHandle = 0;\n';
         code += 'while(!__wsHandle) {\n  wifi_poll(&__wxEvent, &__wxId, &__wxHandle);\n';
         code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}';
         return code;
