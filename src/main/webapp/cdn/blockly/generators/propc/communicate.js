@@ -2054,6 +2054,30 @@ Blockly.propc.wx_evt_connected = function () {
     }
 };
 
+Blockly.Blocks.wx_reconnect = {
+    helpUrl: Blockly.MSG_SWX_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_SWX_GET_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Simple WX reconnect");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.wx_reconnect = function () {
+
+    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        var code = '__wsId = wifi_listen(WS, "/ws/a");\n';
+        code += 'while(!__wsHandle) {\n  wifi_poll(&__wxEvent, &__wxId, &__wxHandle);\n';
+        code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}';
+        return code;
+    } else {
+        return '// Missing Simple WX initialize block!\n';
+    }
+};
+
 // ---------------- Advanced WX Blocks -----------------------------------------
 
 Blockly.Blocks.wx_init_adv = {

@@ -218,6 +218,7 @@ function cloudCompile(text, action, successHandler) {
             'data': {"code": propcCode}
         }).done(function (data) {
             if (data.error) {
+                console.log(data);
                 if (typeof data['message'] === "string")
                     alert("BlocklyProp was unable to compile your project:\n" + data['message']
                             + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
@@ -237,6 +238,7 @@ function cloudCompile(text, action, successHandler) {
                 }
             }
         }).fail(function (data) {
+            console.log(data);
             if (typeof data === "string")
                 alert("BlocklyProp was unable to compile your project:\n----------\n" + data
                         + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
