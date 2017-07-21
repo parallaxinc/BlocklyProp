@@ -734,6 +734,7 @@
                             <block type="wx_read_widgets"></block>
                             <block type="wx_get_widget"></block>
                             <block type="wx_evt_connected"></block>
+                            <block type="wx_reconnect"></block>
                         </category>
                         <category name="Advanced">
                             <block type="wx_init_adv"></block>
