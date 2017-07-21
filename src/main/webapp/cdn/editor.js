@@ -12,6 +12,7 @@ var projectLoaded = false;
 var uploadStaged = false;
 
 var last_saved_timestamp = 0;
+var last_saved_time = 0;
 
 var idProject = 0;
 
@@ -39,7 +40,7 @@ $(document).ready(function () {
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
             
-            timestampSaveTime();
+            timestampSaveTime(20, true);
             setInterval(checkLastSavedTime, 60000);
         });
     }
@@ -76,20 +77,29 @@ $(document).ready(function () {
     $('#clear-workspace').on('click', function () {
         clearWorkspace();
     });
+    $('#save-check-dialog').on('hidden.bs.modal', function () {
+        timestampSaveTime(5, false);
+    });
 
 });
 
-timestampSaveTime = function () {
+timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
     var d_save = new Date();
-    last_saved_timestamp = d_save.getTime() + 1200000;
+    last_saved_timestamp = d_save.getTime() + (mins * 60000);
+    if(resetTimer) {
+        last_saved_time = d_save.getTime();
+    }
 };
 
 checkLastSavedTime = function () {
     var d_now = new Date();
     var t_now = d_now.getTime();
+    var s_save = Math.round((d_now.getTime() - last_saved_time) / 60000);
+    $('#save-check-warning-time').html(s_save.toString(10));
+
     if (t_now > last_saved_timestamp && checkLeave()) {
-        // It's been 30 minutes since the project was lasted saved and it has changed - time to pop up a modal.
+        // It's time to pop up a modal to remind the user to save.
         $('#save-check-dialog').modal('show');
     }
 };
@@ -128,7 +138,7 @@ saveProject = function () {
     });
     
     // Mark the time when saved, add 30 minutes to it.
-    timestampSaveTime();
+    timestampSaveTime(20, true);
 };
 
 saveProjectAs = function () {
@@ -145,6 +155,7 @@ saveProjectAs = function () {
                 // Reloading project with new id
                 window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
             });
+        timestampSaveTime(20, true);    
         }
     });
 };
