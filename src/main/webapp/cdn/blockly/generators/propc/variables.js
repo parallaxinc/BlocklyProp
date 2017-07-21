@@ -194,8 +194,6 @@ Blockly.Blocks.array_get = {
 };
 
 Blockly.propc.array_get = function () {
-    //var varName = this.getFieldValue('VAR');
-    //varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), 'Array');
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var list = Blockly.propc.global_vars_;
@@ -228,14 +226,14 @@ Blockly.Blocks.array_init = {
 };
 
 Blockly.propc.array_init = function () {
-    //var varName = this.getFieldValue('VAR');
-    //varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), 'Array');
     var element = this.getFieldValue('NUM') || '10';
 
-    Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];';
+    if (!this.disabled) {
+        Blockly.propc.global_vars_['__ARRAY' + varName] = 'int ' + varName + '[' + element + '];';
+    }
 
-    return '';                
+    return '';
 };
 
 Blockly.Blocks.array_fill = {
@@ -254,11 +252,9 @@ Blockly.Blocks.array_fill = {
 };
 
 Blockly.propc.array_fill = function () {
-    //var varName = this.getFieldValue('VAR');
-    //varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), 'Array');
     var varVals = this.getFieldValue('NUM');
-    if(varVals.indexOf('0x') === 0 || varVals.indexOf(',0x') > 0) {
+    if (varVals.indexOf('0x') === 0 || varVals.indexOf(',0x') > 0) {
         varVals = varVals.replace(/[^0-9xA-Fa-f,-\.]/g, "");
     } else {
         varVals = varVals.replace(/[^0-9b,-\.]/g, "");
@@ -277,24 +273,24 @@ Blockly.propc.array_fill = function () {
     var initStr = Blockly.propc.global_vars_['__ARRAY' + varName];
 
     /* DONT DELETE - MAY WANT TO USE THIS CODE ELSEWHERE
+     
+     // Find all Array-type variables, and find the largest one.
+     var ArrayList = Object.keys(Blockly.propc.global_vars_);
+     var ArrayMaxSize = 1;
+     for (var k = 0; k < ArrayList.length; k++) {
+     if (ArrayList[k].indexOf('__ARRAY') >= 0) {
+     var t = Blockly.propc.global_vars_[ArrayList[k]];
+     t = t.replace(/[^0-9]/g, "");
+     var z = parseInt(t, 10);
+     if (z > ArrayMaxSize)
+     ArrayMaxSize = z;
+     }
+     }
+     
+     Blockly.propc.global_vars_['__TEMP_ARR'] = 'int __tmpArr[' + ArrayMaxSize.toString() + '];';
+     
+     */
 
-    // Find all Array-type variables, and find the largest one.
-    var ArrayList = Object.keys(Blockly.propc.global_vars_);
-    var ArrayMaxSize = 1;
-    for (var k = 0; k < ArrayList.length; k++) {
-        if (ArrayList[k].indexOf('__ARRAY') >= 0) {
-            var t = Blockly.propc.global_vars_[ArrayList[k]];
-            t = t.replace(/[^0-9]/g, "");
-            var z = parseInt(t, 10);
-            if (z > ArrayMaxSize)
-                ArrayMaxSize = z;
-        }
-    }
-
-    Blockly.propc.global_vars_['__TEMP_ARR'] = 'int __tmpArr[' + ArrayMaxSize.toString() + '];';
-    
-    */
-   
     var code = '';
 
     if (initStr) {
@@ -334,25 +330,20 @@ Blockly.Blocks.array_set = {
 };
 
 Blockly.propc.array_set = function () {
-    //var varName = this.getFieldValue('VAR');
-    //varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), 'Array');
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
     var list = Blockly.propc.global_vars_;
     var elemCount = '0';
 
-    var initStr = Blockly.propc.global_vars_['__ARRAY' + varName];
-
-
-    if (initStr) {
-        initStr = initStr.split("[").pop().replace(/[^0-9]/g, "");
-        elemCount = parseInt(initStr, 10).toString();
-    }
-
     if (Object.keys(list).indexOf('__ARRAY' + varName) < 0) {
         return '// ERROR: The array "' + varName + '" has not been initialized!\n';
     } else {
+        var initStr = Blockly.propc.global_vars_['__ARRAY' + varName];
+
+        initStr = initStr.split("[").pop().replace(/[^0-9]/g, "");
+        elemCount = parseInt(initStr, 10).toString();
+        
         return 'if(' + element + ' < ' + elemCount + ' && ' + element + ' >= 0) ' + varName + '[' + element + '] = ' + value + ';\n';
     }
 };
@@ -371,8 +362,6 @@ Blockly.Blocks.array_clear = {
 };
 
 Blockly.propc.array_clear = function () {
-    //var varName = this.getFieldValue('VAR');
-    //varName = varName.replace(/^[^a-zA-Z_]+|[^a-zA-Z_0-9]+/g, '_');
     var varName = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), 'Array');
     var list = Blockly.propc.global_vars_;
 
