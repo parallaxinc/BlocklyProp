@@ -1727,7 +1727,7 @@ Blockly.propc.wx_init = function () {
     code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}';
 
     var vars = '';
-    vars += 'int __wxEvent, __wxId, __wxHandle, __wsId, __wv[13], __wsHandle = 0;\n';
+    vars += 'int __wxEvent, __wxId, __wxHandle, __wsId, __wv[15], __wsHandle = 0;\n';
     vars += 'char __wxBffr[136];\n';
 
     Blockly.propc.definitions_["wx_def"] = '#include "wifi.h"';
@@ -1992,9 +1992,9 @@ Blockly.propc.wx_read_widgets = function () {
     code += 'while(__wv[0] != \'V\') {  __wv[0]++;\n  wifi_poll(&__wxEvent, &__wxId,';
     code += '&__wxHandle);\n  if(__wxEvent == \'W\' && __wxId == __wsId)';
     code += '__wsHandle = __wxHandle;\n   if(__wxEvent == \'D\') ';
-    code += 'wifi_scan(WS, __wxHandle, "%c%d%d%d%d%d%d%d%d%d%d%d%d", ';
+    code += 'wifi_scan(WS, __wxHandle, "%c%d%d%d%d%d%d%d%d%d%d%d%d%d%d", ';
     code += '&__wv[0], &__wv[1], &__wv[2], &__wv[3], &__wv[4], &__wv[5], &__wv[6], ';
-    code += '&__wv[7], &__wv[8], &__wv[9], &__wv[10], &__wv[11], &__wv[12]);\n';
+    code += '&__wv[7], &__wv[8], &__wv[9], &__wv[10], &__wv[11], &__wv[12], &__wv[13], &__wv[14]);\n';
     code += 'if(__wxEvent == \'X\') {__wsHandle = 0;\nwhile (!__wsHandle)';
     code += '{wifi_poll( & __wxEvent, & __wxId, & __wxHandle);\nif (__wxEvent == \'W\' ';
     code += '&& __wxId == __wsId) __wsHandle = __wxHandle;}break;}}';
@@ -2013,7 +2013,7 @@ Blockly.Blocks.wx_get_widget = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Simple WX widget")
-                .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET")
+                .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["device horizontal tilt", "13"], ["device vertical tilt", "14"]]), "WIDGET")
                 .appendField("value");
         this.setOutput(true, "Number");
         this.setPreviousStatement(false, null);
