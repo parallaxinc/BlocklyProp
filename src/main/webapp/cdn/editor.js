@@ -98,6 +98,10 @@ checkLastSavedTime = function () {
     var s_save = Math.round((d_now.getTime() - last_saved_time) / 60000);
     $('#save-check-warning-time').html(s_save.toString(10));
 
+    if (s_save > 58) {
+        // TODO: It's been to long - autosave, then close/set URL back to login page.
+    }
+    
     if (t_now > last_saved_timestamp && checkLeave()) {
         // It's time to pop up a modal to remind the user to save.
         $('#save-check-dialog').modal('show');

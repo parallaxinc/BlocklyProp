@@ -69,7 +69,8 @@ Blockly.Blocks.console_print_variables = {
         this.setTooltip(Blockly.MSG_CONSOLE_PRINT_VARIABLES_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
-                .appendField("Terminal print number");
+                .appendField("Terminal print number")
+                .setCheck("Number");
         this.appendDummyInput()
                 .appendField("as")
                 .appendField(new Blockly.FieldDropdown([
@@ -134,6 +135,9 @@ Blockly.Blocks.console_scan_text = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        return "String";
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -446,6 +450,9 @@ Blockly.Blocks.serial_receive_text = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        return "String";
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -897,6 +904,11 @@ Blockly.Blocks.xbee_receive = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            return "String";
+        }
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -2608,7 +2620,7 @@ Blockly.Blocks.wx_scan_string = {
                 .appendField(new Blockly.FieldVariable(data), 'VARNAME');
     },
     getVars: function () {
-        return [this.getFieldValue('HANDLE'), this.getFieldValue('HANDLE')];
+        return [this.getFieldValue('VARNAME'), this.getFieldValue('HANDLE')];
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
@@ -3066,6 +3078,9 @@ Blockly.Blocks.wx_buffer = {
                     .appendField("as buffer");
             this.getInput('BUF').setVisible(true);
         }
+    },
+    getVarType: function () {
+        return "String";
     },
     getVars: function () {
         return [this.getFieldValue('BUFFER')];

@@ -566,7 +566,6 @@ Blockly.Blocks.string_type_block = {
                 .appendField("\u201C")
                 .appendField(new Blockly.FieldTextInput('Hello'), "TEXT")
                 .appendField("\u201D");
-
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'String');
@@ -700,13 +699,14 @@ Blockly.propc.char_type_block = function () {
 };
 
 Blockly.Blocks.system_counter = {
-    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_SYSTEM_COUNTER_TOOLTIP);
         if (profile.default.description === "Other Propeller Boards") {
+            this.setHelpUrl(Blockly.MSG_SYSTEM_HELPURL);
             this.setColour(colorPalette.getColor('system'));
         } else {
             this.setColour(colorPalette.getColor('programming'));
+            this.setHelpUrl(Blockly.MSG_VALUES_HELPURL);
         }
         this.appendDummyInput()
                 .appendField("system")
@@ -1241,6 +1241,9 @@ Blockly.Blocks.combine_strings = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
+    getVarType: function () {
+        return "String";
+    },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
     },
@@ -1363,6 +1366,9 @@ Blockly.Blocks.set_char_at_position = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
+    getVarType: function () {
+        return "String";
+    },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
     },
@@ -1401,6 +1407,9 @@ Blockly.Blocks.get_substring = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        return "String";
     },
     getVars: function () {
         return [this.getFieldValue('FROM_STR'), this.getFieldValue('TO_STR')];
@@ -1526,6 +1535,9 @@ Blockly.Blocks.number_to_string = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        return "String";
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
@@ -1662,7 +1674,7 @@ Blockly.propc.math_advanced = function () {
     if (operator === 'sin' || operator === 'cos' || operator === 'tan')
         opTrig = ' * PI/180.0';
 
-    var code = store + ' = (int) (((float)' + arg1 + ') * ' + operator + '(((float) ' + arg2 + ')' + opTrig + ') + 0.5);\n';
+    var code = store + ' = (int) (((float)' + arg1 + ') * ' + operator + '(((float) ' + arg2 + ')' + opTrig + '));\n';
 
     return code;
 };
@@ -1713,7 +1725,7 @@ Blockly.propc.math_inv_trig = function () {
     if (operator === 'atan2')
         opTrig = ',';
 
-    var code = store + ' = (int) (180.0 * ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + ')) * ' + arg3 + ' / PI + 0.5);\n';
+    var code = store + ' = (int) (180.0 * ' + operator + '(((float) ' + arg1 + ')' + opTrig + '((float) ' + arg2 + ')) * ' + arg3 + ' / PI);\n';
 
     return code;
 };
