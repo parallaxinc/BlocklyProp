@@ -639,6 +639,9 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
     },
+    getVarType: function () {
+        return "String";
+    },
     getVars: function () {
         return [this.getFieldValue('BUFFER')];
     },
