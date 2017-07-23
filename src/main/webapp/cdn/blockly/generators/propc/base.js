@@ -512,7 +512,8 @@ Blockly.Blocks.math_bitwise = {
     init: function () {
         this.setTooltip(Blockly.MSG_MATH_BITWISE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
-        this.appendValueInput('A');
+        this.appendValueInput('A')
+                .setCheck("Number");
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([
                     ["& (bitwise AND)", " & "],
@@ -520,8 +521,8 @@ Blockly.Blocks.math_bitwise = {
                     ["^ (bitwise XOR)", " ^ "],
                     [">> (bitwise right shift)", " >> "],
                     ["<< (bitwise left shift)", " << "]]), "OP");
-        this.appendValueInput('B');
-
+        this.appendValueInput('B')
+                .setCheck("Number");
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -729,6 +730,7 @@ Blockly.Blocks.waitcnt = {
         this.setTooltip(Blockly.MSG_WAITCNT_TOOLTIP);
         this.setColour(colorPalette.getColor('system'));
         this.appendValueInput('TARGET')
+                .setCheck("Number")
                 .appendField("Wait until");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -747,6 +749,7 @@ Blockly.Blocks.register_set = {
         this.setTooltip(Blockly.MSG_REGISTER_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('system'));
         this.appendValueInput('TARGET')
+                .setCheck("Number")
                 .appendField("cog")
                 .appendField(new Blockly.FieldDropdown([
                     ['pin output', 'OUTA'],
@@ -997,13 +1000,16 @@ Blockly.Blocks.color_value_from = {
                 .appendField("color value from:");
         this.appendValueInput("RED_VALUE")
                 .appendField('R,0,255,0', 'RANGEVALS0')
-                .appendField("red");
+                .appendField("red")
+                .setCheck("Number");
         this.appendValueInput("GREEN_VALUE")
                 .appendField('R,0,255,0', 'RANGEVALS1')
-                .appendField("green");
+                .appendField("green")
+                .setCheck("Number");
         this.appendValueInput("BLUE_VALUE")
                 .appendField('R,0,255,0', 'RANGEVALS2')
-                .appendField("blue");
+                .appendField("blue")
+                .setCheck("Number");
         this.getField('RANGEVALS0').setVisible(false);
         this.getField('RANGEVALS1').setVisible(false);
         this.getField('RANGEVALS2').setVisible(false);
@@ -1034,8 +1040,8 @@ Blockly.Blocks.get_channel_from = {
                 .appendField("get")
                 .appendField(new Blockly.FieldDropdown([["Red", "R"], ["Green", "G"], ["Blue", "B"]]), "CHANNEL");
         this.appendValueInput('COLOR')
-                .appendField("value from");
-
+                .appendField("value from")
+                .setCheck("Number");
         this.setOutput(true, 'Number');
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
@@ -1060,10 +1066,11 @@ Blockly.Blocks.compare_colors = {
         this.appendDummyInput()
                 .appendField("compare");
         this.appendValueInput('COLOR1')
-                .appendField("color 1:");
+                .appendField("color 1:")
+                .setCheck("Number");
         this.appendValueInput('COLOR2')
-                .appendField("color 2:");
-
+                .appendField("color 2:")
+                .setCheck("Number");
         this.setOutput(true, 'Number');
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
@@ -1205,6 +1212,7 @@ Blockly.Blocks.cog_new = {
         this.appendDummyInput()
                 .appendField("new processor");
         this.appendStatementInput("METHOD")
+                .setCheck("Function")
                 .appendField("function");
 
         this.setInputsInline(true);
@@ -1694,7 +1702,8 @@ Blockly.Blocks.math_inv_trig = {
                 .setCheck("Number")
                 .appendField("÷");
         this.appendValueInput('ARG3')
-                .appendField(") \u00D7");
+                .appendField(") \u00D7")
+                .setCheck("Number");
         this.appendDummyInput()
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');

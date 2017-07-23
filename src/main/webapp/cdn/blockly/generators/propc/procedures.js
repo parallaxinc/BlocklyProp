@@ -399,7 +399,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
                 .appendField(quotes.newQuote_(this.RTL))
                 .appendField(this.id, 'NAME')
                 .appendField(quotes.newQuote_(this.LTR));
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Function");
         this.setNextStatement(true);
         this.setColour(colorPalette.getColor('functions'));
         // Tooltip is set in renameProcedure.
