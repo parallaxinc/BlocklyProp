@@ -446,7 +446,8 @@ Blockly.Blocks.pulse_out = {
                 .appendField("pulse-out PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
-                .appendField("pulse length (" + "\u00B5" + "s)");
+                .appendField("pulse length (" + "\u00B5" + "s)")
+                .setCheck("Number");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -504,6 +505,14 @@ Blockly.Blocks.eeprom_write = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.onchange();
+    },
+    onchange: function () {
+        var setType = "Number";
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            setType = "String";
+        }
+        this.getInput('DATA').setCheck(setType);
     }
 };
 

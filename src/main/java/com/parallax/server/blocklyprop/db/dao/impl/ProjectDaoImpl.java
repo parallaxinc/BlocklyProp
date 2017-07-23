@@ -813,7 +813,7 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll("block type=\"spin_integer\"",
                 "block type=\"math_number\"");
         
-        if (projType == ProjectType.SPIN) {
+        if (!newCode.contains("block type=\"math_number\"") && projType == ProjectType.SPIN) {
             // Change all math number blocks to the same kind
             newCode = newCode.replaceAll("block type=\"math_int_angle\"",
                     "block type=\"math_number\"");

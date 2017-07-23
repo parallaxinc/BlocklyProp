@@ -335,7 +335,7 @@ Blockly.Blocks.serial_tx = {
                     ["number (32-bit integer)", "INT"],
                     ["byte (ASCII character)", "BYTE"]
                 ]), "TYPE");
-        this.appendValueInput('VALUE', Number)
+        this.appendValueInput('VALUE')
                 .setCheck(null);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -538,7 +538,7 @@ Blockly.Blocks.shift_in = {
                 .appendField("CLK")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK");
         this.setInputsInline(true);
-        this.setOutput(true, null);
+        this.setOutput(true, "Number");
     }
 };
 
@@ -711,6 +711,7 @@ Blockly.Blocks.debug_lcd_number = {
         this.setTooltip(Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
+                .setCheck("Number")
                 .appendField("LCD print number");
         this.appendDummyInput()
                 .appendField("as")
@@ -859,13 +860,21 @@ Blockly.Blocks.xbee_transmit = {
         this.setTooltip(Blockly.MSG_XBEE_TRANSMIT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
+                .setCheck(null)
                 .appendField("XBee transmit")
                 .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE");
-        this.appendValueInput('VALUE', Number)
-                .setCheck(null);
+        this.appendValueInput('VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.onchange();
+    },
+    onchange: function () {
+        var setType = "Number";
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            setType = "String";
+        }
+        this.getInput('VALUE').setCheck(setType);
     }
 };
 
@@ -1200,28 +1209,28 @@ Blockly.Blocks.oled_draw_triangle = {
         this.setColour(colorPalette.getColor('protocols'));
         // First x/y coordinates
         this.appendValueInput("POINT_X0")
-                .setCheck(null)
+                .setCheck("Number")
                 .appendField("OLED draw triangle at 1 (x)");
         this.appendValueInput("POINT_Y0")
-                .setCheck(null)
+                .setCheck("Number")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("(y)");
         // Second x/y coordinates
         this.appendValueInput("POINT_X1")
-                .setCheck(null)
+                .setCheck("Number")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("2 (x)");
         this.appendValueInput("POINT_Y1")
-                .setCheck(null)
+                .setCheck("Number")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("(y)");
         // Third x/y coordinates
         this.appendValueInput("POINT_X2")
-                .setCheck(null)
+                .setCheck("Number")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("3 (x)");
         this.appendValueInput("POINT_Y2")
-                .setCheck(null)
+                .setCheck("Number")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("(y)");
         // Color picker control
@@ -1959,7 +1968,7 @@ Blockly.Blocks.wx_send_widget = {
         this.setTooltip(Blockly.MSG_SWX_SEND_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("NUM")
-                .setCheck(null)
+                .setCheck("Number")
                 .appendField("Simple WX send");
         this.appendDummyInput()
                 .appendField("to widget")
