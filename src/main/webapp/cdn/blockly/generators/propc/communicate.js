@@ -860,6 +860,7 @@ Blockly.Blocks.xbee_transmit = {
         this.setTooltip(Blockly.MSG_XBEE_TRANSMIT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
+                .setCheck(null)
                 .appendField("XBee transmit")
                 .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE");
         this.appendValueInput('VALUE');
