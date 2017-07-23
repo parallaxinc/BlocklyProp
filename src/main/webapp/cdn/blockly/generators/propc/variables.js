@@ -212,6 +212,7 @@ Blockly.Blocks.array_get = {
         this.setTooltip(Blockly.MSG_ARRAY_GET_TOOLTIP);
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('NUM')
+                .setCheck('Number')
                 .appendField('array')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR')
                 .appendField('element');
@@ -346,9 +347,11 @@ Blockly.Blocks.array_set = {
         this.setColour(colorPalette.getColor('variables'));
         this.appendValueInput('NUM')
                 .appendField('array')
+                .setCheck('Number')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR')
                 .appendField('element');
         this.appendValueInput('VALUE')
+                .setCheck('Number')
                 .appendField('=');
         this.setInputsInline(true);
         this.setPreviousStatement(true);
