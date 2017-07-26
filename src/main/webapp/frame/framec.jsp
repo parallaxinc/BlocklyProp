@@ -123,7 +123,7 @@
             <block type="controls_return"></block>
                 <c:choose>
                     <c:when test="${experimental == true}">
-                        <block type="custom_code_multiple"></block>
+                    <block type="custom_code_multiple"></block>
                     </c:when>
                 </c:choose>
         </category>
@@ -200,6 +200,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -241,6 +244,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -252,6 +258,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -1526,7 +1535,7 @@
             <block type="system_counter"></block>
                 <c:choose>
                     <c:when test="${experimental == true}">
-                        <block type="custom_code"></block>
+                    <block type="custom_code"></block>
                     </c:when>
                 </c:choose>
         </category>

@@ -271,6 +271,7 @@ Blockly.MSG_GET_SUBSTRING_TOOLTIP = "get part of string: in range of positions; 
 Blockly.MSG_MATH_NUMBER_TOOLTIP = "number value: positive or negative; truncates to integers.";
 Blockly.MSG_STRING_TYPE_BLOCK_TOOLTIP = "text string: up to 128 characters.";
 Blockly.MSG_CHAR_TYPE_BLOCK_TOOLTIP = "character value: Get value (32 to 126) of printable ASCII character selected.";
+Blockly.MSG_MUSIC_NOTE_BLOCK_TOOLTIP = "music note: Get frequency value of scpecified note.";
 Blockly.MSG_LOGIC_BOOLEAN_TOOLTIP = "true/false: Choose a value of 1 (true) or 0 (false).";
 Blockly.MSG_HIGH_LOW_VALUE_TOOLTIP = "high/low: Choose a value of 1 (high) or 0 (low).";
 Blockly.MSG_COLOR_PICKER_TOOLTIP = "color: Get 24-bit integer for color selected in box.";

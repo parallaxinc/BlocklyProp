@@ -699,6 +699,52 @@ Blockly.propc.char_type_block = function () {
     return [code, Blockly.propc.ORDER_NONE];
 };
 
+
+Blockly.Blocks.music_note = {
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_MUSIC_NOTE_BLOCK_TOOLTIP);
+        this.setColour(colorPalette.getColor('programming'));
+        this.appendDummyInput()
+                .appendField("music note")
+                .appendField(new Blockly.FieldDropdown([
+                    ['B', '3951.07'],
+                    ['A♯/B♭', '3729.31'],
+                    ['A', '3520.00'],
+                    ['G♯/A♭', '3322.44'],
+                    ['G', '3135.96'],
+                    ['F♯/G♭', '2959.96'],
+                    ['F', '2793.83'],
+                    ['E', '2637.02'],
+                    ['D♯/E♭', '2489.02'],
+                    ['D', '2349.32'],
+                    ['C♯/D♭', '2217.46'],
+                    ['C', '2093.00']]), "NOTE")
+                .appendField("octave")
+                .appendField(new Blockly.FieldDropdown([
+                    ['1st', '0.015625'],
+                    ['2nd', '0.03125'],
+                    ['3th', '0.0625'],
+                    ['4th', '0.125'],
+                    ['5th', '0.25'],
+                    ['6th', '0.5'],
+                    ['7th', '1'],
+                    ['8th', '2']]), "OCTAVE");
+        this.setPreviousStatement(false, null);
+        this.setNextStatement(false, null);
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.propc.music_note = function () {
+    var note = (Math.round(
+            parseFloat(this.getFieldValue("NOTE")) *
+            parseFloat(this.getFieldValue("OCTAVE"))
+            )).toString(10);
+    return [note, Blockly.propc.ORDER_NONE];
+};
+
+
 Blockly.Blocks.system_counter = {
     init: function () {
         this.setTooltip(Blockly.MSG_SYSTEM_COUNTER_TOOLTIP);
@@ -1224,9 +1270,9 @@ Blockly.Blocks.cog_new = {
 Blockly.propc.cog_new = function () {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
     var method_name = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
-    
+
     Blockly.propc.cog_methods_[method_name] = method;
-    
+
     var code = 'cog_run(' + method_name + ', 128);\n';
     return code;
 };

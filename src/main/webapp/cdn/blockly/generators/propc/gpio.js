@@ -721,10 +721,9 @@ Blockly.Blocks.ab_volt_in = {
 Blockly.propc.ab_volt_in = function () {
     var dropdown_channel = this.getFieldValue('CHANNEL');
 
-    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
-    }
+    Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
+    Blockly.propc.setups_['setup_abvolts'] = 'ad_init(21, 20, 19, 18);';
+
 
     var code = '(ad_in(' + dropdown_channel + ') * 500 / 4096)';
     return [code, Blockly.propc.ORDER_NONE];
@@ -755,10 +754,8 @@ Blockly.propc.ab_volt_out = function () {
     var dropdown_channel = this.getFieldValue('CHANNEL');
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
 
-    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {
+    Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
         Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
-    }
 
     var code = 'da_out(' + dropdown_channel + ', (' + value + '* 256 / 330));\n';
     return code;
