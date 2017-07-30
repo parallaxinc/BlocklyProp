@@ -366,7 +366,7 @@ Blockly.Blocks.serial_tx = {
         this.appendDummyInput()
                 .appendField("Serial transmit")
                 .appendField(new Blockly.FieldDropdown([
-                    ["number (32-bit integer)", "f"],
+                    ["number (32-bit integer)", "INT"],
                     ["byte (ASCII character)", "BYTE"]
                 ]), "TYPE");
         this.appendValueInput('VALUE')
@@ -548,8 +548,10 @@ Blockly.propc.serial_receive_text = function () {
     } else {
         var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
 
-        Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
-        Blockly.propc.vartype_[data] = 'char *';
+        if (!this.disabled) {
+            Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
+            Blockly.propc.vartype_[data] = 'char *';
+        }
 
         if (data !== '') {
             var code = '__idx = 0;\n';

@@ -41,7 +41,7 @@ Blockly.Blocks.make_pin = {
         this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.appendDummyInput("")
+        this.appendDummyInput()
                 .appendField("make PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
@@ -420,8 +420,10 @@ Blockly.Blocks.pulse_in = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("read")
-                .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
-
+                .appendField(new Blockly.FieldDropdown([
+                    ["negative/low pulses", "0"],
+                    ["positive/high pulses", "1"]
+                ]), "STATE");
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -755,7 +757,7 @@ Blockly.propc.ab_volt_out = function () {
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
 
     Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
-        Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
+    Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
 
     var code = 'da_out(' + dropdown_channel + ', (' + value + '* 256 / 330));\n';
     return code;
