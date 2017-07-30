@@ -1178,7 +1178,7 @@
                 </block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.pwm" />" exclude="s3">
-                <block type="pwm_start"></block>
+                <!-- <block type="pwm_start"></block> -->
                 <block type="pwm_set">
                     <value name="DUTY_CYCLE">
                         <block type="math_number">

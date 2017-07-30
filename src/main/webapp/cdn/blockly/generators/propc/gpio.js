@@ -769,14 +769,15 @@ Blockly.Blocks.pwm_start = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM initialize");
-
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText('NOTE: The PWM initialize block is no longer\nneeded. It can be safely deleted.');
     }
 };
 
 Blockly.propc.pwm_start = function () {
-    var code = 'pwm_start(100);\n';
+    //var code = 'pwm_start(100);\n';
+    var code = '// NOTE: The PWM initialize block is no longer needed. It can be safely deleted.\n';
     return code;
 };
 
@@ -813,7 +814,7 @@ Blockly.propc.pwm_set = function () {
         duty_cycle = '100';
     }
 
-    var code = 'pwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
+    var code = 'pwm_start(100);\npwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
     return code;
 };
 
