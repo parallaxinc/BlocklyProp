@@ -414,13 +414,21 @@ Blockly.Blocks.serial_send_text = {
     init: function () {
         this.setTooltip(Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendValueInput('VALUE')
-                .appendField("Serial transmit text")
-                .setCheck('String');
+        this.appendDummyInput()
+                .appendField("Serial transmit")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), 'TYPE');
+        this.appendValueInput('VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setWarningText(null);
+        this.stringTypeCheck();
     },
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
@@ -430,6 +438,14 @@ Blockly.Blocks.serial_send_text = {
         } else {
             this.setWarningText(null);
         }
+        this.stringTypeCheck();
+    },
+    stringTypeCheck: function () {
+        var setType = "Number";
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            setType = "String";
+        }
+        this.getInput('VALUE').setCheck(setType);
     }
 };
 
@@ -439,12 +455,24 @@ Blockly.propc.serial_send_text = function () {
     {
         return '// ERROR: Serial is not initialized!\n';
     } else {
-        var text = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
-        var code = 'dprint(fdser, ' + text.replace(/%/g, "%%") + ');\n';
-        code += 'while(!fdserial_txEmpty(fdser));\n';
-        code += 'pause(5);\n';
+        var type = this.getFieldValue('TYPE');
+        var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
 
-        return code;
+        if (type === "BYTE") {
+            return 'fdserial_txChar(fdser, (' + data + ' & 0xFF) );\n';
+        } else if (type === "INT") {
+            return 'dprint(fdser, "%d\\r", ' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dprint(fdser, "%x\\r", ' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dprint(fdser, "%b\\r", ' + data + ');\n';
+        } else {
+            var code = 'dprint(fdser, "%s\\r", ' + data.replace(/%/g, "%%") + ');\n';
+            code += 'while(!fdserial_txEmpty(fdser));\n';
+            code += 'pause(5);\n';
+
+            return code;
+        }
     }
 };
 
@@ -511,7 +539,15 @@ Blockly.Blocks.serial_receive_text = {
         this.setTooltip(Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Serial receive text store in")
+                .appendField("Serial receive")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), 'TYPE')
+                .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
@@ -519,7 +555,9 @@ Blockly.Blocks.serial_receive_text = {
         this.setWarningText(null);
     },
     getVarType: function () {
-        return "String";
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            return "String";
+        }
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -553,7 +591,17 @@ Blockly.propc.serial_receive_text = function () {
             Blockly.propc.vartype_[data] = 'char *';
         }
 
-        if (data !== '') {
+        var type = this.getFieldValue('TYPE');
+
+        if (type === "BYTE") {
+            return  data + ' = fdserial_rxChar(fdser);\n';
+        } else if (type === "INT") {
+            return 'dscan(fdser, "%d", &' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dscan(fdser, "%b", &' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dscan(fdser, "%x", &' + data + ');\n';
+        } else {
             var code = '__idx = 0;\n';
             code += 'do {\n';
             code += '  ' + data + '[__idx] = fdserial_rxChar(fdser);\n';
@@ -562,8 +610,6 @@ Blockly.propc.serial_receive_text = function () {
             code += data + '[__idx] = 0;\nfdserial_rxFlush(fdser);\n';
 
             return code;
-        } else {
-            return '';
         }
     }
 };
@@ -954,7 +1000,13 @@ Blockly.Blocks.xbee_transmit = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee transmit")
-                .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE");
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), "TYPE");
         this.appendValueInput('VALUE')
                 .setCheck(null);
         this.setInputsInline(true);
@@ -994,6 +1046,10 @@ Blockly.propc.xbee_transmit = function () {
             return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
         } else if (type === "INT") {
             return 'dprint(xbee, "%d\\r", ' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dprint(xbee, "%x\\r", ' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dprint(xbee, "%b\\r", ' + data + ');\n';
         } else {
             var code = 'dprint(xbee, "%s\\r", ' + data.replace(/%/g, "%%") + ');\n';
             code += 'while(!fdserial_txEmpty(xbee));\n';
@@ -1011,7 +1067,13 @@ Blockly.Blocks.xbee_receive = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee receive")
-                .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), "TYPE")
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
@@ -1056,6 +1118,10 @@ Blockly.propc.xbee_receive = function () {
             return  data + ' = fdserial_rxChar(xbee);\n';
         } else if (type === "INT") {
             return 'dscan(xbee, "%d", &' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dscan(xbee, "%b", &' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dscan(xbee, "%x", &' + data + ');\n';
         } else {
             Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
             Blockly.propc.vartype_[data] = 'char *';
