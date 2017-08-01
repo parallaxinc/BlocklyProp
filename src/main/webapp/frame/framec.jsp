@@ -123,7 +123,7 @@
             <block type="controls_return"></block>
                 <c:choose>
                     <c:when test="${experimental == true}">
-                        <block type="custom_code_multiple"></block>
+                    <block type="custom_code_multiple"></block>
                     </c:when>
                 </c:choose>
         </category>
@@ -200,6 +200,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -241,6 +244,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -252,6 +258,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -616,9 +625,9 @@
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="serial_open"></block>
-                <block type="serial_tx"></block>
+                <!-- <block type="serial_tx"></block> -->
                 <block type="serial_send_text"></block>
-                <block type="serial_rx"></block>
+                <!-- <block type="serial_rx"></block> -->
                 <block type="serial_receive_text"></block>
                 <block type="shift_in"></block>
                 <block type="shift_out">
@@ -1169,7 +1178,7 @@
                 </block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.pwm" />" exclude="s3">
-                <block type="pwm_start"></block>
+                <!-- <block type="pwm_start"></block> -->
                 <block type="pwm_set">
                     <value name="DUTY_CYCLE">
                         <block type="math_number">
@@ -1526,7 +1535,7 @@
             <block type="system_counter"></block>
                 <c:choose>
                     <c:when test="${experimental == true}">
-                        <block type="custom_code"></block>
+                    <block type="custom_code"></block>
                     </c:when>
                 </c:choose>
         </category>

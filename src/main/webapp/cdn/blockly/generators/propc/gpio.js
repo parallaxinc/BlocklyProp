@@ -41,7 +41,7 @@ Blockly.Blocks.make_pin = {
         this.setColour(colorPalette.getColor('io'));
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.appendDummyInput("")
+        this.appendDummyInput()
                 .appendField("make PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
@@ -420,8 +420,10 @@ Blockly.Blocks.pulse_in = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("read")
-                .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
-
+                .appendField(new Blockly.FieldDropdown([
+                    ["negative/low pulses", "0"],
+                    ["positive/high pulses", "1"]
+                ]), "STATE");
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -721,10 +723,9 @@ Blockly.Blocks.ab_volt_in = {
 Blockly.propc.ab_volt_in = function () {
     var dropdown_channel = this.getFieldValue('CHANNEL');
 
-    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
-    }
+    Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
+    Blockly.propc.setups_['setup_abvolts'] = 'ad_init(21, 20, 19, 18);';
+
 
     var code = '(ad_in(' + dropdown_channel + ') * 500 / 4096)';
     return [code, Blockly.propc.ORDER_NONE];
@@ -755,10 +756,8 @@ Blockly.propc.ab_volt_out = function () {
     var dropdown_channel = this.getFieldValue('CHANNEL');
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
 
-    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
-    }
+    Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
+    Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
 
     var code = 'da_out(' + dropdown_channel + ', (' + value + '* 256 / 330));\n';
     return code;
@@ -772,14 +771,15 @@ Blockly.Blocks.pwm_start = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM initialize");
-
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText('NOTE: The PWM initialize block is no longer\nneeded. It can be safely deleted.');
     }
 };
 
 Blockly.propc.pwm_start = function () {
-    var code = 'pwm_start(100);\n';
+    //var code = 'pwm_start(100);\n';
+    var code = '// NOTE: The PWM initialize block is no longer needed. It can be safely deleted.\n';
     return code;
 };
 
@@ -816,7 +816,7 @@ Blockly.propc.pwm_set = function () {
         duty_cycle = '100';
     }
 
-    var code = 'pwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
+    var code = 'pwm_start(100);\npwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
     return code;
 };
 

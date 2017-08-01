@@ -295,7 +295,7 @@ Blockly.Blocks.serial_open = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
                 .appendField("TX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
-        this.appendDummyInput()
+        this.appendDummyInput('BAUD_RATE')
                 .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([
                     ["2400", "2400"],
@@ -304,11 +304,43 @@ Blockly.Blocks.serial_open = {
                     ["19200", "19200"],
                     ["38400", "38400"],
                     ["57600", "57600"],
-                    ["115200", "115200"]
-                ]), "BAUD");
+                    ["115200", "115200"],
+                    ["other", "other"]
+                ], function (br) {
+                    this.sourceBlock_.setToOther(br);
+                }), "BAUD");
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.otherBaud = false;
+    },
+    setToOther: function (br) {
+        if (br === 'other') {
+            this.otherBaud = true;
+            this.removeInput('BAUD_RATE');
+            this.appendDummyInput('BAUD_RATE')
+                    .appendField("baud")
+                    .appendField(new Blockly.FieldTextInput('1200',
+                            Blockly.FieldTextInput.numberValidator), "BAUD");
+        }
+    },
+    mutationToDom: function () {
+        if (this.otherBaud) {
+            var container = document.createElement('mutation');
+            container.setAttribute('baud', this.getFieldValue('BAUD'));
+            return container;
+        }
+    },
+    domToMutation: function (xmlElement) {
+        var br = xmlElement.getAttribute('baud');
+        if (br !== undefined) {
+            this.otherBaud = true;
+            this.removeInput('BAUD_RATE');
+            this.appendDummyInput('BAUD_RATE')
+                    .appendField("baud")
+                    .appendField(new Blockly.FieldTextInput(br,
+                            Blockly.FieldTextInput.numberValidator), "BAUD");
+        }
     }
 };
 
@@ -317,9 +349,11 @@ Blockly.propc.serial_open = function () {
     var dropdown_tx_pin = this.getFieldValue('TXPIN');
     var baud = this.getFieldValue('BAUD');
 
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-    Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
-    Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+        Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
+        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
+    }
 
     return '';
 };
@@ -340,17 +374,28 @@ Blockly.Blocks.serial_tx = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Serial initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Serial\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.serial_tx = function () {
-    var type = this.getFieldValue('TYPE');
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
-
-    if (Blockly.propc.setups_["setup_fdserial"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Serial initialize') === -1)
     {
-        return '//Missing serial port initialize block\n';
+        return '// ERROR: Serial is not initialized!\n';
     } else {
+        var type = this.getFieldValue('TYPE');
+        var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
+
         if (type === "BYTE") {
             return 'fdserial_txChar(fdser, (' + data + ' & 0xFF) );\n';
         } else {
@@ -369,26 +414,65 @@ Blockly.Blocks.serial_send_text = {
     init: function () {
         this.setTooltip(Blockly.MSG_SERIAL_SEND_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendValueInput('VALUE')
-                .appendField("Serial transmit text")
-                .setCheck('String');
+        this.appendDummyInput()
+                .appendField("Serial transmit")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), 'TYPE');
+        this.appendValueInput('VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+        this.stringTypeCheck();
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Serial initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Serial\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
+        this.stringTypeCheck();
+    },
+    stringTypeCheck: function () {
+        var setType = "Number";
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            setType = "String";
+        }
+        this.getInput('VALUE').setCheck(setType);
     }
 };
 
 Blockly.propc.serial_send_text = function () {
-    var text = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
-
-    if (Blockly.propc.setups_['setup_fdserial'] === undefined) {
-        return '//Missing serial port initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Serial initialize') === -1)
+    {
+        return '// ERROR: Serial is not initialized!\n';
     } else {
-        var code = 'dprint(fdser, ' + text.replace(/%/g, "%%") + ');\n';
-        code += 'while(!fdserial_txEmpty(fdser));\n';
-        code += 'pause(5);\n';
+        var type = this.getFieldValue('TYPE');
+        var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
 
-        return code;
+        if (type === "BYTE") {
+            return 'fdserial_txChar(fdser, (' + data + ' & 0xFF) );\n';
+        } else if (type === "INT") {
+            return 'dprint(fdser, "%d\\r", ' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dprint(fdser, "%x\\r", ' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dprint(fdser, "%b\\r", ' + data + ');\n';
+        } else {
+            var code = 'dprint(fdser, "%s\\r", ' + data.replace(/%/g, "%%") + ');\n';
+            code += 'while(!fdserial_txEmpty(fdser));\n';
+            code += 'pause(5);\n';
+
+            return code;
+        }
     }
 };
 
@@ -408,6 +492,7 @@ Blockly.Blocks.serial_rx = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -416,17 +501,26 @@ Blockly.Blocks.serial_rx = {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
             this.setFieldValue(newName, 'VALUE');
         }
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Serial initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Serial\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.serial_rx = function () {
-    var type = this.getFieldValue('TYPE');
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
-
-    if (Blockly.propc.setups_["setup_fdserial"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Serial initialize') === -1)
     {
-        return '//Missing serial port initialize block\n';
+        return '// ERROR: Serial is not initialized!\n';
     } else {
+        var type = this.getFieldValue('TYPE');
+        var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
         if (data !== '') {
             if (type === "BYTE") {
                 return data + ' = fdserial_rxChar(fdser);\n';
@@ -445,14 +539,25 @@ Blockly.Blocks.serial_receive_text = {
         this.setTooltip(Blockly.MSG_SERIAL_RECEIVE_TEXT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField("Serial receive text store in")
+                .appendField("Serial receive")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), 'TYPE')
+                .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
     },
     getVarType: function () {
-        return "String";
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            return "String";
+        }
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -461,20 +566,42 @@ Blockly.Blocks.serial_receive_text = {
         if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
             this.setFieldValue(newName, 'VALUE');
         }
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Serial initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Serial\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.serial_receive_text = function () {
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
-
-    Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
-    Blockly.propc.vartype_[data] = 'char *';
-
-    if (Blockly.propc.setups_["setup_fdserial"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Serial initialize') === -1)
     {
-        return '//Missing serial port initialize block\n';
+        return '// ERROR: Serial is not initialized!\n';
     } else {
-        if (data !== '') {
+        var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+
+        if (!this.disabled) {
+            Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
+            Blockly.propc.vartype_[data] = 'char *';
+        }
+
+        var type = this.getFieldValue('TYPE');
+
+        if (type === "BYTE") {
+            return  data + ' = fdserial_rxChar(fdser);\n';
+        } else if (type === "INT") {
+            return 'dscan(fdser, "%d", &' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dscan(fdser, "%b", &' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dscan(fdser, "%x", &' + data + ');\n';
+        } else {
             var code = '__idx = 0;\n';
             code += 'do {\n';
             code += '  ' + data + '[__idx] = fdserial_rxChar(fdser);\n';
@@ -483,8 +610,6 @@ Blockly.propc.serial_receive_text = function () {
             code += data + '[__idx] = 0;\nfdserial_rxFlush(fdser);\n';
 
             return code;
-        } else {
-            return '';
         }
     }
 };
@@ -494,42 +619,16 @@ Blockly.propc.serial_receive_text = function () {
 Blockly.Blocks.shift_in = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
+        var shiftBytes = [];
+        for (var t = 2; t < 33; t++) {
+            shiftBytes.push([t.toString(10), t.toString(10)]);
+        }
         this.setTooltip(Blockly.MSG_SHIFT_IN_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("shift in")
                 .appendField(new Blockly.FieldDropdown(
-                        [['2', '2'],
-                            ['3', '3'],
-                            ['4', '4'],
-                            ['5', '5'],
-                            ['6', '6'],
-                            ['7', '7'],
-                            ['8', '8'],
-                            ['9', '9'],
-                            ['10', '10'],
-                            ['11', '11'],
-                            ['12', '12'],
-                            ['13', '13'],
-                            ['14', '14'],
-                            ['15', '15'],
-                            ['16', '16'],
-                            ['17', '17'],
-                            ['18', '18'],
-                            ['19', '19'],
-                            ['20', '20'],
-                            ['21', '21'],
-                            ['22', '22'],
-                            ['23', '23'],
-                            ['24', '24'],
-                            ['25', '25'],
-                            ['26', '26'],
-                            ['27', '27'],
-                            ['28', '28'],
-                            ['29', '29'],
-                            ['30', '30'],
-                            ['31', '31'],
-                            ['32', '32']]), "BITS")
+                        shiftBytes), "BITS")
                 .appendField("bits")
                 .appendField(new Blockly.FieldDropdown([["MSB first", "MSB"], ["LSB first", "LSB"]]), "MODE")
                 .appendField(new Blockly.FieldDropdown([["before clock", "PRE"], ["after clock", "POST"]]), "ORDER")
@@ -555,43 +654,17 @@ Blockly.propc.shift_in = function () {
 Blockly.Blocks.shift_out = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
+        var shiftBytes = [];
+        for (var t = 2; t < 33; t++) {
+            shiftBytes.push([t.toString(10), t.toString(10)]);
+        }
         this.setTooltip(Blockly.MSG_SHIFT_OUT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("VALUE")
                 .setCheck("Number")
                 .appendField("shift out the")
                 .appendField(new Blockly.FieldDropdown(
-                        [['2', '2'],
-                            ['3', '3'],
-                            ['4', '4'],
-                            ['5', '5'],
-                            ['6', '6'],
-                            ['7', '7'],
-                            ['8', '8'],
-                            ['9', '9'],
-                            ['10', '10'],
-                            ['11', '11'],
-                            ['12', '12'],
-                            ['13', '13'],
-                            ['14', '14'],
-                            ['15', '15'],
-                            ['16', '16'],
-                            ['17', '17'],
-                            ['18', '18'],
-                            ['19', '19'],
-                            ['20', '20'],
-                            ['21', '21'],
-                            ['22', '22'],
-                            ['23', '23'],
-                            ['24', '24'],
-                            ['25', '25'],
-                            ['26', '26'],
-                            ['27', '27'],
-                            ['28', '28'],
-                            ['29', '29'],
-                            ['30', '30'],
-                            ['31', '31'],
-                            ['32', '32']]), "BITS")
+                        shiftBytes), "BITS")
                 .appendField("lowest bits of");
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([["MSB first", "MSBFIRST"], ["LSB first", "LSBFIRST"]]), "MODE")
@@ -636,13 +709,21 @@ Blockly.Blocks.debug_lcd_init = {
 };
 
 Blockly.propc.debug_lcd_init = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
-    var baud = this.getFieldValue('BAUD');
+    if (!this.disabled) {
+        var dropdown_pin = this.getFieldValue('PIN');
+        var baud = this.getFieldValue('BAUD');
 
-    Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
+        Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
+    }
 
-    var code = 'writeChar(debug_lcd, 22);\npause(5);\n';
-    return code;
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Serial initialize') === -1)
+    {
+        return '// ERROR: LCD is not initialized!\n';
+    } else {
+        var code = 'writeChar(debug_lcd, 22);\npause(5);\n';
+        return code;
+    }
 };
 
 Blockly.Blocks.debug_lcd_music_note = {
@@ -660,25 +741,37 @@ Blockly.Blocks.debug_lcd_music_note = {
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('LCD initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an LCD\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.debug_lcd_music_note = function () {
-    var dropdown_note = this.getFieldValue('NOTE');
-    var dropdown_octave = this.getFieldValue('OCTAVE');
-    var dropdown_length = this.getFieldValue('LENGTH');
-
-    var code = '';
-
-    if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
-        code += '//Missing Serial LCD initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('LCD initialize') === -1)
+    {
+        return '// ERROR: LCD is not initialized!\n';
     } else {
+
+        var dropdown_note = this.getFieldValue('NOTE');
+        var dropdown_octave = this.getFieldValue('OCTAVE');
+        var dropdown_length = this.getFieldValue('LENGTH');
+
+        var code = '';
         code += 'writeChar(debug_lcd, ' + dropdown_octave + ');\n';
         code += 'writeChar(debug_lcd, ' + dropdown_length + ');\n';
         code += 'writeChar(debug_lcd, ' + dropdown_note + ');\n';
-    }
 
-    return code;
+        return code;
+    }
 };
 
 Blockly.Blocks.debug_lcd_print = {
@@ -692,15 +785,26 @@ Blockly.Blocks.debug_lcd_print = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('LCD initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an LCD\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.debug_lcd_print = function () {
-    var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
-
-    if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
-        return '//Missing Serial LCD initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('LCD initialize') === -1)
+    {
+        return '// ERROR: LCD is not initialized!\n';
     } else {
+        var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
         return 'dprint(debug_lcd, ' + msg.replace(/%/g, "%%") + ');\n';
     }
 };
@@ -719,18 +823,29 @@ Blockly.Blocks.debug_lcd_number = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('LCD initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an LCD\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.debug_lcd_number = function () {
-    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
-    var format = this.getFieldValue('FORMAT');
-
     var code = '';
-
-    if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
-        code += '//Missing Serial LCD initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('LCD initialize') === -1)
+    {
+        code += '// ERROR: LCD is not initialized!\n';
     } else {
+        var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
+        var format = this.getFieldValue('FORMAT');
+
         code += 'dprint(debug_lcd, ';
         if (format === 'BIN') {
             code += '"%b"';
@@ -768,22 +883,34 @@ Blockly.Blocks.debug_lcd_action = {
                 ]), "ACTION");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('LCD initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an LCD\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.debug_lcd_action = function () {
-    var action = this.getFieldValue('ACTION');
-    var code = '';
-
-    if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
-        code += '//Missing Serial LCD initialization\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('LCD initialize') === -1)
+    {
+        return '// ERROR: LCD is not initialized!\n';
     } else {
+        var action = this.getFieldValue('ACTION');
+        var code = '';
         code += 'writeChar(debug_lcd, ' + action + ');\n';
         //if(action === '12') {
         code += 'pause(5);\n';
         //}
+
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.debug_lcd_set_cursor = {
@@ -801,22 +928,35 @@ Blockly.Blocks.debug_lcd_set_cursor = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('LCD initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an LCD\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.debug_lcd_set_cursor = function () {
-    var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
-    var column = Blockly.propc.valueToCode(this, 'COLUMN', Blockly.propc.ORDER_NONE);
-
-    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.methods_["constrain_function"] = setup_code;
-    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-
-    if (Blockly.propc.setups_['setup_debug_lcd'] === undefined) {
-        return '//Missing Serial LCD initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('LCD initialize') === -1)
+    {
+        return '// LCD: Serial is not initialized!\n';
     } else {
+        if (!this.disabled) {
+            var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
+            var column = Blockly.propc.valueToCode(this, 'COLUMN', Blockly.propc.ORDER_NONE);
+
+            var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
+            setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+            setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+            Blockly.propc.methods_["constrain_function"] = setup_code;
+            Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
+        }
         return 'writeChar(debug_lcd, (128 + (constrain(' + row + ', 0, 3) * 20) + constrain(' + column + ', 0, 19)));\n';
     }
 };
@@ -834,7 +974,6 @@ Blockly.Blocks.xbee_setup = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'DI_PIN')
                 .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
-
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -846,11 +985,11 @@ Blockly.propc.xbee_setup = function () {
     var di_pin = this.getFieldValue('DI_PIN');
     var baud = this.getFieldValue('BAUD');
 
-    Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-
-    Blockly.propc.global_vars_["xbee"] = "fdserial *xbee;";
-    Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + di_pin + ', ' + do_pin + ', 0, ' + baud + ');\n';
-
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
+        Blockly.propc.global_vars_["xbee"] = "fdserial *xbee;";
+        Blockly.propc.setups_["xbee"] = 'xbee = fdserial_open(' + di_pin + ', ' + do_pin + ', 0, ' + baud + ');\n';
+    }
     return '';
 };
 
@@ -860,16 +999,32 @@ Blockly.Blocks.xbee_transmit = {
         this.setTooltip(Blockly.MSG_XBEE_TRANSMIT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .setCheck(null)
                 .appendField("XBee transmit")
-                .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE");
-        this.appendValueInput('VALUE');
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), "TYPE");
+        this.appendValueInput('VALUE')
+                .setCheck(null);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.onchange();
+        this.stringTypeCheck();
     },
     onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('XBee initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an XBee\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
+        this.stringTypeCheck();
+    },
+    stringTypeCheck: function () {
         var setType = "Number";
         if (this.getFieldValue('TYPE') === 'TEXT') {
             setType = "String";
@@ -879,17 +1034,22 @@ Blockly.Blocks.xbee_transmit = {
 };
 
 Blockly.propc.xbee_transmit = function () {
-    var type = this.getFieldValue('TYPE');
-    var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
-
-    if (Blockly.propc.setups_["xbee"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('XBee initialize') === -1)
     {
-        return '//Missing xbee initialize block\n';
+        return '// ERROR: XBee is not initialized!\n';
     } else {
+        var type = this.getFieldValue('TYPE');
+        var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
+
         if (type === "BYTE") {
             return 'fdserial_txChar(xbee, (' + data + ' & 0xFF) );\n';
         } else if (type === "INT") {
             return 'dprint(xbee, "%d\\r", ' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dprint(xbee, "%x\\r", ' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dprint(xbee, "%b\\r", ' + data + ');\n';
         } else {
             var code = 'dprint(xbee, "%s\\r", ' + data.replace(/%/g, "%%") + ');\n';
             code += 'while(!fdserial_txEmpty(xbee));\n';
@@ -907,12 +1067,28 @@ Blockly.Blocks.xbee_receive = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("XBee receive")
-                .appendField(new Blockly.FieldDropdown([["text", "TEXT"], ["number (32-bit integer)", "INT"], ["byte (ASCII character)", "BYTE"]]), "TYPE")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["decimal number", "INT"],
+                    ["hexadecimal number", "HEX"],
+                    ["binary number", "BIN"],
+                    ["ASCII character", "BYTE"]
+                ]), "TYPE")
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('XBee initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an XBee\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     },
     getVarType: function () {
         if (this.getFieldValue('TYPE') === 'TEXT') {
@@ -930,17 +1106,22 @@ Blockly.Blocks.xbee_receive = {
 };
 
 Blockly.propc.xbee_receive = function () {
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
-    var type = this.getFieldValue('TYPE');
-
-    if (Blockly.propc.setups_["xbee"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('XBee initialize') === -1)
     {
-        return '//Missing xbee initialize block\n';
+        return '// ERROR: XBee is not initialized!\n';
     } else {
+        var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+        var type = this.getFieldValue('TYPE');
+
         if (type === "BYTE") {
             return  data + ' = fdserial_rxChar(xbee);\n';
         } else if (type === "INT") {
             return 'dscan(xbee, "%d", &' + data + ');\n';
+        } else if (type === "BIN") {
+            return 'dscan(xbee, "%b", &' + data + ');\n';
+        } else if (type === "HEX") {
+            return 'dscan(xbee, "%x", &' + data + ');\n';
         } else {
             Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
             Blockly.propc.vartype_[data] = 'char *';
@@ -983,15 +1164,16 @@ Blockly.Blocks.oled_initialize = {
 };
 
 Blockly.propc.oled_initialize = function () {
-    var cs_pin = this.getFieldValue("CS");
-    var dc_pin = this.getFieldValue("DC");
-    var din_pin = this.getFieldValue("DIN");
-    var clk_pin = this.getFieldValue("CLK");
-    var res_pin = this.getFieldValue("RES");
+    if (!this.disbled) {
+        var cs_pin = this.getFieldValue("CS");
+        var dc_pin = this.getFieldValue("DC");
+        var din_pin = this.getFieldValue("DIN");
+        var clk_pin = this.getFieldValue("CLK");
+        var res_pin = this.getFieldValue("RES");
 
-    Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
-    Blockly.propc.setups_["oled"] = 'oledc_init(' + din_pin + ', ' + clk_pin + ', ' + cs_pin + ', ' + dc_pin + ', ' + res_pin + ', 2);';
-
+        Blockly.propc.definitions_["oledtools"] = '#include "oledc.h"';
+        Blockly.propc.setups_["oled"] = 'oledc_init(' + din_pin + ', ' + clk_pin + ', ' + cs_pin + ', ' + dc_pin + ', ' + res_pin + ', 2);';
+    }
     return '';
 };
 
@@ -1024,17 +1206,28 @@ Blockly.Blocks.oled_clear_screen = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_clear_screen = function () {
-    var cmd = this.getFieldValue("CMD");
-
-    var code = '';
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var cmd = this.getFieldValue("CMD");
+
+        var code = '';
         if (cmd === 'CLS') {
             code += 'oledc_clear(0, 0, oledc_getWidth(), oledc_getHeight() );\n';
         } else if (cmd === 'WAKE') {
@@ -1044,9 +1237,10 @@ Blockly.propc.oled_clear_screen = function () {
         } else if (cmd === 'INV') {
             code += 'oledc_invertDisplay();\n';
         }
+        return code;
     }
-    return code;
-};
+}
+;
 
 Blockly.Blocks.oled_draw_circle = {
     helpUrl: Blockly.MSG_OLED_HELPURL,
@@ -1079,25 +1273,37 @@ Blockly.Blocks.oled_draw_circle = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_draw_circle = function () {
     // Ensure header file is included
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    }
 
-    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
-    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
-    var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
-    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
-
-    var checkbox = this.getFieldValue('ck_fill');
-    var code;
-
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+        var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+        var radius = Blockly.propc.valueToCode(this, 'RADIUS', Blockly.propc.ORDER_NONE);
+        var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+        var checkbox = this.getFieldValue('ck_fill');
+        var code;
+
         if (checkbox === 'TRUE') {
             code = 'oledc_fillCircle(';
         } else {
@@ -1107,8 +1313,9 @@ Blockly.propc.oled_draw_circle = function () {
         code += radius + ', ';
         code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")) ';
         code += ');';
+
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.oled_draw_line = {
@@ -1139,28 +1346,42 @@ Blockly.Blocks.oled_draw_line = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_draw_line = function () {
     // Ensure header file is included
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    }
 
-    var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
-    var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
-    var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
-    var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
-    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
-
-    var code = '';
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var x_one = Blockly.propc.valueToCode(this, "X_ONE", Blockly.propc.ORDER_NONE);
+        var y_one = Blockly.propc.valueToCode(this, "Y_ONE", Blockly.propc.ORDER_NONE);
+        var x_two = Blockly.propc.valueToCode(this, "X_TWO", Blockly.propc.ORDER_NONE);
+        var y_two = Blockly.propc.valueToCode(this, "Y_TWO", Blockly.propc.ORDER_NONE);
+        var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+        var code = '';
         code += 'oledc_drawLine(' + x_one + ', ' + y_one + ', ' + x_two + ', ' + y_two + ', ';
         code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.oled_draw_pixel = {
@@ -1181,25 +1402,38 @@ Blockly.Blocks.oled_draw_pixel = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_draw_pixel = function () {
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    }
 
-    var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
-    var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
-    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
-
-    var code = '';
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var point_x = Blockly.propc.valueToCode(this, 'X_AXIS', Blockly.propc.ORDER_ATOMIC);
+        var point_y = Blockly.propc.valueToCode(this, 'Y_AXIS', Blockly.propc.ORDER_ATOMIC);
+        var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+        var code = '';
         code += 'oledc_drawPixel(' + point_x + ', ' + point_y + ', ';
         code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.oled_draw_triangle = {
@@ -1247,26 +1481,39 @@ Blockly.Blocks.oled_draw_triangle = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_draw_triangle = function () {
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    }
 
-    var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
-    var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
-    var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
-    var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
-    var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
-    var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
-    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
-
-    var checkbox = this.getFieldValue('ck_fill');
-    var code;
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var point_x0 = Blockly.propc.valueToCode(this, 'POINT_X0', Blockly.propc.ORDER_NONE);
+        var point_y0 = Blockly.propc.valueToCode(this, 'POINT_Y0', Blockly.propc.ORDER_NONE);
+        var point_x1 = Blockly.propc.valueToCode(this, 'POINT_X1', Blockly.propc.ORDER_NONE);
+        var point_y1 = Blockly.propc.valueToCode(this, 'POINT_Y1', Blockly.propc.ORDER_NONE);
+        var point_x2 = Blockly.propc.valueToCode(this, 'POINT_X2', Blockly.propc.ORDER_NONE);
+        var point_y2 = Blockly.propc.valueToCode(this, 'POINT_Y2', Blockly.propc.ORDER_NONE);
+        var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+        var checkbox = this.getFieldValue('ck_fill');
+        var code;
         if (checkbox === 'TRUE') {
             code = 'oledc_fillTriangle(';
         } else {
@@ -1277,8 +1524,8 @@ Blockly.propc.oled_draw_triangle = function () {
         code += point_x1 + ', ' + point_y1 + ', ';
         code += point_x2 + ', ' + point_y2 + ', ';
         code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));';
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.oled_draw_rectangle = {
@@ -1319,26 +1566,38 @@ Blockly.Blocks.oled_draw_rectangle = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_draw_rectangle = function () {
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    }
 
-    var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
-    var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
-    var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
-    var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
-    var corners = Blockly.propc.valueToCode(this, 'RECT_ROUND', Blockly.propc.ORDER_NONE);
-    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
-
-    var checkbox = this.getFieldValue('ck_fill');
-    var code;
-
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var point_x = Blockly.propc.valueToCode(this, 'POINT_X', Blockly.propc.ORDER_NONE);
+        var point_y = Blockly.propc.valueToCode(this, 'POINT_Y', Blockly.propc.ORDER_NONE);
+        var width = Blockly.propc.valueToCode(this, 'RECT_WIDTH', Blockly.propc.ORDER_NONE);
+        var height = Blockly.propc.valueToCode(this, 'RECT_HEIGHT', Blockly.propc.ORDER_NONE);
+        var corners = Blockly.propc.valueToCode(this, 'RECT_ROUND', Blockly.propc.ORDER_NONE);
+        var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+        var checkbox = this.getFieldValue('ck_fill');
+        var code;
+
         if (corners === '0') {
             if (checkbox === 'TRUE') {
                 code = 'oledc_fillRect(';
@@ -1356,8 +1615,8 @@ Blockly.propc.oled_draw_rectangle = function () {
             code += point_x + ', ' + point_y + ', ' + width + ', ' + height + ', ' + corners + ', ';
         }
         code += 'oledc_color565(get8bitColor(' + color + ', "RED"), get8bitColor(' + color + ', "GREEN"), get8bitColor(' + color + ', "BLUE")));\n';
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.oled_text_size = {
@@ -1372,23 +1631,33 @@ Blockly.Blocks.oled_text_size = {
                 .appendField(new Blockly.FieldDropdown([["sans", "FONT_SANS"], ["serif", "FONT_SERIF"], ["script", "FONT_SCRIPT"], ["bubble", "FONT_BUBBLE"]]), "font_select");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_text_size = function () {
-    var size = this.getFieldValue('size_select');
-    var font = this.getFieldValue('font_select');
-
-    var code = '';
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
-        // TODO: Update constants when new oledc library is published
+        var size = this.getFieldValue('size_select');
+        var font = this.getFieldValue('font_select');
+
+        var code = '';
         code += 'oledc_setTextSize(' + size + ');\n';
         code += 'oledc_setTextFont(' + font + ');\n';
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.oled_text_color = {
@@ -1405,20 +1674,33 @@ Blockly.Blocks.oled_text_color = {
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_text_color = function () {
-    Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["colormath"] = '#include "colormath.h"';
+    }
 
-    var font_color = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
-    var background_color = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
-
-    var code = '';
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
-        code += '//Missing OLED initialize block\n';
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var font_color = Blockly.propc.valueToCode(this, 'FONT_COLOR', Blockly.propc.ORDER_NONE);
+        var background_color = Blockly.propc.valueToCode(this, 'BACKGROUND_COLOR', Blockly.propc.ORDER_NONE);
+
+        var code = '';
         code += 'oledc_setTextColor(';
 
         //  TO DO: Try this - it's shorter but slightly slower:
@@ -1426,8 +1708,8 @@ Blockly.propc.oled_text_color = function () {
 
         code += 'oledc_color565(get8bitColor(' + font_color + ', "RED"), get8bitColor(' + font_color + ', "GREEN"), get8bitColor(' + font_color + ', "BLUE")), ';
         code += 'oledc_color565(get8bitColor(' + background_color + ', "RED"), get8bitColor(' + background_color + ', "GREEN"), get8bitColor(' + background_color + ', "BLUE")));';
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.oled_get_max_height = {
@@ -1445,7 +1727,8 @@ Blockly.Blocks.oled_get_max_height = {
 };
 
 Blockly.propc.oled_get_max_height = function () {
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
         return ['0', Blockly.propc.ORDER_NONE];
     } else {
@@ -1468,7 +1751,8 @@ Blockly.Blocks.oled_get_max_width = {
 };
 
 Blockly.propc.oled_get_max_width = function () {
-    if (Blockly.propc.setups_["oled"] === undefined)
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
     {
         return ['0', Blockly.propc.ORDER_NONE];
     } else {
@@ -1476,8 +1760,6 @@ Blockly.propc.oled_get_max_width = function () {
     }
 };
 
-// This block is holding a commented out example of how to pass
-// values to the block it is connected to.
 Blockly.Blocks.oled_set_cursor = {
     helpUrl: Blockly.MSG_OLED_HELPURL,
     init: function () {
@@ -1492,18 +1774,29 @@ Blockly.Blocks.oled_set_cursor = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_set_cursor = function () {
-
-    // Get user input
-    var x = Blockly.propc.valueToCode(this, 'X_POS', Blockly.propc.ORDER_NONE);
-    var y = Blockly.propc.valueToCode(this, 'Y_POS', Blockly.propc.ORDER_NONE);
-
-    if (Blockly.propc.setups_["oled"] === undefined) {
-        return '//Missing OLED initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
+    {
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        // Get user input
+        var x = Blockly.propc.valueToCode(this, 'X_POS', Blockly.propc.ORDER_NONE);
+        var y = Blockly.propc.valueToCode(this, 'Y_POS', Blockly.propc.ORDER_NONE);
+
         return 'oledc_setCursor(' + x + ', ' + y + ',0);';
     }
 
@@ -1521,15 +1814,26 @@ Blockly.Blocks.oled_print_text = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_print_text = function () {
-    var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
-
-    if (Blockly.propc.setups_["oled"] === undefined) {
-        return '//Missing OLED initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
+    {
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var msg = Blockly.propc.valueToCode(this, 'MESSAGE', Blockly.propc.ORDER_NONE);
         return 'oledc_drawText(' + msg + ');';
     }
 };
@@ -1547,16 +1851,27 @@ Blockly.Blocks.oled_print_number = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an OLED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.oled_print_number = function () {
-    var num = Blockly.propc.valueToCode(this, 'NUMIN', Blockly.propc.ORDER_NONE);
-    var type = this.getFieldValue('type');
-
-    if (Blockly.propc.setups_["oled"] === undefined) {
-        return '//Missing OLED initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
+    {
+        return '// ERROR: OLED is not initialized!\n';
     } else {
+        var num = Blockly.propc.valueToCode(this, 'NUMIN', Blockly.propc.ORDER_NONE);
+        var type = this.getFieldValue('type');
         return 'oledc_drawNumber(' + num + ', ' + type + ');';
     }
 };
@@ -1581,18 +1896,19 @@ Blockly.Blocks.ws2812b_init = {
 };
 
 Blockly.propc.ws2812b_init = function () {
-    var pin = this.getFieldValue('PIN');
-    var num = window.parseInt(this.getFieldValue('LEDNUM'));
+    if (!this.disabled) {
+        var pin = this.getFieldValue('PIN');
+        var num = window.parseInt(this.getFieldValue('LEDNUM'));
 
-    if (num < 1)
-        num = 1;
-    if (num > 1500)
-        num = 1500;
+        if (num < 1)
+            num = 1;
+        if (num > 1500)
+            num = 1500;
 
-    Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"\n\n#define LED_PIN ' + pin + '\n#define LED_COUNT ' + num + '\n';
-    Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *__ws2812b;\nint RGBleds[' + num + '];\n';
-    Blockly.propc.setups_["ws2812b_init"] = '__ws2812b = ws2812b_open();\n';
-
+        Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"\n\n#define LED_PIN ' + pin + '\n#define LED_COUNT ' + num + '\n';
+        Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *__ws2812b;\nint RGBleds[' + num + '];\n';
+        Blockly.propc.setups_["ws2812b_init"] = '__ws2812b = ws2812b_open();\n';
+    }
     return '';
 };
 
@@ -1610,21 +1926,33 @@ Blockly.Blocks.ws2812b_set = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('RGB-LED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.ws2812b_set = function () {
-    var led = Blockly.propc.valueToCode(this, 'LED', Blockly.propc.ORDER_NONE);
-    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
-
-    var code = '';
-    if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
-        code += '//Missing RGB-LED initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('RGB-LED initialize') === -1)
+    {
+        return '// ERROR: RGB-LED is not initialized!\n';
     } else {
+        var led = Blockly.propc.valueToCode(this, 'LED', Blockly.propc.ORDER_NONE);
+        var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
+
+        var code = '';
         code += 'if(' + led + ' > 0 && ' + led + ' <= LED_COUNT) {';
         code += 'RGBleds[' + led + ' - 1] = ' + color + ';}';
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.ws2812b_set_multiple = {
@@ -1644,28 +1972,41 @@ Blockly.Blocks.ws2812b_set_multiple = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('RGB-LED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.ws2812b_set_multiple = function () {
-    var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE);
-    var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE);
-    var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
-
-    var code = '';
-    if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
-        code += '//Missing RGB-LED initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('RGB-LED initialize') === -1)
+    {
+        return '// ERROR: RGB-LED is not initialized!\n';
     } else {
-        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-        Blockly.propc.methods_["constrain_function"] = setup_code;
-        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
+        var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE);
+        var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE);
+        var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
+        var code = '';
+        if (!this.disabled) {
+            var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
+            setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+            setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+            Blockly.propc.methods_["constrain_function"] = setup_code;
+            Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
+        }
         code += 'for(int __ldx = ' + start + '; __ldx <= ' + end + '; __ldx++) {';
         code += 'RGBleds[constrain(__ldx, 1, LED_COUNT) - 1] = ' + color + ';}';
+        return code;
     }
-    return code;
 };
 
 Blockly.Blocks.ws2812b_update = {
@@ -1678,12 +2019,24 @@ Blockly.Blocks.ws2812b_update = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('RGB-LED initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
 Blockly.propc.ws2812b_update = function () {
-    if (Blockly.propc.setups_["ws2812b_init"] === undefined) {
-        return '//Missing RGB-LED initialize block\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('RGB-LED initialize') === -1)
+    {
+        return '// ERROR: RGB-LED is not initialized!\n';
     } else {
         return 'ws2812_set(__ws2812b, LED_PIN, RGBleds, LED_COUNT);\n';
     }
@@ -1732,29 +2085,30 @@ Blockly.Blocks.wx_init = {
 };
 
 Blockly.propc.wx_init = function () {
-    var pin_do = this.getFieldValue('DO');
-    var pin_di = this.getFieldValue('DI');
-    if (pin_do === '31')
-        pin_di = '30';
-    var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
-    var title = this.getFieldValue('TITLE');
-    var mode = this.getFieldValue('MODE');
-    //if(pin_do === '31' && pin_di === '30' && mode === 'USB_PGM') mode = 'WX_ALL_COM';
-    var code = '';
-    code += 'wifi_start(' + pin_do + ', ' + pin_di + ', 115200, ' + mode + ');\n';
-    code += 'wifi_setBuffer(__wxBffr, sizeof(__wxBffr));\n';
-    code += '__wsId = wifi_listen(WS, "/ws/a");\n';
-    code += 'while(!__wsHandle) {\n  wifi_poll(&__wxEvent, &__wxId, &__wxHandle);\n';
-    code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}';
+    if (!this.diabled) {
+        var pin_do = this.getFieldValue('DO');
+        var pin_di = this.getFieldValue('DI');
+        if (pin_do === '31')
+            pin_di = '30';
+        var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
+        var title = this.getFieldValue('TITLE');
+        var mode = this.getFieldValue('MODE');
+        //if(pin_do === '31' && pin_di === '30' && mode === 'USB_PGM') mode = 'WX_ALL_COM';
+        var code = '';
+        code += 'wifi_start(' + pin_do + ', ' + pin_di + ', 115200, ' + mode + ');\n';
+        code += 'wifi_setBuffer(__wxBffr, sizeof(__wxBffr));\n';
+        code += '__wsId = wifi_listen(WS, "/ws/a");\n';
+        code += 'while(!__wsHandle) {\n  wifi_poll(&__wxEvent, &__wxId, &__wxHandle);\n';
+        code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}';
 
-    var vars = '';
-    vars += 'int __wxEvent, __wxId, __wxHandle, __wsId, __wv[15], __wsHandle = 0;\n';
-    vars += 'char __wxBffr[136];\n';
+        var vars = '';
+        vars += 'int __wxEvent, __wxId, __wxHandle, __wsId, __wv[15], __wsHandle = 0;\n';
+        vars += 'char __wxBffr[136];\n';
 
-    Blockly.propc.definitions_["wx_def"] = '#include "wifi.h"';
-    Blockly.propc.global_vars_["wx_vars"] = vars;
-    Blockly.propc.setups_["wx_init"] = code;
-
+        Blockly.propc.definitions_["wx_def"] = '#include "wifi.h"';
+        Blockly.propc.global_vars_["wx_vars"] = vars;
+        Blockly.propc.setups_["wx_init"] = code;
+    }
     return '';
 };
 
@@ -1773,16 +2127,37 @@ Blockly.Blocks.wx_config_page = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Simple WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Simple WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('WX ') === 0) {
+                    warnTxt = 'WARNING: You cannot use Simple WX and\nAdvanced WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_config_page = function () {
-    var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
-    var title = this.getFieldValue('TITLE');
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1)
+    {
+        return '// ERROR: Simple WX is not initialized!\n';
+    } else {
+        var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
+        var title = this.getFieldValue('TITLE');
+        var code = 'wifi_print(WS, __wsHandle, "S,' + bkg + ',' + title + '");\n';
 
-    var code = 'wifi_print(WS, __wsHandle, "S,' + bkg + ',' + title + '");\n';
-
-    return code;
+        return code;
+    }
 };
 
 Blockly.Blocks.wx_set_widget = {
@@ -1822,6 +2197,22 @@ Blockly.Blocks.wx_set_widget = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Simple WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Simple WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('WX ') === 0) {
+                    warnTxt = 'WARNING: You cannot use Simple WX and\nAdvanced WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -1851,7 +2242,6 @@ Blockly.Blocks.wx_set_widget = {
         if (details['TYPE'] === undefined) {
             type = this.getFieldValue('TYPE');
         }
-
         var min = details['MIN'];
         if (details['MIN'] === undefined) {
             min = this.getFieldValue('MIN');
@@ -1868,7 +2258,6 @@ Blockly.Blocks.wx_set_widget = {
         if (details['INITIAL'] === undefined) {
             initial = this.getFieldValue('INITIAL');
         }
-
         if (this.getInput('SET_2') !== undefined) {
             this.removeInput('SET_2');
         }
@@ -1934,31 +2323,32 @@ Blockly.Blocks.wx_set_widget = {
 };
 
 Blockly.propc.wx_set_widget = function () {
-    var widget = this.getFieldValue('WIDGET');
-    var label = this.getFieldValue('LABEL');
-    var type = this.getFieldValue('TYPE');
-    var color = this.getFieldValue('COLOR').substr(1).toUpperCase();
-    var min = window.parseInt(this.getFieldValue('MIN') || '0');
-    var max = window.parseInt(this.getFieldValue('MAX') || '10');
-    var initial;
-    if (type === '8') {
-        initial = (window.parseInt((this.getFieldValue('INITIAL') || '#FFFFFF').substr(1), 16)).toString(10);
-    } else if (this.getFieldValue('INITIAL') === 'on') {
-        initial = max;
-    } else if (this.getFieldValue('INITIAL') === 'off') {
-        initial = min;
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1)
+    {
+        return '// ERROR: Simple WX is not initialized!\n';
     } else {
-        initial = (window.parseInt(this.getFieldValue('INITIAL') || '5')).toString(10);
-    }
+        var widget = this.getFieldValue('WIDGET');
+        var label = this.getFieldValue('LABEL');
+        var type = this.getFieldValue('TYPE');
+        var color = this.getFieldValue('COLOR').substr(1).toUpperCase();
+        var min = window.parseInt(this.getFieldValue('MIN') || '0');
+        var max = window.parseInt(this.getFieldValue('MAX') || '10');
+        var initial;
+        if (type === '8') {
+            initial = (window.parseInt((this.getFieldValue('INITIAL') || '#FFFFFF').substr(1), 16)).toString(10);
+        } else if (this.getFieldValue('INITIAL') === 'on') {
+            initial = max;
+        } else if (this.getFieldValue('INITIAL') === 'off') {
+            initial = min;
+        } else {
+            initial = (window.parseInt(this.getFieldValue('INITIAL') || '5')).toString(10);
+        }
 
-    var code = '';
-    code += 'wifi_print(WS, __wsHandle, "W,' + widget + ',' + type + ',' + label + ',';
-    code += min + ',' + max + ',' + initial + ',' + color + '");\n';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        var code = '';
+        code += 'wifi_print(WS, __wsHandle, "W,' + widget + ',' + type + ',' + label + ',';
+        code += min + ',' + max + ',' + initial + ',' + color + '");\n';
         return code;
-    } else {
-        return '// Missing Simple WX initialize block!\n';
     }
 };
 
@@ -1976,22 +2366,38 @@ Blockly.Blocks.wx_send_widget = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Simple WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Simple WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('WX ') === 0) {
+                    warnTxt = 'WARNING: You cannot use Simple WX and\nAdvanced WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_send_widget = function () {
-    var num = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE);
-    var widget = this.getFieldValue('WIDGET');
-    var type = this.getFieldValue('TYPE');
-
-    var code = 'wifi_print(WS, __wsHandle, "D,' + widget + ',%d", ' + num + ');\n';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
-        return code;
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1)
+    {
+        return '// ERROR: Simple WX is not initialized!\n';
     } else {
-        return '// Missing Simple WX initialize block!\n';
-    }
+        var num = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE);
+        var widget = this.getFieldValue('WIDGET');
+        var type = this.getFieldValue('TYPE');
+        var code = 'wifi_print(WS, __wsHandle, "D,' + widget + ',%d", ' + num + ');\n';
 
+        return code;
+    }
 };
 
 Blockly.Blocks.wx_read_widgets = {
@@ -2004,26 +2410,43 @@ Blockly.Blocks.wx_read_widgets = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Simple WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Simple WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('WX ') === 0) {
+                    warnTxt = 'WARNING: You cannot use Simple WX and\nAdvanced WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_read_widgets = function () {
-    var code = '';
-    code += 'wifi_print(WS, __wsHandle, "U,0");\n__wv[0] = 0;\n';
-    code += 'while(__wv[0] != \'V\') {  __wv[0]++;\n  wifi_poll(&__wxEvent, &__wxId,';
-    code += '&__wxHandle);\n  if(__wxEvent == \'W\' && __wxId == __wsId)';
-    code += '__wsHandle = __wxHandle;\n   if(__wxEvent == \'D\') ';
-    code += 'wifi_scan(WS, __wxHandle, "%c%d%d%d%d%d%d%d%d%d%d%d%d%d%d", ';
-    code += '&__wv[0], &__wv[1], &__wv[2], &__wv[3], &__wv[4], &__wv[5], &__wv[6], ';
-    code += '&__wv[7], &__wv[8], &__wv[9], &__wv[10], &__wv[11], &__wv[12], &__wv[13], &__wv[14]);\n';
-    code += 'if(__wxEvent == \'X\') {__wsHandle = 0;\nwhile (!__wsHandle)';
-    code += '{wifi_poll( & __wxEvent, & __wxId, & __wxHandle);\nif (__wxEvent == \'W\' ';
-    code += '&& __wxId == __wsId) __wsHandle = __wxHandle;}break;}}';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
-        return code;
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1)
+    {
+        return '// ERROR: Simple WX is not initialized!\n';
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        var code = '';
+        code += 'wifi_print(WS, __wsHandle, "U,0");\n__wv[0] = 0;\n';
+        code += 'while(__wv[0] != \'V\') {  __wv[0]++;\n  wifi_poll(&__wxEvent, &__wxId,';
+        code += '&__wxHandle);\n  if(__wxEvent == \'W\' && __wxId == __wsId)';
+        code += '__wsHandle = __wxHandle;\n   if(__wxEvent == \'D\') ';
+        code += 'wifi_scan(WS, __wxHandle, "%c%d%d%d%d%d%d%d%d%d%d%d%d%d%d", ';
+        code += '&__wv[0], &__wv[1], &__wv[2], &__wv[3], &__wv[4], &__wv[5], &__wv[6], ';
+        code += '&__wv[7], &__wv[8], &__wv[9], &__wv[10], &__wv[11], &__wv[12], &__wv[13], &__wv[14]);\n';
+        code += 'if(__wxEvent == \'X\') {__wsHandle = 0;\nwhile (!__wsHandle)';
+        code += '{wifi_poll( & __wxEvent, & __wxId, & __wxHandle);\nif (__wxEvent == \'W\' ';
+        code += '&& __wxId == __wsId) __wsHandle = __wxHandle;}break;}}';
+        return code;
     }
 };
 
@@ -2039,16 +2462,33 @@ Blockly.Blocks.wx_get_widget = {
         this.setOutput(true, "Number");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Simple WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Simple WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('WX ') === 0) {
+                    warnTxt = 'WARNING: You cannot use Simple WX and\nAdvanced WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_get_widget = function () {
-    var widget = this.getFieldValue('WIDGET');
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
-        return ['__wv[' + widget + ']', Blockly.propc.ORDER_ATOMIC];
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1)
+    {
+        return '// ERROR: Simple WX is not initialized!\n';
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        var widget = this.getFieldValue('WIDGET');
+        return ['__wv[' + widget + ']', Blockly.propc.ORDER_ATOMIC];
     }
 
 };
@@ -2063,15 +2503,32 @@ Blockly.Blocks.wx_evt_connected = {
         this.setOutput(true, "Number");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Simple WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Simple WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('WX ') === 0) {
+                    warnTxt = 'WARNING: You cannot use Simple WX and\nAdvanced WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_evt_connected = function () {
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
-        return ['(__wxEvent != \'X\')', Blockly.propc.ORDER_ATOMIC];
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1)
+    {
+        return '// ERROR: Simple WX is not initialized!\n';
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return ['(__wxEvent != \'X\')', Blockly.propc.ORDER_ATOMIC];
     }
 };
 
@@ -2084,18 +2541,35 @@ Blockly.Blocks.wx_reconnect = {
                 .appendField("Simple WX reconnect");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Simple WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Simple WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('WX ') === 0) {
+                    warnTxt = 'WARNING: You cannot use Simple WX and\nAdvanced WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_reconnect = function () {
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1)
+    {
+        return '// ERROR: Simple WX is not initialized!\n';
+    } else {
         var code = '__wsId = wifi_listen(WS, "/ws/a"); __wsHandle = 0;\n';
         code += 'while(!__wsHandle) {\n  wifi_poll(&__wxEvent, &__wxId, &__wxHandle);\n';
         code += '  if(__wxEvent == \'W\' && __wxId == __wsId)  __wsHandle = __wxHandle;\n}';
         return code;
-    } else {
-        return '// Missing Simple WX initialize block!\n';
     }
 };
 
@@ -2123,6 +2597,22 @@ Blockly.Blocks.wx_init_adv = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
+        this.setWarningText(null);
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -2143,19 +2633,20 @@ Blockly.Blocks.wx_init_adv = {
 };
 
 Blockly.propc.wx_init_adv = function () {
-    var pin_do = this.getFieldValue('DO');
-    var pin_di = this.getFieldValue('DI');
-    if (pin_do === '31')
-        pin_di = '30';
-    var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
-    var title = this.getFieldValue('TITLE');
-    var mode = this.getFieldValue('MODE');
+    if (!this.disabled) {
+        var pin_do = this.getFieldValue('DO');
+        var pin_di = this.getFieldValue('DI');
+        if (pin_do === '31')
+            pin_di = '30';
+        var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
+        var title = this.getFieldValue('TITLE');
+        var mode = this.getFieldValue('MODE');
 
-    var code = 'wifi_start(' + pin_do + ', ' + pin_di + ', 115200, ' + mode + ');\n';
+        var code = 'wifi_start(' + pin_do + ', ' + pin_di + ', 115200, ' + mode + ');\n';
 
-    Blockly.propc.definitions_["wx_def"] = '#include "wifi.h"';
-    Blockly.propc.setups_["wx_init"] = code;
-
+        Blockly.propc.definitions_["wx_def"] = '#include "wifi.h"';
+        Blockly.propc.setups_["wx_init"] = code;
+    }
     return '';
 };
 
@@ -2180,6 +2671,7 @@ Blockly.Blocks.wx_scan_multiple = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['wx_scan_dec', 'wx_scan_char']));
+        this.setWarningText(null);
     },
     mutationToDom: function (workspace) {
         // Create XML to represent menu options.
@@ -2288,10 +2780,21 @@ Blockly.Blocks.wx_scan_multiple = {
         }
     },
     onchange: function () {
-        if (this.workspace && this.optionList_.length < 1) {
-            this.setWarningText('WX scan must have at least one search term.');
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
         } else {
-            this.setWarningText(null);
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            if (this.workspace && this.optionList_.length < 1) {
+                warnTxt = 'WX scan must have at least one search term.';
+            }
+            this.setWarningText(warnTxt);
         }
     },
     getVars: function () {
@@ -2349,32 +2852,32 @@ Blockly.Blocks.wx_scan_char = {
 };
 
 Blockly.propc.wx_scan_multiple = function () {
-    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
-    var conn = this.getFieldValue('CONNECTION');
-    var start = this.getFieldValue('START');
-    start.replace(/['"]+/g, '');
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
+        var conn = this.getFieldValue('CONNECTION');
+        var start = this.getFieldValue('START').replace(/'/g, '\\\'').replace(/"/g, '\\"');
 
-    if (conn !== 'POST')
-        start = '';
+        if (conn !== 'POST')
+            start = '';
 
-    var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start;
-    var varList = '';
-    var i = 0;
-    while (Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE)) {
-        if (this.getFieldValue('TYPE' + i).includes('integer')) {
-            code += '%d';
-        } else {
-            code += '%c';
+        var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start;
+        var varList = '';
+        var i = 0;
+        while (Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE)) {
+            if (this.getFieldValue('TYPE' + i).includes('integer')) {
+                code += '%d';
+            } else {
+                code += '%c';
+            }
+            varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+            i++;
         }
-        varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
-        i++;
-    }
-    code += '"' + varList + ');\n';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        code += '"' + varList + ');\n';
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -2402,6 +2905,7 @@ Blockly.Blocks.wx_print_multiple = {
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['wx_print_dec', 'wx_print_char', 'wx_print_str']));
         this.optionList_ = ['str', 'dec'];
+        this.setWarningText(null);
     },
     mutationToDom: function (workspace) {
         // Create XML to represent menu options.
@@ -2415,12 +2919,18 @@ Blockly.Blocks.wx_print_multiple = {
         this.optionList_ = value;
         for (var i = 0; i < this.optionList_.length; i++) {
             var label = 'integer';
-            if (this.optionList_[i] === 'str')
+            var chk = 'Number'
+            if (this.optionList_[i] === 'str') {
                 label = 'string';
-            if (this.optionList_[i] === 'char')
+                chk = 'String';
+            }
+            if (this.optionList_[i] === 'char') {
                 label = 'character';
+                chk = 'String';
+            }
             this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
+                    .setCheck(chk)
                     .appendField(label, 'TYPE' + i);
         }
     },
@@ -2500,10 +3010,21 @@ Blockly.Blocks.wx_print_multiple = {
         }
     },
     onchange: function () {
-        if (this.workspace && this.optionList_.length < 1) {
-            this.setWarningText('WX print must have at least one term.');
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
         } else {
-            this.setWarningText(null);
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            if (this.workspace && this.optionList_.length < 1) {
+                warnTxt = 'WX scan must have at least one search term.';
+            }
+            this.setWarningText(warnTxt);
         }
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
             this.removeInput('PRINTa');
@@ -2564,33 +3085,35 @@ Blockly.Blocks.wx_print_char = {
 };
 
 Blockly.propc.wx_print_multiple = function () {
-    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
-    var conn = this.getFieldValue('CONNECTION');
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
+        var conn = this.getFieldValue('CONNECTION');
 
-    var code = 'wifi_print(' + conn + ', ' + handle + ', "';
-    var varList = '';
-    var i = 0;
-    var orIt = '';
-    while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
-        if (this.getFieldValue('TYPE' + i).includes('integer')) {
-            code += '%d';
-            orIt = '0';
-        } else if (this.getFieldValue('TYPE' + i).includes('string')) {
-            code += '%s';
-            orIt = '" "';
-        } else {
-            code += '%c';
-            code = '32';
+        var code = 'wifi_print(' + conn + ', ' + handle + ', "';
+        var varList = '';
+        var i = 0;
+        var orIt = '';
+        while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
+            if (this.getFieldValue('TYPE' + i).includes('integer')) {
+                code += '%d';
+                orIt = '0';
+            } else if (this.getFieldValue('TYPE' + i).includes('string')) {
+                code += '%s';
+                orIt = '" "';
+            } else {
+                code += '%c';
+                code = '32';
+            }
+            varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+            i++;
         }
-        varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
-        i++;
-    }
-    code += '"' + varList + ');\n';
+        code += '"' + varList + ');\n';
 
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -2636,29 +3159,46 @@ Blockly.Blocks.wx_scan_string = {
             this.setFieldValue(newName, 'HANDLE');
         if (Blockly.Names.equals(oldName, this.getFieldValue('VARNAME')))
             this.setFieldValue(newName, 'VARNAME');
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_scan_string = function () {
-    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
-    var conn = this.getFieldValue('CONNECTION');
-    var start = this.getFieldValue('START');
-    start.replace(/['"]+/g, '');
-    var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VARNAME'), Blockly.Variables.NAME_TYPE);
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
+        var conn = this.getFieldValue('CONNECTION');
+        var start = this.getFieldValue('START').replace(/'/g, '\\\'').replace(/"/g, '\\"');
+        var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VARNAME'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.vartype_[store] = 'char *';
+        Blockly.propc.vartype_[store] = 'char *';
 
-    if (conn !== 'POST')
-        start = '';
+        if (conn !== 'POST')
+            start = '';
 
-    var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start + '%s", &' + store + ');\n';
+        var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start + '%s", &' + store + ');\n';
 
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
-};
+}
+;
 
 Blockly.Blocks.wx_send_string = {
     helpUrl: Blockly.MSG_AWX_HELPURL,
@@ -2683,19 +3223,36 @@ Blockly.Blocks.wx_send_string = {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
             this.setFieldValue(newName, 'HANDLE');
         }
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_send_string = function () {
-    var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_NONE);
-    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_NONE);
+        var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
 
-    var code = 'wifi_send(' + handle + ', ' + data + ', sizeof(' + data + '));\n';
+        var code = 'wifi_send(' + handle + ', ' + data + ', sizeof(' + data + '));\n';
 
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -2730,23 +3287,39 @@ Blockly.Blocks.wx_receive_string = {
             this.setFieldValue(newName, 'BYTES');
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
             this.setFieldValue(newName, 'HANDLE');
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_receive_string = function () {
-    var data = Blockly.propc.variableDB_.getName(this.getFieldValue('DATA'), Blockly.Variables.NAME_TYPE);
-    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
-    var max = Blockly.propc.valueToCode(this, 'MAX', Blockly.propc.NONE) || '64';
-    var bytes = Blockly.propc.variableDB_.getName(this.getFieldValue('BYTES'), Blockly.Variables.NAME_TYPE);
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var data = Blockly.propc.variableDB_.getName(this.getFieldValue('DATA'), Blockly.Variables.NAME_TYPE);
+        var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
+        var max = Blockly.propc.valueToCode(this, 'MAX', Blockly.propc.NONE) || '64';
+        var bytes = Blockly.propc.variableDB_.getName(this.getFieldValue('BYTES'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.vartype_[data] = 'char *';
+        Blockly.propc.vartype_[data] = 'char *';
 
-    var code = bytes + ' = wifi_recv(' + handle + ', ' + data + ', ' + max + ');\n';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        var code = bytes + ' = wifi_recv(' + handle + ', ' + data + ', ' + max + ');\n';
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -2775,20 +3348,36 @@ Blockly.Blocks.wx_poll = {
             this.setFieldValue(newName, 'EVENT');
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE')))
             this.setFieldValue(newName, 'HANDLE');
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_poll = function () {
-    var id = Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE);
-    var event = Blockly.propc.variableDB_.getName(this.getFieldValue('EVENT'), Blockly.Variables.NAME_TYPE);
-    var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var id = Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE);
+        var event = Blockly.propc.variableDB_.getName(this.getFieldValue('EVENT'), Blockly.Variables.NAME_TYPE);
+        var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
 
-    var code = 'wifi_poll(&' + event + ', &' + id + ', &' + handle + ');\n';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        var code = 'wifi_poll(&' + event + ', &' + id + ', &' + handle + ');\n';
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -2866,26 +3455,42 @@ Blockly.Blocks.wx_listen = {
             this.setFieldValue(newName, 'ID3');
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID4')))
             this.setFieldValue(newName, 'ID4');
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_listen = function () {
-    var path = Blockly.propc.valueToCode(this, 'PATH', Blockly.propc.ORDER_NONE);
-    var protocol = this.getFieldValue('PROTOCOL');
-    var id = Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE);
-    var port = Blockly.propc.valueToCode(this, 'PORT', Blockly.propc.ORDER_NONE) || '80';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var path = Blockly.propc.valueToCode(this, 'PATH', Blockly.propc.ORDER_NONE);
+        var protocol = this.getFieldValue('PROTOCOL');
+        var id = Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE);
+        var port = Blockly.propc.valueToCode(this, 'PORT', Blockly.propc.ORDER_NONE) || '80';
 
-    var code = '';
-    if (protocol === 'TCP') {
-        code += id + ' = wifi_connect(' + path + ', ' + port + ');\n';
-    } else {
-        code += id + ' = wifi_listen(' + protocol + ', ' + path + ');\n';
-    }
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        var code = '';
+        if (protocol === 'TCP') {
+            code += id + ' = wifi_connect(' + path + ', ' + port + ');\n';
+        } else {
+            code += id + ' = wifi_listen(' + protocol + ', ' + path + ');\n';
+        }
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -2959,15 +3564,31 @@ Blockly.Blocks.wx_code = {
                             ['SSL handshake failed', '-28'],
                             ['SSL application invalid', '-61']]), 'CODE');
         this.setOutput(true, "Number");
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_code = function () {
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
         return [this.getFieldValue('CODE'), Blockly.propc.ORDER_NONE];
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -3022,27 +3643,42 @@ Blockly.Blocks.wx_mode = {
             this.setNextStatement(true, null);
             this.setOutput(false);
         }
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_mode = function () {
-    var mode = this.getFieldValue('MODE');
-    var action = this.getFieldValue('ACTION');
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var mode = this.getFieldValue('MODE');
+        var action = this.getFieldValue('ACTION');
+        var code;
 
-    var code;
-
-    if (action === 'CHECK') {
-        code = ['wifi_mode(CHECK)', Blockly.propc.ORDER_NONE];
-    } else if (mode === 'LEAVE') {
-        code = 'wifi_leave(' + mode + ');\n';
-    } else {
-        code = 'wifi_mode(' + mode + ');\n';
-    }
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        if (action === 'CHECK') {
+            code = ['wifi_mode(CHECK)', Blockly.propc.ORDER_NONE];
+        } else if (mode === 'LEAVE') {
+            code = 'wifi_leave(' + mode + ');\n';
+        } else {
+            code = 'wifi_mode(' + mode + ');\n';
+        }
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -3098,27 +3734,43 @@ Blockly.Blocks.wx_buffer = {
         if (Blockly.Names.equals(oldName, this.getFieldValue('BUFFER'))) {
             this.setFieldValue(newName, 'BUFFER');
         }
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_buffer = function () {
-    var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
-    var def = this.getFieldValue('DEFAULT');
-    var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
+        var def = this.getFieldValue('DEFAULT');
+        var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.vartype_[buffer] = 'char *';
+        Blockly.propc.vartype_[buffer] = 'char *';
 
-    var code = '';
-    if (def === "TRUE") {
-        code += 'wifi_bufferSize(' + size + ');\n';
-    } else {
-        code += 'wifi_setBuffer(' + buffer + ',' + size + ');\n';
-    }
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
+        var code = '';
+        if (def === "TRUE") {
+            code += 'wifi_bufferSize(' + size + ');\n';
+        } else {
+            code += 'wifi_setBuffer(' + buffer + ',' + size + ');\n';
+        }
         return code;
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -3165,16 +3817,31 @@ Blockly.Blocks.wx_disconnect = {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID'))) {
             this.setFieldValue(newName, 'ID');
         }
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_disconnect = function () {
-    var code = 'wifi_disconnect(' + Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE) + ');\n';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
-        return code;
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        return 'wifi_disconnect(' + Blockly.propc.variableDB_.getName(this.getFieldValue('ID'), Blockly.Variables.NAME_TYPE) + ');\n';
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -3190,22 +3857,40 @@ Blockly.Blocks.wx_ip = {
                 .appendField("IP address");
         this.setInputsInline(true);
         this.setOutput(true, "String");
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            for (var ik = 0; ik < allBlocks.length; ik++) {
+                if (allBlocks[ik].toString().indexOf('Simple WX') === 0) {
+                    warnTxt = 'WARNING: You cannot use Advanced WX and\nSimple WX blocks together in your project!';
+                }
+            }
+            this.setWarningText(warnTxt);
+        }
     }
 };
 
 Blockly.propc.wx_ip = function () {
-    var mode = this.getFieldValue('MODE');
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var mode = this.getFieldValue('MODE');
+        if (!this.disabled) {
+            var func = 'char* wifi_ip_string(int __mode) {int __ip[4]; __result = ';
+            func += 'wifi_ip(__mode, __ip); char ipStr[16]; if(__result = \'E\') ';
+            func += '{ipStr = "Error          \0"} else {sprint(ipStr, "%03d.%03d';
+            func += '.%03d.%03d", __ip[0], __ip[1], __ip[2], __ip[3]);} return ipStr;}';
 
-    var func = 'char* wifi_ip_string(int __mode) {int __ip[4]; __result = ';
-    func += 'wifi_ip(__mode, __ip); char ipStr[16]; if(__result = \'E\') ';
-    func += '{ipStr = "Error          \0"} else {sprint(ipStr, "%03d.%03d';
-    func += '.%03d.%03d", __ip[0], __ip[1], __ip[2], __ip[3]);} return ipStr;}';
-
-    if (Blockly.propc.definitions_["wx_def"] === '#include "wifi.h"') {
-        Blockly.propc.global_vars_['ip_address_func'] = func;
+            Blockly.propc.global_vars_['ip_address_func'] = func;
+        }
         return ['wifi_ip_string(' + mode + ')', Blockly.propc.ORDER_NONE];
     } else {
-        return '// Missing Simple WX initialize block!\n';
+        return '// ERROR: WX is not initialized!\n';
     }
 };
 
@@ -3220,7 +3905,7 @@ Blockly.Blocks.graph_output = {
         this.appendValueInput('PRINTa')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
-                .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABELa')
+                .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABELa')
                 .appendField('value');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
@@ -3241,7 +3926,7 @@ Blockly.Blocks.graph_output = {
         for (var i = 0; i < this.optionList_.length; i++) {
             this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
-                    .appendField(new Blockly.FieldTextInput(''), 'GRAPH_LABEL' + i)
+                    .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
                     .appendField('value');
         }
     },
@@ -3323,13 +4008,19 @@ Blockly.Blocks.graph_output = {
 
     },
     onchange: function () {
-        if (this.workspace && this.optionList_.length < 1) {
-            this.setWarningText('Graphing output must have at least one value.');
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('Graph initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Graph\ninitialize block at the beginning of your program!');
         } else {
-            if (this.optionList_.length > 10)
-                this.setWarningText('Graphing output only supports up to 10 values.');
-            else
-                this.setWarningText(null);
+            if (this.workspace && this.optionList_.length < 1) {
+                this.setWarningText('Graphing output must have at least one value.');
+            } else {
+                if (this.optionList_.length > 10)
+                    this.setWarningText('Graphing output only supports up to 10 values.');
+                else
+                    this.setWarningText(null);
+            }
         }
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
             this.removeInput('PRINTa');
@@ -3360,30 +4051,37 @@ Blockly.Blocks.graph_dec = {
 };
 
 Blockly.propc.graph_output = function () {
-    var handle = this.getFieldValue('HANDLE');
-    var conn = this.getFieldValue('CONNECTION');
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Graph initialize') > -1)
+    {
+        var handle = this.getFieldValue('HANDLE');
+        var conn = this.getFieldValue('CONNECTION');
 
-    var code = 'print("%u';
-    var varList = '';
-    var labelList = '';
-    var i = 0;
-    var orIt = '';
-    while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
-        code += ',%d';
-        varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || '0');
-        labelList += this.getFieldValue("GRAPH_LABEL" + i);
-        if (Blockly.propc.valueToCode(this, 'PRINT' + (i + 1), Blockly.propc.ORDER_NONE) && i < 9)
-            labelList += ',';
-        i++;
-        if (i > 10)
-            break;
+        var code = 'print("%u';
+        var varList = '';
+        var labelList = '';
+        var i = 0;
+        var orIt = '';
+        while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
+            code += ',%d';
+            varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || '0');
+            labelList += this.getFieldValue("GRAPH_LABEL" + i);
+            if (Blockly.propc.valueToCode(this, 'PRINT' + (i + 1), Blockly.propc.ORDER_NONE) && i < 9)
+                labelList += ',';
+            i++;
+            if (i > 10)
+                break;
+        }
+        code += '\\r", (CNT >> 16)' + varList + ');\n';
+
+        if (!this.disabled) {
+            Blockly.propc.serial_graphing_ = true;
+            Blockly.propc.definitions_['graphing_labels'] = '// GRAPH_LABELS_START:' + labelList + ':GRAPH_LABELS_END //';
+        }
+        return code;
+    } else {
+        return '// ERROR: Graphing is not initialized!';
     }
-    code += '\\r", (CNT >> 16)' + varList + ');\n';
-
-    Blockly.propc.serial_graphing_ = true;
-    Blockly.propc.definitions_['graphing_labels'] = '// GRAPH_LABELS_START:' + labelList + ':GRAPH_LABELS_END //';
-
-    return code;
 };
 
 Blockly.Blocks.graph_settings = {
@@ -3442,18 +4140,19 @@ Blockly.Blocks.graph_settings = {
 };
 
 Blockly.propc.graph_settings = function () {
-    var rate = this.getFieldValue('RATE');
-    var x_axis = this.getFieldValue('XAXIS') || '10';
-    var y_min = this.getFieldValue('YMIN') || '0';
-    var y_max = this.getFieldValue('YMAX') || '100';
+    if (!this.disabled) {
+        var rate = this.getFieldValue('RATE');
+        var x_axis = this.getFieldValue('XAXIS') || '10';
+        var y_min = this.getFieldValue('YMIN') || '0';
+        var y_max = this.getFieldValue('YMAX') || '100';
 
-    if (parseInt(x_axis) < 10) {
-        x_axis = '10';
+        if (parseInt(x_axis) < 10) {
+            x_axis = '10';
+        }
+
+        Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:100,' +
+                x_axis + ',S,' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
     }
-    
-    Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:100,' +
-            x_axis + ',S,' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
-
     return '';
 };
 

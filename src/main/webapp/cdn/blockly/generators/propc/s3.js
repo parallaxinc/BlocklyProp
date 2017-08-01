@@ -1555,9 +1555,9 @@ Blockly.Blocks.scribbler_serial_send_text = {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
                 .appendField("send text")
-                .appendField(quotes.newQuote_(this.RTL))
+                .appendField("\u201C")
                 .appendField(new Blockly.FieldTextInput(""), "MESSAGE_TEXT")
-                .appendField(quotes.newQuote_(this.LTR));
+                .appendField("\u201D");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
