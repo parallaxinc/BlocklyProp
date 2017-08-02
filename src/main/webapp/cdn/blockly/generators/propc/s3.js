@@ -410,7 +410,7 @@ Blockly.Blocks.scribbler_simple_light = {
                 ]), 'LIGHT_POSITION');
         this.setOutput(true, 'Number');
         this.setColour(colorPalette.getColor('input'));
-        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_LIGHT_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP);
     },
     checkForWas: function (state) {
@@ -1108,7 +1108,7 @@ Blockly.Blocks.light_sensor = {
                 ]), "LGHT_SENSOR_CHOICE");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-        this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_LIGHT_HELPURL);
         this.setTooltip(Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP);
     }
 };
