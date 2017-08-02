@@ -171,7 +171,7 @@ Blockly.Blocks.sound_impact_run = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.setInputsInline(true);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     }
 };
 
@@ -227,7 +227,7 @@ Blockly.Blocks.sound_impact_end = {
         this.appendDummyInput()
                 .appendField("Sound Impact close");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     onchange: function () {
@@ -260,7 +260,7 @@ Blockly.Blocks.colorpal_enable = {
         this.appendDummyInput()
                 .appendField("ColorPal initialize PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'IO_PIN');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.colorPalPin = this.getFieldValue('IO_PIN');
     },
@@ -305,7 +305,7 @@ Blockly.Blocks.colorpal_get_colors_raw = {
                 .appendField("B in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'B_STORAGE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.cp_pins = [];
         this.colorpalPins();
@@ -432,7 +432,7 @@ Blockly.Blocks.colorpal_get_colors = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'COLOR');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.cp_pins = [];
         this.colorpalPins();
@@ -564,7 +564,7 @@ Blockly.Blocks.fp_scanner_init = {
                 .appendField("TX")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -595,7 +595,7 @@ Blockly.Blocks.fp_scanner_add = {
                 .setCheck("Number")
                 .appendField("ID");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -870,7 +870,7 @@ Blockly.Blocks.MMA7455_init = {
 
         this.setInputsInline(false);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     }
 };
 
@@ -902,7 +902,7 @@ Blockly.Blocks.MMA7455_acceleration = {
 
         this.setInputsInline(false);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     },
     getVars: function () {
         return [this.getFieldValue('X_VAR'), this.getFieldValue('Y_VAR'), this.getFieldValue('Z_VAR')];
@@ -957,7 +957,7 @@ Blockly.Blocks.HMC5883L_init = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SDA");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -983,7 +983,7 @@ Blockly.Blocks.HMC5883L_read = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HEADING');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -1041,7 +1041,7 @@ Blockly.Blocks.lsm9ds1_init = {
 
         this.setInputsInline(false);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     }
 };
 
@@ -1069,7 +1069,7 @@ Blockly.Blocks.lsm9ds1_mag_calibrate = {
 
         this.setInputsInline(true);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     },
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
@@ -1108,7 +1108,7 @@ Blockly.Blocks.lsm9ds1_read = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'Z_VAR');
         this.setInputsInline(false);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     },
     getVars: function () {
         return [this.getFieldValue('X_VAR'), this.getFieldValue('Y_VAR'), this.getFieldValue('Z_VAR')];
@@ -1172,7 +1172,7 @@ Blockly.Blocks.lsm9ds1_tilt = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR2');
         this.setInputsInline(true);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -1282,7 +1282,7 @@ Blockly.Blocks.lsm9ds1_heading = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         this.setInputsInline(true);
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -1383,7 +1383,7 @@ Blockly.Blocks.GPS_init = {
                 .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"]]), "BAUD");
 
         this.setNextStatement(true, null);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
     }
 };
 
@@ -1789,7 +1789,7 @@ Blockly.Blocks.rfid_get = {
                 .appendField("RFID store reading in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER');
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -1839,7 +1839,7 @@ Blockly.Blocks.rfid_disable = {
                     ["enable", "ENABLE"]
                 ]), "ACTION");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     onchange: function () {
@@ -1884,7 +1884,7 @@ Blockly.Blocks.rfid_enable = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN_OUT");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1908,7 +1908,7 @@ Blockly.Blocks.rfid_close = {
         this.appendDummyInput()
                 .appendField("RFID close");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     onchange: function () {
@@ -1982,7 +1982,7 @@ Blockly.Blocks.keypad_initialize = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "P7")
                 .appendField("right");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.keypadPins_ = '0,1,2,3,4,5,6,7,';
         this.onchange();

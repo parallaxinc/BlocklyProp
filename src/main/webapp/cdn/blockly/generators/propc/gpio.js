@@ -39,7 +39,7 @@ Blockly.Blocks.make_pin = {
         }
         this.setTooltip(Blockly.MSG_MAKE_PIN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.appendDummyInput()
                 .appendField("make PIN")
@@ -70,7 +70,7 @@ Blockly.Blocks.make_pin_input = {
     init: function () {
         this.setTooltip(Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.appendDummyInput("")
                 .appendField("make PIN");
@@ -150,7 +150,7 @@ Blockly.Blocks.set_pins = {
     init: function () {
         this.setTooltip(Blockly.MSG_SET_PINS_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         var start_pin = [];
         for (var i = profile.default.contiguous_pins_start; i <= profile.default.contiguous_pins_end; i++) {
@@ -309,7 +309,7 @@ Blockly.Blocks.set_pins_binary = {
     init: function () {
         this.setTooltip(Blockly.MSG_SET_PINS_BINARY_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
 
         var start_pin = [];
@@ -367,7 +367,7 @@ Blockly.Blocks.base_freqout = {
                 .appendField("frequency (Hz)")
                 .setCheck('Number');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -450,7 +450,7 @@ Blockly.Blocks.pulse_out = {
                 .appendField("pulse length (" + "\u00B5" + "s)")
                 .setCheck("Number");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -504,7 +504,7 @@ Blockly.Blocks.eeprom_write = {
                 .appendField("to address");
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.onchange();
     },
@@ -559,7 +559,7 @@ Blockly.Blocks.eeprom_read = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVarType: function () {
@@ -632,7 +632,7 @@ Blockly.Blocks.servo_move = {
                 .appendField('R,0,180,0', 'RANGEVALS1');
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -659,7 +659,7 @@ Blockly.Blocks.servo_speed = {
                 .appendField("speed")
                 .setCheck("Number");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -686,7 +686,7 @@ Blockly.Blocks.servo_set_ramp = {
                 .setCheck('Number');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -748,7 +748,7 @@ Blockly.Blocks.ab_volt_out = {
                 .appendField("volt-100ths");
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -772,7 +772,7 @@ Blockly.Blocks.pwm_start = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("PWM initialize");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText('NOTE: The PWM initialize block is no longer\nneeded. It can be safely deleted.');
     }
@@ -799,7 +799,7 @@ Blockly.Blocks.pwm_set = {
                 .appendField("duty cycle (%)");
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -827,7 +827,7 @@ Blockly.Blocks.pwm_stop = {
         this.appendDummyInput()
                 .appendField("PWM stop");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -848,7 +848,7 @@ Blockly.Blocks.wav_play = {
                 .appendField(new Blockly.FieldTextInput('File_name'), 'FILENAME');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -894,7 +894,7 @@ Blockly.Blocks.wav_volume = {
                 .appendField('R,0,10,0', 'RANGEVALS1');
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -922,7 +922,7 @@ Blockly.Blocks.wav_stop = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("WAV stop");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -949,7 +949,7 @@ Blockly.Blocks.ab_drive_init = {
                 .appendField("initialize");
         this.appendDummyInput("PINS");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -1033,7 +1033,7 @@ Blockly.Blocks.ab_drive_ramping = {
                     ["100 ticks/s\u00B2 (sluggish)", "100"]
                 ]), "RAMPING");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
 
         var whichRobot = '';
@@ -1104,7 +1104,7 @@ Blockly.Blocks.ab_drive_goto = {
         this.getField('RANGEVALS0').setVisible(false);
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
 
         var whichRobot = '';
@@ -1177,7 +1177,7 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
                 .setCheck('Number');
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
 
         var whichRobot = '';
@@ -1246,7 +1246,7 @@ Blockly.Blocks.ab_drive_speed = {
         this.getField('RANGEVALS0').setVisible(false);
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
 
         var whichRobot = '';
@@ -1335,7 +1335,7 @@ Blockly.Blocks.ab_drive_stop = {
         this.appendDummyInput()
                 .appendField("Robot drive stop");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1573,7 +1573,7 @@ Blockly.Blocks.mcp320x_set_vref = {
                         Blockly.FieldTextInput.numberValidator), "VREF")
                 .appendField("volt 100ths");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };

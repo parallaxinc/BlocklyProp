@@ -89,7 +89,7 @@ Blockly.Blocks.variables_declare = {
                 .appendField(new Blockly.FieldDropdown([["int", "int"], ["float", "float"], ["char", "char"], ["unsigned int", "unsigned int"], ["signed char", "signed char"]]), "TYPE")
                 .appendField("value");
 
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     },
     getVars: function () {
@@ -113,7 +113,7 @@ Blockly.Blocks.variables_set = {
                 .appendField(Blockly.LANG_VARIABLES_SET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR')
                 .appendField('=');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     },
     getVarType: function () {
@@ -265,7 +265,7 @@ Blockly.Blocks.array_init = {
                         Blockly.FieldTextInput.numberValidator), 'NUM')
                 .appendField("elements");
 
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     }
 };
@@ -291,7 +291,7 @@ Blockly.Blocks.array_fill = {
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR')
                 .appendField("with values")
                 .appendField(new Blockly.FieldTextInput('10,20,30,40,50'), 'NUM');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     },
     onchange: function () {
@@ -396,7 +396,7 @@ Blockly.Blocks.array_set = {
                 .setCheck('Number')
                 .appendField('=');
         this.setInputsInline(true);
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     },
     onchange: function () {
@@ -472,7 +472,7 @@ Blockly.Blocks.array_clear = {
         this.appendDummyInput()
                 .appendField('array clear')
                 .appendField(new Blockly.FieldTextInput('list'), 'VAR');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     },
     onchange: function () {
