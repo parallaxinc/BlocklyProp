@@ -37,7 +37,7 @@ Blockly.Blocks.heb_toggle_led = {
                 .appendField('state')
                 .appendField(new Blockly.FieldDropdown([["on/high", "1"], ["off/low", "0"]]), "STATE");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -64,7 +64,7 @@ Blockly.Blocks.heb_toggle_led_open = {
                 .appendField('state')
                 .setCheck('Number');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -109,7 +109,7 @@ Blockly.Blocks.heb_set_led_rgb = {
                 .appendField('RGB LED set state of')
                 .appendField(new Blockly.FieldDropdown([["left LED", "L"], ["right LED", "R"], ["both LEDs", "B"]]), "SIDE")
                 .appendField('to');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -137,7 +137,7 @@ Blockly.Blocks.heb_print_numeric_var = {
         this.appendValueInput('VALUE')
                 .setCheck('Number')
                 .appendField("Display print number");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -163,7 +163,7 @@ Blockly.Blocks.heb_print_string_var = {
         this.appendValueInput('VALUE')
                 .setCheck('String')
                 .appendField("Display print text");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -185,7 +185,7 @@ Blockly.Blocks.heb_cursor_position_large = {
                 .appendField('Display set font size')
                 .appendField(new Blockly.FieldDropdown([["Large", "LARGE"], ["Small", "SMALL"]]), "SIZE");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -210,7 +210,7 @@ Blockly.Blocks.heb_cursor_position_small = {
                 .setCheck('Number')
                 .appendField('row');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -241,7 +241,7 @@ Blockly.Blocks.heb_oled_point = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -289,7 +289,7 @@ Blockly.Blocks.heb_oled_line = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -339,7 +339,7 @@ Blockly.Blocks.heb_oled_circle = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -396,7 +396,7 @@ Blockly.Blocks.heb_oled_box = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -463,7 +463,7 @@ Blockly.Blocks.heb_oled_triangle = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -501,7 +501,7 @@ Blockly.Blocks.heb_clear_screen = {
         this.appendDummyInput()
                 .appendField('Display clear screen');
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -520,7 +520,7 @@ Blockly.Blocks.heb_rotate = {
         this.appendDummyInput()
                 .appendField('Display rotate 180\u00B0');
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -540,7 +540,7 @@ Blockly.Blocks.heb_ir_send_signal = {
                 .setCheck('String')
                 .appendField('IR send text');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -563,7 +563,7 @@ Blockly.Blocks.heb_ir_read_signal = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER')
                 .appendField('length in')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'LENGTH');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
     },
@@ -598,7 +598,7 @@ Blockly.Blocks.heb_ir_clear_buffer = {
                 // @TODO : Should the title be something else? This might be confusing for beginners...
                 .appendField("IR clear buffer");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -617,7 +617,7 @@ Blockly.Blocks.heb_badge_eeprom_store = {
         this.appendValueInput('CONTACT')
                 .setCheck('String')
                 .appendField("EEPROM store contact");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -666,7 +666,7 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
         this.appendDummyInput()
                 .appendField('store in')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'BUFFER');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVarType: function () {
@@ -723,7 +723,7 @@ Blockly.Blocks.heb_erase_all_contacts = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("EEPROM erase all contacts");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -811,7 +811,7 @@ Blockly.Blocks.heb_text_to_speech_say = {
         this.appendValueInput('STRING')
                 .setCheck('String')
                 .appendField("TTS say");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -836,7 +836,7 @@ Blockly.Blocks.heb_text_to_speech_spell = {
         this.appendValueInput('STRING')
                 .setCheck('String')
                 .appendField("TTS spell");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };

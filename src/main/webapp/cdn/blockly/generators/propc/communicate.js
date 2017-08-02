@@ -45,7 +45,7 @@ Blockly.Blocks.console_print = {
                 .appendField("then a new line")
                 .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -83,7 +83,7 @@ Blockly.Blocks.console_print_variables = {
                 .appendField("then a new line")
                 .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -142,7 +142,7 @@ Blockly.Blocks.console_print_multiple = {
         this.appendDummyInput('NEWLINE')
                 .appendField("then a new line")
                 .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(false);
         this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
@@ -313,7 +313,7 @@ Blockly.Blocks.console_print_dec = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('decimal number');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -324,7 +324,7 @@ Blockly.Blocks.console_print_hex = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('hexadecimal number');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -335,7 +335,7 @@ Blockly.Blocks.console_print_bin = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('binary number');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -346,7 +346,7 @@ Blockly.Blocks.console_print_str = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('text');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -357,7 +357,7 @@ Blockly.Blocks.console_print_char = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('ASCII character');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -368,7 +368,7 @@ Blockly.Blocks.console_print_float = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('floating point number');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -425,7 +425,7 @@ Blockly.Blocks.console_scan_text = {
                 .appendField("Terminal receive text store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVarType: function () {
@@ -467,7 +467,7 @@ Blockly.Blocks.console_scan_number = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -508,7 +508,7 @@ Blockly.Blocks.console_newline = {
         this.appendDummyInput()
                 .appendField("Terminal new line");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -526,7 +526,7 @@ Blockly.Blocks.console_clear = {
         this.appendDummyInput()
                 .appendField("Terminal clear screen");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -551,7 +551,7 @@ Blockly.Blocks.console_move_to_position = {
                 .setCheck('Number');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -602,7 +602,7 @@ Blockly.Blocks.serial_open = {
                     this.sourceBlock_.setToOther(br);
                 }), "BAUD");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.otherBaud = false;
     },
@@ -664,7 +664,7 @@ Blockly.Blocks.serial_tx = {
         this.appendValueInput('VALUE')
                 .setCheck(null);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -717,7 +717,7 @@ Blockly.Blocks.serial_send_text = {
                 ]), 'TYPE');
         this.appendValueInput('VALUE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.stringTypeCheck();
@@ -782,7 +782,7 @@ Blockly.Blocks.serial_rx = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -842,7 +842,7 @@ Blockly.Blocks.serial_receive_text = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -921,7 +921,7 @@ Blockly.Blocks.serial_print_multiple = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
                 .appendField('decimal number');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(false);
         this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
@@ -1147,7 +1147,7 @@ Blockly.Blocks.shift_out = {
                 .appendField("CLK")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1177,7 +1177,7 @@ Blockly.Blocks.debug_lcd_init = {
                 .appendField(new Blockly.FieldDropdown([["2400", "2400"], ["9600", "9600"], ["19200", "19200"]]), "BAUD");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1213,7 +1213,7 @@ Blockly.Blocks.debug_lcd_music_note = {
                 .appendField("length")
                 .appendField(new Blockly.FieldDropdown([["whole (2 s)", "214"], ["half (1 s)", "213"], ["quarter (500 ms)", "212"], ["eigth (250 ms)", "211"], ["sixteenth (125 ms)", "210"], ["thirty-second (63 ms)", "209"], ["sixty-fourth (31 ms)", "208"]]), "LENGTH");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1257,7 +1257,7 @@ Blockly.Blocks.debug_lcd_print = {
                 .setCheck('String')
                 .appendField("LCD print text ");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1295,7 +1295,7 @@ Blockly.Blocks.debug_lcd_number = {
                 .appendField("as")
                 .appendField(new Blockly.FieldDropdown([['Decimal', 'DEC'], ['Hexadecimal', 'HEX'], ['Binary', 'BIN']]), "FORMAT");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1355,7 +1355,7 @@ Blockly.Blocks.debug_lcd_action = {
                     ["display on, cursor on", "24"],
                     ["display on, cursor on, blink", "25"]
                 ]), "ACTION");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1400,7 +1400,7 @@ Blockly.Blocks.debug_lcd_set_cursor = {
                 .setCheck('Number');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1449,7 +1449,7 @@ Blockly.Blocks.xbee_setup = {
                 .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([["9600", "9600"], ["2400", "2400"], ["4800", "4800"], ["19200", "19200"], ["57600", "57600"], ["115200", "115200"]]), "BAUD");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1484,7 +1484,7 @@ Blockly.Blocks.xbee_transmit = {
         this.appendValueInput('VALUE')
                 .setCheck(null);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.stringTypeCheck();
     },
@@ -1551,7 +1551,7 @@ Blockly.Blocks.xbee_receive = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1627,7 +1627,7 @@ Blockly.Blocks.xbee_print_multiple = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
                 .appendField('decimal number');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(false);
         this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
@@ -1722,7 +1722,7 @@ Blockly.Blocks.oled_initialize = {
                 .appendField("RES")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "RES");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1768,7 +1768,7 @@ Blockly.Blocks.oled_clear_screen = {
                 .appendField("OLED command")
                 .appendField(new Blockly.FieldDropdown([["clear screen", "CLS"], ["sleep", "SLEEP"], ["wake", "WAKE"], ["invert", "INV"]]), "CMD");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1834,7 +1834,7 @@ Blockly.Blocks.oled_draw_circle = {
 
         // Other details
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setWarningText(null);
@@ -1908,7 +1908,7 @@ Blockly.Blocks.oled_draw_line = {
                 .appendField("color");
 
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -1964,7 +1964,7 @@ Blockly.Blocks.oled_draw_pixel = {
                 .appendField("color");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2043,7 +2043,7 @@ Blockly.Blocks.oled_draw_triangle = {
 
         // Other details
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2127,7 +2127,7 @@ Blockly.Blocks.oled_draw_rectangle = {
 
         // Other details
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setWarningText(null);
@@ -2193,7 +2193,7 @@ Blockly.Blocks.oled_text_size = {
                 .appendField(new Blockly.FieldDropdown([["small", "SMALL"], ["medium", "MEDIUM"], ["large", "LARGE"]]), "size_select")
                 .appendField("font")
                 .appendField(new Blockly.FieldDropdown([["sans", "FONT_SANS"], ["serif", "FONT_SERIF"], ["script", "FONT_SCRIPT"], ["bubble", "FONT_BUBBLE"]]), "font_select");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2236,7 +2236,7 @@ Blockly.Blocks.oled_text_color = {
                 .setCheck('Number')
                 .appendField("font background color");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2335,7 +2335,7 @@ Blockly.Blocks.oled_set_cursor = {
                 .setCheck('Number')
                 .appendField("(y)");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setWarningText(null);
@@ -2375,7 +2375,7 @@ Blockly.Blocks.oled_print_text = {
                 .appendField("OLED print text ");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setWarningText(null);
@@ -2412,7 +2412,7 @@ Blockly.Blocks.oled_print_number = {
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([["Decimal", "DEC"], ["Hexadecimal", "HEX"], ["Binary", "BIN"]]), "type");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setWarningText(null);
@@ -2454,7 +2454,7 @@ Blockly.Blocks.ws2812b_init = {
                 .appendField("type")
                 .appendField(new Blockly.FieldDropdown([["WS2812", "WS2812"]]), "TYPE");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -2488,7 +2488,7 @@ Blockly.Blocks.ws2812b_set = {
                 .setCheck("Number")
                 .appendField("to color");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2534,7 +2534,7 @@ Blockly.Blocks.ws2812b_set_multiple = {
                 .setCheck("Number")
                 .appendField("to color");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2581,7 +2581,7 @@ Blockly.Blocks.ws2812b_update = {
         this.appendDummyInput()
                 .appendField("RGB-LED update LEDs");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2627,7 +2627,7 @@ Blockly.Blocks.wx_init = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "DI");
         this.getInput('DIPIN').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -2689,7 +2689,7 @@ Blockly.Blocks.wx_config_page = {
                 .appendField(" background color")
                 .appendField(bkg_colors, "BKG");
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2759,7 +2759,7 @@ Blockly.Blocks.wx_set_widget = {
                 .appendField(" initial value")
                 .appendField(new Blockly.FieldTextInput('5', Blockly.FieldTextInput.numberValidator), 'INITIAL');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2928,7 +2928,7 @@ Blockly.Blocks.wx_send_widget = {
                 .appendField("to widget")
                 .appendField(new Blockly.FieldDropdown([["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"]]), "WIDGET");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -2972,7 +2972,7 @@ Blockly.Blocks.wx_read_widgets = {
         this.appendDummyInput()
                 .appendField("Simple WX read widgets");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -3103,7 +3103,7 @@ Blockly.Blocks.wx_reconnect = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Simple WX reconnect");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -3159,7 +3159,7 @@ Blockly.Blocks.wx_init_adv = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "DI");
         this.getInput('DIPIN').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
     },
@@ -3232,7 +3232,7 @@ Blockly.Blocks.wx_scan_multiple = {
                 .appendField(new Blockly.FieldTextInput('txt'), 'START');
         this.optionList_ = ['dec', 'dec'];
         this.updateShape_();
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['wx_scan_dec', 'wx_scan_char']));
         this.setWarningText(null);
@@ -3397,7 +3397,7 @@ Blockly.Blocks.wx_scan_dec = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('integer');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -3409,7 +3409,7 @@ Blockly.Blocks.wx_scan_char = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('character');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -3465,7 +3465,7 @@ Blockly.Blocks.wx_print_multiple = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
                 .appendField('integer');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
         this.optionList_ = ['str', 'dec'];
@@ -3571,7 +3571,7 @@ Blockly.Blocks.wx_scan_string = {
         this.appendDummyInput('STORE')
                 .appendField('store string in')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VARNAME');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     },
     setPrefix_: function (details) {
@@ -3648,7 +3648,7 @@ Blockly.Blocks.wx_send_string = {
                 .appendField("handle")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HANDLE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -3708,7 +3708,7 @@ Blockly.Blocks.wx_receive_string = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck("Number")
                 .appendField("max bytes");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setInputsInline(false);
     },
@@ -3770,7 +3770,7 @@ Blockly.Blocks.wx_poll = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'ID')
                 .appendField("handle in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HANDLE');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -3842,7 +3842,7 @@ Blockly.Blocks.wx_listen = {
         this.getInput('PORT').setVisible(false);
         this.getInput('CONNVARS').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -4042,7 +4042,7 @@ Blockly.Blocks.wx_mode = {
         this.appendDummyInput("CHECK")
                 .appendField("to")
                 .appendField(new Blockly.FieldDropdown([['AP', 'AP'], ['Station', 'STA'], ['Station + AP', 'STA_AP']]), 'MODE');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setInputsInline(true);
     },
@@ -4074,7 +4074,7 @@ Blockly.Blocks.wx_mode = {
             this.setOutput(true, "Number");
         } else {
             this.getInput('CHECK').setVisible(true);
-            this.setPreviousStatement(true, null);
+            this.setPreviousStatement(true, "Block");
             this.setNextStatement(true, null);
             this.setOutput(false);
         }
@@ -4135,7 +4135,7 @@ Blockly.Blocks.wx_buffer = {
                 .appendField("as buffer");
         this.getInput('BUF').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -4223,7 +4223,7 @@ Blockly.Blocks.wx_disconnect = {
                 .appendField("ID", 'TEXT')
                 .appendField(new Blockly.FieldVariable('wxId'), 'ID');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -4342,7 +4342,7 @@ Blockly.Blocks.graph_output = {
                 .setCheck('Number')
                 .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABELa')
                 .appendField('value');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['graph_dec']));
         this.optionList_ = ['dec'];
@@ -4479,7 +4479,7 @@ Blockly.Blocks.graph_dec = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('value');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -4552,7 +4552,7 @@ Blockly.Blocks.graph_settings = {
             this.getField('LABELMAX').setVisible(true);
         }
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.render();
     },

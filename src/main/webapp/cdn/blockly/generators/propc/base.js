@@ -381,7 +381,7 @@ Blockly.Blocks.math_arithmatic_term = {
         this.setColour(colorPalette.getColor('math'));
         this.appendDummyInput()
                 .appendField('term');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -615,7 +615,7 @@ Blockly.Blocks.math_crement = {
         this.appendValueInput('VAR')
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown([["decrement", "--"], ["increment", "++"]]), "OP");
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
     }
 };
@@ -699,7 +699,7 @@ Blockly.Blocks.base_delay = {
                 .appendField("pause (ms)")
                 .setCheck('Number');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -931,7 +931,7 @@ Blockly.Blocks.waitcnt = {
                 .setCheck("Number")
                 .appendField("Wait until");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -961,7 +961,7 @@ Blockly.Blocks.register_set = {
                 ]), 'CMD')
                 .appendField("register =");
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1018,7 +1018,7 @@ Blockly.Blocks.custom_code = {
                     ["includes", "includes"]
                 ]), 'LOC');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1091,7 +1091,7 @@ Blockly.Blocks.comment = {
                     this.sourceBlock_.updateShape_({"ACTION": action});
                 }), 'ACTION')
                 .appendField(new Blockly.FieldTextInput(''), "COMMENT_TEXT");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -1414,7 +1414,7 @@ Blockly.Blocks.cog_new = {
                 .appendField("function");
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -1444,7 +1444,7 @@ Blockly.Blocks.combine_strings = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVarType: function () {
@@ -1569,7 +1569,7 @@ Blockly.Blocks.set_char_at_position = {
                 .setCheck("Number")
                 .appendField("to");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVarType: function () {
@@ -1611,7 +1611,7 @@ Blockly.Blocks.get_substring = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'TO_STR');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVarType: function () {
@@ -1698,7 +1698,7 @@ Blockly.Blocks.string_to_number = {
                 .appendField("to integer store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -1739,7 +1739,7 @@ Blockly.Blocks.number_to_string = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "VAR");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVarType: function () {
@@ -1896,7 +1896,7 @@ Blockly.Blocks.math_advanced = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -1946,7 +1946,7 @@ Blockly.Blocks.math_inv_trig = {
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     getVars: function () {
@@ -2052,7 +2052,7 @@ Blockly.Blocks.custom_code_multiple = {
                     this.sourceBlock_.setupInputs(inSet);
                 }), 'ARG_COUNT');
         this.setInputsInline(false);
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setFieldValue('FALSE', 'EDIT');
         this.hideInputs('FALSE');
@@ -2096,7 +2096,7 @@ Blockly.Blocks.custom_code_multiple = {
         this.setFieldValue(xmlElement.getAttribute('color'), 'COLOR');
         var outType = xmlElement.getAttribute('type');
         if (outType === 'INL') {
-            this.setPreviousStatement(true);
+            this.setPreviousStatement(true, "Block");
             this.setNextStatement(true);
             this.setOutput(false);
         } else if (outType === 'NUM') {
