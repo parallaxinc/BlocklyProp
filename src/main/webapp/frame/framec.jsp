@@ -130,7 +130,6 @@
         <category name="<fmt:message key="category.operators" />" exclude="s3" colour="275">
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
-                <!--<block type="math_arithmetic_multiple"></block> -->
                 <block type="math_limit"></block>
                 <block type="constrain_value"></block>
                 <block type="math_crement"></block>
@@ -150,6 +149,7 @@
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>
                 <block type="logic_compare"></block>
+                <block type="map_value"></block>
                 <block type="math_advanced"></block>
                 <block type="math_inv_trig">
                     <value name="ARG3">
@@ -629,6 +629,7 @@
                 <block type="serial_send_text"></block>
                 <!-- <block type="serial_rx"></block> -->
                 <block type="serial_receive_text"></block>
+                <block type="serial_print_multiple"></block>
                 <block type="shift_in"></block>
                 <block type="shift_out">
                     <value name="VALUE">
@@ -709,6 +710,7 @@
                         </block>
                     </value>
                 </block>
+                <block type="console_print_multiple"></block>
                 <block type="console_scan_text"></block>
                 <block type="console_scan_number"></block>
                 <block type="console_newline"></block>
@@ -801,6 +803,7 @@
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
                 <block type="xbee_transmit"></block>
+                <block type="xbee_print_multiple"></block>
                 <block type="xbee_receive"></block>
             </category>
         </category>
@@ -1324,6 +1327,7 @@
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
             <block type="constrain_value"></block>
+            <block type="map_value"></block>
             <block type="math_advanced"></block>
             <block type="math_inv_trig">
                 <value name="ARG3">

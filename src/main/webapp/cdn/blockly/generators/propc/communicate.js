@@ -124,6 +124,298 @@ Blockly.propc.console_print_variables = function () {
     return code;
 };
 
+Blockly.Blocks.console_print_multiple = {
+    helpUrl: Blockly.MSG_AWX_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_AWX_PRINT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('Terminal print');
+        this.appendValueInput('PRINT0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('String')
+                .appendField('text');
+        this.appendValueInput('PRINT1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField('decimal number');
+        this.appendDummyInput('NEWLINE')
+                .appendField("then a new line")
+                .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setInputsInline(false);
+        this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
+        this.optionList_ = ['str', 'dec'];
+        this.setWarningText(null);
+    },
+    mutationToDom: function (workspace) {
+        // Create XML to represent menu options.
+        var container = document.createElement('mutation');
+        var divs = [];
+        container.setAttribute('options', JSON.stringify(this.optionList_));
+        for (var fv = 0; fv < this.optionList_.length; fv++) {
+            divs.push(this.getFieldValue('DIV' + fv) || '0');
+        }
+        container.setAttribute('divisors', JSON.stringify(divs));
+        return container;
+    },
+    domToMutation: function (container) {
+        // Parse XML to restore the menu options.
+        this.removeInput('PRINT0');
+        this.removeInput('PRINT1');
+        this.removeInput('NEWLINE');
+
+        var value = JSON.parse(container.getAttribute('options'));
+        var divs = JSON.parse(container.getAttribute('divisors'));
+        this.optionList_ = value;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var label = 'decimal number';
+            var chk = 'Number';
+            if (this.optionList_[i] === 'str') {
+                label = 'text';
+                chk = 'String';
+            } else if (this.optionList_[i] === 'char') {
+                label = 'ASCII character';
+            } else if (this.optionList_[i] === 'hex') {
+                label = 'hexadecimal number';
+            } else if (this.optionList_[i] === 'bin') {
+                label = 'binary number';
+            }
+            if (this.optionList_[i] === 'float') {
+                this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField('float point  divide by', 'TYPE' + i)
+                        .appendField(new Blockly.FieldTextInput(divs[i],
+                                Blockly.FieldTextInput.numberValidator), 'DIV' + i);
+            } else {
+                this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField(label, 'TYPE' + i);
+            }
+        }
+        this.appendDummyInput('NEWLINE')
+                .appendField("then a new line")
+                .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+    },
+    decompose: function (workspace) {
+        var containerBlock = Blockly.Block.obtain(workspace, 'console_print_container');
+        containerBlock.initSvg();
+        var connection = containerBlock.getInput('STACK').connection;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var optionBlock = workspace.newBlock(
+                    'console_print_' + this.optionList_[i]);
+            optionBlock.initSvg();
+            connection.connect(optionBlock.previousConnection);
+            connection = optionBlock.nextConnection;
+        }
+        return containerBlock;
+
+    },
+    compose: function (containerBlock) {
+        // Delete everything.
+        var i = 0;
+        while (this.getInput('PRINT' + i)) {
+            this.removeInput('PRINT' + i);
+            i++;
+        }
+        this.removeInput('NEWLINE');
+
+        i = 0;
+        this.optionList_.length = 0;
+        // Rebuild the block's optional inputs.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        var label = '';
+        var chk = '';
+        while (clauseBlock) {
+            chk = 'Number';
+            if (clauseBlock.type === 'console_print_dec') {
+                this.optionList_.push('dec');
+                label = 'decimal number';
+            } else if (clauseBlock.type === 'console_print_hex') {
+                this.optionList_.push('hex');
+                label = 'hexadecimal number';
+            } else if (clauseBlock.type === 'console_print_bin') {
+                this.optionList_.push('bin');
+                label = 'binary number';
+            } else if (clauseBlock.type === 'console_print_char') {
+                this.optionList_.push('char');
+                label = 'ASCII character';
+            } else if (clauseBlock.type === 'console_print_str') {
+                this.optionList_.push('str');
+                chk = 'String';
+                label = 'text';
+            }
+            // Reconnect any child blocks.
+            var printInput;
+            if (clauseBlock.type === 'console_print_float') {
+                this.optionList_.push('float');
+                printInput = this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField('float point  divide by', 'TYPE' + i)
+                        .appendField(new Blockly.FieldTextInput('100',
+                                Blockly.FieldTextInput.numberValidator), 'DIV' + i);
+            } else {
+                printInput = this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField(label, 'TYPE' + i);
+            }
+
+            if (clauseBlock.valueConnection_) {
+                printInput.connection.connect(clauseBlock.valueConnection_);
+            }
+            i++;
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+        this.appendDummyInput('NEWLINE')
+                .appendField("then a new line")
+                .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+    },
+    saveConnections: function (containerBlock) {
+        // Store a pointer to any connected child blocks.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        var x = 0;
+        while (clauseBlock) {
+            var printInput = this.getInput('PRINT' + x);
+            clauseBlock.valueConnection_ =
+                    printInput && printInput.connection.targetConnection;
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+            x++;
+        }
+    },
+    onchange: function () {
+        var warnTxt = null;
+        if (this.workspace && this.optionList_.length < 1) {
+            warnTxt = 'Terminal print multiple must have at least one term.';
+        }
+        this.setWarningText(warnTxt);
+    }
+};
+
+Blockly.Blocks.console_print_container = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('send');
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.console_print_dec = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('decimal number');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.console_print_hex = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('hexadecimal number');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.console_print_bin = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('binary number');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.console_print_str = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('text');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.console_print_char = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('ASCII character');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.console_print_float = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('floating point number');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+    }
+};
+
+Blockly.propc.console_print_multiple = function () {
+    Blockly.propc.serial_terminal_ = true;
+    var code = 'print("';
+    var varList = '';
+    var orIt = '';
+    var i = 0;
+    while (this.getInput('PRINT' + i)) {
+        if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            code += '%d';
+            orIt = '0';
+        } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+            code += '%x';
+            orIt = '0x0';
+        } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
+            code += '%b';
+            orIt = '0b0';
+        } else if (this.getFieldValue('TYPE' + i).includes('text')) {
+            code += '%s';
+            orIt = '" "';
+        } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
+            code += '%c';
+            orIt = '32';
+        } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+            code += '%f';
+            orIt = '0';
+        }
+
+        if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+            varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+        } else {
+            varList += ', ((float) ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt) +
+                    ') / ' + this.getFieldValue('DIV' + i) + '.0';
+        }
+        i++;
+    }
+    if (this.getFieldValue('ck_nl') === 'TRUE') {
+        code += '\\r';
+    }
+    code += '"' + varList + ');\n';
+    return code;
+};
+
 Blockly.Blocks.console_scan_text = {
     helpUrl: Blockly.MSG_TERMINAL_HELPURL,
     init: function () {
@@ -611,6 +903,188 @@ Blockly.propc.serial_receive_text = function () {
 
             return code;
         }
+    }
+};
+
+Blockly.Blocks.serial_print_multiple = {
+    helpUrl: Blockly.MSG_AWX_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_AWX_PRINT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('Serial transmit');
+        this.appendValueInput('PRINT0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('String')
+                .appendField('text');
+        this.appendValueInput('PRINT1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField('decimal number');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setInputsInline(false);
+        this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
+        this.optionList_ = ['str', 'dec'];
+        this.setWarningText(null);
+    },
+    mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
+    domToMutation: function (container) {
+        // Parse XML to restore the menu options.
+        this.removeInput('PRINT0');
+        this.removeInput('PRINT1');
+        this.removeInput('NEWLINE');
+
+        var value = JSON.parse(container.getAttribute('options'));
+        var divs = JSON.parse(container.getAttribute('divisors'));
+        this.optionList_ = value;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var label = 'decimal number';
+            var chk = 'Number';
+            if (this.optionList_[i] === 'str') {
+                label = 'text';
+                chk = 'String';
+            } else if (this.optionList_[i] === 'char') {
+                label = 'ASCII character';
+            } else if (this.optionList_[i] === 'hex') {
+                label = 'hexadecimal number';
+            } else if (this.optionList_[i] === 'bin') {
+                label = 'binary number';
+            }
+            if (this.optionList_[i] === 'float') {
+                this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField('float point  divide by', 'TYPE' + i)
+                        .appendField(new Blockly.FieldTextInput(divs[i],
+                                Blockly.FieldTextInput.numberValidator), 'DIV' + i);
+            } else {
+                this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField(label, 'TYPE' + i);
+            }
+        }
+    },
+    decompose: Blockly.Blocks['console_print_multiple'].decompose,
+    compose: function (containerBlock) {
+        // Delete everything.
+        var i = 0;
+        while (this.getInput('PRINT' + i)) {
+            this.removeInput('PRINT' + i);
+            i++;
+        }
+        i = 0;
+        this.optionList_.length = 0;
+        // Rebuild the block's optional inputs.
+        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        var label = '';
+        var chk = '';
+        while (clauseBlock) {
+            chk = 'Number';
+            if (clauseBlock.type === 'console_print_dec') {
+                this.optionList_.push('dec');
+                label = 'decimal number';
+            } else if (clauseBlock.type === 'console_print_hex') {
+                this.optionList_.push('hex');
+                label = 'hexadecimal number';
+            } else if (clauseBlock.type === 'console_print_bin') {
+                this.optionList_.push('bin');
+                label = 'binary number';
+            } else if (clauseBlock.type === 'console_print_char') {
+                this.optionList_.push('char');
+                label = 'ASCII character';
+            } else if (clauseBlock.type === 'console_print_str') {
+                this.optionList_.push('str');
+                chk = 'String';
+                label = 'text';
+            }
+            // Reconnect any child blocks.
+            var printInput;
+            if (clauseBlock.type === 'console_print_float') {
+                this.optionList_.push('float');
+                printInput = this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField('float point  divide by', 'TYPE' + i)
+                        .appendField(new Blockly.FieldTextInput('100',
+                                Blockly.FieldTextInput.numberValidator), 'DIV' + i);
+            } else {
+                printInput = this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField(label, 'TYPE' + i);
+            }
+
+            if (clauseBlock.valueConnection_) {
+                printInput.connection.connect(clauseBlock.valueConnection_);
+            }
+            i++;
+            clauseBlock = clauseBlock.nextConnection &&
+                    clauseBlock.nextConnection.targetBlock();
+        }
+    },
+    saveConnections: Blockly.Blocks['console_print_multiple'].saveConnections,
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('Serial initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a Serial\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            if (this.workspace && this.optionList_.length < 1) {
+                warnTxt = 'Serial transmit multiple must have at least one term.';
+            }
+            this.setWarningText(warnTxt);
+        }
+    }
+};
+
+
+Blockly.propc.serial_print_multiple = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Serial initialize') === -1)
+    {
+        return '// ERROR: Serial is not initialized!\n';
+    } else {
+        var code = 'fdserial_txChar(fdser, "';
+        var varList = '';
+        var orIt = '';
+        var i = 0;
+        while (this.getInput('PRINT' + i)) {
+            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+                code += '%d';
+                orIt = '0';
+            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+                code += '%x';
+                orIt = '0x0';
+            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
+                code += '%b';
+                orIt = '0b0';
+            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
+                code += '%s';
+                orIt = '" "';
+            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
+                code += '%c';
+                orIt = '32';
+            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                code += '%f';
+                orIt = '0';
+            }
+
+            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+            } else {
+                varList += ', ((float) ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt) +
+                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
+            }
+            i++;
+        }
+        if (this.getFieldValue('ck_nl') === 'TRUE') {
+            code += '\\r';
+        }
+        code += '"' + varList + ');\n';
+        return code;
     }
 };
 
@@ -1137,6 +1611,96 @@ Blockly.propc.xbee_receive = function () {
         }
     }
 };
+
+Blockly.Blocks.xbee_print_multiple = {
+    helpUrl: Blockly.MSG_AWX_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_AWX_PRINT_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('XBee transmit');
+        this.appendValueInput('PRINT0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('String')
+                .appendField('text');
+        this.appendValueInput('PRINT1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField('decimal number');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setInputsInline(false);
+        this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
+        this.optionList_ = ['str', 'dec'];
+        this.setWarningText(null);
+    },
+    mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
+    domToMutation: Blockly.Blocks['serial_print_multiple'].domToMutation,
+    decompose: Blockly.Blocks['console_print_multiple'].decompose,
+    compose: Blockly.Blocks['serial_print_multiple'].compose,
+    saveConnections: Blockly.Blocks['console_print_multiple'].saveConnections,
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('XBee initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a XBee\ninitialize block at the beginning of your program!');
+        } else {
+            var warnTxt = null;
+            if (this.workspace && this.optionList_.length < 1) {
+                warnTxt = 'XBee transmit multiple must have at least one term.';
+            }
+            this.setWarningText(warnTxt);
+        }
+    }
+};
+
+Blockly.propc.xbee_print_multiple = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('XBee initialize') === -1)
+    {
+        return '// ERROR: XBee is not initialized!\n';
+    } else {
+        var code = 'fdserial_txChar(xbee, "';
+        var varList = '';
+        var orIt = '';
+        var i = 0;
+        while (this.getInput('PRINT' + i)) {
+            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+                code += '%d';
+                orIt = '0';
+            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+                code += '%x';
+                orIt = '0x0';
+            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
+                code += '%b';
+                orIt = '0b0';
+            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
+                code += '%s';
+                orIt = '" "';
+            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
+                code += '%c';
+                orIt = '32';
+            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                code += '%f';
+                orIt = '0';
+            }
+
+            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+            } else {
+                varList += ', ((float) ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt) +
+                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
+            }
+            i++;
+        }
+        if (this.getFieldValue('ck_nl') === 'TRUE') {
+            code += '\\r';
+        }
+        code += '"' + varList + ');\n';
+        return code;
+    }
+};
+
 
 // -------------- OLED Display blocks ------------------------------------------
 Blockly.Blocks.oled_initialize = {
@@ -2893,122 +3457,25 @@ Blockly.Blocks.wx_print_multiple = {
                 .appendField(new Blockly.FieldDropdown([["GET", "GET"], ["TCP", "TCP"], ["Websocket", "WS"], ["Command", "CMD"]]), "CONNECTION")
                 .appendField('handle')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HANDLE');
-        this.appendValueInput('PRINTa')
+        this.appendValueInput('PRINT0')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('String')
                 .appendField('string');
-        this.appendValueInput('PRINTb')
+        this.appendValueInput('PRINT1')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
                 .appendField('integer');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setMutator(new Blockly.Mutator(['wx_print_dec', 'wx_print_char', 'wx_print_str']));
+        this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
         this.optionList_ = ['str', 'dec'];
         this.setWarningText(null);
     },
-    mutationToDom: function (workspace) {
-        // Create XML to represent menu options.
-        var container = document.createElement('mutation');
-        container.setAttribute('options', JSON.stringify(this.optionList_));
-        return container;
-    },
-    domToMutation: function (container) {
-        // Parse XML to restore the menu options.
-        var value = JSON.parse(container.getAttribute('options'));
-        this.optionList_ = value;
-        for (var i = 0; i < this.optionList_.length; i++) {
-            var label = 'integer';
-            var chk = 'Number'
-            if (this.optionList_[i] === 'str') {
-                label = 'string';
-                chk = 'String';
-            }
-            if (this.optionList_[i] === 'char') {
-                label = 'character';
-                chk = 'String';
-            }
-            this.appendValueInput('PRINT' + i)
-                    .setAlign(Blockly.ALIGN_RIGHT)
-                    .setCheck(chk)
-                    .appendField(label, 'TYPE' + i);
-        }
-    },
-    decompose: function (workspace) {
-        var containerBlock = Blockly.Block.obtain(workspace, 'wx_print_container');
-        containerBlock.initSvg();
-        var connection = containerBlock.getInput('STACK').connection;
-        for (var i = 0; i < this.optionList_.length; i++) {
-            var optionBlock = workspace.newBlock(
-                    'wx_print_' + this.optionList_[i]);
-            optionBlock.initSvg();
-            connection.connect(optionBlock.previousConnection);
-            connection = optionBlock.nextConnection;
-        }
-        return containerBlock;
-
-    },
-    compose: function (containerBlock) {
-        // Delete everything.
-        var i = 0;
-        while (this.getInput('PRINT' + i)) {
-            this.removeInput('PRINT' + i);
-            i++;
-        }
-
-        i = 0;
-        this.optionList_.length = 0;
-        // Rebuild the block's optional inputs.
-        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
-        var label = '';
-        var chk = '';
-        while (clauseBlock) {
-            if (clauseBlock.type === 'wx_print_dec') {
-                this.optionList_.push('dec');
-                chk = 'Number';
-                label = 'integer';
-            } else if (clauseBlock.type === 'wx_print_char') {
-                this.optionList_.push('char');
-                chk = 'Number';
-                label = 'character';
-            } else if (clauseBlock.type === 'wx_print_str') {
-                this.optionList_.push('str');
-                chk = 'String';
-                label = 'string';
-            }
-            // Reconnect any child blocks.
-
-            var printInput = this.appendValueInput('PRINT' + i)
-                    .setAlign(Blockly.ALIGN_RIGHT)
-                    .setCheck(chk)
-                    .appendField(label, 'TYPE' + i);
-
-            if (clauseBlock.valueConnection_) {
-                printInput.connection.connect(clauseBlock.valueConnection_);
-            }
-            i++;
-
-            clauseBlock = clauseBlock.nextConnection &&
-                    clauseBlock.nextConnection.targetBlock();
-        }
-
-
-
-    },
-    saveConnections: function (containerBlock) {
-        // Store a pointer to any connected child blocks.
-        var clauseBlock = containerBlock.getInputTargetBlock('STACK');
-        var x = 0;
-        while (clauseBlock) {
-            var printInput = this.getInput('PRINT' + x);
-            clauseBlock.valueConnection_ =
-                    printInput && printInput.connection.targetConnection;
-            x++;
-            break;
-            clauseBlock = clauseBlock.nextConnection &&
-                    clauseBlock.nextConnection.targetBlock();
-        }
-    },
+    mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
+    domToMutation: Blockly.Blocks['serial_print_multiple'].domToMutation,
+    decompose: Blockly.Blocks['console_print_multiple'].decompose,
+    compose: Blockly.Blocks['serial_print_multiple'].compose,
+    saveConnections: Blockly.Blocks['console_print_multiple'].saveConnections,
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
         if (allBlocks.toString().indexOf('WX initialize') === -1)
@@ -3026,10 +3493,6 @@ Blockly.Blocks.wx_print_multiple = {
             }
             this.setWarningText(warnTxt);
         }
-        if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
-            this.removeInput('PRINTa');
-            this.removeInput('PRINTb');
-        }
     },
     getVars: function () {
         return [this.getFieldValue('HANDLE')];
@@ -3038,49 +3501,6 @@ Blockly.Blocks.wx_print_multiple = {
         if (Blockly.Names.equals(oldName, this.getFieldValue('HANDLE'))) {
             this.setFieldValue(newName, 'HANDLE');
         }
-    }
-};
-
-Blockly.Blocks.wx_print_container = {
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField('print');
-        this.appendStatementInput('STACK');
-        this.contextMenu = false;
-    }
-};
-
-Blockly.Blocks.wx_print_dec = {
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField('integer');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.contextMenu = false;
-    }
-};
-
-Blockly.Blocks.wx_print_str = {
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField('string');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.contextMenu = false;
-    }
-};
-
-Blockly.Blocks.wx_print_char = {
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField('character');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.contextMenu = false;
     }
 };
 
@@ -3095,18 +3515,33 @@ Blockly.propc.wx_print_multiple = function () {
         var varList = '';
         var i = 0;
         var orIt = '';
-        while (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.ORDER_NONE)) {
-            if (this.getFieldValue('TYPE' + i).includes('integer')) {
+        while (this.getInput('PRINT' + i)) {
+            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
                 code += '%d';
                 orIt = '0';
-            } else if (this.getFieldValue('TYPE' + i).includes('string')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+                code += '%x';
+                orIt = '0x0';
+            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
+                code += '%b';
+                orIt = '0b0';
+            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
                 code += '%s';
                 orIt = '" "';
-            } else {
+            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
                 code += '%c';
-                code = '32';
+                orIt = '32';
+            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                code += '%f';
+                orIt = '0';
             }
-            varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+
+            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+            } else {
+                varList += ', ((float) ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt) +
+                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
+            }
             i++;
         }
         code += '"' + varList + ');\n';
