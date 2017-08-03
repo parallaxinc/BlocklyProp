@@ -45,7 +45,7 @@ Blockly.Blocks.variables_get = {
         this.onchange();
     },
     onchange: function () {
-        var outType = "Number";
+        var outType = null;
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
         for (var x = 0; x < allBlocks.length; x++) {
             var func = allBlocks[x].getVarType;
@@ -61,6 +61,8 @@ Blockly.Blocks.variables_get = {
                 }
                 if (blockType === 'String' && varMatch) {
                     var outType = "String";
+                } else if (blockType === 'Number' && varMatch) {
+                    var outType = "Number";
                 }
             }
         }

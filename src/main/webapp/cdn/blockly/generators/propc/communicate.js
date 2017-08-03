@@ -605,6 +605,25 @@ Blockly.Blocks.serial_open = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.otherBaud = false;
+        this.serialPin = this.getFieldValue('RXPIN') + ',' + this.getFieldValue('TXPIN');
+    },
+    onchange: function (event) {
+        this.serialPin = this.getFieldValue('RXPIN') + ',' + this.getFieldValue('TXPIN');
+        if (event.blockId === this.id || event.oldXml) {  // only fire when it's this block or a block got deleted
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+            for (var x = 0; x < allBlocks.length; x++) {
+                var func = allBlocks[x].serPins;
+                if (func) {
+                    if (event.name === 'RXPIN') {
+                        func.call(allBlocks[x], event.oldValue + ',' + this.getFieldValue('TXPIN'), event.newValue + ',' + this.getFieldValue('TXPIN'));
+                    } else if (event.name === 'TXPIN') {
+                        func.call(allBlocks[x], this.getFieldValue('RXPIN') + ',' + event.oldValue, this.getFieldValue('RXPIN') + ',' + event.newValue);
+                    } else if (event.oldXml) {
+                        func.call(allBlocks[x]);
+                    }
+                }
+            }
+        }
     },
     setToOther: function (br) {
         if (br === 'other') {
@@ -637,68 +656,16 @@ Blockly.Blocks.serial_open = {
 };
 
 Blockly.propc.serial_open = function () {
-    var dropdown_rx_pin = this.getFieldValue('RXPIN');
-    var dropdown_tx_pin = this.getFieldValue('TXPIN');
+    var rx_pin = this.getFieldValue('RXPIN');
+    var tx_pin = this.getFieldValue('TXPIN');
     var baud = this.getFieldValue('BAUD');
 
     if (!this.disabled) {
         Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
         Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser;';
-        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + dropdown_rx_pin + ', ' + dropdown_tx_pin + ', 0, ' + baud + ');';
+        Blockly.propc.setups_['setup_fdserial'] = 'fdser = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
     }
-
     return '';
-};
-
-Blockly.Blocks.serial_tx = {
-    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
-    init: function () {
-        this.setTooltip(Blockly.MSG_SERIAL_TX_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("Serial transmit")
-                .appendField(new Blockly.FieldDropdown([
-                    ["number (32-bit integer)", "INT"],
-                    ["byte (ASCII character)", "BYTE"]
-                ]), "TYPE");
-        this.appendValueInput('VALUE')
-                .setCheck(null);
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true, null);
-        this.setWarningText(null);
-    },
-    onchange: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('Serial initialize') === -1)
-        {
-            this.setWarningText('WARNING: You must use a Serial\ninitialize block at the beginning of your program!');
-        } else {
-            this.setWarningText(null);
-        }
-    }
-};
-
-Blockly.propc.serial_tx = function () {
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('Serial initialize') === -1)
-    {
-        return '// ERROR: Serial is not initialized!\n';
-    } else {
-        var type = this.getFieldValue('TYPE');
-        var data = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
-
-        if (type === "BYTE") {
-            return 'fdserial_txChar(fdser, (' + data + ' & 0xFF) );\n';
-        } else {
-            var code = 'fdserial_txChar(fdser, (' + data + ' >> 24) & 255);\n';
-            code += 'fdserial_txChar(fdser, (' + data + ' >> 16) & 255);\n';
-            code += 'fdserial_txChar(fdser, (' + data + ' >> 8 ) & 255);\n';
-            code += 'fdserial_txChar(fdser, ' + data + ' & 255);\n';
-
-            return code;
-        }
-    }
 };
 
 Blockly.Blocks.serial_send_text = {
@@ -721,8 +688,77 @@ Blockly.Blocks.serial_send_text = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.stringTypeCheck();
+        this.ser_pins = [];
+        this.serPins();
     },
-    onchange: function () {
+    mutationToDom: function () {
+        if (this.getInput('SERPIN')) {
+            var container = document.createElement('mutation');
+            container.setAttribute('serpin', this.getFieldValue('SER_PIN'));
+            return container;
+        }
+    },
+    domToMutation: function (xmlElement) {
+        var serpin = xmlElement.getAttribute('serpin');
+        this.updateSerPin();
+        if (this.getInput('SERPIN')) {
+            this.removeInput('SERPIN');
+        }
+        if (serpin !== undefined) {
+            this.appendDummyInput('SERPIN')
+                    .appendField('RX/TX')
+                    .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
+            this.setFieldValue(serpin, 'SER_PIN');
+        }
+    },
+    serPins: function (oldPin, newPin) {
+        var currentPin = '-1';
+        if (this.ser_pins.length > 0) {
+            currentPin = this.ser_pins[0][0];
+        }
+        this.ser_pins.length = 0;
+        if (this.getInput('SERPIN')) {
+            currentPin = this.getFieldValue('SER_PIN');
+        }
+        this.updateSerPin();
+        if (this.getInput('SERPIN')) {
+            this.removeInput('SERPIN');
+        }
+        if (this.ser_pins.length > 1) {
+            this.appendDummyInput('SERPIN')
+                    .appendField('RX/TX')
+                    .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
+            if (currentPin === oldPin || oldPin === null) {
+                this.setFieldValue(newPin, 'SER_PIN');
+            } else {
+                if (this.getInput('SERPIN') && currentPin !== '-1') {
+                    this.setFieldValue(currentPin, 'SER_PIN');
+                }
+            }
+        }
+    },
+    updateSerPin: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        this.ser_pins.length = 0;
+        for (var x = 0; x < allBlocks.length; x++) {
+            if (allBlocks[x].type === 'serial_open') {
+                var sp = allBlocks[x].serialPin;
+                if (sp) {
+                    this.ser_pins.push([sp, sp]);
+                }
+            }
+        }
+        this.ser_pins.sort();
+        var x = 0;
+        while (x < this.ser_pins.length - 1) {
+            if (this.ser_pins[x][0] === this.ser_pins[x + 1][0]) {
+                this.ser_pins.splice(x, 1);
+            } else {
+                x++;
+            }
+        }
+    },
+    onchange: function (event) {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('Serial initialize') === -1)
         {
@@ -742,6 +778,14 @@ Blockly.Blocks.serial_send_text = {
 };
 
 Blockly.propc.serial_send_text = function () {
+    var p = '';
+    if (this.ser_pins.length > 0) {
+        p = this.ser_pins[0][0].replace(',', '_');
+    }
+    if (this.getInput('SERPIN')) {
+        p = this.getFieldValue('SER_PIN').replace(',', '_');
+    }
+    console.log(p);
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') === -1)
     {
@@ -768,63 +812,6 @@ Blockly.propc.serial_send_text = function () {
     }
 };
 
-Blockly.Blocks.serial_rx = {
-    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
-    init: function () {
-        this.setTooltip(Blockly.MSG_SERIAL_RX_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("Serial receive")
-                .appendField(new Blockly.FieldDropdown([
-                    ["number (32-bit integer)", "INT"],
-                    ["byte (ASCII character)", "BYTE"]
-                ]), "TYPE")
-                .appendField("store in")
-                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true, null);
-        this.setWarningText(null);
-    },
-    getVars: function () {
-        return [this.getFieldValue('VALUE')];
-    },
-    renameVar: function (oldName, newName) {
-        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
-            this.setFieldValue(newName, 'VALUE');
-        }
-    },
-    onchange: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('Serial initialize') === -1)
-        {
-            this.setWarningText('WARNING: You must use a Serial\ninitialize block at the beginning of your program!');
-        } else {
-            this.setWarningText(null);
-        }
-    }
-};
-
-Blockly.propc.serial_rx = function () {
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('Serial initialize') === -1)
-    {
-        return '// ERROR: Serial is not initialized!\n';
-    } else {
-        var type = this.getFieldValue('TYPE');
-        var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
-        if (data !== '') {
-            if (type === "BYTE") {
-                return data + ' = fdserial_rxChar(fdser);\n';
-            } else {
-                return data + ' = (fdserial_rxChar(fdser) << 24) | (fdserial_rxChar(fdser) << 16) | (fdserial_rxChar(fdser) << 8) | fdserial_rxChar(fdser);\n';
-            }
-        } else {
-            return '';
-        }
-    }
-};
-
 Blockly.Blocks.serial_receive_text = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
@@ -845,7 +832,13 @@ Blockly.Blocks.serial_receive_text = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
+        this.ser_pins = [];
+        this.serPins();
     },
+    mutationToDom: Blockly.Blocks['serial_send_text'].mutationToDom,
+    domToMutation: Blockly.Blocks['serial_send_text'].domToMutation,
+    serPins: Blockly.Blocks['serial_send_text'].serPins,
+    updateSerPin: Blockly.Blocks['serial_send_text'].updateSerPin,
     getVarType: function () {
         if (this.getFieldValue('TYPE') === 'TEXT') {
             return "String";
@@ -1046,7 +1039,7 @@ Blockly.propc.serial_print_multiple = function () {
     {
         return '// ERROR: Serial is not initialized!\n';
     } else {
-        var code = 'fdserial_txChar(fdser, "';
+        var code = 'dprint(fdser, "';
         var varList = '';
         var orIt = '';
         var i = 0;
@@ -1265,6 +1258,62 @@ Blockly.propc.serial_scan_multiple = function () {
     } else {
         return '// ERROR: Serial is not initialized!\n';
     }
+};
+
+Blockly.Blocks.serial_tx = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_SERIAL_TX_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Serial transmit")
+                .appendField(new Blockly.FieldDropdown([
+                    ["number (32-bit integer)", "INT"],
+                    ["byte (ASCII character)", "BYTE"]
+                ]), "TYPE");
+        this.appendValueInput('VALUE')
+                .setCheck(null);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+        this.setWarningText('WARNING: This block has been deprecated\nand my not work correctly!\nPlease use one of the blocks\navailable in the menu.');
+    }
+};
+
+Blockly.propc.serial_tx = function () {
+    return '// ERROR: This block has been depricated, please use a different serial transmit block!\n';
+};
+
+Blockly.Blocks.serial_rx = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_SERIAL_RX_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("Serial receive")
+                .appendField(new Blockly.FieldDropdown([
+                    ["number (32-bit integer)", "INT"],
+                    ["byte (ASCII character)", "BYTE"]
+                ]), "TYPE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+        this.setWarningText('WARNING: This block has been deprecated\nand my not work correctly!\nPlease use one of the blocks\navailable in the menu.');
+    },
+    getVars: function () {
+        return [this.getFieldValue('VALUE')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VALUE'))) {
+            this.setFieldValue(newName, 'VALUE');
+        }
+    }
+};
+
+Blockly.propc.serial_rx = function () {
+    return '// ERROR: This block has been deprecated, please use a different serial receive block!\n';
 };
 
 

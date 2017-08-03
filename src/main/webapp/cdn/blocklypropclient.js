@@ -325,7 +325,7 @@ function establish_socket() {
                 if (ws_msg.msg !== undefined) {
                     if (term !== null) { // is the terminal open?
                         //term.write(msg_in);
-                        displayInTerm(msg_in)
+                        displayInTerm(msg_in);
                     } else if (graph !== null) { // is the graph open?
                         graph_new_data(msg_in);
                     }
@@ -387,7 +387,7 @@ function establish_socket() {
 
         connection.onClose = function () {
             lostWSConnection();
-        }    
+        };    
     }
 }
 
@@ -397,10 +397,7 @@ function lostWSConnection() {
     client_use_type = 'none';
     client_available = false;
 
-    $("#client-searching").addClass("hidden");
-    $("#client-available").addClass("hidden");
-    $("#client-unavailable").removeClass("hidden");
-
+    set_ui_buttons('unavailable');
     term = null;
     newTerminal = false;
 
