@@ -31,11 +31,18 @@ $(document).ready(function () {
 });
 
 var check_com_ports_interval = null;
-var check_ws_socket_interval = null;
+var check_ws_socket_timeout = null;
 
 find_client = function () {
+    if (check_ws_socket_timeout) {
+        //Clear timeout if it exists; without this, back-to-back find_client() calls seem to occur
+        clearTimeout(check_ws_socket_timeout);
+        check_ws_client_timeout = null;
+    }
+    
     establish_socket();
     if (client_use_type !== 'ws') {
+        // WebSocket'd launcher not found?  Try Http'd client
         check_client();
     }
 };
@@ -117,7 +124,7 @@ check_client = function () {
             client_use_type = 'none';
             client_available = false;
             set_ui_buttons('unavailable');
-            setTimeout(find_client, 3000);
+            check_ws_socket_timeout = setTimeout(find_client, 3000);
         });
     }
 };
@@ -129,10 +136,9 @@ connection_heartbeat = function () {
         var d = new Date();
         var heartbeat_check = d.getTime();
         if (client_ws_heartbeat + 12000 < heartbeat_check) {
-            // Client is taking too long to check in - close the connection
+            // Client is taking too long to check in - close the connection and clean up
             client_ws_connection.close();
-            clearInterval(client_ws_heartbeat_interval);
-            client_ws_heartbeat_interval = null;
+            lostWSConnection();
         }
     }
 };
@@ -189,12 +195,13 @@ configure_client = function () {
 
 // checks for and, if found, uses a newer WebSockets-only client
 function establish_socket() {
-    //check_ws_socket_interval = null;
+    /* TODO: needs testing - is it better to do this here, or in the next TODO
+    if(client_ws_connection !== null && client_use_type !== 'ws') {
 
-    // TODO: needs testing - is it better to do this here, or in the next TODO
-    if (client_ws_connection !== null && client_use_type !== 'ws') {
-        //client_ws_connection.close();
-    }
+      //check_ws_socket_interval = null;
+
+      //client_ws_connection.close();
+    }*/
 
     // TODO: set/clear and load buttons based on status
 
@@ -235,7 +242,7 @@ function establish_socket() {
             //$("#client-unavailable").addClass("hidden");
 
             // TODO: Should we shutdown and try again? - needs testing
-            //check_ws_socket_interval = setTimeout(function () {
+            //check_ws_socket_timeout = setTimeout(function () {
             //    find_client();
             //}, 3000);
         };
@@ -379,36 +386,36 @@ function establish_socket() {
         };
 
         connection.onClose = function () {
-            client_ws_connection = null;
-            //Removed 'if(...http)' since this code should not be called when using BP Client
-//            if(client_use_type !== 'http') {
-            client_use_type = 'none';
-            client_available = false;
-
-            set_ui_buttons('unavailable');
-
-            term = null;
-            newTerminal = false;
-
-            selected_port = $("#comPort").val();
-            $("#comPort").empty();
-            $("#comPort").append($('<option>', {
-                text: 'Searching...'
-            }));
-            select_com_port(selected_port);
-//            }
-
-            if (check_ws_socket_interval) {
-                clearTimeout(check_ws_socket_interval);
-                check_ws_socket_interval = null;
-            }
-
-            if (client_ws_heartbeat_interval) {
-                clearInterval(client_ws_heartbeat_interval);
-                client_ws_heartbeat_interval = null;
-            }
-
-            check_ws_socket_interval = setTimeout(find_client, 3000);
-        };
+            lostWSConnection();
+        }    
     }
 }
+
+function lostWSConnection() {
+// Lost websocket connection, clean up and restart find_client processing
+    client_ws_connection = null;
+    client_use_type = 'none';
+    client_available = false;
+
+    $("#client-searching").addClass("hidden");
+    $("#client-available").addClass("hidden");
+    $("#client-unavailable").removeClass("hidden");
+
+    term = null;
+    newTerminal = false;
+
+    selected_port = $("#comPort").val();
+    $("#comPort").empty();
+    $("#comPort").append($('<option>', {
+        text: 'Searching...'
+    }));
+    select_com_port(selected_port);
+
+    if (client_ws_heartbeat_interval) {
+        clearInterval(client_ws_heartbeat_interval);
+        client_ws_heartbeat_interval = null;
+    }
+
+    //Create new ws socket timeout (find_client)
+    check_ws_socket_timeout = setTimeout(find_client, 3000);
+};
