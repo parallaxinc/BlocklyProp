@@ -628,8 +628,9 @@
                 <!-- <block type="serial_tx"></block> -->
                 <block type="serial_send_text"></block>
                 <!-- <block type="serial_rx"></block> -->
-                <block type="serial_receive_text"></block>
                 <block type="serial_print_multiple"></block>
+                <block type="serial_receive_text"></block>
+                <block type="serial_scan_multiple"></block>
                 <block type="shift_in"></block>
                 <block type="shift_out">
                     <value name="VALUE">
@@ -805,6 +806,7 @@
                 <block type="xbee_transmit"></block>
                 <block type="xbee_print_multiple"></block>
                 <block type="xbee_receive"></block>
+                <block type="xbee_scan_multiple"></block>
             </category>
         </category>
 
@@ -1238,31 +1240,28 @@
             </category>
         </category>
         <category name="<fmt:message key="category.servo" />" exclude="s3,heb" colour="165">
-            <category name="<fmt:message key="category.servo.standard-servo" />">
-                <block type="servo_move">
-                    <value name="ANGLE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
-            <category name="<fmt:message key="category.servo.cr-servo" />">
-                <block type="servo_speed">
-                    <value name="SPEED">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="servo_set_ramp">
-                    <value name="RAMPSTEP">
-                        <block type="math_number">
-                            <field name="NUM">50</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
+            <block type="servo_move">
+                <value name="ANGLE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="servo_speed">
+                <value name="SPEED">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="servo_set_ramp">
+                <value name="RAMPSTEP">
+                    <block type="math_number">
+                        <field name="NUM">50</field>
+                    </block>
+                </value>
+            </block>
+            <block type="scribbler_stop_servo"></block>
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
             <block type="ab_drive_init"></block>

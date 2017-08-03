@@ -1040,7 +1040,6 @@ Blockly.Blocks.serial_print_multiple = {
     }
 };
 
-
 Blockly.propc.serial_print_multiple = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') === -1)
@@ -1085,6 +1084,186 @@ Blockly.propc.serial_print_multiple = function () {
         }
         code += '"' + varList + ');\n';
         return code;
+    }
+};
+
+Blockly.Blocks.serial_scan_multiple = {
+    helpUrl: Blockly.MSG_AWX_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('Serial receive');
+        this.optionList_ = ['dec', 'char'];
+        this.updateShape_();
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true);
+        this.setMutator(new Blockly.Mutator(['console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
+        this.setWarningText(null);
+    },
+    mutationToDom: function (workspace) {
+        // Create XML to represent menu options.
+        var container = document.createElement('mutation');
+        container.setAttribute('options', JSON.stringify(this.optionList_));
+        return container;
+    },
+    domToMutation: function (container) {
+        // Parse XML to restore the menu options.
+        var value = JSON.parse(container.getAttribute('options'));
+        this.optionList_ = value;
+        this.updateShape_();
+    },
+    decompose: function (workspace) {
+        // Populate the mutator's dialog with this block's components.
+        var containerBlock = workspace.newBlock('serial_scan_container');
+        containerBlock.initSvg();
+        var connection = containerBlock.getInput('STACK').connection;
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var optionBlock = workspace.newBlock(
+                    'console_print_' + this.optionList_[i]);
+            optionBlock.initSvg();
+            connection.connect(optionBlock.previousConnection);
+            connection = optionBlock.nextConnection;
+        }
+        return containerBlock;
+    },
+    compose: function (containerBlock) {
+        // Reconfigure this block based on the mutator dialog's components.
+        var optionBlock = containerBlock.getInputTargetBlock('STACK');
+        // Count number of inputs.
+        this.optionList_.length = 0;
+        var data = [];
+        while (optionBlock) {
+            this.optionList_.push(optionBlock.type.replace('console_print_', ''));
+            data.push([optionBlock.userData_, optionBlock.cpuData_]);
+            optionBlock = optionBlock.nextConnection &&
+                    optionBlock.nextConnection.targetBlock();
+        }
+        this.updateShape_();
+        // Restore any data.
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var userData = data[i][0];
+            if (userData !== undefined) {
+                this.setFieldValue(data[i][1], 'CPU' + i);
+            }
+        }
+    },
+    saveConnections: function (containerBlock) {
+        // Store all data for each option.
+        var optionBlock = containerBlock.getInputTargetBlock('STACK');
+        var i = 0;
+        while (optionBlock) {
+            optionBlock.cpuData_ = this.getFieldValue('CPU' + i) || Blockly.LANG_VARIABLES_GET_ITEM;
+            i++;
+            optionBlock.userData_ = this.getFieldValue('CPU' + i);
+            optionBlock = optionBlock.nextConnection &&
+                    optionBlock.nextConnection.targetBlock();
+        }
+    },
+    updateShape_: function () {
+        // Delete everything.
+        var i = 0;
+        while (this.getInput('OPTION' + i)) {
+            this.removeInput('OPTION' + i);
+            i++;
+        }
+        // Rebuild block.
+        for (var i = 0; i < this.optionList_.length; i++) {
+            var type = this.optionList_[i];
+            var label = 'store ASCII character in';
+            if (type === 'dec') {
+                label = 'store decimal number in';
+            } else if (type === 'hex') {
+                label = 'store hexadecimal number in';
+            } else if (type === 'bin') {
+                label = 'store binary number in';
+            }
+            if (type === 'float') {
+                this.appendDummyInput('OPTION' + i)
+                        .appendField('store float point \u2715')
+                        .appendField(new Blockly.FieldTextInput('100'), 'MULT' + i)
+                        .appendField('in', 'TYPE' + i)
+                        .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'CPU' + i);
+            } else {
+                this.appendDummyInput('OPTION' + i)
+                        .appendField(label, 'TYPE' + i)
+                        .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'CPU' + i);
+            }
+        }
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        var warnTxt = null;
+        if (allBlocks.toString().indexOf('Serial initialize') === -1) {
+            warnTxt = 'WARNING: You must use a Serial\ninitialize block at the beginning of your program!';
+        }
+        if (this.workspace && this.optionList_.length < 1) {
+            warnTxt = 'Serial recieve must have at least one search term.';
+        }
+        this.setWarningText(warnTxt);
+    },
+    getVars: function () {
+        var theVars = [];
+        for (var i = 0; i < this.optionList_.length; i++) {
+            theVars.push(this.getFieldValue('CPU' + i));
+        }
+        return theVars;
+    },
+    renameVar: function (oldName, newName) {
+        for (var i = 0; i < this.optionList_.length; i++) {
+            if (Blockly.Names.equals(oldName, this.getFieldValue('CPU' + i)))
+                this.setFieldValue(newName, 'CPU' + i);
+        }
+    }
+};
+
+Blockly.Blocks.serial_scan_container = {
+    // Container.
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('receive');
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.propc.serial_scan_multiple = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Serial initialize') > -1)
+    {
+        var code = 'dprint(fdser, "';
+        var varList = '';
+        var code_add = '';
+        var i = 0;
+        while (this.getFieldValue('CPU' + i)) {
+            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+                code += '%d';
+            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character in')) {
+                code += '%c';
+            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number in')) {
+                code += '%x';
+            } else if (this.getFieldValue('TYPE' + i).includes('store binary number in')) {
+                code += '%b';
+            } else if (this.getFieldValue('TYPE' + i) === 'in') {
+                code += '%f';
+            }
+            if (this.getFieldValue('TYPE' + i) === 'in') {
+                varList += ', &__fpBuf' + i;
+                code_add += Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+                code_add += ' = (int) (__fpBuf' + i + ' * ' + this.getFieldValue('MULT' + i) + ');\n';
+                if(!this.disabled) {
+                    Blockly.propc.global_vars_["floatPointScanBuffer" + i] = 'float __fpBuf' + i + ';';
+                }
+            } else {
+                varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+            }
+            i++;
+        }
+        code += '"' + varList + ');\n' + code_add;
+        return code;
+    } else {
+        return '// ERROR: Serial is not initialized!\n';
     }
 };
 
@@ -1698,6 +1877,91 @@ Blockly.propc.xbee_print_multiple = function () {
         }
         code += '"' + varList + ');\n';
         return code;
+    }
+};
+
+Blockly.Blocks.xbee_scan_multiple = {
+    helpUrl: Blockly.MSG_AWX_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('XBee receive');
+        this.optionList_ = ['dec', 'char'];
+        this.updateShape_();
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true);
+        this.setMutator(new Blockly.Mutator(['console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
+        this.setWarningText(null);
+    },
+    mutationToDom: Blockly.Blocks['serial_scan_multiple'].mutationToDom,
+    domToMutation: Blockly.Blocks['serial_scan_multiple'].domToMutation,
+    decompose: Blockly.Blocks['serial_scan_multiple'].decompose,
+    compose: Blockly.Blocks['serial_scan_multiple'].compose,
+    saveConnections: Blockly.Blocks['serial_scan_multiple'].saveConnections,
+    updateShape_: Blockly.Blocks['serial_scan_multiple'].updateShape_,
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        var warnTxt = null;
+        if (allBlocks.toString().indexOf('XBee initialize') === -1) {
+            warnTxt = 'WARNING: You must use an XBee\ninitialize block at the beginning of your program!';
+        }
+        if (this.workspace && this.optionList_.length < 1) {
+            warnTxt = 'XBee recieve must have at least one search term.';
+        }
+        this.setWarningText(warnTxt);
+    },
+    getVars: function () {
+        var theVars = [];
+        for (var i = 0; i < this.optionList_.length; i++) {
+            theVars.push(this.getFieldValue('CPU' + i));
+        }
+        return theVars;
+    },
+    renameVar: function (oldName, newName) {
+        for (var i = 0; i < this.optionList_.length; i++) {
+            if (Blockly.Names.equals(oldName, this.getFieldValue('CPU' + i)))
+                this.setFieldValue(newName, 'CPU' + i);
+        }
+    }
+};
+
+Blockly.propc.xbee_scan_multiple = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('XBee initialize') > -1)
+    {
+        var code = 'dprint(fdser, "';
+        var varList = '';
+        var code_add = '';
+        var i = 0;
+        while (this.getFieldValue('CPU' + i)) {
+            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+                code += '%d';
+            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character in')) {
+                code += '%c';
+            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number in')) {
+                code += '%x';
+            } else if (this.getFieldValue('TYPE' + i).includes('store binary number in')) {
+                code += '%b';
+            } else if (this.getFieldValue('TYPE' + i) === 'in') {
+                code += '%f';
+            }
+            if (this.getFieldValue('TYPE' + i) === 'in') {
+                varList += ', &__fpBuf' + i;
+                code_add += Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+                code_add += ' = (int) (__fpBuf' + i + ' * ' + this.getFieldValue('MULT' + i) + ');\n';
+                if(!this.disabled) {
+                    Blockly.propc.global_vars_["floatPointScanBuffer" + i] = 'float __fpBuf' + i + ';';
+                }
+            } else {
+                varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+            }
+            i++;
+        }
+        code += '"' + varList + ');\n' + code_add;
+        return code;
+    } else {
+        return '// ERROR: XBee is not initialized!\n';
     }
 };
 
@@ -3220,7 +3484,6 @@ Blockly.Blocks.wx_scan_multiple = {
         this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('WX scan')
                 .appendField(new Blockly.FieldDropdown([["POST", "POST"], ["Websocket", "WS"], ["Command", "CMD"]], function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
@@ -3362,7 +3625,6 @@ Blockly.Blocks.wx_scan_multiple = {
         }
     },
     getVars: function () {
-
         var theVars = [this.getFieldValue('HANDLE')];
         for (var i = 0; i < this.optionList_.length; i++) {
             theVars.push(this.getFieldValue('CPU' + i));
