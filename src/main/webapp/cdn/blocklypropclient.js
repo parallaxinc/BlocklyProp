@@ -59,6 +59,32 @@ version_as_number = function (rawVersion) {
     return (Number(tempVersion[0]) << 20 | Number(tempVersion[1]) << 10 | Number(tempVersion[2]));
 };
 
+set_ui_buttons = function (ui_btn_state) {
+    if (ui_btn_state === 'available') {
+        $("#client-available").removeClass("hidden");
+        $("#client-searching").addClass("hidden");
+        $("#client-unavailable").addClass("hidden");
+        $("#prop-btn-ram").removeClass("disabled");
+        $("#prop-btn-eeprom").removeClass("disabled");
+        $("#prop-btn-term").removeClass("disabled");
+        $("#prop-btn-graph").removeClass("disabled");
+    } else {
+        $("#prop-btn-ram").addClass("disabled");
+        $("#prop-btn-eeprom").addClass("disabled");
+        $("#prop-btn-term").addClass("disabled");
+        $("#prop-btn-graph").addClass("disabled");
+        if (ui_btn_state === 'searching') {
+            $("#client-available").addClass("hidden");
+            $("#client-searching").removeClass("hidden");
+            $("#client-unavailable").addClass("hidden");
+        } else {
+            $("#client-available").addClass("hidden");
+            $("#client-searching").addClass("hidden");
+            $("#client-unavailable").removeClass("hidden");
+        }
+    }
+};
+
 check_client = function () {
     if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
@@ -74,29 +100,23 @@ check_client = function () {
                 if (version_as_number(data.version) >= version_as_number(client_baud_rate_min_version)) {
                     baud_rate_compatible = true;
                 }
-                
-                client_use_type =  'http';
-                client_available = true;
-                $("#client-available").removeClass("hidden");
-                $("#client-searching").addClass("hidden");
-                $("#client-unavailable").addClass("hidden");
 
+                client_use_type = 'http';
+                client_available = true;
+                set_ui_buttons('available');
                 if (check_com_ports && typeof (check_com_ports) === "function") {
                     check_com_ports();
                     check_com_ports_interval = setInterval(check_com_ports, 5000);
                 }
             }
-            
+
             setTimeout(check_client, 20000);
 
         }).fail(function () {
             clearInterval(check_com_ports_interval);
             client_use_type = 'none';
             client_available = false;
-
-            $("#client-searching").addClass("hidden");
-            $("#client-available").addClass("hidden");
-            $("#client-unavailable").removeClass("hidden");
+            set_ui_buttons('unavailable');
             setTimeout(find_client, 3000);
         });
     }
@@ -170,9 +190,9 @@ configure_client = function () {
 // checks for and, if found, uses a newer WebSockets-only client
 function establish_socket() {
     //check_ws_socket_interval = null;
-    
+
     // TODO: needs testing - is it better to do this here, or in the next TODO
-    if(client_ws_connection !== null && client_use_type !== 'ws') {
+    if (client_ws_connection !== null && client_use_type !== 'ws') {
         //client_ws_connection.close();
     }
 
@@ -191,15 +211,15 @@ function establish_socket() {
 
         var url = client_url.replace('http', 'ws');
         var connection = new WebSocket(url);
-        
+
         connection.onopen = function () {
-            
+
             // TODO: needs testing - is it better to do this here or in the previous TODO
             // Is there already a connection?  If so, close it:
             if (client_ws_connection !== null) {
                 client_ws_connection.close();
             }
-                
+
             var ws_msg = {type: 'hello-browser', baud: baudrate};
             client_ws_connection = connection;
             connection.send(JSON.stringify(ws_msg));
@@ -229,15 +249,15 @@ function establish_socket() {
                 // type: 'hello-client',
                 // version: [String version (semantic versioning)]
                 client_version = version_as_number(ws_msg.version);
-                
+
                 /* Test code: Terminal dump
-                setInterval(function() {
-                    Terminal dumper!
-                    console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
-                    terminal_dump = null;
-                }, 10000);
-                */
-                
+                 setInterval(function() {
+                 Terminal dumper!
+                 console.log('Terminal Dump!\n-------------------\n' + terminal_dump);
+                 terminal_dump = null;
+                 }, 10000);
+                 */
+
                 console.log("Websocket client found - version " + ws_msg.version);
 
                 if (version_as_number(ws_msg.version) < version_as_number(client_min_version)) {
@@ -249,9 +269,7 @@ function establish_socket() {
                 client_use_type = 'ws';
                 client_available = true;
 
-                $("#client-available").removeClass("hidden");
-                $("#client-searching").addClass("hidden");
-                $("#client-unavailable").addClass("hidden");
+                set_ui_buttons('available');
 
                 var portRequestMsg = JSON.stringify({type: 'port-list-request', msg: 'port-list-request'});
                 connection.send(portRequestMsg);
@@ -259,14 +277,14 @@ function establish_socket() {
             }
 
             // --- com port list/change
-            else if (ws_msg.type === 'port-list') {  
+            else if (ws_msg.type === 'port-list') {
                 // type: 'port-list', 
                 // ports: ['port1', 'port2', 'port3'...]
-                
+
                 // mark the time that this was received
                 var d = new Date();
                 client_ws_heartbeat = d.getTime();
-                
+
                 if (!client_ws_heartbeat_interval) {
                     client_ws_heartbeat_interval = setInterval(connection_heartbeat, 4000);
                 }
@@ -292,11 +310,11 @@ function establish_socket() {
                     (typeof ws_msg.msg === 'string' || ws_msg.msg instanceof String)) { // sometimes some weird stuff comes through...
                 // type: 'serial-terminal'
                 // msg: [String message]
-                
+
                 var msg_in = atob(ws_msg.msg);
 
                 //terminal_dump += ws_msg.packetID + ', ' + ws_msg.msg + ', ' + msg_in + '\n';
-                
+
                 if (ws_msg.msg !== undefined) {
                     if (term !== null) { // is the terminal open?
                         //term.write(msg_in);
@@ -305,43 +323,43 @@ function establish_socket() {
                         graph_new_data(msg_in);
                     }
                 }
-                                                                                   
+
                 // var ws_cts = {type: 'debug-cts', msg: 'ok'};
                 // client_ws_connection.send(JSON.stringify(ws_cts));
             }
-            
+
             // --- UI Commands coming from the client
-            else if (ws_msg.type === 'ui-command') { 
+            else if (ws_msg.type === 'ui-command') {
                 // type: 'ui-command', 
                 // action: ['open-terminal','open-graph','close-terminal','close-graph','close-compile','clear-compile','message-compile','alert']
                 // msg: [String message]
-                
+
                 if (ws_msg.action === 'open-terminal') {
                     serial_console();
-                    
+
                 } else if (ws_msg.action === 'open-graph') {
                     graphing_console();
-                    
+
                 } else if (ws_msg.action === 'close-terminal') {
                     $('#console-dialog').modal('hide');
                     newTerminal = false;
                     //term.destroy();
                     updateTermBox(0);
-                    
+
                 } else if (ws_msg.action === 'close-graph') {
                     $('#graphing-dialog').modal('hide');
                     graph_reset();
-                    
+
                 } else if (ws_msg.action === 'clear-compile') {
                     $('#compile-console').val('');
-                    
+
                 } else if (ws_msg.action === 'message-compile') {
                     $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
-                    
+
                 } else if (ws_msg.action === 'close-compile') {
                     $('#compile-dialog').modal('hide');
                     $('#compile-console').val('');
-                    
+
                 } else if (ws_msg.action === 'console-log') {
                     console.log(ws_msg.msg);
 
@@ -362,14 +380,12 @@ function establish_socket() {
 
         connection.onClose = function () {
             client_ws_connection = null;
-              //Removed 'if(...http)' since this code should not be called when using BP Client
+            //Removed 'if(...http)' since this code should not be called when using BP Client
 //            if(client_use_type !== 'http') {
             client_use_type = 'none';
             client_available = false;
 
-            $("#client-searching").addClass("hidden");
-            $("#client-available").addClass("hidden");
-            $("#client-unavailable").removeClass("hidden");
+            set_ui_buttons('unavailable');
 
             term = null;
             newTerminal = false;
@@ -386,7 +402,7 @@ function establish_socket() {
                 clearTimeout(check_ws_socket_interval);
                 check_ws_socket_interval = null;
             }
-            
+
             if (client_ws_heartbeat_interval) {
                 clearInterval(client_ws_heartbeat_interval);
                 client_ws_heartbeat_interval = null;

@@ -1168,16 +1168,21 @@ Blockly.propc.scribbler_servo = function () {
 
 Blockly.Blocks.scribbler_stop_servo = {
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
         this.appendDummyInput("")
-                .appendField("servo on")
+                .appendField("servo PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SERVO_PIN")
                 .appendField("disable");
         this.setInputsInline(false);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('robot'));
-        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
     }
 };
 
