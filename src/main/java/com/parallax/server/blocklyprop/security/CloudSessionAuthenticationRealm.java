@@ -129,7 +129,7 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                         "CloudSession");
             } else {
 
-                LOG.info("Authentication is using local login and password");
+                LOG.info("Authentication is using local authentication database");
 
                 // Principal = login
                 String principal = (String) token.getPrincipal();

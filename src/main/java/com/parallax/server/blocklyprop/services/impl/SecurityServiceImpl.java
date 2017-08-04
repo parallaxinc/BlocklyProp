@@ -255,8 +255,12 @@ public class SecurityServiceImpl implements SecurityService {
                     email, password, passwordConfirm, "en", screenname,
                     birthMonth, birthYear, parentEmail, parentEmailSource);
             
+            LOG.debug("New user ID is {}", id.toString());
+            
             if (id > 0) {
+                LOG.debug("Creating Blockly user record");
                 userDao.create(id);
+                userDao.updateScreenname(id, screenname);
             }
             
             return id;
@@ -392,6 +396,7 @@ public class SecurityServiceImpl implements SecurityService {
         SessionData sessionData = instance.sessionData.get();
         
         if (sessionData.getIdUser() == null) {
+            LOG.debug("Session reports a null user ID.");
             
             // Did not get a valid session
             if (SecurityUtils.getSubject().isAuthenticated()) {
