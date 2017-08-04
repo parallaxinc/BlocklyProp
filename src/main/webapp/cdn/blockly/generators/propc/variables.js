@@ -46,6 +46,7 @@ Blockly.Blocks.variables_get = {
         this.typeCheckRun = null;
     },
     onchange: function () {
+        var sBlock = this;
         if(!this.typeCheckRun) {
             this.typeCheckRun = setTimeout(function () {
                 var outType = "Number";
@@ -58,7 +59,7 @@ Blockly.Blocks.variables_get = {
                         var blockVars = fund.call(allBlocks[x]);
                         var varMatch = false;
                         for (var y = 0; y < blockVars.length; y++) {
-                            if (blockVars[y].toString() === this.getFieldValue('VAR')) {
+                            if (blockVars[y].toString() === sBlock.getFieldValue('VAR')) {
                                 varMatch = true;
                                 break;
                             }
@@ -72,8 +73,8 @@ Blockly.Blocks.variables_get = {
                         }
                     }
                 }
-                this.typeCheckRun = null;
-                this.setOutput(true, outType);
+                sBlock.typeCheckRun = null;
+                sBlock.setOutput(true, outType);
             }, 500);
         }
     },
