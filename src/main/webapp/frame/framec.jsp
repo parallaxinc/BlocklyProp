@@ -123,14 +123,13 @@
             <block type="controls_return"></block>
                 <c:choose>
                     <c:when test="${experimental == true}">
-                        <block type="custom_code_multiple"></block>
+                    <block type="custom_code_multiple"></block>
                     </c:when>
                 </c:choose>
         </category>
         <category name="<fmt:message key="category.operators" />" exclude="s3" colour="275">
             <category name="<fmt:message key="category.operators.numbers" />" >
                 <block type="math_arithmetic"></block>
-                <!--<block type="math_arithmetic_multiple"></block> -->
                 <block type="math_limit"></block>
                 <block type="constrain_value"></block>
                 <block type="math_crement"></block>
@@ -150,6 +149,7 @@
                 <block type="logic_operation"></block>
                 <block type="logic_negate"></block>
                 <block type="logic_compare"></block>
+                <block type="map_value"></block>
                 <block type="math_advanced"></block>
                 <block type="math_inv_trig">
                     <value name="ARG3">
@@ -200,6 +200,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -241,6 +244,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -252,6 +258,9 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
+            <block type="music_note">
+                <field name="OCTAVE">0.125</field>
+            </block>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>
@@ -616,10 +625,12 @@
             </category>
             <category name="<fmt:message key="category.communicate.protocols" />">
                 <block type="serial_open"></block>
-                <block type="serial_tx"></block>
+                <!-- <block type="serial_tx"></block> -->
                 <block type="serial_send_text"></block>
-                <block type="serial_rx"></block>
+                <!-- <block type="serial_rx"></block> -->
+                <block type="serial_print_multiple"></block>
                 <block type="serial_receive_text"></block>
+                <block type="serial_scan_multiple"></block>
                 <block type="shift_in"></block>
                 <block type="shift_out">
                     <value name="VALUE">
@@ -700,6 +711,7 @@
                         </block>
                     </value>
                 </block>
+                <block type="console_print_multiple"></block>
                 <block type="console_scan_text"></block>
                 <block type="console_scan_number"></block>
                 <block type="console_newline"></block>
@@ -792,7 +804,9 @@
             <category name="<fmt:message key="category.communicate.xbee" />">
                 <block type="xbee_setup"></block>
                 <block type="xbee_transmit"></block>
+                <block type="xbee_print_multiple"></block>
                 <block type="xbee_receive"></block>
+                <block type="xbee_scan_multiple"></block>
             </category>
         </category>
 
@@ -1169,7 +1183,7 @@
                 </block>
             </category>
             <category name="<fmt:message key="category.analog-pulses.pwm" />" exclude="s3">
-                <block type="pwm_start"></block>
+                <!-- <block type="pwm_start"></block> -->
                 <block type="pwm_set">
                     <value name="DUTY_CYCLE">
                         <block type="math_number">
@@ -1226,31 +1240,28 @@
             </category>
         </category>
         <category name="<fmt:message key="category.servo" />" exclude="s3,heb" colour="165">
-            <category name="<fmt:message key="category.servo.standard-servo" />">
-                <block type="servo_move">
-                    <value name="ANGLE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
-            <category name="<fmt:message key="category.servo.cr-servo" />">
-                <block type="servo_speed">
-                    <value name="SPEED">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="servo_set_ramp">
-                    <value name="RAMPSTEP">
-                        <block type="math_number">
-                            <field name="NUM">50</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
+            <block type="servo_move">
+                <value name="ANGLE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="servo_speed">
+                <value name="SPEED">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="servo_set_ramp">
+                <value name="RAMPSTEP">
+                    <block type="math_number">
+                        <field name="NUM">50</field>
+                    </block>
+                </value>
+            </block>
+            <block type="scribbler_stop_servo"></block>
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
             <block type="ab_drive_init"></block>
@@ -1315,6 +1326,7 @@
             <block type="logic_negate"></block>
             <block type="logic_compare"></block>
             <block type="constrain_value"></block>
+            <block type="map_value"></block>
             <block type="math_advanced"></block>
             <block type="math_inv_trig">
                 <value name="ARG3">
@@ -1526,7 +1538,7 @@
             <block type="system_counter"></block>
                 <c:choose>
                     <c:when test="${experimental == true}">
-                        <block type="custom_code"></block>
+                    <block type="custom_code"></block>
                     </c:when>
                 </c:choose>
         </category>
