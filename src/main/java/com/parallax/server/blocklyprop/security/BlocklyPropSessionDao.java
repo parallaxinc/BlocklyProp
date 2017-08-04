@@ -32,18 +32,20 @@ public class BlocklyPropSessionDao implements SessionDAO {
 
     @Override
     public Serializable create(Session session) {
-        LOG.info("Create BlocklyProp session");
+        LOG.debug("Create BlocklyProp session");
         
         // Set session timeout for 1 hours
         session.setTimeout(3600000);
         
+        // Create a unique session id
         SimpleSession simpleSession = (SimpleSession) session;
         String uuid = UUID.randomUUID().toString();
         
+        // create a new session
         simpleSession.setId(uuid);
         SessionServiceImpl.getSessionService().create(convert(simpleSession));
-        LOG.info("Session timeout is: {}", simpleSession.getTimeout());
-        LOG.info("Creating session: {}", simpleSession.getId());
+        LOG.debug("Session timeout is: {}", simpleSession.getTimeout());
+        LOG.debug("Creating session: {}", simpleSession.getId());
 
         return uuid;
     }
@@ -54,10 +56,9 @@ public class BlocklyPropSessionDao implements SessionDAO {
 
         try {
             // Obtain an existing session object
-            SessionRecord sessionRecord 
-                    = SessionServiceImpl
-                            .getSessionService()
-                            .readSession(sessionId.toString());
+            SessionRecord sessionRecord = SessionServiceImpl
+                    .getSessionService()
+                    .readSession(sessionId.toString());
  
             if (sessionRecord != null) {
                 return convert(sessionRecord);
@@ -74,6 +75,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
     @Override
     public void update(Session session) throws UnknownSessionException {
         LOG.debug("Update session: {}", session.getId());
+        
         try {
             // updateSession() can throw a NullPointerException if something goes wrong
             SessionServiceImpl.getSessionService().updateSession(convert(session));
@@ -102,41 +104,56 @@ public class BlocklyPropSessionDao implements SessionDAO {
         return sessions;
     }
 
+    /***
+     * Convert a Session object to a SessionRecord object
+     * @param session - Session object to be converted
+     * @return a SessionRecord object 
+     */
     protected SessionRecord convert(Session session) {
         LOG.debug("Converting session {} to a SessionRecord object", session.getId());
         
-        SimpleSession ssession = (SimpleSession) session;
+        SimpleSession sSession = (SimpleSession) session;
+        
+        // Create a SessionRecord object and populate details
         SessionRecord sessionRecord = new SessionRecord();
         sessionRecord.setIdsession(session.getId().toString());
         sessionRecord.setStarttimestamp(new Timestamp(session.getStartTimestamp().getTime()));
         sessionRecord.setLastaccesstime(new Timestamp(session.getLastAccessTime().getTime()));
         sessionRecord.setTimeout(session.getTimeout());
         sessionRecord.setHost(session.getHost());
-        if (ssession.getAttributes() != null) {
-            HashMap<Object, Object> attributes = (HashMap<Object, Object>) ssession.getAttributes();
+        
+        // Add session attributes to the SessionRecord object if any are available
+        if (sSession.getAttributes() != null) {
+            HashMap<Object, Object> attributes = (HashMap<Object, Object>) sSession.getAttributes();
             sessionRecord.setAttributes(SerializationUtils.serialize(attributes));
         }
         return sessionRecord;
     }
 
+    /***
+     * Convert a SessionRecord object to a Session object
+     * @param sessionRecord
+     * @return 
+     */
     protected Session convert(SessionRecord sessionRecord) {
-        LOG.debug("Converting SessionRecord {} into a SimpleSession object", sessionRecord.getIdsession());
+        LOG.debug("Converting SessionRecord {} into a SimpleSession object",
+                sessionRecord.getIdsession());
         
-        SimpleSession ssession = new SimpleSession();
-        ssession.setId(sessionRecord.getIdsession());
-        ssession.setStartTimestamp(sessionRecord.getStarttimestamp());
-        ssession.setLastAccessTime(sessionRecord.getLastaccesstime());
-        ssession.setTimeout(sessionRecord.getTimeout());
-        ssession.setHost(sessionRecord.getHost());
+        SimpleSession sSession = new SimpleSession();
+        sSession.setId(sessionRecord.getIdsession());
+        sSession.setStartTimestamp(sessionRecord.getStarttimestamp());
+        sSession.setLastAccessTime(sessionRecord.getLastaccesstime());
+        sSession.setTimeout(sessionRecord.getTimeout());
+        sSession.setHost(sessionRecord.getHost());
         
         if (sessionRecord.getAttributes() != null) {
             HashMap<Object, Object> attributes 
                     = (HashMap<Object, Object>)
                         SerializationUtils.deserialize(sessionRecord.getAttributes());
             
-            ssession.setAttributes(attributes);
+            sSession.setAttributes(attributes);
         }
-        return ssession;
+        return sSession;
     }
 
 }

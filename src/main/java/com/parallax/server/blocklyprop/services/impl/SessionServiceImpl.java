@@ -44,7 +44,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void create(SessionRecord session) {
-        log.info("Creating a new user session with timeout set to {}", session.getTimeout());
+        log.debug("Creating a new user session with timeout set to {}", session.getTimeout());
 
         sessionDao.create(session);
     }
@@ -65,14 +65,14 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void deleteSession(String idSession) {
-        log.info("Deleting session {}", idSession);
+        log.debug("Deleting session {}", idSession);
 
         sessionDao.deleteSession(idSession);
     }
 
     @Override
     public Collection<SessionRecord> getActiveSessions() {
-        log.info("Getting all active sessions");
+        log.debug("Getting all active sessions");
 
         return sessionDao.getActiveSessions();
     }
