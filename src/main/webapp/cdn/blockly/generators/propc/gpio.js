@@ -617,7 +617,7 @@ Blockly.propc.eeprom_read = function () {
 Blockly.Blocks.servo_move = {
     init: function () {
         if (profile.default.description === "Scribbler Robot") {
-            this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
         } else {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
@@ -650,10 +650,15 @@ Blockly.propc.servo_move = function () {
 };
 
 Blockly.Blocks.servo_speed = {
-    helpUrl: Blockly.MSG_SERVO_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
         this.setTooltip(Blockly.MSG_SERVO_SPEED_TOOLTIP);
-        this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
                 .appendField("CR Servo PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');

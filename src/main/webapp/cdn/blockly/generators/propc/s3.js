@@ -224,7 +224,7 @@ Blockly.Blocks.scribbler_simple_line = {
                 .appendField("line");
         this.setOutput(true, 'Number');
         this.setColour(colorPalette.getColor('input'));
-        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_LINE_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LINE_TOOLTIP);
     },
     checkForWas: function (state) {
@@ -1169,7 +1169,7 @@ Blockly.propc.scribbler_servo = function () {
 Blockly.Blocks.scribbler_stop_servo = {
     init: function () {
         if (profile.default.description === "Scribbler Robot") {
-            this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
         } else {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
@@ -1770,7 +1770,7 @@ Blockly.Blocks.calibrate_line_sensor = {
                 .appendField("line sensor calibrate");
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_LINE_HELPURL);
         this.setTooltip(Blockly.MSG_S3_LINE_CALIBRATE_TOOLTIP);
     }
 };
