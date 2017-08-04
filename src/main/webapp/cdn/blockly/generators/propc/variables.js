@@ -42,7 +42,6 @@ Blockly.Blocks.variables_get = {
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
-        this.onchange();
     },
     onchange: function () {
         var outType = null;
