@@ -42,30 +42,40 @@ Blockly.Blocks.variables_get = {
                 .appendField(Blockly.LANG_VARIABLES_GET_TITLE_1)
                 .appendField(new Blockly.FieldVariable(
                         Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+        this.setOutput(true);
+        this.typeCheckRun = null;
     },
     onchange: function () {
-        var outType = null;
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-        for (var x = 0; x < allBlocks.length; x++) {
-            var func = allBlocks[x].getVarType;
-            var fund = allBlocks[x].getVars;
-            if (func) {
-                var blockType = func.call(allBlocks[x]);
-                var blockVars = fund.call(allBlocks[x]);
-                var varMatch = false;
-                for (var y = 0; y < blockVars.length; y++) {
-                    if (blockVars[y].toString() === this.getFieldValue('VAR')) {
-                        varMatch = true;
+        if(!this.typeCheckRun) {
+            this.typeCheckRun = setTimeout(function () {
+                var outType = "Number";
+                var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+                for (var x = 0; x < allBlocks.length; x++) {
+                    var func = allBlocks[x].getVarType;
+                    var fund = allBlocks[x].getVars;
+                    if (func) {
+                        var blockType = func.call(allBlocks[x]);
+                        var blockVars = fund.call(allBlocks[x]);
+                        var varMatch = false;
+                        for (var y = 0; y < blockVars.length; y++) {
+                            if (blockVars[y].toString() === this.getFieldValue('VAR')) {
+                                varMatch = true;
+                                break;
+                            }
+                        }
+                        if (blockType === 'String' && varMatch) {
+                            var outType = "String";
+                            break;
+                        } else if (blockType === 'Number' && varMatch) {
+                            var outType = "Number";
+                            break;
+                        }
                     }
                 }
-                if (blockType === 'String' && varMatch) {
-                    var outType = "String";
-                } else if (blockType === 'Number' && varMatch) {
-                    var outType = "Number";
-                }
-            }
+                this.typeCheckRun = null;
+                this.setOutput(true, outType);
+            }, 500);
         }
-        this.setOutput(true, outType);
     },
     getVars: function () {
         return [this.getFieldValue('VAR')];
