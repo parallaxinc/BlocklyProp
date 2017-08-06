@@ -143,12 +143,14 @@ function renderContent() {
             'brace_style': 'expand',
             'indent_size': 2
         });
-        code = code.replace(/,\n[\s\xA0]+/g, ", ");
-        code = code.replace(/, & /g, ", &");
-        code = code.replace(/, \* /g, ", *");
-        code = code.replace(/\( & /g, "(&");
-        code = code.replace(/\( \* /g, "(*");
-        code = code.replace(/char \* /g, "char *");
+        code = code.replace(/,\n[\s\xA0]+/g, ", ")
+                .replace(/, & /g, ", &")
+                .replace(/, \* /g, ", *")
+                .replace(/\( & /g, "(&")
+                .replace(/\( \* /g, "(*")
+                .replace(/char \* /g, "char *")
+                .replace(/fdserial \* /g, "fdserial *")
+                .replace(/ws2812 \* /g, "ws2812 *");
         codePropC.setValue(code);
         codePropC.gotoLine(0);
     }
