@@ -59,6 +59,7 @@ $(document).ready(function () {
                 updateTermBox(String.fromCharCode(keycode));
             } else if (active_connection === 'websocket') {
                 msg_to_send.msg = String.fromCharCode(keycode);
+                msg_to_send.portPath = getComPort();
                 msg_to_send.action = 'msg';
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
@@ -88,6 +89,7 @@ $(document).ready(function () {
             updateTermBox(String.fromCharCode(charcode));
         } else if (active_connection === 'websocket') {
             msg_to_send.msg = String.fromCharCode(charcode);
+            msg_to_send.portPath = getComPort();
             msg_to_send.action = 'msg';
             client_ws_connection.send(JSON.stringify(msg_to_send));
         }
