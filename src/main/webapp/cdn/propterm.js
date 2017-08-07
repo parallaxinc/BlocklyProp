@@ -37,35 +37,17 @@ $(document).ready(function () {
     term_height = Math.floor(parseInt(termPxHigh.replace('px', '')));
     //term_width = Math.floor((parseInt(termPxWide.replace('px', '')) - 20) / term_width);
 
-    var msg_to_send = {
-        type: 'serial-terminal',
-        outTo: 'terminal',
-        portPath: getComPort(),
-        baudrate: baudrate.toString(10),
-        msg: 'none',
-        action: 'msg'
-    };
-
     $("#serial_console").keydown(function (e) {
+        //Validate key (or emit special key character)
         var keycode = e.keyCode || e.which;
         if (keycode === 8 || keycode === 13) {
-
-            if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
-                active_connection.send(String.fromCharCode(keycode));
-                if (trap_echos) {
-                    echo_trap.push(keycode);
-                }
-            } else if (active_connection === 'simulated') {
-                updateTermBox(String.fromCharCode(keycode));
-            } else if (active_connection === 'websocket') {
-                msg_to_send.msg = String.fromCharCode(keycode);
-                msg_to_send.action = 'msg';
-                client_ws_connection.send(JSON.stringify(msg_to_send));
-            }
+            //Emit special character
+            processKey(keycode);
         }
 
         //console.log('sending: ' + keycode);
 
+        //Validate key
         var valid =
                 (keycode > 47 && keycode < 58) || // number keys
                 keycode === 32 || // spacebar
@@ -77,22 +59,9 @@ $(document).ready(function () {
     });
 
     $("#serial_console").keypress(function (e) {
-        var charcode = e.charCode;
-
-        if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
-            active_connection.send(String.fromCharCode(charcode));
-            if (trap_echos) {
-                echo_trap.push(charcode);
-            }
-        } else if (active_connection === 'simulated') {
-            updateTermBox(String.fromCharCode(charcode));
-        } else if (active_connection === 'websocket') {
-            msg_to_send.msg = String.fromCharCode(charcode);
-            msg_to_send.action = 'msg';
-            client_ws_connection.send(JSON.stringify(msg_to_send));
-        }
+        //Emit key character
+        processKey(e.charCode);
         //console.log('sending: ' + charcode);
-
     });
 
     $("#serial_console").click(function () {
@@ -122,6 +91,28 @@ $(document).ready(function () {
         }
     });
 });
+
+function processKey(code) {
+    //Emit key code to properly destination
+    if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
+        active_connection.send(String.fromCharCode(code));
+        if (trap_echos) {
+            echo_trap.push(code);
+        }
+    } else if (active_connection === 'simulated') {
+        updateTermBox(String.fromCharCode(code));
+    } else if (active_connection === 'websocket') {
+        var msg_to_send = {
+            type: 'serial-terminal',
+            outTo: 'terminal',
+            portPath: getComPort(),
+            baudrate: baudrate.toString(10),
+            msg: String.fromCharCode(code),
+            action: 'msg'
+        };
+        client_ws_connection.send(JSON.stringify(msg_to_send));
+    } 
+}
 
 function displayInTerm(str) {
     /*
