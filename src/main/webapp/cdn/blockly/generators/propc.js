@@ -23,29 +23,105 @@
  */
 'use strict';
 
-/**
- * Quotes - Created by Vale Tolpegin on 29-5-2016.
- */
-
-/*
-var quotes = {
-    /**
-     * Create an image of an open or closed quote.
-     * @param {boolean} open True if open quote, false if closed.
-     * @return {!Blockly.FieldImage} The field image of the quote.
-     * @this Blockly.Block
-
-    newQuote_: function (open) {
-        if (open === this.RTL) {
-            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAqUlEQVQI1z3KvUpCcRiA8ef9E4JNHhI0aFEacm1o0BsI0Slx8wa8gLauoDnoBhq7DcfWhggONDmJJgqCPA7neJ7p934EOOKOnM8Q7PDElo/4x4lFb2DmuUjcUzS3URnGib9qaPNbuXvBO3sGPHJDRG6fGVdMSeWDP2q99FQdFrz26Gu5Tq7dFMzUvbXy8KXeAj57cOklgA+u1B5AoslLtGIHQMaCVnwDnADZIFIrXsoXrgAAAABJRU5ErkJggg==';
-        } else {
-            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAn0lEQVQI1z3OMa5BURSF4f/cQhAKjUQhuQmFNwGJEUi0RKN5rU7FHKhpjEH3TEMtkdBSCY1EIv8r7nFX9e29V7EBAOvu7RPjwmWGH/VuF8CyN9/OAdvqIXYLvtRaNjx9mMTDyo+NjAN1HNcl9ZQ5oQMM3dgDUqDo1l8DzvwmtZN7mnD+PkmLa+4mhrxVA9fRowBWmVBhFy5gYEjKMfz9AylsaRRgGzvZAAAAAElFTkSuQmCC';
+if (!String.prototype.endsWith) {
+    String.prototype.endsWith = function (searchString, position) {
+        var subjectString = this.toString();
+        if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
+            position = subjectString.length;
         }
-        return new Blockly.FieldImage(file, 12, 12, '"');
-    }
+        position -= searchString.length;
+        var lastIndex = subjectString.indexOf(searchString, position);
+        return lastIndex !== -1 && lastIndex === position;
+    };
+}
 
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function (searchString, position) {
+        position = position || 0;
+        return this.substr(position, searchString.length) === searchString;
+    };
+}
+
+function filterToolbox(profileName, peripherals) {
+    var componentlist = peripherals.slice();
+    componentlist.push(profileName);
+    // console.log(componentlist);
+    $("#toolbox").find('category').each(function () {
+        var toolboxEntry = $(this);
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        if (document.referrer.indexOf('?') !== -1) {
+            if (document.referrer.split('?')[1].indexOf('grayscale=1') > -1) {
+                var colorChanges = {
+                    '140': '#AAAAAA',
+                    '165': '#222222',
+                    '185': '#333333',
+                    '205': '#444444',
+                    '225': '#555555',
+                    '250': '#666666',
+                    '275': '#777777',
+                    '295': '#888888',
+                    '320': '#999999',
+                    '340': '#111111'
+                };
+                var colour = toolboxEntry.attr('colour');
+                if (colour)
+                    toolboxEntry.attr('colour', colorChanges[colour]);
+            }
+        }
+    });
+    $("#toolbox").find('sep').each(function () {
+        var toolboxEntry = $(this);
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+    });
+}
+
+// http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
+/**
+ * @description determine if an array contains one or more items from another array.
+ * @param {array} haystack the array to search.
+ * @param {array} arr the array providing items to check for in the haystack.
+ * @return {boolean} true|false if haystack contains at least one item from arr.
+ */
+var findOne = function (haystack, arr) {
+    return arr.some(function (v) {
+        // console.log(v + " " + (haystack.indexOf(v) >= 0));
+        return haystack.indexOf(v) >= 0;
+    });
 };
-*/
+
+// http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
 
 var array_contains = function (needle) {
     // Per spec, the way to identify NaN is that it is not equal to itself
@@ -73,26 +149,6 @@ var array_contains = function (needle) {
 
     return indexOf.call(this, needle) > -1;
 };
-
-/*
- var directionArrow = {
- /**
- * Create an image of a arrow pointing toward or away.
- * @param {string} direction 'forward' or 'backward'.
- * @return {!Blockly.FieldImage} The field image of the arrow.
- * @this Blockly.Block
- *
- newArrow_: function (direction) {
- if (direction === 'forward') {
- var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C3 L2%2C10 L4%2C10 z M3%2C.5 L.5%2C3 L5.5%2C3 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
- return new Blockly.FieldImage(file, 8, 12, '&#8593;');
- } else {
- var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C0 L2%2C7 L4%2C7 z M3%2C10 L0.2%2C6.5 L5.8%2C6.5 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
- return new Blockly.FieldImage(file, 8, 12, '&#8595;');
- }
- }
- };
- */
 
 /**
  * Color Palette - Created by Michel on 30-4-2016.

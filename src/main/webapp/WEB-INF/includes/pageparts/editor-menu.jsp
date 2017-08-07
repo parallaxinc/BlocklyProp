@@ -87,6 +87,11 @@
                             <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
                             <li><a href="#" onclick="configure_client()"><fmt:message key="editor.run.configure" /></a></li>
+                            <c:choose>
+                                <c:when test="${experimental == true}">
+                                    <li><a href="#" onclick="setEditPropcMode()"><span id="propc-edit-status">Enable</span> Prop C code editing</a></li>
+                                </c:when>
+                            </c:choose>
                         </ul></span>
                 </div>
             </div>

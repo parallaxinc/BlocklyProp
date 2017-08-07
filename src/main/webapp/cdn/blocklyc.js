@@ -63,7 +63,15 @@ var graph_data = {
     ]
 };
 
-
+function setEditPropcMode () {
+    if (codePropC.getReadOnly()) {
+        codePropC.setReadOnly(false);
+        $('#propc-edit-status').html('Disable');
+    } else {
+        codePropC.setReadOnly(true);
+        $('#propc-edit-status').html('Enable');
+    }
+}
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} id ID of tab clicked.
@@ -150,6 +158,7 @@ function renderContent() {
                 .replace(/\( \* /g, "(*")
                 .replace(/char \* /g, "char *")
                 .replace(/fdserial \* /g, "fdserial *")
+                .replace(/colorPal \* /g, "colorPal *")
                 .replace(/ws2812 \* /g, "ws2812 *");
         codePropC.setValue(code);
         codePropC.gotoLine(0);
@@ -160,7 +169,7 @@ function renderContent() {
  * Initialize Blockly.  Called on page load.
  * @param {!Blockly} blockly Instance of Blockly from iframe.
  */
-function init(blockly) {
+function init(blockly) {    
     codePropC = ace.edit("code-propc");
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
@@ -192,8 +201,15 @@ function setBaudrate(_baudrate) {
 }
 
 function cloudCompile(text, action, successHandler) {
-
-    var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+    
+    // if PropC is in edit mode, get it from the editor, otherwise render it from the blocks.
+    var propcCode = '';
+    if(codePropC.getReadOnly()) {
+        propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+    } else {
+        propcCode = codePropC.getValue();
+    }
+    
     var isEmptyProject = propcCode.indexOf("EMPTY_PROJECT") > -1;
     if (isEmptyProject) {
         alert("You can't compile an empty project");
