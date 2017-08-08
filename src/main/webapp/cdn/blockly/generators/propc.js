@@ -378,7 +378,8 @@ Blockly.propc.finish = function (code) {
         } else if (Blockly.propc.serial_graphing_) {
             setup += "/* SERIAL_GRAPHING USED */\n";
         }
-        if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
+        if (Blockly.mainWorkspace.getAllBlocks().length === 0 && 
+                profile.default.description !== "Propeller C (code-only)") {
             setup += "/* EMPTY_PROJECT */\n";
         }
 
