@@ -52,6 +52,7 @@
                     <a id="prop-btn-graph" onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle disabled" id="open-graph-output"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
                         <path d="M.5,0 L.5,13.5 L12.5,13.5 M3.5,0 L3.5,13.5 M6.5,0 L6.5,13.5 M9.5,0 L9.5,13.5 M12.5,0 L12.5,13.5 M.5,3.5 L12.5,3.5 M.5,7 L12.5,7 M.5,10.5 L12.5,10.5 M.5,.5 L12.5,.5" style="stroke:rgba(255,255,255,.6);stroke-width:1;fill:none;"/>
                         <path d="M0,13 L6,5 L9,8 L14,2" style="stroke:#fff;stroke-width:2;fill:none;"/></svg></a>
+                    <a id="prop-btn-pretty" style="display: none;" onclick="prettyCode(null)" data-toggle="tooltip" title="Beautify Code" data-placement="bottom" class="btn btn-info btn-circle"><span style="text-align: center; padding: 0px 5px 0px 5px;"><b>{}</b></span></a>
                 </div>
                 <div style="display:inline; clear:right; float:right;  padding-right: 10px;" align="right">
 
@@ -87,7 +88,13 @@
                             <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
                             <li><a href="#" onclick="configure_client()"><fmt:message key="editor.run.configure" /></a></li>
-                        </ul></span>
+                            <c:choose>
+                                <c:when test="${experimental == true}">
+                                <li id="menu-save-as-propc" style="display: none;"><a href="#" onclick="saveAsPropc()">Edit Propeller C code...</a></li>
+                                </c:when>
+                            </c:choose>
+                        </ul>
+                    </span>
                 </div>
             </div>
         </div>

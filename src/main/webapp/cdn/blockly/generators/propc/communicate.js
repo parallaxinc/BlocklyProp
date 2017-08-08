@@ -1327,7 +1327,7 @@ Blockly.propc.serial_scan_multiple = function () {
                 varList += ', &__fpBuf' + i;
                 code_add += Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
                 code_add += ' = (int) (__fpBuf' + i + ' * ' + this.getFieldValue('MULT' + i) + ');\n';
-                if(!this.disabled) {
+                if (!this.disabled) {
                     Blockly.propc.global_vars_["floatPointScanBuffer" + i] = 'float __fpBuf' + i + ';';
                 }
             } else {
@@ -2081,7 +2081,7 @@ Blockly.propc.xbee_scan_multiple = function () {
                 varList += ', &__fpBuf' + i;
                 code_add += Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
                 code_add += ' = (int) (__fpBuf' + i + ' * ' + this.getFieldValue('MULT' + i) + ');\n';
-                if(!this.disabled) {
+                if (!this.disabled) {
                     Blockly.propc.global_vars_["floatPointScanBuffer" + i] = 'float __fpBuf' + i + ';';
                 }
             } else {
@@ -3004,7 +3004,7 @@ Blockly.propc.ws2812b_set = function () {
         }
         if (this.getInput('RGBPIN')) {
             p = this.getFieldValue('RGB_PIN');
-        }       
+        }
         var code = 'RGBleds' + p + '[constrain(' + led + ', 1, LED_COUNT) - 1] = ' + color + ';\n';
         return code;
     }
@@ -3061,7 +3061,7 @@ Blockly.propc.ws2812b_set_multiple = function () {
         }
         if (this.getInput('RGBPIN')) {
             p = this.getFieldValue('RGB_PIN');
-        }       
+        }
         var code = '';
         if (!this.disabled) {
             var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
@@ -3117,7 +3117,7 @@ Blockly.propc.ws2812b_update = function () {
         }
         if (this.getInput('RGBPIN')) {
             p = this.getFieldValue('RGB_PIN');
-        }       
+        }
         return 'ws2812_set(ws2812b' + p + ', LED_PIN' + p + ', RGBleds' + p + ', LED_COUNT' + p + ');\n';
     }
 };
@@ -5105,3 +5105,145 @@ Blockly.propc.graph_settings = function () {
     return '';
 };
 
+
+var xbee_settings = [
+    ["WR", "Write", "Write parameter values to non-volatile memory so that parameter modifications persist through subsequent power-up or reset. Note: Once WR is issued, no additional characters should be sent to the module until after the response \"OK\\r\" is received.", [], null, null],
+    ["RE", "Restore Defaults", "Restore module parameters to factory defaults.", [], null, null],
+    ["FR", "Software Reset", "Responds immediately with an OK then performs a hard reset ~100ms later.", [], null, null],
+    ["CH", "Channel", "Set/Read the channel number used for transmitting and receiving data between RF modules (uses 802.15.4 protocol channel numbers).", [["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"]], 12, "%d"],
+    ["ID", "PAN ID", "Set/Read the PAN (Personal Area Network) ID. Use 0xFFFF to broadcast messages to all PANs.", [["Min", 0], ["Max", 0xFFFF]], 13106, "%x"],
+    ["DH", "Destination Address High", "Set/Read the upper 32 bits of the 64-bit destination address. When combined with DL, it defines the destination address used for transmission. To transmit using a 16-bit address, set DH parameter to zero and DL less than 0xFFFF. 0x000000000000FFFF is the broadcast address for the PAN.", [["Min", 0], ["Max", 0xFFFFFFFF]], 0, "%x"],
+    ["DL", "Destination Address Low", "Set/Read the lower 32 bits of the 64-bit destination address. When combined with DH, DL defines the destination address used for transmission. To transmit using a 16-bit address, set DH parameter to zero and DL less than 0xFFFF. 0x000000000000FFFF is the broadcast address for the PAN.", [["Min", 0], ["Max", 0xFFFFFFFF]], 0, "%x"],
+    ["MY", "16-bit Source Address", "Set/Read the RF module 16-bit source address. Set MY = 0xFFFF to disable reception of packets with 16-bit addresses. 64-bit source address (serial number) and broadcast address (0x000000000000FFFF) is always enabled.", [["Min", 0], ["Max", 0xFFFF]], 0, "%x"],
+    ["SH", "Serial Number High", "Read high 32 bits of the RF module's unique IEEE 64-bit address. 64-bit source address is always enabled.", [["Min", 0], ["Max", 0xFFFFFFFF]], -1, "%x"],
+    ["SL", "Serial Number Low", "Read low 32 bits of the RF module's unique IEEE 64-bit address. 64-bit source address is always enabled.", [["Min", 0], ["Max", 0xFFFFFFFF]], -1, "%x"],
+    ["RR", "XBee Retries", "Set/Read the maximum number of retries the module will execute in addition to the 3 retries provided by the 802.15.4 MAC. For each XBee retry, the 802.15.4 MAC can execute up to 3 retries.", [["Min", 0], ["Max", 6]], 0, "%d"],
+    ["RN", "Random Delay Slots", "Set/Read the minimum value of the back-off exponent in the CSMA-CA algorithm that is used for collision avoidance. If RN = 0, collision avoidance is disabled during the first iteration of the algorithm (802.15.4 - macMinBE).", [["Min", 0], ["Max", 3]], 0, "%d"],
+    ["MM", "MAC Mode", "Set/Read MAC Mode value. MAC Mode enables/disables the use of a Digi header in the 802.15.4 RF packet. When Modes 0 or 3 are enabled (MM=0,3), duplicate packet detection is enabled as well as certain AT commands. Please see the detailed MM description on page 47 for additional information.", [["Digi Mode", "0"], ["802.15.4 (no ACKs)", "1"], ["802.15.4 (with ACKs)", "2"], ["Digi Mode (no ACKs)", "3"]], 0, "%d"],
+    ["NI", "Node Identifier", "Stores a string identifier. The register only accepts printable ASCII data. A string can not start with a space. Carriage return ends command. Command will automatically end when maximum bytes for the string have been entered. This string is returned as part of the ND (Node Discover) command. This identifier is also used with the DN (Destination Node) command.", [["Length", 20]], "", "%s"],
+    ["ND", "Node Discover", "Discovers and reports all RF modules found. The following information is reported for each module discovered (the example cites use of Transparent operation (AT command format) - refer to the long ND command description regarding differences between Transparent and API operation). MY SH SL DB NI The amount of time the module allows for responses is determined by the NT parameter. In Transparent operation, command completion is designated by a (carriage return). ND also accepts a Node Identifier as a parameter. In this case, only a module matching the supplied identifier will respond. If ND self-response is enabled (NO=1) the module initiating the node discover will also output a response for itself.", [["Length", 20]], "", "%s"],
+    ["NT", "Node Discover Time", "Set/Read the amount of time a node will wait for responses from other nodes when using the ND (Node Discover) command.", [["Min", 1], ["Max", 0xFC]], 25, "%d"],
+    ["NO", "Node Discover Options", "Enables node discover self-response on the module. 0-1 0 DN ( v1.x80*) Networking {Identification} Destination Node. Resolves an NI (Node Identifier) string to a physical address. The following events occur upon successful command execution: 1. DL and DH are set to the address of the module with the matching Node Identifier. 2. “OK” is returned. 3. RF module automatically exits AT Command Mode If there is no response from a module within 200 msec or a parameter is not specified (left blank), the command is terminated and an “ERROR” message is returned. 20-character ASCII string -", [["Length", 20]], "", "%s"],
+    ["CE", "Coordinator Enable", "Set/Read the coordinator setting.", [["End Device", "0"], ["Coordinator", "1"]], 0, "%d"],
+    ["SC", "Scan Channels", "Set/Read list of channels to scan for all Active and Energy Scans as a bitfield. This affects scans initiated in command mode (AS, ED) and during End Device Association and Coordinator startup.", [["Bitfield", 16], ["Mask", 0x1FFE]], 0x1FFE, "%b"],
+    ["SD", "Scan Duration", "Set/Read the scan duration exponent. End Device - Duration of Active Scan during Association. Coordinator - If ‘ReassignPANID’ option is set on Coordinator [refer to A2 parameter], SD determines the length of time the Coordinator will scan channels to locate existing PANs. If ‘ReassignChannel’ option is set, SD determines how long the Coordinator will perform an Energy Scan to determine which channel it will operate on. ‘Scan Time’ is measured as (# of channels to scan] * (2 ^ SD) * 15.36ms). The number of channels to scan is set by the SC command. The XBee can scan up to 16 channels (SC = 0xFFFF). The XBee PRO can scan up to 13 channels (SC = 0x3FFE). Example: The values below show results for a 13 channel scan.", [["00.18 sec", "0"], ["00.74 sec", "2"], ["02.95 sec", "4"], ["11.80 sec", "6"], ["47.19 sec", "8"], ["03.15 min", "10"], ["12.58 min", "12"], ["50.33 min", "14"]], 4, "%d"],
+    ["A1", "End Device Association", "Set/Read End Device association options. bit 0 - ReassignPanID 0 - Will only associate with Coordinator operating on PAN ID that matches module ID 1 - May associate with Coordinator operating on any PAN ID bit 1 - ReassignChannel 0 - Will only associate with Coordinator operating on matching CH Channel setting 1 - May associate with Coordinator operating on any Channel bit 2 - AutoAssociate 0 - Device will not attempt Association 1 - Device attempts Association until success Note: This bit is used only for Non-Beacon systems. End Devices in Beacon-enabled system must always associate to a Coordinator bit 3 - PollCoordOnPinWake 0 - Pin Wake will not poll the Coordinator for indirect (pending) data 1 - Pin Wake will send Poll Request to Coordinator to extract any pending data bits 4 - 7 are reserved", [["Bitfield", 0], ["Mask", 0x0F]], 0, "%b"],
+    ["A2", "Coordinator Association", "Set/Read Coordinator association options. bit 0 - ReassignPanID 0 - Coordinator will not perform Active Scan to locate available PAN ID. It will operate on ID (PAN ID). 1 - Coordinator will perform Active Scan to determine an available ID (PAN ID). If a PAN ID conflict is found, the ID parameter will change. bit 1 - ReassignChannel - 0 - Coordinator will not perform Energy Scan to determine free channel. It will operate on the channel determined by the CH parameter. 1 - Coordinator will perform Energy Scan to find a free channel, then operate on that channel. bit 2 - AllowAssociation - 0 - Coordinator will not allow any devices to associate to it. 1 - Coordinator will allow devices to associate to it. bits 3 - 7 are reserved", [["Bitfield", 3], ["Mask", 7]], 0, "%b"],
+    ["AI", "Association Indication", "Read errors with the last association request: 0x00 - Successful Completion - Coordinator successfully started or End Device association complete 0x01 - Active Scan Timeout 0x02 - Active Scan found no PANs 0x03 - Active Scan found PAN, but the CoordinatorAllowAssociation bit is not set 0x04 - Active Scan found PAN, but Coordinator and End Device are not configured to support beacons 0x05 - Active Scan found PAN, but the Coordinator ID parameter does not match the ID parameter of the End Device 0x06 - Active Scan found PAN, but the Coordinator CH parameter does not match the CH parameter of the End Device 0x07 - Energy Scan Timeout 0x08 - Coordinator start request failed 0x09 - Coordinator could not start due to invalid parameter 0x0A - Coordinator Realignment is in progress 0x0B - Association Request not sent 0x0C - Association Request timed out - no reply was received 0x0D - Association Request had an Invalid Parameter 0x0E - Association Request Channel Access Failure. Request was not transmitted - CCA failure 0x0F - Remote Coordinator did not send an ACK after Association Request was sent 0x10 - Remote Coordinator did not reply to the Association Request, but an ACK was received after sending the request 0x11 - [reserved] 0x12 - Sync-Loss - Lost synchronization with a Beaconing Coordinator 0x13 - Disassociated - No longer associated to Coordinator 0xFF - RF Module is attempting to associate", [["Min", 0], ["Max", 19]], -1, "%x"],
+    ["DA", "Force Disassociation", "End Device will immediately disassociate from a Coordinator (if associated) and reattempt to associate.", [], null, null],
+    ["FP", "Force Poll", "Request indirect messages being held by a coordinator.", [], null, null],
+    ["AS", "Active Scan Time", "Send Beacon Request to Broadcast Address (0xFFFF) and Broadcast PAN (0xFFFF) on every channel. The parameter determines the time the radio will listen for Beacons on each channel. A PanDescriptor is created and returned for every Beacon received from the scan. Each PanDescriptor contains the following information: CoordAddress (SH, SL) CoordPanID (ID) CoordAddrMode 0x02 = 16-bit Short Address 0x03 = 64-bit Long Address Channel (CH parameter) SecurityUse ACLEntry SecurityFailure SuperFrameSpec (2 bytes): bit 15 - Association Permitted (MSB) bit 14 - PAN Coordinator bit 13 - Reserved bit 12 - Battery Life Extension bits 8-11 - Final CAP Slot bits 4-7 - Superframe Order bits 0-3 - Beacon Order GtsPermit RSSI (RSSI is returned as -dBm) TimeStamp (3 bytes) A carriage return is sent at the end of the AS command. The Active Scan is capable of returning up to 5 PanDescriptors in a scan. The actual scan time on each channel is measured as Time = [(2 ^SD PARAM) * 15.36] ms. Note the total scan time is this time multiplied by the number of channels to be scanned (16 for the XBee and 13 for the XBee-PRO). Also refer to SD command description.", [["Min", 0], ["Max", 6]], 0, "%d"],
+    ["ED", "Energy Scan Time", "Send an Energy Detect Scan. This parameter determines the length of scan on each channel. The maximal energy on each channel is returned & each value is followed by a carriage return. An additional carriage return is sent at the end of the command. The values returned represent the detected energy level in units of -dBm. The actual scan time on each channel is measured as Time = [(2 ^ED) * 15.36] ms. Note the total scan time is this time multiplied by the number of channels to be scanned (refer to SD parameter).", [["Min", 0], ["Max", 6]], 0, "%d"],
+    ["EE", "AES Encryption Enable", "Disable/Enable 128-bit AES encryption support. Use in conjunction with the KY command.", [["Min", 0], ["Max", 1]], 0, "%d"],
+    ["KY", "AES Encryption Key", "Set the 128-bit AES (Advanced Encryption Standard) key for encrypting/decrypting data. The KY register cannot be read.", [["Length", 16]], "", "%x"],
+    ["PL", "RF Interfacing Power Level", "Select/Read the power level at which the RF module transmits conducted power.", [["10 dBm", "0"], ["12 dBm", "1"], ["14 dBm", "2"], ["16 dBm", "3"], ["18 dBm", "4"]], 4, "%d"],
+    ["CA", "RF Interfacing CCA Threshold", "Set/read the CCA (Clear Channel Assessment) threshold. Prior to transmitting a packet, a CCA is performed to detect energy on the channel. If the detected energy is above the CCA Threshold, the module will not transmit the packet.", [["Min", 0x24], ["Max", 0x50]], 0x2C, "%x"],
+    ["SM", "Sleep Mode", "Set/Read Sleep Mode configurations.", [["No Sleep", "0"], ["Pin Hibernate", "1"], ["Pin Doze", "2"], ["Cyclic sleep remote", "4"], ["Cyclic sleep remote w/ pin wake-up", "5"]], 0, "%d"]];
+
+
+Blockly.Blocks.xbee_configure = {
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        var xb_sets = [];
+        for (var xt = 0; xt < xbee_settings.length; xt++) {
+            if (xbee_settings[xt][4] !== -1) {
+                xb_sets.push([xbee_settings[xt][1], xt.toString(10)]);
+            }
+        }
+        this.appendDummyInput()
+                .appendField("XBee configuration")
+                .appendField(new Blockly.FieldDropdown([["set", "set"], ["read", "read"]], function (act) {
+                    if (act === "set") {
+                        this.sourceBlock_.setOutput(false, null);
+                        this.sourceBlock_.setPreviousStatement(true, "Block");
+                        this.sourceBlock_.setNextStatement(true, null);
+                    } else {
+                        this.sourceBlock_.setOutput(true, null);
+                        this.sourceBlock_.setPreviousStatement(false);
+                        this.sourceBlock_.setNextStatement(false);
+                    }
+                    this.sourceBlock_.setParams(act);
+                }), 'ACTION')
+                .appendField(new Blockly.FieldDropdown(xb_sets, function (st) {
+                    this.sourceBlock_.setParams(st);
+                }), 'SETTING');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    setParams: function (st) {
+        var act = '';
+        if (st === "set" || st === "read") {
+            act = st;
+            st = parseInt(this.getFieldValue('SETTING'));
+        } else {
+            act = this.getFieldValue('ACTION');
+        }
+        this.setTooltip(xbee_settings[st][2]);
+        if (this.getInput('SELECT')) {
+            this.removeInput('SELECT');
+        }
+        if (act === "set") {
+            if (xbee_settings[st][3].length === 0) {
+
+            } else if (xbee_settings[st][3][0][0] === "Min") {
+                this.appendDummyInput('SELECT')
+                        .appendField("to")
+                        .appendField(new Blockly.FieldTextInput("0", function (text) {
+                            if (text === null) {
+                                this.sourceBlock_.setWarningText('WARNING: You cannot leave this block\'s value blank!');
+                                return null;
+                            }
+                            // TODO: Handle cases like 'ten', '1.203,14', etc.
+                            // 'O' is sometimes mistaken for '0' by inexperienced users.
+                            text = text.replace(/O/ig, '0');
+                            // Strip out thousands separators.
+                            text = text.replace(/,/g, '');
+                            var n = parseFloat(text || 0);
+                            if (isNaN(n)) {
+                                this.sourceBlock_.setWarningText('WARNING: You must enter a number value!');
+                                return null;
+                            } else if (n < xbee_settings[st][3][0][1]) {
+                                this.sourceBlock_.setWarningText('WARNING: The value you entered is too small!\nAcceptable values are from ' + xbee_settings[st][3][0][1] + ' to ' + xbee_settings[st][3][1][1] + '.');
+                                return String(n);
+                            } else if (n > xbee_settings[st][3][1][1]) {
+                                this.sourceBlock_.setWarningText('WARNING: The value you entered is too large!\nAcceptable values are from ' + xbee_settings[st][3][0][1] + ' to ' + xbee_settings[st][3][1][1] + '.');
+                                return String(n);
+                            } else {
+                                this.sourceBlock_.setWarningText(null);
+                                return String(n);
+                            }
+                        }), 'VALUE');
+                if (xbee_settings[st][4]) {
+                    this.setFieldValue(xbee_settings[st][4].toString(), 'VALUE');
+                }
+            } else if (xbee_settings[st][3][0][0] === "Bitfield") {
+
+            } else if (xbee_settings[st][3][0][0] === "Length") {
+
+            } else {
+                this.appendDummyInput('SELECT')
+                        .appendField("to")
+                        .appendField(new Blockly.FieldDropdown(xbee_settings[st][3]), 'VALUE');
+                if (xbee_settings[st][4]) {
+                    this.setFieldValue(xbee_settings[st][4].toString(), 'VALUE');
+                }
+            }
+        } else {
+            if (xbee_settings[st][5]) {
+                if (xbee_settings[st][5] !== "%s") {
+                    this.appendDummyInput('SELECT')
+                            .appendField("as")
+                            .appendField(new Blockly.FieldDropdown([
+                                ["text", "%s"],
+                                ["a decimal number", "%d"],
+                                ["a hexadecimal number", "%x"],
+                                ["a binary number", "%b"]
+                            ]), 'VALUE');
+                    this.setFieldValue(xbee_settings[st][5].toString(), 'VALUE');
+                }
+            }
+        }
+    }
+};

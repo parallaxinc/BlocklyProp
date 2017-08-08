@@ -51,7 +51,7 @@ showInfo = function (data) {
     if (!data['yours']) {
         $(".project-owner").text("(" + data['user'] + ")");
     }
-}
+};
 
 loadProject = function () {
     if (projectData['code']) {

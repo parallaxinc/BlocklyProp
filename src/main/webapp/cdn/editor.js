@@ -10,6 +10,7 @@ var projectData = null;
 var ready = false;
 var projectLoaded = false;
 var uploadStaged = false;
+var ignoreSaveCheck = false;
 
 var last_saved_timestamp = 0;
 var last_saved_time = 0;
@@ -39,7 +40,7 @@ $(document).ready(function () {
                 $('#load-ram-button').removeClass('hidden');
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
-            
+
             timestampSaveTime(20, true);
             setInterval(checkLastSavedTime, 60000);
         });
@@ -87,7 +88,7 @@ timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
     var d_save = new Date();
     last_saved_timestamp = d_save.getTime() + (mins * 60000);
-    if(resetTimer) {
+    if (resetTimer) {
         last_saved_time = d_save.getTime();
     }
 };
@@ -101,7 +102,7 @@ checkLastSavedTime = function () {
     if (s_save > 58) {
         // TODO: It's been to long - autosave, then close/set URL back to login page.
     }
-    
+
     if (t_now > last_saved_timestamp && checkLeave()) {
         // It's time to pop up a modal to remind the user to save.
         $('#save-check-dialog').modal('show');
@@ -109,7 +110,7 @@ checkLastSavedTime = function () {
 };
 
 showInfo = function (data) {
-    console.log(data);
+    //console.log(data);
     $(".project-name").text(data['name']);
     if (!data['yours']) {
         $(".project-owner").text("(" + data['user'] + ")");
@@ -119,17 +120,31 @@ showInfo = function (data) {
         "s3": "/cdn/images/board-icons/IconS3.png",
         "heb": "/cdn/images/board-icons/IconBadge.png",
         "flip": "/cdn/images/board-icons/IconFlip.png",
-        "other": "/cdn/images/board-icons/IconOtherBoards.png"
+        "other": "/cdn/images/board-icons/IconOtherBoards.png",
+        "propcfile": "/cdn/images/board-icons/IconC.png"
     };
-    
+
     var getUrl = window.location;
     var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-    
+
     $("#project-icon").html('<img src="' + baseUrl + projectBoardIcon[data['board']] + '"/>');
 };
 
 saveProject = function () {
-    var code = window.frames["content_blocks"].getXml();
+    var code = '';
+    if (projectData['board'] === 'propcfile') {
+        code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
+        code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
+        code += '<field name="FILENAME">single.c</field>';
+        code += '<field name="CODE">';
+        code += encodeXml(codePropC.getValue());
+        code += '</field></block></xml>';
+
+        window.frames["content_blocks"].clearXml();
+        window.frames["content_blocks"].load(code);
+    } else {
+        code = window.frames["content_blocks"].getXml();
+    }
     projectData['code'] = code;
     $.post(baseUrl + 'rest/project/code', projectData, function (data) {
         var previousOwner = projectData['yours'];
@@ -140,7 +155,7 @@ saveProject = function () {
             window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
         }
     });
-    
+
     // Mark the time when saved, add 30 minutes to it.
     timestampSaveTime(20, true);
 };
@@ -148,7 +163,20 @@ saveProject = function () {
 saveProjectAs = function () {
     utils.prompt("Save project as", projectData['name'], function (value) {
         if (value) {
-            var code = window.frames["content_blocks"].getXml();
+            var code = '';
+            if (projectData['board'] === 'propcfile') {
+                code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
+                code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
+                code += '<field name="FILENAME">single.c</field>';
+                code += '<field name="CODE">';
+                code += encodeXml(codePropC.getValue());
+                code += '</field></block></xml>';
+
+                window.frames["content_blocks"].clearXml();
+                window.frames["content_blocks"].load(code);
+            } else {
+                code = window.frames["content_blocks"].getXml();
+            }
             projectData['code'] = code;
             projectData['name'] = value;
             $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
@@ -159,7 +187,71 @@ saveProjectAs = function () {
                 // Reloading project with new id
                 window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
             });
-        timestampSaveTime(20, true);    
+            timestampSaveTime(20, true);
+        }
+    });
+};
+
+saveAsPropc = function () {
+    /*
+     if (codePropC.getReadOnly()) {
+     codePropC.setReadOnly(false);
+     //$('#propc-edit-status').html('Disable');
+     } else {
+     codePropC.setReadOnly(true);
+     //$('#propc-edit-status').html('Enable');
+     }
+     */
+
+    var xmlText = '<xml xmlns="http://www.w3.org/1999/xhtml">';
+    xmlText += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
+    xmlText += '<field name="FILENAME">single.c</field>';
+    xmlText += '<field name="CODE">';
+    xmlText += encodeXml(codePropC.getValue());
+    xmlText += '</field></block></xml>';
+
+    /*
+     var xmlDom = Blockly.Xml.textToDom(xmlText);
+     Blockly.mainWorkspace.clear();
+     Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
+     */
+
+    utils.prompt("Create a new Propeller C (code-only) project", projectData['name'], function (value) {
+        if (value) {
+            ignoreSaveCheck = true;
+            //var code = window.frames["content_blocks"].getXml();
+            projectData['code'] = xmlText;
+            projectData['name'] = value;
+            projectData['board'] = 'propcfile';
+
+            var newProjectData = {
+                'project-name': projectData['name'],
+                'board-type': projectData['board'],
+                'project-description': projectData['description'],
+                'project-type': projectData['type'],
+                'sharing': (projectData['private'] ? 'private' : 'shared'),
+                'project-description-html': projectData['description-html']
+            };
+            $.post(baseUrl + 'createproject', newProjectData, function (data) {
+                console.log(data);
+                if (data['success']) {
+                    projectData = data;
+                    window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+                    projectData['code'] = xmlText;
+
+                    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+                        projectData = data;
+                        projectData['code'] = xmlText; // Save code in projectdata to be able to verify if code has changed upon leave
+                        ignoreSaveCheck = false;
+                    });
+                } else {
+                    if (typeof data['message'] === "string")
+                        alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
+                    else
+                        alert("There was an error when BlocklyProp tried to create your project:\n" + data['message'].toString());
+                }
+            });
+            timestampSaveTime(20, true);
         }
     });
 };
@@ -179,7 +271,7 @@ blocklyReady = function () {
 
 loadProject = function () {
     if (projectData !== null && uploadStaged === false) {
-        if(projectData['code'].length < 43) {
+        if (projectData['code'].length < 43) {
             projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
         }
         window.frames["content_blocks"].load(projectData['code']);
@@ -202,9 +294,18 @@ window.onbeforeunload = function () {
 };
 
 checkLeave = function () {
+    if (ignoreSaveCheck) {
+        return false;
+    }
     var currentXml = window.frames["content_blocks"].getXml();
-    //console.log(projectData['code']);
-    //console.log(currentXml);
+    if (projectData['board'] === 'propcfile') {
+        currentXml = '<xml xmlns="http://www.w3.org/1999/xhtml">';
+        currentXml += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
+        currentXml += '<field name="FILENAME">single.c</field>';
+        currentXml += '<field name="CODE">';
+        currentXml += encodeXml(codePropC.getValue());
+        currentXml += '</field></block></xml>';
+    }
     if (projectData === null) {
         if (currentXml === '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>') {
             return false;
@@ -385,7 +486,8 @@ function uploadHandler(files) {
                     document.getElementById("selectfile-verify-boardtype").style.display = "none";
                 }
             }
-        };
+        }
+        ;
 
         if (xmlValid === true) {
             document.getElementById("selectfile-verify-valid").style.display = "block";
@@ -405,7 +507,8 @@ function uploadHandler(files) {
     if (uploadedXML !== '') {
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
         uploadStaged = true;
-    };
+    }
+    ;
 }
 
 function clearUploadInfo() {
@@ -428,7 +531,7 @@ function replaceCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
-        $(window).load(function() {
+        $(window).load(function () {
             window.frames["content_blocks"].load(projectData['code']);
             uploadStaged = false;
         });
@@ -453,7 +556,7 @@ function appendCode() {
         window.frames["content_blocks"].setProfile(projectData['board']);
         window.frames["content_blocks"].init(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
-        $(window).load(function() {
+        $(window).load(function () {
             window.frames["content_blocks"].load(projectData['code']);
             uploadStaged = false;
         });
@@ -470,7 +573,9 @@ function clearWorkspace() {
             window.frames["content_blocks"].setProfile(projectData['board']);
             window.frames["content_blocks"].init(projectData['board'], []);
             projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
-            setTimeout(function() {window.frames["content_blocks"].load(projectData['code']);}, 2000);
+            setTimeout(function () {
+                window.frames["content_blocks"].load(projectData['code']);
+            }, 2000);
         }
     });
 }

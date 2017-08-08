@@ -64,6 +64,11 @@
                                         <option value="flip"><fmt:message key="project.board.flip" /></option>
                                         <option value="heb"><fmt:message key="project.board.heb" /></option>
                                         <option value="other"><fmt:message key="project.board.other" /></option>
+                                        <c:choose>
+                                            <c:when test="${experimental == true}">
+                                                <option value="propcfile"><fmt:message key="project.board.propcfile" /></option>
+                                            </c:when>
+                                       </c:choose>
                                     </c:if>
                                     <c:if test="${param.lang == 'SPIN'}">
                                         <option value="s3"><fmt:message key="project.board.s3" /></option>

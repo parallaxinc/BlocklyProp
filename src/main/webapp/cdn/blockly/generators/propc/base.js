@@ -2232,3 +2232,21 @@ Blockly.propc.custom_code_multiple = function () {
     else
         return [code, Blockly.propc.ORDER_ATOMIC];
 };
+
+Blockly.Blocks.propc_file = {
+    init: function () {
+        this.setColour('#000000');
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldTextInput('single.c'), 'FILENAME')
+                .appendField(new Blockly.FieldTextInput(''), 'CODE');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.propc_file = function () {
+    var fnme = this.getFieldValue('FILENAME');
+    var code = this.getFieldValue('CODE');
+    return '// RAW PROPC CODE\n//{{||}}\n' + fnme + '//{{||}}\n' + code;
+};
+

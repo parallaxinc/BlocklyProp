@@ -66,6 +66,13 @@ body {
     line-height: 22px;
 }
 
+.icon-board-propc.editor-icon {
+    background-image: url('images/board-icons/IconC.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
 .navbar-brand#nav-logo {
     background-image: url('images/logo_small.png');
     background-repeat: no-repeat;

@@ -8,6 +8,7 @@
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
 <c:set var="copparestricted" scope="page" value="${properties:copparestricted()}" />
+<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
 
 <div id="project-form-container"  class="container collapse">
     <div class="row">
@@ -139,6 +140,7 @@
         "s3": "<fmt:message key="project.board.s3" />",
         "heb": "<fmt:message key="project.board.heb" />",
         "flip": "<fmt:message key="project.board.flip" />",
-        "other": "<fmt:message key="project.board.other" />"
+        "other": "<fmt:message key="project.board.other" />".
+        "propcfile": "<fmt:message key="project.board.propcfile" />"
     };
 </script>
