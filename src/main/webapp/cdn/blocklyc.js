@@ -104,7 +104,8 @@ function tabClick(id) {
 
     var btns = document.getElementsByClassName("btn-view-code");
     document.getElementById('btn-view-blocks').style.display = 'none';
-    document.getElementById('menu-save-as-propc').style.display = 'none';
+    if (document.getElementById('menu-save-as-propc'))
+        document.getElementById('menu-save-as-propc').style.display = 'none';
     for (var i = 0; i < btns.length; i++) {
         btns[i].style.display = 'none';
     }
@@ -115,7 +116,8 @@ function tabClick(id) {
             }
         } else {
             document.getElementById('btn-view-blocks').style.display = 'inline';
-            document.getElementById('menu-save-as-propc').style.display = 'block';
+            if (document.getElementById('menu-save-as-propc'))
+                document.getElementById('menu-save-as-propc').style.display = 'block';
         }
     } else {
         document.getElementById('prop-btn-graph').style.display = 'none';
