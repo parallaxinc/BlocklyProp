@@ -130,15 +130,20 @@ showInfo = function (data) {
     $("#project-icon").html('<img src="' + baseUrl + projectBoardIcon[data['board']] + '"/>');
 };
 
+propcAsBlocksXml = function () {
+    var code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
+    code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
+    code += '<field name="FILENAME">single.c</field>';
+    code += '<field name="CODE">';
+    code += encodeXml(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
+    code += '</field></block></xml>';
+    return code;
+};
+
 saveProject = function () {
     var code = '';
     if (projectData['board'] === 'propcfile') {
-        code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
-        code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
-        code += '<field name="FILENAME">single.c</field>';
-        code += '<field name="CODE">';
-        code += encodeXml(codePropC.getValue());
-        code += '</field></block></xml>';
+        code = propcAsBlocksXml();
 
         window.frames["content_blocks"].clearXml();
         window.frames["content_blocks"].load(code);
@@ -165,12 +170,7 @@ saveProjectAs = function () {
         if (value) {
             var code = '';
             if (projectData['board'] === 'propcfile') {
-                code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
-                code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
-                code += '<field name="FILENAME">single.c</field>';
-                code += '<field name="CODE">';
-                code += encodeXml(codePropC.getValue());
-                code += '</field></block></xml>';
+                code = propcAsBlocksXml();
 
                 window.frames["content_blocks"].clearXml();
                 window.frames["content_blocks"].load(code);
@@ -203,12 +203,7 @@ saveAsPropc = function () {
      }
      */
 
-    var xmlText = '<xml xmlns="http://www.w3.org/1999/xhtml">';
-    xmlText += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
-    xmlText += '<field name="FILENAME">single.c</field>';
-    xmlText += '<field name="CODE">';
-    xmlText += encodeXml(codePropC.getValue());
-    xmlText += '</field></block></xml>';
+    var xmlText = propcAsBlocksXml();
 
     /*
      var xmlDom = Blockly.Xml.textToDom(xmlText);
@@ -299,12 +294,7 @@ checkLeave = function () {
     }
     var currentXml = window.frames["content_blocks"].getXml();
     if (projectData['board'] === 'propcfile') {
-        currentXml = '<xml xmlns="http://www.w3.org/1999/xhtml">';
-        currentXml += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
-        currentXml += '<field name="FILENAME">single.c</field>';
-        currentXml += '<field name="CODE">';
-        currentXml += encodeXml(codePropC.getValue());
-        currentXml += '</field></block></xml>';
+        currentXml = propcAsBlocksXml();
     }
     if (projectData === null) {
         if (currentXml === '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>') {
