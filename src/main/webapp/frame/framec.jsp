@@ -65,6 +65,9 @@
                     alert(msg);
                 }
             }
+            function clearXml() {
+                Blockly.mainWorkspace.clear();
+            }
             function load(xmlText) {
                 var xmlDom = Blockly.Xml.textToDom(xmlText);
                 Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);

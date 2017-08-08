@@ -188,6 +188,14 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 27
+    },
+    "propc": {
+        description: "Propeller C (code-only)",
+        digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
+        analog: [],
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 27
     }
 };
 function setProfile(profileName) {
@@ -354,32 +362,39 @@ Blockly.propc.finish = function (code) {
     var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') +
             spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
-    // Indent every line.
-    code = '  ' + code.replace(/\n/g, '\n  ');
-    code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
-    code = 'int main() {\n' + varInits + code + '\n}';
-    var setup = '';
-    if (Blockly.propc.serial_terminal_) {
-        setup += "/* SERIAL_TERMINAL USED */\n";
-    } else if (Blockly.propc.serial_graphing_) {
-        setup += "/* SERIAL_GRAPHING USED */\n";
+    
+    if (code.indexOf('// RAW PROPC CODE\n//{{||}}\n') > -1) {
+        var pcc = code.split('//{{||}}\n');
+        return pcc[2];
+        
+    } else {
+        // Indent every line.
+        code = '  ' + code.replace(/\n/g, '\n  ');
+        code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
+        code = 'int main() {\n' + varInits + code + '\n}';
+        var setup = '';
+        if (Blockly.propc.serial_terminal_) {
+            setup += "/* SERIAL_TERMINAL USED */\n";
+        } else if (Blockly.propc.serial_graphing_) {
+            setup += "/* SERIAL_GRAPHING USED */\n";
+        }
+        if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
+            setup += "/* EMPTY_PROJECT */\n";
+        }
+
+        var spacer_decs = '';
+        if (declarations.length > 0)
+            spacer_decs += '// ------ Function Declarations ------\n';
+
+        var spacer_funcs = '\n\n';
+        if (methods.length > 0)
+            spacer_funcs += '// ------ Functions ------\n';
+
+        //return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
+        return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') +
+                spacer_decs + declarations.join('\n\n').replace(/\n\n+/g, '\n').replace(/\n*$/, '\n') +
+                '\n// ------ Main Program ------\n' + code + spacer_funcs + methods.join('\n');
     }
-    if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
-        setup += "/* EMPTY_PROJECT */\n";
-    }
-
-    var spacer_decs = '';
-    if (declarations.length > 0)
-        spacer_decs += '// ------ Function Declarations ------\n';
-
-    var spacer_funcs = '\n\n';
-    if (methods.length > 0)
-        spacer_funcs += '// ------ Functions ------\n';
-
-    //return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
-    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') +
-            spacer_decs + declarations.join('\n\n').replace(/\n\n+/g, '\n').replace(/\n*$/, '\n') +
-            '\n// ------ Main Program ------\n' + code + spacer_funcs + methods.join('\n');
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into

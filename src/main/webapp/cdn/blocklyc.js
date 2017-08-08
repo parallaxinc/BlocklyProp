@@ -63,15 +63,6 @@ var graph_data = {
     ]
 };
 
-function setEditPropcMode () {
-    if (codePropC.getReadOnly()) {
-        codePropC.setReadOnly(false);
-        $('#propc-edit-status').html('Disable');
-    } else {
-        codePropC.setReadOnly(true);
-        $('#propc-edit-status').html('Enable');
-    }
-}
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} id ID of tab clicked.
@@ -99,6 +90,7 @@ function tabClick(id) {
      }*/
 
     // Deselect all tabs and hide all panes.
+    document.getElementById('menu-save-as-propc').style.display = 'none';
     for (var x in TABS_) {
         //if (document.getElementById('tab_' + TABS_[x])) {
         //    document.getElementById('tab_' + TABS_[x]).className = 'taboff';
@@ -110,25 +102,32 @@ function tabClick(id) {
     selected = id.replace('tab_', '');
     //document.getElementById(id).className = 'active';
 
-    if (id === 'tab_blocks') {
-        document.getElementById('btn-view-blocks').style.display = 'none';
-        var btns = document.getElementsByClassName("btn-view-code");
-        for (var i = 0; i < btns.length; i++)
-        {
-            btns[i].style.display = 'inline';
+    var btns = document.getElementsByClassName("btn-view-code");
+    document.getElementById('btn-view-blocks').style.display = 'none';
+    document.getElementById('menu-save-as-propc').style.display = 'none';
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].style.display = 'none';
+    }
+    if (projectData['board'] !== 'propcfile') {
+        if (id === 'tab_blocks') {
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.display = 'inline';
+            }
+        } else {
+            document.getElementById('btn-view-blocks').style.display = 'inline';
+            document.getElementById('menu-save-as-propc').style.display = 'block';
         }
     } else {
-        document.getElementById('btn-view-blocks').style.display = 'inline';
-        var btns = document.getElementsByClassName("btn-view-code");
-        for (var i = 0; i < btns.length; i++)
-        {
-            btns[i].style.display = 'none';
-        }
+        document.getElementById('prop-btn-graph').style.display = 'none';
+        document.getElementById('prop-btn-pretty').style.display = 'inline';        
     }
 
     // Show the selected pane.
-    var content = document.getElementById('content_' + selected);
-    content.style.display = 'block';
+    if (projectData['board'] !== 'propcfile') {
+        document.getElementById('content_' + selected).style.display = 'block';
+    } else {
+        document.getElementById('content_propc').style.display = 'block';
+    }
     renderContent();
 }
 
@@ -146,30 +145,36 @@ function renderContent() {
         codeXml.setValue(xmlText);
         codeXml.gotoLine(0);
     } else if (content.id === 'content_propc') {
-        var code = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
-        code = js_beautify(code, {
-            'brace_style': 'expand',
-            'indent_size': 2
-        });
-        code = code.replace(/,\n[\s\xA0]+/g, ", ")
-                .replace(/, & /g, ", &")
-                .replace(/, \* /g, ", *")
-                .replace(/\( & /g, "(&")
-                .replace(/\( \* /g, "(*")
-                .replace(/char \* /g, "char *")
-                .replace(/fdserial \* /g, "fdserial *")
-                .replace(/colorPal \* /g, "colorPal *")
-                .replace(/ws2812 \* /g, "ws2812 *");
-        codePropC.setValue(code);
-        codePropC.gotoLine(0);
+        prettyCode(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
     }
 }
+
+prettyCode = function (raw_code) {
+    if (!raw_code) {
+        raw_code = codePropC.getValue();
+    }
+    raw_code = js_beautify(raw_code, {
+        'brace_style': 'expand',
+        'indent_size': 2
+    });
+    raw_code = raw_code.replace(/,\n[\s\xA0]+/g, ", ")
+            .replace(/, & /g, ", &")
+            .replace(/, \* /g, ", *")
+            .replace(/\( & /g, "(&")
+            .replace(/\( \* /g, "(*")
+            .replace(/char \* /g, "char *")
+            .replace(/fdserial \* /g, "fdserial *")
+            .replace(/colorPal \* /g, "colorPal *")
+            .replace(/ws2812 \* /g, "ws2812 *");
+    codePropC.setValue(raw_code);
+    codePropC.gotoLine(0);
+};
 
 /**
  * Initialize Blockly.  Called on page load.
  * @param {!Blockly} blockly Instance of Blockly from iframe.
  */
-function init(blockly) {    
+function init(blockly) {
     codePropC = ace.edit("code-propc");
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
@@ -194,6 +199,12 @@ function init(blockly) {
      */
 
     loadProject();
+
+    // if the project is a propc code-only project, enable code editing.
+    if (projectData['board'] === 'propcfile') {
+        codePropC.setReadOnly(false);
+        tabClick('tab_propc');
+    }
 }
 
 function setBaudrate(_baudrate) {
@@ -201,15 +212,15 @@ function setBaudrate(_baudrate) {
 }
 
 function cloudCompile(text, action, successHandler) {
-    
+
     // if PropC is in edit mode, get it from the editor, otherwise render it from the blocks.
     var propcCode = '';
-    if(codePropC.getReadOnly()) {
+    if (codePropC.getReadOnly()) {
         propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
     } else {
         propcCode = codePropC.getValue();
     }
-    
+
     var isEmptyProject = propcCode.indexOf("EMPTY_PROJECT") > -1;
     if (isEmptyProject) {
         alert("You can't compile an empty project");
@@ -328,16 +339,16 @@ function serial_console() {
     if (client_use_type !== 'ws') {
         if (term === null) {
             /*
-            term = new Terminal({
-                cols: 256,
-                rows: 24,
-                useStyle: true,
-                screenKeys: true,
-                portPath: getComPort()
-            });
-            */
+             term = new Terminal({
+             cols: 256,
+             rows: 24,
+             useStyle: true,
+             screenKeys: true,
+             portPath: getComPort()
+             });
+             */
             term = {
-               portPath: getComPort()
+                portPath: getComPort()
             };
 
             newTerminal = true;
@@ -373,7 +384,7 @@ function serial_console() {
                     c_buf = atob(e.data);
                 }
                 //term.write(e.data);
-                if(connStrYet) {
+                if (connStrYet) {
                     displayInTerm(e.data);
                 } else {
                     connString += e.data;
@@ -382,14 +393,14 @@ function serial_console() {
                         document.getElementById('serial-conn-info').innerHTML = connString.trim();
                     }
                 }
-                
+
             };
 
             /*
-            term.on('data', function (data) {
-                connection.send(data);
-            });
-            */
+             term.on('data', function (data) {
+             connection.send(data);
+             });
+             */
 
             if (newTerminal) {
                 //term.open(document.getElementById("serial_console"));
@@ -415,24 +426,24 @@ function serial_console() {
         } else {
             active_connection = 'simulated';
             /*
-            term.on('data', function (data) {
-                data = data.replace('\r', '\r\n');
-                term.write(data);
-            });
+             term.on('data', function (data) {
+             data = data.replace('\r', '\r\n');
+             term.write(data);
+             });
+             
+             if (newTerminal) {
+             term.open(document.getElementById("serial_console"));
+             term.write("Simulated terminal because you are in demo mode\n\r");
+             
+             term.write("Connection established with: " + getComPort() + "\n\r");
+             }
+             */
 
-            if (newTerminal) {
-                term.open(document.getElementById("serial_console"));
-                term.write("Simulated terminal because you are in demo mode\n\r");
-
-                term.write("Connection established with: " + getComPort() + "\n\r");
-            }
-            */
-           
             if (newTerminal) {
                 displayInTerm("Simulated terminal because you are in demo mode\n");
                 displayInTerm("Connection established with: " + getComPort() + "\n");
             }
-           
+
             $('#console-dialog').on('hidden.bs.modal', function () {
                 term_been_scrolled = false;
                 active_connection = null;
@@ -441,17 +452,17 @@ function serial_console() {
             });
         }
     } else if (client_use_type === 'ws') {
-    // using Websocket-only client
+        // using Websocket-only client
 
         /*
-        term = new Terminal({
-            cols: 256,
-            rows: 24,
-            useStyle: true,
-            screenKeys: true,
-            portPath: getComPort()
-        });
-        */
+         term = new Terminal({
+         cols: 256,
+         rows: 24,
+         useStyle: true,
+         screenKeys: true,
+         portPath: getComPort()
+         });
+         */
         term = {
             portPath: getComPort()
         };
@@ -468,12 +479,12 @@ function serial_console() {
         };
 
         /*
-        term.on('data', function (data) {
-            msg_to_send.msg = data;
-            msg_to_send.action = 'msg';
-            client_ws_connection.send(JSON.stringify(msg_to_send));
-        });
-        */
+         term.on('data', function (data) {
+         msg_to_send.msg = data;
+         msg_to_send.action = 'msg';
+         client_ws_connection.send(JSON.stringify(msg_to_send));
+         });
+         */
 
         if (newTerminal === true) {
             //term.open(document.getElementById("serial_console"));
@@ -491,7 +502,7 @@ function serial_console() {
             if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
                 msg_to_send.action = 'close';
                 document.getElementById('serial-conn-info').innerHTML = '';
-                active_connection = null;                
+                active_connection = null;
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
             term_been_scrolled = false;
@@ -591,7 +602,7 @@ function graphing_console() {
                 connection.close();
                 graph_reset();
             });
-            
+
         } else if (client_use_type === 'ws' && client_available) {
             var msg_to_send = {
                 type: 'serial-terminal',
@@ -620,7 +631,7 @@ function graphing_console() {
                 }
                 graph_reset();
             });
-            
+
         } else {
             // create simulated graph?
         }
@@ -756,9 +767,9 @@ function graph_new_data(stream) {
                             graph_data.series[j - 2].shift();
                     }
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
-                    
+
                     // limits total number of data point collected to prevent memory issues
-                    if(graph_csv_data.length > 15000) {
+                    if (graph_csv_data.length > 15000) {
                         graph_csv_data.shift();
                     }
                 }
@@ -778,7 +789,7 @@ function graph_new_data(stream) {
 
 function graph_reset() {
     clearInterval(graph_interval_id);
-    if(graph) {
+    if (graph) {
         graph.detach();
     }
     $("#serial_graphing").html('');
@@ -923,3 +934,21 @@ function graph_update_labels() {
     }
 }
 
+function encodeXml(string) {
+    var xml_special_to_escaped_one_map = {
+        '&': '&amp;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return string.replace(/([\&"<>])/g, function (str, item) {
+        return xml_special_to_escaped_one_map[item];
+    });
+}
+
+function decodeXml(string) {
+    return string.replace(/\&quot;/g, '"')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/\&amp;/g, '&');
+}
