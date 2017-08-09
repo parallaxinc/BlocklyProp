@@ -121,7 +121,9 @@ function tabClick(id) {
         }
     } else {
         document.getElementById('prop-btn-graph').style.display = 'none';
-        document.getElementById('prop-btn-pretty').style.display = 'inline-block';        
+        document.getElementById('prop-btn-pretty').style.display = 'inline-block'; 
+        document.getElementById('download-project').style.display = 'none';
+        document.getElementById('upload-project').style.display = 'none';
     }
 
     // Show the selected pane.
