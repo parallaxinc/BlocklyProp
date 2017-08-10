@@ -15,7 +15,7 @@ Blockly.Blocks.scribbler_loop = {
                 .appendField("loop");
         this.appendStatementInput("LOOP");
 
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('programming'));
@@ -41,7 +41,7 @@ Blockly.Blocks.scribbler_limited_loop = {
                 .appendField("times");
         this.appendStatementInput("LOOP");
 
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('programming'));
@@ -65,7 +65,7 @@ Blockly.Blocks.scribbler_exit_loop = {
     init: function () {
         this.appendDummyInput()
                 .appendField("exit loop");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_EXIT_LOOP_TOOLTIP);
@@ -86,7 +86,7 @@ Blockly.Blocks.scribbler_simple_wait = {
             ['tenths of a second', '100'], 
             ['milliseconds', '1']
         ]), 'TIMESCALE');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_CONTROL_HELPURL);
@@ -124,7 +124,7 @@ Blockly.Blocks.scribbler_wait = {
                 }), 'TIMESCALE');
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
@@ -172,7 +172,7 @@ Blockly.Blocks.scribbler_if_line = {
                 .appendField("line");
         this.appendStatementInput("IF_LINE")
                 .appendField();
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
@@ -266,7 +266,7 @@ Blockly.Blocks.scribbler_if_obstacle = {
                 .appendField("the Scribbler");
         this.appendStatementInput("IF_OBSTACLE")
                 .appendField();
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
@@ -358,7 +358,7 @@ Blockly.Blocks.scribbler_if_light = {
                 .appendField("of the Scribbler");
         this.appendStatementInput("IF_LIGHT")
                 .appendField();
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
@@ -410,7 +410,7 @@ Blockly.Blocks.scribbler_simple_light = {
                 ]), 'LIGHT_POSITION');
         this.setOutput(true, 'Number');
         this.setColour(colorPalette.getColor('input'));
-        this.setHelpUrl(Blockly.MSG_S3_SIMPLE_SENSORS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_LIGHT_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_IF_LIGHT_TOOLTIP);
     },
     checkForWas: function (state) {
@@ -450,7 +450,7 @@ Blockly.Blocks.scribbler_if_stalled = {
                 .appendField("stuck");
         this.appendStatementInput("IF_STALLED")
                 .appendField();
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
@@ -491,7 +491,7 @@ Blockly.Blocks.scribbler_if_button = {
                 }), 'BUTTON_CONDITION')
                 .appendField("pressed");
         this.appendStatementInput("IF_BUTTON");
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
@@ -527,7 +527,7 @@ Blockly.Blocks.scribbler_if_random = {
                 .appendField("if a virtual coin flip is")
                 .appendField(new Blockly.FieldDropdown([['heads', ''], ['tails', '_NOT']]), 'RANDOM_INVERT');
         this.appendStatementInput("IF_RANDOM");
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
         this.setColour(colorPalette.getColor('input'));
@@ -551,7 +551,7 @@ Blockly.Blocks.scribbler_drive = {
                 .appendField("at")
                 .appendField(new Blockly.FieldDropdown([['full', '255'], ['a quick', '191'], ['a gentle', '127'], ['a slow', '63']]), 'DRIVE_SPEED')
                 .appendField("speed");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
@@ -576,7 +576,7 @@ Blockly.Blocks.scribbler_spin = {
                 .appendField("at")
                 .appendField(new Blockly.FieldDropdown([['full', '15'], ['a quick', '7'], ['a gentle', '3'], ['a slow', '1']]), 'SPIN_SPEED')
                 .appendField("speed");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
@@ -595,7 +595,7 @@ Blockly.Blocks.scribbler_stop = {
     init: function () {
         this.appendDummyInput()
                 .appendField("stop driving");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SIMPLE_ACTIONS_HELPURL);
@@ -631,7 +631,7 @@ Blockly.Blocks.scribbler_LED = {
                 .appendField(center_led_colors, "CENTER_COLOR")
                 .appendField(right_led_colors, "RIGHT_COLOR")
                 .appendField(" ");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_LEDS_HELPURL);
@@ -669,7 +669,7 @@ Blockly.Blocks.scribbler_play = {
                 .appendField("note at a")
                 .appendField(new Blockly.FieldDropdown([['loud', '50'], ['medium', '30'], ['quiet', '15']]), 'NOTE_VOLUME')
                 .appendField("volume");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SOUND_HELPURL);
@@ -711,7 +711,7 @@ Blockly.Blocks.move_motors = {
         this.getField('RANGEVALS1').setVisible(false);
         this.getField('RANGEVALS2').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
@@ -759,7 +759,7 @@ Blockly.Blocks.move_motors_distance = {
         this.getField('RANGEVALS1').setVisible(false);
         this.getField('RANGEVALS2').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
@@ -838,7 +838,7 @@ Blockly.Blocks.move_motors_xy = {
         this.getField('RANGEVALS1').setVisible(false);
         this.getField('RANGEVALS2').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
@@ -914,7 +914,7 @@ Blockly.Blocks.move_motors_angle = {
         this.getField('RANGEVALS1').setVisible(false);
         this.getField('RANGEVALS2').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
@@ -980,7 +980,7 @@ Blockly.Blocks.play_polyphony = {
         this.getField('RANGEVALS2').setVisible(false);
         this.getField('RANGEVALS3').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_SOUND_HELPURL);
@@ -1108,7 +1108,7 @@ Blockly.Blocks.light_sensor = {
                 ]), "LGHT_SENSOR_CHOICE");
         this.setOutput(true, "Number");
         this.setColour(colorPalette.getColor('input'));
-        this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
+        this.setHelpUrl(Blockly.MSG_S3_LIGHT_HELPURL);
         this.setTooltip(Blockly.MSG_S3_LIGHT_SENSOR_TOOLTIP);
     }
 };
@@ -1142,7 +1142,7 @@ Blockly.Blocks.scribbler_servo = {
                 .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN")
                 .appendField("rotate to angle (degrees)");
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('robot'));
         this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
@@ -1168,16 +1168,21 @@ Blockly.propc.scribbler_servo = function () {
 
 Blockly.Blocks.scribbler_stop_servo = {
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
         this.appendDummyInput("")
-                .appendField("servo on")
+                .appendField("servo PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "SERVO_PIN")
                 .appendField("disable");
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('robot'));
-        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
     }
 };
 
@@ -1238,7 +1243,7 @@ Blockly.Blocks.digital_output = {
                 .appendField(" ")
                 .appendField(new Blockly.FieldDropdown([['high', "HIGH"], ['low', "LOW"], ['input', "INPUT"], ['toggle state', "TOGGLE"], ['toggle direction', "REVERSE"]]), "ACTION");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('io'));
         this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
@@ -1519,7 +1524,7 @@ Blockly.Blocks.spin_comment = {
         this.appendDummyInput("")
                 .appendField("note:")
                 .appendField(new Blockly.FieldTextInput(""), "COMMENT");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('programming'));
         this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
@@ -1555,10 +1560,10 @@ Blockly.Blocks.scribbler_serial_send_text = {
         this.appendDummyInput("")
                 .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
                 .appendField("send text")
-                .appendField(quotes.newQuote_(this.RTL))
+                .appendField("\u201C")
                 .appendField(new Blockly.FieldTextInput(""), "MESSAGE_TEXT")
-                .appendField(quotes.newQuote_(this.LTR));
-        this.setPreviousStatement(true, null);
+                .appendField("\u201D");
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SERIAL_SEND_TEXT_TOOLTIP);
@@ -1581,7 +1586,7 @@ Blockly.Blocks.scribbler_serial_send_char = {
                 .appendField("send character")
                 .setCheck("Number");
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
@@ -1605,7 +1610,7 @@ Blockly.Blocks.scribbler_serial_send_decimal = {
                 .appendField(new Blockly.FieldDropdown([['Terminal', 'T'], ['WX module', 'W'], ['XBee', 'X']]), 'OUTPUT')
                 .appendField("send number");
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
@@ -1629,7 +1634,7 @@ Blockly.Blocks.scribbler_serial_send_ctrl = {
                 .appendField("send command")
                 .appendField(new Blockly.FieldDropdown([["carriage return", "13"], ["new line", "10"], ["backspace", "127"], ["clear screen", "256"]]), "SERIAL_CHAR");
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setColour(colorPalette.getColor('protocols'));
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
@@ -1680,7 +1685,7 @@ Blockly.Blocks.scribbler_serial_cursor_xy = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("column");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setHelpUrl(Blockly.MSG_S3_COMMUNICATE_HELPURL);
         this.setTooltip(Blockly.MSG_S3_SERIAL_CURSOR_XY_TOOLTIP);
@@ -1763,7 +1768,7 @@ Blockly.Blocks.calibrate_line_sensor = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("line sensor calibrate");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setHelpUrl(Blockly.MSG_S3_SENSORS_HELPURL);
         this.setTooltip(Blockly.MSG_S3_LINE_CALIBRATE_TOOLTIP);

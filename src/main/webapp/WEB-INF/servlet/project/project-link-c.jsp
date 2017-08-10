@@ -30,7 +30,6 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/detect.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blocklyc.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/lib/xterm.js"/>"></script>
         <shiro:authenticated>
             <script type="text/javascript" src="<url:getCdnUrl url="/blocklypropclient.js"/>"></script>
             <script type="text/javascript" src="<url:getCdnUrl url="/editor/shared-editor.js"/>"></script>
@@ -41,7 +40,6 @@
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
-        <link href="<url:getCdnUrl url="/lib/xterm.css"/>" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <div id="editor">
