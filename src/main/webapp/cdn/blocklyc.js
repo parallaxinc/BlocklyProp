@@ -432,19 +432,10 @@ function serial_console() {
                         document.getElementById('serial-conn-info').innerHTML = connString.trim();
                     }
                 }
-
+                $('#serial_console').focus();
             };
 
-            /*
-             term.on('data', function (data) {
-             connection.send(data);
-             });
-             */
-
-            if (newTerminal) {
-                //term.open(document.getElementById("serial_console"));
-            } else {
-                //term.reset();
+            if (!newTerminal) {
                 updateTermBox(0);
             }
 
@@ -454,12 +445,6 @@ function serial_console() {
                 connStrYet = false;
             };
 
-            $('#serial_console').focus();
-            var the_div = document.getElementById('serial_console').innerHTML;
-            if (the_div[the_div.length - 1] !== '\u258D') {
-                document.getElementById('serial_console').innerHTML = the_div + '\u258D';
-            }
-            
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
                 document.getElementById('serial-conn-info').innerHTML = '';
@@ -470,29 +455,10 @@ function serial_console() {
             });
         } else {
             active_connection = 'simulated';
-            /*
-             term.on('data', function (data) {
-             data = data.replace('\r', '\r\n');
-             term.write(data);
-             });
-
-             if (newTerminal) {
-             term.open(document.getElementById("serial_console"));
-             term.write("Simulated terminal because you are in demo mode\n\r");
-
-             term.write("Connection established with: " + getComPort() + "\n\r");
-             }
-             */
 
             if (newTerminal) {
                 displayInTerm("Simulated terminal because you are in demo mode\n");
                 displayInTerm("Connection established with: " + getComPort() + "\n");
-            }
-
-            $('#serial_console').focus();
-            var the_div = document.getElementById('serial_console').innerHTML;
-            if (the_div[the_div.length - 1] !== '\u258D') {
-                document.getElementById('serial_console').innerHTML = the_div + '\u258D';
             }
 
             $('#console-dialog').on('hidden.bs.modal', function () {
@@ -505,15 +471,6 @@ function serial_console() {
     } else if (client_use_type === 'ws') {
         // using Websocket-only client
 
-        /*
-         term = new Terminal({
-         cols: 256,
-         rows: 24,
-         useStyle: true,
-         screenKeys: true,
-         portPath: getComPort()
-         });
-         */
         term = {
             portPath: getComPort()
         };
@@ -529,14 +486,6 @@ function serial_console() {
             action: 'msg'
         };
 
-        /*
-         term.on('data', function (data) {
-         msg_to_send.msg = data;
-         msg_to_send.action = 'msg';
-         client_ws_connection.send(JSON.stringify(msg_to_send));
-         });
-         */
-
         if (newTerminal === true) {
             //term.open(document.getElementById("serial_console"));
             msg_to_send.action = 'open';
@@ -545,7 +494,6 @@ function serial_console() {
                     msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
             client_ws_connection.send(JSON.stringify(msg_to_send));
         } else {
-            //term.reset();
             updateTermBox(0);
         }
 
@@ -558,7 +506,6 @@ function serial_console() {
             }
             term_been_scrolled = false;
             newTerminal = false;
-            //term.destroy();
             updateTermBox(0);
         });
     }

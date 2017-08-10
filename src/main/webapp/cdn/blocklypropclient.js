@@ -326,6 +326,7 @@ function establish_socket() {
                     if (term !== null) { // is the terminal open?
                         //term.write(msg_in);
                         displayInTerm(msg_in);
+                        $('#serial_console').focus();
                     } else if (graph !== null) { // is the graph open?
                         graph_new_data(msg_in);
                     }
