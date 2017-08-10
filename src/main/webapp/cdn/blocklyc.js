@@ -121,7 +121,10 @@ function tabClick(id) {
         }
     } else {
         document.getElementById('prop-btn-graph').style.display = 'none';
-        document.getElementById('prop-btn-pretty').style.display = 'inline-block'; 
+        document.getElementById('prop-btn-pretty').style.display = 'inline-block';
+        document.getElementById('prop-btn-find-replace').style.display = 'inline-block';
+        document.getElementById('prop-btn-undo').style.display = 'inline-block';
+        document.getElementById('prop-btn-redo').style.display = 'inline-block';
         document.getElementById('download-project').style.display = 'none';
         document.getElementById('upload-project').style.display = 'none';
     }
@@ -174,6 +177,14 @@ prettyCode = function (raw_code) {
     codePropC.gotoLine(0);
 };
 
+findReplaceCode = function () {
+    if (document.getElementById('find-replace').style.display === 'none') {
+        document.getElementById('find-replace').style.display = 'block';
+    } else {
+        document.getElementById('find-replace').style.display = 'none';
+    }
+};
+
 /**
  * Initialize Blockly.  Called on page load.
  * @param {!Blockly} blockly Instance of Blockly from iframe.
@@ -207,6 +218,30 @@ function init(blockly) {
     // if the project is a propc code-only project, enable code editing.
     if (projectData['board'] === 'propcfile') {
         codePropC.setReadOnly(false);
+        codePropC.commands.addCommand({
+            name: "undo",
+            bindKey: {win: "Ctrl-z", mac: "Command-z"},
+            exec: function (codePropC) {
+                codePropC.undo();
+            },
+            readOnly: true
+        });
+        codePropC.commands.addCommand({
+            name: "redo",
+            bindKey: {win: "Ctrl-y", mac: "Command-y"},
+            exec: function (codePropC) {
+                codePropC.redo();
+            },
+            readOnly: true
+        });
+        codePropC.commands.addCommand({
+            name: "find_replace",
+            bindKey: {win: "Ctrl-f", mac: "Command-f"},
+            exec: function () {
+                findReplaceCode();
+            },
+            readOnly: true
+        });
         tabClick('tab_propc');
     }
 }
@@ -294,7 +329,7 @@ function compile() {
  * @param modal_message message shown at the top of the compile/load modal.
  * @param compile_command command for the cloud compiler (bin/eeprom).
  * @param load_action command for the loader (RAM/EEPROM).
- * 
+ *
  */
 function loadInto(modal_message, compile_command, load_action) {
     if (client_available) {
@@ -419,6 +454,8 @@ function serial_console() {
                 connStrYet = false;
             };
 
+            document.getElementById('serial_console').focus();
+
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
                 document.getElementById('serial-conn-info').innerHTML = '';
@@ -434,11 +471,11 @@ function serial_console() {
              data = data.replace('\r', '\r\n');
              term.write(data);
              });
-             
+
              if (newTerminal) {
              term.open(document.getElementById("serial_console"));
              term.write("Simulated terminal because you are in demo mode\n\r");
-             
+
              term.write("Connection established with: " + getComPort() + "\n\r");
              }
              */
@@ -447,6 +484,8 @@ function serial_console() {
                 displayInTerm("Simulated terminal because you are in demo mode\n");
                 displayInTerm("Connection established with: " + getComPort() + "\n");
             }
+
+            document.getElementById('serial_console').focus();
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 term_been_scrolled = false;
@@ -782,7 +821,7 @@ function graph_new_data(stream) {
             } else {
                 if (!graph_data_ready) {          // wait for a full set of data to
                     if (stream[k] === '\r')       // come in before graphing, ends up
-                        graph_data_ready = true;  // tossing the first point but prevents 
+                        graph_data_ready = true;  // tossing the first point but prevents
                 } else {                          // garbage from mucking up the graph.
                     graph_temp_string += stream[k];
                 }

@@ -125,9 +125,9 @@ Blockly.propc.console_print_variables = function () {
 };
 
 Blockly.Blocks.console_print_multiple = {
-    helpUrl: Blockly.MSG_AWX_HELPURL,
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_AWX_PRINT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_CONSOLE_PRINT_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('Terminal print');
@@ -919,9 +919,9 @@ Blockly.propc.serial_receive_text = function () {
 };
 
 Blockly.Blocks.serial_print_multiple = {
-    helpUrl: Blockly.MSG_AWX_HELPURL,
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_AWX_PRINT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SERIAL_PRINT_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('Serial transmit');
@@ -1139,9 +1139,9 @@ Blockly.propc.serial_print_multiple = function () {
 };
 
 Blockly.Blocks.serial_scan_multiple = {
-    helpUrl: Blockly.MSG_AWX_HELPURL,
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SERIAL_SCAN_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('Serial receive');
@@ -1928,9 +1928,9 @@ Blockly.propc.xbee_receive = function () {
 };
 
 Blockly.Blocks.xbee_print_multiple = {
-    helpUrl: Blockly.MSG_AWX_HELPURL,
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_AWX_PRINT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_XBEE_PRINT_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('XBee transmit');
@@ -2017,9 +2017,9 @@ Blockly.propc.xbee_print_multiple = function () {
 };
 
 Blockly.Blocks.xbee_scan_multiple = {
-    helpUrl: Blockly.MSG_AWX_HELPURL,
+    helpUrl: Blockly.MSG_XBEE_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_XBEE_SCAN_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('XBee receive');
