@@ -80,6 +80,7 @@ $('#finish').on('click', function () {
         var formData = $(".proj").serializeObject();
         formData['project-description'] = simplemde.value();
         formData['project-description-html'] = simplemde.options.previewRender(simplemde.value());
+        console.log(formData);
         $.post('createproject', formData, function (data) {
             if (data['success']) {
                 window.location = $('#finish').data('editor') + projectTypes[utils.getUrlParameters('lang')] + "?project=" + data['id'];

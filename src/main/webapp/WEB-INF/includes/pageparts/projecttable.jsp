@@ -33,7 +33,8 @@
         "s3": "<url:getCdnUrl url="/images/board-icons/IconS3.png" />",
         "heb": "<url:getCdnUrl url="/images/board-icons/IconBadge.png" />",
         "flip": "<url:getCdnUrl url="/images/board-icons/IconFlip.png" />",
-        "other": "<url:getCdnUrl url="/images/board-icons/IconOtherBoards.png" />"
+        "other": "<url:getCdnUrl url="/images/board-icons/IconOtherBoards.png" />",
+        "propcfile": "<url:getCdnUrl url="/images/board-icons/IconC.png" />"
     };
 
     function formatType(value, row) {
@@ -65,7 +66,8 @@
         "s3": "<fmt:message key="project.board.s3" />",
         "heb": "<fmt:message key="project.board.heb" />",
         "flip": "<fmt:message key="project.board.flip" />",
-        "other": "<fmt:message key="project.board.other" />"
+        "other": "<fmt:message key="project.board.other" />",
+        "propcfile": "<fmt:message key="project.board.propcfile" />"
     };
 
     function formatBoard(value, row) {

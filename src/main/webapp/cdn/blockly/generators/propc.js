@@ -23,30 +23,6 @@
  */
 'use strict';
 
-/**
- * Quotes - Created by Vale Tolpegin on 29-5-2016.
- */
-
-/*
-var quotes = {
-    /**
-     * Create an image of an open or closed quote.
-     * @param {boolean} open True if open quote, false if closed.
-     * @return {!Blockly.FieldImage} The field image of the quote.
-     * @this Blockly.Block
-
-    newQuote_: function (open) {
-        if (open === this.RTL) {
-            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAqUlEQVQI1z3KvUpCcRiA8ef9E4JNHhI0aFEacm1o0BsI0Slx8wa8gLauoDnoBhq7DcfWhggONDmJJgqCPA7neJ7p934EOOKOnM8Q7PDElo/4x4lFb2DmuUjcUzS3URnGib9qaPNbuXvBO3sGPHJDRG6fGVdMSeWDP2q99FQdFrz26Gu5Tq7dFMzUvbXy8KXeAj57cOklgA+u1B5AoslLtGIHQMaCVnwDnADZIFIrXsoXrgAAAABJRU5ErkJggg==';
-        } else {
-            var file = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAQAAAAqJXdxAAAAn0lEQVQI1z3OMa5BURSF4f/cQhAKjUQhuQmFNwGJEUi0RKN5rU7FHKhpjEH3TEMtkdBSCY1EIv8r7nFX9e29V7EBAOvu7RPjwmWGH/VuF8CyN9/OAdvqIXYLvtRaNjx9mMTDyo+NjAN1HNcl9ZQ5oQMM3dgDUqDo1l8DzvwmtZN7mnD+PkmLa+4mhrxVA9fRowBWmVBhFy5gYEjKMfz9AylsaRRgGzvZAAAAAElFTkSuQmCC';
-        }
-        return new Blockly.FieldImage(file, 12, 12, '"');
-    }
-
-};
-*/
-
 var array_contains = function (needle) {
     // Per spec, the way to identify NaN is that it is not equal to itself
     var findNaN = needle !== needle;
@@ -73,26 +49,6 @@ var array_contains = function (needle) {
 
     return indexOf.call(this, needle) > -1;
 };
-
-/*
- var directionArrow = {
- /**
- * Create an image of a arrow pointing toward or away.
- * @param {string} direction 'forward' or 'backward'.
- * @return {!Blockly.FieldImage} The field image of the arrow.
- * @this Blockly.Block
- *
- newArrow_: function (direction) {
- if (direction === 'forward') {
- var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C3 L2%2C10 L4%2C10 z M3%2C.5 L.5%2C3 L5.5%2C3 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
- return new Blockly.FieldImage(file, 8, 12, '&#8593;');
- } else {
- var file = "data:image/svg+xml,%3Csvg viewBox%3D'0 0 7 10' xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width%3D'8' height%3D'12'%3E%3Cpath d%3D'M3%2C0 L2%2C7 L4%2C7 z M3%2C10 L0.2%2C6.5 L5.8%2C6.5 z' style%3D'fill%3A %23fff%3B stroke%3A %23fff%3Bstroke-width%3A 1%3B'%2F%3E%3C%2Fsvg%3E";
- return new Blockly.FieldImage(file, 8, 12, '&#8595;');
- }
- }
- };
- */
 
 /**
  * Color Palette - Created by Michel on 30-4-2016.
@@ -199,7 +155,8 @@ var profile = {
         analog: [["A0", "0"], ["A1", "1"], ["A2", "2"], ["A3", "3"]],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 17
+        contiguous_pins_end: 17,
+        saves_to: [["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"], ["Other Propeller Boards","other"]]
     },
     "s3": {
         description: "Scribbler Robot",
@@ -207,7 +164,8 @@ var profile = {
         analog: [["A0", "0"], ["A1", "1"]],
         baudrate: 9600,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 5
+        contiguous_pins_end: 5,
+        saves_to: [["Scribbler Robot", "s3"]]
     },
     "heb": {
         description: "Hackable Electronic Badge",
@@ -215,7 +173,8 @@ var profile = {
         analog: [],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 11
+        contiguous_pins_end: 11,
+        saves_to: [["Hackable Electronic Badge", "heb"]]
     },
     "flip": {
         description: "Propeller FLiP or Project Board",
@@ -223,7 +182,8 @@ var profile = {
         analog: [],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 27
+        contiguous_pins_end: 27,
+        saves_to: [["Propeller FLiP or Project Board", "flip"], ["Propeller Activity Board", "activity-board"], ["Other Propeller Boards","other"]]
     },
     "other": {
         description: "Other Propeller Boards",
@@ -231,7 +191,17 @@ var profile = {
         analog: [],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 27
+        contiguous_pins_end: 27,
+        saves_to: [["Other Propeller Boards","other"], ["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"]]
+    },
+    "propcfile": {
+        description: "Propeller C (code-only)",
+        digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["18", "18"], ["19", "19"], ["20", "20"], ["21", "21"], ["22", "22"], ["23", "23"], ["24", "24"], ["25", "25"], ["26", "26"], ["27", "27"], ["28", "28"], ["29", "29"], ["30", "30"], ["31", "31"]],
+        analog: [],
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 27,
+        saves_to: []
     }
 };
 function setProfile(profileName) {
@@ -398,32 +368,40 @@ Blockly.propc.finish = function (code) {
     var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') +
             spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
-    // Indent every line.
-    code = '  ' + code.replace(/\n/g, '\n  ');
-    code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
-    code = 'int main() {\n' + varInits + code + '\n}';
-    var setup = '';
-    if (Blockly.propc.serial_terminal_) {
-        setup += "/* SERIAL_TERMINAL USED */\n";
-    } else if (Blockly.propc.serial_graphing_) {
-        setup += "/* SERIAL_GRAPHING USED */\n";
+    
+    if (code.indexOf('// RAW PROPC CODE\n//{{||}}\n') > -1) {
+        var pcc = code.split('//{{||}}\n');
+        return pcc[2];
+        
+    } else {
+        // Indent every line.
+        code = '  ' + code.replace(/\n/g, '\n  ');
+        code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
+        code = 'int main() {\n' + varInits + code + '\n}';
+        var setup = '';
+        if (Blockly.propc.serial_terminal_) {
+            setup += "/* SERIAL_TERMINAL USED */\n";
+        } else if (Blockly.propc.serial_graphing_) {
+            setup += "/* SERIAL_GRAPHING USED */\n";
+        }
+        if (Blockly.mainWorkspace.getAllBlocks().length === 0 && 
+                profile.default.description !== "Propeller C (code-only)") {
+            setup += "/* EMPTY_PROJECT */\n";
+        }
+
+        var spacer_decs = '';
+        if (declarations.length > 0)
+            spacer_decs += '// ------ Function Declarations ------\n';
+
+        var spacer_funcs = '\n\n';
+        if (methods.length > 0)
+            spacer_funcs += '// ------ Functions ------\n';
+
+        //return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
+        return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') +
+                spacer_decs + declarations.join('\n\n').replace(/\n\n+/g, '\n').replace(/\n*$/, '\n') +
+                '\n// ------ Main Program ------\n' + code + spacer_funcs + methods.join('\n');
     }
-    if (Blockly.mainWorkspace.getAllBlocks().length === 0) {
-        setup += "/* EMPTY_PROJECT */\n";
-    }
-
-    var spacer_decs = '';
-    if (declarations.length > 0)
-        spacer_decs += '// ------ Function Declarations ------\n';
-
-    var spacer_funcs = '\n\n';
-    if (methods.length > 0)
-        spacer_funcs += '// ------ Functions ------\n';
-
-    //return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') + methods.join('\n\n') + '\n\n' + code + '\n\n';
-    return setup + allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n') +
-            spacer_decs + declarations.join('\n\n').replace(/\n\n+/g, '\n').replace(/\n*$/, '\n') +
-            '\n// ------ Main Program ------\n' + code + spacer_funcs + methods.join('\n');
 };
 /**
  * Naked values are top-level blocks with outputs that aren't plugged into

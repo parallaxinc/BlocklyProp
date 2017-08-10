@@ -65,6 +65,9 @@
                     alert(msg);
                 }
             }
+            function clearXml() {
+                Blockly.mainWorkspace.clear();
+            }
             function load(xmlText) {
                 var xmlDom = Blockly.Xml.textToDom(xmlText);
                 Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
@@ -807,6 +810,11 @@
                 <block type="xbee_print_multiple"></block>
                 <block type="xbee_receive"></block>
                 <block type="xbee_scan_multiple"></block>
+                <c:choose>
+                    <c:when test="${experimental == true}">
+                        <block type="xbee_configure"></block>
+                    </c:when>
+                </c:choose>
             </category>
         </category>
 
