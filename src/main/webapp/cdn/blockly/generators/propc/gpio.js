@@ -776,7 +776,7 @@ Blockly.Blocks.pwm_start = {
     helpUrl: Blockly.MSG_ANALOG_PWM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_PWM_START_TOOLTIP);
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour('#FF8800');
         this.appendDummyInput()
                 .appendField("PWM initialize");
         this.setPreviousStatement(true, "Block");

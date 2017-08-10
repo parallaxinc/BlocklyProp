@@ -1351,7 +1351,7 @@ Blockly.Blocks.serial_tx = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_SERIAL_TX_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
+        this.setColour('#FF8800');
         this.appendDummyInput()
                 .appendField("Serial transmit")
                 .appendField(new Blockly.FieldDropdown([
@@ -1375,7 +1375,7 @@ Blockly.Blocks.serial_rx = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_SERIAL_RX_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
+        this.setColour('#FF8800');
         this.appendDummyInput()
                 .appendField("Serial receive")
                 .appendField(new Blockly.FieldDropdown([
