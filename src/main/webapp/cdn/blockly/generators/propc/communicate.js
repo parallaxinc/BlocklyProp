@@ -149,7 +149,7 @@ Blockly.Blocks.console_print_multiple = {
         this.optionList_ = ['str', 'dec'];
         this.setWarningText(null);
     },
-    mutationToDom: function (workspace) {
+    mutationToDom: function () {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
         var divs = [];
@@ -196,9 +196,11 @@ Blockly.Blocks.console_print_multiple = {
                         .appendField(label, 'TYPE' + i);
             }
         }
-        this.appendDummyInput('NEWLINE')
-                .appendField("then a new line")
-                .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+        if (this.type === "console_print_multiple") {
+            this.appendDummyInput('NEWLINE')
+                    .appendField("then a new line")
+                    .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+        }
     },
     decompose: function (workspace) {
         var containerBlock = Blockly.Block.obtain(workspace, 'console_print_container');
@@ -272,9 +274,11 @@ Blockly.Blocks.console_print_multiple = {
             clauseBlock = clauseBlock.nextConnection &&
                     clauseBlock.nextConnection.targetBlock();
         }
-        this.appendDummyInput('NEWLINE')
-                .appendField("then a new line")
-                .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+        if (this.type === "console_print_multiple") {
+            this.appendDummyInput('NEWLINE')
+                    .appendField("then a new line")
+                    .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+        }
     },
     saveConnections: function (containerBlock) {
         // Store a pointer to any connected child blocks.
@@ -295,6 +299,7 @@ Blockly.Blocks.console_print_multiple = {
             warnTxt = 'Terminal print multiple must have at least one term.';
         }
         this.setWarningText(warnTxt);
+        console.log(this);
     }
 };
 
@@ -402,9 +407,9 @@ Blockly.propc.console_print_multiple = function () {
         }
 
         if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-            varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+            varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt);
         } else {
-            varList += ', ((float) ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt) +
+            varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
                     ') / ' + this.getFieldValue('DIV' + i) + '.0';
         }
         i++;
@@ -1118,9 +1123,9 @@ Blockly.propc.serial_print_multiple = function () {
             }
 
             if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt);
             } else {
-                varList += ', ((float) ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt) +
+                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
                         ') / ' + this.getFieldValue('DIV' + i) + '.0';
             }
             i++;
@@ -1945,9 +1950,9 @@ Blockly.Blocks.xbee_print_multiple = {
         this.setWarningText(null);
     },
     mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
-    domToMutation: Blockly.Blocks['serial_print_multiple'].domToMutation,
+    domToMutation: Blockly.Blocks['console_print_multiple'].domToMutation,
     decompose: Blockly.Blocks['console_print_multiple'].decompose,
-    compose: Blockly.Blocks['serial_print_multiple'].compose,
+    compose: Blockly.Blocks['console_print_multiple'].compose,
     saveConnections: Blockly.Blocks['console_print_multiple'].saveConnections,
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
@@ -1996,9 +2001,9 @@ Blockly.propc.xbee_print_multiple = function () {
             }
 
             if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                varList += ', ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt);
+                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt);
             } else {
-                varList += ', ((float) ' + Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE || orIt) +
+                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
                         ') / ' + this.getFieldValue('DIV' + i) + '.0';
             }
             i++;
@@ -2024,6 +2029,9 @@ Blockly.Blocks.xbee_scan_multiple = {
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
         this.setWarningText(null);
+        // not used, but allows this block to share functions from serial_scan_multiple block
+        this.ser_pins = [];
+        //this.serPins();
     },
     mutationToDom: Blockly.Blocks['serial_scan_multiple'].mutationToDom,
     domToMutation: Blockly.Blocks['serial_scan_multiple'].domToMutation,
@@ -2031,6 +2039,7 @@ Blockly.Blocks.xbee_scan_multiple = {
     compose: Blockly.Blocks['serial_scan_multiple'].compose,
     saveConnections: Blockly.Blocks['serial_scan_multiple'].saveConnections,
     updateShape_: Blockly.Blocks['serial_scan_multiple'].updateShape_,
+    updateSerPin: function () {},
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
         var warnTxt = null;
@@ -5246,4 +5255,8 @@ Blockly.Blocks.xbee_configure = {
             }
         }
     }
+};
+
+Blockly.propc.xbee_configure = function () {
+    return '// XBee configure is not yet ready and working';
 };
