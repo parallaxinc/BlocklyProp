@@ -1148,7 +1148,6 @@ Blockly.propc.lsm9ds1_read = function () {
         code += xstorage + ' = (int) (100.0 * __imuX);\n';
         code += ystorage + ' = (int) (100.0 * __imuY);\n';
         code += zstorage + ' = (int) (100.0 * __imuZ);\n';
-        code += "// LSM9DS1 IMU is not initialized!\n";
     }
     return code;
 };

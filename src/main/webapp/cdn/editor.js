@@ -34,10 +34,10 @@ $(document).ready(function () {
                 window.frames["content_blocks"].init(data['board'], []);
             }
             if (projectData['board'] === 's3' && type === 'PROPC') {
-                $('#load-ram-button').addClass('hidden');
+                $('#prop-btn-ram').addClass('hidden');
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
             } else {
-                $('#load-ram-button').removeClass('hidden');
+                $('#prop-btn-ram').removeClass('hidden');
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
 
