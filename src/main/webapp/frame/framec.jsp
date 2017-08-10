@@ -203,9 +203,13 @@
             <block type="math_number"></block>
             <block type="string_type_block"></block>
             <block type="char_type_block"></block>
-            <block type="music_note">
-                <field name="OCTAVE">0.125</field>
-            </block>
+            <c:choose>
+                <c:when test="${experimental == true}">
+                    <block type="music_note">
+                        <field name="OCTAVE">0.125</field>
+                    </block>
+                </c:when>
+            </c:choose>
             <block type="number_binary"></block>
             <block type="number_hex"></block>
             <block type="logic_boolean"></block>

@@ -182,7 +182,7 @@ Blockly.Blocks.scribbler_if_line = {
     checkForWas: function (state) {
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
@@ -230,7 +230,7 @@ Blockly.Blocks.scribbler_simple_line = {
     checkForWas: function (state) {
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
@@ -277,7 +277,7 @@ Blockly.Blocks.scribbler_if_obstacle = {
         if (state === undefined) state = this.getFieldValue('OBSTACLE_CONDITION');
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
@@ -323,7 +323,7 @@ Blockly.Blocks.scribbler_simple_obstacle = {
     checkForWas: function (state) {
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
@@ -368,7 +368,7 @@ Blockly.Blocks.scribbler_if_light = {
     checkForWas: function (state) {
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
@@ -416,7 +416,7 @@ Blockly.Blocks.scribbler_simple_light = {
     checkForWas: function (state) {
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
@@ -460,7 +460,7 @@ Blockly.Blocks.scribbler_if_stalled = {
     checkForWas: function (state) {
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
@@ -499,7 +499,7 @@ Blockly.Blocks.scribbler_if_button = {
     checkForWas: function (state) {
         if (state === 'WAS' || state === 'WAS_NOT') {
             this.setColour('#FF8800');
-            this.setWarningText('WARNING: "was" ans "was not" conditions have been depricated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
+            this.setWarningText('WARNING: "was" ans "was not" conditions have been deprecated.\nPlease choose "is" or "is not".\nUse a variable block to keep track of the state of this sensor instead.');
         } else {
             this.setColour(colorPalette.getColor('input'));
             this.setWarningText(null);
