@@ -155,7 +155,8 @@ var profile = {
         analog: [["A0", "0"], ["A1", "1"], ["A2", "2"], ["A3", "3"]],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 17
+        contiguous_pins_end: 17,
+        saves_to: [["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"], ["Other Propeller Boards","other"]]
     },
     "s3": {
         description: "Scribbler Robot",
@@ -163,7 +164,8 @@ var profile = {
         analog: [["A0", "0"], ["A1", "1"]],
         baudrate: 9600,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 5
+        contiguous_pins_end: 5,
+        saves_to: [["Scribbler Robot", "s3"]]
     },
     "heb": {
         description: "Hackable Electronic Badge",
@@ -171,7 +173,8 @@ var profile = {
         analog: [],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 11
+        contiguous_pins_end: 11,
+        saves_to: [["Hackable Electronic Badge", "heb"]]
     },
     "flip": {
         description: "Propeller FLiP or Project Board",
@@ -179,7 +182,8 @@ var profile = {
         analog: [],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 27
+        contiguous_pins_end: 27,
+        saves_to: [["Propeller FLiP or Project Board", "flip"], ["Propeller Activity Board", "activity-board"], ["Other Propeller Boards","other"]]
     },
     "other": {
         description: "Other Propeller Boards",
@@ -187,7 +191,8 @@ var profile = {
         analog: [],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 27
+        contiguous_pins_end: 27,
+        saves_to: [["Other Propeller Boards","other"], ["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"]]
     },
     "propcfile": {
         description: "Propeller C (code-only)",
@@ -195,7 +200,8 @@ var profile = {
         analog: [],
         baudrate: 115200,
         contiguous_pins_start: 0,
-        contiguous_pins_end: 27
+        contiguous_pins_end: 27,
+        saves_to: []
     }
 };
 function setProfile(profileName) {

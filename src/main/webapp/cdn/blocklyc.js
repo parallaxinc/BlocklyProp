@@ -121,7 +121,10 @@ function tabClick(id) {
         }
     } else {
         document.getElementById('prop-btn-graph').style.display = 'none';
-        document.getElementById('prop-btn-pretty').style.display = 'inline-block'; 
+        document.getElementById('prop-btn-pretty').style.display = 'inline-block';
+        document.getElementById('prop-btn-find-replace').style.display = 'inline-block';
+        document.getElementById('prop-btn-undo').style.display = 'inline-block';
+        document.getElementById('prop-btn-redo').style.display = 'inline-block';
         document.getElementById('download-project').style.display = 'none';
         document.getElementById('upload-project').style.display = 'none';
     }
@@ -174,6 +177,14 @@ prettyCode = function (raw_code) {
     codePropC.gotoLine(0);
 };
 
+findReplaceCode = function () {
+    if (document.getElementById('find-replace').style.display === 'none') {
+        document.getElementById('find-replace').style.display = 'block';
+    } else {
+        document.getElementById('find-replace').style.display = 'none';        
+    }
+};
+
 /**
  * Initialize Blockly.  Called on page load.
  * @param {!Blockly} blockly Instance of Blockly from iframe.
@@ -207,6 +218,30 @@ function init(blockly) {
     // if the project is a propc code-only project, enable code editing.
     if (projectData['board'] === 'propcfile') {
         codePropC.setReadOnly(false);
+        codePropC.commands.addCommand({
+            name: "undo",
+            bindKey: {win: "Ctrl-z", mac: "Command-z"},
+            exec: function (codePropC) {
+                codePropC.undo();
+            },
+            readOnly: true
+        });
+        codePropC.commands.addCommand({
+            name: "redo",
+            bindKey: {win: "Ctrl-y", mac: "Command-y"},
+            exec: function (codePropC) {
+                codePropC.redo();
+            },
+            readOnly: true
+        });
+        codePropC.commands.addCommand({
+            name: "find_replace",
+            bindKey: {win: "Ctrl-f", mac: "Command-f"},
+            exec: function () {
+                findReplaceCode();
+            },
+            readOnly: true
+        });
         tabClick('tab_propc');
     }
 }
