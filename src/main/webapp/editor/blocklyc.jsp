@@ -150,7 +150,7 @@
                     </div>
                     <div class="modal-body" style="height: 430px;">
                         <div id="serial-conn-info"></div>
-                        <div id="serial_console" class="prop-term" type="text" tabindex="1"></div>
+                        <div id="serial_console" class="prop-term" type="text" tabindex="1" autofocus></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
