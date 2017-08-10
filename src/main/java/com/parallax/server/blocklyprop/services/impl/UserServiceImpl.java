@@ -56,13 +56,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(Long idUser) {
         if (userDao != null) {
-            return userDao.getUser(idUser).into(User.class);
+            UserRecord userObject = userDao.getUser(idUser);
+            if (userObject != null) { 
+                return userObject.into(User.class);
+            }
         }
-        else {
-            LOG.error("UserDAO is not initialized before first use!");
-            return null;
-        }
-        
+
+        LOG.error("UserDAO is not initialized before first use!");
+        return null;
     }
 
     @Override
