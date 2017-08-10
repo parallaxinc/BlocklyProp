@@ -454,8 +454,12 @@ function serial_console() {
                 connStrYet = false;
             };
 
-            document.getElementById('serial_console').focus();
-
+            $('#serial_console').focus();
+            var the_div = document.getElementById('serial_console').innerHTML;
+            if (the_div[the_div.length - 1] !== '\u258D') {
+                document.getElementById('serial_console').innerHTML = the_div + '\u258D';
+            }
+            
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
                 document.getElementById('serial-conn-info').innerHTML = '';
@@ -485,7 +489,11 @@ function serial_console() {
                 displayInTerm("Connection established with: " + getComPort() + "\n");
             }
 
-            document.getElementById('serial_console').focus();
+            $('#serial_console').focus();
+            var the_div = document.getElementById('serial_console').innerHTML;
+            if (the_div[the_div.length - 1] !== '\u258D') {
+                document.getElementById('serial_console').innerHTML = the_div + '\u258D';
+            }
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 term_been_scrolled = false;
