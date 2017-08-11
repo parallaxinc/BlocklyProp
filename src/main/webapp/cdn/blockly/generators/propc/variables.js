@@ -45,6 +45,7 @@ Blockly.Blocks.variables_get = {
         this.setOutput(true);
         this.typeCheckRun = null;
     },
+    /*
     onchange: function () {
         var sBlock = this;
         if(!this.typeCheckRun) {
@@ -78,6 +79,7 @@ Blockly.Blocks.variables_get = {
             }, 500);
         }
     },
+    */
     getVars: function () {
         return [this.getFieldValue('VAR')];
     },
