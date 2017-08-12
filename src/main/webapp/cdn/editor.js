@@ -76,9 +76,6 @@ $(document).ready(function () {
     $('#upload-project').on('click', function () {
         uploadCode();
     });
-    $('#clear-workspace').on('click', function () {
-        clearWorkspace();
-    });
     $('#save-check-dialog').on('hidden.bs.modal', function () {
         timestampSaveTime(5, false);
     });
@@ -141,9 +138,6 @@ propcAsBlocksXml = function () {
     return code;
 };
 
-setSaveAsMenu = function () {
-};
-
 saveProject = function () {
     var code = '';
     if (projectData['board'] === 'propcfile') {
@@ -174,12 +168,12 @@ saveAsDialog = function () {
     var site_loc = $('#save-as-in-demo').val();
     
     // Prompt user to save current project first if unsaved
-    if (!checkLeave()) {
-        utils.confirm("Save", "Save current project first?", function (value) {
+    if (checkLeave() && projectData['yours']) {
+        utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
             if (value) {
                 saveProject();
             }
-        });
+        }, 'Yes', 'No');
     }
      
     // Reset the save-as modal's fields
@@ -458,7 +452,7 @@ function downloadCode() {
     projXMLcode = projXMLcode.substring(42, projXMLcode.length);
     projXMLcode = projXMLcode.substring(0, (projXMLcode.length - 6));
 
-    utils.prompt("Download Project - Filename:", 'Project' + idProject, function (value) {
+    utils.prompt(Blockly.Msg.DIALOG_DOWNLOAD, 'Project' + idProject, function (value) {
         if (value) {
             // extract the SVG from the iFrame that contains it
             var x = document.getElementsByName("content_blocks");
@@ -537,7 +531,7 @@ function downloadCode() {
 
 function uploadCode() {
     if (checkLeave()) {
-        utils.showMessage('Unsaved Project', 'You must save your project before you can upload a blocks file to it.');
+        utils.showMessage(Blockly.Msg.DIALOG_UNSAVED_PROJECT, Blockly.Msg.DIALOG_SAVE_BEFORE_ADD_BLOCKS);
     } else {
         $('#upload-dialog').modal('show');
     }
@@ -546,8 +540,6 @@ function uploadCode() {
 function uploadHandler(files) {
     var UploadReader = new FileReader();
     UploadReader.onload = function () {
-        //var parsed = new DOMParser().parseFromString(this.result, "text/xml");
-        //var xmlString = (new XMLSerializer()).serializeToString(parsed);
         var xmlString = this.result;
         var xmlValid = false;
         var uploadBoardType = '';
@@ -655,18 +647,3 @@ function appendCode() {
         clearUploadInfo();
     }
 }
-
-function clearWorkspace() {
-    utils.confirm(Blockly.Msg.DIALOG_CLEAR_WORKSPACE, Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING, function (value) {
-        if (value) {
-            window.frames["content_blocks"].location.reload();
-            window.frames["content_blocks"].setProfile(projectData['board']);
-            window.frames["content_blocks"].init(projectData['board'], []);
-            projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
-            setTimeout(function () {
-                window.frames["content_blocks"].load(projectData['code']);
-            }, 2000);
-        }
-    });
-}
-
