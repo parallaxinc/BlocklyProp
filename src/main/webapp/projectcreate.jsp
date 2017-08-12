@@ -57,7 +57,6 @@
                             <div class="form-group">
                                 <label for="board-type"><fmt:message key="project.create.board_type" /></label>
                                 <select class="form-control" id="board-type" name="board-type">
-                                    <c:if test="${param.lang == 'PROPC'}">
                                         <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
                                         <option value="activity-board"><fmt:message key="project.board.activity-board" /></option>
                                         <option value="s3"><fmt:message key="project.board.s3" /></option>
@@ -69,10 +68,6 @@
                                                 <option value="propcfile"><fmt:message key="project.board.propcfile" /></option>
                                             </c:when>
                                        </c:choose>
-                                    </c:if>
-                                    <c:if test="${param.lang == 'SPIN'}">
-                                        <option value="s3"><fmt:message key="project.board.s3" /></option>
-                                    </c:if>
                                 </select>
                             </div>
                         </div>

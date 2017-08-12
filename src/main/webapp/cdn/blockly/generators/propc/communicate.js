@@ -1975,7 +1975,7 @@ Blockly.propc.xbee_print_multiple = function () {
     {
         return '// ERROR: XBee is not initialized!\n';
     } else {
-        var code = 'fdserial_txChar(xbee, "';
+        var code = 'dprint(xbee, "';
         var varList = '';
         var orIt = '';
         var i = 0;

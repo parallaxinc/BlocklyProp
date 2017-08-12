@@ -67,7 +67,8 @@ $(document).ready(function () {
     });
 
     $('#save-project-as').on('click', function () {
-        saveProjectAs();
+        saveAsDialog();
+        //saveProjectAs();
     });
     $('#download-project').on('click', function () {
         downloadCode();
@@ -140,6 +141,9 @@ propcAsBlocksXml = function () {
     return code;
 };
 
+setSaveAsMenu = function () {
+};
+
 saveProject = function () {
     var code = '';
     if (projectData['board'] === 'propcfile') {
@@ -165,7 +169,115 @@ saveProject = function () {
     timestampSaveTime(20, true);
 };
 
+saveAsDialog = function () {
+    // Are we in demo or production?
+    var site_loc = $('#save-as-in-demo').val();
+    
+    // Prompt user to save current project first if unsaved
+    if (!checkLeave()) {
+        utils.confirm("Save", "Save current project first?", function (value) {
+            if (value) {
+                saveProject();
+            }
+        });
+    }
+     
+    // Reset the save-as modal's fields
+    $('#save-as-project-name').val(projectData['name']);
+    $("#save-as-board-type").empty();
+    window.frames["content_blocks"].profile.default.saves_to.forEach(function (bt) {
+        $("#save-as-board-type").append($('<option />').val(bt[1]).text(bt[0]));
+    });
+    
+    // Until release to production, make sure we are on demo before displaying the propc option
+    if (site_loc === 'demo') {
+        $("#save-as-board-type").append($('<option />').val('propcfile').text('Propeller C (code-only)'));
+    }
+    
+    // Open modal
+    $('#save-as-type-dialog').modal('show');    
+};
+
+checkBoardType = function () {
+    var current_type = projectData['board'];
+    var save_as_type = $('#save-as-board-type').val();
+    // save-as-verify-boardtype
+    if (current_type === save_as_type || save_as_type === 'propcfile') {
+        document.getElementById('save-as-verify-boardtype').style.display = 'none';
+    } else {
+        document.getElementById('save-as-verify-boardtype').style.display = 'block';
+    }
+};
+
 saveProjectAs = function () {
+    // Retrieve the field values
+    var p_type = $('#save-as-board-type').val();
+    var p_name = $('#save-as-project-name').val();
+    
+    //get the project's XML code
+    var code = '';
+    if (projectData['board'] === 'propcfile') {
+        code = propcAsBlocksXml();
+
+        window.frames["content_blocks"].clearXml();
+        window.frames["content_blocks"].load(code);
+    } else {
+        code = window.frames["content_blocks"].getXml();
+    }
+
+    // If the new project is the same type as the old one, use the save-as endpoint
+    if(p_type === projectData['board']) {
+        projectData['code'] = code;
+        projectData['name'] = p_name;
+        $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
+            var previousOwner = projectData['yours'];
+            projectData = data;
+            projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+
+            // Reloading project with new id
+            window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+        });
+        timestampSaveTime(20, true);  
+        
+    } else {
+    // Else create a new project, then save into it
+
+        ignoreSaveCheck = true;
+        projectData['code'] = code;
+        projectData['name'] = p_name;
+        projectData['board'] = 'propcfile';
+
+        var newProjectData = {
+            'project-name': p_name,
+            'board-type': p_type,
+            'project-description': projectData['description'],
+            'project-type': projectData['type'],
+            'sharing': (projectData['private'] ? 'private' : 'shared'),
+            'project-description-html': projectData['description-html']
+        };
+        $.post(baseUrl + 'createproject', newProjectData, function (data) {
+            console.log(data);
+            if (data['success']) {
+                projectData = data;
+                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+                projectData['code'] = code;
+
+                $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+                    projectData = data;
+                    projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                    ignoreSaveCheck = false;
+                });
+            } else {
+                if (typeof data['message'] === "string")
+                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
+                else
+                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message'].toString());
+            }
+        });
+        timestampSaveTime(20, true);
+    }
+    
+    /*
     utils.prompt("Save project as", projectData['name'], function (value) {
         if (value) {
             var code = '';
@@ -190,26 +302,13 @@ saveProjectAs = function () {
             timestampSaveTime(20, true);
         }
     });
+    */
+    
 };
 
+/*
 saveAsPropc = function () {
-    /*
-     if (codePropC.getReadOnly()) {
-     codePropC.setReadOnly(false);
-     //$('#propc-edit-status').html('Disable');
-     } else {
-     codePropC.setReadOnly(true);
-     //$('#propc-edit-status').html('Enable');
-     }
-     */
-
     var xmlText = propcAsBlocksXml();
-
-    /*
-     var xmlDom = Blockly.Xml.textToDom(xmlText);
-     Blockly.mainWorkspace.clear();
-     Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
-     */
 
     utils.prompt("Create a new Propeller C (code-only) project", projectData['name'], function (value) {
         if (value) {
@@ -250,6 +349,7 @@ saveAsPropc = function () {
         }
     });
 };
+*/
 
 editProjectDetails = function () {
     window.location.href = baseUrl + 'my/projects.jsp#' + idProject;

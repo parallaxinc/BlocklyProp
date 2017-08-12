@@ -7,6 +7,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
+<!-- Support for experimental blocks in Demo builds  -->
+<!-- See developer notes to use this feature         -->
+<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
+
 <html><!-- manifest=node.manifest> -->
     <head>
         <meta name="application-name" content="&nbsp;"/>
@@ -200,18 +204,19 @@
                         <div class="form-group">
                             <label for="save-as-project-name"><fmt:message key="project.create.project_name" /></label>
                             <input type="text" class="form-control" id="save-as-project-name" name="save-as-project-name"/>
+                            <input type="hidden" id="save-as-in-demo" value="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>" />
                         </div>
                         <div class="form-group">
                             <label for="save-as-board-type"><fmt:message key="project.create.board_type" /></label>
-                            <select class="form-control" id="save-as-board-type" name="save-as-board-type">
+                                <select class="form-control" id="save-as-board-type" name="save-as-board-type" onchange="checkBoardType();">
                                 <option disabled="" selected=""><fmt:message key="project.create.board_type.select" /></option>
                             </select>
                         </div>
-                        <div class="hidden" id="save-as-in-demo"><c:choose><c:when test="${experimental == true}">demo</c:when></c:choose></div>
+                        <div id="save-as-verify-boardtype" class="alert alert-warning" style="display: none;"><span class="glyphicon glyphicon-warning-sign"></span> <fmt:message key="editor.saveas.boardtype.warning" /></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
-                        <button type="button" class="btn btn-primary" onclick="saveAsType();"><fmt:message key="editor.save-as" /></button>
+                        <button type="button" class="btn btn-primary" onclick="saveProjectAs();" data-dismiss="modal"><fmt:message key="editor.save-as" /></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

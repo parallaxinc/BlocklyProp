@@ -90,7 +90,7 @@ function tabClick(id) {
      }*/
 
     // Deselect all tabs and hide all panes.
-    document.getElementById('menu-save-as-propc').style.display = 'none';
+    // document.getElementById('menu-save-as-propc').style.display = 'none';
     for (var x in TABS_) {
         //if (document.getElementById('tab_' + TABS_[x])) {
         //    document.getElementById('tab_' + TABS_[x]).className = 'taboff';
