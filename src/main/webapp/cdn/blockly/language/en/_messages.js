@@ -47,11 +47,16 @@ Blockly.Msg.DIALOG_CLEAR_WORKSPACE = 'Clear Workspace';
 Blockly.Msg.DIALOG_CLEAR_WORKSPACE_WARNING = 'Are you sure you want to clear your workspace?  This action cannot be undone!';
 Blockly.Msg.DIALOG_CHANGED_SINCE = 'The project has been changed since the last save.';
 Blockly.Msg.DIALOG_PROJECT_SAVED = 'Project saved';
+Blockly.Msg.DIALOG_SAVE_TITLE = 'Save';
+Blockly.Msg.DIALOG_SAVE_FIRST = 'Save current project first?';
 Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT = 'The project has been saved';
 Blockly.Msg.DIALOG_SIDE_FILES = '';
 Blockly.Msg.DIALOG_SIDE_FILES_WARNING = '';
 Blockly.Msg.DIALOG_NO_CLIENT = '<i class="glyphicon glyphicon-exclamation-sign"></i> BlocklyPropClient <strong>is not running</strong>';
 Blockly.Msg.DIALOG_CLIENT_SEARCHING = '<i class="glyphicon glyphicon-info-sign"></i> Looking for BlocklyPropClient';
+Blockly.Msg.DIALOG_DOWNLOAD = 'Download Project - Filename:';
+Blockly.Msg.DIALOG_UNSAVED_PROJECT = 'Unsaved Project';
+Blockly.Msg.DIALOG_SAVE_BEFORE_ADD_BLOCKS = 'You must save your project before you can upload a blocks file to it.';
 
 // Variable renaming.
 Blockly.MSG_CHANGE_VALUE_TITLE = 'Change value:';

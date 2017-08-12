@@ -299,7 +299,6 @@ Blockly.Blocks.console_print_multiple = {
             warnTxt = 'Terminal print multiple must have at least one term.';
         }
         this.setWarningText(warnTxt);
-        console.log(this);
     }
 };
 
@@ -797,7 +796,6 @@ Blockly.propc.serial_send_text = function () {
     if (this.getInput('SERPIN')) {
         p = this.getFieldValue('SER_PIN').replace(',', '_');
     }
-    console.log(p);
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') === -1)
     {

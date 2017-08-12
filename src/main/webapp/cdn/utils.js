@@ -31,20 +31,20 @@ var utils = {
 
         });
     },
-    confirm: function (title, message, callback) {
+    confirm: function (title, message, callback, optionLabelConfirm, optionLabelCancel) {
         bootbox.dialog({
             title: title,
             message: message,
             buttons: {
                 cancel: {
-                    label: "Cancel",
+                    label: (optionLabelCancel || "Cancel"),
                     className: "btn-default",
                     callback: function () {
                         callback(false);
                     }
                 },
                 confirm: {
-                    label: "Confirm",
+                    label: (optionLabelConfirm || "Confirm"),
                     className: "btn-primary",
                     callback: function () {
                         callback(true);
