@@ -79,11 +79,13 @@
                             <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
                             <hr style="line-height:5px; margin:5px;">
                             <li><a href="#" onclick="configure_client()"><fmt:message key="editor.run.configure" /></a></li>
+                            <!--
                             <c:choose>
                                 <c:when test="${experimental == true}">
-                                    <li id="menu-save-as-propc" style="display: none;"><a href="#" onclick="saveAsPropc()">Edit Propeller C code...</a></li>
+                                    <li id="menu-save-as-propc" style="display: none;"><a href="#" onclick="saveAsDialog()">Edit Propeller C code...</a></li>
                                 </c:when>
                             </c:choose>
+                            -->
                         </ul>
                     </span>
                 </div>
