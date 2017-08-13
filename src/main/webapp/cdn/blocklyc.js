@@ -122,13 +122,13 @@ function tabClick(id) {
     } else {
         if ($('#editor-full-mode') === 'true') {
             document.getElementById('prop-btn-graph').style.display = 'none';
+            document.getElementById('upload-project').style.display = 'none';
         }
         document.getElementById('prop-btn-pretty').style.display = 'inline-block';
         document.getElementById('prop-btn-find-replace').style.display = 'inline-block';
         document.getElementById('prop-btn-undo').style.display = 'inline-block';
         document.getElementById('prop-btn-redo').style.display = 'inline-block';
         document.getElementById('download-project').style.display = 'none';
-        document.getElementById('upload-project').style.display = 'none';
     }
 
     // Show the selected pane.
@@ -431,7 +431,9 @@ function serial_console() {
                     connString += e.data;
                     if (connString.indexOf(baudrate.toString(10)) > -1) {
                         connStrYet = true;
-                        document.getElementById('serial-conn-info').innerHTML = connString.trim();
+                        if(document.getElementById('serial-conn-info')) {
+                            document.getElementById('serial-conn-info').innerHTML = connString.trim();
+                        }
                     }
                 }
                 $('#serial_console').focus();
@@ -449,9 +451,9 @@ function serial_console() {
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
-                document.getElementById('serial-conn-info').innerHTML = '';
-                // for prop-term:
-                updateTermBox(0);
+                if(document.getElementById('serial-conn-info')) {
+                    document.getElementById('serial-conn-info').innerHTML = '';
+                }
                 term = null;
                 active_connection = null;
             });
@@ -492,8 +494,10 @@ function serial_console() {
             //term.open(document.getElementById("serial_console"));
             msg_to_send.action = 'open';
             active_connection = 'websocket';
-            document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
-                    msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
+            if(document.getElementById('serial-conn-info')) {
+                document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
+                        msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
+            }
             client_ws_connection.send(JSON.stringify(msg_to_send));
         } else {
             updateTermBox(0);
@@ -502,7 +506,9 @@ function serial_console() {
         $('#console-dialog').on('hidden.bs.modal', function () {
             if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
                 msg_to_send.action = 'close';
-                document.getElementById('serial-conn-info').innerHTML = '';
+                if(document.getElementById('serial-conn-info')) {
+                    document.getElementById('serial-conn-info').innerHTML = '';
+                }
                 active_connection = null;
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
@@ -637,8 +643,9 @@ function graphing_console() {
         }
 
         $('#graphing-dialog').modal('show');
-        document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
-
+        if(document.getElementById('btn-graph-play')) {
+            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+        }
     } else {
         alert('To use the graphing feature, your program must have both a graph initialize block and a graph value block.');
     }
@@ -824,15 +831,17 @@ function graph_redraw() {
 }
 
 function graph_play() {
-    var play_state = document.getElementById('btn-graph-play').innerHTML;
-    if (play_state.indexOf('pause') > -1) {
-        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-        clearInterval(graph_interval_id);
-    } else {
-        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-        graph_interval_id = setInterval(function () {
-            graph.update(graph_data);
-        }, graph_options.refreshRate);
+    if(document.getElementById('btn-graph-play')) {
+        var play_state = document.getElementById('btn-graph-play').innerHTML;
+        if (play_state.indexOf('pause') > -1) {
+            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            clearInterval(graph_interval_id);
+        } else {
+            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            graph_interval_id = setInterval(function () {
+                graph.update(graph_data);
+            }, graph_options.refreshRate);
+        }
     }
 }
 
