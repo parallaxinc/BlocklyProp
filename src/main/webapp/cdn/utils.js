@@ -1,12 +1,13 @@
 var utils = {
-    showMessage: function (title, message) {
+    showMessage: function (title, message, callback) {
         bootbox.dialog({
             title: title,
             message: message,
             buttons: {
                 confirm: {
                     label: "Ok",
-                    className: "btn-primary"
+                    className: "btn-primary",
+                    callback: callback
                 }
             }
         });

@@ -47,8 +47,9 @@ $(document).ready(function () {
             setInterval(checkLastSavedTime, 60000);
         }).fail(function () {
             // Failed to load project - this probably means that it belongs to another user and is not shared.
-            utils.showMessage('Project not shared', 'The project you are trying to view is not shared.  You may need to contact the project\'s owner and ask them to share their project before you will be able to view it.');
-            window.location = baseUrl;
+            utils.showMessage('Project not shared', 'The project you are trying to view is not shared.  You may need to contact the project\'s owner and ask them to share their project before you will be able to view it.', function () {
+                window.location = baseUrl;
+            });
         });
     }
 
