@@ -120,7 +120,9 @@ function tabClick(id) {
                 document.getElementById('menu-save-as-propc').style.display = 'block';
         }
     } else {
-        document.getElementById('prop-btn-graph').style.display = 'none';
+        if ($('#editor-full-mode') === 'true') {
+            document.getElementById('prop-btn-graph').style.display = 'none';
+        }
         document.getElementById('prop-btn-pretty').style.display = 'inline-block';
         document.getElementById('prop-btn-find-replace').style.display = 'inline-block';
         document.getElementById('prop-btn-undo').style.display = 'inline-block';
