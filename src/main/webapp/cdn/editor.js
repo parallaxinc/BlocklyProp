@@ -47,9 +47,8 @@ $(document).ready(function () {
             setInterval(checkLastSavedTime, 60000);
         }).fail(function () {
             // Failed to load project - this probably means that it belongs to another user and is not shared.
-            utils.showMessage('The project you are trying to view is not shared.  You may need to contact the project\'s owner and ask them to share their project before you will be able to view it.', function() {
-                window.location = baseUrl;
-            });
+            utils.showMessage('Project not shared', 'The project you are trying to view is not shared.  You may need to contact the project\'s owner and ask them to share their project before you will be able to view it.');
+            window.location = baseUrl;
         });
     }
 
@@ -180,7 +179,7 @@ saveProject = function () {
             elem.style.borderColor = '#2e6da4';
         }, 1750);
         
-        utils.showMessage('BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.', function() {});
+        utils.showMessage('Not logged in', 'BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.');
     });
 
     // Mark the time when saved, add 30 minutes to it.
