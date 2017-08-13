@@ -45,35 +45,17 @@ $(document).ready(function () {
             setInterval(checkLastSavedTime, 60000);
         }).fail(function () {
             // Failed to load project - this probably means that it belongs to another user and is not shared.
-            utils.showMessage(Blockly.Msg.DIALOG_PROJECT_NOT_SHARED, function() {
+            utils.showMessage('The project you are trying to view is not shared.  You may need to contact the project\'s owner and ask them to share their project before you will be able to view it.', function() {
                 window.location = baseUrl;
-            })
+            });
         });
     }
 
     $('#save-project').on('click', function () {
-        saveProject();
-
-        var elem = document.getElementById('save-project');
-        elem.style.paddingLeft = '10px';
-        elem.style.background = 'rgb(92, 184, 92)';
-        elem.style.borderColor = 'rgb(76, 174, 76)';
-
-        setTimeout(function () {
-            elem.innerHTML = 'Save &#x2713;';
-        }, 600);
-
-        setTimeout(function () {
-            elem.innerHTML = 'Save&nbsp;&nbsp;';
-            elem.style.paddingLeft = '15px';
-            elem.style.background = '#337ab7';
-            elem.style.borderColor = '#2e6da4';
-        }, 1750);
+        saveProject();  
     });
-
     $('#save-project-as').on('click', function () {
         saveAsDialog();
-        //saveProjectAs();
     });
     $('#download-project').on('click', function () {
         downloadCode();
@@ -84,7 +66,6 @@ $(document).ready(function () {
     $('#save-check-dialog').on('hidden.bs.modal', function () {
         timestampSaveTime(5, false);
     });
-
 });
 
 timestampSaveTime = function (mins, resetTimer) {
@@ -162,6 +143,42 @@ saveProject = function () {
         if (!previousOwner) {
             window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
         }
+    }).done(function () {
+        // Save was successful, show green with checkmark
+        var elem = document.getElementById('save-project');
+        elem.style.paddingLeft = '10px';
+        elem.style.background = 'rgb(92, 184, 92)';
+        elem.style.borderColor = 'rgb(76, 174, 76)';
+
+        setTimeout(function () {
+            elem.innerHTML = 'Save &#x2713;';
+        }, 600);
+
+        setTimeout(function () {
+            elem.innerHTML = 'Save&nbsp;&nbsp;';
+            elem.style.paddingLeft = '15px';
+            elem.style.background = '#337ab7';
+            elem.style.borderColor = '#2e6da4';
+        }, 1750);
+    }).fail(function () {
+        // Save failed.  Show red with "x"
+        var elem = document.getElementById('save-project');
+        elem.style.paddingLeft = '10px';
+        elem.style.background = 'rgb(214, 44, 44)';
+        elem.style.borderColor = 'rgb(191, 38, 38)';
+
+        setTimeout(function () {
+            elem.innerHTML = 'Save &times;';
+        }, 600);
+
+        setTimeout(function () {
+            elem.innerHTML = 'Save&nbsp;&nbsp;';
+            elem.style.paddingLeft = '15px';
+            elem.style.background = '#337ab7';
+            elem.style.borderColor = '#2e6da4';
+        }, 1750);
+        
+        utils.showMessage('BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.', function() {});
     });
 
     // Mark the time when saved, add 30 minutes to it.
