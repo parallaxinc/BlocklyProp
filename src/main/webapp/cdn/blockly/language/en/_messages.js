@@ -57,6 +57,7 @@ Blockly.Msg.DIALOG_CLIENT_SEARCHING = '<i class="glyphicon glyphicon-info-sign">
 Blockly.Msg.DIALOG_DOWNLOAD = 'Download Project - Filename:';
 Blockly.Msg.DIALOG_UNSAVED_PROJECT = 'Unsaved Project';
 Blockly.Msg.DIALOG_SAVE_BEFORE_ADD_BLOCKS = 'You must save your project before you can upload a blocks file to it.';
+Blockly.Msg.DIALOG_PROJECT_NOT_SHARED = 'The project you are trying to view is not shared.  You may need to contact the project\'s owner and ask them to share their project before you will be able to view it.';
 
 // Variable renaming.
 Blockly.MSG_CHANGE_VALUE_TITLE = 'Change value:';

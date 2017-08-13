@@ -43,6 +43,11 @@ $(document).ready(function () {
 
             timestampSaveTime(20, true);
             setInterval(checkLastSavedTime, 60000);
+        }).fail(function () {
+            // Failed to load project - this probably means that it belongs to another user and is not shared.
+            utils.showMessage(Blockly.Msg.DIALOG_PROJECT_NOT_SHARED, function() {
+                window.location = baseUrl;
+            })
         });
     }
 
