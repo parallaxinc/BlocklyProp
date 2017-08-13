@@ -33,12 +33,14 @@ $(document).ready(function () {
                 window.frames["content_blocks"].setProfile(data['board']);
                 window.frames["content_blocks"].init(data['board'], []);
             }
-            if (projectData['board'] === 's3' && type === 'PROPC') {
-                $('#prop-btn-ram').addClass('hidden');
-                document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-            } else {
-                $('#prop-btn-ram').removeClass('hidden');
-                document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+            if ($('#editor-full-mode') === 'true') {
+                if (projectData['board'] === 's3' && type === 'PROPC') {
+                    $('#prop-btn-ram').addClass('hidden');
+                    document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+                } else {
+                    $('#prop-btn-ram').removeClass('hidden');
+                    document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+                }
             }
 
             timestampSaveTime(20, true);
@@ -387,14 +389,16 @@ loadProject = function () {
         }
         window.frames["content_blocks"].load(projectData['code']);
     }
-    if (projectData['board'] === 's3' && type === 'PROPC') {
-        $('#load-ram-button').addClass('hidden');
-        $('#open-graph-output').addClass('hidden');
-        document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-    } else {
-        $('#load-ram-button').removeClass('hidden');
-        $('#open-graph-output').removeClass('hidden');
-        document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+    if ($('#editor-full-mode') === 'true') {
+        if (projectData['board'] === 's3' && type === 'PROPC') {
+            $('#load-ram-button').addClass('hidden');
+            $('#open-graph-output').addClass('hidden');
+            document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+        } else {
+            $('#load-ram-button').removeClass('hidden');
+            $('#open-graph-output').removeClass('hidden');
+            document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+        }
     }
 };
 
