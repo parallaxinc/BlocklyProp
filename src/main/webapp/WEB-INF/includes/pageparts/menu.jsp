@@ -75,4 +75,18 @@
             </span>
         </div>
     </div>
+<<<<<<< HEAD
 </nav>
+=======
+    <!-- Message of the Day goes here. -->
+    <!--
+        <div class="navbar navbar-expand" style="background-color: #b2dba1 ">
+            <div class="container-fluid">
+                <span style="alignment-adjust: middle"> 
+                    Message of the day goes here
+                </span>
+            </div>
+        </div>
+    -->
+</nav>
+>>>>>>> 6eb07a0e3df40bf299d7ce97f5f8da9449470ac6

@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -21,16 +22,15 @@ public class ServletUtils {
         if (!Strings.isNullOrEmpty(language)) {
             return language;
         }
-//        Object localeObject = req.getAttribute("language");
-//        if (localeObject != null) {
-//            System.out.println("Attribute locale not null: " + localeObject);
-//            return String.valueOf(localeObject);
-//        }
-        Object localeObject = req.getSession().getAttribute("language");
-        if (localeObject != null) {
-            return String.valueOf(localeObject);
-        }
 
+        HttpSession thisSession = req.getSession();
+        if (thisSession != null ) {
+            Object localeObject = thisSession.getAttribute("language");
+            if (localeObject != null) {
+                return String.valueOf(localeObject);
+            }
+        }
+        
         language = BlocklyPropSecurityUtils.getLocale();
         if (!Strings.isNullOrEmpty(language)) {
             return language;

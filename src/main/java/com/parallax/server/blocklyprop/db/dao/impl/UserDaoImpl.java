@@ -32,7 +32,7 @@ public class UserDaoImpl implements UserDao {
     /**
      * Logging facility
      */
-    private static final Logger LOG = LoggerFactory.getLogger(UserDao.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
 
     /**
      * Database connection context
@@ -147,12 +147,28 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    /***
+     * Update a user screen name
+     * <p>
+     * Update a user's screen name by referencing the 
+     * @param idUser
+     * @param screenname 
+     */
     @Override
     public void updateScreenname(Long idUser, String screenname) {
-        UserRecord user = create.selectFrom(Tables.USER).where(Tables.USER.ID.eq(idUser)).fetchOne();
-        if (user != null) {
-            user.setScreenname(screenname);
-            user.update();
+        try {
+            UserRecord user = create.selectFrom(Tables.USER)
+                    .where(Tables.USER.IDCLOUDSESSION.eq(idUser))
+                    .fetchOne();
+        
+            if (user != null) {
+                LOG.info("Updating screen name {}", screenname);
+                user.setScreenname(screenname);
+                user.update();
+            }
+        }
+        catch (org.jooq.exception.DataAccessException jex) {
+            LOG.error("Error while updaing screen name. {}", jex);
         }
     }
 
