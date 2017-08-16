@@ -51,6 +51,15 @@
                     </jsp:include>
                 </td>
             </tr>
+            <tr id="find-replace" style="background-color: #ddd; display: none; padding: 5px;">
+                <td width="100%">
+                    Find:<input type="text" class="form-control" style="display:inline; height:20px; font-size: 14px; line-height: 20px; width: 200px; padding: 1px;" id="propc-find" name="propc-find"/>
+                    <a class="btn-view-blocks" style="height:19px; padding: 0px 3px 1px 3px;" href="#" onclick="codePropC.find(document.getElementById('propc-find').value, {}, true);">Find Next</a> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;Replace:<input type="text" class="form-control" style="display:inline; height:20px; font-size: 14px; line-height: 20px; width: 200px; padding: 1px;" id="propc-replace" name="propc-replace"/>
+                    <a class="btn-view-blocks" style="height:19px; padding: 0px 3px 1px 3px;" href="#" onclick="codePropC.replace(document.getElementById('propc-replace').value, {needle: document.getElementById('propc-find').value}, true);">Replace</a> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="close" onclick="findReplaceCode();">&times;</button>
+                </td>
+            </tr>
             <tr>
                 <td id="content">
                     <div id="content_blocks">

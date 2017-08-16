@@ -37,7 +37,7 @@
                         <span id="editor-full-mode" class="hidden">true</span>
                     </c:if>
                     <c:if test="${param.demo == 'true'}">
-                        <fmt:message key="editor.demonstration.mode.info" />
+                        <span style="font-size:13px;"><fmt:message key="editor.demonstration.mode.info" /></span>
                         <span id="editor-full-mode" class="hidden">false</span>
                     </c:if>    
                 </div>
@@ -55,6 +55,9 @@
                         <a id="prop-btn-graph" onclick="graphing_console()" data-toggle="tooltip" title="Open Graphing Output" data-placement="bottom" class="btn btn-primary btn-circle disabled" id="open-graph-output"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
                             <path d="M.5,0 L.5,13.5 L12.5,13.5 M3.5,0 L3.5,13.5 M6.5,0 L6.5,13.5 M9.5,0 L9.5,13.5 M12.5,0 L12.5,13.5 M.5,3.5 L12.5,3.5 M.5,7 L12.5,7 M.5,10.5 L12.5,10.5 M.5,.5 L12.5,.5" style="stroke:rgba(255,255,255,.6);stroke-width:1;fill:none;"/>
                             <path d="M0,13 L6,5 L9,8 L14,2" style="stroke:#fff;stroke-width:2;fill:none;"/></svg></a>
+                    </c:if>
+                    <c:if test="${param.demo == 'true'}">
+                        <span style="color:#777; font-size:11px;"><a href="<url:getUrl url="/login.jsp"/>"><fmt:message key="editor.demonstration.mode.instructions" /></a>&nbsp;&nbsp;&nbsp;</span>
                     </c:if>
                     <a id="prop-btn-find-replace" style="display: none;" onclick="findReplaceCode();" data-toggle="tooltip" title="Find/Replace" data-placement="bottom" class="btn btn-info btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M1.5,13.25 L4.5,8.75" style="stroke:#fff;stroke-width:2px;fill:none;"/><circle cx="7" cy="5" r="3.5" style="stroke:#fff;stroke-width:1.5px;fill:none;"></circle></svg></a>
                     <a id="prop-btn-pretty" style="display: none;" onclick="prettyCode(null)" data-toggle="tooltip" title="Beautify Code" data-placement="bottom" class="btn btn-info btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M1,10 L5,10 5,11 1,11 Z M2,12 L6,12 6,13 2,13 Z M1,14 5,14 5,15 1,15 Z M0.5,2.75 L2.5,0.6 5.5,3.5 3.5,5.5 Z M5,7 L7,4.75 14,12 12,14 Z M0,7 Q1.5,6.5 2,5 Q2.5,6.5 4,7 Q2.5,7.5 2,9 Q1.5,7.5 0,7 Z M7,3 Q9.5,2.5 10,0 Q10.5,2.5 13,3 Q10.5,3.5 10,6 Q9.5,3.5 7,3 Z" style="stroke-width:0;fill:#fff;"/></svg></a>

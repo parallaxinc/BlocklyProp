@@ -1771,7 +1771,16 @@ Blockly.Blocks.number_binary = {
         this.setTooltip(Blockly.MSG_NUMBER_BINARY_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
-                .appendField(new Blockly.FieldTextInput("0101", Blockly.FieldTextInput.numberValidator), "NUMBER")
+                .appendField(new Blockly.FieldTextInput("0101", function(text) {
+                    if (text === null) {
+                      return null;
+                    }
+                    // 'O' is sometimes mistaken for '0' by inexperienced users.
+                    text = text.replace(/O/ig, '0');
+                    // remove anything that isn't a 0 or 1.
+                    text = text.replace(/[^0-1]/g, '');
+                    return text;
+                    }), "NUMBER")
                 .appendField("binary");
         this.setOutput(true, "Number");
     }
