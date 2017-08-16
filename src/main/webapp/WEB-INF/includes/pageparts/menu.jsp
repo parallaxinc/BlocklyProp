@@ -75,9 +75,6 @@
             </span>
         </div>
     </div>
-<<<<<<< HEAD
-</nav>
-=======
     <!-- Message of the Day goes here. -->
     <!--
         <div class="navbar navbar-expand" style="background-color: #b2dba1 ">
@@ -89,4 +86,3 @@
         </div>
     -->
 </nav>
->>>>>>> 6eb07a0e3df40bf299d7ce97f5f8da9449470ac6
