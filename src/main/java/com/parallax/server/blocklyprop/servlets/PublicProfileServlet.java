@@ -57,6 +57,7 @@ public class PublicProfileServlet extends HttpServlet {
                 } else {
                     log.info("Getting current user while not authenticated");
                     resp.sendError(404);
+                    return;
                 }
             } else {
                 idUser = Long.parseLong(idUserString);
@@ -64,6 +65,7 @@ public class PublicProfileServlet extends HttpServlet {
         } catch (NumberFormatException nfe) {
             log.info("id-user is not a valid number: {}", idUserString);
             resp.sendError(500);
+            return;
         }
         try {
 

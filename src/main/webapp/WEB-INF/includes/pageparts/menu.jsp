@@ -75,4 +75,14 @@
             </span>
         </div>
     </div>
+    <!-- Message of the Day goes here. -->
+    <!--
+        <div class="navbar navbar-expand" style="background-color: #b2dba1 ">
+            <div class="container-fluid">
+                <span style="alignment-adjust: middle"> 
+                    Message of the day goes here
+                </span>
+            </div>
+        </div>
+    -->
 </nav>
