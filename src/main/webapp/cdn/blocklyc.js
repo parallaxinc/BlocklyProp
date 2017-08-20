@@ -433,7 +433,10 @@ function serial_console() {
                         connStrYet = true;
                         if(document.getElementById('serial-conn-info')) {
                             document.getElementById('serial-conn-info').innerHTML = connString.trim();
+                            // send remainder of string to terminal???  Haven't seen any leak through yet...
                         }
+                    } else {
+                        displayInTerm(e.data);
                     }
                 }
                 $('#serial_console').focus();
