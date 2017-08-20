@@ -299,11 +299,11 @@ function establish_socket() {
                 selected_port = $("#comPort").val();
                 $("#comPort").empty();
                 if (ws_msg.ports.length > 0) {
-                    ws_msg.ports.forEach(function (port) {
+                    for (var pts = 0; pts < ws_msg.ports.length; pts++) {
                         $("#comPort").append($('<option>', {
-                            text: port
+                            text: ws_msg.ports[pts]
                         }));
-                    });
+                    }
                 } else {
                     $("#comPort").append($('<option>', {
                         text: 'No devices found'
