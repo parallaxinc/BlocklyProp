@@ -657,11 +657,11 @@ check_com_ports = function () {
             var selected_port = $("#comPort").val();
             $.get(client_url + "ports.json", function (data) {
                 $("#comPort").empty();
-                data.forEach(function (port) {
+                for (var pts = 0; pts < data.length; pts++) {
                     $("#comPort").append($('<option>', {
-                        text: port
+                        text: data[pts]
                     }));
-                });
+                }
                 select_com_port(selected_port);
                 client_available = true;
             }).fail(function () {
