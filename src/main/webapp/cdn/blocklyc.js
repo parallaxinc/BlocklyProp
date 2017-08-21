@@ -379,19 +379,9 @@ function serial_console() {
 
     if (client_use_type !== 'ws') {
         if (term === null) {
-            /*
-             term = new Terminal({
-             cols: 256,
-             rows: 24,
-             useStyle: true,
-             screenKeys: true,
-             portPath: getComPort()
-             });
-             */
             term = {
                 portPath: getComPort()
             };
-
             newTerminal = true;
         }
 
@@ -457,6 +447,8 @@ function serial_console() {
                 if(document.getElementById('serial-conn-info')) {
                     document.getElementById('serial-conn-info').innerHTML = '';
                 }
+                updateTermBox(0);
+                term_been_scrolled = false;
                 term = null;
                 active_connection = null;
             });
