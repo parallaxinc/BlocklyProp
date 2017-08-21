@@ -75,5 +75,9 @@
             }
             $("#project-loggedin-dialog").modal('show');
         }
+        
+        if (navigator.userAgent.indexOf('Edge') > -1 || (navigator.userAgent.indexOf('rv:11') > -1 && navigator.userAgent.indexOf('Trident') > -1) || navigator.userAgent.indexOf('MSIE') > -1) {
+            alert('<fmt:message key="browser.detection.ms.warning" />');
+        }
     </script>
 </shiro:notAuthenticated>
