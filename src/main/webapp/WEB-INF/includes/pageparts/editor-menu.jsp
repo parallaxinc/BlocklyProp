@@ -18,15 +18,19 @@
                 <div style="display:inline; padding-left: 10px; line-height: 30px;">
                     <c:if test="${param.demo == 'false'}">
                         <span id="client-searching" class="bp-client-warning">
-                            <a class="client-searching-link" data-toggle="modal" data-target="#client-download-modal" href="#"><fmt:message key="editor.client.checking" /></span></a>
+                            <a class="client-searching-link" data-toggle="modal" data-target="#client-download-modal" href="#">
+                                <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#8a6d3b;"/></svg>
+                                <fmt:message key="editor.client.checking" />
+                            </a>
                         </span>
                         <span id="client-unavailable" class="bp-client-danger hidden">
-                            <a class="client-unavailable-link" data-toggle="modal" data-target="#client-download-modal" href="#"><fmt:message key="editor.client.not-available" /></span></a>
+                            <a class="client-unavailable-link" data-toggle="modal" data-target="#client-download-modal" href="#">
+                                <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#a94442;"/></svg>
+                                <fmt:message key="editor.client.not-available" />
+                            </a>
                         </span>
                         <span id="client-available" class="bp-client-available hidden">
-                            <c:if test="${param.editor_lang == 'c'}">
-                                <fmt:message key="editor.client.available" />
-                            </c:if>
+                            <fmt:message key="editor.client.available" />
                         </span>
                         <span id="client-available-short" class="hidden">
                             <fmt:message key="editor.client.available.short" />
