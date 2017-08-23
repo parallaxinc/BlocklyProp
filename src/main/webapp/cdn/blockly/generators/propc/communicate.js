@@ -275,7 +275,7 @@ Blockly.Blocks.console_print_multiple = {
                                 ['100,000','100000'],
                                 ['1,000,000','1000000']
                                 ]), 'DIV' + i);
-                this.setFieldValue(divs[i], 'DIV' + i);
+                this.setFieldValue('100', 'DIV' + i);
             } else {
                 printInput = this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
