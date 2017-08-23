@@ -187,8 +187,16 @@ Blockly.Blocks.console_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldTextInput(divs[i],
-                                Blockly.FieldTextInput.numberValidator), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown([
+                                ['1','1'],
+                                ['10','10'],
+                                ['100','100'],
+                                ['1000','1000'],
+                                ['10,000','10000'],
+                                ['100,000','100000'],
+                                ['1,000,000','1000000']
+                                ]), 'DIV' + i);
+                this.setFieldValue(divs[i], 'DIV' + i);
             } else {
                 this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
@@ -258,8 +266,16 @@ Blockly.Blocks.console_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldTextInput('100',
-                                Blockly.FieldTextInput.numberValidator), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown([
+                                ['1','1'],
+                                ['10','10'],
+                                ['100','100'],
+                                ['1000','1000'],
+                                ['10,000','10000'],
+                                ['100,000','100000'],
+                                ['1,000,000','1000000']
+                                ]), 'DIV' + i);
+                this.setFieldValue(divs[i], 'DIV' + i);
             } else {
                 printInput = this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
@@ -981,8 +997,16 @@ Blockly.Blocks.serial_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldTextInput(divs[i],
-                                Blockly.FieldTextInput.numberValidator), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown([
+                                ['1','1'],
+                                ['10','10'],
+                                ['100','100'],
+                                ['1000','1000'],
+                                ['10,000','10000'],
+                                ['100,000','100000'],
+                                ['1,000,000','1000000']
+                                ]), 'DIV' + i);
+                this.setFieldValue(divs[i], 'DIV' + i);
             } else {
                 this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
@@ -1252,9 +1276,19 @@ Blockly.Blocks.serial_scan_multiple = {
             if (type === 'float') {
                 this.appendDummyInput('OPTION' + i)
                         .appendField('store float point \u2715')
-                        .appendField(new Blockly.FieldTextInput('100'), 'MULT' + i)
+                        .appendField(new Blockly.FieldDropdown([
+                                ['1','1'],
+                                ['10','10'],
+                                ['100','100'],
+                                ['1000','1000'],
+                                ['10,000','10000'],
+                                ['100,000','100000'],
+                                ['1,000,000','1000000']
+                                ]), 'MULT' + i)
+                        //.appendField(new Blockly.FieldTextInput('100'), 'MULT' + i)
                         .appendField('in', 'TYPE' + i)
                         .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'CPU' + i);
+                this.setFieldValue('100', 'MULT' + i);
             } else {
                 this.appendDummyInput('OPTION' + i)
                         .appendField(label, 'TYPE' + i)

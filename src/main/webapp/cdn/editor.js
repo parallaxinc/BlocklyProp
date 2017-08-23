@@ -73,9 +73,14 @@ $(document).ready(function () {
 timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
     var d_save = new Date();
-    last_saved_timestamp = d_save.getTime() + (mins * 60000);
-    if (resetTimer) {
-        last_saved_time = d_save.getTime();
+    
+    // If the proposed delay is less than the delay that's already in 
+    // process, don't update the delay to a new shorter time.
+    if (d_save.getTime() + (mins * 60000) > last_saved_timestamp) {
+        last_saved_timestamp = d_save.getTime() + (mins * 60000);
+        if (resetTimer) {
+            last_saved_time = d_save.getTime();
+        }
     }
 };
 
@@ -89,7 +94,7 @@ checkLastSavedTime = function () {
         // TODO: It's been to long - autosave, then close/set URL back to login page.
     }
 
-    if (t_now > last_saved_timestamp && checkLeave()) {
+    if (t_now > last_saved_timestamp && checkLeave() && $('#editor-full-mode').html() === 'true') {
         // It's time to pop up a modal to remind the user to save.
         $('#save-check-dialog').modal('show');
     }
