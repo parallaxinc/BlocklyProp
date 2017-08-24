@@ -835,9 +835,10 @@ Blockly.Blocks.char_type_block = {
                     ["124 - |", "124"],
                     ["125 - }", "125"],
                     ["126 - ~", "126"],
+                    ["7 - bell", "7"],
                     ["10 - line feed", "10"],
                     ["11 - tab", "11"],
-                    ["13 - ccarriage return", "13"],
+                    ["13 - carriage return", "13"],
                     ["127 - delete", "127"]]), "CHAR");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);

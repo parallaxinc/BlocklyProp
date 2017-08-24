@@ -3046,7 +3046,7 @@ Blockly.propc.ws2812b_set = function () {
         if (this.getInput('RGBPIN')) {
             p = this.getFieldValue('RGB_PIN');
         }
-        var code = 'RGBleds' + p + '[constrain(' + led + ', 1, LED_COUNT) - 1] = ' + color + ';\n';
+        var code = 'RGBleds' + p + '[constrain(' + led + ', 1, LED_COUNT' + p + ') - 1] = ' + color + ';\n';
         return code;
     }
 };
