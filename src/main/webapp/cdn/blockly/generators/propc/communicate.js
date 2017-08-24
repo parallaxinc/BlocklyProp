@@ -2884,7 +2884,9 @@ Blockly.Blocks.ws2812b_init = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("RGB-LED initialize PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
+                    this.sourceBlock_.onPinSet(myPin);
+                }), "PIN")
                 .appendField("number of LEDs")
                 .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM")
                 .appendField("type")
@@ -2896,15 +2898,21 @@ Blockly.Blocks.ws2812b_init = {
     },
     onchange: function (event) {
         this.rgbPin = this.getFieldValue('PIN');
-        if (event.blockId === this.id || event.oldXml) {  // only fire when it's this block or a block got deleted
-            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-            for (var x = 0; x < allBlocks.length; x++) {
-                var func = allBlocks[x].rgbPins;
-                if (func) {
-                    var block = func.call(allBlocks[x], event.oldValue, event.newValue);
-                }
+        if (event.oldXml) {  // only fire when a block got deleted
+            this.onPinSet(null);
+        }
+    },
+    onPinSet: function (myPin) {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        for (var x = 0; x < allBlocks.length; x++) {
+            var func = allBlocks[x].rgbPins;
+            if (func && myPin) {
+                func.call(allBlocks[x], this.rgbPin, myPin);
+            } else if (func) {
+                func.call(allBlocks[x]);
             }
         }
+        this.rgbPin = this.getFieldValue('PIN');
     }
 };
 
@@ -2919,7 +2927,7 @@ Blockly.propc.ws2812b_init = function () {
             num = 1500;
 
         Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
-        Blockly.propc.definitions_["ws2812b_sets" + pin] = '#define LED_PIN' + pin + ' ' + pin + '\n#define LED_COUNT' + pin + ' ' + num + '\n';
+        Blockly.propc.definitions_["ws2812b_sets" + pin] = '#define LED_PIN' + pin + '   ' + pin + '\n#define LED_COUNT' + pin + '   ' + num;
         Blockly.propc.global_vars_["ws2812b_array" + pin] = 'ws2812 *ws2812b' + pin + ';\nint RGBleds' + pin + '[' + num + '];\n';
         Blockly.propc.setups_["ws2812b_init" + pin] = 'ws2812b' + pin + ' = ws2812b_open();\n';
     }
