@@ -2918,9 +2918,10 @@ Blockly.propc.ws2812b_init = function () {
         if (num > 1500)
             num = 1500;
 
-        Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"\n\n#define LED_PIN' + pin + ' ' + pin + '\n#define LED_COUNT' + pin + ' ' + num + '\n';
-        Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *ws2812b' + pin + ';\nint RGBleds' + pin + '[' + num + '];\n';
-        Blockly.propc.setups_["ws2812b_init"] = 'ws2812b' + pin + ' = ws2812b_open();\n';
+        Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
+        Blockly.propc.definitions_["ws2812b_sets" + pin] = '#define LED_PIN' + pin + ' ' + pin + '\n#define LED_COUNT' + pin + ' ' + num + '\n';
+        Blockly.propc.global_vars_["ws2812b_array" + pin] = 'ws2812 *ws2812b' + pin + ';\nint RGBleds' + pin + '[' + num + '];\n';
+        Blockly.propc.setups_["ws2812b_init" + pin] = 'ws2812b' + pin + ' = ws2812b_open();\n';
     }
     return '';
 };
@@ -2952,6 +2953,9 @@ Blockly.Blocks.ws2812b_set = {
     },
     domToMutation: function (xmlElement) {
         var rgbpin = xmlElement.getAttribute('rgbpin');
+        if (rgbpin === 'null') {
+            rgbpin = null;
+        }
         this.updateRGBpin();
         if (this.getInput('RGBPIN')) {
             this.removeInput('RGBPIN');
