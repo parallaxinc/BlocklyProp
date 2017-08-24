@@ -682,8 +682,8 @@ Blockly.propc.serial_open = function () {
 
     if (!this.disabled) {
         Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-        Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser' + rx_pin + '_' + tx_pin + ';';
-        Blockly.propc.setups_['setup_fdserial'] = 'fdser' + rx_pin + '_' + tx_pin + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
+        Blockly.propc.definitions_["var fdserial" + rx_pin + '_' + tx_pin] = 'fdserial *fdser' + rx_pin + '_' + tx_pin + ';';
+        Blockly.propc.setups_['setup_fdserial' + rx_pin + '_' + tx_pin] = 'fdser' + rx_pin + '_' + tx_pin + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
     }
     return '';
 };
