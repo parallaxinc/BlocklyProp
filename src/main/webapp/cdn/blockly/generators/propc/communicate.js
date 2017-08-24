@@ -604,9 +604,9 @@ Blockly.Blocks.serial_open = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial initialize RX")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RXPIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat(['None', '-1'])), "RXPIN")
                 .appendField("TX")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "TXPIN");
+                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat(['None', '-1'])), "TXPIN");
         this.appendDummyInput('BAUD_RATE')
                 .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([
@@ -676,14 +676,14 @@ Blockly.Blocks.serial_open = {
 };
 
 Blockly.propc.serial_open = function () {
-    var rx_pin = this.getFieldValue('RXPIN');
-    var tx_pin = this.getFieldValue('TXPIN');
+    var rx_pin = this.getFieldValue('RXPIN').replace(/\-1/g, 'N');
+    var tx_pin = this.getFieldValue('TXPIN').replace(/\-1/g, 'N');
     var baud = this.getFieldValue('BAUD');
 
     if (!this.disabled) {
         Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-        Blockly.propc.definitions_["var fdserial"] = 'fdserial *fdser' + rx_pin + '_' + tx_pin + ';';
-        Blockly.propc.setups_['setup_fdserial'] = 'fdser' + rx_pin + '_' + tx_pin + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
+        Blockly.propc.definitions_["var fdserial" + rx_pin + '_' + tx_pin] = 'fdserial *fdser' + rx_pin + '_' + tx_pin + ';';
+        Blockly.propc.setups_['setup_fdserial' + rx_pin + '_' + tx_pin] = 'fdser' + rx_pin + '_' + tx_pin + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
     }
     return '';
 };
@@ -725,10 +725,14 @@ Blockly.Blocks.serial_send_text = {
             this.removeInput('SERPIN');
         }
         if (serpin) {
+            var pinSelect = this.ser_pins;
+            for (var y = 0; y < pinSelect.length; y++) {
+                pinSelect[y][0] = pinSelect[y][0].replace(/\-1/g, "None");
+            }
             this.appendDummyInput('SERPIN')
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .appendField('RXTX')
-                    .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
+                    .appendField(new Blockly.FieldDropdown(pinSelect), 'SER_PIN');
             this.setFieldValue(serpin, 'SER_PIN');
         }
     },
@@ -746,10 +750,14 @@ Blockly.Blocks.serial_send_text = {
             this.removeInput('SERPIN');
         }
         if (this.ser_pins.length > 1) {
+            var pinSelect = this.ser_pins;
+            for (var y = 0; y < pinSelect.length; y++) {
+                pinSelect[y][0] = pinSelect[y][0].replace(/\-1/g, "None");
+            }
             this.appendDummyInput('SERPIN')
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .appendField('RXTX')
-                    .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
+                    .appendField(new Blockly.FieldDropdown(pinSelect), 'SER_PIN');
             if (this.getInput('PRINT0')) {
                 this.moveInputBefore('SERPIN', 'PRINT0');
             } else if (this.getInput('OPTION0')) {
@@ -771,7 +779,7 @@ Blockly.Blocks.serial_send_text = {
             if (allBlocks[x].type === 'serial_open') {
                 var sp = allBlocks[x].serialPin;
                 if (sp) {
-                    this.ser_pins.push([sp, sp]);
+                    this.ser_pins.push([sp.replace(/\-1/g, "None"), sp]);
                 }
             }
         }
@@ -2953,7 +2961,15 @@ Blockly.Blocks.ws2812b_set = {
         this.rgbPins();
     },
     mutationToDom: function () {
+        var currentPin = '-1';
+        if (this.rgb_pins.length > 0) {
+            currentPin = this.rgb_pins[0][0];
+        }
+        this.rgb_pins.length = 0;
         if (this.getInput('RGBPIN')) {
+            currentPin = this.getFieldValue('RGB_PIN');
+        }
+        if (currentPin !== '-1') {
             var container = document.createElement('mutation');
             container.setAttribute('rgbpin', this.getFieldValue('RGB_PIN'));
             return container;
