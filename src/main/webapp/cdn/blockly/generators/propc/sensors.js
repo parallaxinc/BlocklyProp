@@ -282,7 +282,7 @@ Blockly.propc.colorpal_enable = function () {
     var pin = this.getFieldValue('IO_PIN');
     if (!this.disabled) {
         Blockly.propc.global_vars_["colorpal" + pin] = 'colorPal *cpal' + pin + ';';
-        Blockly.propc.definitions_["colorpal" + pin] = '#include "colorpal.h"';
+        Blockly.propc.definitions_["colorpal"] = '#include "colorpal.h"';
 
 
         Blockly.propc.setups_["colorpal" + pin] = 'cpal' + pin + ' = colorPal_open(' + pin + ');';
