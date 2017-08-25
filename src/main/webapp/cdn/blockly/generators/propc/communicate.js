@@ -714,15 +714,17 @@ Blockly.Blocks.serial_send_text = {
         this.serPins();
     },
     mutationToDom: function () {
+        var container = document.createElement('mutation');
         if (this.getInput('SERPIN')) {
-            var container = document.createElement('mutation');
             container.setAttribute('serpin', this.getFieldValue('SER_PIN'));
-            return container;
+
         }
+        container.setAttribute('pinmenu', JSON.stringify(this.ser_pins));
+        return container;
     },
     domToMutation: function (xmlElement) {
         var serpin = xmlElement.getAttribute('serpin');
-        this.updateSerPin();
+        this.ser_pins = JSON.parse(xmlElement.getAttribute('pinmenu')) || [['0,0','0,0']];
         if (this.getInput('SERPIN')) {
             this.removeInput('SERPIN');
         }
@@ -733,8 +735,6 @@ Blockly.Blocks.serial_send_text = {
                     .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
             this.setFieldValue(serpin, 'SER_PIN');
         }
-        var this_ser_block = this;
-        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     serPins: function (oldPin, newPin) {
         var currentPin = '-1';
@@ -964,6 +964,7 @@ Blockly.Blocks.serial_print_multiple = {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
         var divs = [];
+        container.setAttribute('pinmenu', JSON.stringify(this.ser_pins));
         container.setAttribute('options', JSON.stringify(this.optionList_));
         for (var fv = 0; fv < this.optionList_.length; fv++) {
             divs.push(this.getFieldValue('DIV' + fv) || '0');
@@ -1018,8 +1019,8 @@ Blockly.Blocks.serial_print_multiple = {
                         .appendField(label, 'TYPE' + i);
             }
         }
+        this.ser_pins = JSON.parse(container.getAttribute('pinmenu')) || [['0,0','0,0']];
         var serpin = container.getAttribute('serpin');
-        this.updateSerPin();
         if (this.getInput('SERPIN')) {
             this.removeInput('SERPIN');
         }
@@ -1033,8 +1034,6 @@ Blockly.Blocks.serial_print_multiple = {
                 this.moveInputBefore('SERPIN', 'PRINT0');
             }
         }
-        var this_ser_block = this;
-        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     decompose: Blockly.Blocks['console_print_multiple'].decompose,
     compose: function (containerBlock) {
@@ -1185,6 +1184,7 @@ Blockly.Blocks.serial_scan_multiple = {
     mutationToDom: function () {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
+        container.setAttribute('pinmenu', JSON.stringify(this.ser_pins));
         container.setAttribute('options', JSON.stringify(this.optionList_));
         if (this.getInput('SERPIN')) {
             container.setAttribute('serpin', this.getFieldValue('SER_PIN'));
@@ -1196,8 +1196,8 @@ Blockly.Blocks.serial_scan_multiple = {
         var value = JSON.parse(container.getAttribute('options'));
         this.optionList_ = value;
         this.updateShape_();
+        this.ser_pins = JSON.parse(container.getAttribute('pinmenu')) || [['0,0','0,0']];
         var serpin = container.getAttribute('serpin');
-        this.updateSerPin();
         if (this.getInput('SERPIN')) {
             this.removeInput('SERPIN');
         }
@@ -1211,8 +1211,6 @@ Blockly.Blocks.serial_scan_multiple = {
                 this.moveInputBefore('SERPIN', 'OPTION0');
             }
         }
-        var this_ser_block = this;
-        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     decompose: function (workspace) {
         // Populate the mutator's dialog with this block's components.

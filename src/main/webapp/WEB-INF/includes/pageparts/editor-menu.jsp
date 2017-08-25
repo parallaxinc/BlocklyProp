@@ -86,20 +86,22 @@
                             <c:if test="${param.demo == 'false'}">
                                 <li><a id="edit-project-details" href="#" onclick="editProjectDetails()"><fmt:message key="editor.edit-details" /></a></li>
                                 <li><a id="save-project-as" href="#"><fmt:message key="editor.save-as" /></a></li>
-                                <hr style="line-height:5px; margin:5px;">
+                                <hr style="line-height:5px; margin:5px;" />
                                 <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a></li>
                                 <li><a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a></li>
                             </c:if>
                             <li><a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a></li>
-                            <hr style="line-height:5px; margin:5px;">
+                            <hr style="line-height:5px; margin:5px;" />
                             <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /> & Reference</a></li>
-                            <hr style="line-height:5px; margin:5px;">
+                            <hr style="line-height:5px; margin:5px;" />
                             <li><a id="download-side" href="#" onclick="downloadPropC()">Download SimpleIDE files</a></li>
                             <li><a id="download-project" href="#"><fmt:message key="editor.download" /></a></li>
                             <c:if test="${param.demo == 'false'}">
                                 <li><a id="upload-project" href="#"><fmt:message key="editor.upload" /></a></li>
-                                <hr style="line-height:5px; margin:5px;">
+                                <hr style="line-height:5px; margin:5px;" />
                                 <li><a href="#" onclick="configure_client()"><fmt:message key="editor.run.configure" /></a></li>
+                                <hr style="line-height:5px; margin:5px;" />
+                                <li><a href="<url:getUrl url="/logout"/>"><fmt:message key="logout" /></a></li>
                             </c:if>
                         </ul>
                     </span>
