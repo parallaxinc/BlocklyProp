@@ -188,14 +188,14 @@ Blockly.Blocks.console_print_multiple = {
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
                         .appendField(new Blockly.FieldDropdown([
-                                ['1','1'],
-                                ['10','10'],
-                                ['100','100'],
-                                ['1000','1000'],
-                                ['10,000','10000'],
-                                ['100,000','100000'],
-                                ['1,000,000','1000000']
-                                ]), 'DIV' + i);
+                            ['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']
+                        ]), 'DIV' + i);
                 this.setFieldValue(divs[i], 'DIV' + i);
             } else {
                 this.appendValueInput('PRINT' + i)
@@ -267,14 +267,14 @@ Blockly.Blocks.console_print_multiple = {
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
                         .appendField(new Blockly.FieldDropdown([
-                                ['1','1'],
-                                ['10','10'],
-                                ['100','100'],
-                                ['1000','1000'],
-                                ['10,000','10000'],
-                                ['100,000','100000'],
-                                ['1,000,000','1000000']
-                                ]), 'DIV' + i);
+                            ['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']
+                        ]), 'DIV' + i);
                 this.setFieldValue('100', 'DIV' + i);
             } else {
                 printInput = this.appendValueInput('PRINT' + i)
@@ -724,7 +724,7 @@ Blockly.Blocks.serial_send_text = {
     },
     domToMutation: function (xmlElement) {
         var serpin = xmlElement.getAttribute('serpin');
-        this.ser_pins = JSON.parse(xmlElement.getAttribute('pinmenu')) || [['0,0','0,0']];
+        this.ser_pins = JSON.parse(xmlElement.getAttribute('pinmenu')) || [['0,0', '0,0']];
         if (this.getInput('SERPIN')) {
             this.removeInput('SERPIN');
         }
@@ -1003,14 +1003,14 @@ Blockly.Blocks.serial_print_multiple = {
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
                         .appendField(new Blockly.FieldDropdown([
-                                ['1','1'],
-                                ['10','10'],
-                                ['100','100'],
-                                ['1000','1000'],
-                                ['10,000','10000'],
-                                ['100,000','100000'],
-                                ['1,000,000','1000000']
-                                ]), 'DIV' + i);
+                            ['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']
+                        ]), 'DIV' + i);
                 this.setFieldValue(divs[i], 'DIV' + i);
             } else {
                 this.appendValueInput('PRINT' + i)
@@ -1019,7 +1019,7 @@ Blockly.Blocks.serial_print_multiple = {
                         .appendField(label, 'TYPE' + i);
             }
         }
-        this.ser_pins = JSON.parse(container.getAttribute('pinmenu')) || [['0,0','0,0']];
+        this.ser_pins = JSON.parse(container.getAttribute('pinmenu')) || [['0,0', '0,0']];
         var serpin = container.getAttribute('serpin');
         if (this.getInput('SERPIN')) {
             this.removeInput('SERPIN');
@@ -1196,7 +1196,7 @@ Blockly.Blocks.serial_scan_multiple = {
         var value = JSON.parse(container.getAttribute('options'));
         this.optionList_ = value;
         this.updateShape_();
-        this.ser_pins = JSON.parse(container.getAttribute('pinmenu')) || [['0,0','0,0']];
+        this.ser_pins = JSON.parse(container.getAttribute('pinmenu')) || [['0,0', '0,0']];
         var serpin = container.getAttribute('serpin');
         if (this.getInput('SERPIN')) {
             this.removeInput('SERPIN');
@@ -1283,14 +1283,14 @@ Blockly.Blocks.serial_scan_multiple = {
                 this.appendDummyInput('OPTION' + i)
                         .appendField('store float point \u2715')
                         .appendField(new Blockly.FieldDropdown([
-                                ['1','1'],
-                                ['10','10'],
-                                ['100','100'],
-                                ['1000','1000'],
-                                ['10,000','10000'],
-                                ['100,000','100000'],
-                                ['1,000,000','1000000']
-                                ]), 'MULT' + i)
+                            ['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']
+                        ]), 'MULT' + i)
                         //.appendField(new Blockly.FieldTextInput('100'), 'MULT' + i)
                         .appendField('in', 'TYPE' + i)
                         .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'CPU' + i);
@@ -2961,18 +2961,19 @@ Blockly.Blocks.ws2812b_set = {
         this.rgbPins();
     },
     mutationToDom: function () {
-        if (this.getInput('RGBPIN'))  {
-            var container = document.createElement('mutation');
+        var container = document.createElement('mutation');
+        container.setAttribute('pinmenu', JSON.stringify(this.rgb_pins));
+        if (this.getInput('RGBPIN')) {
             container.setAttribute('rgbpin', this.getFieldValue('RGB_PIN'));
-            return container;
         }
+        return container;
     },
     domToMutation: function (xmlElement) {
         var rgbpin = xmlElement.getAttribute('rgbpin');
+        this.rgb_pins = JSON.parse(xmlElement.getAttribute('pinmenu'));
         if (rgbpin === 'null') {
             rgbpin = null;
         }
-        this.updateRGBpin();
         if (this.getInput('RGBPIN')) {
             this.removeInput('RGBPIN');
         }
