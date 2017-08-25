@@ -604,9 +604,9 @@ Blockly.Blocks.serial_open = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Serial initialize RX")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat(['None', '-1'])), "RXPIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['None', 'None']])), "RXPIN")
                 .appendField("TX")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat(['None', '-1'])), "TXPIN");
+                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['None', 'None']])), "TXPIN");
         this.appendDummyInput('BAUD_RATE')
                 .appendField("baud")
                 .appendField(new Blockly.FieldDropdown([
@@ -676,14 +676,16 @@ Blockly.Blocks.serial_open = {
 };
 
 Blockly.propc.serial_open = function () {
-    var rx_pin = this.getFieldValue('RXPIN').replace(/\-1/g, 'N');
-    var tx_pin = this.getFieldValue('TXPIN').replace(/\-1/g, 'N');
+    var rx_pin = this.getFieldValue('RXPIN').replace('None', '-1');
+    var tx_pin = this.getFieldValue('TXPIN').replace('None', '-1');
+    var rx_label = this.getFieldValue('RXPIN').replace('None', 'N');
+    var tx_label = this.getFieldValue('TXPIN').replace('None', 'N');
     var baud = this.getFieldValue('BAUD');
 
     if (!this.disabled) {
         Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
-        Blockly.propc.definitions_["var fdserial" + rx_pin + '_' + tx_pin] = 'fdserial *fdser' + rx_pin + '_' + tx_pin + ';';
-        Blockly.propc.setups_['setup_fdserial' + rx_pin + '_' + tx_pin] = 'fdser' + rx_pin + '_' + tx_pin + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
+        Blockly.propc.definitions_["var fdserial" + rx_label + '_' + tx_label] = 'fdserial *fdser' + rx_label + '_' + tx_label + ';';
+        Blockly.propc.setups_['setup_fdserial' + rx_label + '_' + tx_label] = 'fdser' + rx_label + '_' + tx_label + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
     }
     return '';
 };
@@ -725,16 +727,14 @@ Blockly.Blocks.serial_send_text = {
             this.removeInput('SERPIN');
         }
         if (serpin) {
-            var pinSelect = this.ser_pins;
-            for (var y = 0; y < pinSelect.length; y++) {
-                pinSelect[y][0] = pinSelect[y][0].replace(/\-1/g, "None");
-            }
             this.appendDummyInput('SERPIN')
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .appendField('RXTX')
-                    .appendField(new Blockly.FieldDropdown(pinSelect), 'SER_PIN');
+                    .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
             this.setFieldValue(serpin, 'SER_PIN');
         }
+        var this_ser_block = this;
+        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     serPins: function (oldPin, newPin) {
         var currentPin = '-1';
@@ -750,14 +750,10 @@ Blockly.Blocks.serial_send_text = {
             this.removeInput('SERPIN');
         }
         if (this.ser_pins.length > 1) {
-            var pinSelect = this.ser_pins;
-            for (var y = 0; y < pinSelect.length; y++) {
-                pinSelect[y][0] = pinSelect[y][0].replace(/\-1/g, "None");
-            }
             this.appendDummyInput('SERPIN')
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .appendField('RXTX')
-                    .appendField(new Blockly.FieldDropdown(pinSelect), 'SER_PIN');
+                    .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
             if (this.getInput('PRINT0')) {
                 this.moveInputBefore('SERPIN', 'PRINT0');
             } else if (this.getInput('OPTION0')) {
@@ -779,7 +775,7 @@ Blockly.Blocks.serial_send_text = {
             if (allBlocks[x].type === 'serial_open') {
                 var sp = allBlocks[x].serialPin;
                 if (sp) {
-                    this.ser_pins.push([sp.replace(/\-1/g, "None"), sp]);
+                    this.ser_pins.push([sp, sp]);
                 }
             }
         }
@@ -815,10 +811,10 @@ Blockly.Blocks.serial_send_text = {
 Blockly.propc.serial_send_text = function () {
     var p = '';
     if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
+        p = this.ser_pins[0][0].replace(',', '_').replace(/None/g, 'N');
     }
     if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
+        p = this.getFieldValue('SER_PIN').replace(',', '_').replace(/None/g, 'N');
     }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') === -1)
@@ -1037,6 +1033,8 @@ Blockly.Blocks.serial_print_multiple = {
                 this.moveInputBefore('SERPIN', 'PRINT0');
             }
         }
+        var this_ser_block = this;
+        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     decompose: Blockly.Blocks['console_print_multiple'].decompose,
     compose: function (containerBlock) {
@@ -1213,6 +1211,8 @@ Blockly.Blocks.serial_scan_multiple = {
                 this.moveInputBefore('SERPIN', 'OPTION0');
             }
         }
+        var this_ser_block = this;
+        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     decompose: function (workspace) {
         // Populate the mutator's dialog with this block's components.
@@ -2903,6 +2903,7 @@ Blockly.Blocks.ws2812b_init = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.rgbPin = this.getFieldValue('PIN');
+        this.onPinSet();
     },
     onchange: function (event) {
         this.rgbPin = this.getFieldValue('PIN');
@@ -2911,16 +2912,17 @@ Blockly.Blocks.ws2812b_init = {
         }
     },
     onPinSet: function (myPin) {
+        var oldPin = this.rgbPin;
+        this.rgbPin = myPin;
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
         for (var x = 0; x < allBlocks.length; x++) {
             var func = allBlocks[x].rgbPins;
             if (func && myPin) {
-                func.call(allBlocks[x], this.rgbPin, myPin);
+                func.call(allBlocks[x], oldPin, myPin);
             } else if (func) {
                 func.call(allBlocks[x]);
             }
         }
-        this.rgbPin = this.getFieldValue('PIN');
     }
 };
 
@@ -2961,15 +2963,7 @@ Blockly.Blocks.ws2812b_set = {
         this.rgbPins();
     },
     mutationToDom: function () {
-        var currentPin = '-1';
-        if (this.rgb_pins.length > 0) {
-            currentPin = this.rgb_pins[0][0];
-        }
-        this.rgb_pins.length = 0;
-        if (this.getInput('RGBPIN')) {
-            currentPin = this.getFieldValue('RGB_PIN');
-        }
-        if (currentPin !== '-1') {
+        if (this.getInput('RGBPIN'))  {
             var container = document.createElement('mutation');
             container.setAttribute('rgbpin', this.getFieldValue('RGB_PIN'));
             return container;
@@ -3052,6 +3046,7 @@ Blockly.Blocks.ws2812b_set = {
 };
 
 Blockly.propc.ws2812b_set = function () {
+    this.updateRGBpin();
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('RGB-LED initialize') === -1)
     {
@@ -3116,6 +3111,7 @@ Blockly.Blocks.ws2812b_set_multiple = {
 };
 
 Blockly.propc.ws2812b_set_multiple = function () {
+    this.updateRGBpin();
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('RGB-LED initialize') === -1)
     {
@@ -3175,6 +3171,7 @@ Blockly.Blocks.ws2812b_update = {
 };
 
 Blockly.propc.ws2812b_update = function () {
+    this.updateRGBpin();
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('RGB-LED initialize') === -1)
     {
