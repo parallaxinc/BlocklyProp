@@ -25,7 +25,7 @@
                         </span>
                         <span id="client-unavailable" class="bp-client-danger hidden">
                             <a class="client-unavailable-link" data-toggle="modal" data-target="#client-download-modal" href="#">
-                                <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#a94442;"/></svg>
+                                <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg>
                                 <fmt:message key="editor.client.not-available" />
                             </a>
                         </span>

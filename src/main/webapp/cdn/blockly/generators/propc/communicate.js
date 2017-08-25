@@ -733,6 +733,8 @@ Blockly.Blocks.serial_send_text = {
                     .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
             this.setFieldValue(serpin, 'SER_PIN');
         }
+        var this_ser_block = this;
+        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     serPins: function (oldPin, newPin) {
         var currentPin = '-1';
@@ -1031,6 +1033,8 @@ Blockly.Blocks.serial_print_multiple = {
                 this.moveInputBefore('SERPIN', 'PRINT0');
             }
         }
+        var this_ser_block = this;
+        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     decompose: Blockly.Blocks['console_print_multiple'].decompose,
     compose: function (containerBlock) {
@@ -1207,6 +1211,8 @@ Blockly.Blocks.serial_scan_multiple = {
                 this.moveInputBefore('SERPIN', 'OPTION0');
             }
         }
+        var this_ser_block = this;
+        setTimeout(function () {this_ser_block.updateSerPin();}, 500);
     },
     decompose: function (workspace) {
         // Populate the mutator's dialog with this block's components.
