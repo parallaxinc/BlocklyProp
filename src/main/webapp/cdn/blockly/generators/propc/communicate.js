@@ -626,6 +626,7 @@ Blockly.Blocks.serial_open = {
         this.setNextStatement(true, null);
         this.otherBaud = false;
         this.serialPin = this.getFieldValue('RXPIN') + ',' + this.getFieldValue('TXPIN');
+        this.onchange({oldXml:true});
     },
     onchange: function (event) {
         this.serialPin = this.getFieldValue('RXPIN') + ',' + this.getFieldValue('TXPIN');
@@ -779,15 +780,7 @@ Blockly.Blocks.serial_send_text = {
                 }
             }
         }
-        this.ser_pins.sort();
-        var x = 0;
-        while (x < this.ser_pins.length - 1) {
-            if (this.ser_pins[x][0] === this.ser_pins[x + 1][0]) {
-                this.ser_pins.splice(x, 1);
-            } else {
-                x++;
-            }
-        }
+        this.ser_pins = uniq_fast(this.ser_pins);
     },
     onchange: function (event) {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
@@ -797,7 +790,9 @@ Blockly.Blocks.serial_send_text = {
         } else {
             this.setWarningText(null);
         }
-        this.stringTypeCheck();
+        if (this.stringTypeCheck) {
+            this.stringTypeCheck();
+        }
     },
     stringTypeCheck: function () {
         var setType = "Number";
@@ -2905,7 +2900,7 @@ Blockly.Blocks.ws2812b_init = {
     },
     onchange: function (event) {
         this.rgbPin = this.getFieldValue('PIN');
-        if (event.oldXml) {  // only fire when a block got deleted
+        if (event.oldXml || event.xml) {  // only fire when a block got deleted or created
             this.onPinSet(null);
         }
     },
@@ -2915,8 +2910,12 @@ Blockly.Blocks.ws2812b_init = {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
         for (var x = 0; x < allBlocks.length; x++) {
             var func = allBlocks[x].rgbPins;
+            var fund = allBlocks[x].onchange;
             if (func && myPin) {
                 func.call(allBlocks[x], oldPin, myPin);
+                if (fund) {
+                    fund.call(allBlocks[x], {xml:true});
+                }
             } else if (func) {
                 func.call(allBlocks[x]);
             }
@@ -2958,6 +2957,7 @@ Blockly.Blocks.ws2812b_set = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.rgb_pins = [];
+        this.warnFlag = 0;
         this.rgbPins();
     },
     mutationToDom: function () {
@@ -3015,31 +3015,38 @@ Blockly.Blocks.ws2812b_set = {
         this.rgb_pins.length = 0;
         for (var x = 0; x < allBlocks.length; x++) {
             if (allBlocks[x].type === 'ws2812b_init') {
-                var cp = allBlocks[x].rgbPin;
+                var cp = allBlocks[x].rgbPin || allBlocks[x].getFieldValue('PIN');
                 if (cp) {
                     this.rgb_pins.push([cp, cp]);
                 }
             }
         }
-        this.rgb_pins.sort(function (a, b) {
-            return a - b;
-        });
-        var x = 0;
-        while (x < this.rgb_pins.length - 1) {
-            if (this.rgb_pins[x][0] === this.rgb_pins[x + 1][0]) {
-                this.rgb_pins.splice(x, 1);
-            } else {
-                x++;
-            }
-        }
+        this.rgb_pins = uniq_fast(this.rgb_pins);
     },
-    onchange: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('RGB-LED initialize') === -1)
-        {
-            this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
-        } else {
-            this.setWarningText(null);
+    onchange: function (event) {
+        // only fire when a block got deleted or created, the RGB_PIN field was changed
+        if (event.oldXml || event.type === Blockly.Events.CREATE || (event.name === 'RGB_PIN' && event.blockId === this.id) || this.warnFlag > 0) {
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+            if (allBlocks.toString().indexOf('RGB-LED initialize') === -1)
+            {
+                this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
+            } else {
+                this.setWarningText(null);
+                this.warnFlag--;
+                if (this.getInput('RGBPIN')) {
+                    var allRGBpins = '';
+                    for (var x = 0; x < allBlocks.length; x++) {
+                        if (allBlocks[x].type === 'ws2812b_init') {
+                            allRGBpins += (allBlocks[x].rgbPin || allBlocks[x].getFieldValue('PIN')) + ',';
+                        }
+                    }
+                    if (allRGBpins.indexOf(this.getFieldValue('RGB_PIN')) === -1) {
+                        this.setWarningText('WARNING: You must use choose a new PIN for this block!');
+                        // let all changes through long enough to ensure this is set properly.
+                        this.warnFlag = allBlocks.length * 3;
+                    }
+                }
+            }
         }
     }
 };
@@ -3098,15 +3105,7 @@ Blockly.Blocks.ws2812b_set_multiple = {
     domToMutation: Blockly.Blocks['ws2812b_set'].domToMutation,
     rgbPins: Blockly.Blocks['ws2812b_set'].rgbPins,
     updateRGBpin: Blockly.Blocks['ws2812b_set'].updateRGBpin,
-    onchange: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('RGB-LED initialize') === -1)
-        {
-            this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
-        } else {
-            this.setWarningText(null);
-        }
-    }
+    onchange: Blockly.Blocks['ws2812b_set'].onchange
 };
 
 Blockly.propc.ws2812b_set_multiple = function () {
@@ -3158,15 +3157,7 @@ Blockly.Blocks.ws2812b_update = {
     domToMutation: Blockly.Blocks['ws2812b_set'].domToMutation,
     rgbPins: Blockly.Blocks['ws2812b_set'].rgbPins,
     updateRGBpin: Blockly.Blocks['ws2812b_set'].updateRGBpin,
-    onchange: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('RGB-LED initialize') === -1)
-        {
-            this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
-        } else {
-            this.setWarningText(null);
-        }
-    }
+    onchange: Blockly.Blocks['ws2812b_set'].onchange
 };
 
 Blockly.propc.ws2812b_update = function () {
