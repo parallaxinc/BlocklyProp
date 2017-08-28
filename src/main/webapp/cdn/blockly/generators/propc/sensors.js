@@ -134,31 +134,6 @@ Blockly.propc.PIR_Sensor = function () {
     return ['input(' + this.getFieldValue('PIN') + ')', Blockly.propc.ORDER_ATOMIC];
 };
 
-// ---------------- SF02 Laser Rangefinder Blocks ------------------------------
-/*
- Blockly.Blocks.SF02_Laser_Rangefinder = {
- init: function () {
- this.setColour(colorPalette.getColor('input'));
- this.appendDummyInput()
- .appendField("SF02 Laser Rangefinder PIN")
- .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
- 
- this.setOutput(true, 'Number');
- this.setPreviousStatement(false, null);
- this.setNextStatement(false, null);
- }
- };
- 
- Blockly.propc.SF02_Laser_Rangefinder = function() {
- var pin = this.getFieldValue('PIN');
- 
- Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
- Blockly.propc.setups_['setup_abvolts'] = 'ad_init(21, 20, 19, 18);';
- 
- var code = 'ad_volts(' + pin + ')';
- return [code, Blockly.propc.ORDER_ATOMIC];
- };
- */
 
 // ---------------- Sound Impact Sensor Blocks ---------------------------------
 Blockly.Blocks.sound_impact_run = {
@@ -259,20 +234,34 @@ Blockly.Blocks.colorpal_enable = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("ColorPal initialize PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'IO_PIN');
+                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
+                    this.sourceBlock_.onPinSet(myPin);
+                }), "IO_PIN");
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.colorPalPin = this.getFieldValue('IO_PIN');
+        this.onPinSet();
     },
     onchange: function (event) {
         this.colorPalPin = this.getFieldValue('IO_PIN');
-        if (event.blockId === this.id || event.oldXml) {  // only fire when it's this block or a block got deleted
-            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-            for (var x = 0; x < allBlocks.length; x++) {
-                var func = allBlocks[x].colorpalPins;
-                if (func) {
-                    var block = func.call(allBlocks[x], event.oldValue, event.newValue);
+        if (event.oldXml || event.xml) {  // only fire when a block got deleted or created
+            this.onPinSet(null);
+        }
+    },
+    onPinSet: function (myPin) {
+        var oldPin = this.colorPalPin;
+        this.colorPalPin = myPin;
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        for (var x = 0; x < allBlocks.length; x++) {
+            var func = allBlocks[x].colorpalPins;
+            var fund = allBlocks[x].onchange;
+            if (func && myPin) {
+                func.call(allBlocks[x], oldPin, myPin);
+                if (fund) {
+                    fund.call(allBlocks[x], {xml: true});
                 }
+            } else if (func) {
+                func.call(allBlocks[x]);
             }
         }
     }
@@ -306,22 +295,28 @@ Blockly.Blocks.colorpal_get_colors_raw = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.cp_pins = [];
+        this.warnFlag = 0;
         this.colorpalPins();
     },
     mutationToDom: function () {
+        var container = document.createElement('mutation');
         if (this.getInput('CPIN')) {
-            var container = document.createElement('mutation');
             container.setAttribute('cpin', this.getFieldValue('CP_PIN'));
-            return container;
         }
+        container.setAttribute('pinmenu', JSON.stringify(this.cp_pins));
+        return container;
     },
     domToMutation: function (xmlElement) {
         var cpin = xmlElement.getAttribute('cpin');
-        this.updateCpin();
+        //this.updateCpin();
+        this.cp_pins = JSON.parse(xmlElement.getAttribute('pinmenu'));
+        if (cpin === 'null') {
+            cpin = null;
+        }
         if (this.getInput('CPIN')) {
             this.removeInput('CPIN');
         }
-        if (cpin !== undefined) {
+        if (cpin) {
             this.appendDummyInput('CPIN')
                     .appendField('PIN')
                     .appendField(new Blockly.FieldDropdown(this.cp_pins), 'CP_PIN');
@@ -359,23 +354,13 @@ Blockly.Blocks.colorpal_get_colors_raw = {
         this.cp_pins.length = 0;
         for (var x = 0; x < allBlocks.length; x++) {
             if (allBlocks[x].type === 'colorpal_enable') {
-                var cp = allBlocks[x].colorPalPin;
+                var cp = allBlocks[x].colorPalPin || allBlocks[x].getFieldValue('IO_PIN');
                 if (cp) {
                     this.cp_pins.push([cp, cp]);
                 }
             }
         }
-        this.cp_pins.sort(function (a, b) {
-            return a - b;
-        });
-        var x = 0;
-        while (x < this.cp_pins.length - 1) {
-            if (this.cp_pins[x][0] === this.cp_pins[x + 1][0]) {
-                this.cp_pins.splice(x, 1);
-            } else {
-                x++;
-            }
-        }
+        this.cp_pins = uniq_fast(this.cp_pins);
     },
     getVars: function () {
         return [this.getFieldValue('R_STORAGE'), this.getFieldValue('G_STORAGE'), this.getFieldValue('B_STORAGE')];
@@ -389,13 +374,30 @@ Blockly.Blocks.colorpal_get_colors_raw = {
             this.setFieldValue(newName, 'B_STORAGE');
         }
     },
-    onchange: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('ColorPal initialize') === -1)
-        {
-            this.setWarningText('WARNING: You must use a ColorPal\ninitialize block at the beginning of your program!');
-        } else {
-            this.setWarningText(null);
+    onchange: function (event) {
+        // only fire when a block got deleted or created, the CP_PIN field was changed
+        if (event.oldXml || event.type === Blockly.Events.CREATE || (event.name === 'CP_PIN' && event.blockId === this.id) || this.warnFlag > 0) {
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+            if (allBlocks.toString().indexOf('ColorPal initialize') === -1)
+            {
+                this.setWarningText('WARNING: You must use a ColorPal\ninitialize block at the beginning of your program!');
+            } else {
+                this.setWarningText(null);
+                this.warnFlag--;
+                if (this.getInput('CPIN')) {
+                    var allCpPins = '';
+                    for (var x = 0; x < allBlocks.length; x++) {
+                        if (allBlocks[x].type === 'colorpal_enable') {
+                            allCpPins += (allBlocks[x].colorPalPin || allBlocks[x].getFieldValue('IO_PIN')) + ',';
+                        }
+                    }
+                    if (allCpPins.indexOf(this.getFieldValue('CP_PIN')) === -1) {
+                        this.setWarningText('WARNING: You must use choose a new PIN for this block!');
+                        // let all changes through long enough to ensure this is set properly.
+                        this.warnFlag = allBlocks.length * 3;
+                    }
+                }
+            }
         }
     }
 };
@@ -433,92 +435,20 @@ Blockly.Blocks.colorpal_get_colors = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.cp_pins = [];
+        this.warnFlag = 0;
         this.colorpalPins();
     },
-    mutationToDom: function () {
-        if (this.getInput('CPIN')) {
-            var container = document.createElement('mutation');
-            container.setAttribute('cpin', this.getFieldValue('CP_PIN'));
-            return container;
-        }
-    },
-    domToMutation: function (xmlElement) {
-        var cpin = xmlElement.getAttribute('cpin');
-        this.updateCpin();
-        if (this.getInput('CPIN')) {
-            this.removeInput('CPIN');
-        }
-        if (cpin !== undefined) {
-            this.appendDummyInput('CPIN')
-                    .appendField('PIN')
-                    .appendField(new Blockly.FieldDropdown(this.cp_pins), 'CP_PIN');
-            this.setFieldValue(cpin, 'CP_PIN');
-        }
-    },
-    colorpalPins: function (oldPin, newPin) {
-        var currentPin = '-1';
-        if (this.cp_pins.length > 0) {
-            currentPin = this.cp_pins[0][0];
-        }
-        this.cp_pins.length = 0;
-        if (this.getInput('CPIN')) {
-            currentPin = this.getFieldValue('CP_PIN');
-        }
-        this.updateCpin();
-        if (this.getInput('CPIN')) {
-            this.removeInput('CPIN');
-        }
-        if (this.cp_pins.length > 1) {
-            this.appendDummyInput('CPIN')
-                    .appendField('PIN')
-                    .appendField(new Blockly.FieldDropdown(this.cp_pins), 'CP_PIN');
-            if (currentPin === oldPin || oldPin === null) {
-                this.setFieldValue(newPin, 'CP_PIN');
-            } else {
-                if (this.getInput('CPIN') && currentPin !== '-1') {
-                    this.setFieldValue(currentPin, 'CP_PIN');
-                }
-            }
-        }
-    },
-    updateCpin: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-        this.cp_pins.length = 0;
-        for (var x = 0; x < allBlocks.length; x++) {
-            if (allBlocks[x].type === 'colorpal_enable') {
-                var cp = allBlocks[x].colorPalPin;
-                if (cp) {
-                    this.cp_pins.push([cp, cp]);
-                }
-            }
-        }
-        this.cp_pins.sort(function (a, b) {
-            return a - b;
-        });
-        var x = 0;
-        while (x < this.cp_pins.length - 1) {
-            if (this.cp_pins[x][0] === this.cp_pins[x + 1][0]) {
-                this.cp_pins.splice(x, 1);
-            } else {
-                x++;
-            }
-        }
-    },
+    mutationToDom: Blockly.Blocks['colorpal_get_colors_raw'].mutationToDom,
+    domToMutation: Blockly.Blocks['colorpal_get_colors_raw'].domToMutation,
+    colorpalPins: Blockly.Blocks['colorpal_get_colors_raw'].colorpalPins,
+    updateCpin: Blockly.Blocks['colorpal_get_colors_raw'].updateCpin,
+    onchange: Blockly.Blocks['colorpal_get_colors_raw'].onchange,
     getVars: function () {
         return [this.getFieldValue('COLOR')];
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('COLOR'))) {
             this.setFieldValue(newName, 'COLOR');
-        }
-    },
-    onchange: function () {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('ColorPal initialize') === -1)
-        {
-            this.setWarningText('WARNING: You must use a ColorPal\ninitialize block at the beginning of your program!');
-        } else {
-            this.setWarningText(null);
         }
     }
 };

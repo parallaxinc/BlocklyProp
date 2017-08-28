@@ -156,7 +156,7 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 17,
-        saves_to: [["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"], ["Other Propeller Boards","other"]]
+        saves_to: [["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"], ["Other Propeller Boards", "other"]]
     },
     "s3": {
         description: "Scribbler Robot",
@@ -183,7 +183,7 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 27,
-        saves_to: [["Propeller FLiP or Project Board", "flip"], ["Propeller Activity Board", "activity-board"], ["Other Propeller Boards","other"]]
+        saves_to: [["Propeller FLiP or Project Board", "flip"], ["Propeller Activity Board", "activity-board"], ["Other Propeller Boards", "other"]]
     },
     "other": {
         description: "Other Propeller Boards",
@@ -192,7 +192,7 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 27,
-        saves_to: [["Other Propeller Boards","other"], ["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"]]
+        saves_to: [["Other Propeller Boards", "other"], ["Propeller Activity Board", "activity-board"], ["Propeller FLiP or Project Board", "flip"]]
     },
     "propcfile": {
         description: "Propeller C (code-only)",
@@ -368,11 +368,11 @@ Blockly.propc.finish = function (code) {
     var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') +
             spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
     var varInits = setups.join('\n') + '\n';
-    
+
     if (code.indexOf('// RAW PROPC CODE\n//{{||}}\n') > -1) {
         var pcc = code.split('//{{||}}\n');
         return pcc[2];
-        
+
     } else {
         // Indent every line.
         code = '  ' + code.replace(/\n/g, '\n  ');
@@ -384,7 +384,7 @@ Blockly.propc.finish = function (code) {
         } else if (Blockly.propc.serial_graphing_) {
             setup += "/* SERIAL_GRAPHING USED */\n";
         }
-        if (Blockly.mainWorkspace.getAllBlocks().length === 0 && 
+        if (Blockly.mainWorkspace.getAllBlocks().length === 0 &&
                 profile.default.description !== "Propeller C (code-only)") {
             setup += "/* EMPTY_PROJECT */\n";
         }
@@ -539,17 +539,53 @@ Blockly.BlockSvg.prototype.setCollapsed = function (b) {
  * @return {string} Safe entity name.
  * @private
  */
-Blockly.Names.prototype.safeName_ = function(name) {
-  if (!name) {
-    name = 'unnamed';
-  } else {
-    // Unfortunately names in non-latin characters will look like
-    // _E9_9F_B3_E4_B9_90 which is pretty meaningless.
-    name = encodeURI(name.replace(/ /g, '_')).replace(/[^\w]/g, '_');
-    // Most languages don't allow names with leading numbers.
-    if ('0123456789'.indexOf(name[0]) != -1 || (name[0] === '_' && name[1] === '_')) {  // addition here: prevents collision with names with a leading double undescore.
-      name = 'my_' + name;
+Blockly.Names.prototype.safeName_ = function (name) {
+    if (!name) {
+        name = 'unnamed';
+    } else {
+        // Unfortunately names in non-latin characters will look like
+        // _E9_9F_B3_E4_B9_90 which is pretty meaningless.
+        name = encodeURI(name.replace(/ /g, '_')).replace(/[^\w]/g, '_');
+        // Most languages don't allow names with leading numbers.
+        if ('0123456789'.indexOf(name[0]) != -1 || (name[0] === '_' && name[1] === '_')) {  // addition here: prevents collision with names with a leading double undescore.
+            name = 'my_' + name;
+        }
     }
-  }
-  return name;
+    return name;
 };
+
+// polyfill that removes duplicates from an array and sorts it
+// From: https://stackoverflow.com/questions/9229645/remove-duplicates-from-javascript-array
+function uniq_fast(a) {
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for (var i = 0; i < len; i++) {
+        var item = a[i];
+        if (seen[item] !== 1) {
+            seen[item] = 1;
+            out[j++] = item;
+        }
+    }
+    var tmpOut = out;
+    try {
+        var sorted = [];
+        j = 0;
+        while (out.length > 0) {
+            len = out.length;
+            k = 0;
+            for (var i = 0; i < len; i++) {
+                if (parseInt(out[i], 10) < parseInt(out[k], 10)) {
+                    k = i;
+                }
+            }
+            sorted[j] = out[k];
+            j++;
+            out.splice(k, 1);
+        }
+        return sorted;
+    } catch (err) {
+        return tmpOut;
+    }
+}
