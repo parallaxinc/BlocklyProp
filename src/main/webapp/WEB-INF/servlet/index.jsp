@@ -32,6 +32,14 @@
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
+            <div class="jumbotron">
+                <div class="logo">
+                    <h1 id="BlocklyProp">BlocklyProp</h1>
+                </div>
+                <p><strong>Blockly for Propeller Multicore:</strong> Making amazing projects and learning to code just became easier</p>
+                <p><img class="cdn full-width" border="0" src="http://localhost:8080/blockly/cdn/images/home-banner.png"></p>
+            </div>
+            <%--            
                 <%
                 String html = (String) request.getAttribute("html");
                 if (html != null) {
@@ -40,7 +48,7 @@
             <% } else {%>
             <h2><fmt:message key="html.content_missing" /></h2>
             <% }%>
-
+--%>
             <h2 class="pad-latest-projects"><fmt:message key="home.latest_projects.title" /></h2>
             <hr>
             <ul class="latest-projects"></ul>
