@@ -18,27 +18,27 @@
         </div>
         <!-- Projects -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
-            <span>
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a>
-                </li>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="<url:getUrl url="/projects.jsp"/>"><fmt:message key="menu.community_projects" /></a>
+                    </li>
                 <shiro:authenticated>
-                <li>
-                    <a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a>
-                </li>
+                    <li>
+                        <a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a>
+                    </li>
                 </shiro:authenticated>
-                <li>
-                    <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a>
-                </li>
-                <li>
-                    <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
-                </li>
-            </ul>
-            </span><span>
-                
+                    <li>
+                        <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a>
+                    </li>
+                    <li>
+                        <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
+                    </li>
+                </ul>
+            </div>
+            <div>
                 <!-- Register / Login -->
-            <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right">
                 <shiro:notAuthenticated>
                     <!-- Anonymous user -->
                     <li>
@@ -72,17 +72,16 @@
                 </li>
                 -->
             </ul>
-            </span>
+            </div>
         </div>
     </div>
     <!-- Message of the Day goes here. -->
-    <!--
-        <div class="navbar navbar-expand" style="background-color: #b2dba1 ">
+    
+        <div class="navbar navbar-expand" style="background-color:#FAE6A4 ">
             <div class="container-fluid">
                 <span style="alignment-adjust: middle"> 
                     Message of the day goes here
                 </span>
             </div>
         </div>
-    -->
 </nav>
