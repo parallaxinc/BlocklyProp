@@ -190,7 +190,7 @@ Blockly.propc.variables_set = function () {
             Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
         } else if (argument0.indexOf("char\[\]") > -1) {
             Blockly.propc.vartype_[varName] = 'char *';
-        } else if (argument0.indexOf("\"") > -1) {
+        } else if (argument0.indexOf("\"") > -1 && argument0.indexOf("get8bitColor(") === -1) {  // Some functions tht return numbers take strings as arguments, so we need to account for that.
             Blockly.propc.vartype_[varName] = 'char *';
         } else if (argument0.indexOf(".") > -1) {
             Blockly.propc.vartype_[varName] = 'float';
