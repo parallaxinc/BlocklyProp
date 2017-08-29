@@ -140,7 +140,7 @@
         "s3": "<fmt:message key="project.board.s3" />",
         "heb": "<fmt:message key="project.board.heb" />",
         "flip": "<fmt:message key="project.board.flip" />",
-        "other": "<fmt:message key="project.board.other" />".
+        "other": "<fmt:message key="project.board.other" />",
         "propcfile": "<fmt:message key="project.board.propcfile" />"
     };
 </script>
