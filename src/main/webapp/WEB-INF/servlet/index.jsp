@@ -34,21 +34,11 @@
         <div class="container">
             <div class="jumbotron">
                 <div class="logo">
-                    <h1 id="BlocklyProp">BlocklyProp</h1>
+                    <h1 id="BlocklyProp"><fmt:message key="home.page.product.title" /></h1>
                 </div>
-                <p><strong>Blockly for Propeller Multicore:</strong> Making amazing projects and learning to code just became easier</p>
+                <p><strong><fmt:message key="home.page.banner.title" /></strong>&nbsp;<fmt:message key="home.page.banner.slug" /></p>
                 <p><img class="cdn full-width" border="0" src="<url:getCdnUrl url="/images/home-banner.png"/>"></p>
             </div>
-            <%--            
-                <%
-                String html = (String) request.getAttribute("html");
-                if (html != null) {
-            %>
-            <%= html%>
-            <% } else {%>
-            <h2><fmt:message key="html.content_missing" /></h2>
-            <% }%>
---%>
             <h2 class="pad-latest-projects"><fmt:message key="home.latest_projects.title" /></h2>
             <hr>
             <ul class="latest-projects"></ul>
