@@ -16,7 +16,9 @@
                 <h4 class="modal-title"><fmt:message key="editor.client.title" /></h4>
             </div>
             <div class="modal-body">
-                <div id="client-instructions" data-url="<url:getUrl url="/public/clientinstructions"/>"></div>
+                <div id="client-instructions">
+                    <fmt:message key="clientdownload.instructions" />
+                </div>
                 <div class="clients">
                     <div class="client MacOS">
                         <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
