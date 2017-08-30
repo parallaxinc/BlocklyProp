@@ -37,7 +37,7 @@
                     <h1 id="BlocklyProp">BlocklyProp</h1>
                 </div>
                 <p><strong>Blockly for Propeller Multicore:</strong> Making amazing projects and learning to code just became easier</p>
-                <p><img class="cdn full-width" border="0" src="http://localhost:8080/blockly/cdn/images/home-banner.png"></p>
+                <p><img class="cdn full-width" border="0" src="<url:getCdnUrl url="/images/home-banner.png"/>"></p>
             </div>
             <%--            
                 <%
