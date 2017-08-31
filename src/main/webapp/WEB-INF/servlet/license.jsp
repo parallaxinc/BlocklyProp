@@ -21,7 +21,7 @@
                 <div class="col-md-12">
                     <h2><fmt:message key="license.title" /></h2>
                     <p><fmt:message key="license.type" /></p>
-                    <p><fmt:message key="license.copyright.head" /> <span id="year"></span><fmt:message key="license.copyright.owner" /></p>
+                    <p><fmt:message key="license.copyright.head" />&nbsp;<span id="year"></span>&nbsp;<fmt:message key="license.copyright.owner" /></p>
                     <p><fmt:message key="license.text.part1" /></p>
                     <p><fmt:message key="license.text.part2" /></p>
                     <p><fmt:message key="license.warranty" /></p>

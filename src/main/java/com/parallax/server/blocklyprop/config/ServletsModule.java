@@ -7,6 +7,7 @@ package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
 import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
+import com.parallax.server.blocklyprop.servlets.ClientDownloadServlet;
 import com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
@@ -27,10 +28,8 @@ import com.parallax.server.blocklyprop.servlets.PublicProfileServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
 import com.parallax.server.blocklyprop.servlets.SessionStateServlet;
 import com.parallax.server.blocklyprop.servlets.TextileChangeLogServlet;
-import com.parallax.server.blocklyprop.servlets.TextileClientDownloadServlet;
-import com.parallax.server.blocklyprop.servlets.TextileClientInstructionsServlet;
 import com.parallax.server.blocklyprop.servlets.TextileIndexServlet;
-import com.parallax.server.blocklyprop.servlets.TextileLibrariesServlet;
+import com.parallax.server.blocklyprop.servlets.LibrariesServlet;
 
 /**
  * Map each URI to a class that will handle the request
@@ -64,9 +63,8 @@ public class ServletsModule extends ServletModule {
         // Textile pages
         serve("/index", "/").with(TextileIndexServlet.class);
         serve("/public/license").with(LicenseServlet.class);
-        serve("/public/libraries").with(TextileLibrariesServlet.class);
-        serve("/public/clientdownload").with(TextileClientDownloadServlet.class);
-        serve("/public/clientinstructions").with(TextileClientInstructionsServlet.class);
+        serve("/public/libraries").with(LibrariesServlet.class);
+        serve("/public/clientdownload").with(ClientDownloadServlet.class);
         serve("/public/changelog").with(TextileChangeLogServlet.class);
 
         // Help
