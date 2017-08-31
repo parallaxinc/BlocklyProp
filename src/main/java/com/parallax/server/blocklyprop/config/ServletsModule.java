@@ -27,9 +27,9 @@ import com.parallax.server.blocklyprop.servlets.ProjectServlet;
 import com.parallax.server.blocklyprop.servlets.PublicProfileServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
 import com.parallax.server.blocklyprop.servlets.SessionStateServlet;
-import com.parallax.server.blocklyprop.servlets.TextileChangeLogServlet;
 import com.parallax.server.blocklyprop.servlets.TextileIndexServlet;
 import com.parallax.server.blocklyprop.servlets.LibrariesServlet;
+import com.parallax.server.blocklyprop.servlets.ReleasesServlet;
 
 /**
  * Map each URI to a class that will handle the request
@@ -60,12 +60,12 @@ public class ServletsModule extends ServletModule {
 
         serve("/public/profile").with(PublicProfileServlet.class);
 
-        // Textile pages
+        // Information pages
         serve("/index", "/").with(TextileIndexServlet.class);
         serve("/public/license").with(LicenseServlet.class);
         serve("/public/libraries").with(LibrariesServlet.class);
         serve("/public/clientdownload").with(ClientDownloadServlet.class);
-        serve("/public/changelog").with(TextileChangeLogServlet.class);
+        serve("/public/releases").with(ReleasesServlet.class);
 
         // Help
         serve("/public/help").with(HelpServlet.class);
