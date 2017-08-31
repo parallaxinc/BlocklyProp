@@ -68,6 +68,13 @@ public class RestSharedProject {
 
         List<ProjectRecord> projects 
                 = projectService.getSharedProjects(sort, order, limit, offset);
+
+        if (projects != null) {
+            LOG.info("Returned {} shared projects", projects.size());
+        }
+        else {
+            LOG.info("Received a NULL project list.");
+        }
         
         int projectCount = projectService.countSharedProjects();
 

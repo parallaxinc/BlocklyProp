@@ -27,7 +27,11 @@ import ch.qos.logback.classic.LoggerContext;
 
 
 /**
- *
+ * Load the application configuration information
+ * 
+ * <p>
+ * This class is referenced in the /src/main/webapp/WEB-INF/web.xml file
+ * 
  * @author Michel
  */
 public class SetupConfig extends GuiceServletContextListener {
