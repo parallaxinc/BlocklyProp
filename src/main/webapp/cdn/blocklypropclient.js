@@ -23,15 +23,12 @@ var client_ws_heartbeat_interval = null;
 
 var baud_rate_compatible = false;
 
-$(document).ready(function () {
-    find_client();
-    $.get($("#client-instructions").data('url'), function (data) {
-        $("#client-instructions").html(data);
-    });
-});
-
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
+
+$(document).ready(function () {
+    find_client();
+});
 
 find_client = function () {
     if (check_ws_socket_timeout) {
