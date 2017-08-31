@@ -28,10 +28,10 @@
                             </div>
                         </div>
                         <div style="padding-top:10px;">
-                            <a id="mac1-btn" class="btn btn-sm btn-primary" onclick="showStep('mac', 1, 4);">Step 1</a>
-                            <a id="mac2-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 2, 4);">Step 2</a>
-                            <a id="mac3-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 3, 4);">Step 3</a>
-                            <a id="mac4-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 4, 4);">Step 4</a>
+                            <a id="mac1-btn" class="btn btn-sm btn-primary" onclick="showStep('mac', 1, 4);"><fmt:message key="client.run.step1" /></a>
+                            <a id="mac2-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 2, 4);"><fmt:message key="client.run.step2" /></a>
+                            <a id="mac3-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 3, 4);"><fmt:message key="client.run.step3" /></a>
+                            <a id="mac4-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 4, 4);"><fmt:message key="client.run.step4" /></a>
                         </div>
                     </div>
 
@@ -54,9 +54,9 @@
                             </div>
                         </div>
                         <div style="padding-top:10px;">
-                            <a id="win1-btn" class="btn btn-sm btn-primary" onclick="showStep('win', 1, 3);">Step 1</a>
-                            <a id="win2-btn" class="btn btn-sm btn-default" onclick="showStep('win', 2, 3);">Step 2</a>
-                            <a id="win3-btn" class="btn btn-sm btn-default" onclick="showStep('win', 3, 3);">Step 3</a>
+                            <a id="win1-btn" class="btn btn-sm btn-primary" onclick="showStep('win', 1, 3);"><fmt:message key="client.run.step1" /></a>
+                            <a id="win2-btn" class="btn btn-sm btn-default" onclick="showStep('win', 2, 3);"><fmt:message key="client.run.step2" /></a>
+                            <a id="win3-btn" class="btn btn-sm btn-default" onclick="showStep('win', 3, 3);"><fmt:message key="client.run.step3" /></a>
                         </div>
                     </div>
 
@@ -78,9 +78,9 @@
                             </div>
                         </div>
                         <div style="padding-top:10px;">
-                            <a id="chr1-btn" class="btn btn-sm btn-primary" onclick="showStep('chr', 1, 3);">Step 1</a>
-                            <a id="chr2-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 2, 3);">Step 2</a>
-                            <a id="chr3-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 3, 3);">Step 3</a>
+                            <a id="chr1-btn" class="btn btn-sm btn-primary" onclick="showStep('chr', 1, 3);"><fmt:message key="client.run.step1" /></a>
+                            <a id="chr2-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 2, 3);"><fmt:message key="client.run.step2" /></a>
+                            <a id="chr3-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 3, 3);"><fmt:message key="client.run.step3" /></a>
                         </div>
                     </div>
 
