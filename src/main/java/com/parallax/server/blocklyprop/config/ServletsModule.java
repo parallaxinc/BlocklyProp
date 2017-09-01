@@ -11,7 +11,6 @@ import com.parallax.server.blocklyprop.servlets.ClientDownloadServlet;
 import com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
-import com.parallax.server.blocklyprop.servlets.HelpSearchServlet;
 import com.parallax.server.blocklyprop.servlets.HelpServlet;
 import com.parallax.server.blocklyprop.servlets.LicenseServlet;
 import com.parallax.server.blocklyprop.servlets.NewOAuthUserServlet;
@@ -69,7 +68,6 @@ public class ServletsModule extends ServletModule {
 
         // Help
         serve("/public/help").with(HelpServlet.class);
-        serve("/public/helpsearch").with(HelpSearchServlet.class);
 
         // OAuth
         serve("/oauth/newuser").with(NewOAuthUserServlet.class);
