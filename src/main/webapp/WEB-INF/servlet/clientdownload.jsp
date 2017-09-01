@@ -22,54 +22,50 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2><fmt:message key="clientdownload.title" /></h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8 col-sm-12">
 
-                    <%
-                        String html = (String) request.getAttribute("html");
-                        if (html != null) {
-                    %>
-                    <%= html%>
-                    <% } else {%>
-                    <p><fmt:message key="html.content_missing" /></p>
-                    <% }%>
-
-                </div>
-
-                <div class="col-md-4 col-sm-12">
-                    <div class="clients">
-                        <div class="client MacOS">
-                            <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
-                                <fmt:message key="clientdownload.client.macos.installer" /></a>
-                        </div>
-                        <div class="client Windows">
-                            <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
-                                <fmt:message key="clientdownload.client.windows32.installer" /></a>
-                        </div>
-
-                        <div class="client Windows">
-                            <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
-                                <fmt:message key="clientdownload.client.windows64.installer" /></a>
-                        </div>
-
-                        <div class="client ChromeOS">
-                            <img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>
-                            <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
-                                <fmt:message key="clientdownload.client.chromeos.installer" /></a>
-                        </div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                            <fmt:message key="clientdownload.os.menu" />
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onmouseup="showOS('Windows');">Windows</a></li>
+                            <li><a href="#" onmouseup="showOS('MacOS');">Mac OS</a></li>
+                            <li><a href="#" onmouseup="showOS('ChromeOS');">Chrome OS</a></li>
+                            <!-- <li><a href="#" onmouseup="showOS('Linux');">Linux</a></li> -->
+                        </ul>
                     </div>
+                    <%--
                     <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');">
                         <fmt:message key="clientdownload.showall" /></button>
+                    --%>  
+                </div>
+            </div>
+
+            <script>
+                function showOS(o) {
+                    $("body").removeClass('Windows')
+                            .removeClass('MacOS')
+                            .removeClass('Linux')
+                            .removeClass('ChromeOS');
+                    $("body").addClass(o);
+                }
+            </script>
+
+            <div class="clients">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <%@ include file="/WEB-INF/includes/pageparts/clientinstructions.jsp"%> 
+                    </div>
+
+                    <div class="col-sm-5">
+                        <%@ include file="/WEB-INF/includes/pageparts/clientdownload.jsp"%> 
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
+    <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
 
-    </body>
+</body>
 </html>
