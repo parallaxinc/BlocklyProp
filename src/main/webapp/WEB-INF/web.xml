@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+<web-app version="3.0" 
+         xmlns="http://java.sun.com/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    
+    <!-- ============================================================== -->
+    <!-- What does this file do?                                        -->
+    <!-- Java web applications use a deployment descriptor file to      -->
+    <!-- determine how URLs map to servlets, which URLs require         -->
+    <!-- authentication, and other information. This file is named      -->
+    <!-- web.xml, and resides in the app's WAR under the WEB-INF/       -->
+    <!-- directory. web.xml is part of the servlet standard for web     -->
+    <!-- applications.                                                  -->
+    <!--                                                                -->
     <!-- This is the he Web Application Deployment Descriptor for the   -->
     <!-- BlocklyProp application. This file describes the servlets and  -->
     <!-- other components that make up your application, along with any -->
@@ -18,6 +31,26 @@
     <!-- config located in classpath:shiro.ini                          -->
     <!-- Reference:                                                     -->
     <!-- https://shiro.apache.org/documentation.html                    -->
+    <!-- ============================================================== -->
+    <!--
+    A filter is a class that acts on a request like a servlet, but may 
+    allow the handling of the request to continue with other filters or 
+    servlets. A filter may perform an auxiliary task such as logging, 
+    performing specialized authentication checks, or annotating the 
+    request or response objects before calling the servlet. Filters allow
+    you to compose request processing tasks from the deployment descriptor.
+    -->
+    
+    <!--
+    Similar to servlets, you configure a filter in the deployment descriptor
+    by declaring the filter with the <filter> element, then mapping it to a 
+    URL pattern with the <filter-mapping> element. You can also map filters
+    directly to other servlets.
+    
+    The <filter> element contains a <filter-name>, <filter-class>, and 
+    optional <init-param> elements.
+    -->
+    
     <filter>
         <filter-name>ShiroFilter</filter-name>
         <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
