@@ -76,14 +76,12 @@
             </div>
         </div>
     </div>
-
-                        
-<!-- Message of the Day goes here. -->
-<div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; ">
-    <div class="row"> 
-        <div class="col-sm-12" align="center">
-            Message of the day goes here
+    <!-- Message of the Day goes here. -->
+    <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; ">
+        <div class="row">
+            <div class="col-sm-12" align="center">
+                Message of the day goes here
+            </div>
         </div>
     </div>
-</div>
 </nav>
