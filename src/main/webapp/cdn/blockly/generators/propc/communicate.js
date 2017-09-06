@@ -1396,7 +1396,7 @@ Blockly.Blocks.serial_tx = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.setWarningText('WARNING: This block has been deprecated\nand my not work correctly!\nPlease use one of the blocks\navailable in the menu.');
+        this.setWarningText('WARNING: This block has been deprecated\nand may not work correctly!\nPlease use one of the blocks\navailable in the menu.');
     }
 };
 
@@ -1420,7 +1420,7 @@ Blockly.Blocks.serial_rx = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.setWarningText('WARNING: This block has been deprecated\nand my not work correctly!\nPlease use one of the blocks\navailable in the menu.');
+        this.setWarningText('WARNING: This block has been deprecated\nand may not work correctly!\nPlease use one of the blocks\navailable in the menu.');
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
