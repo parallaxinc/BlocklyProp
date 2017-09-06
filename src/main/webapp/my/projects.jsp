@@ -30,9 +30,9 @@
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/project.js"/>" ></script>
+
     </head>
     <body>
-
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div id="project-table-container" class="container collapse">

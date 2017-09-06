@@ -5,6 +5,7 @@
  */
 
 var baseUrl = $("meta[name=base]").attr("content");
+var cdnUrl = $("meta[name=cdn]").attr("content");
 
 var projectData = null;
 var ready = false;
@@ -19,8 +20,15 @@ var idProject = 0;
 
 var uploadedXML = '';
 
+var type = 'PROPC';
+
+// http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
+
 $(document).ready(function () {
-    idProject = getUrlParameters('project', '', false);
+    idProject = getURLParameter('project');
     if (!idProject) {
         window.location = baseUrl;
     } else {
@@ -30,8 +38,8 @@ $(document).ready(function () {
             showInfo(data);
             projectLoaded = true;
             if (ready) {
-                window.frames["content_blocks"].setProfile(data['board']);
-                window.frames["content_blocks"].init(data['board'], []);
+                setProfile(data['board']);
+                initToolbox(data['board'], []);
             }
             if ($('#editor-full-mode') === 'true') {
                 if (projectData['board'] === 's3' && type === 'PROPC') {
@@ -136,10 +144,10 @@ saveProject = function () {
     if (projectData['board'] === 'propcfile') {
         code = propcAsBlocksXml();
 
-        window.frames["content_blocks"].clearXml();
-        window.frames["content_blocks"].load(code);
+        clearXml();
+        loadToolbox(code);
     } else {
-        code = window.frames["content_blocks"].getXml();
+        code = getXml();
     }
     projectData['code'] = code;
     $.post(baseUrl + 'rest/project/code', projectData, function (data) {
@@ -193,9 +201,6 @@ saveProject = function () {
 };
 
 saveAsDialog = function () {
-    // Are we in demo or production?
-    var site_loc = $('#save-as-in-demo').val();
-    
     // Prompt user to save current project first if unsaved
     if (checkLeave() && projectData['yours']) {
         utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
@@ -208,12 +213,12 @@ saveAsDialog = function () {
     // Reset the save-as modal's fields
     $('#save-as-project-name').val(projectData['name']);
     $("#save-as-board-type").empty();
-    window.frames["content_blocks"].profile.default.saves_to.forEach(function (bt) {
+    profile.default.saves_to.forEach(function (bt) {
         $("#save-as-board-type").append($('<option />').val(bt[1]).text(bt[0]));
     });
     
     // Until release to production, make sure we are on demo before displaying the propc option
-    if (site_loc === 'demo') {
+    if (inDemo === 'demo') {
         $("#save-as-board-type").append($('<option />').val('propcfile').text('Propeller C (code-only)'));
     }
     
@@ -242,10 +247,10 @@ saveProjectAs = function () {
     if (projectData['board'] === 'propcfile') {
         code = propcAsBlocksXml();
 
-        window.frames["content_blocks"].clearXml();
-        window.frames["content_blocks"].load(code);
+        clearXml();
+        loadToolbox(code);
     } else {
-        code = window.frames["content_blocks"].getXml();
+        code = getXml();
     }
 
     // If the new project is the same type as the old one, use the save-as endpoint
@@ -307,10 +312,10 @@ saveProjectAs = function () {
             if (projectData['board'] === 'propcfile') {
                 code = propcAsBlocksXml();
 
-                window.frames["content_blocks"].clearXml();
-                window.frames["content_blocks"].load(code);
+                clearXml();
+                loadToolbox(code);
             } else {
-                code = window.frames["content_blocks"].getXml();
+                code = getXml();
             }
             projectData['code'] = code;
             projectData['name'] = value;
@@ -336,7 +341,7 @@ saveAsPropc = function () {
     utils.prompt("Create a new Propeller C (code-only) project", projectData['name'], function (value) {
         if (value) {
             ignoreSaveCheck = true;
-            //var code = window.frames["content_blocks"].getXml();
+            //var code = getXml();
             projectData['code'] = xmlText;
             projectData['name'] = value;
             projectData['board'] = 'propcfile';
@@ -379,9 +384,14 @@ editProjectDetails = function () {
 };
 
 blocklyReady = function () {
+    // if debug mode is active, show the XML button
+    if (getURLParameter('debug')) {
+        document.getElementById('tab_xml').style.display = 'inline-block';
+    }
+    
     if (projectLoaded) {
-        window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init(projectData['board'], []);
+        setProfile(projectData['board']);
+        initToolbox(projectData['board'], []);
     } else {
         ready = true;
     }
@@ -392,7 +402,7 @@ loadProject = function () {
         if (projectData['code'].length < 43) {
             projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
         }
-        window.frames["content_blocks"].load(projectData['code']);
+        loadToolbox(projectData['code']);
     }
     if ($('#editor-full-mode') === 'true') {
         if (projectData['board'] === 's3' && type === 'PROPC') {
@@ -417,7 +427,7 @@ checkLeave = function () {
     if (ignoreSaveCheck) {
         return false;
     }
-    var currentXml = window.frames["content_blocks"].getXml();
+    var currentXml = getXml();
     if (projectData['board'] === 'propcfile') {
         currentXml = propcAsBlocksXml();
     }
@@ -436,36 +446,6 @@ checkLeave = function () {
     }
 };
 
-function getUrlParameters(parameter, staticURL, decode) {
-    /*
-     Function: getUrlParameters
-     Description: Get the value of URL parameters either from
-     current URL or static URL
-     Author: Tirumal
-     URL: www.code-tricks.com
-     */
-    var currLocation = (staticURL.length) ? staticURL : window.location.search;
-
-    var parArr = [];
-    if (currLocation !== undefined && currLocation.split("?")[1] !== undefined) {
-        parArr = currLocation.split("?")[1].split("&");
-    }
-    var returnBool = true;
-
-    for (var i = 0; i < parArr.length; i++) {
-        parr = parArr[i].split("=");
-        if (parr[0] === parameter) {
-            returnBool = true;
-            return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-        } else {
-            returnBool = false;
-        }
-    }
-
-    if (!returnBool)
-        return false;
-}
-
 setInterval(function () {
     $.get(baseUrl + 'ping');
 }, 60000);
@@ -479,7 +459,7 @@ function hashCode(str) {
 }
 
 function downloadCode() {
-    var projXMLcode = window.frames["content_blocks"].getXml(); //projectData['code'];
+    var projXMLcode = getXml(); //projectData['code'];
     projXMLcode = projXMLcode.substring(42, projXMLcode.length);
     projXMLcode = projXMLcode.substring(0, (projXMLcode.length - 6));
 
@@ -640,12 +620,12 @@ function replaceCode() {
         newCode = newCode.substring(42, newCode.length);
         newCode = newCode.substring(0, (newCode.length - 29));
 
-        window.frames["content_blocks"].location.reload();
-        window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init(projectData['board'], []);
+        location.reload();
+        setProfile(projectData['board']);
+        initToolbox(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
         $(window).load(function () {
-            window.frames["content_blocks"].load(projectData['code']);
+            loadToolbox(projectData['code']);
             uploadStaged = false;
         });
 
@@ -665,16 +645,151 @@ function appendCode() {
         newCode = newCode.substring(42, newCode.length);
         newCode = newCode.substring(0, (newCode.length - 6));
 
-        window.frames["content_blocks"].location.reload();
-        window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init(projectData['board'], []);
+        location.reload();
+        setProfile(projectData['board']);
+        initToolbox(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
         $(window).load(function () {
-            window.frames["content_blocks"].load(projectData['code']);
+            loadToolbox(projectData['code']);
             uploadStaged = false;
         });
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
     }
+}
+
+function filterToolbox(profileName, peripherals) {
+    var componentlist = peripherals.slice();
+    componentlist.push(profileName);
+
+    $("#toolbox").find('category').each(function () {
+        var toolboxEntry = $(this);
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        // Remove toolbox categories that are experimental if not in demo
+        var experimental = toolboxEntry.attr('experimental');
+        if (experimental && inDemo !== 'demo') {
+            toolboxEntry.remove();
+        }
+        
+        // Set the category's label
+        var catKey = toolboxEntry.attr('key');
+        if (catKey) {
+            toolboxEntry.attr('name', toolbox_label[catKey]);
+        }
+
+        if (document.referrer.indexOf('?') !== -1) {
+            if (document.referrer.split('?')[1].indexOf('grayscale=1') > -1) {
+                var colorChanges = {
+                    '140': '#AAAAAA',
+                    '165': '#222222',
+                    '185': '#333333',
+                    '205': '#444444',
+                    '225': '#555555',
+                    '250': '#666666',
+                    '275': '#777777',
+                    '295': '#888888',
+                    '320': '#999999',
+                    '340': '#111111'
+                };
+                var colour = toolboxEntry.attr('colour');
+                if (colour)
+                    toolboxEntry.attr('colour', colorChanges[colour]);
+            }
+        }
+    });
+    $("#toolbox").find('sep').each(function () {
+        var toolboxEntry = $(this);
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+    });
+
+    $("#toolbox").find('block').each(function () {
+        var toolboxEntry = $(this);
+        
+        // Remove toolbox categories that are experimental if not in demo
+        var experimental = toolboxEntry.attr('experimental');
+        if (experimental && inDemo !== 'demo') {
+            toolboxEntry.remove();
+        }
+    });
+
+}
+
+// http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
+/**
+ * @description determine if an array contains one or more items from another array.
+ * @param {array} haystack the array to search.
+ * @param {array} arr the array providing items to check for in the haystack.
+ * @return {boolean} true|false if haystack contains at least one item from arr.
+ */
+var findOne = function (haystack, arr) {
+    return arr.some(function (v) {
+        // console.log(v + " " + (haystack.indexOf(v) >= 0));
+        return haystack.indexOf(v) >= 0;
+    });
+};
+
+function initToolbox(profileName, peripherals) {
+    filterToolbox(profileName, peripherals);
+
+    Blockly.inject('content_blocks', {
+        toolbox: document.getElementById('toolbox'),
+        trashcan: true,
+        media: cdnUrl + 'blockly/media/',
+        path: cdnUrl + 'blockly/',
+        comments: false
+    });
+    
+    init(Blockly);
+}
+
+function clearXml() {
+    Blockly.mainWorkspace.clear();
+}
+
+function loadToolbox(xmlText) {
+    var xmlDom = Blockly.Xml.textToDom(xmlText);
+    Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
+}
+
+function getXml() {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    return Blockly.Xml.domToText(xml);
+}
+
+function showOS(o) {
+    $("body").removeClass('Windows')
+            .removeClass('MacOS')
+            .removeClass('Linux')
+            .removeClass('ChromeOS');
+    $("body").addClass(o);
 }

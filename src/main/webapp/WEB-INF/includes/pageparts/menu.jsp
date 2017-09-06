@@ -33,7 +33,7 @@
                         <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a>
                     </li>
                     <li>
-                        <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
+                        <a href="privacy-policy" class="internav-link"><fmt:message key="menu.privacy" /></a>
                     </li>
                 </ul>
             </div>
@@ -58,7 +58,7 @@
                     </li>
                 </shiro:authenticated>
 
-                <li><a href="<url:getUrl url="/public/help"/>"><fmt:message key="menu.help" /></a></li>
+                <li><a href="help" class="internav-link"><fmt:message key="menu.help" /></a></li>
                 <!--
                 <li class="navbar-text">
                     <form style="margin-bottom: 0;">
