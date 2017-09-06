@@ -14,13 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author developer
+ * @author Michel
  */
 @Singleton
-public class LibrariesServlet extends HttpServlet {
-    
+public class IndexServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/servlet/libraries.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/servlet/index.jsp").forward(req, resp);
     }
+
 }

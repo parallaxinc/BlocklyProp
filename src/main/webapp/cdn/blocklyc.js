@@ -102,6 +102,7 @@ function tabClick(id) {
     selected = id.replace('tab_', '');
     //document.getElementById(id).className = 'active';
 
+    var tbxs = document.getElementsByClassName('blocklyToolboxDiv');
     var btns = document.getElementsByClassName("btn-view-code");
     document.getElementById('btn-view-blocks').style.display = 'none';
     if (document.getElementById('menu-save-as-propc'))
@@ -114,7 +115,13 @@ function tabClick(id) {
             for (var i = 0; i < btns.length; i++) {
                 btns[i].style.display = 'inline';
             }
+            for (var xt = 0; xt < tbxs.length; xt++) {
+                tbxs[xt].style.display = 'block';
+            }
         } else {
+            for (var xt = 0; xt < tbxs.length; xt++) {
+                tbxs[xt].style.display = 'none';
+            }
             document.getElementById('btn-view-blocks').style.display = 'inline';
             if (document.getElementById('menu-save-as-propc'))
                 document.getElementById('menu-save-as-propc').style.display = 'block';
