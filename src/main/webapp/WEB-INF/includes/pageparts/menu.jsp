@@ -33,7 +33,7 @@
                         <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a>
                     </li>
                     <li>
-                        <a href="privacy-policy" class="internav-link"><fmt:message key="menu.privacy" /></a>
+                        <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
                     </li>
                 </ul>
             </div>
@@ -52,7 +52,6 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"><shiro:principal></shiro:principal> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="<url:getUrl url="/profile"/>"><fmt:message key="menu.profile" /></a></li>
-                       <!--     <li><a href="<url:getUrl url="/public/profile"/>"><fmt:message key="menu.public-profile" /></a></li> -->
                             <li><a href="<url:getUrl url="/logout"/>"><fmt:message key="logout" /></a></li>
                         </ul>
                     </li>
@@ -76,7 +75,7 @@
             </div>
         </div>
     </div>
-    <!-- Message of the Day goes here. -->
+    <!-- Message of the Day goes here. 
     <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; ">
         <div class="row">
             <div class="col-sm-12" align="center">
@@ -84,4 +83,5 @@
             </div>
         </div>
     </div>
+    -->
 </nav>
