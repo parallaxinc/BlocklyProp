@@ -466,13 +466,13 @@ function downloadCode() {
     utils.prompt(Blockly.Msg.DIALOG_DOWNLOAD, 'Project' + idProject, function (value) {
         if (value) {
             // extract the SVG from the iFrame that contains it
-            var x = document.getElementsByName("content_blocks");
-            var y = (x[0].contentWindow || x[0].contentDocument);
-            if (y.document)
-                y = y.document;
+            //var x = document.getElementsByName("content_blocks");
+            //var y = (x[0].contentWindow || x[0].contentDocument);
+            //if (y.document)
+            //    y = y.document;
 
             // get the paths of the blocks themselves and the size/position of the blocks
-            var projSVG = y.getElementsByClassName('blocklyBlockCanvas');
+            var projSVG = document.getElementsByClassName('blocklyBlockCanvas');
             var projSVGcode = projSVG[0].outerHTML.replace(/&nbsp;/g, ' ');
             var projSize = projSVG[0].getBoundingClientRect();
             var projH = (parseInt(projSize.height) + parseInt(projSize.top) + 100).toString();
