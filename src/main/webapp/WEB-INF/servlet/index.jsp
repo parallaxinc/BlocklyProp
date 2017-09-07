@@ -658,8 +658,32 @@
                 }
                 indexNav(gotoLoc);
             });
+            
+            osName = 'unknown-client';
+
+            // Detect the current operating system
+            function detectOS(x, y, z) {
+                z = z || y;
+                if (navigator[x] && navigator[x].indexOf(y) !== -1) {
+                    osName = z;
+                }
+            }
+
+            /*   navigator     value     download  */
+            detectOS("appVersion", "X11", "UNIX");
+            detectOS("appVersion", "Mac", "MacOS");
+            detectOS("appVersion", "Linux");
+            detectOS("userAgent", "Linux");
+            detectOS("platform", "Linux");
+            detectOS("appVersion", "Win", "Windows");
+            detectOS("userAgent", "Windows");
+            detectOS("platform", "Win", "Windows");
+            detectOS("oscpu", "Windows");
+            detectOS("appVersion", "CrOS", "ChromeOS");
 
             $(document).ready(function () {
+                $("body").addClass(osName);
+
                 // Manage the page location/view
                 var loca = location.pathname.split('/');
                 var gotoLoca = loca[loca.length - 1];

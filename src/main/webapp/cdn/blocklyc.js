@@ -174,6 +174,8 @@ prettyCode = function (raw_code) {
         'indent_size': 2
     });
     raw_code = raw_code.replace(/,\n[\s\xA0]+/g, ", ")
+    
+            // improve the way reference and dereference operands are rendered
             .replace(/, & /g, ", &")
             .replace(/, \* /g, ", *")
             .replace(/\( & /g, "(&")
@@ -181,7 +183,12 @@ prettyCode = function (raw_code) {
             .replace(/char \* /g, "char *")
             .replace(/fdserial \* /g, "fdserial *")
             .replace(/colorPal \* /g, "colorPal *")
-            .replace(/ws2812 \* /g, "ws2812 *");
+            .replace(/ws2812 \* /g, "ws2812 *")
+    
+            // improve the way functions and arrays are rendered
+            .replace(/\)\s*[\n\r]\s*{/g,") {")
+            .replace(/=\s*{([\s\S]*)};/g, "= {%1};");
+    
     codePropC.setValue(raw_code);
     codePropC.gotoLine(0);
 };
@@ -202,6 +209,7 @@ function init(blockly) {
     codePropC = ace.edit("code-propc");
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
+    codePropC.getSession().setTabSize(2);
     codePropC.setReadOnly(true);
 
     codeXml = ace.edit("code-xml");
