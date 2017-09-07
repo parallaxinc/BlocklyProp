@@ -1884,7 +1884,7 @@ Blockly.propc.map_value = function () {
 
     if (!this.disabled) {
         var func_code1 = 'int map(int __xVal, int __inMin, int __inMax, int __outMin, int __outMax)';
-        var func_code2 = '} return (__xVal - __inMin) * (__outMax - __outMin) / (__inMax - __inMin) + __outMin;}';
+        var func_code2 = '{ return (__xVal - __inMin) * (__outMax - __outMin) / (__inMax - __inMin) + __outMin;}';
         Blockly.propc.method_declarations_["map_function"] = func_code1 + ';\n';
         Blockly.propc.methods_["map_function"] = func_code1 + func_code2;
     }
