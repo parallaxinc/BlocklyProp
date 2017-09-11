@@ -5,6 +5,9 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
+<%--
+<%@ include file="my/projects.jsp"%>
+--%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,8 +25,8 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
-        <link href="<url:getCdnUrl url="/lib/simplemde.min.css"/>" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
+        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/simplemde.min.css"/>">
+        <link rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
         <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/jquery.form.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>" ></script>

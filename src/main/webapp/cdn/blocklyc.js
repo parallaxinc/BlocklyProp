@@ -187,7 +187,7 @@ prettyCode = function (raw_code) {
     
             // improve the way functions and arrays are rendered
             .replace(/\)\s*[\n\r]\s*{/g,") {")
-            .replace(/\[([0-9]*)\]\s*=\s*{([\s0-9xXbBA-F,]*)};/g, "[$1] = {$2};");
+            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, "[$1] = {$2};");
     
     codePropC.setValue(raw_code);
     codePropC.gotoLine(0);

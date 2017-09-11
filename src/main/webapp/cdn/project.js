@@ -5,17 +5,6 @@ var linkShareUrl = '';
 
 var idProject = null;
 
-var projectTypes = {
-    "PROPC": {
-        "editor": "blocklyc.jsp",
-        "class": "editor-c-link"
-    },
-    "SPIN": {
-        "editor": "blocklyc.jsp",
-        "class": "editor-c-link"
-    }
-};
-
 var simplemde = null;
 
 $(document).ready(function () {
@@ -165,13 +154,11 @@ function loadProject(idProject) {
             //$("#project-form-friends").prop('checked', 'checked').parent().addClass('active');
         }
 
-
         var openProjectLink = $("a.open-project-link");
-        openProjectLink.removeClass("editor-c-link editor-spin-link");
-        openProjectLink.attr("href", baseUrl + "editor/" + projectTypes[project['type']]['editor'] + "?project=" + project['id']);
+        //openProjectLink.removeClass("editor-c-link");
+        openProjectLink.attr("href", baseUrl + "editor/blocklyc.jsp?project=" + project['id']);
         $('.clone-project').attr('href', cloneUrl + project['id']);
         $('.delete-project').attr('href', deleteUrl + project['id']);
-        openProjectLink.addClass(projectTypes[project['type']]['class']);
     });
 }
 

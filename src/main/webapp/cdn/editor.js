@@ -290,11 +290,15 @@ saveProjectAs = function () {
                 window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
                 projectData['code'] = code;
 
-                $.post(baseUrl + 'rest/project/code', projectData, function (data) {
-                    projectData = data;
-                    projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-                    ignoreSaveCheck = false;
-                });
+                // Give the database a chance to catch up - possibly change to document.ready?
+                setTimeout(function () {
+                    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+                        projectData = data;
+                        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                        ignoreSaveCheck = false;
+                    });
+                }, 1000);
+                
             } else {
                 if (typeof data['message'] === "string")
                     alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);

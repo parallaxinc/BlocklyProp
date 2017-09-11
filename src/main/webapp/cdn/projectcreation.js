@@ -1,20 +1,19 @@
 //searchVisible = 0;
 //transparent = true;
 
-var projectTypes = {
-    "PROPC": "blocklyc.jsp",
-    "SPIN": "blocklyc.jsp"
-};
-
 var simplemde = null;
 
 $(document).ready(function () {
-    /*  Activate the tooltips      */
+    // Activate the tooltips
     $('[rel="tooltip"]').tooltip();
-    simplemde = new SimpleMDE({element: document.getElementById("project-description"), hideIcons: ["link"], spellChecker: false});
+    simplemde = new SimpleMDE(
+            {
+                element: document.getElementById("project-description"), 
+                hideIcons: ["link"], 
+                spellChecker: false
+            });
 
-    $('#project-type').val(utils.getUrlParameters('lang'));
-
+    // set behavior when radio-groups are clicked
     $('[data-toggle="wizard-radio"]').click(function () {
         wizard = $(this).closest('.wizard-card');
         wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
@@ -23,6 +22,7 @@ $(document).ready(function () {
         $(this).find('[type="radio"]').attr('checked', 'true');
     });
 
+    // set behavior when checkboxes are clicked
     $('[data-toggle="wizard-checkbox"]').click(function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
@@ -33,12 +33,12 @@ $(document).ready(function () {
         }
     });
 
-    $height = $(document).height();
-    $('.set-full-height').css('height', $height);
+    // Set full height classes based on window height
+    doc_height = $(document).height();
+    $('.set-full-height').css('height', doc_height);
 });
 
 function validateFirstStep() {
-
     $(".proj").validate({
         rules: {
             'project-name': "required",
@@ -58,8 +58,7 @@ function validateFirstStep() {
     return true;
 }
 
-$.fn.serializeObject = function ()
-{
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function () {
@@ -83,22 +82,10 @@ $('#finish').on('click', function () {
         console.log(formData);
         $.post('createproject', formData, function (data) {
             if (data['success']) {
-                window.location = $('#finish').data('editor') + projectTypes[utils.getUrlParameters('lang')] + "?project=" + data['id'];
+                window.location = $('#finish').data('editor') + "blocklyc.jsp?project=" + data['id'];
             } else {
-                if (typeof data['message'] === "string")
-                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
-                else
-                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message'].toString());
+                alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
             }
         });
     }
 });
-
-
-
-
-
-
-
-
-

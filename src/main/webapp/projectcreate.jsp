@@ -27,8 +27,14 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <title>BlocklyProp</title>
+
         <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
+        <script src="<url:getCdnUrl url="/lib/jquery.validate.min.js"/>"></script>
+        <script src="<url:getCdnUrl url="/projectcreation.js"/>"></script>
+
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/lib/bootstrap/plugins/gsdk-base.css"/>" rel="stylesheet">
         <link href="<url:getCdnUrl url="/lib/simplemde.min.css"/>" rel="stylesheet">
@@ -63,11 +69,9 @@
                                         <option value="flip"><fmt:message key="project.board.flip" /></option>
                                         <option value="heb"><fmt:message key="project.board.heb" /></option>
                                         <option value="other"><fmt:message key="project.board.other" /></option>
-                                        <c:choose>
-                                            <c:when test="${experimental == true}">
-                                                <option value="propcfile"><fmt:message key="project.board.propcfile" /></option>
-                                            </c:when>
-                                       </c:choose>
+                                        <c:choose><c:when test="${experimental == true}">
+                                            <option value="propcfile"><fmt:message key="project.board.propcfile" /></option>
+                                        </c:when></c:choose>
                                 </select>
                             </div>
                         </div>
@@ -75,40 +79,39 @@
                             <label for="project-description"><fmt:message key="project.create.description" /></label>
                             <textarea class="form-control" id="project-description" rows="7" name="project-description"></textarea>
                         </div>
-                        <input type="hidden" id="project-type" name="project-type"/>
+                        <input type="hidden" id="project-type" name="project-type" value="PROPC"/>
                     </div>
                     <div class="row">
                         <div class="col-sm-5 col-sm-offset-1">
                             <div class="form-group">
                                 <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
                             
-                            <c:if test="${copparestricted == true}">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default active">
-                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
-                                            <fmt:message key="project.sharing.private" />
-                                    </label>
-                                </div>
-                            </c:if>
+                                <c:if test="${copparestricted == true}">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-default active">
+                                            <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                                <fmt:message key="project.sharing.private" />
+                                        </label>
+                                    </div>
+                                </c:if>
 
-                            <c:if test="${copparestricted == false}">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default active">
-                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
-                                            <fmt:message key="project.sharing.private" />
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <input type="radio" name="sharing" value="shared" id="project-form-shared"/>
-                                            <fmt:message key="project.sharing.shared" />
-                                    </label>
-                                </div>
-                            </c:if>
-                            </div>
+                                <c:if test="${copparestricted == false}">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label class="btn btn-default active">
+                                            <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                                <fmt:message key="project.sharing.private" />
+                                        </label>
+                                        <label class="btn btn-default">
+                                            <input type="radio" name="sharing" value="shared" id="project-form-shared"/>
+                                                <fmt:message key="project.sharing.shared" />
+                                        </label>
+                                    </div>
+                                </c:if>
                                 
+                            </div>
                         </div>
                         <div class="col-sm-5">
                             <div class="form-group">
-                                <label>&nbsp;</label><br/>
                                 <input type='button' id='finish' class='btn btn-primary pull-right' name='finish' value='<fmt:message key="project.create.finishlink" />' data-editor='<url:getUrl url="/editor/"/>' />
                             </div>
                         </div>
@@ -117,11 +120,5 @@
                 </form>
             </div>
         </div>
-
-        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
-        <script src="<url:getCdnUrl url="/lib/jquery.validate.min.js"/>"></script>
-        <script src="<url:getCdnUrl url="/utils.js"/>"></script>
-        <script src="<url:getCdnUrl url="/projectcreation.js"/>"></script>
     </body>
 </html>
