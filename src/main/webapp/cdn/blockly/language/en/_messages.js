@@ -941,7 +941,10 @@ var tooltip_text = [
     ['prop-btn-redo','Redo'],
     ['btn-graph-play','Pause/Resume the graph'],
     ['btn-graph-snapshot','Download a snapshot of the graph'],
-    ['btn-graph-csv','Download graph data as CSV']
+    ['btn-graph-csv','Download graph data as CSV'],
+    ['project-form-shared', 'Make project visible to other users'],
+    ['project-form-private', 'Hide project from other users']
+    
 ];
 
 // Insert the text strings (internationalization) once the page has loaded

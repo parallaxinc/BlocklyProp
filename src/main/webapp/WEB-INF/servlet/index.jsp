@@ -6,6 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
+
+<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
+<c:set var="copparestricted" scope="page" value="${properties:copparestricted()}" />
+
 <!doctype html >
 <html>
     <head>
@@ -22,37 +26,39 @@
         <link type="image/png" rel="icon" sizes="32x32" href="<url:getCdnUrl url="/images/favicon-32x32.png"/>" />
         <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
 
-        <link rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
+        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/gsdk-base.css"/>">
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/simplemde.min.css"/>">
         <link rel="stylesheet" href="<url:getCdnUrl url="/style-clientdownload.css"/>" />
-
+        <link rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
+        
         <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/jquery.form.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/lib/jquery.validate.min.js"/>"></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/jquery.bootstrap.wizard.js"/>"></script>
         <script src="<url:getCdnUrl url="/lib/micromarkdown.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
-        
-        <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
+
         <script src="<url:getCdnUrl url="/project.js"/>" ></script>
-        
-        
+
+
         <script>
             // Define Blockly to prevent messages file from throwing an exception (TEMPORARY)
-            var Blockly = {Msg:{}};   
+            var Blockly = {Msg:{}};
         </script>
 
         <!-- Internationalization text strings -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
 
-        <script>            
+        <script>
             // Set the application version
             page_text_label['application_major'] = "<fmt:message key="application.major"/>";
             page_text_label['application_minor'] = "<fmt:message key="application.minor"/>";
             page_text_label['application_build'] = "<fmt:message key="application.build"/>";
-        </script>        
+        </script>
 
     </head>
     <body>
@@ -76,13 +82,11 @@
                             <li>
                                 <a href="<url:getUrl url="/projects.jsp"/>"><span class="keyed-lang-string" key="menu_community_projects"></span></a>
                             </li>
-                            <shiro:authenticated>
-                                <li>
+                            <li id="my-projects-menu-item">
                                     <a href="<url:getUrl url="/my/projects.jsp"/>"><span class="keyed-lang-string" key="menu_my_projects"></span></a>
-                                </li>
-                            </shiro:authenticated>
-                            <li>
-                                <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><span class="keyed-lang-string" key="menu_newproject_title"></span></a>
+                            </li>
+                            <li id="new-project-menu-item">
+                                <a href="new-project" class="internav-link"><span class="keyed-lang-string" key="menu_newproject_title"></span></a>
                             </li>
                             <li>
                                 <a href="privacy-policy" class="internav-link"><span class="keyed-lang-string" key="menu_privacy"></span></a>
@@ -92,44 +96,39 @@
                     <div>
                         <!-- Register / Login -->
                         <ul class="nav navbar-nav navbar-right">
-                        <shiro:notAuthenticated>
                             <!-- Anonymous user -->
-                            <li>
+                            <li id="login-menu-item">
                                 <a href="<url:getUrl url="/login.jsp"/>"><span class="keyed-lang-string" key="menu_login_and_register"></span></a>
                             </li>
-                        </shiro:notAuthenticated>
-                        <shiro:authenticated>
                             <!-- Authenticated user -->
-                            <li class="dropdown">
+                            <li class="dropdown" id="profile-menu-item">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true">
-                                    <shiro:principal></shiro:principal> <span class="caret"></span>
+                                    <span class="auth-user"></span> <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="<url:getUrl url="/profile"/>"><span class="keyed-lang-string" key="menu_profile"></span></a></li>
                                     <li><a href="<url:getUrl url="/logout"/>"><span class="keyed-lang-string" key="logout"></span></a></li>
                                 </ul>
                             </li>
-                        </shiro:authenticated>
-
-                        <li><a href="help" class="internav-link"><span class="keyed-lang-string" key="menu_help"></span></a></li>
-                        <!--
-                        <li class="navbar-text">
-                            <form style="margin-bottom: 0;">
-                                <select id="language" name="language" onchange="submit()">
-                                    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-                                    <%-- Multi-lingual support is under development
-                                    <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
-                                    <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>
-                                    --%>
-                                </select>
-                            </form>
-                        </li>
-                        -->
-                    </ul>
+                            <li><a href="help" class="internav-link"><span class="keyed-lang-string" key="menu_help"></span></a></li>
+                            <!--
+                            <li class="navbar-text">
+                                <form style="margin-bottom: 0;">
+                                    <select id="language" name="language" onchange="submit()">
+                                        <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+                                        <%-- Multi-lingual support is under development
+                                        <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
+                                        <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>
+                                        --%>
+                                    </select>
+                                </form>
+                            </li>
+                            -->
+                        </ul>
                     </div>
                 </div>
             </div>
-                                
+
             <!-- Message of the Day goes here. -->
             <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; display: none;" id="message-of-the-day">
                 <div class="row">
@@ -239,13 +238,13 @@
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_tutorials_badge"><span class="keyed-lang-string" key="help_text_tutorials"></span></a></li>
                     <%--<li><a target="_blank" class="keyed-lang-string" key="help_link_educator-resources_badge"><span class="keyed-lang-string" key="help_text_educator-resources"></span></a></li>--%>
                     </ul>
-                </div>                
+                </div>
             </div>
             <div class="row">
                 <div class="col-sm-4">
                     <div style="width:48px; height:48px; border-radius:24px; background-color:#C4EDBF; border: 0.5px #A9DFA2 solid; padding:3px; display: inline-block;">
                         <img src="<url:getCdnUrl url="/images/products/S3prod.png"/>" style="display: inline-block; height: 42px; width: 42px;"/>
-                    </div> 
+                    </div>
                     <h4 style="display: inline-block; padding-left: 5px;"><span class="keyed-lang-string" key="help_title_s3"></span></h4>
                     <ul style="margin-left: 30px; padding-bottom: 10px">
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_getting-started_s3"><span class="keyed-lang-string" key="help_text_getting-started"></span></a></li>
@@ -269,8 +268,8 @@
                 </div>
                 <div class="col-sm-4">
 
-                </div>                
-            </div>        
+                </div>
+            </div>
         </div>
 
         <div class="container" class="index-pages" id="index-libraries" style="display: none;">
@@ -429,7 +428,7 @@
             </div>
         </div>
 
-        <div class="container" class="index-pages" id="index-client" style="display: none;">
+        <div class="container index-pages" id="index-client" style="display: none;">
             <div class="row">
                 <div class="col-md-12">
                     <h2><span class="keyed-lang-string" key="clientdownload_title"></span></h2>
@@ -448,7 +447,7 @@
                     <%--
                     <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');">
                         <span class="keyed-lang-string" key="clientdownload_showall"></span></button>
-                    --%>  
+                    --%>
                 </div>
             </div>
 
@@ -568,13 +567,13 @@
                             <img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>
                             <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
                                 <span class="keyed-lang-string" key="clientdownload_client_chromeos_installer"></span></a>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-                        
-        <div class="container" class="index-pages" id="index-privacy-policy" style="display: none;">
+
+        <div class="container index-pages" id="index-privacy-policy" style="display: none;">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
                     <h3>Parallax BlocklyProp Privacy Policies</h3>
@@ -615,28 +614,86 @@
                 </div>
             </div>
         </div>
-                            
+        
+        <div class="container index-pages" id="index-new-project" style="display: none;">
+            <form class="proj">
+                <div class="row">
+                    <div class="col-sm-5 col-sm-offset-1">
+                        <h3><span class="keyed-lang-string" key="project_create_title" ></span></h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5 col-sm-offset-1">
+                        <div class="form-group">
+                            <label for="project-name"><span class="keyed-lang-string" key="project_create_project_name" ></span></label>
+                            <input type="text" class="form-control" id="project-name" name="project-name"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label for="board-type"><span class="keyed-lang-string"  key="project_create_board_type" ></span></label>
+                            <select class="form-control" id="board-type" name="board-type"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <label for="project-description"><span class="keyed-lang-string" key="project_create_description" ></span></label>
+                        <textarea class="form-control" id="project-description" name="project-description"></textarea>
+                    </div>
+                    <input type="hidden" id="project-type" name="project-type" value="PROPC"/>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5 col-sm-offset-1">
+                        <div class="form-group">
+
+                            <c:if test="${copparestricted == true}">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default active">
+                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                            <span class="keyed-lang-string" key="project_sharing_private" ></span>
+                                    </label>
+                                </div>
+                            </c:if>
+
+                            <c:if test="${copparestricted == false}">
+                                <label for="sharing"><span class="keyed-lang-string" key="project_sharing" ></span></label><br/>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default active">
+                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                            <span class="keyed-lang-string" key="project_sharing_private" ></span>
+                                    </label>
+                                    <label class="btn btn-default">
+                                        <input type="radio" name="sharing" value="shared" id="project-form-shared"/>
+                                        <span class="keyed-lang-string" key="project_sharing_shared" ></span>
+                                    </label>
+                                </div>
+                            </c:if>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <input type='button' id='finish' class='btn btn-primary pull-right' name='finish' value='Finish' />
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+
         <div id="page-dump" style="display: none;"></div>
 
         <script>
-            /*
-            var projectTypes = {
-                "PROPC": {
-                    "editor": "blocklyc.jsp",
-                    "class": "editor-c-link"
-                },
-                "SPIN": {
-                    "editor": "blocklyc.jsp",
-                    "class": "editor-c-link"
-                }
-            };
-            */
-           
+            // Get the logged in status
             var user_authenticated = false;
             <shiro:authenticated>
                 user_authenticated = true;
             </shiro:authenticated>
-           
+
+            // Get the username once logged in
+            var auth_user = '<shiro:principal></shiro:principal>';
+
             var projectBoard = {
                 "activity-board": "icon-board-ab",
                 "s3": "icon-board-s3",
@@ -648,6 +705,8 @@
 
             var oauthUrls = {};
             var baseUrl = '<url:getUrl url="/" />';
+            var simplemde = null;
+            console.log(baseUrl);
 
             // handle user clicks on the "back" button
             window.addEventListener("popstate", function(e) {
@@ -658,7 +717,7 @@
                 }
                 indexNav(gotoLoc);
             });
-            
+
             osName = 'unknown-client';
 
             // Detect the current operating system
@@ -689,11 +748,11 @@
                 var gotoLoca = loca[loca.length - 1];
                 if (gotoLoca === 'blockly' || gotoLoca === 'index' || gotoLoca === '' || !gotoLoca) {
                     // Set the current page in the browser navigation
-                    history.pushState(null, null, '<url:getUrl url="/"/>');
+                    history.pushState(null, null, baseUrl);
                 } else {
                     indexNav(gotoLoca);
                 }
-                
+
                 // Once the page loads, set the behavior of the links for faux-navigation
                 $('.internav-link').click(function(e) {
                     var loc = this.href.split('/');
@@ -701,13 +760,41 @@
                     e.preventDefault();
                     indexNav(gotoLoc);
                 });
-                
+
                 // Prevent dropdown menu from affecting the page navigation on the client download/instructions page
                 $('.client-os-dropdown').click(function(e) {
                     e.preventDefault();
                 });
+
+                // Show or hide elements based on login status
+                if (user_authenticated === true) {
+                    $('#profile-menu-item').css('display', 'list-item');
+                    $('#login-menu-item').css('display', 'none');
+                    $('#my-projects-menu-item').css('display', 'list-item');
+                    $('#new-project-menu-item').css('display', 'list-item');
+                } else {
+                    $('#profile-menu-item').css('display', 'none');
+                    $('#login-menu-item').css('display', 'list-item');
+                    $('#my-projects-menu-item').css('display', 'none');
+                    $('#new-project-menu-item').css('display', 'none');
+                }
                 
-                /*
+                // Add the username when the user is logged in
+                $('.auth-user').html(auth_user);
+            
+                $('#loginform').submit(function (event) {
+                    $("#login-failure").addClass("hidden");
+                    // Stop form from submitting normally
+                    event.preventDefault();
+
+                    var jqxhr = $.post($('#loginform').attr('action'), $('#loginform').serialize(), onLoginSuccess);
+                    jqxhr.fail(function (jqXHR, textStatus, errorThrown) {
+                        alert("An unexpected error occured. Please try again later or contact the webmaster.");
+                    });
+
+                });
+
+               /*
                 var pageReq = getURLParameter('page');
                 alert(pageReq);
                 if (pageReq) {
@@ -715,10 +802,10 @@
 
                 }
                 */
-                
+
                 // set the year in copyright text fields
                 $('.year-text').html(new Date().getFullYear());
-                
+
                 // Retrieve the list of latest projects
                 $.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", function (data) {
                     $.each(data['rows'], function (index, project) {
@@ -738,7 +825,7 @@
                         $(".latest-projects").append(projectItem);
                     });
                 });
-                
+
                 // Retrieve the Message of the Day content
                 $('#page-dump').load("http://learn.parallax.com/node/1692", function (data, statusTxt, xhr){
                     if(statusTxt === "error")
@@ -751,26 +838,110 @@
                         $('#message-of-the-day-link').html(motd_msg[1] + ' - click here for more information');
                     }
                 });
-            
-                // Grab the release list from github, format it, and 
+
+                // Grab the release list from github, format it, and
                 $.getJSON("http://api.github.com/repos/parallaxinc/BlocklyProp/releases", function (result) {
                     $.each(result, function (i) {
                         $("#from-github").html($("#from-github").html() +
-                                "<h5><b>Release <a href=\"" + result[i].url + "\" target=\"_blank\">" + 
+                                "<h5><b>Release <a href=\"" + result[i].url + "\" target=\"_blank\">" +
                                 result[i].name + "</a></b>&nbsp;" +
                                 result[i].published_at.split('T')[0] + "</h5>" +
                                 micromarkdown.parse(result[i].body).replace(/\r\n/g, '<br>') + "<hr />");
                     });
                 });
-                
+
                 // Set up oauth
                 if (document.getElementById('project-loggedin-dialog')) {
                     $(".oauth").each(function () {
                         oauthUrls[$(this).attr('id')] = $(this).attr("href");
                     });
                 }
+
+                // Activate the tooltips
+                $('[rel="tooltip"]').tooltip();
+                simplemde = new SimpleMDE(
+                        {
+                            element: document.getElementById("project-description"),
+                            hideIcons: ["link"],
+                            spellChecker: false
+                        });
+
+                // set behavior when radio-groups are clicked
+                $('[data-toggle="wizard-radio"]').click(function () {
+                    wizard = $(this).closest('.wizard-card');
+                    wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
+                    $(this).addClass('active');
+                    $(wizard).find('[type="radio"]').removeAttr('checked');
+                    $(this).find('[type="radio"]').attr('checked', 'true');
+                });
+
+                // set behavior when checkboxes are clicked
+                $('[data-toggle="wizard-checkbox"]').click(function () {
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active');
+                        $(this).find('[type="checkbox"]').removeAttr('checked');
+                    } else {
+                        $(this).addClass('active');
+                        $(this).find('[type="checkbox"]').attr('checked', 'true');
+                    }
+                });
+
+                // Set full height classes based on window height
+                doc_height = $(document).height();
+                $('.set-full-height').css('height', doc_height);
+                
+                // Set the board menu
+                $("#board-type").empty();
+                $('#board-type').append($('<option>', {
+                    disabled: '',
+                    selected: '',
+                    text: page_text_label['project_create_board_type_select']
+                }));
+                $('#board-type').append($('<option>', {
+                    value: 'activity-board',
+                    text: page_text_label['project_board_activity-board']
+                }));
+                $('#board-type').append($('<option>', {
+                    value: 's3',
+                    text: page_text_label['project_board_s3']
+                }));
+                $('#board-type').append($('<option>', {
+                    value: 'flip',
+                    text: page_text_label['project_board_flip']
+                }));
+                $('#board-type').append($('<option>', {
+                    value: 'heb',
+                    text: page_text_label['project_board_heb']
+                }));
+                $('#board-type').append($('<option>', {
+                    value: 'other',
+                    text: page_text_label['project_board_other']
+                }));
+                <c:choose><c:when test="${experimental == true}">
+                    $('#board-type').append($('<option>', {
+                        value: 'propcfile',
+                        text: page_text_label['project_board_propcfile']
+                    }));
+                </c:when></c:choose>
+                $('#finish').val(page_text_label['project_create_finishlink']);
             });
             
+            function onLoginSuccess(response, statusText, xhr, $form) {
+                // alert(response.data.token);
+                if (response.success === true) {
+                    if (typeof window['post-authenticate'] === 'function') {
+                        window['post-authenticate']();
+                    } else {
+                        location.reload(true);
+                    }
+                } else {
+                    $("#login-failure").removeClass("hidden");
+                    if (typeof window['failed-authentication'] === 'function') {
+                        window['failed-authentication']();
+                    }
+                }
+            }
+
             if(!user_authenticated) {
                 $("body").on("click", "a.editor-new-link", function (event) {
                     event.preventDefault();
@@ -782,12 +953,12 @@
                     setEditorLinksAndShow.call(this, page_text_label['not_loggedin_try_viewprojectlink']);
                 });
             }
- 
+
             // http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
             function getURLParameter(name) {
                 return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
             }
-                
+
             function setEditorLinksAndShow(linkText) {
                 $(".try-view-editor").text(linkText);
                 $("a.editor-continue-link").attr("href", $(this).attr("href"));
@@ -811,7 +982,7 @@
             }
 
             function indexNav(divRef) {
-                history.pushState(null, null, '<url:getUrl url="/"/>' + (divRef === 'main' ? '' : divRef));
+                history.pushState(null, null, baseUrl + (divRef === 'main' ? '' : divRef));
                 document.getElementById('index-main').style.display = 'none';
                 document.getElementById('index-help').style.display = 'none';
                 document.getElementById('index-license').style.display = 'none';
@@ -819,9 +990,10 @@
                 document.getElementById('index-libraries').style.display = 'none';
                 document.getElementById('index-client').style.display = 'none';
                 document.getElementById('index-privacy-policy').style.display = 'none';
+                document.getElementById('index-new-project').style.display = 'none';
                 document.getElementById('index-' + divRef).style.display = 'block';
             }
-            
+
             function showOS(o) {
                 $("body").removeClass('Windows')
                         .removeClass('MacOS')
@@ -829,7 +1001,7 @@
                         .removeClass('ChromeOS');
                 $("body").addClass(o);
             }
-            
+
             function showStep(o, i, t) {
                 for (var j = 1; j <= t; j++) {
                     $('#' + o + j.toString() + '-btn').addClass('btn-default').removeClass('btn-primary');
@@ -838,8 +1010,61 @@
                 $('#' + o + i.toString() + '-btn').removeClass('btn-default').addClass('btn-primary');
                 $('#' + o + i.toString()).removeClass('hidden');
             }
+
+            function validateFirstStep() {
+                $(".proj").validate({
+                    rules: {
+                        'project-name': "required",
+                        'board-type': "required"
+                    },
+                    messages: {
+                        'project-name': "Please enter a project name",
+                        'board-type': "Please select a board type"
+                    }
+                });
+
+                if (!$(".proj").valid()) {
+                    //form is invalid
+                    return false;
+                }
+                return true;
+            }
+
+            $.fn.serializeObject = function () {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function () {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };
+
+            // Handle 'create new project' form completion
+            $('#finish').on('click', function () {
+                if (validateFirstStep()) {
+                    var formData = $(".proj").serializeObject();
+                    formData['project-description'] = simplemde.value();
+                    formData['project-description-html'] = simplemde.options.previewRender(simplemde.value());
+                    console.log(formData);
+                    $.post(baseUrl + 'createproject', formData, function (data) {
+                        console.log(data);
+                        if (data['success']) {
+                            window.location = baseUrl + "editor/blocklyc.jsp?project=" + data['id'];
+                        } else {
+                            alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
+                        }
+                    }).fail( function(response){ console.log(response); });
+                }
+            });
         </script>
-        
+
         <footer class="footer">
             <nav class="navbar">
                 <div class="container">

@@ -54,7 +54,7 @@ public class ServletsModule extends ServletModule {
         serve("/public/profile").with(PublicProfileServlet.class);
 
         // Information pages
-        serve("/index", "/", "/help", "/license", "/libraries", "/client", "/releases").with(IndexServlet.class);
+        serve("/index", "/", "/help", "/license", "/libraries", "/client", "/releases", "/new-project").with(IndexServlet.class);
 
         // OAuth
         serve("/oauth/newuser").with(NewOAuthUserServlet.class);

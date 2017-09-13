@@ -23,6 +23,7 @@
 </table>
 
 <script>
+    console.log('<url:getUrl url="${param.url}"/>');
     var languageUrls = {
         "PROPC": "<url:getCdnUrl url="/images/lang-icons/c.png" />",
         "SPIN": "<url:getCdnUrl url="/images/lang-icons/spin.png" />"

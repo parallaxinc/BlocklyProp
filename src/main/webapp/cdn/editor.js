@@ -6,6 +6,7 @@
 
 var baseUrl = $("meta[name=base]").attr("content");
 var cdnUrl = $("meta[name=cdn]").attr("content");
+var user_authenticated = ($("meta[name=user-auth]").attr("content") === 'true') ? true : false;
 
 var projectData = null;
 var ready = false;
@@ -20,14 +21,22 @@ var idProject = 0;
 
 var uploadedXML = '';
 
-var type = 'PROPC';
-
 // http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
 }
 
 $(document).ready(function () {
+    if (user_authenticated) {
+        $('.auth-true').css('display', $(this).attr('displayas'));
+        $('.auth-false').css('display', 'none');
+    } else {
+        $('.auth-false').css('display', $(this).attr('displayas'));
+        $('.auth-true').css('display', 'none');
+    }
+    
+    $('.url-prefix').attr('href', function(idx, cur) {return baseUrl + cur;});
+    
     idProject = getURLParameter('project');
     if (!idProject) {
         window.location = baseUrl;
@@ -42,7 +51,7 @@ $(document).ready(function () {
                 initToolbox(data['board'], []);
             }
             if ($('#editor-full-mode') === 'true') {
-                if (projectData['board'] === 's3' && type === 'PROPC') {
+                if (projectData['board'] === 's3') {
                     $('#prop-btn-ram').addClass('hidden');
                     document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
                 } else {
@@ -78,7 +87,7 @@ $(document).ready(function () {
     });
 });
 
-timestampSaveTime = function (mins, resetTimer) {
+var timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
     var d_save = new Date();
     
@@ -92,15 +101,15 @@ timestampSaveTime = function (mins, resetTimer) {
     }
 };
 
-checkLastSavedTime = function () {
+var checkLastSavedTime = function () {
     var d_now = new Date();
     var t_now = d_now.getTime();
     var s_save = Math.round((d_now.getTime() - last_saved_time) / 60000);
     $('#save-check-warning-time').html(s_save.toString(10));
 
-    if (s_save > 58) {
+    //if (s_save > 58) {
         // TODO: It's been to long - autosave, then close/set URL back to login page.
-    }
+    //}
 
     if (t_now > last_saved_timestamp && checkLeave() && $('#editor-full-mode').html() === 'true') {
         // It's time to pop up a modal to remind the user to save.
@@ -108,7 +117,7 @@ checkLastSavedTime = function () {
     }
 };
 
-showInfo = function (data) {
+var showInfo = function (data) {
     //console.log(data);
     $(".project-name").text(data['name']);
     if (!data['yours']) {
@@ -129,7 +138,7 @@ showInfo = function (data) {
     $("#project-icon").html('<img src="' + baseUrl + projectBoardIcon[data['board']] + '"/>');
 };
 
-propcAsBlocksXml = function () {
+var propcAsBlocksXml = function () {
     var code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
     code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
     code += '<field name="FILENAME">single.c</field>';
@@ -139,7 +148,7 @@ propcAsBlocksXml = function () {
     return code;
 };
 
-saveProject = function () {
+var saveProject = function () {
     var code = '';
     if (projectData['board'] === 'propcfile') {
         code = propcAsBlocksXml();
@@ -200,7 +209,7 @@ saveProject = function () {
     timestampSaveTime(20, true);
 };
 
-saveAsDialog = function () {
+var saveAsDialog = function () {
     // Prompt user to save current project first if unsaved
     if (checkLeave() && projectData['yours']) {
         utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
@@ -226,7 +235,7 @@ saveAsDialog = function () {
     $('#save-as-type-dialog').modal('show');    
 };
 
-checkBoardType = function () {
+var checkBoardType = function () {
     var current_type = projectData['board'];
     var save_as_type = $('#save-as-board-type').val();
     // save-as-verify-boardtype
@@ -237,7 +246,7 @@ checkBoardType = function () {
     }
 };
 
-saveProjectAs = function () {
+var saveProjectAs = function () {
     // Retrieve the field values
     var p_type = $('#save-as-board-type').val();
     var p_name = $('#save-as-project-name').val();
@@ -290,11 +299,15 @@ saveProjectAs = function () {
                 window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
                 projectData['code'] = code;
 
-                $.post(baseUrl + 'rest/project/code', projectData, function (data) {
-                    projectData = data;
-                    projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-                    ignoreSaveCheck = false;
-                });
+                // Give the database a chance to catch up - possibly change to document.ready?
+                setTimeout(function () {
+                    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+                        projectData = data;
+                        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                        ignoreSaveCheck = false;
+                    });
+                }, 1000);
+                
             } else {
                 if (typeof data['message'] === "string")
                     alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
@@ -379,11 +392,11 @@ saveAsPropc = function () {
 };
 */
 
-editProjectDetails = function () {
+var editProjectDetails = function () {
     window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
 };
 
-blocklyReady = function () {
+var blocklyReady = function () {
     // if debug mode is active, show the XML button
     if (getURLParameter('debug')) {
         document.getElementById('tab_xml').style.display = 'inline-block';
@@ -397,7 +410,7 @@ blocklyReady = function () {
     }
 };
 
-loadProject = function () {
+var loadProject = function () {
     if (projectData !== null && uploadStaged === false) {
         if (projectData['code'].length < 43) {
             projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
@@ -405,7 +418,7 @@ loadProject = function () {
         loadToolbox(projectData['code']);
     }
     if ($('#editor-full-mode') === 'true') {
-        if (projectData['board'] === 's3' && type === 'PROPC') {
+        if (projectData['board'] === 's3') {
             $('#load-ram-button').addClass('hidden');
             $('#open-graph-output').addClass('hidden');
             document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
@@ -423,7 +436,7 @@ window.onbeforeunload = function () {
     }
 };
 
-checkLeave = function () {
+var checkLeave = function () {
     if (ignoreSaveCheck) {
         return false;
     }

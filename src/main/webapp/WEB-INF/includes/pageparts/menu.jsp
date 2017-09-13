@@ -28,10 +28,11 @@
                     <li>
                         <a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a>
                     </li>
-                </shiro:authenticated>
+
                     <li>
-                        <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a>
+                        <a href="<url:getUrl url="/new-project"/>"><fmt:message key="menu.newproject.title" /></a>
                     </li>
+                </shiro:authenticated>
                     <li>
                         <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
                     </li>
