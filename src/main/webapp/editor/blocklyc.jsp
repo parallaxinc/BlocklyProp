@@ -16,6 +16,8 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <meta name="cdn" content="<url:getCdnUrl url="/"/>">
+        <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
+        <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>"
         <meta name="application-name" content="&nbsp;"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
         <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />
@@ -28,10 +30,7 @@
         <link type="image/png" rel="icon" sizes="32x32" href="<url:getCdnUrl url="/images/favicon-32x32.png"/>" />
         <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
 
-
         <title>BlocklyProp</title>
-        
-        <script>var inDemo = '<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>';</script>
 
         <!-- JavaScript libraries -->
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/chartist.min.js"/>"></script>
@@ -70,11 +69,21 @@
 
         <!-- Style sheets -->
         <link href="<url:getCdnUrl url="/lib/chartist.min.css" />" rel="stylesheet" type="text/css" />
-        <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet">
+        <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
-        
+
+        <%--
+        <!-- Minified/Compressed versions of the above files -->
+        <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_libs.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_setups.min.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_cores.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_gens.min.js"/>"></script>
+        <link href="<url:getCdnUrl url="/compressed/propc_styles.css"/>" rel="stylesheet" type="text/css" />
+        --%>
     </head>
+    
     <body onload="blocklyReady();">
         <div id="editor">
             <table id="content_table">
@@ -82,39 +91,37 @@
                     <td>
                         <nav class="navbar navbar-default clearfix" role="navigation">
                             <div style="width:100%;">
-                                <div style="display:inline;"><span><a id="nav-logo" href="<url:getUrl url="/"/>">BlocklyProp<br><strong>BETA</strong></a></span>
+                                <div style="display:inline;"><span><a id="nav-logo" href="" class="url-prefix">BlocklyProp<br><strong>BETA</strong></a></span>
                                 </div>
                                 <div style="display:inline;">
                                     <div style="width:100%; ">
-                                        <div style="display:inline; padding-left: 10px; line-height: 30px;">
-                                            <shiro:authenticated>
-                                                <span id="client-searching" class="bp-client-warning">
-                                                    <a class="client-searching-link" data-toggle="modal" data-target="#client-download-modal" href="#">
-                                                        <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#8a6d3b;"/></svg>
-                                                        <span class="keyed-lang-string" key="editor_client_checking"></span>
-                                                    </a>
-                                                </span>
-                                                <span id="client-unavailable" class="bp-client-danger hidden">
-                                                    <a class="client-unavailable-link" data-toggle="modal" data-target="#client-download-modal" href="#">
-                                                        <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg>
-                                                        <span class="keyed-lang-string" key="editor_client_not-available"></span>
-                                                    </a>
-                                                </span>
-                                                <span id="client-available" class="bp-client-available hidden">
-                                                    <span class="keyed-lang-string" key="editor_client_available"></span>
-                                                </span>
-                                                <span id="client-available-short" class="hidden">
-                                                    <span class="keyed-lang-string" key="editor_client_available_short"></span>
-                                                </span>
-                                                <span id="client-available-long" class="hidden">
-                                                    <span class="keyed-lang-string" key="editor_client_available"></span>
-                                                </span>
-                                                <span id="editor-full-mode" class="hidden">true</span>
-                                            </shiro:authenticated>
-                                            <shiro:notAuthenticated>
-                                                <span style="font-size:13px;"><span class="keyed-lang-string" key="editor_demonstration_mode_info"></span></span>
-                                                <span id="editor-full-mode" class="hidden">false</span>
-                                            </shiro:notAuthenticated>
+                                        <div style="display:inline; padding-left: 10px; line-height: 30px;" class="auth-true" displayas="inline">
+                                            <span id="client-searching" class="bp-client-warning">
+                                                <a class="client-searching-link" data-toggle="modal" data-target="#client-download-modal" href="#">
+                                                    <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#8a6d3b;"/></svg>
+                                                    <span class="keyed-lang-string" key="editor_client_checking"></span>
+                                                </a>
+                                            </span>
+                                            <span id="client-unavailable" class="bp-client-danger hidden">
+                                                <a class="client-unavailable-link" data-toggle="modal" data-target="#client-download-modal" href="#">
+                                                    <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg>
+                                                    <span class="keyed-lang-string" key="editor_client_not-available"></span>
+                                                </a>
+                                            </span>
+                                            <span id="client-available" class="bp-client-available hidden">
+                                                <span class="keyed-lang-string" key="editor_client_available"></span>
+                                            </span>
+                                            <span id="client-available-short" class="hidden">
+                                                <span class="keyed-lang-string" key="editor_client_available_short"></span>
+                                            </span>
+                                            <span id="client-available-long" class="hidden">
+                                                <span class="keyed-lang-string" key="editor_client_available"></span>
+                                            </span>
+                                            <span id="editor-full-mode" class="hidden">true</span>
+                                        </div>
+                                        <div style="display:inline; padding-left: 10px; line-height: 30px;" class="auth-false" displayas="inline">
+                                            <span style="font-size:13px;"><span class="keyed-lang-string" key="editor_demonstration_mode_info"></span></span>
+                                            <span id="editor-full-mode" class="hidden">false</span>
                                         </div>
                                         <div class="project-name-wrapper" align="right">        
                                             <span id="project-icon" class="editor-icon"></span> <span class="project-name"></span> <span class="project-owner"></span>
@@ -122,56 +129,44 @@
                                     </div>
                                     <div style="width:100%; padding-bottom: 5px;">
                                         <div style="display:inline; padding-left: 10px;" id="board-action-buttons">
-                                            <shiro:authenticated>
-                                                <a id="prop-btn-comp" onclick="compile()" data-toggle="tooltip" title="" data-placement="bottom" href="#" class="btn btn-success btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M2.25,6 L5.5,9.25 12,2.5 13.5,4 5.5,12 1,7.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></a>
-                                                <a id="prop-btn-ram" onclick="loadInto('Load into RAM', 'bin', 'RAM')" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-success btn-circle disabled"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,0 L8.5,0 8.5,9 12.5,9 7,14.5 1.5,9 5.5,9 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></a>
-                                                <a id="prop-btn-eeprom" onclick="loadInto('Load into EEPROM', 'eeprom', 'EEPROM')" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-success btn-circle disabled"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,0 L8.5,0 8.5,6 12.5,6 7,11.5 1.5,6 5.5,6 Z M0.5,12 L13.5,12 13.5,14.5 0.5,14.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></a>
-                                                <a id="prop-btn-term" onclick="serial_console()" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-primary btn-circle disabled"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15">
-                                                    <path d="M3,4.5 L10,4.5 M3,6.5 L6,6.5 M3,8.5 L8,8.5 M1,1 L13,1 13,14 1,14 1,1 M2,0 L12,0 M14,2 L14,13 M12,15 L2,15 M0,2 L0,13" style="stroke:#fff;stroke-width:1;fill:none;"/></svg></a>
-                                                <a id="prop-btn-graph" onclick="graphing_console()" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-primary btn-circle disabled" id="open-graph-output"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
-                                                    <path d="M.5,0 L.5,13.5 L12.5,13.5 M3.5,0 L3.5,13.5 M6.5,0 L6.5,13.5 M9.5,0 L9.5,13.5 M12.5,0 L12.5,13.5 M.5,3.5 L12.5,3.5 M.5,7 L12.5,7 M.5,10.5 L12.5,10.5 M.5,.5 L12.5,.5" style="stroke:rgba(255,255,255,.6);stroke-width:1;fill:none;"/>
-                                                    <path d="M0,13 L6,5 L9,8 L14,2" style="stroke:#fff;stroke-width:2;fill:none;"/></svg></a>
-                                            </shiro:authenticated>
-                                            <shiro:notAuthenticated>
-                                                <span style="color:#777; font-size:11px;"><a href="<url:getUrl url="/login.jsp"/>"><span class="keyed-lang-string" key="editor_demonstration_mode_instructions"></span></a>&nbsp;&nbsp;&nbsp;</span>
-                                            </shiro:notAuthenticated>
+                                            <a id="prop-btn-comp" onclick="compile()" data-toggle="tooltip" title="" data-placement="bottom" href="#" class="btn btn-success btn-circle auth-true" displayas="inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M2.25,6 L5.5,9.25 12,2.5 13.5,4 5.5,12 1,7.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></a>
+                                            <a id="prop-btn-ram" onclick="loadInto('Load into RAM', 'bin', 'RAM')" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-success btn-circle disabled auth-true" displayas="inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,0 L8.5,0 8.5,9 12.5,9 7,14.5 1.5,9 5.5,9 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></a>
+                                            <a id="prop-btn-eeprom" onclick="loadInto('Load into EEPROM', 'eeprom', 'EEPROM')" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-success btn-circle disabled auth-true" displayas="inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,0 L8.5,0 8.5,6 12.5,6 7,11.5 1.5,6 5.5,6 Z M0.5,12 L13.5,12 13.5,14.5 0.5,14.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></a>
+                                            <a id="prop-btn-term" onclick="serial_console()" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-primary btn-circle disabled auth-true" displayas="inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15">
+                                                <path d="M3,4.5 L10,4.5 M3,6.5 L6,6.5 M3,8.5 L8,8.5 M1,1 L13,1 13,14 1,14 1,1 M2,0 L12,0 M14,2 L14,13 M12,15 L2,15 M0,2 L0,13" style="stroke:#fff;stroke-width:1;fill:none;"/></svg></a>
+                                            <a id="prop-btn-graph" onclick="graphing_console()" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-primary btn-circle disabled auth-true" displayas="inline-block" id="open-graph-output"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="14">
+                                                <path d="M.5,0 L.5,13.5 L12.5,13.5 M3.5,0 L3.5,13.5 M6.5,0 L6.5,13.5 M9.5,0 L9.5,13.5 M12.5,0 L12.5,13.5 M.5,3.5 L12.5,3.5 M.5,7 L12.5,7 M.5,10.5 L12.5,10.5 M.5,.5 L12.5,.5" style="stroke:rgba(255,255,255,.6);stroke-width:1;fill:none;"/>
+                                                <path d="M0,13 L6,5 L9,8 L14,2" style="stroke:#fff;stroke-width:2;fill:none;"/></svg></a>
+                                            <span style="color:#777; font-size:11px;" class="auth-false" displayas="inline"><a href="login.jsp" class="url-prefix"><span class="keyed-lang-string" key="editor_demonstration_mode_instructions"></span></a>&nbsp;&nbsp;&nbsp;</span>
                                             <a id="prop-btn-find-replace" style="display: none;" onclick="findReplaceCode();" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-info btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M1.5,13.25 L4.5,8.75" style="stroke:#fff;stroke-width:2px;fill:none;"/><circle cx="7" cy="5" r="3.5" style="stroke:#fff;stroke-width:1.5px;fill:none;"></circle></svg></a>
                                             <a id="prop-btn-pretty" style="display: none;" onclick="prettyCode(null)" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-info btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M1,10 L5,10 5,11 1,11 Z M2,12 L6,12 6,13 2,13 Z M1,14 5,14 5,15 1,15 Z M0.5,2.75 L2.5,0.6 5.5,3.5 3.5,5.5 Z M5,7 L7,4.75 14,12 12,14 Z M0,7 Q1.5,6.5 2,5 Q2.5,6.5 4,7 Q2.5,7.5 2,9 Q1.5,7.5 0,7 Z M7,3 Q9.5,2.5 10,0 Q10.5,2.5 13,3 Q10.5,3.5 10,6 Q9.5,3.5 7,3 Z" style="stroke-width:0;fill:#fff;"/></svg></a>
                                             <a id="prop-btn-undo" style="display: none;" onclick="codePropC.undo();" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-info btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M3.5,6.5 L2.25,4.5 0.75,10.25 6,10.5 5,8.5 Q8.5,5.5 12,7 Q8,3.5 3.5,6.5 Z M11,11 L14.5,11 Q12.5,6 7,8.25 Q11,8 11,11 Z" style="stroke-width:0;fill:#fff;"/></svg></a>
                                             <a id="prop-btn-redo" style="display: none;" onclick="codePropC.redo();" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-info btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M11.5,6.5 L12.75,4.5 14.25,10.25 9,10.5 10,8.5 Q6.5,5.5 3,7 Q7,3.5 11.5,6.5 Z M4,11 L0.5,11 Q2.5,6 8,8.25 Q4,8 4,11 Z" style="stroke-width:0;fill:#fff;"/></svg></a>
                                         </div>
                                         <div style="display:inline; clear:right; float:right;  padding-right: 10px;" align="right">
-                                            <shiro:authenticated>
-                                                <select class="dropdown port-dropdown" title="Ports" data-placement="left" id="comPort"></select>
-                                            </shiro:authenticated>
+                                            <select class="dropdown port-dropdown auth-true" displayas="inline-block" title="Ports" data-placement="left" id="comPort"></select>
                                             <a class="btn-view-code" id="btn-view-propc" style="display:inline;" href="#" onclick="tabClick('tab_propc')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" style="vertical-align: middle;"><path d="M0.5,7 C4,1.5 10,1.5 13.5,7 C10,12.5 4,12.5 0.5,7 M0.5,7 C4,3.5 10,3.5 13.5,7" style="stroke:#000;stroke-width:1.5;fill:none;"/><circle cx="7" cy="6.5" r="2.75" style="stroke:#000;stroke-width:1.5;fill:none;"></circle><circle cx="7" cy="6.5" r=".5" style="stroke:#000;stroke-width:1.5;fill:#000;"></circle></svg> <span class="keyed-lang-string" key="menu_code"></span></a>
                                             <a class="btn-view-blocks" id="btn-view-blocks" style="display:none;" href="#" onclick="tabClick('tab_blocks')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" style="vertical-align: middle;"><path d="M0.5,7 C4,1.5 10,1.5 13.5,7 C10,12.5 4,12.5 0.5,7 M0.5,7 C4,3.5 10,3.5 13.5,7" style="stroke:#fff;stroke-width:1.5;fill:none;"/><circle cx="7" cy="6.5" r="2.75" style="stroke:#fff;stroke-width:1.5;fill:none;"></circle><circle cx="7" cy="6.5" r=".5" style="stroke:#fff;stroke-width:1.5;fill:#fff;"></circle></svg> <span class="keyed-lang-string" key="menu_blocks"></span></a>                    
                                             <a href="#" class="btn btn-sm btn-primary" id="tab_xml" onclick="tabClick('tab_xml')" style="display: none;"><span class="keyed-lang-string" key="editor_view_xml"></span></a>
-                                            <shiro:authenticated>
-                                                <a href="#" class="demo-function" id="save-project"><span class="keyed-lang-string" key="editor_save"></span></a>
-                                            </shiro:authenticated>
+                                            <div style="display:inline-block;" class="auth-true" displayas="inline-block"><a href="#" class="demo-function" id="save-project"><span class="keyed-lang-string" key="editor_save"></span></a></div>
                                             <span class="dropdown"><button class="btn btn-sm btn-default dropdown-toggle" id="options-menu" type="button" data-toggle="dropdown">&#9776; <span class="caret"></span></button>
                                                 <ul class="dropdown-menu pull-right btn-sm">
-                                                    <shiro:authenticated>
-                                                        <li><a id="edit-project-details" href="#" onclick="editProjectDetails()"><span class="keyed-lang-string" key="editor_edit-details"></span></a></li>
-                                                        <li><a id="save-project-as" href="#"><span class="keyed-lang-string" key="editor_save-as"></span></a></li>
-                                                        <hr style="line-height:5px; margin:5px;" />
-                                                        <li><a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><span class="keyed-lang-string" key="menu_newproject_title"></span></a></li>
-                                                        <li><a href="<url:getUrl url="/my/projects.jsp"/>"><span class="keyed-lang-string" key="menu_my_projects"></span></a></li>
-                                                    </shiro:authenticated>
-                                                    <li><a href="<url:getUrl url="/projects.jsp"/>"><span class="keyed-lang-string" key="menu_community_projects"></span></a></li>
+                                                    <li class="auth-true" displayas="list-item"><a id="edit-project-details" href="#" onclick="editProjectDetails()"><span class="keyed-lang-string" key="editor_edit-details"></span></a></li>
+                                                    <li class="auth-true" displayas="list-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" key="editor_save-as"></span></a></li>
+                                                    <hr style="line-height:5px; margin:5px;"  class="auth-true" displayas="list-item"/>
+                                                    <li class="auth-true" displayas="list-item"><a href="new-project" class="url-prefix"><span class="keyed-lang-string" key="menu_newproject_title"></span></a></li>
+                                                    <li class="auth-true" displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" key="menu_my_projects"></span></a></li>
+                                                    <li><a href="projects.jsp" class="url-prefix"><span class="keyed-lang-string" key="menu_community_projects"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;" />
-                                                    <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><span class="keyed-lang-string" key="menu_help_reference"></span></a></li>
+                                                    <li><a href="help" target="_blank" class="url-prefix"><span class="keyed-lang-string" key="menu_help_reference"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;" />
                                                     <li><a id="download-side" href="#" onclick="downloadPropC()"><span class="keyed-lang-string" key="menu_download_simpleide"></span></a></li>
                                                     <li><a id="download-project" href="#"><span class="keyed-lang-string" key="editor_download"></span></a></li>
-                                                    <shiro:authenticated>
-                                                        <li><a id="upload-project" href="#"><span class="keyed-lang-string" key="editor_upload"></span></a></li>
-                                                        <hr style="line-height:5px; margin:5px;" />
-                                                        <li><a href="#" onclick="configure_client()"><span class="keyed-lang-string" key="editor_run_configure"></span></a></li>
-                                                        <hr style="line-height:5px; margin:5px;" />
-                                                        <li><a href="<url:getUrl url="/logout"/>"><span class="keyed-lang-string" key="logout"></span></a></li>
-                                                    </shiro:authenticated>
+                                                    <li class="auth-true" displayas="list-item"><a id="upload-project" href="#"><span class="keyed-lang-string" key="editor_upload"></span></a></li>
+                                                    <hr style="line-height:5px; margin:5px;" class="auth-true" displayas="list-item"/>
+                                                    <li class="auth-true" displayas="list-item"><a href="#" onclick="configure_client()"><span class="keyed-lang-string" key="editor_run_configure"></span></a></li>
+                                                    <hr style="line-height:5px; margin:5px;" class="auth-true" displayas="list-item"/>
+                                                    <li class="auth-true" displayas="list-item"><a href="logout" class="url-prefix"><span class="keyed-lang-string" key="logout"></span></a></li>
                                                 </ul>
                                             </span>
                                         </div>
@@ -179,7 +174,6 @@
                                 </div>
                             </div>
                         </nav>
-
                     </td>
                 </tr>
                 <tr id="find-replace" style="background-color: #ddd; display: none; padding: 5px;">
@@ -194,7 +188,1421 @@
                 <tr>
                     <td id="content">
                         <div id="content_blocks">
-                            <%@ include file="/frame/framec.jsp"%>
+                            <xml id="toolbox" style="display: none">
+                                <category name="1" key="category_control" exclude="s3" colour="205">
+                                    <block type="comment"></block>
+                                    <block type="controls_if"></block>
+                                    <block type="controls_repeat">
+                                        <mutation TYPE="FOREVER"></mutation>
+                                    </block>
+                                    <block type="control_repeat_for_loop">
+                                        <value name="START">
+                                            <block type="math_number">
+                                                <field name="NUM">1</field>
+                                            </block>
+                                        </value>
+                                        <value name="END">
+                                            <block type="math_number">
+                                                <field name="NUM">10</field>
+                                            </block>
+                                        </value>
+                                        <value name="STEP">
+                                            <block type="math_number">
+                                                <field name="NUM">1</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="controls_select">
+                                        <value name="SWITCH">
+                                            <block type="variables_get"></block>
+                                        </value>
+                                    </block>
+                                    <block type="controls_break"></block>
+                                    <block type="base_delay">
+                                        <value name="DELAY_TIME">
+                                            <block type="math_number">
+                                                <field name="NUM">1000</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="cog_new"></block>
+                                    <block type="controls_return"></block>
+                                    <block type="custom_code_multiple" experimental="true"></block>
+                                </category>
+                                <category name="2" key="category_operators" exclude="s3" colour="275">
+                                    <category name="3" key="category_operators_numbers" >
+                                        <block type="math_arithmetic"></block>
+                                        <block type="math_limit"></block>
+                                        <block type="constrain_value"></block>
+                                        <block type="math_crement"></block>
+                                        <block type="math_random">
+                                            <value name="A">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                            <value name="B">
+                                                <block type="math_number">
+                                                    <field name="NUM">100</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="math_bitwise"></block>
+                                        <block type="logic_operation"></block>
+                                        <block type="logic_negate"></block>
+                                        <block type="logic_compare"></block>
+                                        <block type="map_value"></block>
+                                        <block type="math_advanced"></block>
+                                        <block type="math_inv_trig">
+                                            <value name="ARG3">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="4" key="category_operators_strings" >
+                                        <block type="string_compare"></block>
+                                        <block type="string_length"></block>
+                                        <block type="combine_strings"></block>
+                                        <block type="find_substring"></block>
+                                        <block type="get_char_at_position">
+                                            <value name="POSITION">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="set_char_at_position">
+                                            <value name="POSITION">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="get_substring">
+                                            <value name="START">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                            <value name="END">
+                                                <block type="math_number">
+                                                    <field name="NUM">3</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="string_to_number"></block>
+                                        <block type="number_to_string"></block>
+                                    </category>
+                                </category>
+                                <sep></sep>
+                                <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE FOLLOWING MENU AS WELL -->
+                                <category name="5" key="category_values" include="other" colour="275">
+                                    <block type="math_number"></block>
+                                    <block type="string_type_block"></block>
+                                    <block type="char_type_block"></block>
+                                    <block type="music_note">
+                                        <field name="OCTAVE">0.125</field>
+                                    </block>
+                                    <block type="number_binary"></block>
+                                    <block type="number_hex"></block>
+                                    <block type="logic_boolean"></block>
+                                    <block type="high_low_value"></block>
+                                    <block type="color_picker"></block>
+                                    <block type="color_value_from">
+                                        <value name="RED_VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                        <value name="GREEN_VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                        <value name="BLUE_VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="get_channel_from">
+                                        <value name="COLOR">
+                                            <block type="color_picker"></block>
+                                        </value>
+                                    </block>
+                                    <block type="compare_colors">
+                                        <value name="COLOR1">
+                                            <block type="color_picker"></block>
+                                        </value>
+                                        <value name="COLOR2">
+                                            <block type="color_picker"></block>
+                                        </value>
+                                    </block>
+                                </category>
+                                <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE PREVIOUS MENU AS WELL -->
+                                <category name="6" key="category_values" include="heb" colour="205">
+                                    <block type="math_number"></block>
+                                    <block type="string_type_block"></block>
+                                    <block type="char_type_block"></block>
+                                    <block type="music_note">
+                                        <field name="OCTAVE">0.125</field>
+                                    </block>
+                                    <block type="number_binary"></block>
+                                    <block type="number_hex"></block>
+                                    <block type="logic_boolean"></block>
+                                    <block type="high_low_value"></block>
+                                    <block type="heb_color_val"></block>
+                                    <block type="system_counter"></block>
+                                </category>
+                                <category name="7" key="category_values" include="activity-board,flip" colour="205">
+                                    <block type="math_number"></block>
+                                    <block type="string_type_block"></block>
+                                    <block type="char_type_block"></block>
+                                    <block type="music_note">
+                                        <field name="OCTAVE">0.125</field>
+                                    </block>
+                                    <block type="number_binary"></block>
+                                    <block type="number_hex"></block>
+                                    <block type="logic_boolean"></block>
+                                    <block type="high_low_value"></block>
+                                    <block type="color_picker"></block>
+                                    <block type="color_value_from">
+                                        <value name="RED_VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                        <value name="GREEN_VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                        <value name="BLUE_VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="get_channel_from">
+                                        <value name="COLOR">
+                                            <block type="color_picker"></block>
+                                        </value>
+                                    </block>
+                                    <block type="compare_colors">
+                                        <value name="COLOR1">
+                                            <block type="color_picker"></block>
+                                        </value>
+                                        <value name="COLOR2">
+                                            <block type="color_picker"></block>
+                                        </value>
+                                    </block>
+                                    <block type="system_counter"></block>
+                                </category>
+                                <category name="8" key="category_operators_arrays" exclude="s3" colour="250">
+                                    <block type="array_init"></block>
+                                    <block type="array_fill"></block>
+                                    <block type="array_get">
+                                        <value name="NUM">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="array_set">
+                                        <value name="NUM">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                        <value name="VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="array_clear"></block>
+                                </category>
+                                <category name="13" key="category_control" include="s3" colour=205>
+                                    <block type="controls_repeat">
+                                        <mutation TYPE="FOREVER"></mutation>
+                                    </block>
+                                    <block type="controls_repeat">
+                                        <mutation type="TIMES"></mutation>
+                                        <field name="TYPE">TIMES</field>
+                                        <value name="TIMES">
+                                            <block type="math_number">
+                                                <field name="NUM">10</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="control_repeat_for_loop">
+                                        <value name="START">
+                                            <block type="math_number">
+                                                <field name="NUM">1</field>
+                                            </block>
+                                        </value>
+                                        <value name="END">
+                                            <block type="math_number">
+                                                <field name="NUM">10</field>
+                                            </block>
+                                        </value>
+                                        <value name="STEP">
+                                            <block type="math_number">
+                                                <field name="NUM">1</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="scribbler_exit_loop"></block>
+                                    <block type="controls_if"></block>
+                                    <block type="scribbler_wait">
+                                        <value name="WAITTIME">
+                                            <block type="math_number">
+                                                <field name="NUM">500</field>
+                                            </block>
+                                        </value>
+                                        <field name="TIMESCALE">1</field>
+                                    </block>
+                                    <block type="comment"></block>
+                                </category>
+                                <category name="14" key="category_variables" custom="VARIABLE" colour="250"></category>
+                                <category name="15" key="category_operators_arrays" include="s3" colour="250">
+                                    <block type="array_init"></block>
+                                    <block type="array_fill"></block>
+                                    <block type="array_get">
+                                        <value name="NUM">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="array_set">
+                                        <value name="NUM">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                        <value name="VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="array_clear"></block>
+                                </category>
+                                <category name="16" key="category_functions" custom="PROCEDURE" colour="225"></category>
+                                <category name="17" key="category_input-output_pin-states" exclude="s3,heb" colour="185">
+                                    <block type="make_pin"></block>
+                                    <block type="make_pin_input">
+                                        <value name="PIN">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="check_pin"></block>
+                                    <block type="check_pin_input">
+                                        <value name="PIN">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="set_pins"></block>
+                                    <block type="get_pins"></block>
+                                    <block type="set_pins_binary">
+                                        <value name="VALUE">
+                                            <block type="number_binary"></block>
+                                        </value>
+                                </category>
+                                <category name="18" key="category_communicate" include="activity-board,flip,other" colour="340">
+                                    <category name="19" key="category_communicate_graphing" include="activity-board,flip,other">
+                                        <block type="graph_settings">
+                                            <field name="XAXIS">40,S</field>
+                                        </block>                
+                                        <block type="graph_output"></block>
+                                    </category>
+                                    <category name="20" key="category_communicate_oled" >
+                                        <block type="oled_initialize"></block>
+                                        <block type="oled_font_loader"></block>
+                                        <block type="oled_get_max_height"></block>
+                                        <block type="oled_get_max_width"></block>
+                                        <block type="oled_clear_screen"></block>
+                                        <block type="oled_text_color">
+                                            <value name="FONT_COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                            <value name="BACKGROUND_COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_text_size"></block>
+                                        <block type="oled_set_cursor">
+                                            <value name="X_POS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y_POS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_print_text">
+                                            <value name="MESSAGE">
+                                                <block type="string_type_block"></block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_print_number">
+                                            <value name="NUMIN">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_draw_pixel">
+                                            <value name="X_AXIS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y_AXIS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_draw_line">
+                                            <value name="X_ONE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y_ONE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="X_TWO">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y_TWO">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_draw_triangle">
+                                            <value name="POINT_X0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POINT_Y0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POINT_X1">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POINT_Y1">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POINT_X2">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POINT_Y2">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_draw_rectangle">
+                                            <value name="POINT_X">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POINT_Y">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="RECT_WIDTH">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="RECT_HEIGHT">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="RECT_ROUND">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                        </block>
+                                        <block type="oled_draw_circle">
+                                            <value name="POINT_X">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POINT_Y">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="RADIUS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="21" key="category_communicate_protocols" >
+                                        <block type="serial_open"></block>
+                                        <!-- <block type="serial_tx"></block> -->
+                                        <block type="serial_send_text"></block>
+                                        <!-- <block type="serial_rx"></block> -->
+                                        <block type="serial_print_multiple" experimental="true"></block>
+                                        <block type="serial_receive_text"></block>
+                                        <block type="serial_scan_multiple" experimental="true"></block>
+                                        <block type="shift_in"></block>
+                                        <block type="shift_out">
+                                            <value name="VALUE">
+                                                <block type="math_number">
+                                                    <field name="NUM">10</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="22" key="category_communicate_WS2812B" >
+                                        <block type="ws2812b_init"></block>
+                                        <block type="ws2812b_set">
+                                            <value name="LED">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLOR">
+                                                <block type="color_picker"></block>
+                                            </value>
+                                        </block>
+                                        <block type="ws2812b_set_multiple">
+                                            <value name="START">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                            <value name="END">
+                                                <block type="math_number">
+                                                    <field name="NUM">4</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLOR">
+                                                <block type="color_picker">#000000</block>
+                                            </value>
+                                        </block>
+                                        <block type="ws2812b_update"></block>
+                                    </category>
+                                    <category name="23" key="category_communicate_serial-lcd" >
+                                        <block type="debug_lcd_init"></block>
+                                        <block type="debug_lcd_print">
+                                            <value name="MESSAGE">
+                                                <block type="string_type_block"></block>
+                                            </value>
+                                        </block>
+                                        <block type="debug_lcd_number">
+                                            <value name="VALUE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="debug_lcd_action"></block>
+                                        <block type="debug_lcd_set_cursor">
+                                            <value name="ROW">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLUMN">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="debug_lcd_music_note"></block>
+                                    </category>
+                                    <category name="24" key="category_communicate_serial-terminal" >
+                                        <block type="console_print">
+                                            <value name="MESSAGE">
+                                                <block type="string_type_block"></block>
+                                            </value>
+                                        </block>
+                                        <block type="console_print_variables">
+                                            <value name="VALUE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="console_print_multiple"></block>
+                                        <block type="console_scan_text"></block>
+                                        <block type="console_scan_number"></block>
+                                        <block type="console_newline"></block>
+                                        <block type="console_clear"></block>
+                                        <block type="console_move_to_position">
+                                            <value name="ROW">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLUMN">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+
+                                    <category name="WX Module" experimental="true">
+                                        <category name="Simple">
+                                            <block type="wx_init"></block>
+                                            <block type="wx_config_page"></block>
+                                            <block type="wx_set_widget"></block>
+                                            <block type="wx_send_widget">
+                                                <value name="NUM">
+                                                    <block type="math_number">
+                                                        <field name="NUM">10</field>
+                                                    </block>
+                                                </value>
+                                            </block>
+                                            <block type="wx_read_widgets"></block>
+                                            <block type="wx_get_widget"></block>
+                                            <block type="wx_evt_connected"></block>
+                                            <block type="wx_reconnect"></block>
+                                        </category>
+                                        <category name="Advanced">
+                                            <block type="wx_init_adv"></block>
+                                            <block type="wx_listen">
+                                                <field name="ID">wxConnId1</field>
+                                                <value name="PATH">
+                                                    <block type="string_type_block">
+                                                        <field name="TEXT">path</field>
+                                                    </block>
+                                                </value>
+                                            </block>
+                                            <block type="wx_poll">
+                                                <field name="EVENT">wxEvent</field>
+                                                <field name="ID">wxId</field>
+                                                <field name="HANDLE">wxHandle</field>
+                                            </block>
+                                            <block type="wx_print_multiple">
+                                                <field name="HANDLE">wxHandle</field>
+                                            </block>
+                                            <block type="wx_send_string">
+                                                <field name="HANDLE">wxHandle</field>
+                                                <value name="DATA">
+                                                    <block type="string_type_block"></block>
+                                                </value>
+                                            </block>
+                                            <block type="wx_scan_multiple">
+                                                <field name="HANDLE">wxHandle</field>
+                                            </block>
+                                            <block type="wx_scan_string">
+                                                <field name="HANDLE">wxHandle</field>
+                                            </block>
+                                            <block type="wx_receive_string">
+                                                <field name="HANDLE">wxHandle</field>
+                                                <value name="MAX">
+                                                    <block type="math_number">
+                                                        <field name="NUM">64</field>
+                                                    </block>
+                                                </value>
+                                            </block>
+                                            <block type="wx_mode"></block>
+                                            <block type="wx_code"></block>
+                                            <block type="wx_buffer">
+                                                <value name="SIZE">
+                                                    <block type="math_number">
+                                                        <field name="NUM">64</field>
+                                                    </block>
+                                                </value>
+                                            </block>
+                                            <block type="wx_disconnect"></block>
+                                            <block type="wx_ip"></block>
+                                        </category>
+                                    </category>
+
+                                    <category name="28" key="category_communicate_xbee">
+                                        <block type="xbee_setup"></block>
+                                        <block type="xbee_transmit"></block>
+                                        <block type="xbee_print_multiple" experimental="true"></block>
+                                        <block type="xbee_receive"></block>
+                                        <block type="xbee_scan_multiple" experimental="true"></block>
+                                        <block type="xbee_configure" experimental="true"></block>
+                                    </category>
+                                </category>
+
+                                <sep include="heb"></sep>
+
+                                <category name="29" key="category_communicate" include="heb" colour="340">
+                                    <category name="30" key="category_communicate_serial-terminal">
+                                        <block type="console_print">
+                                            <value name="MESSAGE">
+                                                <block type="string_type_block"></block>
+                                            </value>
+                                        </block>
+                                        <block type="console_print_variables">
+                                            <value name="VALUE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="console_scan_text"></block>
+                                        <block type="console_scan_number"></block>
+                                        <block type="console_newline"></block>
+                                        <block type="console_clear"></block>
+                                        <block type="console_move_to_position">
+                                            <value name="ROW">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLUMN">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="31" key="category_hackable-electronic-badge_oled" >
+                                        <block type="heb_print_numeric_var">
+                                            <value name="VALUE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_print_string_var">
+                                            <value name="VALUE">
+                                                <block type="string_type_block">
+                                                    <field name="TEXT">Hello</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_cursor_position_large"></block>
+                                        <block type="heb_cursor_position_small">
+                                            <value name="ROWS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="COLS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_clear_screen"></block>
+                                        <block type="heb_rotate"></block>
+                                        <block type="heb_oled_point">
+                                            <value name="X0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_oled_line">
+                                            <value name="X0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="X1">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y1">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_oled_box">
+                                            <value name="X0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="W">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="H">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_oled_circle">
+                                            <value name="X0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="R">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_oled_triangle">
+                                            <value name="X0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y0">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="X1">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y1">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="X2">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y2">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="32" key="category_hackable-electronic-badge_ir-communication" >
+                                        <block type="heb_ir_send_signal">
+                                            <value name="MESSAGE">
+                                                <block type="string_type_block">
+                                                    <field name="TEXT">Hello</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_ir_read_signal"></block>
+                                        <block type="heb_ir_clear_buffer"></block>
+                                    </category>
+                                </category>
+                                <category name="33" key="category_audio" include="heb" colour="295">
+                                    <category name="34" key="category_hackable-electronic-badge_text-to-speech" >
+                                        <block type="heb_text_to_speech_say">
+                                            <value name="STRING">
+                                                <block type="string_type_block">
+                                                    <field name="TEXT">heloa</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="heb_text_to_speech_spell">
+                                            <value name="STRING">
+                                                <block type="string_type_block">
+                                                    <field name="TEXT">hello</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                </category>
+                                <category name="35" key="category_hackable-electronic-badge_led_control" include="heb" colour="225">
+                                    <block type="heb_toggle_led"></block>
+                                    <block type="heb_toggle_led_open">
+                                        <value name="LED_NUM">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                        <value name="LED_STATE">
+                                            <block type="high_low_value">
+                                                <field name="VALUE">high</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="heb_set_led_rgb">
+                                        <value name="RGB">
+                                            <block type="heb_color_val"></block>
+                                        </value>
+                                    </block>
+                                </category>
+                                <category name="36" key="category_sensor-input" include="heb" colour="185">
+                                    <category name="37" key="category_hackable-electronic-badge_accelerometer" >
+                                        <block type="heb_badge_axis_acceleration"></block>
+                                        <block type="heb_badge_was_shaken"></block>
+                                    </category>
+                                    <category name="38" key="category_hackable-electronic-badge_touchpad-control" >
+                                        <block type="heb_touchpad_status"></block>
+                                    </category>
+                                </category>
+                                <category name="39" key="category_memory" include="heb" colour="140">
+                                    <block type="heb_badge_eeprom_store">
+                                        <value name="CONTACT">
+                                            <block type="string_type_block">
+                                                <field name="TEXT">Last, First</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="heb_badge_eeprom_is_stored">
+                                        <value name="CONTACT">
+                                            <block type="string_type_block">
+                                                <field name="TEXT">Last, First</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="heb_badge_eeprom_retrieve">
+                                        <value name="INDEX">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="heb_count_contacts"></block>
+                                    <block type="heb_erase_all_contacts"></block>
+                                </category>
+                                <category name="40" key="category_sensor-input" exclude="s3,heb" colour="140">
+                                    <category name="41" key="category_sensor-input_2axis-joystick" include="activity-board">
+                                        <block type="joystick_input_xaxis"></block>
+                                        <block type="joystick_input_yaxis"></block>
+                                    </category>
+                                    <category name="42" key="category_sensor-input_4x4-keypad" >
+                                        <block type="keypad_initialize"></block>
+                                        <block type="keypad_read"></block>
+                                    </category>
+                                    <category name="43" key="category_sensor-input_colorpal" >
+                                        <block type="colorpal_enable"></block>
+                                        <block type="colorpal_get_colors_raw"></block>
+                                        <block type="colorpal_get_colors"></block>
+                                    </category>
+                                    <category name="44" key="category_sensor-input_ping" >
+                                        <block type="sensor_ping"></block>
+                                    </category>
+                                    <category name="45" key="category_sensor-input_gps" >
+                                        <block type="GPS_init"></block>
+                                        <block type="GPS_hasFix"></block>
+                                        <block type="GPS_latitude"></block>
+                                        <block type="GPS_longitude"></block>
+                                        <block type="GPS_heading"></block>
+                                        <block type="GPS_altitude"></block>
+                                        <block type="GPS_velocity"></block>
+                                        <block type="GPS_satsTracked"></block>
+                                        <block type="GPS_date_time"></block>
+                                    </category>
+                                    <category name="46" key="category_sensor-input_fingerprint" >
+                                        <block type="fp_scanner_init"></block>
+                                        <block type="fp_scanner_add">
+                                            <value name="USER">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="fp_scanner_scan"></block>
+                                    </category>
+                                    <!--
+                                                <category name="47" key="category_sensor-input_hmc5883l" >
+                                                    <block type="HMC5883L_init"></block>
+                                                    <block type="HMC5883L_read"></block>
+                                                </category>
+                                    -->
+                                    <category name="48" key="category_sensor-input_LSM9DS1" >
+                                        <block type="lsm9ds1_init"></block>
+                                        <block type="lsm9ds1_mag_calibrate"></block>
+                                        <block type="lsm9ds1_read"></block>
+                                        <block type="lsm9ds1_tilt"></block>
+                                        <block type="lsm9ds1_heading"></block>
+                                    </category>
+                                    <category name="49" key="category_sensor-input_memsic-2axis" >
+                                        <block type="MX2125_acceleration_xaxis"></block>
+                                        <block type="MX2125_acceleration_yaxis"></block>
+                                        <block type="MX2125_rotation"></block>
+                                        <block type="MX2125_tilt_xaxis"></block>
+                                        <block type="MX2125_tilt_yaxis"></block>
+                                    </category>
+                                    <!--
+                                                <category name="50" key="category_sensor-input_mma7455" >
+                                                    <block type="MMA7455_init"></block>
+                                                    <block type="MMA7455_acceleration"></block>
+                                                </category>
+                                    -->
+                                    <category name="51" key="category_sensor-input_pir" >
+                                        <block type="PIR_Sensor"></block>
+                                    </category>
+                                    <category name="52" key="category_sensor-input_rfid" >
+                                        <block type="rfid_enable"></block>
+                                        <block type="rfid_get"></block>
+                                        <block type="rfid_disable"></block>
+                                        <block type="rfid_close"></block>
+                                    </category>
+                                    <category name="53" key="category_sensor-input_sony-remote" >
+                                        <block type="sirc_get"></block>
+                                    </category>
+                                    <category name="54" key="category_sensor-input_sound-impact-sensor" >
+                                        <block type="sound_impact_run"></block>
+                                        <block type="sound_impact_get"></block>
+                                        <block type="sound_impact_end"></block>
+                                    </category>
+                                </category>
+                                <category name="55" key="category_memory" include="activity-board,flip,other" colour="165">
+                                    <category name="56" key="category_memory_eeprom" >
+                                        <block type="eeprom_read">
+                                            <value name="ADDRESS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="eeprom_write">
+                                            <value name="ADDRESS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                </category>
+                                <category name="57" key="category_analog-pulses" exclude="s3,heb" colour="185">
+                                    <category name="58" key="category_analog-pulses_pulse-in-out" exclude="s3">
+                                        <block type="pulse_in"></block>
+                                        <block type="pulse_out">
+                                            <value name="PULSE_LENGTH">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="base_count">
+                                            <value name="DURATION">
+                                                <block type="math_number">
+                                                    <field name="NUM">1</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="59" key="category_analog-pulses_pwm" exclude="s3">
+                                        <!-- <block type="pwm_start"></block> -->
+                                        <block type="pwm_set">
+                                            <value name="DUTY_CYCLE">
+                                                <block type="math_number">
+                                                    <field name="NUM">50</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="pwm_stop"></block>
+                                    </category>
+                                    <category name="60" key="category_analog-pulses_rc" exclude="s3">
+                                        <block type="rc_charge_discharge"></block>
+                                    </category>
+                                    <category name="61" key="category_analog-pulses_voltage" include="activity-board">
+                                        <block type="ab_volt_in"></block>
+                                        <block type="ab_volt_out">
+                                            <value name="VALUE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="62" key="category_analog-pulses_voltage" include="flip,other">
+                                        <block type="mcp320x_read"></block>
+                                        <block type="mcp320x_set_vref"></block>
+                                    </category>
+                                </category>
+                                <category name="63" key="category_audio" exclude="s3,heb" colour="185">
+                                    <category name="64" key="category_audio_freqout" exclude="s3">
+                                        <block type="base_freqout">
+                                            <value name="DURATION">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="FREQUENCY">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="65" key="category_audio_audio" include="activity-board">
+                                        <block type="wav_play"></block>
+                                        <block type="wav_status"></block>
+                                        <block type="wav_volume">
+                                            <value name="VOLUME">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="wav_stop"></block>
+                                    </category>
+                                </category>
+                                <category name="66" key="category_servo" exclude="s3,heb" colour="165">
+                                    <block type="servo_move">
+                                        <value name="ANGLE">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="servo_speed">
+                                        <value name="SPEED">
+                                            <block type="math_number">
+                                                <field name="NUM">0</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="servo_set_ramp">
+                                        <value name="RAMPSTEP">
+                                            <block type="math_number">
+                                                <field name="NUM">50</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="scribbler_stop_servo"></block>
+                                </category>
+                                <category name="67" key="category_robot"  include="activity-board" colour="295">
+                                    <block type="ab_drive_init"></block>
+                                    <block type="ab_drive_ramping">
+                                        <field name="RAMPING">600</field>
+                                    </block>
+                                    <block type="ab_drive_speed">
+                                        <value name="LEFT">
+                                            <block type="math_number">
+                                                <field name="NUM">64</field>
+                                            </block>
+                                        </value>
+                                        <value name="RIGHT">
+                                            <block type="math_number">
+                                                <field name="NUM">64</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="ab_drive_goto">
+                                        <value name="LEFT">
+                                            <block type="math_number">
+                                                <field name="NUM">64</field>
+                                            </block>
+                                        </value>
+                                        <value name="RIGHT">
+                                            <block type="math_number">
+                                                <field name="NUM">64</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="ab_drive_goto_max_speed">
+                                        <value name="SPEED">
+                                            <block type="math_number">
+                                                <field name="NUM">64</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="ab_drive_stop"></block>
+                                    <block type="activitybot_calibrate"></block>
+                                    <block type="activitybot_display_calibration"></block>
+                                </category>
+                                <category name="68" key="category_s3-math" include="s3" colour="275">
+                                    <block type="math_number"></block>
+                                    <block type="scribbler_boolean"></block>
+                                    <block type="scribbler_random_boolean"></block>
+                                    <block type="math_random">
+                                        <value name="A">
+                                            <block type="math_number">
+                                                <field name="NUM">1</field>
+                                            </block>
+                                        </value>
+                                        <value name="B">
+                                            <block type="math_number">
+                                                <field name="NUM">10</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="math_arithmetic"></block>
+                                    <block type="math_limit"></block>
+                                    <block type="logic_operation"></block>
+                                    <block type="math_crement"></block>
+                                    <block type="logic_negate"></block>
+                                    <block type="logic_compare"></block>
+                                    <block type="constrain_value"></block>
+                                    <block type="map_value"></block>
+                                    <block type="math_advanced"></block>
+                                    <block type="math_inv_trig">
+                                        <value name="ARG3">
+                                            <block type="math_number">
+                                                <field name="NUM">1</field>
+                                            </block>
+                                        </value>
+                                    </block>
+                                </category>
+                                <category name="69" key="category_sensor-input" include="s3" colour=140>
+                                    <category name="70" key="category_sensor-input_s3-line" >
+                                        <block type="calibrate_line_sensor"></block>
+                                        <!-- <block type="scribbler_if_line"></block> -->
+                                        <block type="scribbler_simple_line"></block>
+                                        <block type="line_sensor"></block>
+                                    </category>
+                                    <category name="71" key="category_sensor-input_s3-obstacle" >
+                                        <!-- <block type="scribbler_if_obstacle"></block>
+                                        <block type="obstacle_sensor"></block> -->
+                                        <block type="scribbler_simple_obstacle"></block>
+                                    </category>
+                                    <category name="72" key="category_sensor-input_s3-light" >
+                                        <!-- <block type="scribbler_if_light"></block> -->
+                                        <block type="scribbler_simple_light"></block>
+                                        <block type="light_sensor"></block>
+                                    </category>
+                                    <category name="73" key="category_sensor-input_s3-stall" >
+                                        <!-- <block type="scribbler_if_stalled"></block> -->
+                                        <block type="stall_sensor"></block>
+                                        <!-- <block type="spinning_sensor"></block> -->
+                                    </category>
+                                    <category name="74" key="category_sensor-input_s3-sirc" >
+                                        <block type="sirc_s3_get"></block>
+                                    </category>
+                                    <category name="75" key="category_sensor-input_s3-mic" >
+                                        <block type="mic_s3_get"></block>
+                                    </category>
+                                    <category name="76" key="category_sensor-input_s3-button" >
+                                        <block type="reset_button_presses"></block>
+                                    </category>
+                                </category>
+                                <category name="77" key="category_s3-actions" include="s3" colour="185">
+                                    <category name="78" key="category_s3-actions_motors" >
+                                        <block type="scribbler_drive">
+                                            <field name="DRIVE_ANGLE">STRAIGHT</field>
+                                        </block>
+                                        <block type="scribbler_spin"></block>
+                                        <block type="scribbler_stop"></block>
+                                        <block type="move_motors">
+                                            <value name="LEFT_MOTOR_SPEED">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="RIGHT_MOTOR_SPEED">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="MOTOR_DURATION">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="move_motors_distance">
+                                            <value name="LEFT_MOTOR_DISTANCE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="RIGHT_MOTOR_DISTANCE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="MOTOR_SPEED">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="move_motors_xy">
+                                            <value name="X_DISTANCE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="Y_DISTANCE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="MOTOR_SPEED">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="move_motors_angle">
+                                            <value name="ROTATE_ANGLE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="ROTATE_RADIUS">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="ROTATE_SPEED">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="79" key="category_s3-actions_sound" include="s3">
+                                        <block type="scribbler_play">
+                                            <field name="NOTE_DURATION">250</field>
+                                            <field name="NOTE_OCTAVE">4</field>
+                                            <field name="NOTE_FREQUENCY">4186</field>
+                                            <field name="NOTE_VOLUME">50</field>
+                                        </block>
+                                        <block type="play_polyphony">
+                                            <value name="FREQUENCY_1">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="FREQUENCY_2">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POLYPHONY_DURATION">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="POLYPHONY_VOLUME">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="80" key="category_s3-actions_leds" include="s3">
+                                        <block type="scribbler_LED"></block>
+                                    </category>
+                                    <category name="81" key="category_communicate" include="s3">
+                                        <block type="scribbler_serial_send_text"></block>
+                                        <block type="scribbler_serial_send_decimal"></block>
+                                        <block type="scribbler_serial_send_char"></block>
+                                        <block type="scribbler_serial_send_ctrl"></block>
+                                        <!--
+                                                        <block type="scribbler_serial_cursor_xy">
+                                                            <value name="X">
+                                                                <block type="spin_integer">
+                                                                    <field name="INT_VALUE">0</field>
+                                                                </block>
+                                                            </value>
+                                                            <value name="Y">
+                                                                <block type="spin_integer">
+                                                                    <field name="INT_VALUE">0</field>
+                                                                </block>
+                                                            </value>
+                                                        </block>
+                                        -->
+                                        <block type="scribbler_serial_rx_byte"></block>
+                                    </category>
+                                    <category name="82" key="category_s3-actions_reset" include="s3">
+                                        <block type="factory_reset"></block>
+                                    </category>
+                                </category>
+                                <category name="" key="category_s3-hacker-port" include="s3" colour="295">
+                                    <category name="83" key="category_s3-hacker-port_sensors" >
+                                        <block type="scribbler_ping"></block>
+                                    </category>
+                                    <category name="84" key="category_s3-hacker-port_pins" >
+                                        <block type="make_pin"></block>
+                                        <block type="check_pin"></block>
+                                        <block type="analog_input"></block>
+                                    </category>
+                                    <category name="85" key="category_s3-hacker-port_servo" >
+                                        <block type="servo_move">
+                                            <value name="ANGLE">
+                                                <block type="math_number">
+                                                    <field name="NUM">90</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="scribbler_stop_servo"></block>
+                                    </category>
+                                </category>
+
+                                <category name="86" key="category_system" include="other" colour="320">
+                                    <block type="waitcnt">
+                                        <value name="TARGET">
+                                            <block type="math_arithmetic">
+                                                <value name="A">
+                                                    <block type="system_counter"></block>
+                                                </value>
+                                            </block>
+                                        </value>
+                                    </block>
+                                    <block type="register_set"></block>
+                                    <block type="register_get"></block>
+                                    <block type="system_counter"></block>
+                                    <block type="custom_code" experimental="true"></block>
+                                </category>
+                            </xml>
                         </div>
                         <div id="content_propc">
                             <div id="code-propc"></div>

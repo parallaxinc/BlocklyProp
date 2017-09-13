@@ -85,7 +85,7 @@
                             <li id="my-projects-menu-item">
                                     <a href="<url:getUrl url="/my/projects.jsp"/>"><span class="keyed-lang-string" key="menu_my_projects"></span></a>
                             </li>
-                            <li>
+                            <li id="new-project-menu-item">
                                 <a href="new-project" class="internav-link"><span class="keyed-lang-string" key="menu_newproject_title"></span></a>
                             </li>
                             <li>
@@ -771,10 +771,12 @@
                     $('#profile-menu-item').css('display', 'list-item');
                     $('#login-menu-item').css('display', 'none');
                     $('#my-projects-menu-item').css('display', 'list-item');
+                    $('#new-project-menu-item').css('display', 'list-item');
                 } else {
                     $('#profile-menu-item').css('display', 'none');
                     $('#login-menu-item').css('display', 'list-item');
                     $('#my-projects-menu-item').css('display', 'none');
+                    $('#new-project-menu-item').css('display', 'none');
                 }
                 
                 // Add the username when the user is logged in

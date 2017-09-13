@@ -37,8 +37,8 @@
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
         
-        <!-- <script src="<url:getCdnUrl url="/project.js"/>" ></script> -->
-        <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
+        <script src="<url:getCdnUrl url="/project.js"/>" ></script>
+        <!-- <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script> -->
         
         
         
@@ -46,7 +46,7 @@
     <body>
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
         <!-- Display community projects -->
-        <div id="project-table-container" class="container">
+        <div id="project-table-container" class="container collapse">
             <div class="row">
                 <div class="col-md-12">
                     

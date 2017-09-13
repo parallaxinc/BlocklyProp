@@ -4998,10 +4998,10 @@ Blockly.Blocks.graph_output = {
             var printInput = this.getInput('PRINT' + x);
             clauseBlock.valueConnection_ =
                     printInput && printInput.connection.targetConnection;
-            x++;
-            break;
             clauseBlock = clauseBlock.nextConnection &&
                     clauseBlock.nextConnection.targetBlock();
+            x++;
+            //break;
         }
         var i = 0;
         this.graph_labels_ = null;

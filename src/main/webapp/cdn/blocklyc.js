@@ -165,7 +165,7 @@ function renderContent() {
     }
 }
 
-prettyCode = function (raw_code) {
+var prettyCode = function (raw_code) {
     if (!raw_code) {
         raw_code = codePropC.getValue();
     }
@@ -193,7 +193,7 @@ prettyCode = function (raw_code) {
     codePropC.gotoLine(0);
 };
 
-findReplaceCode = function () {
+var findReplaceCode = function () {
     if (document.getElementById('find-replace').style.display === 'none') {
         document.getElementById('find-replace').style.display = 'block';
     } else {
@@ -661,7 +661,7 @@ function graphing_console() {
     }
 }
 
-check_com_ports = function () {
+var check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
             var selected_port = $("#comPort").val();
@@ -686,7 +686,7 @@ check_com_ports = function () {
     }
 };
 
-select_com_port = function (com_port) {
+var select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);
     }
@@ -698,7 +698,8 @@ select_com_port = function (com_port) {
 $(document).ready(function () {
     check_com_ports();
 });
-getComPort = function () {
+
+var getComPort = function () {
     return $('#comPort').find(":selected").text();
 };
 

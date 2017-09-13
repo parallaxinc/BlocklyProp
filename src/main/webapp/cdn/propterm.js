@@ -233,7 +233,7 @@ function updateTermBox(c) {
                     break;
                 case 7: // Beep
                     document.getElementById("serial_console").classList.remove("visual-beep");
-                    void document.getElementById("serial_console").offsetWidth;
+                    var ow = document.getElementById("serial_console").offsetWidth;
                     document.getElementById("serial_console").classList.add("visual-beep");
                     var sound = document.getElementById("term-beep");
                     sound.play();
