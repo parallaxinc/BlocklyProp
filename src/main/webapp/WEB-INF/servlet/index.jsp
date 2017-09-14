@@ -133,7 +133,9 @@
             <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; display: none;" id="message-of-the-day">
                 <div class="row">
                     <div class="col-sm-12" align="center">
-                        <a id="message-of-the-day-link" href="http://learn.parallax.com/node/1692" target="_blank">Message of the day</a>
+                        <a id="message-of-the-day-link" href="http://learn.parallax.com/node/1692" target="_blank" style="color:#8a6d3b;">
+                            <span id="message-of-the-day-text"></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -682,8 +684,6 @@
             </form>
         </div>
 
-        <div id="page-dump" style="display: none;"></div>
-
         <script>
             // Get the logged in status
             var user_authenticated = false;
@@ -705,6 +705,7 @@
 
             var oauthUrls = {};
             var baseUrl = '<url:getUrl url="/" />';
+            var cdnUrl = '<url:getCdnUrl url="/" />';
             var simplemde = null;
             console.log(baseUrl);
 
@@ -827,16 +828,9 @@
                 });
 
                 // Retrieve the Message of the Day content
-                $('#page-dump').load("http://learn.parallax.com/node/1692", function (data, statusTxt, xhr){
-                    if(statusTxt === "error")
-                        console.log("Error: " + xhr.status + ": " + xhr.statusText);
-                    console.log(data);
-                    if(data.indexOf('<h6><em>') > -1 || data.indexOf('<em><h6>') > -1) {
-                        var motd_page = data.replace(/<h6>/g, '|||').replace(/<\/h6>/g, '|||').replace(/<em>/g, '|||').replace(/<\/em>/g, '|||');
-                        var motd_msg = motd_page.split('||||||');
-                        $('#message-of-the-day').css('display', 'block');
-                        $('#message-of-the-day-link').html(motd_msg[1] + ' - click here for more information');
-                    }
+                $.get(cdnUrl + "motd-feeder.txt", function (data) {
+                    $('#message-of-the-day').css('display', 'block');
+                    $('#message-of-the-day-text').html(data + ' - click for more information');
                 });
 
                 // Grab the release list from github, format it, and
