@@ -1,13 +1,5 @@
-/**
- *
- */
 
-/**
- * @fileoverview
- * @author
- */
 'use strict';
-
 
 Blockly.Blocks.scribbler_loop = {
     init: function () {
