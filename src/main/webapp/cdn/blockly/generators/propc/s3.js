@@ -1041,10 +1041,10 @@ Blockly.Blocks.stall_sensor = {
         this.appendDummyInput("")
                 .appendField("stall sensor")
                 .appendField(new Blockly.FieldDropdown([
-                    ["tail wheel is stopped", "s3_stalled()"],
-                    ["tail wheel is spinning", "!s3_stalled()"],
-                    ["drive wheels stalled", "!s3_motorsMoving()"],
-                    ["drive wheels turning", "s3_motorsMoving()"],
+                    ["tail wheel is not spinning", "!s3_tailWheelMoving()"],
+                    ["tail wheel is spinning", "s3_tailWheelMoving()"],
+                    ["drive wheels are stopped", "!s3_motorsMoving()"],
+                    ["drive wheels are turning", "s3_motorsMoving()"],
                     ["Scribbler is stuck", "s3_simpleStalled(S3_IS)"],
                     ["Scribbler is not stuck", "s3_simpleStalled(S3_IS_NOT)"]
                 ]), "STALL_SENSOR_CHOICE");
