@@ -1396,7 +1396,7 @@ Blockly.Blocks.serial_tx = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.setWarningText('WARNING: This block has been deprecated\nand my not work correctly!\nPlease use one of the blocks\navailable in the menu.');
+        this.setWarningText('WARNING: This block has been deprecated\nand may not work correctly!\nPlease use one of the blocks\navailable in the menu.');
     }
 };
 
@@ -1420,7 +1420,7 @@ Blockly.Blocks.serial_rx = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.setWarningText('WARNING: This block has been deprecated\nand my not work correctly!\nPlease use one of the blocks\navailable in the menu.');
+        this.setWarningText('WARNING: This block has been deprecated\nand may not work correctly!\nPlease use one of the blocks\navailable in the menu.');
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -4998,10 +4998,10 @@ Blockly.Blocks.graph_output = {
             var printInput = this.getInput('PRINT' + x);
             clauseBlock.valueConnection_ =
                     printInput && printInput.connection.targetConnection;
-            x++;
-            break;
             clauseBlock = clauseBlock.nextConnection &&
                     clauseBlock.nextConnection.targetBlock();
+            x++;
+            //break;
         }
         var i = 0;
         this.graph_labels_ = null;

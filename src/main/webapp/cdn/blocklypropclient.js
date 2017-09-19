@@ -25,12 +25,13 @@ var baud_rate_compatible = false;
 
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
-
+var check_ws_client_timeout = null;   // unused?  safe to delete?
+        
 $(document).ready(function () {
     find_client();
 });
 
-find_client = function () {
+var find_client = function () {
     if (check_ws_socket_timeout) {
         //Clear timeout if it exists; without this, back-to-back find_client() calls seem to occur
         clearTimeout(check_ws_socket_timeout);
@@ -44,7 +45,7 @@ find_client = function () {
     }
 };
 
-version_as_number = function (rawVersion) {
+var version_as_number = function (rawVersion) {
     var tempVersion = rawVersion.toString().split(".");
     tempVersion.push('0');
 
@@ -63,7 +64,7 @@ version_as_number = function (rawVersion) {
     return (Number(tempVersion[0]) << 20 | Number(tempVersion[1]) << 10 | Number(tempVersion[2]));
 };
 
-set_ui_buttons = function (ui_btn_state) {
+var set_ui_buttons = function (ui_btn_state) {
     if (ui_btn_state === 'available') {
         $("#client-available").removeClass("hidden");
         $("#client-searching").addClass("hidden");
@@ -89,7 +90,7 @@ set_ui_buttons = function (ui_btn_state) {
     }
 };
 
-check_client = function () {
+var check_client = function () {
     if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
@@ -126,7 +127,7 @@ check_client = function () {
     }
 };
 
-connection_heartbeat = function () {
+var connection_heartbeat = function () {
     // Check the last time the port list was recieved.
     // If it's been too long, close the connection.
     if (client_use_type === 'ws') {
@@ -140,7 +141,7 @@ connection_heartbeat = function () {
     }
 };
 
-configure_client = function () {
+var configure_client = function () {
     var url_input = $("<form/>", {
         class: "form-inline"
     });

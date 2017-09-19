@@ -3,13 +3,15 @@
     Created on : 24-mei-2015, 18:41:02
     Author     : Michel
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
+<%--
+<%@ include file="my/projects.jsp"%>
+--%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="application-name" content="&nbsp;"/>
+        <meta name="application-name" content="BlocklyProp"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
         <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />
         <link type="image/png" rel="apple-touch-icon-precomposed" sizes="57x57" href="<url:getCdnUrl url="/images/apple-touch-icon-57x57.png"/>" />
@@ -23,8 +25,8 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
-        <link href="<url:getCdnUrl url="/lib/simplemde.min.css"/>" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
+        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/simplemde.min.css"/>">
+        <link rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
         <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/jquery.form.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>" ></script>
@@ -39,11 +41,14 @@
         <div id="project-table-container" class="container collapse">
             <div class="row">
                 <div class="col-md-12">
+                    
                     <h2><fmt:message key="project.list.title"/></h2>
+                    
                     <jsp:include page="/WEB-INF/includes/pageparts/projecttable.jsp">
                         <jsp:param name="url" value="/rest/shared/project/list" />
                         <jsp:param name="showuser" value="true" />
                     </jsp:include>
+                    
                 </div>
             </div>
         </div>

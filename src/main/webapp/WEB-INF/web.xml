@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.0" 
-         xmlns="http://java.sun.com/xml/ns/javaee" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <!-- ============================================================== -->
     <!-- What does this file do?                                        -->
     <!-- Java web applications use a deployment descriptor file to      -->
@@ -40,7 +36,6 @@
     request or response objects before calling the servlet. Filters allow
     you to compose request processing tasks from the deployment descriptor.
     -->
-    
     <!--
     Similar to servlets, you configure a filter in the deployment descriptor
     by declaring the filter with the <filter> element, then mapping it to a 
@@ -109,10 +104,6 @@
         <servlet-class>com.cuubez.visualizer.servlet.VzHttpServletDispatcher</servlet-class>
     </servlet>
     <!-- URL of the visual REST API documentation -->
-    <servlet>
-        <servlet-name>ChildPrivacy</servlet-name>
-        <servlet-class>com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>vapi_servlet</servlet-name>
         <url-pattern>/apidoc</url-pattern>
@@ -131,10 +122,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <!-- Other servlets -->
-    <servlet-mapping>
-        <servlet-name>ChildPrivacy</servlet-name>
-        <url-pattern>/ChildPrivacy</url-pattern>
-    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index</welcome-file>
     </welcome-file-list>

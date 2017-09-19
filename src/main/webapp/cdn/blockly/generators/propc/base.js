@@ -1884,7 +1884,7 @@ Blockly.propc.map_value = function () {
 
     if (!this.disabled) {
         var func_code1 = 'int map(int __xVal, int __inMin, int __inMax, int __outMin, int __outMax)';
-        var func_code2 = '} return (__xVal - __inMin) * (__outMax - __outMin) / (__inMax - __inMin) + __outMin;}';
+        var func_code2 = '{ return (__xVal - __inMin) * (__outMax - __outMin) / (__inMax - __inMin) + __outMin;}';
         Blockly.propc.method_declarations_["map_function"] = func_code1 + ';\n';
         Blockly.propc.methods_["map_function"] = func_code1 + func_code2;
     }
@@ -1902,13 +1902,13 @@ Blockly.Blocks.math_advanced = {
         this.appendValueInput("ARG2")
                 .setCheck("Number")
                 .appendField(new Blockly.FieldDropdown([
-                    ["× the cosine of", "cos"],
-                    ["× the sine of", "sin"],
-                    ["× the tangent of", "tan"],
-                    ["× the square root of", "sqrt"],
-                    ["× e raised to the power of", "exp"],
-                    ["× the logarithm (base 10) of", "log10"],
-                    ["× the natural logarithm of", "log"]]), "OP");
+                    ["\u2715 the cosine of", "cos"],
+                    ["\u2715 the sine of", "sin"],
+                    ["\u2715 the tangent of", "tan"],
+                    ["\u2715 the square root of", "sqrt"],
+                    ["\u2715 e raised to the power of", "exp"],
+                    ["\u2715 the logarithm (base 10) of", "log10"],
+                    ["\u2715 the natural logarithm of", "log"]]), "OP");
         this.appendDummyInput("")
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'STORE');
@@ -1955,7 +1955,7 @@ Blockly.Blocks.math_inv_trig = {
                     ["arctangent of (", "atan2"]]), "OP");
         this.appendValueInput("ARG2")
                 .setCheck("Number")
-                .appendField("÷");
+                .appendField("\u00F7");
         this.appendValueInput('ARG3')
                 .appendField(") \u00D7")
                 .setCheck("Number");

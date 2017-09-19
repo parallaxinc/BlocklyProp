@@ -23,6 +23,7 @@
 </table>
 
 <script>
+    console.log('<url:getUrl url="${param.url}"/>');
     var languageUrls = {
         "PROPC": "<url:getCdnUrl url="/images/lang-icons/c.png" />",
         "SPIN": "<url:getCdnUrl url="/images/lang-icons/spin.png" />"
@@ -42,23 +43,11 @@
     }
 
     function formatProject(value, row) {
-        return [
-            "<a href='#",
-            row['id'],
-            "'>",
-            value,
-            "</a>"
-        ].join('');
+        return "<a href='#" + row['id'] + "'>" + value + "</a>";
     }
 
     function formatUser(value, row) {
-        return [
-            "<a href='<url:getUrl url="/public/profile" />?id-user=",
-            row['id-user'],
-            "'>",
-            value,
-            "</a>"
-        ].join('');
+        return "<a href='<url:getUrl url="/public/profile" />?id-user=" + row['id-user'] + "'>" + value + "</a>";
     }
 
     var boards = {

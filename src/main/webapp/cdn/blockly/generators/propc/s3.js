@@ -1,13 +1,5 @@
-/**
- *
- */
 
-/**
- * @fileoverview
- * @author
- */
 'use strict';
-
 
 Blockly.Blocks.scribbler_loop = {
     init: function () {
@@ -849,16 +841,16 @@ Blockly.Blocks.move_motors_xy = {
         var connectionLeft_ = this.getInput('Y_DISTANCE').connection;
         var blockLeft_ = connectionLeft_.targetBlock();
         var blockRight_ = connectionRight_.targetBlock();
-        var rangeText = 'R,-20755429,20755429,0';
+        var rangeText = 'R,-633,633,0';
 
         if (unit === ' * 10000 / 1933') {
-            rangeText = 'R,-207554294,207554294,0';
+            rangeText = 'R,-6334,6334,0';
         } else if (unit === ' * 10000 / 491') {
-            rangeText = 'R,-52720723,52720723,0';
+            rangeText = 'R,-1608,1608,0';
         } else if (unit === ' * 1000 / 491') {
-            rangeText = 'R,-527207235,527207235,0';
+            rangeText = 'R,-16089,16089,0';
         } else if (unit === '') {
-            rangeText = 'R,-1073741823,1073741823,0';
+            rangeText = 'R,-32768,32767,0';
         }
 
         this.setFieldValue(rangeText, 'RANGEVALS0');
@@ -878,7 +870,7 @@ Blockly.propc.move_motors_xy = function () {
     var x_distance = Blockly.propc.valueToCode(this, 'X_DISTANCE', Blockly.propc.ORDER_ATOMIC) || '0';
     var y_distance = Blockly.propc.valueToCode(this, 'Y_DISTANCE', Blockly.propc.ORDER_ATOMIC) || '0';
     var top_speed = Blockly.propc.valueToCode(this, 'MOTOR_SPEED', Blockly.propc.ORDER_ATOMIC) || '0';
-    return 'scribbler_set_speed(' + top_speed + ' * 3 / 20);\nscribbler_move_to(' + x_distance + distance_multiplier + ', ' + y_distance + distance_multiplier + ');\n';
+    return 's3_motorGotoXY(' + x_distance + distance_multiplier + ', ' + y_distance + distance_multiplier + ', ' + top_speed + ');\n';
 };
 
 // Move the motors...
@@ -1049,10 +1041,10 @@ Blockly.Blocks.stall_sensor = {
         this.appendDummyInput("")
                 .appendField("stall sensor")
                 .appendField(new Blockly.FieldDropdown([
-                    ["tail wheel is stopped", "s3_stalled()"],
-                    ["tail wheel is spinning", "!s3_stalled()"],
-                    ["drive wheels stalled", "!s3_motorsMoving()"],
-                    ["drive wheels turning", "s3_motorsMoving()"],
+                    ["tail wheel is not spinning", "!s3_tailWheelMoving()"],
+                    ["tail wheel is spinning", "s3_tailWheelMoving()"],
+                    ["drive wheels are stopped", "!s3_motorsMoving()"],
+                    ["drive wheels are turning", "s3_motorsMoving()"],
                     ["Scribbler is stuck", "s3_simpleStalled(S3_IS)"],
                     ["Scribbler is not stuck", "s3_simpleStalled(S3_IS_NOT)"]
                 ]), "STALL_SENSOR_CHOICE");

@@ -12,10 +12,10 @@
         <div class="container">
             <div>
                 <ul class="nav navbar-nav">
-                    <li><a href="<url:getUrl url="/public/license"/>"><fmt:message key="footer.licenselink" /></a></li>
-                    <li><a href="<url:getUrl url="/public/releases"/>"><fmt:message key="footer.releases" /></a></li>
-                    <li><a href="<url:getUrl url="/public/libraries"/>"><fmt:message key="footer.librarieslink" /></a></li>
-                    <li><a href="<url:getUrl url="/public/clientdownload"/>"><fmt:message key="clientdownload.title" /></a></li>
+                    <li><a href="<url:getUrl url="/license"/>"><fmt:message key="footer.licenselink" /></a></li>
+                    <li><a href="<url:getUrl url="/releases"/>"><fmt:message key="footer.releases" /></a></li>
+                    <li><a href="<url:getUrl url="/libraries"/>"><fmt:message key="footer.librarieslink" /></a></li>
+                    <li><a href="<url:getUrl url="/client"/>"><fmt:message key="clientdownload.title" /></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <jsp:useBean id="date" class="java.util.Date" />

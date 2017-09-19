@@ -102,6 +102,7 @@ function tabClick(id) {
     selected = id.replace('tab_', '');
     //document.getElementById(id).className = 'active';
 
+    var tbxs = document.getElementsByClassName('blocklyToolboxDiv');
     var btns = document.getElementsByClassName("btn-view-code");
     document.getElementById('btn-view-blocks').style.display = 'none';
     if (document.getElementById('menu-save-as-propc'))
@@ -114,7 +115,13 @@ function tabClick(id) {
             for (var i = 0; i < btns.length; i++) {
                 btns[i].style.display = 'inline';
             }
+            for (var xt = 0; xt < tbxs.length; xt++) {
+                tbxs[xt].style.display = 'block';
+            }
         } else {
+            for (var xt = 0; xt < tbxs.length; xt++) {
+                tbxs[xt].style.display = 'none';
+            }
             document.getElementById('btn-view-blocks').style.display = 'inline';
             if (document.getElementById('menu-save-as-propc'))
                 document.getElementById('menu-save-as-propc').style.display = 'block';
@@ -158,7 +165,7 @@ function renderContent() {
     }
 }
 
-prettyCode = function (raw_code) {
+var prettyCode = function (raw_code) {
     if (!raw_code) {
         raw_code = codePropC.getValue();
     }
@@ -167,6 +174,8 @@ prettyCode = function (raw_code) {
         'indent_size': 2
     });
     raw_code = raw_code.replace(/,\n[\s\xA0]+/g, ", ")
+    
+            // improve the way reference and dereference operands are rendered
             .replace(/, & /g, ", &")
             .replace(/, \* /g, ", *")
             .replace(/\( & /g, "(&")
@@ -174,12 +183,17 @@ prettyCode = function (raw_code) {
             .replace(/char \* /g, "char *")
             .replace(/fdserial \* /g, "fdserial *")
             .replace(/colorPal \* /g, "colorPal *")
-            .replace(/ws2812 \* /g, "ws2812 *");
+            .replace(/ws2812 \* /g, "ws2812 *")
+    
+            // improve the way functions and arrays are rendered
+            .replace(/\)\s*[\n\r]\s*{/g,") {")
+            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, "[$1] = {$2};");
+    
     codePropC.setValue(raw_code);
     codePropC.gotoLine(0);
 };
 
-findReplaceCode = function () {
+var findReplaceCode = function () {
     if (document.getElementById('find-replace').style.display === 'none') {
         document.getElementById('find-replace').style.display = 'block';
     } else {
@@ -195,6 +209,7 @@ function init(blockly) {
     codePropC = ace.edit("code-propc");
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
+    codePropC.getSession().setTabSize(2);
     codePropC.setReadOnly(true);
 
     codeXml = ace.edit("code-xml");
@@ -646,7 +661,7 @@ function graphing_console() {
     }
 }
 
-check_com_ports = function () {
+var check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
             var selected_port = $("#comPort").val();
@@ -671,7 +686,7 @@ check_com_ports = function () {
     }
 };
 
-select_com_port = function (com_port) {
+var select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);
     }
@@ -683,7 +698,8 @@ select_com_port = function (com_port) {
 $(document).ready(function () {
     check_com_ports();
 });
-getComPort = function () {
+
+var getComPort = function () {
     return $('#comPort').find(":selected").text();
 };
 

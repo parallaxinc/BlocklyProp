@@ -28,10 +28,11 @@
                     <li>
                         <a href="<url:getUrl url="/my/projects.jsp"/>"><fmt:message key="menu.my_projects" /></a>
                     </li>
-                </shiro:authenticated>
+
                     <li>
-                        <a href="<url:getUrl url="/projectcreate.jsp?lang=PROPC"/>"><fmt:message key="menu.newproject.title" /></a>
+                        <a href="<url:getUrl url="/new-project"/>"><fmt:message key="menu.newproject.title" /></a>
                     </li>
+                </shiro:authenticated>
                     <li>
                         <a href="<url:getUrl url="/privacy-policy"/>"><fmt:message key="menu.privacy" /></a>
                     </li>
@@ -52,13 +53,12 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"><shiro:principal></shiro:principal> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="<url:getUrl url="/profile"/>"><fmt:message key="menu.profile" /></a></li>
-                       <!--     <li><a href="<url:getUrl url="/public/profile"/>"><fmt:message key="menu.public-profile" /></a></li> -->
                             <li><a href="<url:getUrl url="/logout"/>"><fmt:message key="logout" /></a></li>
                         </ul>
                     </li>
                 </shiro:authenticated>
 
-                <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
+                <li><a href="help" class="internav-link"><fmt:message key="menu.help" /></a></li>
                 <!--
                 <li class="navbar-text">
                     <form style="margin-bottom: 0;">
@@ -76,12 +76,27 @@
             </div>
         </div>
     </div>
+                        
     <!-- Message of the Day goes here. -->
-    <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; ">
+    <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; display: none;" id="message-of-the-day">
         <div class="row">
             <div class="col-sm-12" align="center">
-                Message of the day goes here
+                <a id="message-of-the-day-link" href="http://learn.parallax.com/node/1692" target="_blank" style="color:#8a6d3b;">
+                    <span id="message-of-the-day-text"></span>
+                </a>
             </div>
         </div>
     </div>
+    
+    <script>
+        var cdnUrl = '<url:getCdnUrl url="/" />';
+        
+        $(document).ready(function () {
+            // Retrieve the Message of the Day content
+            $.get(cdnUrl + "motd-feeder.txt", function (data) {
+                $('#message-of-the-day').css('display', 'block');
+                $('#message-of-the-day-text').html(data + ' - click for more information');
+            });
+        });
+    </script>
 </nav>

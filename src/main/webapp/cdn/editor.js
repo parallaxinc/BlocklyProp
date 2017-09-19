@@ -5,6 +5,8 @@
  */
 
 var baseUrl = $("meta[name=base]").attr("content");
+var cdnUrl = $("meta[name=cdn]").attr("content");
+var user_authenticated = ($("meta[name=user-auth]").attr("content") === 'true') ? true : false;
 
 var projectData = null;
 var ready = false;
@@ -19,8 +21,23 @@ var idProject = 0;
 
 var uploadedXML = '';
 
+// http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
+
 $(document).ready(function () {
-    idProject = getUrlParameters('project', '', false);
+    if (user_authenticated) {
+        $('.auth-true').css('display', $(this).attr('displayas'));
+        $('.auth-false').css('display', 'none');
+    } else {
+        $('.auth-false').css('display', $(this).attr('displayas'));
+        $('.auth-true').css('display', 'none');
+    }
+    
+    $('.url-prefix').attr('href', function(idx, cur) {return baseUrl + cur;});
+    
+    idProject = getURLParameter('project');
     if (!idProject) {
         window.location = baseUrl;
     } else {
@@ -30,11 +47,11 @@ $(document).ready(function () {
             showInfo(data);
             projectLoaded = true;
             if (ready) {
-                window.frames["content_blocks"].setProfile(data['board']);
-                window.frames["content_blocks"].init(data['board'], []);
+                setProfile(data['board']);
+                initToolbox(data['board'], []);
             }
             if ($('#editor-full-mode') === 'true') {
-                if (projectData['board'] === 's3' && type === 'PROPC') {
+                if (projectData['board'] === 's3') {
                     $('#prop-btn-ram').addClass('hidden');
                     document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
                 } else {
@@ -70,7 +87,7 @@ $(document).ready(function () {
     });
 });
 
-timestampSaveTime = function (mins, resetTimer) {
+var timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
     var d_save = new Date();
     
@@ -84,15 +101,15 @@ timestampSaveTime = function (mins, resetTimer) {
     }
 };
 
-checkLastSavedTime = function () {
+var checkLastSavedTime = function () {
     var d_now = new Date();
     var t_now = d_now.getTime();
     var s_save = Math.round((d_now.getTime() - last_saved_time) / 60000);
     $('#save-check-warning-time').html(s_save.toString(10));
 
-    if (s_save > 58) {
+    //if (s_save > 58) {
         // TODO: It's been to long - autosave, then close/set URL back to login page.
-    }
+    //}
 
     if (t_now > last_saved_timestamp && checkLeave() && $('#editor-full-mode').html() === 'true') {
         // It's time to pop up a modal to remind the user to save.
@@ -100,7 +117,7 @@ checkLastSavedTime = function () {
     }
 };
 
-showInfo = function (data) {
+var showInfo = function (data) {
     //console.log(data);
     $(".project-name").text(data['name']);
     if (!data['yours']) {
@@ -121,7 +138,7 @@ showInfo = function (data) {
     $("#project-icon").html('<img src="' + baseUrl + projectBoardIcon[data['board']] + '"/>');
 };
 
-propcAsBlocksXml = function () {
+var propcAsBlocksXml = function () {
     var code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
     code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
     code += '<field name="FILENAME">single.c</field>';
@@ -131,15 +148,15 @@ propcAsBlocksXml = function () {
     return code;
 };
 
-saveProject = function () {
+var saveProject = function () {
     var code = '';
     if (projectData['board'] === 'propcfile') {
         code = propcAsBlocksXml();
 
-        window.frames["content_blocks"].clearXml();
-        window.frames["content_blocks"].load(code);
+        clearXml();
+        loadToolbox(code);
     } else {
-        code = window.frames["content_blocks"].getXml();
+        code = getXml();
     }
     projectData['code'] = code;
     $.post(baseUrl + 'rest/project/code', projectData, function (data) {
@@ -192,10 +209,7 @@ saveProject = function () {
     timestampSaveTime(20, true);
 };
 
-saveAsDialog = function () {
-    // Are we in demo or production?
-    var site_loc = $('#save-as-in-demo').val();
-    
+var saveAsDialog = function () {
     // Prompt user to save current project first if unsaved
     if (checkLeave() && projectData['yours']) {
         utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
@@ -208,12 +222,12 @@ saveAsDialog = function () {
     // Reset the save-as modal's fields
     $('#save-as-project-name').val(projectData['name']);
     $("#save-as-board-type").empty();
-    window.frames["content_blocks"].profile.default.saves_to.forEach(function (bt) {
+    profile.default.saves_to.forEach(function (bt) {
         $("#save-as-board-type").append($('<option />').val(bt[1]).text(bt[0]));
     });
     
     // Until release to production, make sure we are on demo before displaying the propc option
-    if (site_loc === 'demo') {
+    if (inDemo === 'demo') {
         $("#save-as-board-type").append($('<option />').val('propcfile').text('Propeller C (code-only)'));
     }
     
@@ -221,7 +235,7 @@ saveAsDialog = function () {
     $('#save-as-type-dialog').modal('show');    
 };
 
-checkBoardType = function () {
+var checkBoardType = function () {
     var current_type = projectData['board'];
     var save_as_type = $('#save-as-board-type').val();
     // save-as-verify-boardtype
@@ -232,7 +246,7 @@ checkBoardType = function () {
     }
 };
 
-saveProjectAs = function () {
+var saveProjectAs = function () {
     // Retrieve the field values
     var p_type = $('#save-as-board-type').val();
     var p_name = $('#save-as-project-name').val();
@@ -242,10 +256,10 @@ saveProjectAs = function () {
     if (projectData['board'] === 'propcfile') {
         code = propcAsBlocksXml();
 
-        window.frames["content_blocks"].clearXml();
-        window.frames["content_blocks"].load(code);
+        clearXml();
+        loadToolbox(code);
     } else {
-        code = window.frames["content_blocks"].getXml();
+        code = getXml();
     }
 
     // If the new project is the same type as the old one, use the save-as endpoint
@@ -285,11 +299,15 @@ saveProjectAs = function () {
                 window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
                 projectData['code'] = code;
 
-                $.post(baseUrl + 'rest/project/code', projectData, function (data) {
-                    projectData = data;
-                    projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-                    ignoreSaveCheck = false;
-                });
+                // Give the database a chance to catch up - possibly change to document.ready?
+                setTimeout(function () {
+                    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+                        projectData = data;
+                        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                        ignoreSaveCheck = false;
+                    });
+                }, 1000);
+                
             } else {
                 if (typeof data['message'] === "string")
                     alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
@@ -307,10 +325,10 @@ saveProjectAs = function () {
             if (projectData['board'] === 'propcfile') {
                 code = propcAsBlocksXml();
 
-                window.frames["content_blocks"].clearXml();
-                window.frames["content_blocks"].load(code);
+                clearXml();
+                loadToolbox(code);
             } else {
-                code = window.frames["content_blocks"].getXml();
+                code = getXml();
             }
             projectData['code'] = code;
             projectData['name'] = value;
@@ -336,7 +354,7 @@ saveAsPropc = function () {
     utils.prompt("Create a new Propeller C (code-only) project", projectData['name'], function (value) {
         if (value) {
             ignoreSaveCheck = true;
-            //var code = window.frames["content_blocks"].getXml();
+            //var code = getXml();
             projectData['code'] = xmlText;
             projectData['name'] = value;
             projectData['board'] = 'propcfile';
@@ -374,28 +392,33 @@ saveAsPropc = function () {
 };
 */
 
-editProjectDetails = function () {
+var editProjectDetails = function () {
     window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
 };
 
-blocklyReady = function () {
+var blocklyReady = function () {
+    // if debug mode is active, show the XML button
+    if (getURLParameter('debug')) {
+        document.getElementById('tab_xml').style.display = 'inline-block';
+    }
+    
     if (projectLoaded) {
-        window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init(projectData['board'], []);
+        setProfile(projectData['board']);
+        initToolbox(projectData['board'], []);
     } else {
         ready = true;
     }
 };
 
-loadProject = function () {
+var loadProject = function () {
     if (projectData !== null && uploadStaged === false) {
         if (projectData['code'].length < 43) {
             projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
         }
-        window.frames["content_blocks"].load(projectData['code']);
+        loadToolbox(projectData['code']);
     }
     if ($('#editor-full-mode') === 'true') {
-        if (projectData['board'] === 's3' && type === 'PROPC') {
+        if (projectData['board'] === 's3') {
             $('#load-ram-button').addClass('hidden');
             $('#open-graph-output').addClass('hidden');
             document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
@@ -413,11 +436,11 @@ window.onbeforeunload = function () {
     }
 };
 
-checkLeave = function () {
+var checkLeave = function () {
     if (ignoreSaveCheck) {
         return false;
     }
-    var currentXml = window.frames["content_blocks"].getXml();
+    var currentXml = getXml();
     if (projectData['board'] === 'propcfile') {
         currentXml = propcAsBlocksXml();
     }
@@ -436,36 +459,6 @@ checkLeave = function () {
     }
 };
 
-function getUrlParameters(parameter, staticURL, decode) {
-    /*
-     Function: getUrlParameters
-     Description: Get the value of URL parameters either from
-     current URL or static URL
-     Author: Tirumal
-     URL: www.code-tricks.com
-     */
-    var currLocation = (staticURL.length) ? staticURL : window.location.search;
-
-    var parArr = [];
-    if (currLocation !== undefined && currLocation.split("?")[1] !== undefined) {
-        parArr = currLocation.split("?")[1].split("&");
-    }
-    var returnBool = true;
-
-    for (var i = 0; i < parArr.length; i++) {
-        parr = parArr[i].split("=");
-        if (parr[0] === parameter) {
-            returnBool = true;
-            return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-        } else {
-            returnBool = false;
-        }
-    }
-
-    if (!returnBool)
-        return false;
-}
-
 setInterval(function () {
     $.get(baseUrl + 'ping');
 }, 60000);
@@ -479,20 +472,14 @@ function hashCode(str) {
 }
 
 function downloadCode() {
-    var projXMLcode = window.frames["content_blocks"].getXml(); //projectData['code'];
+    var projXMLcode = getXml(); //projectData['code'];
     projXMLcode = projXMLcode.substring(42, projXMLcode.length);
     projXMLcode = projXMLcode.substring(0, (projXMLcode.length - 6));
 
     utils.prompt(Blockly.Msg.DIALOG_DOWNLOAD, 'Project' + idProject, function (value) {
         if (value) {
-            // extract the SVG from the iFrame that contains it
-            var x = document.getElementsByName("content_blocks");
-            var y = (x[0].contentWindow || x[0].contentDocument);
-            if (y.document)
-                y = y.document;
-
             // get the paths of the blocks themselves and the size/position of the blocks
-            var projSVG = y.getElementsByClassName('blocklyBlockCanvas');
+            var projSVG = document.getElementsByClassName('blocklyBlockCanvas');
             var projSVGcode = projSVG[0].outerHTML.replace(/&nbsp;/g, ' ');
             var projSize = projSVG[0].getBoundingClientRect();
             var projH = (parseInt(projSize.height) + parseInt(projSize.top) + 100).toString();
@@ -640,12 +627,12 @@ function replaceCode() {
         newCode = newCode.substring(42, newCode.length);
         newCode = newCode.substring(0, (newCode.length - 29));
 
-        window.frames["content_blocks"].location.reload();
-        window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init(projectData['board'], []);
+        location.reload();
+        setProfile(projectData['board']);
+        initToolbox(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
         $(window).load(function () {
-            window.frames["content_blocks"].load(projectData['code']);
+            loadToolbox(projectData['code']);
             uploadStaged = false;
         });
 
@@ -665,16 +652,151 @@ function appendCode() {
         newCode = newCode.substring(42, newCode.length);
         newCode = newCode.substring(0, (newCode.length - 6));
 
-        window.frames["content_blocks"].location.reload();
-        window.frames["content_blocks"].setProfile(projectData['board']);
-        window.frames["content_blocks"].init(projectData['board'], []);
+        location.reload();
+        setProfile(projectData['board']);
+        initToolbox(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
         $(window).load(function () {
-            window.frames["content_blocks"].load(projectData['code']);
+            loadToolbox(projectData['code']);
             uploadStaged = false;
         });
 
         // Reset all of the upload fields and containers
         clearUploadInfo();
     }
+}
+
+function filterToolbox(profileName, peripherals) {
+    var componentlist = peripherals.slice();
+    componentlist.push(profileName);
+
+    $("#toolbox").find('category').each(function () {
+        var toolboxEntry = $(this);
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        // Remove toolbox categories that are experimental if not in demo
+        var experimental = toolboxEntry.attr('experimental');
+        if (experimental && inDemo !== 'demo') {
+            toolboxEntry.remove();
+        }
+        
+        // Set the category's label
+        var catKey = toolboxEntry.attr('key');
+        if (catKey) {
+            toolboxEntry.attr('name', toolbox_label[catKey]);
+        }
+
+        if (document.referrer.indexOf('?') !== -1) {
+            if (document.referrer.split('?')[1].indexOf('grayscale=1') > -1) {
+                var colorChanges = {
+                    '140': '#AAAAAA',
+                    '165': '#222222',
+                    '185': '#333333',
+                    '205': '#444444',
+                    '225': '#555555',
+                    '250': '#666666',
+                    '275': '#777777',
+                    '295': '#888888',
+                    '320': '#999999',
+                    '340': '#111111'
+                };
+                var colour = toolboxEntry.attr('colour');
+                if (colour)
+                    toolboxEntry.attr('colour', colorChanges[colour]);
+            }
+        }
+    });
+    $("#toolbox").find('sep').each(function () {
+        var toolboxEntry = $(this);
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+    });
+
+    $("#toolbox").find('block').each(function () {
+        var toolboxEntry = $(this);
+        
+        // Remove toolbox categories that are experimental if not in demo
+        var experimental = toolboxEntry.attr('experimental');
+        if (experimental && inDemo !== 'demo') {
+            toolboxEntry.remove();
+        }
+    });
+
+}
+
+// http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
+/**
+ * @description determine if an array contains one or more items from another array.
+ * @param {array} haystack the array to search.
+ * @param {array} arr the array providing items to check for in the haystack.
+ * @return {boolean} true|false if haystack contains at least one item from arr.
+ */
+var findOne = function (haystack, arr) {
+    return arr.some(function (v) {
+        // console.log(v + " " + (haystack.indexOf(v) >= 0));
+        return haystack.indexOf(v) >= 0;
+    });
+};
+
+function initToolbox(profileName, peripherals) {
+    filterToolbox(profileName, peripherals);
+
+    Blockly.inject('content_blocks', {
+        toolbox: document.getElementById('toolbox'),
+        trashcan: true,
+        media: cdnUrl + 'blockly/media/',
+        path: cdnUrl + 'blockly/',
+        comments: false
+    });
+    
+    init(Blockly);
+}
+
+function clearXml() {
+    Blockly.mainWorkspace.clear();
+}
+
+function loadToolbox(xmlText) {
+    var xmlDom = Blockly.Xml.textToDom(xmlText);
+    Blockly.Xml.domToWorkspace(xmlDom, Blockly.mainWorkspace);
+}
+
+function getXml() {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    return Blockly.Xml.domToText(xml);
+}
+
+function showOS(o) {
+    $("body").removeClass('Windows')
+            .removeClass('MacOS')
+            .removeClass('Linux')
+            .removeClass('ChromeOS');
+    $("body").addClass(o);
 }
