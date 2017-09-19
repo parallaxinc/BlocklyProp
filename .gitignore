@@ -4,6 +4,7 @@ build.properties
 ## Blockly Files
 #################
 # /src/main/**/logback.xml
+nb*
 
 #################
 ## NetBeans

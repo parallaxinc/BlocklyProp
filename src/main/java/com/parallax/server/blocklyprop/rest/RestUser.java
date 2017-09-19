@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
  * @author Michel
  */
 @Path("/user")
-@Group(name = "/user", title = "User info")
+@Group(name = "/user", title = "User information")
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestUser {
 
