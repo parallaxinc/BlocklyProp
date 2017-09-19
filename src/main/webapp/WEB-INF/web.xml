@@ -51,6 +51,12 @@
     optional <init-param> elements.
     -->
     
+    <!--
+    Assuming that a Shiro INI Configuration file is located at either of the
+    following two locations, using whichever is found first:
+        /WEB-INF/shiro.ini
+        shiro.ini file at the root of the classpath.
+    -->
     <filter>
         <filter-name>ShiroFilter</filter-name>
         <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
@@ -63,6 +69,8 @@
         <dispatcher>INCLUDE</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
+    
+    
     <!-- Guice - A lightweight dependency injection framework           -->
     <!-- Reference:                                                     -->
     <!-- https://github.com/google/guice                                -->
@@ -74,6 +82,7 @@
         <filter-name>GuiceFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
     <!-- Listeners -->
     <!-- Guice -->
     <listener>

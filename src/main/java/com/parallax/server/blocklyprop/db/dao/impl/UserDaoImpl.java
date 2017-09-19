@@ -136,9 +136,23 @@ public class UserDaoImpl implements UserDao {
         return record;
     }
 
+    /***
+     * Get a blocklyprop user id based on the cloud session user id
+     * <p>
+     * This method looks for the cloud session user id in the blocklyprop
+     * user table. If the cloud session id is not found, this method will
+     * create a new blocklyprop user id and return that id to the caller.
+     * @param id The cloud session user id
+     * @return  The blocklyprop user id associated with the cloudsession user id
+     */
     @Override
     public Long getUserIdForCloudSessionUserId(Long id) {
-        Long idUser = create.select(Tables.USER.ID).from(Tables.USER).where(Tables.USER.IDCLOUDSESSION.eq(id)).fetchOneInto(Long.class);
+        Long idUser = create
+                .select(Tables.USER.ID)
+                .from(Tables.USER)
+                .where(Tables.USER.IDCLOUDSESSION.eq(id))
+                .fetchOneInto(Long.class);
+        
         if (idUser == null) {
             UserRecord user = create(id);
             return user.getId();
