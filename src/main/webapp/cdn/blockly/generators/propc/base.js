@@ -1863,13 +1863,13 @@ Blockly.Blocks.map_value = {
         this.appendDummyInput()
                 .appendField("with range")
                 .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "IMIN")
-                .appendField("(min)")
+                .appendField("(from A)")
                 .appendField(new Blockly.FieldTextInput("50", Blockly.FieldTextInput.numberValidator), "IMAX")
-                .appendField("(max) to range")
+                .appendField("(from B) to range")
                 .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "FMIN")
-                .appendField("(min)")
+                .appendField("(to A)")
                 .appendField(new Blockly.FieldTextInput("100", Blockly.FieldTextInput.numberValidator), "FMAX")
-                .appendField("(max)");
+                .appendField("(to B)");
         this.setInputsInline(true);
         this.setOutput(true, "Number");
     }

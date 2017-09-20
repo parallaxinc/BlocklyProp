@@ -194,8 +194,8 @@ def gen_compressed(filenames, target_filename):
       print 'UNKNOWN ERROR'
 
 if __name__ == '__main__':
-  #gen_uncompressed(filenames_cores, 'compressed/propc_cores.js')
-  #gen_uncompressed(filenames_libs, 'compressed/propc_libs.js')
-  #gen_compressed(filenames_setups, 'compressed/propc_setups.min.js')
-  #gen_compressed(filenames_gens, 'compressed/propc_gens.min.js')
+  gen_uncompressed(filenames_cores, 'compressed/propc_cores.js')
+  gen_uncompressed(filenames_libs, 'compressed/propc_libs.js')
+  gen_compressed(filenames_setups, 'compressed/propc_setups.min.js')
+  gen_compressed(filenames_gens, 'compressed/propc_gens.min.js')
   gen_compressed_css(filenames_styles, 'compressed/propc_styles.css')
