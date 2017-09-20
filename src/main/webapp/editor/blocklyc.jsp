@@ -1364,6 +1364,7 @@
                                         </value>
                                     </block>
                                     <block type="ab_drive_stop"></block>
+                                    <block type="ab_drive_get_ticks"></block>
                                     <block type="activitybot_calibrate"></block>
                                     <block type="activitybot_display_calibration"></block>
                                 </category>
@@ -1562,20 +1563,41 @@
                                         -->
                                         <block type="scribbler_serial_rx_byte"></block>
                                     </category>
-                                    <category name="82" key="category_s3-actions_reset" include="s3">
+                                    <category name="82" key="category_memory" include="s3">
+                                        <block type="s3_eeprom_read">
+                                            <value name="ADDR">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="s3_eeprom_write">
+                                            <value name="ADDR">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                            <value name="VALUE">
+                                                <block type="math_number">
+                                                    <field name="NUM">0</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </category>
+                                    <category name="83" key="category_s3-actions_reset" include="s3">
                                         <block type="factory_reset"></block>
                                     </category>
                                 </category>
-                                <category name="" key="category_s3-hacker-port" include="s3" colour="295">
-                                    <category name="83" key="category_s3-hacker-port_sensors" >
+                                <category name="84" key="category_s3-hacker-port" include="s3" colour="295">
+                                    <category name="85" key="category_s3-hacker-port_sensors" >
                                         <block type="scribbler_ping"></block>
                                     </category>
-                                    <category name="84" key="category_s3-hacker-port_pins" >
+                                    <category name="86" key="category_s3-hacker-port_pins" >
                                         <block type="make_pin"></block>
                                         <block type="check_pin"></block>
                                         <block type="analog_input"></block>
                                     </category>
-                                    <category name="85" key="category_s3-hacker-port_servo" >
+                                    <category name="87" key="category_s3-hacker-port_servo" >
                                         <block type="servo_move">
                                             <value name="ANGLE">
                                                 <block type="math_number">
@@ -1587,7 +1609,7 @@
                                     </category>
                                 </category>
 
-                                <category name="86" key="category_system" include="other" colour="320">
+                                <category name="88" key="category_system" include="other" colour="320">
                                     <block type="waitcnt">
                                         <value name="TARGET">
                                             <block type="math_arithmetic">

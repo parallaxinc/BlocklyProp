@@ -1060,7 +1060,7 @@ Blockly.propc.stall_sensor = function () {
     return [choice, Blockly.propc.ORDER_ATOMIC];
 };
 
-
+//Unused? - Possibly delete:
 Blockly.Blocks.button_pressed = {
     init: function () {
         this.appendDummyInput("")
@@ -1125,39 +1125,6 @@ Blockly.propc.reset_button_presses = function () {
     return ['s3_resetButtonCount()', Blockly.propc.ORDER_ATOMIC];
 };
 
-/*
-Blockly.Blocks.scribbler_servo = {
-    init: function () {
-        this.appendValueInput("SERVO_ANGLE")
-                .setCheck("Number")
-                .appendField("servo on")
-                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "SERVO_PIN")
-                .appendField("rotate to angle (degrees)");
-        this.setInputsInline(false);
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('robot'));
-        this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_SERVO_TOOLTIP);
-    }
-};
-
-Blockly.propc.scribbler_servo = function () {
-    var dropdown_pin = this.getFieldValue('SERVO_PIN');
-    var degrees = Blockly.propc.valueToCode(this, 'SERVO_ANGLE', Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
-    if (degrees < 0) {
-        degrees = 0;
-    }
-    if (degrees > 180) {
-        degrees = 180;
-    }
-    var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
-    return code;
-};
-*/
-
 Blockly.Blocks.scribbler_stop_servo = {
     init: function () {
         if (profile.default.description === "Scribbler Robot") {
@@ -1183,6 +1150,7 @@ Blockly.propc.scribbler_stop_servo = function () {
     return 'servo_disable(' + this.getFieldValue('SERVO_PIN') + ');\n';
 };
 
+// Unused?  Possibly delete?
 Blockly.Blocks.scribbler_ping = {
     init: function () {
         this.appendDummyInput("")
@@ -1208,59 +1176,6 @@ Blockly.propc.scribbler_ping = function () {
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
-/*
-Blockly.Blocks.digital_input = {
-    init: function () {
-        this.appendDummyInput("")
-                .appendField("check PIN")
-                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
-        this.setOutput(true, "Number");
-        this.setColour(colorPalette.getColor('io'));
-        this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_DIGITAL_INPUT_TOOLTIP);
-    }
-};
-
-Blockly.propc.digital_input = function () {
-    var pin = this.getFieldValue('PIN');
-    return ['input(' + pin + ')', Blockly.propc.ORDER_ATOMIC];
-};
-
-Blockly.Blocks.digital_output = {
-    init: function () {
-        this.appendDummyInput("")
-                .appendField("make PIN")
-                .appendField(new Blockly.FieldDropdown([['P0', '0'], ['P1', '1'], ['P2', '2'], ['P3', '3'], ['P4', '4'], ['P5', '5']]), "PIN");
-        this.appendDummyInput("")
-                .appendField(" ")
-                .appendField(new Blockly.FieldDropdown([['high', "HIGH"], ['low', "LOW"], ['input', "INPUT"], ['toggle state', "TOGGLE"], ['toggle direction', "REVERSE"]]), "ACTION");
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('io'));
-        this.setHelpUrl(Blockly.MSG_S3_IO_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_DIGITAL_OUTPUT_TOOLTIP);
-    }
-};
-
-Blockly.propc.digital_output = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
-    var dropdown_action = this.getFieldValue('ACTION');
-    switch (dropdown_action) {
-        case "HIGH":
-            return 'high(' + dropdown_pin + ');\n';
-        case "LOW":
-            return 'low(' + dropdown_pin + ');\n';
-        case "TOGGLE":
-            return 'toggle(' + dropdown_pin + ');\n\tset_direction(' + dropdown_pin + ', 1);\n';
-        case "INPUT":
-            return 'set_direction(' + dropdown_pin + ', 0);\n';
-        case "REVERSE":
-            return 'reverse(' + dropdown_pin + ');\n';
-    }
-};
-*/
-
 Blockly.Blocks.analog_input = {
     init: function () {
         this.appendDummyInput("")
@@ -1278,179 +1193,6 @@ Blockly.propc.analog_input = function () {
     var pin = this.getFieldValue('PIN');
     return ['s3_readADC(S3_ADC_A' + pin + ')', Blockly.propc.ORDER_ATOMIC];
 };
-
-/*
-Blockly.Blocks.spin_integer = {
-    init: function () {
-        this.appendDummyInput('MAIN')
-                .appendField(new Blockly.FieldTextInput('10', Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
-        this.setColour(colorPalette.getColor('math'));
-        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_SPIN_INTEGER_TOOLTIP);
-        this.appendDummyInput('HIDDENVALS')
-                .appendField('', 'RVALS')
-                .appendField('', 'CONN')
-                .setVisible(false);
-        this.setOutput(true, 'Number');
-        this.connection_id_ = null;
-        this.onchange();
-    },
-    onchange: function () {
-        var rangeVals = ['N', '-100', '100', '0'];
-        var range = [-100, 100, 0];
-        var data = this.getFieldValue('INT_VALUE');
-
-        if (this.outputConnection) {
-            if (this.outputConnection.targetBlock() !== null) {
-                var key, inputvalue, _connectedField;
-                var _blockFields = this.outputConnection.targetBlock().getInputWithBlock(this).fieldRow;
-                for (key in _blockFields) {
-                    if (_blockFields.hasOwnProperty(key) && !isNaN(parseInt(key, 10))) {
-                        inputvalue = _blockFields[key].name || ' ';
-                        if (inputvalue.substring(0, 9) === "RANGEVALS") {
-                            _connectedField = inputvalue;
-                            break;
-                        }
-                    }
-                }
-                var sourceBlock_ = this.outputConnection.targetBlock();
-                if (sourceBlock_) {
-                    var fieldListing = sourceBlock_.getFieldValue(_connectedField);
-                    if (fieldListing) {
-                        rangeVals = fieldListing.split(',');
-                        if (rangeVals[0] === 'S' || rangeVals[0] === 'R' || rangeVals[0] === 'A') {
-                            var idx;
-                            for (idx = 1; idx <= rangeVals.length; idx++)
-                                range[idx - 1] = Number(rangeVals[idx]);
-                        }
-                    }
-                }
-                if (this.outputConnection.targetBlock().getInputWithBlock(this) !== this.connection_id_) {
-                    var theVal = this.getFieldValue('INT_VALUE');
-                    this.removeInput('MAIN');
-                    if (rangeVals[0] === 'S') {
-                        var theNum = Number(theVal);
-                        if (theNum > range[1])
-                            theNum = range[1];
-                        if (theNum < range[0])
-                            theNum = range[0];
-                        this.setWarningText(null);
-                        this.appendDummyInput('MAIN')
-                                .appendField(new Blockly.FieldRange(theNum.toString(10),
-                                        range[0].toString(10), range[1].toString(10)), 'INT_VALUE');
-                    } else {
-                        this.appendDummyInput('MAIN')
-                                .appendField(new Blockly.FieldTextInput(theVal,
-                                        Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
-                    }
-                }
-                this.connection_id_ = this.outputConnection.targetBlock().getInputWithBlock(this);
-            } else {
-                if (this.connection_id_) {
-                    var theVal = this.getFieldValue('INT_VALUE');
-                    this.removeInput('MAIN');
-                    this.appendDummyInput('MAIN')
-                            .appendField(new Blockly.FieldTextInput(theVal,
-                                    Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
-                }
-                this.connection_id_ = null;
-                rangeVals = ['N', '-100', '100', '0'];
-            }
-        }
-        range[2] = Number(this.getFieldValue('INT_VALUE'));
-        if (rangeVals) {
-            if (rangeVals[0] === 'R') {
-                if (range[2] < range[0]) {
-                    this.setWarningText('WARNING: Your value is too small!  It must be greater than or equal to ' + range[0].toString(10));
-                } else if (range[2] > range[1]) {
-                    this.setWarningText('WARNING: Your value is too large!  It must be less than or equal to ' + range[1].toString(10));
-                } else {
-                    this.setWarningText(null);
-                }
-            } else if (rangeVals[0] === 'A') {
-                var warnMsg = 'none';
-                var idx;
-                for (idx = 0; idx < range.length; idx++)
-                    if (range[2] === Number(rangeVals[idx]))
-                        warnMsg = 'match';
-                if (warnMsg === 'none') {
-                    this.setWarningText('WARNING: The value you entered is not available or not allowed!');
-                } else {
-                    this.setWarningText(null);
-                }
-            } else if (rangeVals[0] === 'S') {
-                this.setWarningText(null);
-            } else {
-                this.setWarningText(null);
-            }
-            if (rangeVals[0] === 'R' && (range[2] < range[0] || range[2] > range[1]) && Math.abs(range[0] - range[1]) <= 10000000) {
-                if (this.getField('TITLE')) {
-                    if (range[1] >= 2147483647) {
-                        this.setFieldValue('(\u2265 ' + range[0].toString(10) + ')', 'TITLE');
-                    } else if (range[0] <= -2147483647) {
-                        this.setFieldValue('(\u2264' + range[1].toString(10) + ')', 'TITLE');
-                    } else {
-                        this.setFieldValue('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
-                    }
-                } else {
-                    this.removeInput('MAIN');
-                    this.appendDummyInput('MAIN')
-                            .appendField(new Blockly.FieldTextInput(data,
-                                    Blockly.FieldTextInput.numberValidator), 'INT_VALUE')
-                            .appendField('', 'TITLE');
-                }
-            } else {
-                if (this.getField('TITLE')) {
-                    this.removeInput('MAIN');
-                    if (rangeVals[0] === 'S') {
-                        this.appendDummyInput('MAIN')
-                                .appendField(new Blockly.FieldRange(data, range[0].toString(10), range[1].toString(10)), 'INT_VALUE');
-                    } else {
-                        this.appendDummyInput('MAIN')
-                                .appendField(new Blockly.FieldTextInput(data,
-                                        Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
-                    }
-                }
-            }
-            this.setFieldValue(rangeVals.toString(), 'RVALS');
-        } else {
-            if (this.getField('TITLE')) {
-                this.removeInput('MAIN');
-                this.appendDummyInput('MAIN')
-                        .appendField(new Blockly.FieldTextInput(data,
-                                Blockly.FieldTextInput.numberValidator), 'INT_VALUE');
-            }
-            this.setFieldValue('', 'RVALS');
-            this.setWarningText(null);
-        }
-    }
-};
-
-Blockly.propc.spin_integer = function () {
-    var code = window.parseInt(this.getFieldValue('INT_VALUE'));
-    var order = code < 0 ? Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
-    return [code, order];
-};
-
-Blockly.Blocks.math_int_angle = {
-    init: function () {
-        this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_MATH_INT_ANGLE_TOOLTIP);
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldAngle('90', Blockly.FieldTextInput.numberValidator), 'ANGLE_VALUE');
-
-        this.setOutput(true, 'Number');
-        this.setColour(colorPalette.getColor('math'));
-    }
-};
-
-Blockly.propc.math_int_angle = function () {
-    var code = window.parseInt(this.getFieldValue('ANGLE_VALUE'));
-    var order = code < 0 ?
-            Blockly.propc.ORDER_UNARY_PREFIX : Blockly.propc.ORDER_ATOMIC;
-    return [code, order];
-};
-*/
 
 Blockly.Blocks.scribbler_boolean = {
     init: function () {
@@ -1500,36 +1242,6 @@ Blockly.Blocks.scribbler_random_number = {
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_RANDOM_NUMBER_TOOLTIP);
     }
 };
-
-/*
-Blockly.propc.scribbler_random_number = function () {
-    Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
-    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
-    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
-
-    var code = '(' + arg1 + ' + rand() % (' + arg2 + ' - ' + arg1 + ' + 1))';
-    return [code, Blockly.propc.ORDER_ATOMIC];
-};
-
-Blockly.Blocks.spin_comment = {
-    init: function () {
-        this.appendDummyInput("")
-                .appendField("note:")
-                .appendField(new Blockly.FieldTextInput(""), "COMMENT");
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true, null);
-        this.setColour(colorPalette.getColor('programming'));
-        this.setHelpUrl(Blockly.MSG_S3_CONTROL_HELPURL);
-        this.setTooltip(Blockly.MSG_S3_SPIN_COMMENT_TOOLTIP);
-    }
-};
-
-Blockly.propc.spin_comment = function () {
-    var text = this.getFieldValue("COMMENT");
-
-    return '// ' + text + '\n';
-};
-*/
 
 Blockly.Blocks.factory_reset = {
     init: function () {
@@ -1753,6 +1465,53 @@ Blockly.propc.mic_s3_get = function () {
 
     var code = 's3_readMic()';
     return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+Blockly.Blocks.s3_eeprom_read = {
+    helpUrl: Blockly.MSG_S3_MEMORY_HELPURL,
+    init: function() {      
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_MEMORY_READ_TOOLTIP);
+        this.appendValueInput("ADDR")
+            .setCheck('Number')
+            .appendField('R,0,7936,0', 'RANGEVALS0')
+            .appendField("memory read from address");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.setInputsInline(true);
+        this.setOutput(true, 'Number');
+        this.setColour(colorPalette.getColor('input'));
+  }
+};
+
+Blockly.propc.s3_eeprom_read = function () {
+    var addr = Blockly.propc.valueToCode(this, 'ADDR', Blockly.propc.ORDER_NONE);
+    var code = 's3_memoryRead(' + addr + ')';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
+
+Blockly.Blocks.s3_eeprom_write = {
+    helpUrl: Blockly.MSG_S3_MEMORY_HELPURL,
+    init: function() {
+        this.setTooltip(Blockly.MSG_S3_SCRIBBLER_MEMORY_WRITE_TOOLTIP);
+        this.appendValueInput("VALUE")
+            .setCheck('Number')
+            .appendField("memory write");
+        this.appendValueInput("ADDR")
+            .setCheck('Number')
+            .appendField('R,0,7936,0', 'RANGEVALS0')
+            .appendField("to address");
+        this.getField('RANGEVALS0').setVisible(false);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+        this.setInputsInline(true);
+        this.setColour(colorPalette.getColor('input'));
+  }
+};
+
+Blockly.propc.s3_eeprom_write = function () {
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE);
+    var addr = Blockly.propc.valueToCode(this, 'ADDR', Blockly.propc.ORDER_NONE);
+    var code = 's3_memoryWrite(' + addr + ', ' + value + ');\n';
+    return code;
 };
 
 Blockly.Blocks.calibrate_line_sensor = {
