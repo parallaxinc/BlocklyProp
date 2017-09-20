@@ -279,10 +279,10 @@ Blockly.Blocks.get_pins = {
         this.appendDummyInput("")
                 .appendField("get the")
                 .appendField(new Blockly.FieldDropdown([["states", "STATE"], ["directions", "DIRECTION"]]), "ACTION")
-                .appendField("to highest PIN")
-                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT")
                 .appendField("from lowest PIN")
-                .appendField(new Blockly.FieldDropdown(pin_count), "START_PIN");
+                .appendField(new Blockly.FieldDropdown(pin_count), "START_PIN")
+                .appendField("to highest PIN")
+                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT");
     }
 };
 
@@ -323,10 +323,10 @@ Blockly.Blocks.set_pins_binary = {
         this.appendValueInput("VALUE")
                 .appendField("set the")
                 .appendField(new Blockly.FieldDropdown([["states", "STATE"], ["directions", "DIRECTION"]]), "ACTION")
-                .appendField("to highest PIN")
-                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT")
                 .appendField("from lowest PIN")
                 .appendField(new Blockly.FieldDropdown(pin_count), "START_PIN")
+                .appendField("to highest PIN")
+                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT")
                 .appendField("using bits from")
                 .setCheck('Number');
     }
@@ -497,7 +497,9 @@ Blockly.Blocks.eeprom_write = {
         this.appendValueInput("DATA")
                 .setCheck(null)
                 .appendField("EEPROM write")
-                .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE");
+                .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]], function (type) {
+                    this.sourceBlock_.setOutputType_(type);
+                }), "TYPE");
         this.appendValueInput("ADDRESS")
                 .appendField('R,0,7675,0', 'RANGEVALS0')
                 .setCheck("Number")
@@ -506,11 +508,21 @@ Blockly.Blocks.eeprom_write = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.onchange();
+        this.setOutputType_(this.getFieldValue('DATA'));
     },
-    onchange: function () {
+    mutationToDom: function () {
+        // Create XML to represent menu options.
+        var container = document.createElement('mutation');
+        container.setAttribute('type', this.getFieldValue('DATA'));
+        return container;
+    },
+    domToMutation: function (container) {
+        // Parse XML to restore the menu options.
+        this.setOutputType_(container.getAttribute('type') || 'NUMBER');
+    },
+    setOutputType_: function (type) {
         var setType = "Number";
-        if (this.getFieldValue('TYPE') === 'TEXT') {
+        if (type === 'TEXT') {
             setType = "String";
         }
         this.getInput('DATA').setCheck(setType);
