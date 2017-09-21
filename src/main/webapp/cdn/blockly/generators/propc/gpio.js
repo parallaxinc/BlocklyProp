@@ -518,7 +518,11 @@ Blockly.Blocks.eeprom_write = {
     },
     domToMutation: function (container) {
         // Parse XML to restore the menu options.
-        this.setOutputType_(container.getAttribute('type') || 'NUMBER');
+        var savedType = container.getAttribute('type');
+        if(!savedType) {
+            savedType = this.getFieldValue('TYPE');
+        }
+        this.setOutputType_(savedType || 'NUMBER');
     },
     setOutputType_: function (type) {
         var setType = "Number";
