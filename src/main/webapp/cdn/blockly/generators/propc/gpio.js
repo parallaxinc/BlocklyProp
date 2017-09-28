@@ -1252,12 +1252,11 @@ Blockly.Blocks.ab_drive_ramping = {
         this.setTooltip(Blockly.MSG_ROBOT_RAMPING_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput('ACCEL')
-                .appendField("Robot set acceleration for", "TITLE")
+                .appendField("Robot set acceleration for")
                 .appendField(new Blockly.FieldDropdown([
-                    ["speed", "FOR_SPEED"],
-                    ["distance", "FOR_GOTO"]
+                    ["speed blocks to", "FOR_SPEED"],
+                    ["distance blocks to", "FOR_GOTO"]
                 ]), "OPS")
-                .appendField("blocks to", "TITLE_2")
                 .appendField(new Blockly.FieldDropdown([
                     ["2000 ticks/s\u00B2", "2000"],
                     ["1600 ticks/s\u00B2 (jerky)", "1600"],
@@ -1271,7 +1270,24 @@ Blockly.Blocks.ab_drive_ramping = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.whichBot();
+        this.isBot = '';
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('bot', this.isBot);
+        container.setAttribute('ramp', this.getFieldValue('RAMPING') || '600');
+        container.setAttribute('type', this.getFieldValue('OPS') || 'FOR_SPEED');
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var bot = xmlElement.getAttribute('bot');
+        var type = xmlElement.getAttribute('type') || this.getFieldValue('OPS');
+        var ramp = xmlElement.getAttribute('ramp') || this.getFieldValue('RAMPING');
+        if (bot) {
+            this.newRobot(bot, type, ramp);
+        } else {
+            this.whichBot();
+        }
     },
     whichBot: function () {
         var whichRobot = '';
@@ -1284,28 +1300,48 @@ Blockly.Blocks.ab_drive_ramping = {
             whichRobot = 'arlodrive.h';
         else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
             whichRobot = 'servodiffdrive.h';
-        this.newRobot(whichRobot);
+        if (this.type === 'ab_drive_ramping') {
+            var ramp = this.getFieldValue('RAMPING') || '600';
+            var type = this.getFieldValue('OPS') || 'FOR_SPEED';
+            this.isBot = whichRobot;
+            this.newRobot(whichRobot, type, ramp);
+        } else {
+            this.newRobot(whichRobot);
+        }
     },
-    newRobot: function (robot) {
+    newRobot: function (robot, type, ramp) {
         this.setWarningText(null);
+        var accelMenu = [
+                    ["2000 ticks/s\u00B2", "2000"],
+                    ["1600 ticks/s\u00B2 (jerky)", "1600"],
+                    ["1200 ticks/s\u00B2", "1200"],
+                    ["800 ticks/s\u00B2 (peppy)", "800"],
+                    ["600 ticks/s\u00B2", "600"],
+                    ["400 ticks/s\u00B2 (smooth)", "400"],
+                    ["200 ticks/s\u00B2", "200"],
+                    ["100 ticks/s\u00B2 (sluggish)", "100"]
+                ];
+        this.removeInput('ACCEL');
         if (robot === 'abdrive.h' || robot === 'arlodrive.h' || robot === 'abdrive360.h') {
-            this.setFieldValue("Robot set acceleration for", "TITLE");
-            this.getField("TITLE_2").setVisible(true);
-            this.getField("OPS").setVisible(true);
-            this.getField("RAMPING").setVisible(true);
+            this.appendDummyInput('ACCEL')
+                .appendField("Robot set acceleration for")
+                .appendField(new Blockly.FieldDropdown([
+                    ["speed blocks to", "FOR_SPEED"],
+                    ["distance blocks to", "FOR_GOTO"]
+                ]), "OPS")
+                .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
+            this.setFieldValue(type || 'FOR_SPEED', 'OPS');
+            this.setFieldValue(ramp || '600', 'RAMPING');
         } else if (robot === '') {
             this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
-            this.setFieldValue("Robot set acceleration", "TITLE");
-            this.getField("TITLE_2").setVisible(false);
-            this.getField("OPS").setVisible(false);
-            this.getField("RAMPING").setVisible(false);
+            this.appendDummyInput('ACCEL')
+                .appendField("Robot set acceleration");
         } else {
-            this.setFieldValue("Robot set acceleration to", "TITLE");
-            this.getField("TITLE_2").setVisible(false);
-            this.getField("OPS").setVisible(false);
-            this.getField("RAMPING").setVisible(true);
+            this.appendDummyInput('ACCEL')
+                .appendField("Robot set acceleration to")
+                .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
+            this.setFieldValue(ramp || '600', 'RAMPING');
         }
-        //this.render();
     }
 };
 
