@@ -513,21 +513,24 @@ Blockly.Blocks.eeprom_write = {
     mutationToDom: function () {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
-        container.setAttribute('type', this.getFieldValue('DATA'));
+        container.setAttribute('type', this.getFieldValue('TYPE'));
         return container;
     },
     domToMutation: function (container) {
         // Parse XML to restore the menu options.
         var savedType = container.getAttribute('type');
-        if(!savedType) {
-            savedType = this.getFieldValue('TYPE');
+        if (!savedType) {
+            savedType = null;
         }
-        this.setOutputType_(savedType || 'NUMBER');
+        this.setOutputType_(savedType || null);
     },
     setOutputType_: function (type) {
         var setType = "Number";
         if (type === 'TEXT') {
             setType = "String";
+        }
+        if (type === null || type === 'null') {
+            setType = null;
         }
         this.getInput('DATA').setCheck(setType);
     }
@@ -676,7 +679,7 @@ Blockly.Blocks.servo_speed = {
         }
         this.setTooltip(Blockly.MSG_SERVO_SPEED_TOOLTIP);
         this.appendDummyInput()
-                .appendField("CR Servo PIN")
+                .appendField("CR servo PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
         this.appendValueInput("SPEED")
                 .appendField("speed")
@@ -702,7 +705,7 @@ Blockly.Blocks.servo_set_ramp = {
         this.setTooltip(Blockly.MSG_SERVO_SET_RAMP_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("CR Servo set ramp PIN")
+                .appendField("CR servo set ramp PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
         this.appendValueInput('RAMPSTEP')
                 .appendField("rampstep (0 - 100)")
@@ -727,6 +730,212 @@ Blockly.propc.servo_set_ramp = function () {
         Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
     }
     return 'servo_setramp(' + pin + ', ' + ramp_step + ');\n';
+};
+
+// --------- Feedback 360 servo blocks -----------------------------------------
+Blockly.Blocks.fb360_init = {
+    init: function () {
+        //this.setTooltip(Blockly.MSG_FB360_INIT_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendDummyInput()
+                .appendField("Feedback 360\u00b0 servo initialize PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField("FB")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "FB");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.fb360_init = function () {
+    var pin = this.getFieldValue("PIN");
+    var fb = this.getFieldValue("FB");
+
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include servo360"] = '#include "servo360.h"';
+        Blockly.propc.setups_["servo360_" + pin] = 'servo360_connect(' + pin + ',' + fb + ');\n';
+    }
+    return '';
+};
+
+Blockly.Blocks.fb360_setup = {
+    init: function () {
+        //this.setTooltip(Blockly.MSG_FB360_SETUP_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendDummyInput()
+                .appendField("Feedback 360\u00b0 servo PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown([
+                    ['set acceleration to', 'setAcceleration'],
+                    ['set max speed (+/-) to', 'setMaxSpeed']
+                ], function (param) {
+                    this.sourceBlock_.updateShape_(param);
+                }), "PARAM");
+        this.appendDummyInput('OPTION')
+                .appendField(new Blockly.FieldDropdown([
+                    ["7200\u00B0/s\u00B2", "2000"],
+                    ["4800\u00B0/s\u00B2 (peppy)", "1200"],
+                    ["3600\u00B0/s\u00B2", "800"],
+                    ["2400\u00B0/s\u00B2 (smooth)", "400"],
+                    ["1200\u00B0/s\u00B2", "200"],
+                    ["600\u00B0/s\u00B2 (sluggish)", "100"]
+                ]), "VALUE");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    updateShape_: function (param) {
+        this.removeInput('OPTION');
+        if (param === 'setAcceleration') {
+            this.appendDummyInput('OPTION')
+                    .appendField(new Blockly.FieldDropdown([
+                        ["7200\u00B0/s\u00B2", "2000"],
+                        ["4800\u00B0/s\u00B2 (peppy)", "1200"],
+                        ["3600\u00B0/s\u00B2", "800"],
+                        ["2400\u00B0/s\u00B2 (smooth)", "400"],
+                        ["1200\u00B0/s\u00B2", "200"],
+                        ["600\u00B0/s\u00B2 (sluggish)", "100"]
+                    ]), "VALUE");
+        } else {
+            this.appendDummyInput('OPTION')
+                    .appendField(new Blockly.FieldTextInput('1080', function (text) {
+                        var n = Blockly.FieldTextInput.numberValidator(text);
+                        if (n < 1)
+                            n = 1;
+                        if (n > 1080)
+                            n = 1080;
+                        return n;
+                    }), "VALUE")
+                    .appendField('\u00B0/s');
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('param', this.getFieldValue('PARAM'));
+        container.setAttribute('value', this.getFieldValue('VALUE'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var param = xmlElement.getAttribute('param');
+        var value = xmlElement.getAttribute('value');
+        this.updateShape_(param);
+        this.setFieldValue(value, 'VALUE');
+    },
+    onchange: function () {
+        var pinWarn = 'WARNING: You need a Feedback 360\u00B0 servo initialize block set to match the PIN on this block!';
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+
+        // Iterate through every block.
+        for (var x = 0; x < blocks.length; x++) {
+            var blockName = blocks[x].type;
+            var myPin = this.getFieldValue('PIN');
+            if (blockName === 'fb360_init' && (blocks[x].getFieldValue('PIN') === myPin || blocks[x].getFieldValue('FB') === myPin)) {
+                pinWarn = null;
+            }
+        }
+        this.setWarningText(pinWarn);
+    }
+};
+
+Blockly.propc.fb360_setup = function () {
+    var param = this.getFieldValue("PARAM");
+    var value = this.getFieldValue("VALUE") || '0';
+    var pin = this.getFieldValue("PIN");
+    
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
+        return 'servo360_' + param + '(' + pin + ', ' + value + ');\n';
+    } else {
+        return '// WARNING: You need a Feedback 360\u00B0 servo initialize block set to match the PIN on this block!';
+    }
+};
+
+Blockly.Blocks.fb360_set = {
+    init: function () {
+        //this.setTooltip(Blockly.MSG_FB360_SET_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendValueInput('VALUE')
+                .setCheck('Number')
+                .appendField("Feedback 360\u00b0 servo PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown([
+                    ['set speed to (+/-)', 'speed'],
+                    ['change position by (+/-)', 'goto']
+                ], function (param) {
+                    this.sourceBlock_.updateShape_(param);
+                }), "PARAM");
+        this.appendDummyInput()
+                .appendField('\u00B0/s', 'END');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    updateShape_: function (param) {
+        if (param === 'speed') {
+            this.setFieldValue('\u00B0/s', 'END');
+        } else {
+            this.setFieldValue('\u00B0', 'END');
+        }
+    },
+    onchange: Blockly.Blocks['fb360_setup'].onchange,
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('param', this.getFieldValue('PARAM'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var param = xmlElement.getAttribute('param');
+        this.updateShape_(param);
+    }
+};
+
+Blockly.propc.fb360_set = Blockly.propc.fb360_setup;
+
+Blockly.Blocks.fb360_get = {
+    init: function () {
+        //this.setTooltip(Blockly.MSG_FB360_SET_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendDummyInput('VALUE')
+                .appendField("Feedback 360\u00b0 servo PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField('position (\u00B0)');
+        this.setOutput(true, "Number");
+    },
+    onchange: Blockly.Blocks['fb360_setup'].onchange
+};
+
+Blockly.propc.fb360_get = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
+        return ['servo360_get(' + this.getFieldValue("PIN") + ')', Blockly.propc.ORDER_NONE];
+    } else {
+        return ['0', Blockly.propc.ORDER_NONE];
+    }
 };
 
 // --------- ActivityBoard A/D and D/A voltage measurement/generation blocks ---
@@ -967,10 +1176,10 @@ Blockly.Blocks.ab_drive_init = {
         this.appendDummyInput()
                 .appendField("Robot")
                 .appendField(new Blockly.FieldDropdown([
-            ["ActivityBot", "abdrive.h"], 
-        //    ["ActivityBot 360\u00b0", "abdrive360.h"], 
-            ["Arlo", "arlodrive.h"], 
-            ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
+                    ["ActivityBot", "abdrive.h"],
+                    //["ActivityBot 360\u00b0", "abdrive360.h"], 
+                    ["Arlo", "arlodrive.h"],
+                    ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
                     this.sourceBlock_.updateShape_({"BOT": bot});
                 }), "BOT")
                 .appendField("initialize");
@@ -1096,7 +1305,7 @@ Blockly.Blocks.ab_drive_ramping = {
             this.getField("OPS").setVisible(false);
             this.getField("RAMPING").setVisible(true);
         }
-        this.render();
+        //this.render();
     }
 };
 
@@ -1330,8 +1539,8 @@ Blockly.Blocks.ab_drive_speed = {
         } else if (robot === '') {
             warnText = 'WARNING: You must use a Robot initialize\nblock at the beginning of your program!';
             rangeText = 'N,0,0,0';
-        } 
-        
+        }
+
         this.appendValueInput("LEFT")
                 .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)

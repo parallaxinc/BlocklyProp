@@ -90,7 +90,6 @@ var colorPalette = {
         if (colorPalette.activePalette && colorPalette.activePalette[type] !== undefined) {
             return colorPalette.activePalette[type];
         }
-        console.log("Missing color type: " + type);
         return '#000000';
     }
 
@@ -343,7 +342,6 @@ Blockly.propc.finish = function (code) {
         // Excludes variables with "__" in the name for now because those are buffers for private functions
         // This is a temporary patch until I can figure something better out -MM
         if (definitions[def].indexOf("char *") > -1 && definitions[def].indexOf("__") === -1 && definitions[def].indexOf("rfidBfr") === -1 ) {
-            console.log(definitions[def]);
         //    definitions[def] = definitions[def].replace("char *", "char ").replace(";", "[128];");
             definitions[def] = definitions[def].replace(/char \*(\s*)(\w+);/g, 'char *$1$2' + bigStr + spaceAdd + endStr);
             spaceAdd += ' ';

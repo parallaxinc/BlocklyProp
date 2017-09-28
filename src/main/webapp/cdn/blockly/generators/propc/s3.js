@@ -1146,8 +1146,23 @@ Blockly.Blocks.scribbler_stop_servo = {
 };
 
 Blockly.propc.scribbler_stop_servo = function () {
-    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
-    return 'servo_disable(' + this.getFieldValue('SERVO_PIN') + ');\n';
+    var pin = this.getFieldValue('SERVO_PIN');
+    var addType = '';
+    var blocks = Blockly.getMainWorkspace().getAllBlocks();
+
+    // Iterate through every block - determine if we are trying to disable a feedback 360 servo or a CR/standard servo
+    for (var x = 0; x < blocks.length; x++) {
+        var blockName = blocks[x].type;
+        if (blockName === 'fb360_init' && (blocks[x].getFieldValue('PIN') === pin || blocks[x].getFieldValue('FB') === pin)) {
+            addType = '360';
+        }
+    }
+    
+    if (addType === '') {
+        Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
+    }
+    
+    return 'servo' + addType + '_disable(' + pin + ');\n';
 };
 
 // Unused?  Possibly delete?
