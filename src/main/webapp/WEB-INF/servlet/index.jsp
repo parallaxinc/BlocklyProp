@@ -83,7 +83,7 @@
                                 <a href="<url:getUrl url="/projects.jsp"/>"><span class="keyed-lang-string" key="menu_community_projects"></span></a>
                             </li>
                             <li id="my-projects-menu-item">
-                                    <a href="<url:getUrl url="/my/projects.jsp"/>"><span class="keyed-lang-string" key="menu_my_projects"></span></a>
+                                <a href="<url:getUrl url="/my/projects.jsp"/>"><span class="keyed-lang-string" key="menu_my_projects"></span></a>
                             </li>
                             <li id="new-project-menu-item">
                                 <a href="new-project" class="internav-link"><span class="keyed-lang-string" key="menu_newproject_title"></span></a>

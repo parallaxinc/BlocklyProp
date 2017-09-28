@@ -456,6 +456,11 @@
                                     </block>
                                     <block type="scribbler_exit_loop"></block>
                                     <block type="controls_if"></block>
+                                    <block type="controls_select">
+                                        <value name="SWITCH">
+                                            <block type="variables_get"></block>
+                                        </value>
+                                    </block>
                                     <block type="scribbler_wait">
                                         <value name="WAITTIME">
                                             <block type="math_number">
@@ -1325,6 +1330,12 @@
                                             </block>
                                         </value>
                                     </block>
+                                    <!--
+                                    <block type="fb360_init"></block>
+                                    <block type="fb360_setup"></block>
+                                    <block type="fb360_set"></block>
+                                    <block type="fb360_get"></block>
+                                    -->
                                     <block type="scribbler_stop_servo"></block>
                                 </category>
                                 <category name="67" key="category_robot"  include="activity-board" colour="295">

@@ -706,7 +706,7 @@ Blockly.Blocks.base_delay = {
     ,
     // For testing purposes - use the pause block to capture onchange events and report them to the console.
     onchange: function(event) {
-        console.log(event);
+        //console.log(event);
     }
     
 };
@@ -1511,7 +1511,8 @@ Blockly.propc.find_substring = function () {
     var subs = Blockly.propc.valueToCode(this, 'SUBSTR', Blockly.propc.ORDER_ATOMIC) || '';
     var strs = Blockly.propc.valueToCode(this, 'STR', Blockly.propc.ORDER_ATOMIC) || '';
 
-    Blockly.propc.definitions_['find_sub'] = 'int find_sub(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS + 1); }\n';
+    Blockly.propc.methods_['find_sub'] = 'int find_sub(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS + 1); }\n';
+    Blockly.propc.method_declarations_["find_sub"] = 'int find_sub(char *__strS, char *__subS);\n';
 
     var code = '';
 
