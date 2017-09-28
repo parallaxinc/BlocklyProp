@@ -892,8 +892,10 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         
         // Replace the Robot init block with two blocks, need to generate unique 20-digit blockID:
-        newCode = newCode.replaceAll("</field><field name=\"RAMPING\">", 
-                "</field></block><block type=\"ab_drive_ramping\" id=\"" + randomString(20) + "\"><field name=\"RAMPING\">");
+        if (!newCode.contains("block type=\"ab_drive_ramping\"")) {
+            newCode = newCode.replaceAll("</field><field name=\"RAMPING\">", 
+                    "</field></block><block type=\"ab_drive_ramping\" id=\"" + randomString(20) + "\"><field name=\"RAMPING\">");
+        }
         
         
         return newCode;
