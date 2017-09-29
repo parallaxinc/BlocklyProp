@@ -1,6 +1,6 @@
 var osName = 'unknown-client';
 
-var inDemo = $("meta[name=in-demo]").attr("content");;
+var inDemo = $("meta[name=in-demo]").attr("content");
 
 function nav(x, y, z) {
     z = z || y;

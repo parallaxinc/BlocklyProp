@@ -37,6 +37,12 @@ $(document).ready(function () {
     
     $('.url-prefix').attr('href', function(idx, cur) {return baseUrl + cur;});
     
+    // set the URLs for all of the CDN-sourced images
+    var imgs = document.getElementsByTagName('img');
+    for (l = 0; l < imgs.length; l++) {
+        imgs[l].src = cdnUrl + imgs[l].getAttribute('data-src');
+    }
+    
     idProject = getURLParameter('project');
     if (!idProject) {
         window.location = baseUrl;
