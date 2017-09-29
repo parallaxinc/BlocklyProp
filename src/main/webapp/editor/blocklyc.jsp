@@ -18,7 +18,11 @@
         <meta name="cdn" content="<url:getCdnUrl url="/"/>">
         <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
         <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>"
-        <meta name="application-name" content="&nbsp;"/>
+        <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
+        <meta name="win64client" content="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
+        <meta name="macOSclient" content="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
+              
+        <meta name="application-name" content="BlocklyProp"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
         <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />
         <link type="image/png" rel="apple-touch-icon-precomposed" sizes="57x57" href="<url:getCdnUrl url="/images/apple-touch-icon-57x57.png"/>" />
@@ -1796,11 +1800,120 @@
 
                     <div class="modal-body">
                         <div class="clients">
+                            
+                            <!-- MacOS instructions -->
+                            <div class="client-instructions MacOS">
+                                <h4><span class="keyed-lang-string" key="client_macOS_run_title"></span></h4>
+                                <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
+                                    <div id="mac1">
+                                        <p><span class="keyed-lang-string" key="client_macOS_run_instructions1"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/mac_os1.png"/></div>
+                                    </div>
+                                    <div id="mac2" class="hidden">
+                                        <p><span class="keyed-lang-string" key="client_macOS_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/mac_os2.png"/></div>
+                                    </div>
+                                    <div id="mac3" class="hidden">
+                                        <p><span class="keyed-lang-string" key="client_macOS_run_instructions3"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/mac_os3.png"/></div>
+                                    </div>
+                                    <div id="mac4" class="hidden">
+                                        <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
+                                    </div>
+                                </div>
+                                <div style="padding-top:10px;">
+                                    <button id="mac1-btn" class="btn btn-sm btn-primary" onclick="showStep('mac', 1, 4);"><span class="keyed-lang-string" key="client_run_step1"></span></button>
+                                    <button id="mac2-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 2, 4);"><span class="keyed-lang-string" key="client_run_step2"></span></button>
+                                    <button id="mac3-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 3, 4);"><span class="keyed-lang-string" key="client_run_step3"></span></button>
+                                    <button id="mac4-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 4, 4);"><span class="keyed-lang-string" key="client_run_step4"></span></button>
+                                </div>
+                            </div>
 
-                            <%@ include file="/WEB-INF/includes/pageparts/clientinstructions.jsp"%>
+                            <!-- Windows instructions -->
+                            <div class="client-instructions Windows">
+                                <h4><span class="keyed-lang-string" key="client_windows_run_title"></span></h4>
+                                <div style="background:#f5f5f5; border-radius:6px; height:250px; padding:6px;">
+                                    <div id="win1">
+                                        <p><span class="keyed-lang-string" key="client_windows_run_instructions1"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/windows1.png"/></div>
+                                    </div>
+                                    <div id="win2" class="hidden">
+                                        <p><span class="keyed-lang-string" key="client_windows_run_instructions2"></span></p>
+                                        <p><span class="keyed-lang-string" key="client_windows_run_instructions3"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/windows2.png"/></div>
+                                    </div>
+                                    <div id="win3" class="hidden">
+                                        <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
+                                    </div>
+                                </div>
+                                <div style="padding-top:10px;">
+                                    <button id="win1-btn" class="btn btn-sm btn-primary" onclick="showStep('win', 1, 3);"><span class="keyed-lang-string" key="client_run_step1"></span></button>
+                                    <button id="win2-btn" class="btn btn-sm btn-default" onclick="showStep('win', 2, 3);"><span class="keyed-lang-string" key="client_run_step2"></span></button>
+                                    <button id="win3-btn" class="btn btn-sm btn-default" onclick="showStep('win', 3, 3);"><span class="keyed-lang-string" key="client_run_step3"></span></button>
+                                </div>
+                            </div>
+
+                            <!-- Chrome OS instructions -->
+                            <div class="client-instructions ChromeOS">
+                                <h4><span class="keyed-lang-string" key="client_windows_run_title"></span></h4>
+                                <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
+                                    <div id="chr1">
+                                        <p><span class="keyed-lang-string" key="client_chrome_run_instructions1"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/chrome1.png"/></div>
+                                    </div>
+                                    <div id="chr2" class="hidden">
+                                        <p><span class="keyed-lang-string" key="client_chrome_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/chrome2.png"/></div>
+                                    </div>
+                                    <div id="chr3" class="hidden">
+                                        <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
+                                    </div>
+                                </div>
+                                <div style="padding-top:10px;">
+                                    <button id="chr1-btn" class="btn btn-sm btn-primary" onclick="showStep('chr', 1, 3);"><span class="keyed-lang-string" key="client_run_step1"></span></button>
+                                    <button id="chr2-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 2, 3);"><span class="keyed-lang-string" key="client_run_step2"></span></button>
+                                    <button id="chr3-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 3, 3);"><span class="keyed-lang-string" key="client_run_step3"></span></button>
+                                </div>
+                            </div>
                             <hr />
-                            <%@ include file="/WEB-INF/includes/pageparts/clientdownload.jsp"%>
+                            
+                            <!-- MacOS client -->
+                            <div class="client-instructions MacOS">
+                                <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
+                            </div>
+                            <div class="client MacOS">
+                                <img src="" data-src="images/os-icons/mac_os.png"/>
+                                <a href="#" id="client-mac-link">
+                                    <span class="keyed-lang-string" key="clientdownload_client_macos_installer"></span></a>
+                            </div>
 
+                            <!-- Windows clients -->
+                            <div class="client-instructions Windows">
+                                <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
+                            </div>
+                            <div class="client Windows">
+                                <img src="" data-src="images/os-icons/windows.png"/>
+                                <a href="#" id="client-win32-link">
+                                    <span class="keyed-lang-string" key="clientdownload_client_windows32_installer"></span></a>
+                            </div>
+                            <div class="client Windows">
+                                <img src="" data-src="images/os-icons/windows.png"/>
+                                <a href="#" id="client-win64-link">
+                                    <span class="keyed-lang-string" key="clientdownload_client_windows64_installer"></span></a>
+                            </div>
+
+                            <!-- ChromeOS client -->
+                            <div class="client-instructions ChromeOS">
+                                <h4><span class="keyed-lang-string" key="clientdownload_download_launcher"></span></h4>
+                            </div>
+                            <div class="client ChromeOS">
+                                <img src="" data-src="images/os-icons/chrome_os.png"/>
+                                <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
+                                    <span class="keyed-lang-string" key="clientdownload_client_chromeos_installer"></span></a>
+                            </div>
                         </div>
                         <hr />
                         <div class="dropup">

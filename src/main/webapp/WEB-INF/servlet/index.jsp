@@ -13,7 +13,18 @@
 <!doctype html >
 <html>
     <head>
-        <meta name="application-name" content="&nbsp;"/>
+        <meta name="base" content="<url:getUrl url="/"/>">
+        <meta name="cdn" content="<url:getCdnUrl url="/"/>">
+        <meta name="user-coppa" content="<c:if test="${copparestricted == true}">true</c:if>">
+        <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
+        <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>"
+        <meta name="user-name" content="<shiro:principal></shiro:principal>">
+        <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
+        <meta name="win64client" content="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
+        <meta name="macOSclient" content="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
+
+        <meta charset="utf-8">
+        <meta name="application-name" content="BlocklyProp"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
         <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />
 
@@ -147,7 +158,7 @@
                     <h1 id="BlocklyProp"><span class="keyed-lang-string" key="home_page_product_title"></span></h1>
                 </div>
                 <p><strong><span class="keyed-lang-string" key="home_page_banner_title"></span></strong>&nbsp;<span class="keyed-lang-string" key="home_page_banner_slug"></span></p>
-                <p><img class="cdn full-width" border="0" src="<url:getCdnUrl url="/images/home-banner.png"/>"></p>
+                <p><img class="cdn full-width" border="0" src="" data-src="images/home-banner.png"></p>
             </div>
             <h2 class="pad-latest-projects"><span class="keyed-lang-string" key="home_latest_projects_title"></span></h2>
             <hr>
@@ -206,7 +217,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div style="width:48px; height:48px; border-radius:24px; background-color:#C7DFFF; border: 0.5px #B3CEE6 solid; padding:3px; display: inline-block;">
-                        <img src="<url:getCdnUrl url="/images/products/ABOTprod.png"/>" style="display: inline-block; height: 42px; width: 42px;"/>
+                        <img src="" data-src="images/products/ABOTprod.png" style="display: inline-block; height: 42px; width: 42px;"/>
                     </div>
                     <h4 style="display: inline-block; padding-left: 5px;"><span class="keyed-lang-string" key="help_title_activity-bot"></span></h4>
                     <ul style="margin-left: 30px; padding-bottom: 10px">
@@ -219,7 +230,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div style="width:48px; height:48px; border-radius:24px; background-color:#C7DFFF; border: 0.5px #B3CEE6 solid; padding:3px; display: inline-block;">
-                        <img src="<url:getCdnUrl url="/images/products/ABWXprod.png"/>" style="display: inline; height: 42px; width: 42px;"/>
+                        <img src="" data-src="images/products/ABWXprod.png" style="display: inline; height: 42px; width: 42px;"/>
                     </div>
                     <h4 style="display: inline-block; padding-left: 5px;"><span class="keyed-lang-string" key="help_title_activity-board"></span></h4>
                     <ul style="margin-left: 30px; padding-bottom: 10px">
@@ -231,7 +242,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div style="width:48px; height:48px; border-radius:24px; background-color:#E3CCF9; border: 0.5px #CDADED solid; padding:3px; display: inline-block;">
-                        <img src="<url:getCdnUrl url="/images/products/HEBprod.png"/>" style="display: inline; height: 42px; width: 42px;"/>
+                        <img src="" data-src="images/products/HEBprod.png" style="display: inline; height: 42px; width: 42px;"/>
                     </div>
                     <h4 style="display: inline-block; padding-left: 5px;"><span class="keyed-lang-string" key="help_title_badge"></span></h4>
                     <ul style="margin-left: 30px; padding-bottom: 10px">
@@ -245,7 +256,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div style="width:48px; height:48px; border-radius:24px; background-color:#C4EDBF; border: 0.5px #A9DFA2 solid; padding:3px; display: inline-block;">
-                        <img src="<url:getCdnUrl url="/images/products/S3prod.png"/>" style="display: inline-block; height: 42px; width: 42px;"/>
+                        <img src="" data-src="images/products/S3prod.png" style="display: inline-block; height: 42px; width: 42px;"/>
                     </div>
                     <h4 style="display: inline-block; padding-left: 5px;"><span class="keyed-lang-string" key="help_title_s3"></span></h4>
                     <ul style="margin-left: 30px; padding-bottom: 10px">
@@ -258,7 +269,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div style="width:48px; height:48px; border-radius:24px; background-color:#CCECF9; border: 0.5px #AED6E8 solid; padding:3px; display: inline-block;">
-                        <img src="<url:getCdnUrl url="/images/products/FLIPprod.png"/>" style="display: inline; height: 42px; width: 42px;"/>
+                        <img src="" data-src="images/products/FLIPprod.png" style="display: inline; height: 42px; width: 42px;"/>
                     </div>
                     <h4 style="display: inline-block; padding-left: 5px;"><span class="keyed-lang-string" key="help_title_flip"></span></h4>
                     <ul style="margin-left: 30px; padding-bottom: 10px">
@@ -462,19 +473,19 @@
                             <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                 <div id="mac1">
                                     <p><span class="keyed-lang-string" key="client_macOS_run_instructions1"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/mac_os1.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/mac_os1.png"/></div>
                                 </div>
                                 <div id="mac2" class="hidden">
                                     <p><span class="keyed-lang-string" key="client_macOS_run_instructions2"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/mac_os2.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/mac_os2.png"/></div>
                                 </div>
                                 <div id="mac3" class="hidden">
                                     <p><span class="keyed-lang-string" key="client_macOS_run_instructions3"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/mac_os3.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/mac_os3.png"/></div>
                                 </div>
                                 <div id="mac4" class="hidden">
                                     <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/usbok.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
                                 </div>
                             </div>
                             <div style="padding-top:10px;">
@@ -491,16 +502,16 @@
                             <div style="background:#f5f5f5; border-radius:6px; height:250px; padding:6px;">
                                 <div id="win1">
                                     <p><span class="keyed-lang-string" key="client_windows_run_instructions1"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/windows1.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/windows1.png"/></div>
                                 </div>
                                 <div id="win2" class="hidden">
                                     <p><span class="keyed-lang-string" key="client_windows_run_instructions2"></span></p>
                                     <p><span class="keyed-lang-string" key="client_windows_run_instructions3"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/windows2.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/windows2.png"/></div>
                                 </div>
                                 <div id="win3" class="hidden">
                                     <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/usbok.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
                                 </div>
                             </div>
                             <div style="padding-top:10px;">
@@ -516,15 +527,15 @@
                             <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                 <div id="chr1">
                                     <p><span class="keyed-lang-string" key="client_chrome_run_instructions1"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/chrome1.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/chrome1.png"/></div>
                                 </div>
                                 <div id="chr2" class="hidden">
                                     <p><span class="keyed-lang-string" key="client_chrome_run_instructions2"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/chrome2.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/chrome2.png"/></div>
                                 </div>
                                 <div id="chr3" class="hidden">
                                     <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
-                                    <div align="center"><img src="<url:getCdnUrl url="/images/client-run/usbok.png"/>"/></div>
+                                    <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
                                 </div>
                             </div>
                             <div style="padding-top:10px;">
@@ -541,8 +552,8 @@
                             <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
                         </div>
                         <div class="client MacOS">
-                            <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
+                            <img src="" data-src="images/os-icons/mac_os.png"/>
+                            <a href="#" id="client-mac-link">
                                 <span class="keyed-lang-string" key="clientdownload_client_macos_installer"></span></a>
                         </div>
 
@@ -551,13 +562,13 @@
                             <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
                         </div>
                         <div class="client Windows">
-                            <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
+                            <img src="" data-src="images/os-icons/windows.png"/>
+                            <a href="#" id="client-win32-link">
                                 <span class="keyed-lang-string" key="clientdownload_client_windows32_installer"></span></a>
                         </div>
                         <div class="client Windows">
-                            <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
+                            <img src="" data-src="images/os-icons/windows.png"/>
+                            <a href="#" id="client-win64-link">
                                 <span class="keyed-lang-string" key="clientdownload_client_windows64_installer"></span></a>
                         </div>
 
@@ -566,7 +577,7 @@
                             <h4><span class="keyed-lang-string" key="clientdownload_download_launcher"></span></h4>
                         </div>
                         <div class="client ChromeOS">
-                            <img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>
+                            <img src="" data-src="images/os-icons/chrome_os.png"/>
                             <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
                                 <span class="keyed-lang-string" key="clientdownload_client_chromeos_installer"></span></a>
                         </div>
@@ -647,31 +658,26 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-5 col-sm-offset-1">
-                        <div class="form-group">
-
-                            <c:if test="${copparestricted == true}">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default active">
-                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
-                                            <span class="keyed-lang-string" key="project_sharing_private" ></span>
-                                    </label>
-                                </div>
-                            </c:if>
-
-                            <c:if test="${copparestricted == false}">
-                                <label for="sharing"><span class="keyed-lang-string" key="project_sharing" ></span></label><br/>
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default active">
-                                        <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
-                                            <span class="keyed-lang-string" key="project_sharing_private" ></span>
-                                    </label>
-                                    <label class="btn btn-default">
-                                        <input type="radio" name="sharing" value="shared" id="project-form-shared"/>
-                                        <span class="keyed-lang-string" key="project_sharing_shared" ></span>
-                                    </label>
-                                </div>
-                            </c:if>
-
+                        <div class="form-group coppa-true hidden">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default active">
+                                    <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                        <span class="keyed-lang-string" key="project_sharing_private" ></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group coppa-false hidden">
+                            <label for="sharing"><span class="keyed-lang-string" key="project_sharing" ></span></label><br/>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default active">
+                                    <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
+                                        <span class="keyed-lang-string" key="project_sharing_private" ></span>
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="sharing" value="shared" id="project-form-shared"/>
+                                    <span class="keyed-lang-string" key="project_sharing_shared" ></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-5">
@@ -685,14 +691,11 @@
         </div>
 
         <script>
-            // Get the logged in status
-            var user_authenticated = false;
-            <shiro:authenticated>
-                user_authenticated = true;
-            </shiro:authenticated>
-
-            // Get the username once logged in
-            var auth_user = '<shiro:principal></shiro:principal>';
+            var baseUrl = $("meta[name=base]").attr("content");
+            var cdnUrl = $("meta[name=cdn]").attr("content");
+            var user_authenticated = ($("meta[name=user-auth]").attr("content") === 'true') ? true : false;
+            var user_copparestricted = ($("meta[name=user-coppa]").attr("content") === 'true') ? true : false;
+            var auth_user = $("meta[name=user-name]").attr("content");
 
             var projectBoard = {
                 "activity-board": "icon-board-ab",
@@ -704,10 +707,14 @@
             };
 
             var oauthUrls = {};
-            var baseUrl = '<url:getUrl url="/" />';
-            var cdnUrl = '<url:getCdnUrl url="/" />';
             var simplemde = null;
-            console.log(baseUrl);
+            
+            // set the URLs for all of the CDN-sourced images
+            var imgs = document.getElementsByTagName('img');
+            for (l = 0; l < imgs.length; l++) {
+                imgs[l].src = cdnUrl + imgs[l].getAttribute('data-src');
+            }
+
 
             // handle user clicks on the "back" button
             window.addEventListener("popstate", function(e) {
@@ -843,6 +850,36 @@
                                 micromarkdown.parse(result[i].body).replace(/\r\n/g, '<br>') + "<hr />");
                     });
                 });
+                
+                // Grab the latest released mac and windows clients from GitHub
+                /*
+                $.getJSON("http://api.github.com/repos/parallaxinc/BlocklyPropClient/releases/latest", function (result) {
+                    downloads = result.assets;
+                    for (i = 0; i < downloads.length; i++) {
+                        if (downloads[i].name.indexOf('32.exe') > -1) {
+                            $('#client-win32-link').attr('href', downloads[i].browser_download_url);
+                        } else if (downloads[i].name.indexOf('64.exe') > -1) {
+                            $('#client-win64-link').attr('href', downloads[i].browser_download_url);
+                        } else if (downloads[i].name.indexOf('.pkg') > -1) {
+                            $('#client-mac-link').attr('href', downloads[i].browser_download_url);
+                        }
+                    }
+                });
+                */
+                
+                // Set the links for the released clients
+                $('#client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
+                $('#client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
+                $('#client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
+
+                // Set visibility of COPPA related elements
+                if (user_copparestricted) {
+                    $('.coppa-false').addClass('hidden');
+                    $('.coppa-true').removeClass('hidden');
+                } else {
+                    $('.coppa-false').removeClass('hidden');                    
+                    $('.coppa-true').addClass('hidden');
+                }
 
                 // Set up oauth
                 if (document.getElementById('project-loggedin-dialog')) {
@@ -911,12 +948,13 @@
                     value: 'other',
                     text: page_text_label['project_board_other']
                 }));
-                <c:choose><c:when test="${experimental == true}">
+                // Only add the PropC code-only type if in demo (extends from the experiental tag)
+                if (inDemo === 'demo') {
                     $('#board-type').append($('<option>', {
                         value: 'propcfile',
                         text: page_text_label['project_board_propcfile']
                     }));
-                </c:when></c:choose>
+                }
                 $('#finish').val(page_text_label['project_create_finishlink']);
             });
             
