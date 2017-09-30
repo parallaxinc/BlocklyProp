@@ -147,17 +147,26 @@ Blockly.Blocks.console_print_multiple = {
         this.setInputsInline(false);
         this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
         this.optionList_ = ['str', 'dec'];
+        this.specDigits_ = false;
         this.setWarningText(null);
     },
     mutationToDom: function () {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
         var divs = [];
+        var places = [];
+        var digits = [];
         container.setAttribute('options', JSON.stringify(this.optionList_));
         for (var fv = 0; fv < this.optionList_.length; fv++) {
             divs.push(this.getFieldValue('DIV' + fv) || '0');
+            places.push(this.getFieldValue('PLACE' + fv) || '');
+            digits.push(this.getFieldValue('DIGIT' + fv) || '');
         }
         container.setAttribute('divisors', JSON.stringify(divs));
+        if (this.specDigits_) {
+            container.setAttribute('places', JSON.stringify(places));
+            container.setAttribute('digits', JSON.stringify(digits));
+        }
         return container;
     },
     domToMutation: function (container) {
@@ -165,10 +174,19 @@ Blockly.Blocks.console_print_multiple = {
         this.removeInput('PRINT0');
         this.removeInput('PRINT1');
         this.removeInput('NEWLINE');
-
         var value = JSON.parse(container.getAttribute('options'));
         var divs = JSON.parse(container.getAttribute('divisors'));
         this.optionList_ = value;
+        
+        var places = [];
+        var digits = [];
+        this.specDigits_ = false;        
+        if (container.getAttribute('places') || container.getAttribute('digits')) {
+            this.specDigits_ = true;
+            places = JSON.parse(container.getAttribute('places'));
+            digits = JSON.parse(container.getAttribute('digits'));
+        }
+        
         for (var i = 0; i < this.optionList_.length; i++) {
             var label = 'decimal number';
             var chk = 'Number';
@@ -182,7 +200,7 @@ Blockly.Blocks.console_print_multiple = {
             } else if (this.optionList_[i] === 'bin') {
                 label = 'binary number';
             }
-            if (this.optionList_[i] === 'float') {
+            if (this.optionList_[i] === 'float' && !this.specDigits_) {
                 this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
@@ -197,6 +215,46 @@ Blockly.Blocks.console_print_multiple = {
                             ['1,000,000', '1000000']
                         ]), 'DIV' + i);
                 this.setFieldValue(divs[i], 'DIV' + i);
+            } else if (this.optionList_[i] === 'float' && this.specDigits_) {
+                this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField('float point  divide by', 'TYPE' + i)
+                        .appendField(new Blockly.FieldDropdown([
+                            ['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']
+                        ]), 'DIV' + i)
+                        .appendField('digits')
+                        .appendField(new Blockly.FieldTextInput('', function(text) {
+                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                                return text || '';
+                            }), 'DIGIT' + i)
+                        .appendField('places')
+                        .appendField(new Blockly.FieldTextInput('', function(text) {
+                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                                return text || '';
+                            }), 'PLACE' + i);
+                this.setFieldValue(divs[i] || '100', 'DIV' + i);
+                this.setFieldValue(places[i] || '', 'PLACE' + i);
+                this.setFieldValue(digits[i] || '', 'DIGIT' + i);                
+            } else if (this.specDigits_ &&  (this.optionList_[i] === 'hex' || 
+                            this.optionList_[i] === 'dec' || 
+                            this.optionList_[i] === 'bin')) {
+                this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField(label, 'TYPE' + i)
+                        .appendField('digits')
+                        .appendField(new Blockly.FieldTextInput('', function(text) {
+                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                                return text || '';
+                            }), 'DIGIT' + i);
+                this.setFieldValue(digits[i] || '', 'DIGIT' + i);
             } else {
                 this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
@@ -212,7 +270,14 @@ Blockly.Blocks.console_print_multiple = {
     },
     decompose: function (workspace) {
         var containerBlock = Blockly.Block.obtain(workspace, 'console_print_container');
-        containerBlock.initSvg();
+        if (this.type === 'console_print_multiple') {
+            containerBlock.initSvg();
+            containerBlock.setFieldValue((this.specDigits_ ? 'TRUE' : 'FALSE'), 'PLACES');
+        } else {
+            containerBlock = Blockly.Block.obtain(workspace, 'serial_print_container');
+            containerBlock.initSvg();
+        }
+
         var connection = containerBlock.getInput('STACK').connection;
         for (var i = 0; i < this.optionList_.length; i++) {
             var optionBlock = workspace.newBlock(
@@ -227,7 +292,13 @@ Blockly.Blocks.console_print_multiple = {
     compose: function (containerBlock) {
         // Delete everything.
         var i = 0;
+        var digits = [];
+        var places = [];
+        var divs = [];
         while (this.getInput('PRINT' + i)) {
+            digits[i] = this.getFieldValue('DIGIT' + i);
+            places[i] = this.getFieldValue('PLACE' + i);
+            divs[i] = this.getFieldValue('DIV' + i);
             this.removeInput('PRINT' + i);
             i++;
         }
@@ -237,6 +308,10 @@ Blockly.Blocks.console_print_multiple = {
         this.optionList_.length = 0;
         // Rebuild the block's optional inputs.
         var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+        this.specDigits_ = false;
+        if (containerBlock.getFieldValue('PLACES') === 'TRUE') {
+            this.specDigits_ = true;
+        }
         var label = '';
         var chk = '';
         while (clauseBlock) {
@@ -260,7 +335,7 @@ Blockly.Blocks.console_print_multiple = {
             }
             // Reconnect any child blocks.
             var printInput;
-            if (clauseBlock.type === 'console_print_float') {
+            if (clauseBlock.type === 'console_print_float' && !this.specDigits_) {
                 this.optionList_.push('float');
                 printInput = this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
@@ -275,7 +350,48 @@ Blockly.Blocks.console_print_multiple = {
                             ['100,000', '100000'],
                             ['1,000,000', '1000000']
                         ]), 'DIV' + i);
-                this.setFieldValue('100', 'DIV' + i);
+                this.setFieldValue(divs[i] || '100', 'DIV' + i);
+            } else if (clauseBlock.type === 'console_print_float' && this.specDigits_) {
+                this.optionList_.push('float');
+                printInput = this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField('float point  divide by', 'TYPE' + i)
+                        .appendField(new Blockly.FieldDropdown([
+                            ['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']
+                        ]), 'DIV' + i)
+                        .appendField('digits')
+                        .appendField(new Blockly.FieldTextInput('', function(text) {
+                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                                return text || '';
+                            }), 'DIGIT' + i)
+                        .appendField('places')
+                        .appendField(new Blockly.FieldTextInput('', function(text) {
+                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                                return text || '';
+                            }), 'PLACE' + i);
+                this.setFieldValue(divs[i] || '100', 'DIV' + i);
+                this.setFieldValue(places[i] || '', 'PLACE' + i);
+                this.setFieldValue(digits[i] || '', 'DIGIT' + i);
+            } else if (this.specDigits_ &&  (this.optionList_[i] === 'hex' || 
+                            this.optionList_[i] === 'dec' || 
+                            this.optionList_[i] === 'bin')) {
+                printInput = this.appendValueInput('PRINT' + i)
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .setCheck(chk)
+                        .appendField(label, 'TYPE' + i)
+                        .appendField('digits')
+                        .appendField(new Blockly.FieldTextInput('', function(text) {
+                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                                return text || '';
+                            }), 'DIGIT' + i);
+                this.setFieldValue(digits[i] || '', 'DIGIT' + i);
             } else {
                 printInput = this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
@@ -319,6 +435,19 @@ Blockly.Blocks.console_print_multiple = {
 };
 
 Blockly.Blocks.console_print_container = {
+    init: function () {
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('send');
+        this.appendStatementInput('STACK');
+        this.appendDummyInput()
+                .appendField('specify digits')
+                .appendField(new Blockly.FieldCheckbox("FALSE"), "PLACES");
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.serial_print_container = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
@@ -401,14 +530,18 @@ Blockly.propc.console_print_multiple = function () {
     var orIt = '';
     var i = 0;
     while (this.getInput('PRINT' + i)) {
+        var digitsPlaces = this.getFieldValue('DIGIT' + i);
+        if (this.getFieldValue('PLACE' + i) && this.getFieldValue('PLACE' + i) !== '') {
+            digitsPlaces += '.' + this.getFieldValue('PLACE' + i);
+        }
         if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-            code += '%d';
+            code += '%' + digitsPlaces + 'd';
             orIt = '0';
         } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
-            code += '%x';
+            code += '%' + digitsPlaces + 'x';
             orIt = '0x0';
         } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
-            code += '%b';
+            code += '%' + digitsPlaces + 'b';
             orIt = '0b0';
         } else if (this.getFieldValue('TYPE' + i).includes('text')) {
             code += '%s';
@@ -417,7 +550,7 @@ Blockly.propc.console_print_multiple = function () {
             code += '%c';
             orIt = '32';
         } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-            code += '%f';
+            code += '%' + digitsPlaces + 'f';
             orIt = '0';
         }
 
