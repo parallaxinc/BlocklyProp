@@ -43,6 +43,11 @@ $(document).ready(function () {
         imgs[l].src = cdnUrl + imgs[l].getAttribute('data-src');
     }
     
+    // Set the client download links
+    $('#client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
+    $('#client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
+    $('#client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
+
     idProject = getURLParameter('project');
     if (!idProject) {
         window.location = baseUrl;
@@ -805,4 +810,13 @@ function showOS(o) {
             .removeClass('Linux')
             .removeClass('ChromeOS');
     $("body").addClass(o);
+}
+
+function showStep(o, i, t) {
+    for (var j = 1; j <= t; j++) {
+        $('#' + o + j.toString() + '-btn').addClass('btn-default').removeClass('btn-primary');
+        $('#' + o + j.toString()).addClass('hidden');
+    }
+    $('#' + o + i.toString() + '-btn').removeClass('btn-default').addClass('btn-primary');
+    $('#' + o + i.toString()).removeClass('hidden');
 }
