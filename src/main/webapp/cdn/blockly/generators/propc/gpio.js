@@ -888,7 +888,9 @@ Blockly.Blocks.fb360_set = {
                     ['change position by (+/-)', 'goto']
                 ], function (param) {
                     this.sourceBlock_.updateShape_(param);
-                }), "PARAM");
+                }), "PARAM")
+                .appendField('R,720,720,0', 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
         this.appendDummyInput()
                 .appendField('\u00B0/s', 'END');
         this.setInputsInline(true);
@@ -898,7 +900,12 @@ Blockly.Blocks.fb360_set = {
     updateShape_: function (param) {
         if (param === 'speed') {
             this.setFieldValue('\u00B0/s', 'END');
+            this.setFieldValue('R,720,720,0', 'RANGEVALS0');
+        } else if (param === 'angle') {
+            this.setFieldValue('R,-1456,1456,0', 'RANGEVALS0');
+            this.setFieldValue('\u00B0', 'END');
         } else {
+            this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS0');
             this.setFieldValue('\u00B0', 'END');
         }
     },
