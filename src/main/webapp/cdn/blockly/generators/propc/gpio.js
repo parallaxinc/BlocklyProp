@@ -852,7 +852,12 @@ Blockly.Blocks.fb360_setup = {
 
 Blockly.propc.fb360_setup = function () {
     var param = this.getFieldValue("PARAM");
-    var value = this.getFieldValue("VALUE") || '0';
+    var value = '0';
+    if (this.type === 'fb360_setup') {
+        value = this.getFieldValue("VALUE") || '0';
+    } else {
+        value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';;
+    }
     var pin = this.getFieldValue("PIN");
     
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
@@ -879,6 +884,7 @@ Blockly.Blocks.fb360_set = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([
                     ['set speed to (+/-)', 'speed'],
+                    ['set angle to (+/-)', 'angle'],
                     ['change position by (+/-)', 'goto']
                 ], function (param) {
                     this.sourceBlock_.updateShape_(param);
@@ -932,7 +938,7 @@ Blockly.Blocks.fb360_get = {
 Blockly.propc.fb360_get = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
-        return ['servo360_get(' + this.getFieldValue("PIN") + ')', Blockly.propc.ORDER_NONE];
+        return ['servo360_getAngle(' + this.getFieldValue("PIN") + ')', Blockly.propc.ORDER_NONE];
     } else {
         return ['0', Blockly.propc.ORDER_NONE];
     }
