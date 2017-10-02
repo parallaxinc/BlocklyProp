@@ -164,7 +164,7 @@
             <hr>
             <ul class="latest-projects"></ul>
         </div>
-
+                                   
         <div class="modal fade" id="project-loggedin-dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
