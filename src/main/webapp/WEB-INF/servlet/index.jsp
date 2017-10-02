@@ -696,7 +696,8 @@
             var user_authenticated = ($("meta[name=user-auth]").attr("content") === 'true') ? true : false;
             var user_copparestricted = ($("meta[name=user-coppa]").attr("content") === 'true') ? true : false;
             var auth_user = $("meta[name=user-name]").attr("content");
-
+            var inDemo = $("meta[name=in-demo]").attr("content");
+            
             var projectBoard = {
                 "activity-board": "icon-board-ab",
                 "s3": "icon-board-s3",
