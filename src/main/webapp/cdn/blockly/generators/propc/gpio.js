@@ -1249,6 +1249,9 @@ Blockly.propc.ab_drive_init = function () {
     var bot = this.getFieldValue('BOT');
 
     if (!this.disabled) {
+        if (bot.indexOf('360') > -1) {
+            Blockly.propc.definitions_["include servo360"] = '#include "servo360.h"';
+        }
         Blockly.propc.definitions_["include abdrive"] = '#include "' + bot + '"';
         if (bot === 'servodiffdrive.h') {
             var left = Number(this.getFieldValue('LEFT'));
