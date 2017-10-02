@@ -1160,9 +1160,10 @@ Blockly.propc.scribbler_stop_servo = function () {
     
     if (addType === '') {
         Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
+        return 'servo_disable(' + pin + ');\n';
+    } else {
+        return 'servo360_enable(' + pin + ', 0);\n';
     }
-    
-    return 'servo' + addType + '_disable(' + pin + ');\n';
 };
 
 // Unused?  Possibly delete?
