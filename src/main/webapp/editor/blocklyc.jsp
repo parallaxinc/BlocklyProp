@@ -17,7 +17,7 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <meta name="cdn" content="<url:getCdnUrl url="/"/>">
         <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
-        <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>"
+        <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>">
         <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
         <meta name="win64client" content="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
         <meta name="macOSclient" content="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
