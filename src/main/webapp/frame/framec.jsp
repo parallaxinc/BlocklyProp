@@ -382,6 +382,11 @@
             </block>
             <block type="scribbler_exit_loop"></block>
             <block type="controls_if"></block>
+            <block type="controls_select">
+                <value name="SWITCH">
+                    <block type="variables_get"></block>
+                </value>
+            </block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
                     <block type="math_number">
