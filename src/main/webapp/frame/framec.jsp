@@ -1249,6 +1249,17 @@
                         </block>
                     </value>
                 </block>
+                <block type="fb360_init"></block>
+                <block type="fb360_setup"></block>
+                <block type="fb360_set">
+                    <value name="VALUE">
+                        <block type="math_number">
+                            <field name="NUM">0</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="fb360_get"></block>
+                <block type="scribbler_stop_servo"></block>
             </category>
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
