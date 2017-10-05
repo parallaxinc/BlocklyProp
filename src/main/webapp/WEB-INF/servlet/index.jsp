@@ -17,7 +17,7 @@
         <meta name="cdn" content="<url:getCdnUrl url="/"/>">
         <meta name="user-coppa" content="<c:if test="${copparestricted == true}">true</c:if>">
         <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
-        <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>"
+        <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>">
         <meta name="user-name" content="<shiro:principal></shiro:principal>">
         <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
         <meta name="win64client" content="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
@@ -712,7 +712,7 @@
             
             // set the URLs for all of the CDN-sourced images
             var imgs = document.getElementsByTagName('img');
-            for (l = 0; l < imgs.length; l++) {
+            for (var l = 0; l < imgs.length; l++) {
                 imgs[l].src = cdnUrl + imgs[l].getAttribute('data-src');
             }
 
