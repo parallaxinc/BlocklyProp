@@ -39,7 +39,7 @@ $(document).ready(function () {
     
     // set the URLs for all of the CDN-sourced images
     var imgs = document.getElementsByTagName('img');
-    for (l = 0; l < imgs.length; l++) {
+    for (var l = 0; l < imgs.length; l++) {
         imgs[l].src = cdnUrl + imgs[l].getAttribute('data-src');
     }
     
