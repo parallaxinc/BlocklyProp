@@ -900,7 +900,7 @@ Blockly.Blocks.fb360_set = {
     updateShape_: function (param) {
         if (param === 'speed') {
             this.setFieldValue('\u00B0/s', 'END');
-            this.setFieldValue('R,720,720,0', 'RANGEVALS0');
+            this.setFieldValue('R,-720,720,0', 'RANGEVALS0');
         } else if (param === 'angle') {
             this.setFieldValue('R,-1456,1456,0', 'RANGEVALS0');
             this.setFieldValue('\u00B0', 'END');
