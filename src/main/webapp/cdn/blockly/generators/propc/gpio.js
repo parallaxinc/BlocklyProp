@@ -735,7 +735,7 @@ Blockly.propc.servo_set_ramp = function () {
 // --------- Feedback 360 servo blocks -----------------------------------------
 Blockly.Blocks.fb360_init = {
     init: function () {
-        //this.setTooltip(Blockly.MSG_FB360_INIT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_FB360_INIT_TOOLTIP);
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
@@ -767,7 +767,7 @@ Blockly.propc.fb360_init = function () {
 
 Blockly.Blocks.fb360_setup = {
     init: function () {
-        //this.setTooltip(Blockly.MSG_FB360_SETUP_TOOLTIP);
+        this.setTooltip(Blockly.MSG_FB360_SETUP_TOOLTIP);
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
@@ -870,7 +870,7 @@ Blockly.propc.fb360_setup = function () {
 
 Blockly.Blocks.fb360_set = {
     init: function () {
-        //this.setTooltip(Blockly.MSG_FB360_SET_TOOLTIP);
+        this.setTooltip(Blockly.MSG_FB360_SET_TOOLTIP);
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
@@ -925,7 +925,7 @@ Blockly.propc.fb360_set = Blockly.propc.fb360_setup;
 
 Blockly.Blocks.fb360_get = {
     init: function () {
-        //this.setTooltip(Blockly.MSG_FB360_SET_TOOLTIP);
+        this.setTooltip(Blockly.MSG_FB360_GET_TOOLTIP);
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
