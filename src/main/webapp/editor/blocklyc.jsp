@@ -1667,13 +1667,13 @@
 
                         <label class="control-label"><span class="keyed-lang-string" key="editor_upload_selectfile"></span></label>
                         <input id="selectfile" type="file" onchange="uploadHandler(this.files);">
-                        <div id="selectfile-verify-valid" class="alert alert-success" style="display: none;"><span class="glyphicon glyphicon-ok"></span> <span class="keyed-lang-string" key="editor_upload_valid"></span></div>
-                        <div id="selectfile-verify-notvalid" class="alert alert-danger" style="display: none;"><span class="glyphicon glyphicon-ban-circle"></span> <span class="keyed-lang-string" key="editor_upload_notvalid"></span></div>
-                        <div id="selectfile-verify-boardtype" class="alert alert-warning" style="display: none;"><span class="glyphicon glyphicon-warning-sign"></span> <span class="keyed-lang-string" key="editor_upload_boardtype_warning"></span></div>
+                        <div id="selectfile-verify-valid" class="alert alert-success" style="display: none;"><svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M2.25,6 L5.5,9.25 12,2.5 13.5,4 5.5,12 1,7.5 Z" style="stroke:#3c763d;stroke-width:1;fill:#3c763d;"/></svg> <span class="keyed-lang-string" key="editor_upload_valid"></span></div>
+                        <div id="selectfile-verify-notvalid" class="alert alert-danger" style="display: none;"><svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#8a6d3b;"/></svg> <span class="keyed-lang-string" key="editor_upload_notvalid"></span></div>
+                        <div id="selectfile-verify-boardtype" class="alert alert-warning" style="display: none;"><svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg> <span class="keyed-lang-string" key="editor_upload_boardtype_warning"></span></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" disabled="true" id="selectfile-replace" onclick="replaceCode();"><span class="keyed-lang-string" key="editor_button_replace"></span></button>
-                        <button type="button" class="btn btn-primary" disabled="true" id="selectfile-append" onclick="appendCode();"><span class="keyed-lang-string" key="editor_button_append"></span></button>
+                        <button type="button" class="btn btn-danger" disabled="true" id="selectfile-replace" onclick="uploadMergeCode(false);"><span class="keyed-lang-string" key="editor_button_replace"></span></button>
+                        <button type="button" class="btn btn-primary" disabled="true" id="selectfile-append" onclick="uploadMergeCode(true);"><span class="keyed-lang-string" key="editor_button_append"></span></button>
                         <button type="button" class="btn btn-default" onclick="clearUploadInfo();" data-dismiss="modal"><span class="keyed-lang-string" key="editor_button_cancel"></span></button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -1688,7 +1688,7 @@
                         <h4 class="modal-title" id="save-check-title"><span class="keyed-lang-string" key="editor_save-check"></span></h4>
                     </div>
                     <div class="modal-body">
-                        <div id="save-check-warning"><span class="glyphicon glyphicon-warning-sign"></span> <span class="keyed-lang-string" key="editor_save-check_warning"></span></div>
+                        <div id="save-check-warning"><svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#000;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#000;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#000;"/></svg> <span class="keyed-lang-string" key="editor_save-check_warning"></span></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" key="editor_button_close"></span></button>
@@ -1783,7 +1783,7 @@
                                 <option disabled="" selected=""><span class="keyed-lang-string" key="project_create_board_type_select"></span></option>
                             </select>
                         </div>
-                        <div id="save-as-verify-boardtype" class="alert alert-warning" style="display: none;"><span class="glyphicon glyphicon-warning-sign"></span> <span class="keyed-lang-string" key="editor_saveas_boardtype_warning"></span></div>
+                        <div id="save-as-verify-boardtype" class="alert alert-warning" style="display: none;"><svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg> <span class="keyed-lang-string" key="editor_saveas_boardtype_warning"></span></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" key="editor_button_close"></span></button>

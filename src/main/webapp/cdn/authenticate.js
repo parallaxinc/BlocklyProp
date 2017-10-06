@@ -15,7 +15,6 @@ $(document).ready(function () {
 });
 
 function onLoginSuccess(response, statusText, xhr, $form) {
-    // alert(response.data.token);
     if (response.success === true) {
         if (typeof window['post-authenticate'] === 'function') {
             window['post-authenticate']();
