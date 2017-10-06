@@ -11,7 +11,6 @@ var user_authenticated = ($("meta[name=user-auth]").attr("content") === 'true') 
 var projectData = null;
 var ready = false;
 var projectLoaded = false;
-var uploadStaged = false;
 var ignoreSaveCheck = false;
 
 var last_saved_timestamp = 0;
@@ -63,10 +62,12 @@ $(document).ready(function () {
             }
             if ($('#editor-full-mode') === 'true') {
                 if (projectData['board'] === 's3') {
-                    $('#prop-btn-ram').addClass('hidden');
+                    $('#load-ram-button').addClass('hidden');
+                    $('#open-graph-output').addClass('hidden');
                     document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
                 } else {
-                    $('#prop-btn-ram').removeClass('hidden');
+                    $('#load-ram-button').removeClass('hidden');
+                    $('#open-graph-output').removeClass('hidden');
                     document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
                 }
             }
@@ -135,23 +136,29 @@ var showInfo = function (data) {
         $(".project-owner").text("(" + data['user'] + ")");
     }
     var projectBoardIcon = {
-        "activity-board": "/cdn/images/board-icons/IconActivityBoard.png",
-        "s3": "/cdn/images/board-icons/IconS3.png",
-        "heb": "/cdn/images/board-icons/IconBadge.png",
-        "flip": "/cdn/images/board-icons/IconFlip.png",
-        "other": "/cdn/images/board-icons/IconOtherBoards.png",
-        "propcfile": "/cdn/images/board-icons/IconC.png"
+        "activity-board": "images/board-icons/IconActivityBoard.png",
+        "s3": "images/board-icons/IconS3.png",
+        "heb": "images/board-icons/IconBadge.png",
+        "flip": "images/board-icons/IconFlip.png",
+        "other": "images/board-icons/IconOtherBoards.png",
+        "propcfile": "images/board-icons/IconC.png"
     };
 
-    var getUrl = window.location;
-    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+    $("#project-icon").html('<img src="' + cdnUrl + projectBoardIcon[data['board']] + '"/>');
+};
 
-    $("#project-icon").html('<img src="' + baseUrl + projectBoardIcon[data['board']] + '"/>');
+function generateBlockId() {
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,.:;=?@[]^_`{|}~';
+    var blockId = 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.round(Math.random()*(chars.length-1));
+        return chars[r];
+    });
+    return blockId;
 };
 
 var propcAsBlocksXml = function () {
     var code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
-    code += '<block type="propc_file" id="abcdefghijklmno12345" x="100" y="100">';
+    code += '<block type="propc_file" id="' + generateBlockId() + '" x="100" y="100">';
     code += '<field name="FILENAME">single.c</field>';
     code += '<field name="CODE">';
     code += encodeXml(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
@@ -164,7 +171,7 @@ var saveProject = function () {
     if (projectData['board'] === 'propcfile') {
         code = propcAsBlocksXml();
 
-        clearXml();
+        Blockly.mainWorkspace.clear();
         loadToolbox(code);
     } else {
         code = getXml();
@@ -267,7 +274,7 @@ var saveProjectAs = function () {
     if (projectData['board'] === 'propcfile') {
         code = propcAsBlocksXml();
 
-        clearXml();
+        Blockly.mainWorkspace.clear();
         loadToolbox(code);
     } else {
         code = getXml();
@@ -336,7 +343,7 @@ var saveProjectAs = function () {
             if (projectData['board'] === 'propcfile') {
                 code = propcAsBlocksXml();
 
-                clearXml();
+                Blockly.mainWorkspace.clear();
                 loadToolbox(code);
             } else {
                 code = getXml();
@@ -418,26 +425,6 @@ var blocklyReady = function () {
         initToolbox(projectData['board'], []);
     } else {
         ready = true;
-    }
-};
-
-var loadProject = function () {
-    if (projectData !== null && uploadStaged === false) {
-        if (projectData['code'].length < 43) {
-            projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
-        }
-        loadToolbox(projectData['code']);
-    }
-    if ($('#editor-full-mode') === 'true') {
-        if (projectData['board'] === 's3') {
-            $('#load-ram-button').addClass('hidden');
-            $('#open-graph-output').addClass('hidden');
-            document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-        } else {
-            $('#load-ram-button').removeClass('hidden');
-            $('#open-graph-output').removeClass('hidden');
-            document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
-        }
     }
 };
 
@@ -617,9 +604,7 @@ function uploadHandler(files) {
 
     if (uploadedXML !== '') {
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
-        uploadStaged = true;
-    }
-    ;
+    };
 }
 
 function clearUploadInfo() {
@@ -631,48 +616,23 @@ function clearUploadInfo() {
     document.getElementById("selectfile-verify-boardtype").style.display = "none";
 }
 
-function replaceCode() {
+function uploadMergeCode(append) {
     $('#upload-dialog').modal('hide');
     if (uploadedXML !== '') {
-        var newCode = uploadedXML;
-        newCode = newCode.substring(42, newCode.length);
-        newCode = newCode.substring(0, (newCode.length - 29));
-
-        location.reload();
-        setProfile(projectData['board']);
-        initToolbox(projectData['board'], []);
-        projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + newCode + '</xml>';
-        $(window).load(function () {
-            loadToolbox(projectData['code']);
-            uploadStaged = false;
-        });
-
-        // Reset all of the upload fields and containers
-        clearUploadInfo();
-    }
-}
-
-function appendCode() {
-    $('#upload-dialog').modal('hide');
-    if (uploadedXML !== '') {
-        var projCode = projectData['code'];
-        projCode = projCode.substring(42, projCode.length);
-        projCode = projCode.substring(0, (projCode.length - 6));
+        var projCode = '';
+        if (append) {
+            projCode = getXml();
+            projCode = projCode.substring(42, projCode.length);
+            projCode = projCode.substring(0, (projCode.length - 6));
+        }
 
         var newCode = uploadedXML;
         newCode = newCode.substring(42, newCode.length);
         newCode = newCode.substring(0, (newCode.length - 6));
 
-        location.reload();
-        setProfile(projectData['board']);
-        initToolbox(projectData['board'], []);
         projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml">' + projCode + newCode + '</xml>';
-        $(window).load(function () {
-            loadToolbox(projectData['code']);
-            uploadStaged = false;
-        });
-
-        // Reset all of the upload fields and containers
+        Blockly.mainWorkspace.clear();
+        loadToolbox(projectData['code']);
         clearUploadInfo();
     }
 }
@@ -783,15 +743,19 @@ function initToolbox(profileName, peripherals) {
         toolbox: document.getElementById('toolbox'),
         trashcan: true,
         media: cdnUrl + 'blockly/media/',
-        path: cdnUrl + 'blockly/',
-        comments: false
+        //path: cdnUrl + 'blockly/',
+        comments: false,
+        zoom: {
+          controls: true,
+          wheel: true,
+          startScale: 1.0,
+          maxScale: 3,
+          minScale: 0.3,
+          scaleSpeed: 1.2
+        }
     });
     
     init(Blockly);
-}
-
-function clearXml() {
-    Blockly.mainWorkspace.clear();
 }
 
 function loadToolbox(xmlText) {

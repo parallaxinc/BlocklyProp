@@ -92,16 +92,11 @@ function tabClick(id) {
     // Deselect all tabs and hide all panes.
     // document.getElementById('menu-save-as-propc').style.display = 'none';
     for (var x in TABS_) {
-        //if (document.getElementById('tab_' + TABS_[x])) {
-        //    document.getElementById('tab_' + TABS_[x]).className = 'taboff';
-        //}
         document.getElementById('content_' + TABS_[x]).style.display = 'none';
     }
 
     // Select the active tab.
     selected = id.replace('tab_', '');
-    //document.getElementById(id).className = 'active';
-
     var tbxs = document.getElementsByClassName('blocklyToolboxDiv');
     var btns = document.getElementsByClassName("btn-view-code");
     document.getElementById('btn-view-blocks').style.display = 'none';
@@ -147,9 +142,7 @@ function tabClick(id) {
     renderContent();
 }
 
-/**
- * Populate the currently selected pane with content generated from the blocks.
- */
+// Populate the currently selected pane with content generated from the blocks.
 function renderContent() {
     var content = document.getElementById('content_' + selected);
     // Initialize the pane.
@@ -230,7 +223,12 @@ function init(blockly) {
      }
      */
 
-    loadProject();
+    if (projectData !== null) {
+        if (projectData['code'].length < 43) {
+            projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
+        }
+        loadToolbox(projectData['code']);
+    }
 
     // if the project is a propc code-only project, enable code editing.
     if (projectData['board'] === 'propcfile') {
