@@ -19,6 +19,7 @@
         <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
         <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>">
         <meta name="user-name" content="<shiro:principal></shiro:principal>">
+        <meta name="oath-on" content="<c:if test="${properties:oauth('google')}">true</c:if>">
         <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
         <meta name="win64client" content="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
         <meta name="macOSclient" content="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
@@ -82,7 +83,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" id="nav-logo" href="<url:getUrl url="/"/>">
+                    <a class="navbar-brand base-link" id="nav-logo" href="" data-url="">
                         <strong>BETA</strong>&nbsp;<span class="keyed-lang-string" key="menu_product_title"></span>
                     </a>
                 </div>
@@ -118,7 +119,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="<url:getUrl url="/profile"/>"><span class="keyed-lang-string" key="menu_profile"></span></a></li>
-                                    <li><a href="<url:getUrl url="/logout"/>"><span class="keyed-lang-string" key="logout"></span></a></li>
+                                    <li><a href="" class="base-link" data-url="logout"><span class="keyed-lang-string" key="logout"></span></a></li>
                                 </ul>
                             </li>
                             <li><a href="help" class="internav-link"><span class="keyed-lang-string" key="menu_help"></span></a></li>
@@ -189,21 +190,19 @@
                                 </div>
                                 <p><a href="resetrequest"><span class="keyed-lang-string" key="login_forgotlink"></span></a></p>
                                 <p><a href="confirmrequest"><span class="keyed-lang-string" key="login_notconfirmedlink"></span></a></p>
-                                <form id="loginform" name="loginform" action="<url:getUrl url="/authenticate" />" method="post">
+                                <form id="loginform" name="loginform" action="" method="post">
                                     <div class="form-group">
-                                        <label for="username" ><span class="keyed-lang-string" key="login_email"></span></label>
+                                        <label for="username" class="keyed-lang-string" key="login_email"></label>
                                         <input class="form-control" type="text" name="username" maxlength="255" required="required"/>
                                     </div>
                                     <div class="form-group">
-                                        <label for="password"><span class="keyed-lang-string" key="login_password"></span></label>
+                                        <label for="password" class="keyed-lang-string" key="login_password"></label>
                                         <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
                                     </div>
                                     <input class="btn btn-default" type="submit" name="submit" class="keyed-lang-string" key="login_submit" value="Submit">
                                 </form>
                             </div>
-                            <c:if test="${properties:oauth('google')}">
-                                <a href="<url:getUrl url="/oauth/google" />?url=" target="oauth" class="oauth" id="oauth-google">Log in using Google</a>
-                            </c:if>
+                            <a href="" data-url="oauth/google?url=" target="oauth" class="oauth base-link hidden" id="oauth-google">Log in using Google</a>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -638,20 +637,20 @@
                 <div class="row">
                     <div class="col-sm-5 col-sm-offset-1">
                         <div class="form-group">
-                            <label for="project-name"><span class="keyed-lang-string" key="project_create_project_name" ></span></label>
+                            <label for="project-name" class="keyed-lang-string" key="project_create_project_name" ></label>
                             <input type="text" class="form-control" id="project-name" name="project-name"/>
                         </div>
                     </div>
                     <div class="col-sm-5">
                         <div class="form-group">
-                            <label for="board-type"><span class="keyed-lang-string"  key="project_create_board_type" ></span></label>
+                            <label for="board-type" class="keyed-lang-string"  key="project_create_board_type" ></label>
                             <select class="form-control" id="board-type" name="board-type"></select>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
-                        <label for="project-description"><span class="keyed-lang-string" key="project_create_description" ></span></label>
+                        <label for="project-description" class="keyed-lang-string" key="project_create_description" ></label>
                         <textarea class="form-control" id="project-description" name="project-description"></textarea>
                     </div>
                     <input type="hidden" id="project-type" name="project-type" value="PROPC"/>
@@ -667,7 +666,7 @@
                             </div>
                         </div>
                         <div class="form-group coppa-false hidden">
-                            <label for="sharing"><span class="keyed-lang-string" key="project_sharing" ></span></label><br/>
+                            <label for="sharing" class="keyed-lang-string" key="project_sharing"></label><br/>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default active">
                                     <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
@@ -697,6 +696,7 @@
             var user_copparestricted = ($("meta[name=user-coppa]").attr("content") === 'true') ? true : false;
             var auth_user = $("meta[name=user-name]").attr("content");
             var inDemo = $("meta[name=in-demo]").attr("content");
+            var oauthOn = ($("meta[name=oauth-on]").attr("content") === 'true') ? true : false;
             
             var projectBoard = {
                 "activity-board": "icon-board-ab",
@@ -957,6 +957,20 @@
                     }));
                 }
                 $('#finish').val(page_text_label['project_create_finishlink']);
+                
+                // Set urls for links
+                var a_hrefs = document.getElementsByClassName('base-link');
+                for (var l = 0; l < a_hrefs.length; l++) {
+                    a_hrefs[l].setAttribute('href', baseUrl + a_hrefs[l].getAttribute('data-url'));
+                }  
+                
+                // Set url for authentication form submission
+                $('#loginform').attr('action', baseUrl + 'authenticate');
+                
+                // If oauth is turned on, make the links visible
+                if (oauthOn) {
+                    $('.oauth').removeClass('hidden');
+                }
             });
             
             function onLoginSuccess(response, statusText, xhr, $form) {

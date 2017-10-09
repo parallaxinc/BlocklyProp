@@ -99,4 +99,10 @@ public interface ProjectDao {
             String code, 
             String newName);
 
+    ProjectRecord saveProjectCodeBoardAs(
+            Long idProject, 
+            String code, 
+            String newName,
+            String newBoard);
+
 }

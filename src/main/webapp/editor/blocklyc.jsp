@@ -114,7 +114,7 @@
                                             </span>
                                             <span id="client-available" class="bp-client-available hidden">
                                                 <span class="keyed-lang-string" key="editor_client_available"></span>
-                                            </span>
+                                            </span> 
                                             <span id="client-available-short" class="hidden">
                                                 <span class="keyed-lang-string" key="editor_client_available_short"></span>
                                             </span>
@@ -156,7 +156,7 @@
                                             <span class="dropdown"><button class="btn btn-sm btn-default dropdown-toggle" id="options-menu" type="button" data-toggle="dropdown">&#9776; <span class="caret"></span></button>
                                                 <ul class="dropdown-menu pull-right btn-sm">
                                                     <li class="auth-true" displayas="list-item"><a id="edit-project-details" href="#" onclick="editProjectDetails()"><span class="keyed-lang-string" key="editor_edit-details"></span></a></li>
-                                                    <li class="auth-true" displayas="list-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" key="editor_save-as"></span></a></li>
+                                                    <li class="auth-true" displayas="list-item" id="save-as-menu-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" key="editor_save-as"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;"  class="auth-true" displayas="list-item"/>
                                                     <li class="auth-true" displayas="list-item"><a href="new-project" class="url-prefix"><span class="keyed-lang-string" key="menu_newproject_title"></span></a></li>
                                                     <li class="auth-true" displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" key="menu_my_projects"></span></a></li>

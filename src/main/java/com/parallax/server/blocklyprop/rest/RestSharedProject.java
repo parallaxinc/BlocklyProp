@@ -64,6 +64,11 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
         
+        if (sort == null) sort = TableSort.modified;
+        if (order == null) order = TableOrder.asc;
+        if (limit == null) limit = 20;
+        if (offset == null) offset = 0;
+        
         LOG.info("Sort: {}", sort);
 
         List<ProjectRecord> projects 
@@ -97,6 +102,12 @@ public class RestSharedProject {
     @Name("Get shared projects by user")
     @Produces("application/json")
     public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset, @PathParam("id") Long idUser) {
+
+        if (sort == null) sort = TableSort.modified;
+        if (order == null) order = TableOrder.asc;
+        if (limit == null) limit = 20;
+        if (offset == null) offset = 0;
+        
         LOG.info("Sort: {}", sort);
 
         List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
