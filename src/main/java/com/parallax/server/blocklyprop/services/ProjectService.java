@@ -44,5 +44,7 @@ public interface ProjectService {
     ProjectRecord saveProjectCode(Long idProject, String code);
 
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName);
+    
+    public ProjectRecord saveProjectCodeBoardAs(Long idProject, String code, String newName, String newBoard);
 
 }

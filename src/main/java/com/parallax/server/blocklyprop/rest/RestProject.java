@@ -70,6 +70,11 @@ public class RestProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
         
+        if (sort == null) sort = TableSort.modified;
+        if (order == null) order = TableOrder.asc;
+        if (limit == null) limit = 20;
+        if (offset == null) offset = 0;
+        
         LOG.info("Retreiving project list");
 
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
@@ -165,6 +170,43 @@ public class RestProject {
                     code, 
                     newName);
             LOG.debug("Code for project {} has been saved as {}", idProject, newName);
+            
+            JsonObject result = projectConverter.toJson(savedProject);
+            LOG.debug("Returning JSON: {}", result);
+
+            result.addProperty("success", true);
+
+            return Response.ok(result.toString()).build();
+        } catch (AuthorizationException ae) {
+            LOG.warn("Project code not saved. Not Authorized");
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        catch (Exception ex) {
+            LOG.error("General exception encountered. Message is: ", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @POST
+    @Path("/board-as")
+    @Detail("Save project code board")
+    @Name("Save project code board")
+    @Produces("application/json")
+    public Response saveProjectCodeBoardAs(
+            @FormParam("id") Long idProject, 
+            @FormParam("code") String code, 
+            @FormParam("name") String newName,
+            @FormParam("board") String newBoard) {
+        
+        LOG.info("Saving project {} code as new {} for board {}", idProject, newName, newBoard);
+
+        try {
+            ProjectRecord savedProject = projectService.saveProjectCodeBoardAs(
+                    idProject, 
+                    code, 
+                    newName,
+                    newBoard);
+            LOG.debug("Code for project {} has been saved as {} for board {}", idProject, newName, newBoard);
             
             JsonObject result = projectConverter.toJson(savedProject);
             LOG.debug("Returning JSON: {}", result);

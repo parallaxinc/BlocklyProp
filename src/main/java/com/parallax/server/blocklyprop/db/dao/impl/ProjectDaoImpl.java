@@ -613,6 +613,43 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
+    /**
+     * TODO: add details.
+     *
+     * @param idProject
+     * @param code
+     * @param newName
+     * @param newBoard
+     * @return
+     */
+    @Override
+    public ProjectRecord saveProjectCodeBoardAs(Long idProject, String code, String newName, String newBoard) {
+        LOG.info("Saving project code as '{}'", newName);
+
+        ProjectRecord original = getProject(idProject);
+        if (original == null) {
+            LOG.error("Original project {} is missing. Unable to save code as...", idProject);
+            throw new NullPointerException("Project doesn't exist");
+        }
+
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
+            ProjectRecord cloned = createProject(
+                    newName,
+                    original.getDescription(),
+                    original.getDescriptionHtml(),
+                    code,
+                    original.getType(),
+                    newBoard,
+                    original.getPrivate(),
+                    original.getShared(),
+                    original.getId());
+
+            return cloned;
+        }
+        return null;
+    }
+
     // Private over-ride of the public getProject()
     //
     // 

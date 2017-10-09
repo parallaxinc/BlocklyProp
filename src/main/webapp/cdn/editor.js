@@ -132,8 +132,12 @@ var checkLastSavedTime = function () {
 var showInfo = function (data) {
     //console.log(data);
     $(".project-name").text(data['name']);
+    
+    // Does the current user own the project?
     if (!data['yours']) {
+        // If not, display owner username and hide save-as menu option
         $(".project-owner").text("(" + data['user'] + ")");
+        $("#save-as-menu-item").css('display', 'none');
     }
     var projectBoardIcon = {
         "activity-board": "images/board-icons/IconActivityBoard.png",
@@ -181,7 +185,8 @@ var saveProject = function () {
         var previousOwner = projectData['yours'];
         projectData = data;
         projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-        //utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
+
+        // If the current user doesn't own this project, a new one is created and the page is redirected to the new project.
         if (!previousOwner) {
             window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
         }
@@ -223,7 +228,7 @@ var saveProject = function () {
         utils.showMessage('Not logged in', 'BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.');
     });
 
-    // Mark the time when saved, add 30 minutes to it.
+    // Mark the time when saved, add 20 minutes to it.
     timestampSaveTime(20, true);
 };
 
@@ -280,135 +285,20 @@ var saveProjectAs = function () {
         code = getXml();
     }
 
-    // If the new project is the same type as the old one, use the save-as endpoint
-    if(p_type === projectData['board']) {
-        projectData['code'] = code;
-        projectData['name'] = p_name;
-        $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
-            var previousOwner = projectData['yours'];
-            projectData = data;
-            projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+    // Save the new project using the board-as endpoint
+    projectData['board'] = p_type;
+    projectData['code'] = code;
+    projectData['name'] = p_name;
+    $.post(baseUrl + 'rest/project/board-as', projectData, function (data) {
+        var previousOwner = projectData['yours'];
+        projectData = data;
+        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
 
-            // Reloading project with new id
-            window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
-        });
-        timestampSaveTime(20, true);  
-        
-    } else {
-    // Else create a new project, then save into it
-
-        ignoreSaveCheck = true;
-        projectData['code'] = code;
-        projectData['name'] = p_name;
-        projectData['board'] = 'propcfile';
-
-        var newProjectData = {
-            'project-name': p_name,
-            'board-type': p_type,
-            'project-description': projectData['description'],
-            'project-type': projectData['type'],
-            'sharing': (projectData['private'] ? 'private' : 'shared'),
-            'project-description-html': projectData['description-html']
-        };
-        $.post(baseUrl + 'createproject', newProjectData, function (data) {
-            console.log(data);
-            if (data['success']) {
-                projectData = data;
-                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
-                projectData['code'] = code;
-
-                // Give the database a chance to catch up - possibly change to document.ready?
-                setTimeout(function () {
-                    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
-                        projectData = data;
-                        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-                        ignoreSaveCheck = false;
-                    });
-                }, 1000);
-                
-            } else {
-                if (typeof data['message'] === "string")
-                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
-                else
-                    alert("There was an error when BlocklyProp tried to create your project:\n" + data['message'].toString());
-            }
-        });
-        timestampSaveTime(20, true);
-    }
-    
-    /*
-    utils.prompt("Save project as", projectData['name'], function (value) {
-        if (value) {
-            var code = '';
-            if (projectData['board'] === 'propcfile') {
-                code = propcAsBlocksXml();
-
-                Blockly.mainWorkspace.clear();
-                loadToolbox(code);
-            } else {
-                code = getXml();
-            }
-            projectData['code'] = code;
-            projectData['name'] = value;
-            $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
-                var previousOwner = projectData['yours'];
-                projectData = data;
-                projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-                utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
-                // Reloading project with new id
-                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
-            });
-            timestampSaveTime(20, true);
-        }
+        // Reloading project with new id
+        window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
     });
-    */
-    
+    timestampSaveTime(20, true);      
 };
-
-/*
-saveAsPropc = function () {
-    var xmlText = propcAsBlocksXml();
-
-    utils.prompt("Create a new Propeller C (code-only) project", projectData['name'], function (value) {
-        if (value) {
-            ignoreSaveCheck = true;
-            //var code = getXml();
-            projectData['code'] = xmlText;
-            projectData['name'] = value;
-            projectData['board'] = 'propcfile';
-
-            var newProjectData = {
-                'project-name': projectData['name'],
-                'board-type': projectData['board'],
-                'project-description': projectData['description'],
-                'project-type': projectData['type'],
-                'sharing': (projectData['private'] ? 'private' : 'shared'),
-                'project-description-html': projectData['description-html']
-            };
-            $.post(baseUrl + 'createproject', newProjectData, function (data) {
-                console.log(data);
-                if (data['success']) {
-                    projectData = data;
-                    window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
-                    projectData['code'] = xmlText;
-
-                    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
-                        projectData = data;
-                        projectData['code'] = xmlText; // Save code in projectdata to be able to verify if code has changed upon leave
-                        ignoreSaveCheck = false;
-                    });
-                } else {
-                    if (typeof data['message'] === "string")
-                        alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
-                    else
-                        alert("There was an error when BlocklyProp tried to create your project:\n" + data['message'].toString());
-                }
-            });
-            timestampSaveTime(20, true);
-        }
-    });
-};
-*/
 
 var editProjectDetails = function () {
     window.location.href = baseUrl + 'my/projects.jsp#' + idProject;

@@ -24,6 +24,7 @@
 
 <script>
     console.log('<url:getUrl url="${param.url}"/>');
+    
     var languageUrls = {
         "PROPC": "<url:getCdnUrl url="/images/lang-icons/c.png" />",
         "SPIN": "<url:getCdnUrl url="/images/lang-icons/spin.png" />"
@@ -50,15 +51,6 @@
         return "<a href='<url:getUrl url="/public/profile" />?id-user=" + row['id-user'] + "'>" + value + "</a>";
     }
 
-    var boards = {
-        "activity-board": "<fmt:message key="project.board.activity-board" />",
-        "s3": "<fmt:message key="project.board.s3" />",
-        "heb": "<fmt:message key="project.board.heb" />",
-        "flip": "<fmt:message key="project.board.flip" />",
-        "other": "<fmt:message key="project.board.other" />",
-        "propcfile": "<fmt:message key="project.board.propcfile" />"
-    };
-
     function formatBoard(value, row) {
         var boardTranslation = boards[value];
         if (!boardTranslation) {
@@ -75,4 +67,13 @@
         }
         return value;
     }
+    
+    var boards = {
+        "activity-board": "<fmt:message key="project.board.activity-board" />",
+        "s3": "<fmt:message key="project.board.s3" />",
+        "heb": "<fmt:message key="project.board.heb" />",
+        "flip": "<fmt:message key="project.board.flip" />",
+        "other": "<fmt:message key="project.board.other" />",
+        "propcfile": "<fmt:message key="project.board.propcfile" />"
+    };
 </script>
