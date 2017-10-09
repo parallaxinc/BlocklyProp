@@ -1666,7 +1666,7 @@ Blockly.propc.ab_drive_stop = function () {
 Blockly.Blocks.activitybot_calibrate = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ACTIVITYBOT_CALIBRATE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_ACTIVITYBOT_CALIBRATE_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([
@@ -1687,16 +1687,52 @@ Blockly.propc.activitybot_calibrate = function () {
 Blockly.Blocks.activitybot_display_calibration = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([
                     ["ActivityBot", "abdrive.h"],
-                    ["ActivityBot 360\u00b0", "abdrive360.h"]]), "BOT")
+                    ["ActivityBot 360\u00b0", "abdrive360.h"]], function(bot) {
+                            this.sourceBlock_.updateShape_(bot, this.sourceBlock_.getFieldValue('TYPE'));
+                        }), "BOT");
+        this.appendDummyInput('MENU')
                 .appendField("display calibration")
                 .appendField(new Blockly.FieldDropdown([
                     ['results', 'result'], 
                     ['interpolation table', 'table']]), 'TYPE');
+        this.setInputsInline(true);
+        this.updateShape_();
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('bot', this.getFieldValue('BOT'));
+        container.setAttribute('type', this.getFieldValue('TYPE'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var bot = xmlElement.getAttribute('bot');
+        var type = xmlElement.getAttribute('type');
+        this.updateShape_(bot, type);
+    },
+    updateShape_: function (bot, type) {
+        if (bot === undefined) {
+            bot = this.getFieldValue('BOT');
+        }
+        if (type === undefined) {
+            type = this.getFieldValue('TYPE') || 'result';
+        }
+
+        this.removeInput('MENU');
+        if (bot === 'abdrive.h') {
+            this.appendDummyInput('MENU')
+                    .appendField("display calibration")
+                    .appendField(new Blockly.FieldDropdown([
+                        ['results', 'result'], 
+                        ['interpolation table', 'table']]), 'TYPE');
+        } else {
+            this.appendDummyInput('MENU')
+                    .appendField("display calibration results");         
+        }
     }
 };
 
