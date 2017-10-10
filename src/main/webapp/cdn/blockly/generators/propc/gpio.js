@@ -1680,7 +1680,7 @@ Blockly.propc.activitybot_calibrate = function () {
     var bot = this.getFieldValue('BOT') || 'abcalibrate.h';
     var servo = '';
     if (bot === "abcalibrate360.h") {
-        servo = "#include servo360.h\n";
+        servo = "#include \"servo360.h\"\n";
     }
     Blockly.propc.definitions_["activitybot_calibrate"] = servo + '#include "' + bot + '"';
     Blockly.propc.setups_["activitybot_calibrate"] = 'cal_servoPins(12, 13);\n\tcal_encoderPins(14, 15);';
@@ -1721,9 +1721,9 @@ Blockly.propc.activitybot_display_calibration = function () {
         }
     } else {
         if (this.getFieldValue('TYPE') === 'table') {
-            return 'cal_displayResults();\n';
-        } else {
             return 'cal_displayData();\n';
+        } else {
+            return 'cal_displayResults();\n';
         }        
     }
 };
