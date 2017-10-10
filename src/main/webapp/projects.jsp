@@ -133,6 +133,7 @@
                     $('#project-table').bootstrapTable('showColumn', 'user');
                     $('#project-page-title').html('<fmt:message key="project.list.title"/>');
                 } else {
+                    tableREST = '<url:getUrl url="/rest/project/list"/>';
                     $('#project-table').bootstrapTable('hideColumn', 'user');
                     $('#project-page-title').html('<fmt:message key="my_project.list.title"/>');
                 }
@@ -152,7 +153,7 @@
                     
                     <h2 id="project-page-title"><fmt:message key="project.list.title"/></h2>
                     
-                    <table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="/rest/shared/project/list"/>"  
+                    <table id="project-table" class="table" data-toggle="table" data-url=""  
                            data-toolbar="#toolbar" data-search="false" data-side-pagination="server" data-pagination="true">
                         <thead>
                             <tr>
