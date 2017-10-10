@@ -99,7 +99,12 @@ def gen_compressed_css(filenames, target_filename):
   f = open(target_filename, 'w')
   f.write(res)
   f.close()
+
+  original_kb = int(len(inc) / 1024 + 0.5)
+  compressed_kb = int(len(res) / 1024 + 0.5)
+  ratio = int(float(compressed_kb) / float(original_kb) * 100 + 0.5)
   print 'SUCCESS: ' + target_filename
+  print 'Size changed from %d KB to %d KB (%d%%).' % (original_kb, compressed_kb, ratio)
 
 
 def gen_uncompressed(filenames, target_filename):
