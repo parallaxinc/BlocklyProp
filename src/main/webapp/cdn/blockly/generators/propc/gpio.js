@@ -1708,7 +1708,7 @@ Blockly.propc.activitybot_display_calibration = function () {
     var bot = this.getFieldValue('BOT') || 'abdrive.h';
     var servo = '';
     if (bot === "abcalibrate360.h") {
-        servo = "#include servo360.h\n";
+        servo = "#include \"servo360.h\"\n";
     }
     Blockly.propc.definitions_["activitybot_calibrate"] = servo + '#include "' + bot + '"';
     Blockly.propc.serial_terminal_ = true;
