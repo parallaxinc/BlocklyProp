@@ -1666,15 +1666,23 @@ Blockly.propc.ab_drive_stop = function () {
 Blockly.Blocks.activitybot_calibrate = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ACTIVITYBOT_CALIBRATE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_ACTIVITYBOT_CALIBRATE_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
-                .appendField("ActivityBot calibrate");
+                .appendField(new Blockly.FieldDropdown([
+                    ["ActivityBot", "abcalibrate.h"],
+                    ["ActivityBot 360\u00b0", "abcalibrate360.h"]]), "BOT")
+                .appendField("calibrate");
     }
 };
 
 Blockly.propc.activitybot_calibrate = function () {
-    Blockly.propc.definitions_["activitybot_calibrate"] = '#include "abcalibrate.h"';
+    var bot = this.getFieldValue('BOT') || 'abcalibrate.h';
+    var servo = '';
+    if (bot === "abcalibrate360.h") {
+        servo = "#include \"servo360.h\"\n";
+    }
+    Blockly.propc.definitions_["activitybot_calibrate"] = servo + '#include "' + bot + '"';
     Blockly.propc.setups_["activitybot_calibrate"] = 'cal_servoPins(12, 13);\n\tcal_encoderPins(14, 15);';
 
     return 'high(26);\nhigh(27);\ncal_activityBot();\nlow(26);\nlow(27);\n';
@@ -1683,22 +1691,40 @@ Blockly.propc.activitybot_calibrate = function () {
 Blockly.Blocks.activitybot_display_calibration = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
-                .appendField("ActivityBot display calibration")
-                .appendField(new Blockly.FieldDropdown([['results', 'result'], ['interpolation table', 'table']]), 'TYPE');
+                .appendField(new Blockly.FieldDropdown([
+                    ["ActivityBot", "abdrive.h"],
+                    ["ActivityBot 360\u00b0", "abcalibrate360.h"]]), "BOT")
+                .appendField("display calibration")
+                .appendField(new Blockly.FieldDropdown([
+                    ['results', 'result'], 
+                    ['data', 'table']]), 'TYPE');
     }
 };
 
 Blockly.propc.activitybot_display_calibration = function () {
-    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
+    var bot = this.getFieldValue('BOT') || 'abdrive.h';
+    var servo = '';
+    if (bot === "abcalibrate360.h") {
+        servo = "#include \"servo360.h\"\n";
+    }
+    Blockly.propc.definitions_["activitybot_calibrate"] = servo + '#include "' + bot + '"';
     Blockly.propc.serial_terminal_ = true;
 
-    if (this.getFieldValue('TYPE') === 'table') {
-        return 'drive_displayInterpolation();\n';
+    if(bot === 'abdrive.h') {
+        if (this.getFieldValue('TYPE') === 'table') {
+            return 'drive_displayInterpolation();\n';
+        } else {
+            return 'drive_calibrationResults();\n';
+        }
     } else {
-        return 'drive_calibrationResults();\n';
+        if (this.getFieldValue('TYPE') === 'table') {
+            return 'cal_displayData();\n';
+        } else {
+            return 'cal_displayResults();\n';
+        }        
     }
 };
 
