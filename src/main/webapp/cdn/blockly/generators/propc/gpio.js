@@ -39,9 +39,9 @@ Blockly.Blocks.make_pin = {
         }
         this.setTooltip(Blockly.MSG_MAKE_PIN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.appendDummyInput("")
+        this.appendDummyInput()
                 .appendField("make PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([["high", "HIGH"], ["low", "LOW"], ["toggle", "TOGGLE"], ["input", "INPUT"], ["reverse", "REVERSE"]]), "ACTION");
@@ -70,7 +70,7 @@ Blockly.Blocks.make_pin_input = {
     init: function () {
         this.setTooltip(Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.appendDummyInput("")
                 .appendField("make PIN");
@@ -150,7 +150,7 @@ Blockly.Blocks.set_pins = {
     init: function () {
         this.setTooltip(Blockly.MSG_SET_PINS_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         var start_pin = [];
         for (var i = profile.default.contiguous_pins_start; i <= profile.default.contiguous_pins_end; i++) {
@@ -192,7 +192,6 @@ Blockly.Blocks.set_pins = {
         var action = xmlElement.getAttribute('action');
         var pinCount = xmlElement.getAttribute('pin_count');
         var startPin = xmlElement.getAttribute('start_pin');
-        //var type = this.getFieldValue('TYPE');
         this.updateShape_({"ACTION": action, "PIN_COUNT": pinCount, "START_PIN": startPin});
     },
     updateShape_: function (details) {
@@ -280,10 +279,10 @@ Blockly.Blocks.get_pins = {
         this.appendDummyInput("")
                 .appendField("get the")
                 .appendField(new Blockly.FieldDropdown([["states", "STATE"], ["directions", "DIRECTION"]]), "ACTION")
-                .appendField("to highest PIN")
-                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT")
                 .appendField("from lowest PIN")
-                .appendField(new Blockly.FieldDropdown(pin_count), "START_PIN");
+                .appendField(new Blockly.FieldDropdown(pin_count), "START_PIN")
+                .appendField("to highest PIN")
+                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT");
     }
 };
 
@@ -310,7 +309,7 @@ Blockly.Blocks.set_pins_binary = {
     init: function () {
         this.setTooltip(Blockly.MSG_SET_PINS_BINARY_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
 
         var start_pin = [];
@@ -324,10 +323,10 @@ Blockly.Blocks.set_pins_binary = {
         this.appendValueInput("VALUE")
                 .appendField("set the")
                 .appendField(new Blockly.FieldDropdown([["states", "STATE"], ["directions", "DIRECTION"]]), "ACTION")
-                .appendField("to highest PIN")
-                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT")
                 .appendField("from lowest PIN")
                 .appendField(new Blockly.FieldDropdown(pin_count), "START_PIN")
+                .appendField("to highest PIN")
+                .appendField(new Blockly.FieldDropdown(start_pin), "PIN_COUNT")
                 .appendField("using bits from")
                 .setCheck('Number');
     }
@@ -368,7 +367,7 @@ Blockly.Blocks.base_freqout = {
                 .appendField("frequency (Hz)")
                 .setCheck('Number');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -420,8 +419,10 @@ Blockly.Blocks.pulse_in = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendDummyInput()
                 .appendField("read")
-                .appendField(new Blockly.FieldDropdown([["negative/low pulses", "0"], ["positive/high pulses", "1"]]), "STATE");
-
+                .appendField(new Blockly.FieldDropdown([
+                    ["negative/low pulses", "0"],
+                    ["positive/high pulses", "1"]
+                ]), "STATE");
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -446,9 +447,10 @@ Blockly.Blocks.pulse_out = {
                 .appendField("pulse-out PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
         this.appendValueInput('PULSE_LENGTH')
-                .appendField("pulse length (" + "\u00B5" + "s)");
+                .appendField("pulse length (" + "\u00B5" + "s)")
+                .setCheck("Number");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -495,15 +497,42 @@ Blockly.Blocks.eeprom_write = {
         this.appendValueInput("DATA")
                 .setCheck(null)
                 .appendField("EEPROM write")
-                .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]]), "TYPE");
+                .appendField(new Blockly.FieldDropdown([["number", "NUMBER"], ["text", "TEXT"], ["byte", "BYTE"]], function (type) {
+                    this.sourceBlock_.setOutputType_(type);
+                }), "TYPE");
         this.appendValueInput("ADDRESS")
                 .appendField('R,0,7675,0', 'RANGEVALS0')
                 .setCheck("Number")
                 .appendField("to address");
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+        this.setOutputType_(this.getFieldValue('DATA'));
+    },
+    mutationToDom: function () {
+        // Create XML to represent menu options.
+        var container = document.createElement('mutation');
+        container.setAttribute('type', this.getFieldValue('TYPE'));
+        return container;
+    },
+    domToMutation: function (container) {
+        // Parse XML to restore the menu options.
+        var savedType = container.getAttribute('type');
+        if (!savedType) {
+            savedType = null;
+        }
+        this.setOutputType_(savedType || null);
+    },
+    setOutputType_: function (type) {
+        var setType = "Number";
+        if (type === 'TEXT') {
+            setType = "String";
+        }
+        if (type === null || type === 'null') {
+            setType = null;
+        }
+        this.getInput('DATA').setCheck(setType);
     }
 };
 
@@ -512,12 +541,13 @@ Blockly.propc.eeprom_write = function () {
     var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC);
     var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_ATOMIC) || '';
 
-    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.methods_["constrain_function"] = setup_code;
-    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-
+    if (!this.disabled) {
+        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
+        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+        Blockly.propc.methods_["constrain_function"] = setup_code;
+        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
+    }
     var code = '';
     if (data !== '') {
         if (type === 'BYTE') {
@@ -548,8 +578,15 @@ Blockly.Blocks.eeprom_read = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VALUE');
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        if (this.getFieldValue('TYPE') === 'TEXT') {
+            return "String";
+        } else {
+            return "Number";
+        }
     },
     getVars: function () {
         return [this.getFieldValue('VALUE')];
@@ -565,31 +602,33 @@ Blockly.propc.eeprom_read = function () {
     var type = this.getFieldValue('TYPE');
     var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC) || '0';
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
+    var code = '';
 
-    Blockly.propc.global_vars_["i2c_eepromAddr"] = 'int __eeAddr;';
-
-    var code = '__eeAddr = ' + address + ';\n';
-    code += 'if(__eeAddr < 0) __eeAddr = 0;\n';
-    code += 'if(__eeAddr > 7675) __eeAddr = 7675;\n';
+    if (!this.disabled) {
+        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
+        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+        Blockly.propc.methods_["constrain_function"] = setup_code;
+        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
+    }
 
     if (data !== '') {
         if (type === 'BYTE') {
-            code += data + ' = ee_getByte( 32768 + __eeAddr ) & 255;\n';
+            code += data + ' = ee_getByte( 32768 + constrain(' + address + ', 0, 7675)) & 255;\n';
         } else if (type === 'NUMBER') {
-            code += data + ' = ee_getInt( 32768 + __eeAddr );\n';
+            code += data + ' = ee_getInt( 32768 + constrain(' + address + ', 0, 7675));\n';
         } else {
-            Blockly.propc.global_vars_["i2c_eeBffr"] = 'char __eeBffr[1];';
-            Blockly.propc.global_vars_["i2c_eeIdx"] = 'int __eeIdx = 0;';
-            Blockly.propc.vartype_[data] = 'char *';
-            code += '// Get the string from EEPROM one character at a time until it finds the end of the string.\n';
-            code += '__eeIdx = 0;\n';
-            code += 'while(__eeIdx < 128) {\n  ee_getStr(__eeBffr, 1, (32768 + __eeAddr) + __eeIdx);\n';
-            code += '  ' + data + '[__eeIdx] = __eeBffr[0];\n';
-            code += '  if(' + data + '[__eeIdx] == 0) break;\n  __eeIdx++;\n}\n';
-            code += '  if(__eeIdx >= 128) ' + data + '[127] = 0;\n';
+            if (!this.disabled) {
+                Blockly.propc.global_vars_["i2c_eeBffr"] = 'char __eeBffr[1];';
+                Blockly.propc.global_vars_["i2c_eeIdx"] = 'int __eeIdx = 0;';
+                Blockly.propc.vartype_[data] = 'char *';
+            }
+            code += '// Get the string from EEPROM one character at a time until it finds the end of the string.\n__eeIdx = 0;\n';
+            code += 'while(__eeIdx < 128) {\n  ee_getStr(__eeBffr, 1, (32768 + constrain(' + address + ', 0, 7675)) + __eeIdx);\n';
+            code += data + '[__eeIdx] = __eeBffr[0];\nif(' + data + '[__eeIdx] == 0) break;\n  __eeIdx++;\n}\n';
+            code += 'if(__eeIdx >= 128) ' + data + '[127] = 0;\n';
         }
     }
-
     return code;
 };
 
@@ -597,7 +636,7 @@ Blockly.propc.eeprom_read = function () {
 Blockly.Blocks.servo_move = {
     init: function () {
         if (profile.default.description === "Scribbler Robot") {
-            this.setHelpUrl(Blockly.MSG_S3_MOTORS_HELPURL);
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
         } else {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
@@ -614,7 +653,7 @@ Blockly.Blocks.servo_move = {
                 .appendField('R,0,180,0', 'RANGEVALS1');
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -622,26 +661,31 @@ Blockly.Blocks.servo_move = {
 Blockly.propc.servo_move = function () {
     var dropdown_pin = this.getFieldValue('PIN');
     var degrees = Blockly.propc.valueToCode(this, 'ANGLE', Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
-
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
+    }
     var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
     return code;
 };
 
 Blockly.Blocks.servo_speed = {
-    helpUrl: Blockly.MSG_SERVO_HELPURL,
     init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
         this.setTooltip(Blockly.MSG_SERVO_SPEED_TOOLTIP);
-        this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("CR Servo PIN")
+                .appendField("CR servo PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
         this.appendValueInput("SPEED")
                 .appendField("speed")
                 .setCheck("Number");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -649,9 +693,9 @@ Blockly.Blocks.servo_speed = {
 Blockly.propc.servo_speed = function () {
     var pin = this.getFieldValue('PIN');
     var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
-
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
+    }
     return 'servo_speed(' + pin + ', ' + speed + ');\n';
 };
 
@@ -661,14 +705,14 @@ Blockly.Blocks.servo_set_ramp = {
         this.setTooltip(Blockly.MSG_SERVO_SET_RAMP_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
-                .appendField("CR Servo set ramp PIN")
+                .appendField("CR servo set ramp PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
         this.appendValueInput('RAMPSTEP')
                 .appendField("rampstep (0 - 100)")
                 .setCheck('Number');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -682,10 +726,229 @@ Blockly.propc.servo_set_ramp = function () {
     } else if (Number(ramp_step) > 100) {
         ramp_step = "100";
     }
-
-    Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
-
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
+    }
     return 'servo_setramp(' + pin + ', ' + ramp_step + ');\n';
+};
+
+// --------- Feedback 360 servo blocks -----------------------------------------
+Blockly.Blocks.fb360_init = {
+    init: function () {
+        this.setTooltip(Blockly.MSG_FB360_INIT_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendDummyInput()
+                .appendField("Feedback 360\u00b0 servo initialize PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField("FB")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "FB");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.fb360_init = function () {
+    var pin = this.getFieldValue("PIN");
+    var fb = this.getFieldValue("FB");
+
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include servo360"] = '#include "servo360.h"';
+        Blockly.propc.setups_["servo360_" + pin] = 'servo360_connect(' + pin + ',' + fb + ');\n';
+    }
+    return '';
+};
+
+Blockly.Blocks.fb360_setup = {
+    init: function () {
+        this.setTooltip(Blockly.MSG_FB360_SETUP_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendDummyInput()
+                .appendField("Feedback 360\u00b0 servo PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown([
+                    ['set acceleration to', 'setAcceleration'],
+                    ['set max speed (+/-) to', 'setMaxSpeed']
+                ], function (param) {
+                    this.sourceBlock_.updateShape_(param);
+                }), "PARAM");
+        this.appendDummyInput('OPTION')
+                .appendField(new Blockly.FieldDropdown([
+                    ["7200\u00B0/s\u00B2", "2000"],
+                    ["4800\u00B0/s\u00B2 (peppy)", "1200"],
+                    ["3600\u00B0/s\u00B2", "800"],
+                    ["2400\u00B0/s\u00B2 (smooth)", "400"],
+                    ["1200\u00B0/s\u00B2", "200"],
+                    ["600\u00B0/s\u00B2 (sluggish)", "100"]
+                ]), "VALUE");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    updateShape_: function (param) {
+        this.removeInput('OPTION');
+        if (param === 'setAcceleration') {
+            this.appendDummyInput('OPTION')
+                    .appendField(new Blockly.FieldDropdown([
+                        ["7200\u00B0/s\u00B2", "2000"],
+                        ["4800\u00B0/s\u00B2 (peppy)", "1200"],
+                        ["3600\u00B0/s\u00B2", "800"],
+                        ["2400\u00B0/s\u00B2 (smooth)", "400"],
+                        ["1200\u00B0/s\u00B2", "200"],
+                        ["600\u00B0/s\u00B2 (sluggish)", "100"]
+                    ]), "VALUE");
+        } else {
+            this.appendDummyInput('OPTION')
+                    .appendField(new Blockly.FieldTextInput('1080', function (text) {
+                        var n = Blockly.FieldTextInput.numberValidator(text);
+                        if (n < 1)
+                            n = 1;
+                        if (n > 1080)
+                            n = 1080;
+                        return n;
+                    }), "VALUE")
+                    .appendField('\u00B0/s');
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('param', this.getFieldValue('PARAM'));
+        container.setAttribute('value', this.getFieldValue('VALUE'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var param = xmlElement.getAttribute('param');
+        var value = xmlElement.getAttribute('value');
+        this.updateShape_(param);
+        this.setFieldValue(value, 'VALUE');
+    },
+    onchange: function () {
+        var pinWarn = 'WARNING: You need a Feedback 360\u00B0 servo initialize block set to match the PIN on this block!';
+        var blocks = Blockly.getMainWorkspace().getAllBlocks();
+
+        // Iterate through every block.
+        for (var x = 0; x < blocks.length; x++) {
+            var blockName = blocks[x].type;
+            var myPin = this.getFieldValue('PIN');
+            if (blockName === 'fb360_init' && (blocks[x].getFieldValue('PIN') === myPin || blocks[x].getFieldValue('FB') === myPin)) {
+                pinWarn = null;
+            }
+        }
+        this.setWarningText(pinWarn);
+    }
+};
+
+Blockly.propc.fb360_setup = function () {
+    var param = this.getFieldValue("PARAM");
+    var value = '0';
+    if (this.type === 'fb360_setup') {
+        value = this.getFieldValue("VALUE") || '0';
+    } else {
+        value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';;
+    }
+    var pin = this.getFieldValue("PIN");
+    
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
+        return 'servo360_' + param + '(' + pin + ', ' + value + ');\n';
+    } else {
+        return '// WARNING: You need a Feedback 360\u00B0 servo initialize block set to match the PIN on this block!';
+    }
+};
+
+Blockly.Blocks.fb360_set = {
+    init: function () {
+        this.setTooltip(Blockly.MSG_FB360_SET_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendValueInput('VALUE')
+                .setCheck('Number')
+                .appendField("Feedback 360\u00b0 servo PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown([
+                    ['set speed to (+/-)', 'speed'],
+                    ['set angle to (+/-)', 'angle'],
+                    ['change position by (+/-)', 'goto']
+                ], function (param) {
+                    this.sourceBlock_.updateShape_(param);
+                }), "PARAM")
+                .appendField('R,-720,720,0', 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
+        this.appendDummyInput()
+                .appendField('\u00B0/s', 'END');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    updateShape_: function (param) {
+        if (param === 'speed') {
+            this.setFieldValue('\u00B0/s', 'END');
+            this.setFieldValue('R,-720,720,0', 'RANGEVALS0');
+        } else if (param === 'angle') {
+            this.setFieldValue('R,-1456,1456,0', 'RANGEVALS0');
+            this.setFieldValue('\u00B0', 'END');
+        } else {
+            this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS0');
+            this.setFieldValue('\u00B0', 'END');
+        }
+    },
+    onchange: Blockly.Blocks['fb360_setup'].onchange,
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('param', this.getFieldValue('PARAM'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var param = xmlElement.getAttribute('param');
+        this.updateShape_(param);
+    }
+};
+
+Blockly.propc.fb360_set = Blockly.propc.fb360_setup;
+
+Blockly.Blocks.fb360_get = {
+    init: function () {
+        this.setTooltip(Blockly.MSG_FB360_GET_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendDummyInput('VALUE')
+                .appendField("Feedback 360\u00b0 servo PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField('position (\u00B0)');
+        this.setOutput(true, "Number");
+    },
+    onchange: Blockly.Blocks['fb360_setup'].onchange
+};
+
+Blockly.propc.fb360_get = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
+        return ['servo360_getAngle(' + this.getFieldValue("PIN") + ')', Blockly.propc.ORDER_NONE];
+    } else {
+        return ['0', Blockly.propc.ORDER_NONE];
+    }
 };
 
 // --------- ActivityBoard A/D and D/A voltage measurement/generation blocks ---
@@ -706,12 +969,10 @@ Blockly.Blocks.ab_volt_in = {
 
 Blockly.propc.ab_volt_in = function () {
     var dropdown_channel = this.getFieldValue('CHANNEL');
-
-    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt'] === undefined) {
-        Blockly.propc.setups_['setup_abvolt'] = 'ad_init(21, 20, 19, 18);';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
+        Blockly.propc.setups_['setup_abvolts'] = 'ad_init(21, 20, 19, 18);';
     }
-
     var code = '(ad_in(' + dropdown_channel + ') * 500 / 4096)';
     return [code, Blockly.propc.ORDER_NONE];
 };
@@ -732,7 +993,7 @@ Blockly.Blocks.ab_volt_out = {
                 .appendField("volt-100ths");
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -740,12 +1001,10 @@ Blockly.Blocks.ab_volt_out = {
 Blockly.propc.ab_volt_out = function () {
     var dropdown_channel = this.getFieldValue('CHANNEL');
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
-
-    Blockly.propc.definitions_["include abvolt"] = '#include "abvolts.h"';
-    if (Blockly.propc.setups_['setup_abvolt_out'] === undefined) {
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include abvolts"] = '#include "abvolts.h"';
         Blockly.propc.setups_['setup_abvolt_out'] = 'da_init(26, 27);';
     }
-
     var code = 'da_out(' + dropdown_channel + ', (' + value + '* 256 / 330));\n';
     return code;
 };
@@ -755,18 +1014,17 @@ Blockly.Blocks.pwm_start = {
     helpUrl: Blockly.MSG_ANALOG_PWM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_PWM_START_TOOLTIP);
-        this.setColour(colorPalette.getColor('io'));
+        this.setColour('#FF8800');
         this.appendDummyInput()
                 .appendField("PWM initialize");
-
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+        this.setWarningText('NOTE: The PWM initialize block is no longer\nneeded. It can be safely deleted.');
     }
 };
 
 Blockly.propc.pwm_start = function () {
-    var code = 'pwm_start(100);\n';
-    return code;
+    return '// NOTE: The PWM initialize block is no longer needed. It can be safely deleted.\n';
 };
 
 Blockly.Blocks.pwm_set = {
@@ -786,7 +1044,7 @@ Blockly.Blocks.pwm_set = {
                 .appendField("duty cycle (%)");
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -802,7 +1060,7 @@ Blockly.propc.pwm_set = function () {
         duty_cycle = '100';
     }
 
-    var code = 'pwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
+    var code = 'pwm_start(100);\npwm_set(' + pin + ', ' + channel + ', ' + duty_cycle + ');\n';
     return code;
 };
 
@@ -814,7 +1072,7 @@ Blockly.Blocks.pwm_stop = {
         this.appendDummyInput()
                 .appendField("PWM stop");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -835,17 +1093,17 @@ Blockly.Blocks.wav_play = {
                 .appendField(new Blockly.FieldTextInput('File_name'), 'FILENAME');
 
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.wav_play = function () {
     var filename = this.getFieldValue('FILENAME');
-
-    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
-    Blockly.propc.setups_["sd_card"] = 'int DO = 22, CLK = 23, DI = 24, CS = 25;\n\tsd_mount(DO, CLK, DI, CS);\n';
-
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+        Blockly.propc.setups_["sd_card"] = 'int DO = 22, CLK = 23, DI = 24, CS = 25;\n\tsd_mount(DO, CLK, DI, CS);\n';
+    }
     var code = 'wav_play("' + filename + '.wav");\n';
     return code;
 };
@@ -857,7 +1115,6 @@ Blockly.Blocks.wav_status = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("WAV status");
-
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
@@ -865,8 +1122,9 @@ Blockly.Blocks.wav_status = {
 };
 
 Blockly.propc.wav_status = function () {
-    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
-
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+    }
     var code = 'wav_playing()';
     return [code, Blockly.propc.ORDER_NONE];
 };
@@ -881,7 +1139,7 @@ Blockly.Blocks.wav_volume = {
                 .appendField('R,0,10,0', 'RANGEVALS1');
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -889,14 +1147,15 @@ Blockly.Blocks.wav_volume = {
 Blockly.propc.wav_volume = function () {
     var volume = Blockly.propc.valueToCode(this, 'VOLUME', Blockly.propc.ORDER_NONE) || '0';
 
-    Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
 
-    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.methods_["constrain_function"] = setup_code;
-    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-
+        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
+        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
+        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
+        Blockly.propc.methods_["constrain_function"] = setup_code;
+        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
+    }
     var code = 'wav_volume(constrain(' + volume + ', 0, 10));\n';
     return code;
 };
@@ -908,13 +1167,15 @@ Blockly.Blocks.wav_stop = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("WAV stop");
-
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.wav_stop = function () {
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
+    }
     var code = 'wav_stop();\n';
     return code;
 };
@@ -927,16 +1188,17 @@ Blockly.Blocks.ab_drive_init = {
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField("Robot")
-                .appendField(new Blockly.FieldDropdown([["ActivityBot", "abdrive.h"], ["Arlo", "arlodrive.h"], ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
+                .appendField(new Blockly.FieldDropdown([
+                    ["ActivityBot", "abdrive.h"],
+                    ["ActivityBot 360\u00b0", "abdrive360.h"], 
+                    ["Arlo", "arlodrive.h"],
+                    ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
                     this.sourceBlock_.updateShape_({"BOT": bot});
                 }), "BOT")
                 .appendField("initialize");
         this.appendDummyInput("PINS");
-        //        .appendField(" ramping")
-        //        .appendField(new Blockly.FieldDropdown([["none", "64"], ["light", "8"], ["medium", "4"], ["heavy", "2"], ["maximum", "1"]]), "RAMPING");
-
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     mutationToDom: function () {
@@ -985,21 +1247,18 @@ Blockly.Blocks.ab_drive_init = {
 
 Blockly.propc.ab_drive_init = function () {
     var bot = this.getFieldValue('BOT');
-    var left = Number(this.getFieldValue('LEFT'));
-    var right = Number(this.getFieldValue('RIGHT'));
-    //var ramping = Number(this.getFieldValue('RAMPING'));
 
-    Blockly.propc.definitions_["include abdrive"] = '#include "' + bot + '"';
-
-    if (bot === 'servodiffdrive.h') {
-        Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
-        //Blockly.propc.setups_["sdd_ramping"] = 'drive_setramp(' + ramping + ',' + ramping + ');\n';
-    } else if (bot === 'abdrive.h') {
-        //Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
-    } else if (bot === 'arlodrive.h') {
-        //Blockly.propc.setups_["abd_ramping"] = 'drive_setRampStep(' + ramping + ');\n';
+    if (!this.disabled) {
+        if (bot.indexOf('360') > -1) {
+            Blockly.propc.definitions_["include servo360"] = '#include "servo360.h"';
+        }
+        Blockly.propc.definitions_["include abdrive"] = '#include "' + bot + '"';
+        if (bot === 'servodiffdrive.h') {
+            var left = Number(this.getFieldValue('LEFT'));
+            var right = Number(this.getFieldValue('RIGHT'));
+            Blockly.propc.setups_["servodiffdrive"] = 'drive_pins(' + left + ',' + right + ');\n';
+        }
     }
-
     return '';
 };
 
@@ -1009,12 +1268,11 @@ Blockly.Blocks.ab_drive_ramping = {
         this.setTooltip(Blockly.MSG_ROBOT_RAMPING_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput('ACCEL')
-                .appendField("Robot set acceleration for", "TITLE")
+                .appendField("Robot set acceleration for")
                 .appendField(new Blockly.FieldDropdown([
-                    ["speed", "FOR_SPEED"],
-                    ["distance", "FOR_GOTO"]
+                    ["speed blocks to", "FOR_SPEED"],
+                    ["distance blocks to", "FOR_GOTO"]
                 ]), "OPS")
-                .appendField("blocks to", "TITLE_2")
                 .appendField(new Blockly.FieldDropdown([
                     ["2000 ticks/s\u00B2", "2000"],
                     ["1600 ticks/s\u00B2 (jerky)", "1600"],
@@ -1026,37 +1284,80 @@ Blockly.Blocks.ab_drive_ramping = {
                     ["100 ticks/s\u00B2 (sluggish)", "100"]
                 ]), "RAMPING");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-
+        this.isBot = '';
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('bot', this.isBot);
+        container.setAttribute('ramp', this.getFieldValue('RAMPING') || '600');
+        container.setAttribute('type', this.getFieldValue('OPS') || 'FOR_SPEED');
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var bot = xmlElement.getAttribute('bot');
+        var type = xmlElement.getAttribute('type') || this.getFieldValue('OPS');
+        var ramp = xmlElement.getAttribute('ramp') || this.getFieldValue('RAMPING');
+        if (bot) {
+            this.newRobot(bot, type, ramp);
+        } else {
+            this.whichBot();
+        }
+    },
+    whichBot: function () {
         var whichRobot = '';
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
             whichRobot = 'abdrive.h';
-        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
+        else if (allBlocks.indexOf('Robot ActivityBot 360\u00b0 initialize') > -1)
+            whichRobot = 'abdrive360.h';
+        else if (allBlocks.indexOf('Robot Arlo initialize') > -1)
             whichRobot = 'arlodrive.h';
-        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
+        else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
             whichRobot = 'servodiffdrive.h';
-        this.newRobot(whichRobot);
-    },
-    newRobot: function (robot) {
-        if (robot === 'abdrive.h' || robot === 'arlodrive.h') {
-            this.setFieldValue("Robot set acceleration for", "TITLE");
-            this.getField("TITLE_2").setVisible(true);
-            this.getField("OPS").setVisible(true);
-            this.getField("RAMPING").setVisible(true);
-        } else if (robot === '') {
-            this.setFieldValue("Robot set acceleration", "TITLE");
-            this.getField("TITLE_2").setVisible(false);
-            this.getField("OPS").setVisible(false);
-            this.getField("RAMPING").setVisible(false);
+        if (this.type === 'ab_drive_ramping') {
+            var ramp = this.getFieldValue('RAMPING') || '600';
+            var type = this.getFieldValue('OPS') || 'FOR_SPEED';
+            this.isBot = whichRobot;
+            this.newRobot(whichRobot, type, ramp);
         } else {
-            this.setFieldValue("Robot set acceleration to", "TITLE");
-            this.getField("TITLE_2").setVisible(false);
-            this.getField("OPS").setVisible(true);
-            this.getField("OPS").setVisible(false);
+            this.newRobot(whichRobot);
         }
-        this.render();
+    },
+    newRobot: function (robot, type, ramp) {
+        this.setWarningText(null);
+        var accelMenu = [
+                    ["2000 ticks/s\u00B2", "2000"],
+                    ["1600 ticks/s\u00B2 (jerky)", "1600"],
+                    ["1200 ticks/s\u00B2", "1200"],
+                    ["800 ticks/s\u00B2 (peppy)", "800"],
+                    ["600 ticks/s\u00B2", "600"],
+                    ["400 ticks/s\u00B2 (smooth)", "400"],
+                    ["200 ticks/s\u00B2", "200"],
+                    ["100 ticks/s\u00B2 (sluggish)", "100"]
+                ];
+        this.removeInput('ACCEL');
+        if (robot === 'abdrive.h' || robot === 'arlodrive.h' || robot === 'abdrive360.h') {
+            this.appendDummyInput('ACCEL')
+                .appendField("Robot set acceleration for")
+                .appendField(new Blockly.FieldDropdown([
+                    ["speed blocks to", "FOR_SPEED"],
+                    ["distance blocks to", "FOR_GOTO"]
+                ]), "OPS")
+                .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
+            this.setFieldValue(type || 'FOR_SPEED', 'OPS');
+            this.setFieldValue(ramp || '600', 'RAMPING');
+        } else if (robot === '') {
+            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
+            this.appendDummyInput('ACCEL')
+                .appendField("Robot set acceleration");
+        } else {
+            this.appendDummyInput('ACCEL')
+                .appendField("Robot set acceleration to")
+                .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
+            this.setFieldValue(ramp || '600', 'RAMPING');
+        }
     }
 };
 
@@ -1064,19 +1365,57 @@ Blockly.propc.ab_drive_ramping = function () {
     var ramping = Number(this.getFieldValue('RAMPING'));
     var ops = this.getFieldValue('OPS');
 
-    var code = '';
-
-    if (Blockly.propc.definitions_["include abdrive"] === '#include "servodiffdrive.h"') {
-        code += 'drive_setRampStep(' + (ramping / 50).toString(10)
-                + ',' + (ramping / 50).toString(10) + ');\n';
-    } else if (Blockly.propc.definitions_["include abdrive"] === '#include "abdrive.h"' ||
-            Blockly.propc.definitions_["include abdrive"] === '#include "arlodrive.h"') {
-        code += 'drive_setAcceleration(' + ops + ', ' + ramping.toString(10) + ');\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Robot ActivityBot initialize') > -1 ||
+            allBlocks.indexOf('Robot Arlo initialize') > -1 ||
+            allBlocks.indexOf('Robot ActivityBot 360\u00b0 initialize') > -1) {
+        return 'drive_setAcceleration(' + ops + ', ' + ramping.toString(10) + ');\n';
+    } else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1) {
+        return 'drive_setRampStep(' + (ramping / 50).toString(10) + ',' + (ramping / 50).toString(10) + ');\n';
     } else {
-        code += '// Robot drive system is not initialized!\n';
+        return '// Robot drive system is not initialized!\n';
     }
+};
 
-    return code;
+Blockly.Blocks.ab_drive_get_ticks = {
+    helpUrl: Blockly.MSG_ROBOT_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_ROBOT_GET_TICKS_TOOLTIP);
+        this.setColour(colorPalette.getColor('robot'));
+        this.appendDummyInput('ACCEL')
+                .appendField("Robot encoders store left count in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'LEFT')
+                .appendField("right count in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'RIGHT');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+        this.whichBot();
+    },
+    whichBot: Blockly.Blocks['ab_drive_ramping'].whichBot,
+    newRobot: function (robot) {
+        if (robot === 'abdrive.h' || robot === 'abdrive360.h' || robot === 'arlodrive.h') {
+            this.setWarningText(null);
+        } else if (robot === '') {
+            this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
+        } else {
+            this.setWarningText('WARNING: This block is not compatible with Servo Differential Drive');
+        }
+    }
+};
+
+Blockly.propc.ab_drive_get_ticks = function () {
+    var left = Blockly.propc.variableDB_.getName(this.getFieldValue('LEFT'), Blockly.Variables.NAME_TYPE);
+    var right = Blockly.propc.variableDB_.getName(this.getFieldValue('RIGHT'), Blockly.Variables.NAME_TYPE);
+
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Robot ActivityBot initialize') > -1 ||
+            allBlocks.indexOf('Robot ActivityBot 360\u00b0 initialize') > -1 ||
+            allBlocks.indexOf('Robot Arlo initialize') > -1) {
+        return 'drive_getTicks(&' + left + ', &' + right + ');\n';
+    } else {
+        return '// Robot drive system is not initialized or non-ActivityBot Robot selected!\n';
+    }
 };
 
 Blockly.Blocks.ab_drive_goto = {
@@ -1100,19 +1439,11 @@ Blockly.Blocks.ab_drive_goto = {
         this.getField('RANGEVALS0').setVisible(false);
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-
-        var whichRobot = '';
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
-            whichRobot = 'abdrive.h';
-        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
-            whichRobot = 'arlodrive.h';
-        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
-            whichRobot = 'servodiffdrive.h';
-        this.newRobot(whichRobot);
+        this.whichBot();
     },
+    whichBot: Blockly.Blocks['ab_drive_ramping'].whichBot,
     newRobot: function (robot) {
         if (robot === 'servodiffdrive.h') {
             this.setWarningText('WARNING: Servo Differential Drive\ndoes not support "Robot drive distance"!');
@@ -1128,13 +1459,11 @@ Blockly.propc.ab_drive_goto = function () {
     var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE) || '0';
     var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE) || '0';
     var units = this.getFieldValue('UNITS');
-    var bot = Blockly.propc.definitions_["include abdrive"];
 
     var code = '';
-
-    if (bot === '#include "servodiffdrive.h"') {
-        code += '// Servo Differential Drive does not support "Drive Distance"\n';
-    } else if (bot === '#include "abdrive.h"') {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Robot ActivityBot initialize') > -1 ||
+            allBlocks.indexOf('Robot ActivityBot 360\u00b0 initialize') > -1) {
         if (units === 'TICK') {
             code += 'drive_goto(' + left + ', ' + right + ');\n';
         } else if (units === 'CM') {
@@ -1142,7 +1471,7 @@ Blockly.propc.ab_drive_goto = function () {
         } else {
             code += 'drive_goto((' + left + ' * 508)/65, (' + right + ' * 508)/65);\n';
         }
-    } else {
+    } else if (allBlocks.indexOf('Robot Arlo initialize') > -1) {
         if (units === 'TICK') {
             code += 'drive_goto(' + left + ', ' + right + ');\n';
         } else if (units === 'CM') {
@@ -1150,13 +1479,13 @@ Blockly.propc.ab_drive_goto = function () {
         } else {
             code += 'drive_goto((' + left + ' * 50)/7, (' + right + ' * 50)/7);\n';
         }
+    } else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1) {
+        code += '// Servo Differential Drive does not support "Drive Distance"\n';
+    } else {
+        code += '// Robot drive system is not initialized!\n';
     }
 
-    if (bot === undefined) {
-        return '// Robot drive system is not initialized!\n';
-    } else {
-        return code;
-    }
+    return code;
 };
 
 Blockly.Blocks.ab_drive_goto_max_speed = {
@@ -1176,19 +1505,11 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
                 .setCheck('Number');
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-
-        var whichRobot = '';
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
-            whichRobot = 'abdrive.h';
-        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
-            whichRobot = 'arlodrive.h';
-        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
-            whichRobot = 'servodiffdrive.h';
-        this.newRobot(whichRobot);
+        this.whichBot();
     },
+    whichBot: Blockly.Blocks['ab_drive_ramping'].whichBot,
     newRobot: function (robot) {
         if (robot === 'servodiffdrive.h') {
             this.setWarningText('WARNING: Servo Differential Drive\ndoes not support this block');
@@ -1205,30 +1526,23 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
         } else if (ops === 'FOR_GOTO') {
             this.setFieldValue('Robot set speed (+/-) for', 'TITLE');
         }
-
     }
 };
 
 Blockly.propc.ab_drive_goto_max_speed = function () {
     var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE) || '128';
     var ops = this.getFieldValue("OPS");
-    var bot = Blockly.propc.definitions_["include abdrive"];
 
-    var code = '';
-
-    if (bot === '#include "servodiffdrive.h"') {
-        code += '// Servo Differential Drive does not support this block\n';
-    } else if (bot === '#include "abdrive.h"') {
-        code += 'drive_setMaxVelocity(' + ops + ', ' + speed + ');\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Robot ActivityBot initialize') > -1 ||
+            allBlocks.indexOf('Robot ActivityBot 360\u00b0 initialize') > -1) {
+        return 'drive_setMaxVelocity(' + ops + ', ' + speed + ');\n';
+    } else if (allBlocks.indexOf('Robot Arlo initialize') > -1) {
+        return '// Set max speed is not supported for this robot\n';
+    } else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1) {
+        return '// Servo Differential Drive does not support this block\n';
     } else {
-        code += '// Set max speed is not supported for this robot\n';
-        //code += 'drive_setMaxVelocity(' + speed + ');\n';
-    }
-
-    if (bot === undefined) {
         return '// Robot drive system is not initialized!\n';
-    } else {
-        return code;
     }
 };
 
@@ -1252,19 +1566,11 @@ Blockly.Blocks.ab_drive_speed = {
         this.getField('RANGEVALS0').setVisible(false);
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-
-        var whichRobot = '';
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('Robot ActivityBot initialize') > -1)
-            whichRobot = 'abdrive.h';
-        if (allBlocks.indexOf('Robot Arlo initialize') > -1)
-            whichRobot = 'arlodrive.h';
-        if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
-            whichRobot = 'servodiffdrive.h';
-        this.newRobot(whichRobot);
+        this.whichBot();
     },
+    whichBot: Blockly.Blocks['ab_drive_ramping'].whichBot,
     newRobot: function (robot) {
         var connectionRight_ = this.getInput('RIGHT').connection;
         var connectionLeft_ = this.getInput('LEFT').connection;
@@ -1285,8 +1591,6 @@ Blockly.Blocks.ab_drive_speed = {
         } else if (robot === '') {
             warnText = 'WARNING: You must use a Robot initialize\nblock at the beginning of your program!';
             rangeText = 'N,0,0,0';
-        } else if (robot === 'abdrive.h') {
-            rangeText = 'R,-128,128,0';
         }
 
         this.appendValueInput("LEFT")
@@ -1320,18 +1624,17 @@ Blockly.Blocks.ab_drive_speed = {
 Blockly.propc.ab_drive_speed = function () {
     var left = Blockly.propc.valueToCode(this, 'LEFT', Blockly.propc.ORDER_NONE) || '0';
     var right = Blockly.propc.valueToCode(this, 'RIGHT', Blockly.propc.ORDER_NONE) || '0';
-    var bot = Blockly.propc.definitions_["include abdrive"];
 
-    var code = '';
-
-    if (bot === undefined || bot === '') {
-        code += '// Robot drive system is not initialized!\n';
-    } else if (bot === '#include "servodiffdrive.h"') {
-        code += 'drive_speeds(' + left + ', ' + right + ');\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Robot ActivityBot initialize') > -1 ||
+            allBlocks.indexOf('Robot Arlo initialize') > -1 ||
+            allBlocks.indexOf('Robot ActivityBot 360\u00b0 initialize') > -1) {
+        return 'drive_speed(' + left + ', ' + right + ');\n';
+    } else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1) {
+        return 'drive_speeds(' + left + ', ' + right + ');\n';
     } else {
-        code += 'drive_speed(' + left + ', ' + right + ');\n';
+        return '// Robot drive system is not initialized!\n';
     }
-    return code;
 };
 
 Blockly.Blocks.ab_drive_stop = {
@@ -1342,38 +1645,44 @@ Blockly.Blocks.ab_drive_stop = {
         this.appendDummyInput()
                 .appendField("Robot drive stop");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.ab_drive_stop = function () {
-    var bot = Blockly.propc.definitions_["include abdrive"];
-
-    var code = '';
-
-    if (bot === undefined || bot === '') {
-        code += '// Robot drive system is not initialized!\n';
-    } else if (bot === '#include "servodiffdrive.h"') {
-        code += 'drive_speeds(0, 0);\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Robot ActivityBot initialize') > -1 ||
+            allBlocks.indexOf('Robot Arlo initialize') > -1 ||
+            allBlocks.indexOf('Robot ActivityBot 360\u00b0 initialize') > -1) {
+        return 'drive_speed(0, 0);\n';
+    } else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1) {
+        return 'drive_speeds(0, 0);\n';
     } else {
-        code += 'drive_speed(0, 0);\n';
+        return '// Robot drive system is not initialized!\n';
     }
-    return code;
 };
 
 Blockly.Blocks.activitybot_calibrate = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ACTIVITYBOT_CALIBRATE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_ACTIVITYBOT_CALIBRATE_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
-                .appendField("ActivityBot calibrate");
+                .appendField(new Blockly.FieldDropdown([
+                    ["ActivityBot", "abcalibrate.h"],
+                    ["ActivityBot 360\u00b0", "abcalibrate360.h"]]), "BOT")
+                .appendField("calibrate");
     }
 };
 
 Blockly.propc.activitybot_calibrate = function () {
-    Blockly.propc.definitions_["activitybot_calibrate"] = '#include "abcalibrate.h"';
+    var bot = this.getFieldValue('BOT') || 'abcalibrate.h';
+    var servo = '';
+    if (bot === "abcalibrate360.h") {
+        servo = "#include \"servo360.h\"\n";
+    }
+    Blockly.propc.definitions_["activitybot_calibrate"] = servo + '#include "' + bot + '"';
     Blockly.propc.setups_["activitybot_calibrate"] = 'cal_servoPins(12, 13);\n\tcal_encoderPins(14, 15);';
 
     return 'high(26);\nhigh(27);\ncal_activityBot();\nlow(26);\nlow(27);\n';
@@ -1382,41 +1691,40 @@ Blockly.propc.activitybot_calibrate = function () {
 Blockly.Blocks.activitybot_display_calibration = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
+        this.setTooltip(Blockly.MSG_ROBOT_ACTIVITYBOT_DISPLAY_CALIBRATION_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
-                .appendField("ActivityBot display calibration")
-                .appendField(new Blockly.FieldDropdown([['results', 'result'], ['interpolation table', 'table']]), 'TYPE');
+                .appendField(new Blockly.FieldDropdown([
+                    ["ActivityBot", "abdrive.h"],
+                    ["ActivityBot 360\u00b0", "abcalibrate360.h"]]), "BOT")
+                .appendField("display calibration")
+                .appendField(new Blockly.FieldDropdown([
+                    ['results', 'result'], 
+                    ['data', 'table']]), 'TYPE');
     }
 };
 
 Blockly.propc.activitybot_display_calibration = function () {
-    Blockly.propc.definitions_["include abdrive"] = '#include "abdrive.h"';
-
+    var bot = this.getFieldValue('BOT') || 'abdrive.h';
+    var servo = '';
+    if (bot === "abcalibrate360.h") {
+        servo = "#include \"servo360.h\"\n";
+    }
+    Blockly.propc.definitions_["activitybot_calibrate"] = servo + '#include "' + bot + '"';
     Blockly.propc.serial_terminal_ = true;
 
-    var code = '';
-
-    code += 'if(!abd_intTabSetup) interpolation_table_setup();\n';
-    code += 'print("=== LEFT SERVO ===\\r");\n';
-    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCnt[ABD_L], abd_cntrIdx[ABD_L]);\n';
-    code += 'print("Index, Servo Drive, Encoder Ticks/Second\\r");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCnt[ABD_L]; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrL[__rIdx], abd_spdmL[__rIdx]);\n';
-    code += 'print("\\r\\r=== RIGHT SERVO ===\\r");\n';
-    code += 'print("Table Entries = %d, Zero Speed Index = %d\\r\\r", abd_elCnt[ABD_R], abd_cntrIdx[ABD_R]);\n';
-    code += 'print("Index, Servo Drive, Encoder Ticks/Second\\r");\n';
-    code += 'for(int __rIdx = 0; __rIdx < abd_elCnt[ABD_R]; __rIdx++) print("%d, %d, %d\\r", __rIdx, abd_spdrR[__rIdx], abd_spdmR[__rIdx]);\n';
-
-    if (this.getFieldValue('TYPE') === 'table') {
-        var global_code = '';
-        global_code += 'int abd_intTabSetup;\nvolatile int abd_elCnt[2], abd_cntrIdx[2];\n';
-        global_code += 'int abd_spdrL[120], abd_spdmL[120], abd_spdrR[120], abd_spdmR[120];\n\nvoid interpolation_table_setup(void);';
-
-        Blockly.propc.global_vars_["activitybot_display_calibration"] = global_code;
-
-        return code;
+    if(bot === 'abdrive.h') {
+        if (this.getFieldValue('TYPE') === 'table') {
+            return 'drive_displayInterpolation();\n';
+        } else {
+            return 'drive_calibrationResults();\n';
+        }
     } else {
-        return 'drive_calibrationResults();\n';
+        if (this.getFieldValue('TYPE') === 'table') {
+            return 'cal_displayData();\n';
+        } else {
+            return 'cal_displayResults();\n';
+        }        
     }
 };
 
@@ -1556,30 +1864,32 @@ Blockly.propc.mcp320x_read = function () {
         channel = "11" + channel.substr(channel.length - 3, channel.length) + "0";
     }
 
-    Blockly.propc.global_vars_["adc_set_vref"] = 'int __Mvref = 330;';
-    var func = '';
-    var code = '';
+    if (!this.disabled) {
+        Blockly.propc.global_vars_["adc_set_vref"] = 'int __Mvref = 330;';
+        var func = '';
+        var code = '';
 
-    if (res === '18' & chip === 1) {
-        func += 'int read_adc0831(int __McsPin, int __MclkPin, int __MdoPin, int __MVr)';
-        func += '{low(__MclkPin);\nlow(__McsPin);\npulse_out(__MclkPin, 250);\n';
-        func += 'int __Mvolts = shift_in(__MdoPin, __MclkPin, MSBPOST, 8);\nhigh(__McsPin);\n';
-        func += 'return ((__Mvolts * __MVr) / 256);}';
-        Blockly.propc.methods_["adc083x_read"] = func;
-        Blockly.propc.method_declarations_["adc083x_read"] = 'int read_adc0831(int __McsPin, int __MclkPin, int __MdoPin, int __MVr);\n';
+        if (res === '18' & chip === 1) {
+            func += 'int read_adc0831(int __McsPin, int __MclkPin, int __MdoPin, int __MVr)';
+            func += '{low(__MclkPin);\nlow(__McsPin);\npulse_out(__MclkPin, 250);\n';
+            func += 'int __Mvolts = shift_in(__MdoPin, __MclkPin, MSBPOST, 8);\nhigh(__McsPin);\n';
+            func += 'return ((__Mvolts * __MVr) / 256);}';
+            Blockly.propc.methods_["adc083x_read"] = func;
+            Blockly.propc.method_declarations_["adc083x_read"] = 'int read_adc0831(int __McsPin, int __MclkPin, int __MdoPin, int __MVr);\n';
 
-        code += 'read_adc083x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin + ', __Mvref)';
-    } else {
-        func += 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr, int __Mres) {\n';
-        func += '  high(__McsPin);  low(__MclkPin);  low(__McsPin);\n';
-        func += '  shift_out(__MdiPin, __MclkPin, MSBFIRST, __Mbits, __Mdata);\n';
-        func += '  int __Mvolts = shift_in(__MdoPin, __MclkPin, MSBPOST, __Mres);\n';
-        func += '  high(__McsPin);  high(__MclkPin);\n  return ((__Mvolts * __MVr) / pow(2,__Mres));}';
-        Blockly.propc.methods_["mcp320x_read"] = func;
-        Blockly.propc.method_declarations_["mcp320x_read"] = 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr, int __Mres);\n';
+            code += 'read_adc083x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin + ', __Mvref)';
+        } else {
+            func += 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr, int __Mres) {\n';
+            func += '  high(__McsPin);  low(__MclkPin);  low(__McsPin);\n';
+            func += '  shift_out(__MdiPin, __MclkPin, MSBFIRST, __Mbits, __Mdata);\n';
+            func += '  int __Mvolts = shift_in(__MdoPin, __MclkPin, MSBPOST, __Mres);\n';
+            func += '  high(__McsPin);  high(__MclkPin);\n  return ((__Mvolts * __MVr) / pow(2,__Mres));}';
+            Blockly.propc.methods_["mcp320x_read"] = func;
+            Blockly.propc.method_declarations_["mcp320x_read"] = 'int read_mcp320x(int __McsPin, int __MclkPin, int __MdoPin, int __MdiPin, int __Mbits, int __Mdata, int __MVr, int __Mres);\n';
 
-        code += 'read_mcp320x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin;
-        code += ', ' + di_pin + ', ' + channel.length + ', 0b' + channel + ', __Mvref, ' + res + ')';
+            code += 'read_mcp320x(' + cs_pin + ', ' + clk_pin + ', ' + do_pin;
+            code += ', ' + di_pin + ', ' + channel.length + ', 0b' + channel + ', __Mvref, ' + res + ')';
+        }
     }
 
 
@@ -1597,17 +1907,18 @@ Blockly.Blocks.mcp320x_set_vref = {
                         Blockly.FieldTextInput.numberValidator), "VREF")
                 .appendField("volt 100ths");
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
 
 Blockly.propc.mcp320x_set_vref = function () {
-    var vref = parseInt(this.getFieldValue('VREF'));
-
-    var code = '';
-    if (Blockly.propc.global_vars_["adc_set_vref"] !== undefined) {
-        code += '__Mvref = ' + vref + ';\n';
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('A/D chip read') > -1)
+    {
+        var vref = parseInt(this.getFieldValue('VREF'));
+        return '__Mvref = ' + vref + ';\n';
+    } else {
+        return '';
     }
-    return code;
 };

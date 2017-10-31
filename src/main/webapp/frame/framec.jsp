@@ -382,6 +382,11 @@
             </block>
             <block type="scribbler_exit_loop"></block>
             <block type="controls_if"></block>
+            <block type="controls_select">
+                <value name="SWITCH">
+                    <block type="variables_get"></block>
+                </value>
+            </block>
             <block type="scribbler_wait">
                 <value name="WAITTIME">
                     <block type="math_number">
@@ -1225,31 +1230,38 @@
             </category>
         </category>
         <category name="<fmt:message key="category.servo" />" exclude="s3,heb" colour="165">
-            <category name="<fmt:message key="category.servo.standard-servo" />">
-                <block type="servo_move">
-                    <value name="ANGLE">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
-            <category name="<fmt:message key="category.servo.cr-servo" />">
-                <block type="servo_speed">
-                    <value name="SPEED">
-                        <block type="math_number">
-                            <field name="NUM">0</field>
-                        </block>
-                    </value>
-                </block>
-                <block type="servo_set_ramp">
-                    <value name="RAMPSTEP">
-                        <block type="math_number">
-                            <field name="NUM">50</field>
-                        </block>
-                    </value>
-                </block>
-            </category>
+            <block type="servo_move">
+                <value name="ANGLE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="servo_speed">
+                <value name="SPEED">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="servo_set_ramp">
+                <value name="RAMPSTEP">
+                    <block type="math_number">
+                        <field name="NUM">50</field>
+                    </block>
+                </value>
+            </block>
+            <block type="fb360_init"></block>
+            <block type="fb360_setup"></block>
+            <block type="fb360_set">
+                <value name="VALUE">
+                    <block type="math_number">
+                        <field name="NUM">0</field>
+                    </block>
+                </value>
+            </block>
+            <block type="fb360_get"></block>
+            <block type="scribbler_stop_servo"></block>
         </category>
         <category name="<fmt:message key="category.robot" />"  include="activity-board" colour="295">
             <block type="ab_drive_init"></block>
@@ -1288,6 +1300,7 @@
                 </value>
             </block>
             <block type="ab_drive_stop"></block>
+            <block type="ab_drive_get_ticks"></block>
             <block type="activitybot_calibrate"></block>
             <block type="activitybot_display_calibration"></block>
         </category>
