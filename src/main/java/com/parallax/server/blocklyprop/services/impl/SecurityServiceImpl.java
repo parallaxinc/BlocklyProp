@@ -419,6 +419,11 @@ public class SecurityServiceImpl implements SecurityService {
                         }
                         
                         sessionData.setUser(user);
+                        
+                        // The call to getUserIdForCloudSessionUserId will create
+                        // a new user in the blocklyprop user table if one does
+                        // not exist.
+                        // TODO: Creating a user without a screen_name. Screen_name should be included.
                         sessionData.setIdUser(
                                 instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
                         
