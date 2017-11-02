@@ -19,7 +19,6 @@ import com.parallax.server.blocklyprop.servlets.ProjectCreationServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectEditorServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectLinkServlet;
 import com.parallax.server.blocklyprop.servlets.ProjectServlet;
-import com.parallax.server.blocklyprop.servlets.PublicProfileServlet;
 import com.parallax.server.blocklyprop.servlets.RegisterServlet;
 import com.parallax.server.blocklyprop.servlets.SessionStateServlet;
 import com.parallax.server.blocklyprop.servlets.IndexServlet;
@@ -51,10 +50,8 @@ public class ServletsModule extends ServletModule {
         serve("/projectlink").with(ProjectLinkServlet.class);
         serve("/projecteditor").with(ProjectEditorServlet.class);
 
-        serve("/public/profile").with(PublicProfileServlet.class);
-
         // Information pages
-        serve("/index", "/", "/help", "/license", "/libraries", "/client", "/releases", "/new-project").with(IndexServlet.class);
+        serve("/index", "/", "/help", "/license", "/libraries", "/client", "/releases", "/new-project", "/projects", "/my-projects", "/privacy-policy", "/login").with(IndexServlet.class);
 
         // OAuth
         serve("/oauth/newuser").with(NewOAuthUserServlet.class);
@@ -64,9 +61,5 @@ public class ServletsModule extends ServletModule {
         // API Endpoints
         // Get the time left in a session
         serve("/sessionapi").with(SessionStateServlet.class);      
-        
-        // COPPA support
-        serve("/privacy-policy").with(IndexServlet.class);
     }
-
 }

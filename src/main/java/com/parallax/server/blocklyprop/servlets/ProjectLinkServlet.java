@@ -10,7 +10,6 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
-import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
@@ -58,22 +57,20 @@ public class ProjectLinkServlet extends HttpServlet {
             idProject = Long.parseLong(idProjectString);
         } catch (NumberFormatException nfe) {
             // Show error screen
-            req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+            //req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+            resp.getWriter().write("<html><body><h3>Project not found</h3><p>BlocklyProp was unable to find or give you access to the project you are requesting.  It may have been unshared or deleted by its owner.  Use your browser's back button to go back to the previous page.</p></body></html>");
         }
 
         ProjectRecord project = projectSharingService.getSharedProject(idProject, shareKey);
         if (project == null) {
             // Project not found, or invalid share key
-            req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+            //req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+            resp.getWriter().write("<html><body><h3>Project not found</h3><p>BlocklyProp was unable to find or give you access to the project you are requesting.  It may have been unshared or deleted by its owner.  Use your browser's back button to go back to the previous page.</p></body></html>");
         } else {
             JsonObject result = projectConverter.toJson(project);
             result.addProperty("code", project.getCode());
             req.setAttribute("project", result.toString());
-            //if (ProjectType.PROPC == project.getType()) {
-                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-c.jsp").forward(req, resp);
-            //} else if (ProjectType.SPIN == project.getType()) {
-            //    req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
-            //}
+            req.getRequestDispatcher("/editor/blocklyc.jsp").forward(req, resp);
         }
     }
 

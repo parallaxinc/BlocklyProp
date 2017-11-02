@@ -4809,7 +4809,7 @@ Blockly.propc.wx_mode = function () {
 
         if (action === 'CHECK') {
             code = ['wifi_mode(CHECK)', Blockly.propc.ORDER_NONE];
-        } else if (mode === 'LEAVE') {
+        } else if (action === 'LEAVE') {
             code = 'wifi_leave(' + mode + ');\n';
         } else {
             code = 'wifi_mode(' + mode + ');\n';
