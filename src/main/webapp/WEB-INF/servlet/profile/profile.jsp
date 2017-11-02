@@ -45,7 +45,7 @@
                     <div class="alert alert-danger hidden form-message" id="unlock-error">
                         <p><fmt:message key="profile.unlock.error" /></p>
                     </div>
-                    <form id="loginform" action="<url:getUrl url="/profile" />" method="post">
+                    <form id="loginform" action="<url:getUrl url="/rest/profile/unlock" />" method="post">
                         <h3><fmt:message key="profile.unlock.title" /></h3>
                         <input type="hidden" name="username" value="<%= request.getAttribute("email")%>" />
                         <div class="form-group">

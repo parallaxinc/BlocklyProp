@@ -14,14 +14,21 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
+import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
+import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
+import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.client.cloudsession.objects.User;
+import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
+import com.parallax.server.blocklyprop.services.SecurityService;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -44,6 +51,7 @@ public class RestProfile {
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private CloudSessionUserService cloudSessionUserService;
     private Configuration configuration;
+    private SecurityService securityService;
 
     @Inject
     public void setConfiguration(Configuration configuration) {
@@ -51,6 +59,80 @@ public class RestProfile {
         cloudSessionLocalUserService = new CloudSessionLocalUserService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
         cloudSessionUserService = new CloudSessionUserService(configuration.getString("cloudsession.baseurl"));
     }
+
+    @Inject
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
+    }
+
+    @GET
+    @Path("/get")
+    @Detail("Get user info")
+    @Name("Get user info")
+    @Produces("application/json")
+    public Response doGet() {
+
+        JsonObject result = new JsonObject();
+        User user = BlocklyPropSecurityUtils.getUserInfo();
+        if (user != null) {
+            result.addProperty("success", true);
+            result.addProperty("id", user.getId());
+            result.addProperty("email", user.getEmail());
+            result.addProperty("screenname", user.getScreenname());
+            result.addProperty("birthmonth", user.getBirthMonth());
+            result.addProperty("birthyear", user.getBirthYear());
+            result.addProperty("source", user.getAuthenticationSource());
+        } else {
+            result.addProperty("success", false);
+            result.addProperty("message", "user-not-found");
+        }
+        return Response.ok(result.toString()).build();
+    }
+    
+    @POST
+    @Path("/unlock")
+    @Detail("Verify username/password to unlock")
+    @Name("Verify username/password to unlock")
+    @Produces("application/json")
+    public Response unlock(@FormParam("username") String username, @FormParam("password") String password) {
+        JsonObject result = new JsonObject();
+        if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(password)) {
+            result.addProperty("success", false);
+            result.addProperty("message", "fields-missing");
+        } else {
+            try {
+                User user = securityService.authenticateLocalUser(username, password);
+
+                if (user != null) {
+                    result.addProperty("success", true);
+                    JsonObject userJson = new JsonObject();
+                    userJson.addProperty("id-user", user.getId());
+                    userJson.addProperty("screenname", user.getScreenname());
+                    userJson.addProperty("email", user.getEmail());
+                    result.add("user", userJson);
+                } else {
+                    result.addProperty("success", false);
+                    result.addProperty("message", "user-missing");
+                }
+            } catch (UnknownUserException ex) {
+                result.addProperty("success", false);
+                result.addProperty("message", "user-unknown");
+            } catch (UserBlockedException ex) {
+                result.addProperty("success", false);
+                result.addProperty("message", "user-blocked");
+            } catch (EmailNotConfirmedException ex) {
+                result.addProperty("success", false);
+                result.addProperty("message", "user-not-confirmed");
+            } catch (InsufficientBucketTokensException ex) {
+                result.addProperty("success", false);
+                result.addProperty("message", "user-insufficient-tokens");
+            } catch (WrongAuthenticationSourceException ex) {
+                result.addProperty("success", false);
+                result.addProperty("message", "user-wrong-auth-source");
+            }
+        }
+        return Response.ok(result.toString()).build();
+    }    
 
     @POST
     @Path("/base")

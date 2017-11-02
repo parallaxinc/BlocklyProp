@@ -120,6 +120,59 @@ public class RestProject {
 
         return Response.ok(result.toString()).build();
     }
+    
+    @GET
+    @Path("/delete/{id}")
+    @Detail("Delete project by id")
+    @Name("Delete project by id")
+    @Produces("application/json")
+    public Response delete(@PathParam("id") Long idProject) {
+        LOG.info("Deleting project {}", idProject);
+
+        ProjectRecord project = projectService.getProject(idProject);
+
+        if (project != null) {
+            if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+                LOG.info("User not authorized to delete project {}", idProject);
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            } else {
+                LOG.info("Deleting project {}", idProject);
+                projectService.deleteProject(idProject);
+                JsonObject result = new JsonObject();
+                result.addProperty("success", true);
+                return Response.ok(result.toString()).build();
+            }
+        } else {
+            LOG.info("Project {} was not found", idProject);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
+    @Path("/clone/{id}")
+    @Detail("Clone project by id")
+    @Name("Clone project by id")
+    @Produces("application/json")
+    public Response clone(@PathParam("id") Long idProject) {
+        LOG.info("Cloning project {}", idProject);
+
+        try {
+            ProjectRecord clonedProject = projectService.cloneProject(idProject);
+            if (clonedProject == null) {
+                LOG.info("Project {} is not shared", idProject);
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            } else {
+                LOG.info("Cloning project {}", idProject);
+                JsonObject result = projectConverter.toJson(clonedProject);
+                result.addProperty("success", true);
+                LOG.debug("Returning JSON: {}", result);
+                return Response.ok(result.toString()).build();
+            }
+        } catch (NullPointerException npe) {
+            LOG.info("Project {} was not found", idProject);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
 
     @POST
     @Path("/code")
@@ -145,8 +198,7 @@ public class RestProject {
         } catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.error("General exception encountered. Message is: ", ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -180,8 +232,7 @@ public class RestProject {
         } catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.error("General exception encountered. Message is: ", ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -217,8 +268,7 @@ public class RestProject {
         } catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.error("General exception encountered. Message is: ", ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -270,8 +320,7 @@ public class RestProject {
         } catch (AuthorizationException ae) {
             LOG.warn("Project not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.error("General exception encountered. Message is: ", ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

@@ -415,6 +415,8 @@ public class ProjectDaoImpl implements ProjectDao {
             orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
         }
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
+        // Only list community projects that are NOT blank.
+        conditions = conditions.and(Tables.PROJECT.CODE.charLength().gt(50));
         if (idUser != null) {
             conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
         }

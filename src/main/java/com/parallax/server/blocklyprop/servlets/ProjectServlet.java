@@ -36,6 +36,7 @@ public class ProjectServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
+        /*
         String clone = req.getParameter("clone");
         if (!Strings.isNullOrEmpty(clone)) {
             clone(Long.parseLong(clone), req, resp);
@@ -45,15 +46,17 @@ public class ProjectServlet extends HttpServlet {
         if (!Strings.isNullOrEmpty(delete)) {
             delete(Long.parseLong(delete), req, resp);
         }
+        */
     }
 
+    /*
     private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             ProjectRecord clonedProject = projectService.cloneProject(idProject);
             if (clonedProject == null) {
                 req.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(req, resp);
             } else {
-                resp.sendRedirect("my/projects.jsp#" + clonedProject.getId());
+                resp.sendRedirect("/my-projects#" + clonedProject.getId());
             }
         } catch (NullPointerException npe) {
             req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
@@ -68,13 +71,14 @@ public class ProjectServlet extends HttpServlet {
                     req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
                 }
                 projectService.deleteProject(idProject);
-                resp.sendRedirect("my/projects.jsp");
+                resp.sendRedirect("/my-projects");
             } catch (UnauthorizedException ue) {
                 req.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(req, resp);
             }
         } catch (NullPointerException npe) {
             req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         }
-    }
+    }   
+    */
 
 }

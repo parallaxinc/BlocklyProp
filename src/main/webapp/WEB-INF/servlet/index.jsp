@@ -38,13 +38,13 @@
         <link type="image/png" rel="icon" sizes="32x32" href="<url:getCdnUrl url="/images/favicon-32x32.png"/>" />
         <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
 
+        <%--<link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/gsdk-base.css"/>">--%>
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
-        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/gsdk-base.css"/>">
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/simplemde.min.css"/>">
         <link rel="stylesheet" href="<url:getCdnUrl url="/style-clientdownload.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
-        
+
         <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/jquery.form.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/jquery.validate.min.js"/>"></script>
@@ -54,12 +54,9 @@
         <script src="<url:getCdnUrl url="/lib/micromarkdown.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
 
-        <script src="<url:getCdnUrl url="/project.js"/>" ></script>
-
-
         <script>
             // Define Blockly to prevent messages file from throwing an exception (TEMPORARY)
-            var Blockly = {Msg:{}};
+            var Blockly = {Msg: {}};
         </script>
 
         <!-- Internationalization text strings -->
@@ -92,10 +89,10 @@
                     <div>
                         <ul class="nav navbar-nav">
                             <li>
-                                <a href="<url:getUrl url="/projects.jsp"/>"><span class="keyed-lang-string" key="menu_community_projects"></span></a>
+                                <a href="projects" class="internav-link"><span class="keyed-lang-string" key="menu_community_projects"></span></a>
                             </li>
                             <li id="my-projects-menu-item">
-                                <a href="<url:getUrl url="/my/projects.jsp"/>"><span class="keyed-lang-string" key="menu_my_projects"></span></a>
+                                <a href="my-projects" class="internav-link"><span class="keyed-lang-string" key="menu_my_projects"></span></a>
                             </li>
                             <li id="new-project-menu-item">
                                 <a href="new-project" class="internav-link"><span class="keyed-lang-string" key="menu_newproject_title"></span></a>
@@ -110,7 +107,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <!-- Anonymous user -->
                             <li id="login-menu-item">
-                                <a href="<url:getUrl url="/login.jsp"/>"><span class="keyed-lang-string" key="menu_login_and_register"></span></a>
+                                <a href="" id="login-link"><span class="keyed-lang-string" key="menu_login_and_register"></span></a>
                             </li>
                             <!-- Authenticated user -->
                             <li class="dropdown" id="profile-menu-item">
@@ -128,13 +125,13 @@
                                 <form style="margin-bottom: 0;">
                                     <select id="language" name="language" onchange="submit()">
                                         <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-                                        <%-- Multi-lingual support is under development
-                                        <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
-                                        <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>
-                                        --%>
-                                    </select>
-                                </form>
-                            </li>
+                            <%-- Multi-lingual support is under development
+                            <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
+                            <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>
+                            --%>
+                        </select>
+                    </form>
+                </li>
                             -->
                         </ul>
                     </div>
@@ -165,7 +162,40 @@
             <hr>
             <ul class="latest-projects"></ul>
         </div>
-                                   
+
+        <div class="modal fade" id="login-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title keyed-lang-string" key="login_title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="login-failure hidden">
+                            <div class="alert alert-danger" id="unlock-error">
+                                <p class="keyed-lang-string" key="login_failed"><%-- : < %=errorDescription%> --%></p>
+                            </div>
+                        </div>
+                        <p><a href="register"><span class="keyed-lang-string" key="login_registerlink"></span></a></p>
+                        <p><a href="resetrequest"><span class="keyed-lang-string" key="login_forgotlink"></span></a></p>
+                        <p><a href="confirmrequest"><span class="keyed-lang-string" key="login_notconfirmedlink"></span></a></p>
+                        <form class="loginform" name="loginform_simple" action="" method="post">
+                            <div class="form-group">
+                                <label for="username" key="login_email" class="keyed-lang-string"></label>
+                                <input class="form-control" type="text" name="username" maxlength="255" required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" key="login_password" class="keyed-lang-string"></label>
+                                <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
+                            </div>
+                            <input class="btn btn-default submit-button" type="submit" name="submit" value="Submit">
+                        </form>
+                        <a href="" data-url="oauth/google?url=" target="oauth" class="oauth base-link hidden" id="oauth-google">Log in using Google</a>
+                    </div>
+                </div>
+            </div>
+        </div>                            
+
         <div class="modal fade" id="project-loggedin-dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -183,14 +213,14 @@
                             <h2><span class="keyed-lang-string" key="not_loggedin_login_title"></span></h2>
                             <p><a href="<url:getUrl url="/register"/>" ><span class="keyed-lang-string" key="not_loggedin_login_registerlink"></span></a></p>
                             <div>
-                                <div id="login-failure" class="hidden">
+                                <div class="login-failure hidden">
                                     <div class="alert alert-danger" id="unlock-error">
                                         <p><span class="keyed-lang-string" key="login_failed"></span><%-- : < %=errorDescription%> --%></p>
                                     </div>
                                 </div>
                                 <p><a href="resetrequest"><span class="keyed-lang-string" key="login_forgotlink"></span></a></p>
                                 <p><a href="confirmrequest"><span class="keyed-lang-string" key="login_notconfirmedlink"></span></a></p>
-                                <form id="loginform" name="loginform" action="" method="post">
+                                <form class="loginform" name="loginform" action="" method="post">
                                     <div class="form-group">
                                         <label for="username" class="keyed-lang-string" key="login_email"></label>
                                         <input class="form-control" type="text" name="username" maxlength="255" required="required"/>
@@ -199,7 +229,7 @@
                                         <label for="password" class="keyed-lang-string" key="login_password"></label>
                                         <input class="form-control" type="password" name="password" maxlength="255" required="required"/>
                                     </div>
-                                    <input class="btn btn-default" type="submit" name="submit" class="keyed-lang-string" key="login_submit" value="Submit">
+                                    <input class="btn btn-default submit-button" type="submit" name="submit" value="Submit">
                                 </form>
                             </div>
                             <a href="" data-url="oauth/google?url=" target="oauth" class="oauth base-link hidden" id="oauth-google">Log in using Google</a>
@@ -236,7 +266,7 @@
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_getting-started_ab"><span class="keyed-lang-string" key="help_text_getting-started"></span></a></li>
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_reference_ab"><span class="keyed-lang-string" key="help_text_reference"></span></a></li>
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_tutorials_activity-board"><span class="keyed-lang-string" key="help_text_tutorials"></span></a></li>
-                    <%--<li><a target="_blank" class="keyed-lang-string" key="help_link_educator-resources_activity-board"><span class="keyed-lang-string" key="help_text_educator-resources"></span></a></li>--%>
+                                <%--<li><a target="_blank" class="keyed-lang-string" key="help_link_educator-resources_activity-board"><span class="keyed-lang-string" key="help_text_educator-resources"></span></a></li>--%>
                     </ul>
                 </div>
                 <div class="col-sm-4">
@@ -248,7 +278,7 @@
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_getting-started_ab"><span class="keyed-lang-string" key="help_text_getting-started"></span></a></li>
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_reference_ab"><span class="keyed-lang-string" key="help_text_reference"></span></a></li>
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_tutorials_badge"><span class="keyed-lang-string" key="help_text_tutorials"></span></a></li>
-                    <%--<li><a target="_blank" class="keyed-lang-string" key="help_link_educator-resources_badge"><span class="keyed-lang-string" key="help_text_educator-resources"></span></a></li>--%>
+                                <%--<li><a target="_blank" class="keyed-lang-string" key="help_link_educator-resources_badge"><span class="keyed-lang-string" key="help_text_educator-resources"></span></a></li>--%>
                     </ul>
                 </div>
             </div>
@@ -275,7 +305,7 @@
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_getting-started_ab"><span class="keyed-lang-string" key="help_text_getting-started"></span></a></li>
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_reference_ab"><span class="keyed-lang-string" key="help_text_reference"></span></a></li>
                         <li><a target="_blank" class="keyed-lang-string" key="help_link_tutorials_flip"><span class="keyed-lang-string" key="help_text_tutorials"></span></a></li>
-                    <%--<li><a target="_blank" class="keyed-lang-string" key="help_link_educator-resources_flip"><span class="keyed-lang-string" key="help_text_educator-resources"></span></a></li>--%>
+                                <%--<li><a target="_blank" class="keyed-lang-string" key="help_link_educator-resources_flip"><span class="keyed-lang-string" key="help_text_educator-resources"></span></a></li>--%>
                     </ul>
                 </div>
                 <div class="col-sm-4">
@@ -626,7 +656,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="container index-pages" id="index-new-project" style="display: none;">
             <form class="proj">
                 <div class="row">
@@ -657,22 +687,14 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-5 col-sm-offset-1">
-                        <div class="form-group coppa-true hidden">
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default active">
-                                    <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
-                                        <span class="keyed-lang-string" key="project_sharing_private" ></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group coppa-false hidden">
+                        <div class="form-group">
                             <label for="sharing" class="keyed-lang-string" key="project_sharing"></label><br/>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default active">
                                     <input type="radio" name="sharing" value="private" id="project-form-private" checked="checked"/>
-                                        <span class="keyed-lang-string" key="project_sharing_private" ></span>
+                                    <span class="keyed-lang-string" key="project_sharing_private" ></span>
                                 </label>
-                                <label class="btn btn-default">
+                                <label class="btn btn-default coppa-false hidden">
                                     <input type="radio" name="sharing" value="shared" id="project-form-shared"/>
                                     <span class="keyed-lang-string" key="project_sharing_shared" ></span>
                                 </label>
@@ -689,6 +711,142 @@
             </form>
         </div>
 
+        <div id="index-projects" class="container index-pages hidden">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h2 id="project-page-title"><span class="keyed-lang-string" key="project_list_title"></span></h2>
+
+                    <table id="project-table" class="table" data-toggle="table" data-search="false" data-side-pagination="server" data-pagination="true">
+                        <thead>
+                            <tr>
+                                <th data-field="board" data-sortable="false" data-formatter="formatType" data-width="30px" data-align="center"> </th>
+                                <th data-field="name" data-sortable="true" data-formatter="formatProject">Project Name</th>
+                                <th data-field="board" data-sortable="true" data-formatter="formatBoard">Board/Device Type</th>
+                                <th data-field="description" data-formatter="formatDescription" data-sortable="false">Description</th>
+                                <th data-field="user" data-formatter="formatUser" data-sortable="true">User</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Display community shared project form -->
+        <div id="project-form-container"  class="container hidden">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>
+                        <a role="button" onclick="showTable();" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="keyed-lang-string" key="back"></span></a>
+                        <span class="keyed-lang-string" key="project_details_title"></span>
+                        <a class="btn btn-primary open-project-link editor-view-link" href="#" ><span class="keyed-lang-string" key="project_viewcode"></span></a>
+                    </h2>
+                    <!-- Post the form contents to /blockly/rest/project  -->
+                    <form id="project-form" method="post">
+                        <div class="alert alert-success alert-dismissible hidden project-changed" id="project-changed">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <p><span class="keyed-lang-string" key="project_changed"></span></p>
+                        </div>
+                        <input type="hidden" name="id" id="project-form-id"/>
+                        <div class="form-group">
+                            <label for="name"><span class="keyed-lang-string" key="project_name"></span></label>
+                            <input type="text" class="form-control" name="name" id="project-form-name" required="required"/>
+                        </div>
+                        <div class="form-group not-your-project hidden">
+                            <label for="user"><span class="keyed-lang-string" key="project_user"></span></label>
+                            <input type="text" class="form-control" name="user" id="project-form-user" readonly="readonly"/>
+                        </div>
+                        <div class="form-group">
+                            <table style="width:100%; padding:0;   font-size: 14px;">
+                                <tr>
+                                    <td style="padding-right:10px;">
+                                        <label for="board"><span class="keyed-lang-string" key="project_board"></span></label>
+                                        <input type="text" class="form-control" name="board" id="project-form-board" readonly="readonly"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <label for="createdDate"><span class="keyed-lang-string" key="project_created"></span></label>
+                                        <input type="text" class="form-control" name="createdDate" id="project-form-created" readonly="readonly"/>
+                                    </td>
+                                    <td>
+                                        <label for="modifiedDate"><span class="keyed-lang-string" key="project_modified"></span></label>
+                                        <input type="text" class="form-control" name="modifiedDate" id="project-form-modified" readonly="readonly"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description"><span class="keyed-lang-string" key="project_description"></span></label>
+                            <div class="your-project hidden">
+                                <textarea class="form-control" name="description" id="project-form-description"></textarea>
+                            </div>
+                            <input type="hidden" name="description-html" id="project-form-description-html" />
+                            <div id="project-description-html" class="not-your-project hidden description-html"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sharing" class="keyed-lang-string" key="project_sharing"></label><br/>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default active">
+                                    <input type="radio" name="sharing" value="private" id="project-form-edit-private" checked="checked"/>
+                                    <span class="keyed-lang-string" key="project_sharing_private" ></span>
+                                </label>
+                                <label class="btn btn-default coppa-false hidden">
+                                    <input type="radio" name="sharing" value="shared" id="project-form-edit-shared"/>
+                                    <span class="keyed-lang-string" key="project_sharing_shared" ></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="share-link-generator">
+                            <div class="form-group your-project hidden coppa-false">
+                                <label for="share-link"><span class="keyed-lang-string" key="project_share-link"></span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" id="project-link-share-enable">
+                                    </span>
+                                    <input type="text" class="form-control" name="share-link" id="project-link-share" title="Ctrl/&#8984; + c to copy" readonly="readonly"/>
+                                </div><!-- /input-group -->
+                            </div>
+                        </div>
+
+                        <div class="modal-footer" id="project-save-buttons">
+                            <div class="btn-group not-your-project hidden">
+                                <a class="btn btn-default clone-project"><span class="keyed-lang-string" key="project_clonelink"></span></a>
+                            </div>
+                            <div class="btn-group your-project hidden">
+                                <button class="btn btn-primary" ><span class="keyed-lang-string" key="project_savelink"></span></button>
+                                <a class="btn btn-danger delete-project"><span class="keyed-lang-string" key="project_deletelink"></span></a>
+                                <a class="btn btn-default clone-project"><span class="keyed-lang-string" key="project_clonelink"></span></a>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="project-delete-confirm" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title keyed-lang-string" key="project_delete_confirm_title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="not-shared-project hidden keyed-lang-string" key="project_delete_confirm"></p>
+                        <p class="shared-project hidden keyed-lang-string" key="project_delete_confirm_shared"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="project-delete-confirmed">Delete</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
         <script>
             var baseUrl = $("meta[name=base]").attr("content");
             var cdnUrl = $("meta[name=cdn]").attr("content");
@@ -697,7 +855,9 @@
             var auth_user = $("meta[name=user-name]").attr("content");
             var inDemo = $("meta[name=in-demo]").attr("content");
             var oauthOn = ($("meta[name=oauth-on]").attr("content") === 'true') ? true : false;
-            
+
+            var idProject = null;
+
             var projectBoard = {
                 "activity-board": "icon-board-ab",
                 "s3": "icon-board-s3",
@@ -707,9 +867,34 @@
                 "propcfile": "icon-board-propc"
             };
 
+            // TODO: clean these up...
+            var boards = {
+                "activity-board": page_text_label['project_board_activity-board'],
+                "s3": page_text_label['project_board_s3'],
+                "heb": page_text_label['project_board_heb'],
+                "flip": page_text_label['project_board_flip'],
+                "other": page_text_label['project_board_other'],
+                "propcfile": page_text_label['project_board_propcfile']
+            };
+
+            var languageUrls = {
+                "PROPC": cdnUrl + "images/lang-icons/c.png",
+                "SPIN": cdnUrl + "images/lang-icons/spin.png"
+            };
+
+            var boardIconUrls = {
+                "activity-board": cdnUrl + "images/board-icons/IconActivityBoard.png",
+                "s3": cdnUrl + "images/board-icons/IconS3.png",
+                "heb": cdnUrl + "images/board-icons/IconBadge.png",
+                "flip": cdnUrl + "images/board-icons/IconFlip.png",
+                "other": cdnUrl + "images/board-icons/IconOtherBoards.png",
+                "propcfile": cdnUrl + "images/board-icons/IconC.png"
+            };
+
             var oauthUrls = {};
-            var simplemde = null;
-            
+            var simplemde_new = null;
+            var simplemde_edit = null;
+
             // set the URLs for all of the CDN-sourced images
             var imgs = document.getElementsByTagName('img');
             for (var l = 0; l < imgs.length; l++) {
@@ -718,7 +903,7 @@
 
 
             // handle user clicks on the "back" button
-            window.addEventListener("popstate", function(e) {
+            window.addEventListener("popstate", function (e) {
                 var loc = location.pathname.split('/');
                 var gotoLoc = loc[loc.length - 1];
                 if (gotoLoc === 'blockly' || gotoLoc === 'index' || gotoLoc === '' || !gotoLoc) {
@@ -750,20 +935,19 @@
             detectOS("appVersion", "CrOS", "ChromeOS");
 
             $(document).ready(function () {
+
+                // TODO: use this to check logged in status and to set page elements  
+                $.get('http://localhost:8080/blockly/rest/profile/get', function (res) {
+                    console.log(res);
+                }).fail(function (res) {
+                    console.log('user info failure:');
+                    console.log(res);
+                });
+
                 $("body").addClass(osName);
 
-                // Manage the page location/view
-                var loca = location.pathname.split('/');
-                var gotoLoca = loca[loca.length - 1];
-                if (gotoLoca === 'blockly' || gotoLoca === 'index' || gotoLoca === '' || !gotoLoca) {
-                    // Set the current page in the browser navigation
-                    history.pushState(null, null, baseUrl);
-                } else {
-                    indexNav(gotoLoca);
-                }
-
                 // Once the page loads, set the behavior of the links for faux-navigation
-                $('.internav-link').click(function(e) {
+                $('.internav-link').click(function (e) {
                     var loc = this.href.split('/');
                     var gotoLoc = loc[loc.length - 1];
                     e.preventDefault();
@@ -771,7 +955,7 @@
                 });
 
                 // Prevent dropdown menu from affecting the page navigation on the client download/instructions page
-                $('.client-os-dropdown').click(function(e) {
+                $('.client-os-dropdown').click(function (e) {
                     e.preventDefault();
                 });
 
@@ -781,44 +965,51 @@
                     $('#login-menu-item').css('display', 'none');
                     $('#my-projects-menu-item').css('display', 'list-item');
                     $('#new-project-menu-item').css('display', 'list-item');
+                    $('#project-save-buttons').removeClass('hidden');
+                    $('share-link-generator').removeClass('hidden');
                 } else {
                     $('#profile-menu-item').css('display', 'none');
                     $('#login-menu-item').css('display', 'list-item');
                     $('#my-projects-menu-item').css('display', 'none');
                     $('#new-project-menu-item').css('display', 'none');
+                    $('#project-save-buttons').addClass('hidden');
+                    $('share-link-generator').addClass('hidden');
                 }
-                
+
                 // Add the username when the user is logged in
                 $('.auth-user').html(auth_user);
-            
-                $('#loginform').submit(function (event) {
-                    $("#login-failure").addClass("hidden");
+
+                // Set the text in the submit buttons on the login forms
+                $('.submit-button').attr('value', page_text_label['login_submit']);
+
+                $('.loginform').submit(function (event) {
+                    $(".login-failure").addClass("hidden");
                     // Stop form from submitting normally
                     event.preventDefault();
 
-                    var jqxhr = $.post($('#loginform').attr('action'), $('#loginform').serialize(), onLoginSuccess);
+                    var jqxhr = $.post($('.loginform').attr('action'), $('.loginform').serialize(), onLoginSuccess);
                     jqxhr.fail(function (jqXHR, textStatus, errorThrown) {
                         alert("An unexpected error occured. Please try again later or contact the webmaster.");
                     });
 
                 });
 
-               /*
-                var pageReq = getURLParameter('page');
-                alert(pageReq);
-                if (pageReq) {
-                    indexNav(pageReq);
-
-                }
-                */
+                /*
+                 var pageReq = getURLParameter('page');
+                 alert(pageReq);
+                 if (pageReq) {
+                 indexNav(pageReq);
+                 
+                 }
+                 */
 
                 // set the year in copyright text fields
                 $('.year-text').html(new Date().getFullYear());
 
                 // Retrieve the list of latest projects
-                $.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", function (data) {
+                $.get(baseUrl + "rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", function (data) {
                     $.each(data['rows'], function (index, project) {
-                        console.log(project);
+                        //console.log(project);
                         var user = '';
                         if (project['user']) {
                             user = ' (' + project['user'] + ')';
@@ -828,7 +1019,7 @@
                         });
                         $("<a/>", {
                             "class": "editor-view-link editor-icon " + projectBoard[project['board']],
-                            "href": "/blockly/editor/blocklyc.jsp?project=" + project['id'],
+                            "href": baseUrl + "editor/blocklyc.jsp?project=" + project['id'],
                             "text": project['name'] + user
                         }).appendTo(projectItem);
                         $(".latest-projects").append(projectItem);
@@ -851,23 +1042,23 @@
                                 micromarkdown.parse(result[i].body).replace(/\r\n/g, '<br>') + "<hr />");
                     });
                 });
-                
+
                 // Grab the latest released mac and windows clients from GitHub
                 /*
-                $.getJSON("http://api.github.com/repos/parallaxinc/BlocklyPropClient/releases/latest", function (result) {
-                    downloads = result.assets;
-                    for (i = 0; i < downloads.length; i++) {
-                        if (downloads[i].name.indexOf('32.exe') > -1) {
-                            $('#client-win32-link').attr('href', downloads[i].browser_download_url);
-                        } else if (downloads[i].name.indexOf('64.exe') > -1) {
-                            $('#client-win64-link').attr('href', downloads[i].browser_download_url);
-                        } else if (downloads[i].name.indexOf('.pkg') > -1) {
-                            $('#client-mac-link').attr('href', downloads[i].browser_download_url);
-                        }
-                    }
-                });
-                */
-                
+                 $.getJSON("http://api.github.com/repos/parallaxinc/BlocklyPropClient/releases/latest", function (result) {
+                 downloads = result.assets;
+                 for (i = 0; i < downloads.length; i++) {
+                 if (downloads[i].name.indexOf('32.exe') > -1) {
+                 $('#client-win32-link').attr('href', downloads[i].browser_download_url);
+                 } else if (downloads[i].name.indexOf('64.exe') > -1) {
+                 $('#client-win64-link').attr('href', downloads[i].browser_download_url);
+                 } else if (downloads[i].name.indexOf('.pkg') > -1) {
+                 $('#client-mac-link').attr('href', downloads[i].browser_download_url);
+                 }
+                 }
+                 });
+                 */
+
                 // Set the links for the released clients
                 $('#client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
                 $('#client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
@@ -878,7 +1069,7 @@
                     $('.coppa-false').addClass('hidden');
                     $('.coppa-true').removeClass('hidden');
                 } else {
-                    $('.coppa-false').removeClass('hidden');                    
+                    $('.coppa-false').removeClass('hidden');
                     $('.coppa-true').addClass('hidden');
                 }
 
@@ -891,12 +1082,11 @@
 
                 // Activate the tooltips
                 $('[rel="tooltip"]').tooltip();
-                simplemde = new SimpleMDE(
-                        {
-                            element: document.getElementById("project-description"),
-                            hideIcons: ["link"],
-                            spellChecker: false
-                        });
+                simplemde_new = new SimpleMDE({
+                    element: document.getElementById("project-description"),
+                    hideIcons: ["link"],
+                    spellChecker: false
+                });
 
                 // set behavior when radio-groups are clicked
                 $('[data-toggle="wizard-radio"]').click(function () {
@@ -921,7 +1111,7 @@
                 // Set full height classes based on window height
                 doc_height = $(document).height();
                 $('.set-full-height').css('height', doc_height);
-                
+
                 // Set the board menu
                 $("#board-type").empty();
                 $('#board-type').append($('<option>', {
@@ -957,22 +1147,161 @@
                     }));
                 }
                 $('#finish').val(page_text_label['project_create_finishlink']);
-                
+
                 // Set urls for links
                 var a_hrefs = document.getElementsByClassName('base-link');
                 for (var l = 0; l < a_hrefs.length; l++) {
                     a_hrefs[l].setAttribute('href', baseUrl + a_hrefs[l].getAttribute('data-url'));
-                }  
-                
+                }
+
                 // Set url for authentication form submission
-                $('#loginform').attr('action', baseUrl + 'authenticate');
-                
+                $('.loginform').attr('action', baseUrl + 'authenticate');
+
                 // If oauth is turned on, make the links visible
                 if (oauthOn) {
                     $('.oauth').removeClass('hidden');
                 }
+
+                simplemde_edit = new SimpleMDE({
+                    element: document.getElementById("project-form-description"),
+                    hideIcons: ["link"],
+                    spellChecker: false
+                });
+
+                // Set the URL the project form POSTs to
+                $('#project-form').attr('action', baseUrl + "rest/project");
+
+                // Set the behavior of the project form
+                $('#project-form').ajaxForm({
+                    'beforeSerialize': function () {
+                        $("#project-form-description").val(simplemde_edit.value());
+                        $("#project-form-description-html").val(simplemde_edit.options.previewRender(simplemde_edit.value()));
+                    },
+                    'success': function () {
+                        $(".project-changed:not(.hidden").remove();
+                        var projectChanged = $(".project-changed").clone().insertAfter(".project-changed");
+                        projectChanged.removeClass("hidden");
+                        projectChanged.delay(5000).fadeOut(400, function () {
+                            projectChanged.remove();
+                        });
+                    }
+                });
+
+                // Clone, get new id, show in project form
+                $(".clone-project").click(function (e) {
+                    e.preventDefault();
+                    if (window.idProject) {
+                        $.get(baseUrl + 'rest/project/clone/' + window.idProject, function (result) {
+                            if (!result['success']) {
+                                alert('Unable to clone project:\n' + result.toString());
+                            } else {
+                                idProject = result['id'];
+                                showProject(idProject);
+                            }
+                        });
+                    } else {
+                        alert('ERROR: Project not found!');
+                    }
+                });
+
+                // TODO: add project info into modal
+                $(".delete-project").click(function (e) {
+                    e.preventDefault();
+                    $("#project-delete-confirm").modal('show');
+                });
+
+                // Delete project and return to project listing
+                $("#project-delete-confirmed").click(function () {
+                    if (window.idProject) {
+                        $.get(baseUrl + 'rest/project/delete/' + window.idProject, function (result) {
+                            if (!result['success']) {
+                                alert('Unable to delete project:\n' + result.toString());
+                            }
+                        });
+
+                        // Hide the project table
+                        window.idProject = null;
+                        idProject = null;
+                        $("#project-form-container").addClass('hidden');
+
+                        // Show the project table
+                        // TODO: refresh the project table?
+                        if (window.location.href.indexOf('/my-projects') > -1) {
+                            indexNav('my-projects');
+                        } else {
+                            indexNav('projects');
+                        }
+                    } else {
+                        alert('ERROR: Project not found');
+                    }
+                    $("#project-delete-confirm").modal('hide');
+                });
+
+                $("#project-link-share-enable").click(function () {
+                    var linkShareInput = $("#project-link-share");
+                    if ($(this).prop('checked')) {
+                        $.post(baseUrl + "projectlink", {'id': idProject, 'action': 'share'}, function (response) {
+                            if (response['success']) {
+                                linkShareInput.val(window.location.origin + baseUrl + 'projectlink?id=' + idProject + "&key=" + response['share-key']);
+                                linkShareInput.focus();
+                                linkShareInput[0].setSelectionRange(0, linkShareInput.val().length);
+                                linkShareInput.tooltip();
+                                linkShareInput.tooltip('show');
+
+                                $('.not-shared-project').addClass('hidden');
+                                $('.shared-project').removeClass('hidden');
+                            }
+                        });
+
+
+                    } else {
+                        $.post(baseUrl + "projectlink", {'id': idProject, 'action': 'revoke'}, function (response) {
+                            if (response['success']) {
+                                linkShareInput.tooltip('destroy');
+                                linkShareInput.val('');
+
+                                $('.not-shared-project').removeClass('hidden');
+                                $('.shared-project').addClass('hidden');
+                            }
+                        });
+                    }
+                });
+
+                $("#project-link-share").click(function () {
+                    var linkShareInput = $("#project-link-share");
+                    linkShareInput[0].setSelectionRange(0, linkShareInput.val().length);
+                });
+
+                $('#project-table').bootstrapTable('destroy').bootstrapTable({
+                    columns: [{
+                            field: 'board',
+                            title: ' '
+                        }, {
+                            field: 'name',
+                            title: page_text_label['project_table_name']
+                        }, {
+                            field: 'board',
+                            title: page_text_label['project_table_board']
+                        }, {
+                            field: 'description',
+                            title: page_text_label['project_table_description']
+                        }, {
+                            field: 'user',
+                            title: page_text_label['project_table_user']
+                        }]
+                });
+
+                // Manage the page location/view
+                var loca = location.pathname.split('/');
+                var gotoLoca = loca[loca.length - 1];
+                if (gotoLoca === 'blockly' || gotoLoca === 'index' || gotoLoca === '' || !gotoLoca) {
+                    // Set the current page in the browser navigation
+                    history.pushState(null, null, baseUrl);
+                } else {
+                    indexNav(gotoLoca);
+                }
             });
-            
+
             function onLoginSuccess(response, statusText, xhr, $form) {
                 // alert(response.data.token);
                 if (response.success === true) {
@@ -982,14 +1311,19 @@
                         location.reload(true);
                     }
                 } else {
-                    $("#login-failure").removeClass("hidden");
+                    $(".login-failure").removeClass("hidden");
                     if (typeof window['failed-authentication'] === 'function') {
                         window['failed-authentication']();
                     }
                 }
             }
 
-            if(!user_authenticated) {
+            $('#login-link').click(function (event) {
+                event.preventDefault();
+                $('#login-modal').modal('show');
+            });
+
+            if (!user_authenticated) {
                 $("body").on("click", "a.editor-new-link", function (event) {
                     event.preventDefault();
                     setEditorLinksAndShow.call(this, page_text_label['not_loggedin_try_trylink']);
@@ -1029,6 +1363,13 @@
             }
 
             function indexNav(divRef) {
+                var showLogin = false;
+                if (divRef === 'login') {
+                    divRef = 'main';
+                    showLogin = true;
+                } else if (divRef === '') {
+                    divRef = 'main';
+                }
                 history.pushState(null, null, baseUrl + (divRef === 'main' ? '' : divRef));
                 document.getElementById('index-main').style.display = 'none';
                 document.getElementById('index-help').style.display = 'none';
@@ -1038,7 +1379,46 @@
                 document.getElementById('index-client').style.display = 'none';
                 document.getElementById('index-privacy-policy').style.display = 'none';
                 document.getElementById('index-new-project').style.display = 'none';
-                document.getElementById('index-' + divRef).style.display = 'block';
+                $('#index-projects').addClass('hidden');
+                if (divRef.indexOf('projects') > -1) {
+                    if (divRef.indexOf('my-projects') > -1) {
+                        setupTable(true);
+                    } else {
+                        setupTable(false);
+                    }
+                    $('#index-projects').removeClass('hidden');
+                } else {
+                    document.getElementById('index-' + divRef).style.display = 'block';
+                }
+                if (showLogin) {
+                    $('#login-modal').modal('show');
+                }
+            }
+
+
+            // TODO: Edit this when project table is incoperated into the index-nav
+            /*
+             if (window.location.href.indexOf('/projects') > -1 && getURLParameter('user')) {
+             // Get the user name from the project records
+             var uId = getURLParameter('user');
+             var uName = getScreenName(uId);
+             if (uName) {
+             showByUser(uId, uName);                        
+             } else {
+             // TODO: add info to a div that's more informative to the user
+             console.log('User ' + uId + ' not found, loading community projects.');
+             setupTable(false);
+             };
+             }
+             */
+
+            function getScreenName(u) {
+                $.get(baseUrl + 'rest/shared/project/list/user/' + u, function (data) {
+                    return data.rows[0].user;
+                }).fail(function () {
+                    return false;
+                });
+
             }
 
             function showOS(o) {
@@ -1097,8 +1477,8 @@
             $('#finish').on('click', function () {
                 if (validateFirstStep()) {
                     var formData = $(".proj").serializeObject();
-                    formData['project-description'] = simplemde.value();
-                    formData['project-description-html'] = simplemde.options.previewRender(simplemde.value());
+                    formData['project-description'] = simplemde_new.value();
+                    formData['project-description-html'] = simplemde_new.options.previewRender(simplemde_new.value());
                     console.log(formData);
                     $.post(baseUrl + 'createproject', formData, function (data) {
                         console.log(data);
@@ -1107,9 +1487,149 @@
                         } else {
                             alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);
                         }
-                    }).fail( function(response){ console.log(response); });
+                    }).fail(function (response) {
+                        console.log(response);
+                    });
                 }
             });
+
+            function formatType(value, row) {
+                return '<img src="' + boardIconUrls[value] + '" />';
+            }
+
+            function formatProject(value, row) {
+                return "<a role='button' onclick='showProject(" + row['id'] + ");'>" + value + "</a>";
+                //return "<a href='#" + row['id'] + "'>" + value + "</a>";
+            }
+
+            function formatUser(value, row) {
+                return "<a role='button' onclick='showByUser(" + row['id-user'] + ", \"" + value + "\");'>" + value + "</a>";
+            }
+
+            function formatBoard(value, row) {
+                var boardTranslation = boards[value];
+                if (!boardTranslation) {
+                    boardTranslation = boards['other'];
+                }
+                return boardTranslation;
+            }
+
+            function formatDescription(value, row) {
+                if (value) {
+                    if (value.length > 30) {
+                        return value.substring(0, 27) + '&hellip;';
+                    }
+                }
+                return value;
+            }
+
+            function showByUser(uId, uName) {
+                var allProjectsButton = '<a role="button" onclick="setupTable(false);" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to all projects</a>';
+                $('#project-table').bootstrapTable('hideColumn', 'user');
+                $('#project-page-title').html(allProjectsButton + ' Projects by user ' + uName);
+                var userRestUrl = baseUrl + 'rest/shared/project/list/user' + uId;
+                $('#project-table').bootstrapTable('refresh', {
+                    url: userRestUrl
+                });
+            }
+
+            function setupTable(showMyProjects) {
+                if (!showMyProjects) {
+                    tableREST = baseUrl + 'rest/shared/project/list';
+                    $('#project-table').bootstrapTable('showColumn', 'user');
+                    $('#project-page-title').html('<fmt:message key="project.list.title"/>');
+                } else {
+                    tableREST = baseUrl + 'rest/project/list';
+                    $('#project-table').bootstrapTable('hideColumn', 'user');
+                    $('#project-page-title').html('<fmt:message key="my_project.list.title"/>');
+                }
+                $('#project-table').bootstrapTable('refresh', {
+                    url: tableREST
+                });
+            }
+
+            function showTable() {
+                $("#project-table").bootstrapTable('refresh');
+                $("#index-projects").removeClass('hidden');
+                $("#project-form-container").addClass('hidden');
+            }
+
+            function showProject(idProject) {
+                // Clear form
+                $(".sharing").removeProp('checked').parent().removeClass('active');
+                $('.your-project').addClass('hidden');
+                $('.not-your-project').addClass('hidden');
+                $('.not-shared-project').addClass('hidden');
+                $('.shared-project').addClass('hidden');
+
+                loadProject(idProject);
+                $("#index-projects").addClass('hidden');
+                $("#project-form-container").removeClass('hidden');
+            }
+
+            function loadProject(idProject) {
+                window.idProject = idProject;
+
+                var linkShareInput = $("#project-link-share");
+                linkShareInput.tooltip('destroy');
+                linkShareInput.val('');
+                $("#project-link-share-enable").prop('checked', false);
+
+                // Get details
+                $.get(baseUrl + "rest/shared/project/get/" + idProject, function (project) {
+                    if (project['yours']) {
+                        $('.your-project').removeClass('hidden');
+
+                        if (project['share-key']) {
+                            $("#project-link-share-enable").prop('checked', true);
+                            linkShareInput.val(window.location.origin + baseUrl + 'projectlink?id=' + idProject + "&key=" + project['share-key']);
+                            linkShareInput.tooltip();
+
+                            $('.shared-project').removeClass('hidden');
+                        } else {
+                            $('.not-shared-project').removeClass('hidden');
+                        }
+                    } else {
+                        $('.not-your-project').removeClass('hidden');
+                        $("#project-form-user").val(project['user']);
+                    }
+                    $("#project-form-id").val(project['id']);
+                    $("#project-form-name").val(project['name']);
+
+                    var boardTranslation = boards[project['board']];
+                    if (!boardTranslation) {
+                        boardTranslation = boards['other'];
+                    }
+                    $("#project-form-board").val(boardTranslation);
+                    $("#project-form-created").val(project['created']);
+                    $("#project-form-modified").val(project['modified']);
+                    simplemde_edit.value(project['description']);
+                    $("#project-description-html").html(project['description-html']);
+                    if (project['private']) {
+                        $("#project-form-private").prop('checked', 'checked').parent().addClass('active');
+                    } else if (project['shared']) {
+                        $("#project-form-shared").prop('checked', 'checked').parent().addClass('active');
+                    } else {
+                        $("#project-form-private").prop('checked', 'checked').parent().addClass('active');
+                        //$("#project-form-friends").prop('checked', 'checked').parent().addClass('active');
+                    }
+
+                    var openProjectLink = $("a.open-project-link");
+                    //openProjectLink.removeClass("editor-c-link");
+                    openProjectLink.attr("href", baseUrl + "editor/blocklyc.jsp?project=" + project['id']);
+                });
+            }
+
+            function guid() {
+                function s4() {
+                    return Math.floor((1 + Math.random()) * 0x10000)
+                            .toString(16)
+                            .substring(1);
+                }
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+            }
+
         </script>
 
         <footer class="footer">
@@ -1125,9 +1645,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li>
                                 <a href="http://www.parallax.com" target="_blank">
-                                    V<span class="keyed-lang-string" key="application_major"></span>
-                                    .<span class="keyed-lang-string" key="application_minor"></span>
-                                    .<span class="keyed-lang-string" key="application_build"></span>
+                                    V<span class="keyed-lang-string" key="application_major"></span>.<span class="keyed-lang-string" key="application_minor"></span>.<span class="keyed-lang-string" key="application_build"></span>
                                     Parallax &copy; 2015 - <span class="year-text"></span>
                                 </a>
                             </li>

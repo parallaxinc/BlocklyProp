@@ -159,8 +159,8 @@
                                                     <li class="auth-true" displayas="list-item" id="save-as-menu-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" key="editor_save-as"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;"  class="auth-true" displayas="list-item"/>
                                                     <li class="auth-true" displayas="list-item"><a href="new-project" class="url-prefix"><span class="keyed-lang-string" key="menu_newproject_title"></span></a></li>
-                                                    <li class="auth-true" displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" key="menu_my_projects"></span></a></li>
-                                                    <li><a href="projects.jsp" class="url-prefix"><span class="keyed-lang-string" key="menu_community_projects"></span></a></li>
+                                                    <li class="auth-true" displayas="list-item"><a href="my-projects" class="url-prefix"><span class="keyed-lang-string" key="menu_my_projects"></span></a></li>
+                                                    <li><a href="projects" class="url-prefix"><span class="keyed-lang-string" key="menu_community_projects"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;" />
                                                     <li><a href="help" target="_blank" class="url-prefix"><span class="keyed-lang-string" key="menu_help_reference"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;" />

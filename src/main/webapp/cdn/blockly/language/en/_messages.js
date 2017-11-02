@@ -952,7 +952,8 @@ var tooltip_text = [
     ['btn-graph-csv','Download graph data as CSV'],
     ['project-form-shared', 'Make project visible to other users'],
     ['project-form-private', 'Hide project from other users']
-    
+    ['project-form-edit-shared', 'Make project visible to other users'],
+    ['project-form-edit-private', 'Hide project from other users']
 ];
 
 // Insert the text strings (internationalization) once the page has loaded
@@ -977,6 +978,8 @@ $(document).ready(function () {
     
     // insert into button/link tooltips
     for (var i = 0; i < tooltip_text.length; i++) {
-        $('#' + tooltip_text[i][0]).attr('title', tooltip_text[i][1]);
+        if (tooltip_text[i] && document.getElementById(tooltip_text[i][0])) {
+            $('#' + tooltip_text[i][0]).attr('title', tooltip_text[i][1]);
+        }
     }
 });
