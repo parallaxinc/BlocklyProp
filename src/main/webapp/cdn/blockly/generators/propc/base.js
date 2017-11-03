@@ -1931,8 +1931,8 @@ Blockly.propc.math_advanced = function () {
     var store = Blockly.propc.variableDB_.getName(this.getFieldValue('STORE'), Blockly.Variables.NAME_TYPE);
     var arg1 = Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '1';
     var arg2 = Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '1';
-    arg1 = arg1.replace(/([0-9])(\xA0| |\)|$)/g, "$1.0$2").replace(/\(int\)/g, "");
-    arg2 = arg2.replace(/([0-9])(\xA0| |\)|$)/g, "$1.0$2").replace(/\(int\)/g, "");
+    arg1 = arg1.replace(/([-+]?\d+)/g, "$1.0").replace(/\(int\)/g, "");
+    arg2 = arg2.replace(/([-+]?\d+)/g, "$1.0").replace(/\(int\)/g, "");
     var operator = this.getFieldValue('OP');
     var opTrig = '';
     if (operator === 'sin' || operator === 'cos' || operator === 'tan')

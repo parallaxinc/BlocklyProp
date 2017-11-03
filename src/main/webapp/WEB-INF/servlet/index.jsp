@@ -738,7 +738,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2>
-                        <a role="button" onclick="showTable();" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="keyed-lang-string" key="back"></span></a>
+                        <a role="button" onclick="showTable();" class="btn btn-default">&#8249; <span class="keyed-lang-string" key="back"></span></a>
                         <span class="keyed-lang-string" key="project_details_title"></span>
                         <a class="btn btn-primary open-project-link editor-view-link" href="#" ><span class="keyed-lang-string" key="project_viewcode"></span></a>
                     </h2>
@@ -1524,7 +1524,7 @@
             }
 
             function showByUser(uId, uName) {
-                var allProjectsButton = '<a role="button" onclick="setupTable(false);" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back to all projects</a>';
+                var allProjectsButton = '<a role="button" onclick="setupTable(false);" class="btn btn-default">&#8249; Back to all projects</a>';
                 $('#project-table').bootstrapTable('hideColumn', 'user');
                 $('#project-page-title').html(allProjectsButton + ' Projects by user ' + uName);
                 var userRestUrl = baseUrl + 'rest/shared/project/list/user' + uId;
