@@ -29,7 +29,11 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
 
     @Override
     public ProjectSharingRecord getProject(Long idProject, String accessKey) {
-        return create.selectFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject).and(Tables.PROJECT_SHARING.SHAREKEY.equal(accessKey))).fetchOne();
+        return create
+                .selectFrom(Tables.PROJECT_SHARING)
+                .where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject)
+                        .and(Tables.PROJECT_SHARING.SHAREKEY.equal(accessKey)))
+                .fetchOne();
     }
 
     @Override
@@ -44,7 +48,10 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
 
     @Override
     public List<ProjectSharingRecord> getSharingInfo(Long idProject) {
-        return create.selectFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject)).fetch();
+        return create
+                .selectFrom(Tables.PROJECT_SHARING)
+                .where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject))
+                .fetch();
     }
 
 }
