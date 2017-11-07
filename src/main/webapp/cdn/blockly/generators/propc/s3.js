@@ -1206,8 +1206,8 @@ Blockly.Blocks.analog_input = {
 
 // TODO: create this function in s3 library.
 Blockly.propc.analog_input = function () {
-    var pin = this.getFieldValue('PIN');
-    return ['s3_readADC(S3_ADC_A' + pin + ')', Blockly.propc.ORDER_ATOMIC];
+    var pin = this.getFieldValue('ANALOG_PIN');
+    return ['s3_readADC(S3_ADC_' + pin + ')', Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.Blocks.scribbler_boolean = {
