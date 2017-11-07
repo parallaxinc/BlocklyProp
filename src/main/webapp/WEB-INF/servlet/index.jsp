@@ -936,13 +936,15 @@
 
             $(document).ready(function () {
 
-                // TODO: use this to check logged in status and to set page elements  
+                // TODO: use this to check logged in status and to set page elements 
+                /*
                 $.get('http://localhost:8080/blockly/rest/profile/get', function (res) {
                     console.log(res);
                 }).fail(function (res) {
                     console.log('user info failure:');
                     console.log(res);
                 });
+                */
 
                 $("body").addClass(osName);
 
