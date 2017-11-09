@@ -566,6 +566,64 @@ Blockly.Names.prototype.safeName_ = function (name) {
     return name;
 };
 
+// NOTE!  Replaces core function!
+// The change turns off keypress detection by the Blockly Workspace, which becomes
+// problematic when trying to edit propc code in the ace editor.
+/**
+ * Handle a key-down on SVG drawing surface.
+ * @param {!Event} e Key down event.
+ * @private
+ */
+Blockly.onKeyDown_ = function(e) {
+  // detect if the project is a code-only type
+  if (projectData['board'] !== 'propcfile') {
+      
+    if (Blockly.isTargetInput_(e)) {
+      // When focused on an HTML text input widget, don't trap any keys.
+      return;
+    }
+    // TODO: Add keyboard support for cursoring around the context menu.
+    if (e.keyCode == 27) {
+      // Pressing esc closes the context menu.
+      Blockly.hideChaff();
+    } else if (e.keyCode == 8 || e.keyCode == 46) {
+      // Delete or backspace.
+      try {
+        if (Blockly.selected && Blockly.selected.isDeletable()) {
+          Blockly.hideChaff();
+          Blockly.selected.dispose(true, true);
+        }
+      } finally {
+        // Stop the browser from going back to the previous page.
+        // Use a finally so that any error in delete code above doesn't disappear
+        // from the console when the page rolls back.
+        e.preventDefault();
+      }
+    } else if (e.altKey || e.ctrlKey || e.metaKey) {
+      if (Blockly.selected &&
+          Blockly.selected.isDeletable() && Blockly.selected.isMovable() &&
+          Blockly.selected.workspace == Blockly.mainWorkspace) {
+        Blockly.hideChaff();
+        if (e.keyCode == 67) {
+          // 'c' for copy.
+          Blockly.copy_(Blockly.selected);
+        } else if (e.keyCode == 88) {
+          // 'x' for cut.
+          Blockly.copy_(Blockly.selected);
+          Blockly.selected.dispose(true, true);
+        }
+      }
+      if (e.keyCode == 86) {
+        // 'v' for paste.
+        if (Blockly.clipboard_) {
+          Blockly.mainWorkspace.paste(Blockly.clipboard_);
+        }
+      }
+    }
+  }
+};
+
+
 // polyfill that removes duplicates from an array and sorts it
 // From: https://stackoverflow.com/questions/9229645/remove-duplicates-from-javascript-array
 function uniq_fast(a) {
