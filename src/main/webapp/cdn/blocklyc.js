@@ -134,11 +134,11 @@ function tabClick(id) {
     }
 
     // Show the selected pane.
-    if (projectData['board'] !== 'propcfile') {
+    //if (projectData['board'] !== 'propcfile') {
         document.getElementById('content_' + selected).style.display = 'block';
-    } else {
-        document.getElementById('content_propc').style.display = 'block';
-    }
+    //} else {
+    //    document.getElementById('content_propc').style.display = 'block';
+    //}
     renderContent();
 }
 
