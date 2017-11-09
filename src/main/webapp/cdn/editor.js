@@ -307,7 +307,7 @@ var editProjectDetails = function () {
 var blocklyReady = function () {
     // if debug mode is active, show the XML button
     if (getURLParameter('debug')) {
-        document.getElementById('tab_xml').style.display = 'inline-block';
+        document.getElementById('btn-view-xml').style.display = 'inline-block';
     }
     
     if (projectLoaded) {

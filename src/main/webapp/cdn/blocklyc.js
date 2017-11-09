@@ -133,12 +133,15 @@ function tabClick(id) {
         document.getElementById('download-project').style.display = 'none';
     }
 
+    document.getElementById('content_' + selected).style.display = 'block';
     // Show the selected pane.
-    //if (projectData['board'] !== 'propcfile') {
-        document.getElementById('content_' + selected).style.display = 'block';
-    //} else {
-    //    document.getElementById('content_propc').style.display = 'block';
-    //}
+    if (projectData['board'] === 'propcfile' && selected === 'xml') {
+        document.getElementById('btn-view-propc').style.display = 'inline';
+        document.getElementById('btn-view-xml').style.display = 'none';
+    } else if (projectData['board'] === 'propcfile' && selected === 'propc') {
+        document.getElementById('btn-view-xml').style.display = 'inline';
+        document.getElementById('btn-view-propc').style.display = 'none';
+    }
     renderContent();
 }
 
