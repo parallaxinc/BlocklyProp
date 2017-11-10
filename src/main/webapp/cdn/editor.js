@@ -308,6 +308,8 @@ var blocklyReady = function () {
     // if debug mode is active, show the XML button
     if (getURLParameter('debug')) {
         document.getElementById('btn-view-xml').style.display = 'inline-block';
+    } else {
+        document.getElementById('btn-view-xml').style.display = 'none';
     }
     
     if (projectLoaded) {
