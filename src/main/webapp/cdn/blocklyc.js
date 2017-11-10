@@ -106,6 +106,13 @@ function tabClick(id) {
         btns[i].style.display = 'none';
     }
     if (projectData['board'] !== 'propcfile') {
+
+        // Reinstate keybindings from block workspace if this is a code-only project.
+        if (Blockly.codeOnlyKeybind === true) {
+            Blockly.bindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
+            Blockly.codeOnlyKeybind = false;
+        }
+        
         if (id === 'tab_blocks') {
             for (var i = 0; i < btns.length; i++) {
                 btns[i].style.display = 'inline';
@@ -122,6 +129,11 @@ function tabClick(id) {
                 document.getElementById('menu-save-as-propc').style.display = 'block';
         }
     } else {
+        
+        // Remove keybindings from block workspace if this is a code-only project.
+        Blockly.unbindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
+        Blockly.codeOnlyKeybind = true;
+
         if ($('#editor-full-mode') === 'true') {
             document.getElementById('prop-btn-graph').style.display = 'none';
             document.getElementById('upload-project').style.display = 'none';
@@ -135,10 +147,10 @@ function tabClick(id) {
 
     document.getElementById('content_' + selected).style.display = 'block';
     // Show the selected pane.
-    if (projectData['board'] === 'propcfile' && selected === 'xml') {
+    if (projectData['board'] === 'propcfile' && selected === 'xml' && getURLParameter('debug')) {
         document.getElementById('btn-view-propc').style.display = 'inline';
         document.getElementById('btn-view-xml').style.display = 'none';
-    } else if (projectData['board'] === 'propcfile' && selected === 'propc') {
+    } else if (projectData['board'] === 'propcfile' && selected === 'propc' && getURLParameter('debug')) {
         document.getElementById('btn-view-xml').style.display = 'inline';
         document.getElementById('btn-view-propc').style.display = 'none';
     }
