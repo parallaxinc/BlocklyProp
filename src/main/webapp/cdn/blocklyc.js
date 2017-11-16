@@ -280,7 +280,7 @@ function cloudCompile(text, action, successHandler) {
         alert("You can't compile an empty project");
     } else {
         $("#compile-dialog-title").text(text);
-        $("#compile-console").val('');
+        $("#compile-console").val('Compile... ');
         $('#compile-dialog').modal('show');
 
 
@@ -314,10 +314,10 @@ function cloudCompile(text, action, successHandler) {
                     loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
                 }
                 if (data.success) {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
                 } else {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
             }
         }).fail(function (data) {
