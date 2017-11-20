@@ -530,7 +530,7 @@ Blockly.propc.console_print_multiple = function () {
     var orIt = '';
     var i = 0;
     while (this.getInput('PRINT' + i)) {
-        var digitsPlaces = this.getFieldValue('DIGIT' + i);
+        var digitsPlaces = this.getFieldValue('DIGIT' + i) || '';
         if (this.getFieldValue('PLACE' + i) && this.getFieldValue('PLACE' + i) !== '') {
             digitsPlaces += '.' + this.getFieldValue('PLACE' + i);
         }
