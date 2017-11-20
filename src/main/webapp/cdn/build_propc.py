@@ -143,7 +143,7 @@ def gen_compressed(filenames, target_filename):
 
   # Send the request to Google.
   headers = { "Content-type": "application/x-www-form-urlencoded" }
-  conn = httplib.HTTPConnection('closure-compiler.appspot.com')
+  conn = httplib.HTTPSConnection('closure-compiler.appspot.com')
   conn.request('POST', '/compile', urllib.urlencode(params), headers)
   response = conn.getresponse()
   json_str = response.read()
