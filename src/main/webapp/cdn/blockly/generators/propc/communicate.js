@@ -4132,7 +4132,7 @@ Blockly.propc.wx_scan_multiple = function () {
         var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start;
         var varList = '';
         var i = 0;
-        while (Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE)) {
+        while (this.getFieldValue('CPU' + i)) {
             if (this.getFieldValue('TYPE' + i).includes('integer')) {
                 code += '%d';
             } else {
