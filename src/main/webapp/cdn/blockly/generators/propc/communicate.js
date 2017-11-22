@@ -5058,7 +5058,7 @@ Blockly.propc.wx_ip = function () {
         var mode = this.getFieldValue('MODE');
         if (!this.disabled) {
             var func = 'char* wifi_ip_string(int __mode) {int __ip[4]; __result = ';
-            func += 'wifi_ip(__mode, __ip); char ipStr[16]; if(__result = \'E\') ';
+            func += 'wifi_ip(__mode, __ip); char ipStr[16]; if(__result == \'E\') ';
             func += '{ipStr = "Error          ";} else {sprint(ipStr, "%03d.%03d';
             func += '.%03d.%03d", __ip[0], __ip[1], __ip[2], __ip[3]);} return ipStr;}';
 
