@@ -4635,7 +4635,7 @@ Blockly.propc.wx_listen = function () {
 Blockly.Blocks.wx_join = {
     helpUrl: Blockly.MSG_AWX_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_AWX_GET_IP_TOOLTIP);
+        //this.setTooltip(Blockly.MSG_AWX_GET_IP_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .setAlign(Blockly.ALIGN_RIGHT)
@@ -4644,7 +4644,8 @@ Blockly.Blocks.wx_join = {
                 .appendField("passphrase")
                 .appendField(new Blockly.FieldTextInput('passphrase'), 'PASS');
         this.setInputsInline(true);
-        this.setOutput(true, "String");
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
     },
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
@@ -4661,7 +4662,7 @@ Blockly.propc.wx_join = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
     {
-        var ssid = this.getFieldValue('MODE') || '';
+        var ssid = this.getFieldValue('SSID') || '';
         var pass = this.getFieldValue('PASS') || '';
         return 'wifi_join("' + ssid + '", "' + pass + '");\n';
     } else {
