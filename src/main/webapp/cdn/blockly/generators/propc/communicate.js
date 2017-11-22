@@ -4632,6 +4632,43 @@ Blockly.propc.wx_listen = function () {
     }
 };
 
+Blockly.Blocks.wx_join = {
+    helpUrl: Blockly.MSG_AWX_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_AWX_GET_IP_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("WX join network SSID")
+                .appendField(new Blockly.FieldTextInput('myNetwork'), 'SSID')
+                .appendField("passphrase")
+                .appendField(new Blockly.FieldTextInput('passphrase'), 'PASS');
+        this.setInputsInline(true);
+        this.setOutput(true, "String");
+    },
+    onchange: function () {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        if (allBlocks.toString().indexOf('WX initialize') === -1)
+        {
+            this.setWarningText('WARNING: You must use a WX\ninitialize block at the beginning of your program!');
+        } else {
+            this.setWarningText(null);
+        }
+    }
+};
+
+Blockly.propc.wx_join = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
+    {
+        var ssid = this.getFieldValue('MODE') || '';
+        var pass = this.getFieldValue('PASS') || '';
+        return 'wifi_join("' + ssid + '", "' + pass + '");\n';
+    } else {
+        return '// ERROR: WX is not initialized!\n';
+    }
+};
+
 Blockly.Blocks.wx_code = {
     helpUrl: Blockly.MSG_AWX_HELPURL,
     init: function () {
