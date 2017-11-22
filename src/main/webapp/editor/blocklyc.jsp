@@ -868,6 +868,7 @@
                                                     </block>
                                                 </value>
                                             </block>
+                                            <block type="wx_join"></block>
                                             <block type="wx_disconnect"></block>
                                             <block type="wx_ip"></block>
                                         </category>
