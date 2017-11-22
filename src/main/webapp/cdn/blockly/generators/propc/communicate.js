@@ -4662,7 +4662,7 @@ Blockly.propc.wx_join = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
     {
-        var ssid = this.getFieldValue('MODE') || '';
+        var ssid = this.getFieldValue('SSID') || '';
         var pass = this.getFieldValue('PASS') || '';
         return 'wifi_join("' + ssid + '", "' + pass + '");\n';
     } else {
