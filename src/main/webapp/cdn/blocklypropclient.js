@@ -361,7 +361,11 @@ function establish_socket() {
 
                 } else if (ws_msg.action === 'message-compile') {
                     $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
-
+                    
+                    // Scoll automatically to the bottom after new data is added
+                    var compileConsoleObj = document.getElementById("compile-console");
+                    compileConsoleObj.scrollTop = objDiv.scrollHeight;
+                    
                 } else if (ws_msg.action === 'close-compile') {
                     $('#compile-dialog').modal('hide');
                     $('#compile-console').val('');

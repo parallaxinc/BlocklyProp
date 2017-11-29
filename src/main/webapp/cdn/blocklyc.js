@@ -334,6 +334,10 @@ function cloudCompile(text, action, successHandler) {
                 } else {
                     $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
+                
+                // Scoll automatically to the bottom after new data is added
+                var compileConsoleObj = document.getElementById("compile-console");
+                compileConsoleObj.scrollTop = objDiv.scrollHeight;
             }
         }).fail(function (data) {
             console.log(data);
