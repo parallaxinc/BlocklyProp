@@ -1207,16 +1207,18 @@ Blockly.Blocks.ab_drive_init = {
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
-        var bot = this.getFieldValue('BOT');
-        container.setAttribute('BOT', bot);
+        container.setAttribute('BOT', this.getFieldValue('BOT'));
+        container.setAttribute('LEFT', this.getFieldValue('LEFT') || '0');
+        container.setAttribute('RIGHT', this.getFieldValue('RIGHT') || '0');
         return container;
     },
     domToMutation: function (xmlElement) {
         var bot = xmlElement.getAttribute('BOT');
-        this.updateShape_({"BOT": bot});
+        var left = xmlElement.getAttribute('LEFT') || '0';
+        var right = xmlElement.getAttribute('RIGHT') || '0';
+        this.updateShape_({"BOT": bot, "LEFT": left, "RIGHT": right});
     },
     updateShape_: function (details) {
-
         var bot = details['BOT'];
         if (details['BOT'] === undefined) {
             bot = this.getFieldValue('BOT');
@@ -1230,6 +1232,8 @@ Blockly.Blocks.ab_drive_init = {
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
                     .appendField("right PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT");
+            this.setFieldValue(details['LEFT'], "LEFT");
+            this.setFieldValue(details['RIGHT'], "RIGHT");
         }
 
         // Go through all of the blocks and run the "newRobot" function in each one that has it.
@@ -1241,11 +1245,6 @@ Blockly.Blocks.ab_drive_init = {
                 func.call(blocks[x], bot);
             }
         }
-
-        if (bot === 'arlodrive.h')
-            this.setWarningText('The Arlo robot is only partially supported in BlocklyProp at this time. Most blocks will work, some will not.');
-        else
-            this.setWarningText(null);
     }
 };
 
@@ -1352,6 +1351,8 @@ Blockly.Blocks.ab_drive_ramping = {
                 .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
             this.setFieldValue(type || 'FOR_SPEED', 'OPS');
             this.setFieldValue(ramp || '600', 'RAMPING');
+            if (robot === 'arlodrive.h')
+                this.setWarningText('WARNING: This block does not currently work for the Arlo robot.');
         } else if (robot === '') {
             this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
             this.appendDummyInput('ACCEL')
@@ -1517,6 +1518,8 @@ Blockly.Blocks.ab_drive_goto_max_speed = {
     newRobot: function (robot) {
         if (robot === 'servodiffdrive.h') {
             this.setWarningText('WARNING: Servo Differential Drive\ndoes not support this block');
+        } else if (robot === 'arlodrive.h') {
+            this.setWarningText('WARNING: This block does not currently work for the Arlo robot.');
         } else if (robot === '') {
             this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
         } else {
@@ -1590,7 +1593,7 @@ Blockly.Blocks.ab_drive_speed = {
         this.removeInput('LEFT');
         this.removeInput('RIGHT');
 
-        if (robot === 'servodiffdrive.h') {
+        if (robot === 'servodiffdrive.h' || robot === 'arlodrive.h') {
             rangeText = 'R,-500,500,0';
         } else if (robot === '') {
             warnText = 'WARNING: You must use a Robot initialize\nblock at the beginning of your program!';
