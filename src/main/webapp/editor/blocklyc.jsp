@@ -1338,9 +1338,11 @@
                                     <block type="fb360_init"></block>
                                     <block type="fb360_setup">
                                         <field name="PARAM">setAcceleration</field>
-                                        <block type="math_number">
-                                            <field name="NUM">7200</field>
-                                        </block>
+                                        <value name="VALUE">
+                                            <block type="math_number">
+                                                <field name="NUM">7200</field>
+                                            </block>
+                                        </value>
                                     </block>
                                     <block type="fb360_set">
                                         <value name="VALUE">
