@@ -3323,13 +3323,13 @@ Blockly.Blocks.wx_init = {
                 .appendField('Simple WX initialize')
                 .appendField("mode")
                 .appendField(new Blockly.FieldDropdown([['Terminal on USB', 'USB_PGM_TERM'], ['Terminal on WX', 'USB_PGM'], ['Term & Programming on WX', 'WX_ALL_COM']]), "MODE")  // .concat(profile.default.digital)
-                .appendField(" DO")
-                .appendField(new Blockly.FieldDropdown([['WX Socket', '31']].concat(profile.default.digital), function (pin) {
+                .appendField(" DI")
+                .appendField(new Blockly.FieldDropdown([['WX Socket', '30']].concat(profile.default.digital), function (pin) {
                     this.sourceBlock_.updateShape_({"PIN": pin});
-                }), "DO");
-        this.appendDummyInput('DIPIN')
-                .appendField("DI")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "DI");
+                }), "DI");
+        this.appendDummyInput('DOPIN')
+                .appendField("DO")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "DO");
         this.getInput('DIPIN').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
@@ -3337,7 +3337,7 @@ Blockly.Blocks.wx_init = {
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
-        var pin = this.getFieldValue('DO');
+        var pin = this.getFieldValue('DI');
         container.setAttribute('pin', pin);
         return container;
     },
@@ -3346,10 +3346,10 @@ Blockly.Blocks.wx_init = {
         this.updateShape_({"PIN": pin});
     },
     updateShape_: function (details) {
-        if (details['PIN'] === '31')
-            this.getInput('DIPIN').setVisible(false);
+        if (details['PIN'] === '30')
+            this.getInput('DOPIN').setVisible(false);
         else
-            this.getInput('DIPIN').setVisible(true);
+            this.getInput('DOPIN').setVisible(true);
     }
 };
 
@@ -3357,8 +3357,8 @@ Blockly.propc.wx_init = function () {
     if (!this.diabled) {
         var pin_do = this.getFieldValue('DO');
         var pin_di = this.getFieldValue('DI');
-        if (pin_do === '31')
-            pin_di = '30';
+        if (pin_di === '30')
+            pin_do = '31';
         var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
         var title = this.getFieldValue('TITLE');
         var mode = this.getFieldValue('MODE');
@@ -3855,14 +3855,14 @@ Blockly.Blocks.wx_init_adv = {
                 .appendField('WX initialize')
                 .appendField("mode")
                 .appendField(new Blockly.FieldDropdown([['Terminal on USB', 'USB_PGM_TERM'], ['Terminal on WX', 'USB_PGM'], ['Term & Programming on WX', 'WX_ALL_COM']]), "MODE")  // .concat(profile.default.digital)
-                .appendField(" DO")
-                .appendField(new Blockly.FieldDropdown([['WX Socket', '31']].concat(profile.default.digital), function (pin) {
+                .appendField(" DI")
+                .appendField(new Blockly.FieldDropdown([['WX Socket', '30']].concat(profile.default.digital), function (pin) {
                     this.sourceBlock_.updateShape_({"PIN": pin});
-                }), "DO");
-        this.appendDummyInput('DIPIN')
-                .appendField("DI")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "DI");
-        this.getInput('DIPIN').setVisible(false);
+                }), "DI");
+        this.appendDummyInput('DOPIN')
+                .appendField("DO")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "DO");
+        this.getInput('DOPIN').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
@@ -3885,7 +3885,7 @@ Blockly.Blocks.wx_init_adv = {
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
-        var pin = this.getFieldValue('DO');
+        var pin = this.getFieldValue('DI');
         container.setAttribute('pin', pin);
         return container;
     },
@@ -3894,10 +3894,10 @@ Blockly.Blocks.wx_init_adv = {
         this.updateShape_({"PIN": pin});
     },
     updateShape_: function (details) {
-        if (details['PIN'] === '31')
-            this.getInput('DIPIN').setVisible(false);
+        if (details['PIN'] === '30')
+            this.getInput('DOPIN').setVisible(false);
         else
-            this.getInput('DIPIN').setVisible(true);
+            this.getInput('DOPIN').setVisible(true);
     }
 };
 
@@ -3905,8 +3905,8 @@ Blockly.propc.wx_init_adv = function () {
     if (!this.disabled) {
         var pin_do = this.getFieldValue('DO');
         var pin_di = this.getFieldValue('DI');
-        if (pin_do === '31')
-            pin_di = '30';
+        if (pin_di === '30')
+            pin_do = '31';
         var bkg = (this.getFieldValue('BKG') === '#FFFFFF') ? '1' : '0';
         var title = this.getFieldValue('TITLE');
         var mode = this.getFieldValue('MODE');
@@ -5059,8 +5059,8 @@ Blockly.propc.wx_ip = function () {
         if (!this.disabled) {
             var func = 'char *wifi_ip_string(int __mode) {int __ip[4]; char __result = ';
             func += 'wifi_ip(__mode, __ip); char *ipStr; if(__result == \'E\') ';
-            func += '{ipStr = "Error          ";} else {sprint(ipStr, "%03d.%03d';
-            func += '.%03d.%03d", __ip[0], __ip[1], __ip[2], __ip[3]);} return ipStr;}';
+            func += '{ipStr = "Error          ";} else {sprint(ipStr, "%d.%d';
+            func += '.%d.%d", __ip[0], __ip[1], __ip[2], __ip[3]);} return ipStr;}';
 
             Blockly.propc.methods_["ip_address_func"] = func;
             Blockly.propc.method_declarations_["ip_address_func"] = 'char *wifi_ip_string(int __mode);\n';
@@ -5090,7 +5090,7 @@ Blockly.Blocks.graph_output = {
         this.optionList_ = ['dec'];
         this.graph_labels_ = [];
     },
-    mutationToDom: function (workspace) {
+    mutationToDom: function () {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
         container.setAttribute('options', JSON.stringify(this.optionList_));

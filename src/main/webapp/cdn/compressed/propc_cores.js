@@ -1748,8 +1748,8 @@ Blockly.propc.finish = function (code) {
         setups.unshift('  s3_setup();pause(100);');
     
     // TODO: Remove when the library is compiling correctly
-    if (imports.toString().indexOf('360.h"') > -1 && imports.toString().indexOf('#include "ab') > -1)
-        setups.unshift('  ee_getInt(32768); // NOTE: This is a temporary patch to make the AB360 robot library compile correctly.');
+    //if (imports.toString().indexOf('360.h"') > -1 && imports.toString().indexOf('#include "ab') > -1)
+    //    setups.unshift('  ee_getInt(32768); // NOTE: This is a temporary patch to make the AB360 robot library compile correctly.');
 
     // Add volatile to variable declarations in cogs
     for (var idx = user_var_start; idx < user_var_end; idx++) {
