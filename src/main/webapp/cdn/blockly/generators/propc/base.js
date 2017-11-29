@@ -160,6 +160,8 @@ Blockly.Blocks.math_number = {
                         this.setFieldValue('(\u2265 ' + range[0].toString(10) + ')', 'TITLE');
                     } else if (range[0] <= -2147483647) {
                         this.setFieldValue('(\u2264' + range[1].toString(10) + ')', 'TITLE');
+                    } else if (Math.abs(range[0]) === Math.abs(range[1])) {
+                        this.setFieldValue('(+/- ' + Math.abs(range[0]).toString(10) + ')', 'TITLE');
                     } else {
                         this.setFieldValue('(' + range[0].toString(10) + ' to ' + range[1].toString(10) + ')', 'TITLE');
                     }

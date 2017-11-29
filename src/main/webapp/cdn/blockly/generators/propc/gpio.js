@@ -775,64 +775,49 @@ Blockly.Blocks.fb360_setup = {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('output'));
         }
-        this.appendDummyInput()
+        this._menuOptions = [['set acceleration (\u00B0/s\u00B2) to', 'setAcceleration'],
+                ['set max speed (\u00B0/s) to', 'setMaxSpeed'],
+                //['home to current position', ''],
+                //['home to servo zero', ''],
+                ['turn count (+/- revolutions) to', 'setTurns'],
+                ['home to position (+/- \u00B0)', 'setAngleOffset'],
+                ['kP for speed to', 'setControlSys,S360_SETTING_KPV'],
+                ['kI for speed to', 'setControlSys,S360_SETTING_KIV'],
+                ['kD for speed to', 'setControlSys,S360_SETTING_KDV'],
+                ['I for speed max to', 'setControlSys,S360_SETTING_IV_MAX'],                
+                ['kP for position to', 'setControlSys,S360_SETTING_KPA'],
+                ['kI for position to', 'setControlSys,S360_SETTING_KIA'],
+                ['kD for position to', 'setControlSys,S360_SETTING_KDA'],
+                ['I for position max to', 'setControlSys,S360_SETTING_IA_MAX']];
+        this.appendValueInput("VALUE")
                 .appendField("Feedback 360\u00b0 servo PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
-                .appendField(new Blockly.FieldDropdown([
-                    ['set acceleration to', 'setAcceleration'],
-                    ['set max speed (+/-) to', 'setMaxSpeed']
-                ], function (param) {
+                .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
-                }), "PARAM");
-        this.appendDummyInput('OPTION')
-                .appendField(new Blockly.FieldDropdown([
-                    ["7200\u00B0/s\u00B2", "2000"],
-                    ["4800\u00B0/s\u00B2 (peppy)", "1200"],
-                    ["3600\u00B0/s\u00B2", "800"],
-                    ["2400\u00B0/s\u00B2 (smooth)", "400"],
-                    ["1200\u00B0/s\u00B2", "200"],
-                    ["600\u00B0/s\u00B2 (sluggish)", "100"]
-                ]), "VALUE");
+                }), "PARAM")
+                .appendField('R,0,7200,0', 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     updateShape_: function (param) {
-        this.removeInput('OPTION');
         if (param === 'setAcceleration') {
-            this.appendDummyInput('OPTION')
-                    .appendField(new Blockly.FieldDropdown([
-                        ["7200\u00B0/s\u00B2", "2000"],
-                        ["4800\u00B0/s\u00B2 (peppy)", "1200"],
-                        ["3600\u00B0/s\u00B2", "800"],
-                        ["2400\u00B0/s\u00B2 (smooth)", "400"],
-                        ["1200\u00B0/s\u00B2", "200"],
-                        ["600\u00B0/s\u00B2 (sluggish)", "100"]
-                    ]), "VALUE");
+            this.setFieldValue('R,0,7200,0', 'RANGEVALS0');
+        } else if (param === 'setMaxSpeed') {
+            this.setFieldValue('R,0,1080,0', 'RANGEVALS0');
         } else {
-            this.appendDummyInput('OPTION')
-                    .appendField(new Blockly.FieldTextInput('1080', function (text) {
-                        var n = Blockly.FieldTextInput.numberValidator(text);
-                        if (n < 1)
-                            n = 1;
-                        if (n > 1080)
-                            n = 1080;
-                        return n;
-                    }), "VALUE")
-                    .appendField('\u00B0/s');
+            this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS0');
         }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
         container.setAttribute('param', this.getFieldValue('PARAM'));
-        container.setAttribute('value', this.getFieldValue('VALUE'));
         return container;
     },
     domToMutation: function (xmlElement) {
         var param = xmlElement.getAttribute('param');
-        var value = xmlElement.getAttribute('value');
         this.updateShape_(param);
-        this.setFieldValue(value, 'VALUE');
     },
     onchange: function () {
         var pinWarn = 'WARNING: You need a Feedback 360\u00B0 servo initialize block set to match the PIN on this block!';
@@ -852,17 +837,17 @@ Blockly.Blocks.fb360_setup = {
 
 Blockly.propc.fb360_setup = function () {
     var param = this.getFieldValue("PARAM");
-    var value = '0';
-    if (this.type === 'fb360_setup') {
-        value = this.getFieldValue("VALUE") || '0';
-    } else {
-        value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';;
-    }
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';;
     var pin = this.getFieldValue("PIN");
     
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
-        return 'servo360_' + param + '(' + pin + ', ' + value + ');\n';
+        if (param.indexOf(',') > -1) {
+            var params = param.split(',');
+            return 'servo360_' + params[0] + '(' + pin + ', ' + params[1] + ', ' + value + ');\n';
+        } else {
+            return 'servo360_' + param + '(' + pin + ', ' + value + ');\n';
+        }
     } else {
         return '// WARNING: You need a Feedback 360\u00B0 servo initialize block set to match the PIN on this block!';
     }
@@ -878,47 +863,34 @@ Blockly.Blocks.fb360_set = {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('output'));
         }
+        this._menuOptions = [['set speed to (+/- \u00B0/s)', 'speed'],
+                ['set position to (+/- \u00B0)', 'angle'],
+                ['change position by (+/- \u00B0)', 'goto']];
         this.appendValueInput('VALUE')
                 .setCheck('Number')
                 .appendField("Feedback 360\u00b0 servo PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
-                .appendField(new Blockly.FieldDropdown([
-                    ['set speed to (+/-)', 'speed'],
-                    ['set angle to (+/-)', 'angle'],
-                    ['change position by (+/-)', 'goto']
-                ], function (param) {
+                .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
                 .appendField('R,-720,720,0', 'RANGEVALS0');
         this.getField('RANGEVALS0').setVisible(false);
-        this.appendDummyInput()
-                .appendField('\u00B0/s', 'END');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     updateShape_: function (param) {
         if (param === 'speed') {
-            this.setFieldValue('\u00B0/s', 'END');
             this.setFieldValue('R,-720,720,0', 'RANGEVALS0');
         } else if (param === 'angle') {
             this.setFieldValue('R,-1456,1456,0', 'RANGEVALS0');
-            this.setFieldValue('\u00B0', 'END');
         } else {
             this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS0');
-            this.setFieldValue('\u00B0', 'END');
         }
     },
     onchange: Blockly.Blocks['fb360_setup'].onchange,
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
-        container.setAttribute('param', this.getFieldValue('PARAM'));
-        return container;
-    },
-    domToMutation: function (xmlElement) {
-        var param = xmlElement.getAttribute('param');
-        this.updateShape_(param);
-    }
+    mutationToDom: Blockly.Blocks['fb360_setup'].mutationToDom,
+    domToMutation: Blockly.Blocks['fb360_setup'].domToMutation
 };
 
 Blockly.propc.fb360_set = Blockly.propc.fb360_setup;
@@ -946,6 +918,38 @@ Blockly.propc.fb360_get = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
         return ['servo360_getAngle(' + this.getFieldValue("PIN") + ')', Blockly.propc.ORDER_NONE];
+    } else {
+        return ['0', Blockly.propc.ORDER_NONE];
+    }
+};
+
+Blockly.Blocks.fb360_status = {
+    init: function () {
+        this.setTooltip(Blockly.MSG_FB360_GET_TOOLTIP);
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('robot'));
+        } else {
+            this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
+            this.setColour(colorPalette.getColor('output'));
+        }
+        this.appendDummyInput('VALUE')
+                .appendField("Feedback 360\u00b0 servo PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(new Blockly.FieldDropdown([
+                        ['is turning a speed','S360_SPEED'],
+                        ['is moving to a position', 'S360_GOTO'],
+                        ['is holding at a position', 'S360_POSITION']
+                    ]), "STATUS");
+        this.setOutput(true, "Number");
+    },
+    onchange: Blockly.Blocks['fb360_setup'].onchange
+};
+
+Blockly.propc.fb360_status = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
+        return ['(servo360_getCsop(' + this.getFieldValue("PIN") + ') == ' + this.getFieldValue("STATUS") + ')', Blockly.propc.ORDER_NONE];
     } else {
         return ['0', Blockly.propc.ORDER_NONE];
     }
