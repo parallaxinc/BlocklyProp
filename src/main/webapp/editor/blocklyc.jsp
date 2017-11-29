@@ -1336,7 +1336,12 @@
                                         </value>
                                     </block>
                                     <block type="fb360_init"></block>
-                                    <block type="fb360_setup"></block>
+                                    <block type="fb360_setup">
+                                        <field name="PARAM">setAcceleration</field>
+                                        <block type="math_number">
+                                            <field name="NUM">7200</field>
+                                        </block>
+                                    </block>
                                     <block type="fb360_set">
                                         <value name="VALUE">
                                             <block type="math_number">
@@ -1345,6 +1350,7 @@
                                         </value>
                                     </block>
                                     <block type="fb360_get"></block>
+                                    <block type="fb360_status"></block>
                                     <block type="scribbler_stop_servo"></block>
                                 </category>
                                 <category name="67" key="category_robot"  include="activity-board" colour="295">

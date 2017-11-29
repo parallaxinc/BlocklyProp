@@ -3330,7 +3330,7 @@ Blockly.Blocks.wx_init = {
         this.appendDummyInput('DOPIN')
                 .appendField("DO")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital), "DO");
-        this.getInput('DIPIN').setVisible(false);
+        this.getInput('DOPIN').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
