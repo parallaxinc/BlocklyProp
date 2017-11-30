@@ -301,7 +301,7 @@ var saveProjectAs = function () {
 };
 
 var editProjectDetails = function () {
-    window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
+    window.location.href = baseUrl + 'my-projects?id=' + idProject;
 };
 
 var blocklyReady = function () {
