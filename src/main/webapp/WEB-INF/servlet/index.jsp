@@ -738,7 +738,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2>
-                        <a role="button" onclick="showTable();" class="btn btn-default">&#8249; <span class="keyed-lang-string" key="back"></span></a>
+                        <a role="button" onclick="showTable();" class="btn btn-default" id="back-to-table">&#8249; <span class="keyed-lang-string" key="back"></span></a>
                         <span class="keyed-lang-string" key="project_details_title"></span>
                         <a class="btn btn-primary open-project-link editor-view-link" href="#" ><span class="keyed-lang-string" key="project_viewcode"></span></a>
                     </h2>
@@ -1295,12 +1295,13 @@
 
                 // Manage the page location/view
                 var loca = location.pathname.split('/');
+                var theProj = getURLParameter('id');
                 var gotoLoca = loca[loca.length - 1];
                 if (gotoLoca === 'blockly' || gotoLoca === 'index' || gotoLoca === '' || !gotoLoca) {
                     // Set the current page in the browser navigation
                     history.pushState(null, null, baseUrl);
                 } else {
-                    indexNav(gotoLoca);
+                    indexNav(gotoLoca, theProj);
                 }
             });
 
@@ -1364,7 +1365,7 @@
                 alert(page_text_label['browser_detection_ms_warning']);
             }
 
-            function indexNav(divRef) {
+            function indexNav(divRef, idProject) {
                 var showLogin = false;
                 if (divRef === 'login') {
                     divRef = 'main';
@@ -1384,11 +1385,17 @@
                 $('#index-projects').addClass('hidden');
                 if (divRef.indexOf('projects') > -1) {
                     if (divRef.indexOf('my-projects') > -1) {
-                        setupTable(true);
+                        if (idProject) {
+                            showProject(idProject, true);
+                            $('#index-projects').addClass('hidden');
+                        } else {
+                            setupTable(true);                            
+                            $('#index-projects').removeClass('hidden');
+                        }
                     } else {
                         setupTable(false);
+                        $('#index-projects').removeClass('hidden');
                     }
-                    $('#index-projects').removeClass('hidden');
                 } else {
                     document.getElementById('index-' + divRef).style.display = 'block';
                 }
@@ -1556,7 +1563,7 @@
                 $("#project-form-container").addClass('hidden');
             }
 
-            function showProject(idProject) {
+            function showProject(idProject, removeBackButton) {
                 // Clear form
                 $(".sharing").removeProp('checked').parent().removeClass('active');
                 $('.your-project').addClass('hidden');
@@ -1565,6 +1572,11 @@
                 $('.shared-project').addClass('hidden');
 
                 loadProject(idProject);
+                if (removeBackButton) {
+                    $('#back-to-table').addClass('hidden');
+                } else {
+                    $('#back-to-table').removeClass('hidden');
+                }
                 $("#index-projects").addClass('hidden');
                 $("#project-form-container").removeClass('hidden');
             }
