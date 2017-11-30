@@ -357,27 +357,66 @@ Blockly.Blocks.base_freqout = {
     init: function () {
         this.setTooltip(Blockly.MSG_BASE_FREQOUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput("")
-                .appendField("frequency PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.appendValueInput("DURATION", 'Number')
+        this.addPinMenu("frequency PIN", 'DURATION');
+        this.appendValueInput("DURATION")
                 .appendField("duration (ms)")
                 .setCheck('Number');
-        this.appendValueInput("FREQUENCY", 'Number')
+        this.appendValueInput("FREQUENCY")
                 .appendField("frequency (Hz)")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
+    },
+    addPinMenu: function (label, moveBefore) {
+        this.appendDummyInput('SET_PIN')
+                .appendField(label, 'LABEL')
+                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['other', 'other']]), function (op) {
+                    this.sourceBlock_.setToOther(op, moveBefore);
+                }), "PIN");
+        this.moveBefore = moveBefore || false;
+        this.otherPin = false;
+    },
+    setToOther: function (op, moveBefore) {
+        if (op === 'other') {
+            this.otherPin = true;
+            var label = this.getFieldValue('LABEL');
+            this.removeInput('SET_PIN');
+            this.appendValueInput('PIN')
+                    .appendField(label)
+                    .setCheck('Number')
+                    .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
+            this.getField('RANGEVALS0').setVisible(false);
+            this.initSvg();
+            if (moveBefore) {
+                this.moveInputBefore('PIN', moveBefore);
+            }
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('otherpin', this.otherPin);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var op = xmlElement.getAttribute('otherpin');
+        if (op === 'true') {
+            this.setToOther('other', this.moveBefore);
+        }
+    }    
 };
 
 Blockly.propc.base_freqout = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var duration = Blockly.propc.valueToCode(this, 'DURATION', Blockly.propc.ORDER_ATOMIC) || 1000;
     var frequency = Blockly.propc.valueToCode(this, 'FREQUENCY', Blockly.propc.ORDER_ATOMIC) || 3000;
 
-    var code = 'freqout(' + dropdown_pin + ', ' + duration + ', ' + frequency + ');\n';
+    var code = 'freqout(' + pin + ', ' + duration + ', ' + frequency + ');\n';
 
     return code;
 };
@@ -387,24 +426,31 @@ Blockly.Blocks.base_count = {
     init: function () {
         this.setTooltip(Blockly.MSG_BASE_COUNT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput("")
-                .appendField("count pulses PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.appendValueInput("DURATION", 'Number')
+        this.addPinMenu("count pulses PIN", 'DURATION');
+        this.appendValueInput("DURATION")
                 .appendField("duration (ms)")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
-    }
+    },
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther
 };
 
 Blockly.propc.base_count = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var duration = Blockly.propc.valueToCode(this, 'DURATION', Blockly.propc.ORDER_ATOMIC) || '1';
 
-    var code = 'count(' + dropdown_pin + ', ' + duration + ')';
+    var code = 'count(' + pin + ', ' + duration + ')';
 
     return [code, Blockly.propc.ORDER_NONE];
 };
@@ -414,10 +460,8 @@ Blockly.Blocks.pulse_in = {
     init: function () {
         this.setTooltip(Blockly.MSG_PULSE_IN_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput()
-                .appendField("pulse-in PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.appendDummyInput()
+        this.addPinMenu("pulse-in PIN", 'READ');
+        this.appendDummyInput('READ')
                 .appendField("read")
                 .appendField(new Blockly.FieldDropdown([
                     ["negative/low pulses", "0"],
@@ -427,11 +471,20 @@ Blockly.Blocks.pulse_in = {
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
-    }
+    },
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther
 };
 
 Blockly.propc.pulse_in = function () {
-    var pin = this.getFieldValue("PIN");
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var state = this.getFieldValue("STATE");
 
     var code = 'pulse_in(' + pin + ', ' + state + ')';
@@ -443,20 +496,27 @@ Blockly.Blocks.pulse_out = {
     init: function () {
         this.setTooltip(Blockly.MSG_PULSE_OUT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput()
-                .appendField("pulse-out PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.addPinMenu("pulse-out PIN", 'PULSE_LENGTH');
         this.appendValueInput('PULSE_LENGTH')
                 .appendField("pulse length (" + "\u00B5" + "s)")
                 .setCheck("Number");
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
+    },
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther
 };
 
 Blockly.propc.pulse_out = function () {
-    var pin = this.getFieldValue("PIN");
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var pulse_length = Blockly.propc.valueToCode(this, 'PULSE_LENGTH', Blockly.propc.ORDER_ATOMIC);
 
     return 'pulse_out(' + pin + ', ' + pulse_length + ');\n';
@@ -467,21 +527,27 @@ Blockly.Blocks.rc_charge_discharge = {
     init: function () {
         this.setTooltip(Blockly.MSG_RC_CHARGE_DISCHARGE_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput("")
-                .appendField("RC")
-                .appendField(new Blockly.FieldDropdown([["charge", "0"], ["discharge", "1"]]), "STATE");
-        this.appendDummyInput("")
-                .appendField("PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown([["RC charge", "0"], ["RC discharge", "1"]]), "STATE");
+        this.addPinMenu("PIN", false);
         this.setInputsInline(true);
-        this.setPreviousStatement(false, null);
+        this.setPreviousStatement(false, "Block");
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
-    }
+    },
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther
 };
 
 Blockly.propc.rc_charge_discharge = function () {
-    var pin = this.getFieldValue("PIN");
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var state = this.getFieldValue("STATE");
 
     var code = 'rc_time(' + pin + ', ' + state + ')';
@@ -643,28 +709,34 @@ Blockly.Blocks.servo_move = {
             this.setColour(colorPalette.getColor('output'));
         }
         this.setTooltip(Blockly.MSG_SERVO_MOVE_TOOLTIP);
-        this.appendDummyInput()
-                .appendField("Servo PIN")
-                .setAlign(Blockly.ALIGN_RIGHT)
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.addPinMenu("Servo PIN", 'ANGLE');
         this.appendValueInput("ANGLE")
                 .appendField("set angle (0-180\u00B0)")
                 .setCheck("Number")
-                .appendField('R,0,180,0', 'RANGEVALS1');
-        this.getField('RANGEVALS1').setVisible(false);
+                .appendField('R,0,180,0', 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
+    },
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther
 };
 
 Blockly.propc.servo_move = function () {
-    var dropdown_pin = this.getFieldValue('PIN');
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var degrees = Blockly.propc.valueToCode(this, 'ANGLE', Blockly.propc.ORDER_NONE);
     if (!this.disabled) {
         Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
     }
-    var code = 'servo_angle(' + dropdown_pin + ', ' + degrees + ' * 10);\n';
+    var code = 'servo_angle(' + pin + ', ' + degrees + ' * 10);\n';
     return code;
 };
 
@@ -678,20 +750,27 @@ Blockly.Blocks.servo_speed = {
             this.setColour(colorPalette.getColor('output'));
         }
         this.setTooltip(Blockly.MSG_SERVO_SPEED_TOOLTIP);
-        this.appendDummyInput()
-                .appendField("CR servo PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
+        this.addPinMenu("CR servo PIN", 'SPEED');
         this.appendValueInput("SPEED")
                 .appendField("speed")
                 .setCheck("Number");
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
+    },
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther
 };
 
 Blockly.propc.servo_speed = function () {
-    var pin = this.getFieldValue('PIN');
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var speed = Blockly.propc.valueToCode(this, 'SPEED', Blockly.propc.ORDER_NONE);
     if (!this.disabled) {
         Blockly.propc.definitions_["include servo"] = '#include "servo.h"';
@@ -704,9 +783,7 @@ Blockly.Blocks.servo_set_ramp = {
     init: function () {
         this.setTooltip(Blockly.MSG_SERVO_SET_RAMP_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
-        this.appendDummyInput()
-                .appendField("CR servo set ramp PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), 'PIN');
+        this.addPinMenu("CR servo set ramp PIN", 'RAMPSTEP');
         this.appendValueInput('RAMPSTEP')
                 .appendField("rampstep (0 - 100)")
                 .setCheck('Number');
@@ -714,11 +791,20 @@ Blockly.Blocks.servo_set_ramp = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
+    },
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther
 };
 
 Blockly.propc.servo_set_ramp = function () {
-    var pin = this.getFieldValue('PIN');
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var ramp_step = Blockly.propc.valueToCode(this, 'RAMPSTEP', Blockly.propc.ORDER_NONE);
 
     if (Number(ramp_step) < 0) {
@@ -789,9 +875,9 @@ Blockly.Blocks.fb360_setup = {
                 ['kI for position to', 'setControlSys,S360_SETTING_KIA'],
                 ['kD for position to', 'setControlSys,S360_SETTING_KDA'],
                 ['I for position max to', 'setControlSys,S360_SETTING_IA_MAX']];
+        this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendValueInput("VALUE")
-                .appendField("Feedback 360\u00b0 servo PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(' ')
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
@@ -801,6 +887,8 @@ Blockly.Blocks.fb360_setup = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther,
     updateShape_: function (param) {
         if (param === 'setAcceleration') {
             this.setFieldValue('R,0,7200,0', 'RANGEVALS0');
@@ -813,9 +901,14 @@ Blockly.Blocks.fb360_setup = {
     mutationToDom: function () {
         var container = document.createElement('mutation');
         container.setAttribute('param', this.getFieldValue('PARAM'));
+        container.setAttribute('otherpin', this.otherPin);
         return container;
     },
     domToMutation: function (xmlElement) {
+        var op = xmlElement.getAttribute('otherpin');
+        if (op === 'true') {
+            this.setToOther('other', this.moveBefore);
+        }
         var param = xmlElement.getAttribute('param');
         this.updateShape_(param);
     },
@@ -838,7 +931,12 @@ Blockly.Blocks.fb360_setup = {
 Blockly.propc.fb360_setup = function () {
     var param = this.getFieldValue("PARAM");
     var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';;
-    var pin = this.getFieldValue("PIN");
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
@@ -866,10 +964,10 @@ Blockly.Blocks.fb360_set = {
         this._menuOptions = [['set speed to (+/- \u00B0/s)', 'speed'],
                 ['set position to (+/- \u00B0)', 'angle'],
                 ['change position by (+/- \u00B0)', 'goto']];
+        this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendValueInput('VALUE')
                 .setCheck('Number')
-                .appendField("Feedback 360\u00b0 servo PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+                .appendField(' ')
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
@@ -889,6 +987,8 @@ Blockly.Blocks.fb360_set = {
         }
     },
     onchange: Blockly.Blocks['fb360_setup'].onchange,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther,
     mutationToDom: Blockly.Blocks['fb360_setup'].mutationToDom,
     domToMutation: Blockly.Blocks['fb360_setup'].domToMutation
 };
@@ -905,19 +1005,29 @@ Blockly.Blocks.fb360_get = {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('output'));
         }
+        this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendDummyInput('VALUE')
-                .appendField("Feedback 360\u00b0 servo PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField('position (\u00B0)');
         this.setOutput(true, "Number");
+        this.setInputsInline(true);
     },
-    onchange: Blockly.Blocks['fb360_setup'].onchange
+    onchange: Blockly.Blocks['fb360_setup'].onchange,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther,
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation
 };
 
 Blockly.propc.fb360_get = function () {
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
-        return ['servo360_getAngle(' + this.getFieldValue("PIN") + ')', Blockly.propc.ORDER_NONE];
+        return ['servo360_getAngle(' + pin + ')', Blockly.propc.ORDER_NONE];
     } else {
         return ['0', Blockly.propc.ORDER_NONE];
     }
@@ -925,7 +1035,7 @@ Blockly.propc.fb360_get = function () {
 
 Blockly.Blocks.fb360_status = {
     init: function () {
-        this.setTooltip(Blockly.MSG_FB360_GET_TOOLTIP);
+        //this.setTooltip(Blockly.MSG_FB360_GET_TOOLTIP);
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
@@ -933,23 +1043,33 @@ Blockly.Blocks.fb360_status = {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('output'));
         }
+        this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendDummyInput('VALUE')
-                .appendField("Feedback 360\u00b0 servo PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
                 .appendField(new Blockly.FieldDropdown([
                         ['is turning a speed','S360_SPEED'],
                         ['is moving to a position', 'S360_GOTO'],
                         ['is holding at a position', 'S360_POSITION']
                     ]), "STATUS");
         this.setOutput(true, "Number");
+        this.setInputsInline(true);
     },
-    onchange: Blockly.Blocks['fb360_setup'].onchange
+    onchange: Blockly.Blocks['fb360_setup'].onchange,
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther,
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation
 };
 
 Blockly.propc.fb360_status = function () {
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
-        return ['(servo360_getCsop(' + this.getFieldValue("PIN") + ') == ' + this.getFieldValue("STATUS") + ')', Blockly.propc.ORDER_NONE];
+        return ['(servo360_getCsop(' + pin + ') == ' + this.getFieldValue("STATUS") + ')', Blockly.propc.ORDER_NONE];
     } else {
         return ['0', Blockly.propc.ORDER_NONE];
     }
@@ -1036,10 +1156,8 @@ Blockly.Blocks.pwm_set = {
     init: function () {
         this.setTooltip(Blockly.MSG_PWM_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput()
-                .appendField("PWM set PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-        this.appendDummyInput()
+        this.addPinMenu("PWM set PIN", 'CHANNEL');
+        this.appendDummyInput('CHANNEL')
                 .appendField("channel")
                 .appendField(new Blockly.FieldDropdown([["A", "0"], ["B", "1"]]), "CHANNEL");
         this.appendValueInput("DUTY_CYCLE", Number)
@@ -1050,11 +1168,20 @@ Blockly.Blocks.pwm_set = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
+    },
+    addPinMenu: Blockly.Blocks['base_freqout'].addPinMenu,
+    setToOther: Blockly.Blocks['base_freqout'].setToOther,
+    mutationToDom: Blockly.Blocks['base_freqout'].mutationToDom,
+    domToMutation: Blockly.Blocks['base_freqout'].domToMutation
 };
 
 Blockly.propc.pwm_set = function () {
-    var pin = this.getFieldValue("PIN");
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("PIN");
+    }
     var channel = this.getFieldValue("CHANNEL");
     var duty_cycle = Blockly.propc.valueToCode(this, "DUTY_CYCLE", Blockly.propc.ORDER_NONE);
 

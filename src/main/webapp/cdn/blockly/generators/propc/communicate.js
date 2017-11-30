@@ -752,6 +752,9 @@ Blockly.Blocks.serial_open = {
                     ["115200", "115200"],
                     ["other", "other"]
                 ], function (br) {
+                    if (br === 'other') {
+                        this.otherBaud = true;
+                    }
                     this.sourceBlock_.setToOther(br);
                 }), "BAUD");
         this.appendDummyInput('MODE')
@@ -789,16 +792,18 @@ Blockly.Blocks.serial_open = {
         }
     },
     setToOther: function (br) {
-        if (br === 'other') {
-            br = '1200';
+        if (this.otherBaud === true) {
+            if (!br || br === 'other') {
+                br = '1200';
+            }
+            this.otherBaud = true;
+            this.removeInput('BAUD_RATE');
+            this.appendDummyInput('BAUD_RATE')
+                    .appendField("baud")
+                    .appendField(new Blockly.FieldTextInput(br,
+                            Blockly.FieldTextInput.numberValidator), "BAUD");
+            this.moveInputBefore('BAUD_RATE', 'MODE');
         }
-        this.otherBaud = true;
-        this.removeInput('BAUD_RATE');
-        this.appendDummyInput('BAUD_RATE')
-                .appendField("baud")
-                .appendField(new Blockly.FieldTextInput(br,
-                        Blockly.FieldTextInput.numberValidator), "BAUD");
-        this.moveInputBefore('BAUD_RATE', 'MODE');
     },
     setToMode: function (details) {
         if (!details) {
@@ -829,7 +834,8 @@ Blockly.Blocks.serial_open = {
     domToMutation: function (xmlElement) {
         var br = xmlElement.getAttribute('baud');
         if (br !== undefined) {
-            this.otherBaud = this.setToOther(br);
+            this.otherBaud = true;
+            this.setToOther(br);
         }
         var ck_bits = ['FALSE','FALSE', 'FALSE', 'FALSE'];
         var otherMode = false;
