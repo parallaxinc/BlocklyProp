@@ -754,10 +754,19 @@ Blockly.Blocks.serial_open = {
                 ], function (br) {
                     this.sourceBlock_.setToOther(br);
                 }), "BAUD");
+        this.appendDummyInput('MODE')
+                .appendField("mode")
+                .appendField(new Blockly.FieldDropdown([
+                    ["standard", "standard"],
+                    ["other", "other"]
+                ], function () {
+                    this.sourceBlock_.setToMode();
+                }), "TYPE");
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.otherBaud = false;
+        this.otherMode = false;
         this.serialPin = this.getFieldValue('RXPIN') + ',' + this.getFieldValue('TXPIN');
         this.onchange({oldXml:true});
     },
@@ -781,30 +790,57 @@ Blockly.Blocks.serial_open = {
     },
     setToOther: function (br) {
         if (br === 'other') {
-            this.otherBaud = true;
-            this.removeInput('BAUD_RATE');
-            this.appendDummyInput('BAUD_RATE')
-                    .appendField("baud")
-                    .appendField(new Blockly.FieldTextInput('1200',
-                            Blockly.FieldTextInput.numberValidator), "BAUD");
+            br = '1200';
         }
+        this.otherBaud = true;
+        this.removeInput('BAUD_RATE');
+        this.appendDummyInput('BAUD_RATE')
+                .appendField("baud")
+                .appendField(new Blockly.FieldTextInput(br,
+                        Blockly.FieldTextInput.numberValidator), "BAUD");
+        this.moveInputBefore('BAUD_RATE', 'MODE');
+    },
+    setToMode: function (details) {
+        if (!details) {
+            var details = ['FALSE','FALSE', 'FALSE', 'FALSE'];
+        }
+        this.removeInput('MODE');
+        this.appendDummyInput('MODE')
+                .appendField("invert RX")
+                .appendField(new Blockly.FieldCheckbox(details[0]), "ck_bit0")
+                .appendField("invert TX")
+                .appendField(new Blockly.FieldCheckbox(details[1]), "ck_bit1")
+                .appendField("open-drain")
+                .appendField(new Blockly.FieldCheckbox(details[2]), "ck_bit2")
+                .appendField("remove TX echos")
+                .appendField(new Blockly.FieldCheckbox(details[3]), "ck_bit3");
+        this.otherMode = true;
     },
     mutationToDom: function () {
-        if (this.otherBaud) {
+        if (this.otherBaud || this.otherMode) {
             var container = document.createElement('mutation');
-            container.setAttribute('baud', this.getFieldValue('BAUD'));
+            container.setAttribute('baud', this.getFieldValue('BAUD') || '1200');
+            for (var k = 0; k < 4; k++) {
+                container.setAttribute('ck_bit' + k.toString(10), this.getFieldValue('ck_bit' + k.toString(10)) || 'FALSE');
+            }
             return container;
         }
     },
     domToMutation: function (xmlElement) {
         var br = xmlElement.getAttribute('baud');
         if (br !== undefined) {
-            this.otherBaud = true;
-            this.removeInput('BAUD_RATE');
-            this.appendDummyInput('BAUD_RATE')
-                    .appendField("baud")
-                    .appendField(new Blockly.FieldTextInput(br,
-                            Blockly.FieldTextInput.numberValidator), "BAUD");
+            this.otherBaud = this.setToOther(br);
+        }
+        var ck_bits = ['FALSE','FALSE', 'FALSE', 'FALSE'];
+        var otherMode = false;
+        for (var k = 0; k < 4; k++) {
+            ck_bits[k] = xmlElement.getAttribute('ck_bit' + k.toString(10));
+            if (ck_bits[k] === 'TRUE') {
+                otherMode = true;
+            }
+        }
+        if (otherMode) {
+            this.setToMode(ck_bits);
         }
     }
 };
@@ -814,12 +850,16 @@ Blockly.propc.serial_open = function () {
     var tx_pin = this.getFieldValue('TXPIN').replace('None', '-1');
     var rx_label = this.getFieldValue('RXPIN').replace('None', 'N');
     var tx_label = this.getFieldValue('TXPIN').replace('None', 'N');
+    var mode = '0b';
+    for (var k = 3; k > -1; k--) {
+        mode += ((this.getFieldValue('ck_bit' + k.toString(10)) || 'FALSE') === 'TRUE' ? '1' : '0');
+    }
     var baud = this.getFieldValue('BAUD');
 
     if (!this.disabled) {
         Blockly.propc.definitions_["include fdserial"] = '#include "fdserial.h"';
         Blockly.propc.definitions_["var fdserial" + rx_label + '_' + tx_label] = 'fdserial *fdser' + rx_label + '_' + tx_label + ';';
-        Blockly.propc.setups_['setup_fdserial' + rx_label + '_' + tx_label] = 'fdser' + rx_label + '_' + tx_label + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', 0, ' + baud + ');';
+        Blockly.propc.setups_['setup_fdserial' + rx_label + '_' + tx_label] = 'fdser' + rx_label + '_' + tx_label + ' = fdserial_open(' + rx_pin + ', ' + tx_pin + ', ' + mode + ', ' + baud + ');';
     }
     return '';
 };
