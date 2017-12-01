@@ -1387,7 +1387,6 @@
                     if (divRef.indexOf('my-projects') > -1) {
                         if (idProject) {
                             showProject(idProject, true);
-                            $('#index-projects').addClass('hidden');
                         } else {
                             setupTable(true);                            
                             $('#index-projects').removeClass('hidden');
