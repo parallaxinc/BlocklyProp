@@ -792,7 +792,7 @@ Blockly.Blocks.serial_open = {
         }
     },
     setToOther: function (br) {
-        if (this.otherBaud === true) {
+        if (br === 'other' || this.otherBaud === true) {
             if (!br || br === 'other') {
                 br = '1200';
             }
@@ -817,7 +817,7 @@ Blockly.Blocks.serial_open = {
                 .appendField(new Blockly.FieldCheckbox(details[1]), "ck_bit1")
                 .appendField("open-drain")
                 .appendField(new Blockly.FieldCheckbox(details[2]), "ck_bit2")
-                .appendField("remove TX echos")
+                .appendField("remove TX echo")
                 .appendField(new Blockly.FieldCheckbox(details[3]), "ck_bit3");
         this.otherMode = true;
     },
