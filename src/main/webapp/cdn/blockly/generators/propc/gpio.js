@@ -374,7 +374,7 @@ Blockly.Blocks.base_freqout = {
                 .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['other', 'other']]), function (op) {
                     this.sourceBlock_.setToOther(op, moveBefore);
                 }), "PIN");
-        this.moveBefore = moveBefore || false;
+        this.moveBefore = moveBefore;
         this.otherPin = false;
     },
     setToOther: function (op, moveBefore) {
@@ -387,7 +387,6 @@ Blockly.Blocks.base_freqout = {
                     .setCheck('Number')
                     .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
             this.getField('RANGEVALS0').setVisible(false);
-            this.initSvg();
             if (moveBefore) {
                 this.moveInputBefore('PIN', moveBefore);
             }
@@ -527,9 +526,10 @@ Blockly.Blocks.rc_charge_discharge = {
     init: function () {
         this.setTooltip(Blockly.MSG_RC_CHARGE_DISCHARGE_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown([["RC charge", "0"], ["RC discharge", "1"]]), "STATE");
-        this.addPinMenu("PIN", false);
+        this.addPinMenu("RC time PIN", 'MODE');
+        this.appendDummyInput('MODE')
+                .appendField(' ')
+                .appendField(new Blockly.FieldDropdown([["charge", "0"], ["discharge", "1"]]), "STATE");
         this.setInputsInline(true);
         this.setPreviousStatement(false, "Block");
         this.setNextStatement(false, null);
@@ -713,8 +713,8 @@ Blockly.Blocks.servo_move = {
         this.appendValueInput("ANGLE")
                 .appendField("set angle (0-180\u00B0)")
                 .setCheck("Number")
-                .appendField('R,0,180,0', 'RANGEVALS0');
-        this.getField('RANGEVALS0').setVisible(false);
+                .appendField('R,0,180,0', 'RANGEVALS1');
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
@@ -861,8 +861,8 @@ Blockly.Blocks.fb360_setup = {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('output'));
         }
-        this._menuOptions = [['set acceleration (\u00B0/s\u00B2) to', 'setAcceleration'],
-                ['set max speed (\u00B0/s) to', 'setMaxSpeed'],
+        this._menuOptions = [['acceleration (\u00B0/s\u00B2) to', 'setAcceleration'],
+                ['max speed (\u00B0/s) to', 'setMaxSpeed'],
                 //['home to current position', ''],
                 //['home to servo zero', ''],
                 ['turn count (+/- revolutions) to', 'setTurns'],
@@ -877,7 +877,7 @@ Blockly.Blocks.fb360_setup = {
                 ['I for position max to', 'setControlSys,S360_SETTING_IA_MAX']];
         this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendValueInput("VALUE")
-                .appendField(' ')
+                .appendField('set')
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
@@ -891,11 +891,11 @@ Blockly.Blocks.fb360_setup = {
     setToOther: Blockly.Blocks['base_freqout'].setToOther,
     updateShape_: function (param) {
         if (param === 'setAcceleration') {
-            this.setFieldValue('R,0,7200,0', 'RANGEVALS0');
+            this.setFieldValue('R,0,7200,0', 'RANGEVALS1');
         } else if (param === 'setMaxSpeed') {
-            this.setFieldValue('R,0,1080,0', 'RANGEVALS0');
+            this.setFieldValue('R,0,1080,0', 'RANGEVALS1');
         } else {
-            this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS0');
+            this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS1');
         }
     },
     mutationToDom: function () {
@@ -971,19 +971,19 @@ Blockly.Blocks.fb360_set = {
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
-                .appendField('R,-720,720,0', 'RANGEVALS0');
-        this.getField('RANGEVALS0').setVisible(false);
+                .appendField('R,-720,720,0', 'RANGEVALS1');
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     updateShape_: function (param) {
         if (param === 'speed') {
-            this.setFieldValue('R,-720,720,0', 'RANGEVALS0');
+            this.setFieldValue('R,-720,720,0', 'RANGEVALS1');
         } else if (param === 'angle') {
-            this.setFieldValue('R,-1456,1456,0', 'RANGEVALS0');
+            this.setFieldValue('R,-1456,1456,0', 'RANGEVALS1');
         } else {
-            this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS0');
+            this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS1');
         }
     },
     onchange: Blockly.Blocks['fb360_setup'].onchange,
