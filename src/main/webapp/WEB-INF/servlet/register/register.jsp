@@ -241,8 +241,13 @@
                     <form name="registerForm" action="" method="post">
                         <div class="form-group">
                             <label for="screenname" ><fmt:message key="register.do.screenname" /></label>
-                            <input class="form-control" type="text" name="screenname" maxlength="255" value="<%= request.getAttribute("screenname")%>">
+                            <input class="form-control" type="text" name="screenname" id="screenname" maxlength="255" value="<%= request.getAttribute("screenname")%>">
                         </div>
+                        <script>
+                            $("#screenname").bind("keyup", function(e) {
+                                this.value = this.value.replace(/[^\w\.\-]/g, '');  //removes any non-word characters except "." and "-"
+                            });
+                        </script>
                         <div class="form-group">
                             <label for="email" ><fmt:message key="register.do.email" /></label>
                             <input class="form-control" type="email" name="email" maxlength="255" value="<%= request.getAttribute("email")%>">

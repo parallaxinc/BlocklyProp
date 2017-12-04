@@ -571,6 +571,7 @@
                                                 </block>
                                             </value>
                                         </block>
+                                        <block type="oled_print_multiple"></block>
                                         <block type="oled_draw_pixel">
                                             <value name="X_AXIS">
                                                 <block type="math_number">

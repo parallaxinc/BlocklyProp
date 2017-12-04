@@ -270,7 +270,7 @@ Blockly.Blocks.console_print_multiple = {
     },
     decompose: function (workspace) {
         var containerBlock = Blockly.Block.obtain(workspace, 'console_print_container');
-        if (this.type === 'console_print_multiple') {
+        if (this.type === 'console_print_multiple' || this.type === 'oled_print_multiple') {
             containerBlock.initSvg();
             containerBlock.setFieldValue((this.specDigits_ ? 'TRUE' : 'FALSE'), 'PLACES');
         } else {
@@ -557,7 +557,8 @@ Blockly.propc.console_print_multiple = function () {
         if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
             varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt);
         } else {
-            varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
+            var t = Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE);
+            varList += ', ((float) ' + (t || orIt) +
                     ') / ' + this.getFieldValue('DIV' + i) + '.0';
         }
         i++;
@@ -792,7 +793,7 @@ Blockly.Blocks.serial_open = {
         }
     },
     setToOther: function (br) {
-        if (this.otherBaud === true) {
+        if (br === 'other' || this.otherBaud === true) {
             if (!br || br === 'other') {
                 br = '1200';
             }
@@ -817,7 +818,7 @@ Blockly.Blocks.serial_open = {
                 .appendField(new Blockly.FieldCheckbox(details[1]), "ck_bit1")
                 .appendField("open-drain")
                 .appendField(new Blockly.FieldCheckbox(details[2]), "ck_bit2")
-                .appendField("remove TX echos")
+                .appendField("remove TX echo")
                 .appendField(new Blockly.FieldCheckbox(details[3]), "ck_bit3");
         this.otherMode = true;
     },
@@ -3053,6 +3054,99 @@ Blockly.propc.oled_print_number = function () {
         var num = Blockly.propc.valueToCode(this, 'NUMIN', Blockly.propc.ORDER_NONE);
         var type = this.getFieldValue('type');
         return 'oledc_drawNumber(' + num + ', ' + type + ');';
+    }
+};
+
+Blockly.Blocks.oled_print_multiple = {
+    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_OLED_PRINT_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField('OLED print');
+        this.appendValueInput('PRINT0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('String')
+                .appendField('text');
+        this.appendValueInput('PRINT1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField('decimal number');
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true);
+        this.setInputsInline(false);
+        this.setMutator(new Blockly.Mutator(['console_print_str', 'console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
+        this.optionList_ = ['str', 'dec'];
+        this.specDigits_ = false;
+        this.setWarningText(null);
+    },
+    mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
+    domToMutation: Blockly.Blocks['console_print_multiple'].domToMutation,
+    decompose: Blockly.Blocks['console_print_multiple'].decompose,
+    compose: Blockly.Blocks['console_print_multiple'].compose,
+    saveConnections: Blockly.Blocks['console_print_multiple'].saveConnections,
+    onchange: function () {
+        var warnTxt = null;
+        if (this.workspace && this.optionList_.length < 1) {
+            warnTxt = 'OLED print multiple must have at least one term.';
+        }
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('OLED initialize') === -1)
+        {
+            warnTxt = 'WARNING: You must use an OLED\ninitialize block at the beginning of your program!';
+        }
+        this.setWarningText(warnTxt);
+    }
+};
+
+Blockly.propc.oled_print_multiple = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('OLED initialize') === -1)
+    {
+        return '// ERROR: OLED is not initialized!\n';
+    } else {
+        var code = 'oledc_print("';
+        var varList = '';
+        var orIt = '';
+        var i = 0;
+        while (this.getInput('PRINT' + i)) {
+            var digitsPlaces = this.getFieldValue('DIGIT' + i) || '';
+            if (this.getFieldValue('PLACE' + i) && this.getFieldValue('PLACE' + i) !== '') {
+                digitsPlaces += '.' + this.getFieldValue('PLACE' + i);
+            }
+            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+                code += '%' + digitsPlaces + 'd';
+                orIt = '0';
+            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+                code += '%' + digitsPlaces + 'x';
+                orIt = '0x0';
+            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
+                code += '%' + digitsPlaces + 'b';
+                orIt = '0b0';
+            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
+                code += '%s';
+                orIt = '" "';
+            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
+                code += '%c';
+                orIt = '32';
+            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                code += '%' + digitsPlaces + 'f';
+                orIt = '0';
+            }
+
+            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
+                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt);
+            } else {
+                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
+                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
+            }
+            i++;
+        }
+        if (this.getFieldValue('ck_nl') === 'TRUE') {
+            code += '\\r';
+        }
+        code += '"' + varList + ');\n';
+        return code;
     }
 };
 

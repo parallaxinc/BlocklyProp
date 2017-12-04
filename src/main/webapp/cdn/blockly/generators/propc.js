@@ -389,6 +389,7 @@ Blockly.propc.finish = function (code) {
         // Indent every line.
         code = '  ' + code.replace(/\n/g, '\n  ');
         code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
+        code = code.replace(/\(float\)\s*\(int\)/g, '(float)');
         code = 'int main() {\n' + varInits + code + '\n}';
         var setup = '';
         if (Blockly.propc.serial_terminal_) {

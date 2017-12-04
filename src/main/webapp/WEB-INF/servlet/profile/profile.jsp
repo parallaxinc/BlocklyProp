@@ -77,7 +77,12 @@
                         </div>
                         <div class="form-group">
                             <label for="screenname" ><fmt:message key="profile.screenname" /></label>
-                            <input class="form-control" type="text" name="screenname" maxlength="255" required="required" value="<%= request.getAttribute("screenname")%>"/>
+                            <input class="form-control" type="text" name="screenname" id="screenname" maxlength="255" required="required" value="<%= request.getAttribute("screenname")%>"/>
+                            <script>
+                                $("#screenname").bind("keyup", function(e) {
+                                    this.value = this.value.replace(/[^\w\.\-]/g, '');  //removes any non-word characters except "." and "-"
+                                });
+                            </script>
                         </div>
                         <input class="btn btn-default" type="submit" name="save-base" value="<fmt:message key="profile.submit" />">
                     </form>
