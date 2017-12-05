@@ -337,7 +337,7 @@ function cloudCompile(text, action, successHandler) {
                 
                 // Scoll automatically to the bottom after new data is added
                 var compileConsoleObj = document.getElementById("compile-console");
-                compileConsoleObj.scrollTop = objDiv.scrollHeight;
+                compileConsoleObj.scrollTop = compileConsoleObj.scrollHeight;
             }
         }).fail(function (data) {
             console.log(data);
