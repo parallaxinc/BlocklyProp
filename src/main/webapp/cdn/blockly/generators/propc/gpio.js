@@ -881,7 +881,7 @@ Blockly.Blocks.fb360_setup = {
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
-                .appendField('R,0,7200,0', 'RANGEVALS0');
+                .appendField('R,0,7200,0', 'RANGEVALS1');
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
