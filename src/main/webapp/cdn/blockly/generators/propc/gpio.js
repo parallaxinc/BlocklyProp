@@ -882,7 +882,7 @@ Blockly.Blocks.fb360_setup = {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
                 .appendField('R,0,7200,0', 'RANGEVALS1');
-        this.getField('RANGEVALS0').setVisible(false);
+        this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
