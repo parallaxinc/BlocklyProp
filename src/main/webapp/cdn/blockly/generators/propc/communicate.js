@@ -302,6 +302,7 @@ Blockly.Blocks.console_print_multiple = {
             this.removeInput('PRINT' + i);
             i++;
         }
+        var ck_nl = this.getFieldValue('ck_nl');
         this.removeInput('NEWLINE');
 
         i = 0;
@@ -409,7 +410,7 @@ Blockly.Blocks.console_print_multiple = {
         if (this.type === "console_print_multiple") {
             this.appendDummyInput('NEWLINE')
                     .appendField("then a new line")
-                    .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+                    .appendField(new Blockly.FieldCheckbox(ck_nl || "FALSE"), "ck_nl");
         }
     },
     saveConnections: function (containerBlock) {
@@ -533,6 +534,9 @@ Blockly.propc.console_print_multiple = function () {
         var digitsPlaces = this.getFieldValue('DIGIT' + i) || '';
         if (this.getFieldValue('PLACE' + i) && this.getFieldValue('PLACE' + i) !== '') {
             digitsPlaces += '.' + this.getFieldValue('PLACE' + i);
+        }
+        if (digitsPlaces !== '') {
+            digitsPlaces = '0' + digitsPlaces;
         }
         if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
             code += '%' + digitsPlaces + 'd';
