@@ -377,8 +377,8 @@
                             <p>
                                 <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
                                 <select name="sponsoremailtype">
+                                    <option value="0" selected="selected">Contact</option>
                                     <option value="1">Parent/Guardian</option>
-                                    <option value="2" selected="selected">Contact</option>
                                     <option value="3">Teacher/Instructor</option>
                                 </select>
                             </p>
