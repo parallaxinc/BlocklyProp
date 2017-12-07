@@ -1130,7 +1130,7 @@ Blockly.Blocks.scribbler_stop_servo = {
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
-            this.pisSet = profile.default.digital;
+            this.pinSet = profile.default.digital;
         } else {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('output'));
