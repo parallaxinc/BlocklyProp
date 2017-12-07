@@ -364,7 +364,7 @@ function establish_socket() {
                     
                     // Scoll automatically to the bottom after new data is added
                     var compileConsoleObj = document.getElementById("compile-console");
-                    compileConsoleObj.scrollTop = objDiv.scrollHeight;
+                    compileConsoleObj.scrollTop = compileConsoleObj.scrollHeight;
                     
                 } else if (ws_msg.action === 'close-compile') {
                     $('#compile-dialog').modal('hide');
