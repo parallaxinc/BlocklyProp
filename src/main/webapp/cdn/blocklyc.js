@@ -336,8 +336,7 @@ function cloudCompile(text, action, successHandler) {
                 }
                 
                 // Scoll automatically to the bottom after new data is added
-                var compileConsoleObj = document.getElementById("compile-console");
-                compileConsoleObj.scrollTop = compileConsoleObj.scrollHeight;
+                document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
             }
         }).fail(function (data) {
             console.log(data);
@@ -391,6 +390,10 @@ function loadInto(modal_message, compile_command, load_action) {
 
                 $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                     $("#compile-console").val($("#compile-console").val() + loaddata.message);
+
+                    // Scoll automatically to the bottom after new data is added
+                    document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+
                     console.log(loaddata);
                     if (terminalNeeded === 'term' && loaddata.success) {
                         serial_console();

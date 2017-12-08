@@ -1140,7 +1140,7 @@ Blockly.Blocks.scribbler_stop_servo = {
         this.addPinMenu("servo PIN", 'VALUE');
         this.appendDummyInput("VALUE")
                 .appendField("disable");
-        this.setInputsInline(false);
+        this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
