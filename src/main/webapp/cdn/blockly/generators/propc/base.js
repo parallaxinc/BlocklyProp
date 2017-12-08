@@ -689,7 +689,7 @@ Blockly.propc.math_bitwise = function () {
     var operator = this.getFieldValue('OP');
 
     var code = argument0 + operator + argument1;
-    return [code, Blockly.propc.ORDER_NONE];
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.Blocks.base_delay = {
