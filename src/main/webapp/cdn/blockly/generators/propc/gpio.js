@@ -1324,14 +1324,10 @@ Blockly.Blocks.ab_drive_init = {
                     ["ActivityBot 360\u00b0", "abdrive360.h"], 
                     ["Arlo", "arlodrive.h"],
                     ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
-                    this.sourceBlock_.updateShape_(bot);
+                    this.sourceBlock_.updateShape_({"BOT": bot});
                 }), "BOT")
                 .appendField("initialize");
-        this.appendDummyInput("PINS")
-                .appendField(" left PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
-                .appendField("right PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT");
+        this.appendDummyInput("PINS");
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
@@ -1339,30 +1335,32 @@ Blockly.Blocks.ab_drive_init = {
     mutationToDom: function () {
         var container = document.createElement('mutation');
         container.setAttribute('BOT', this.getFieldValue('BOT'));
+        container.setAttribute('LEFT', this.getFieldValue('LEFT') || '0');
+        container.setAttribute('RIGHT', this.getFieldValue('RIGHT') || '0');
         return container;
     },
     domToMutation: function (xmlElement) {
         var bot = xmlElement.getAttribute('BOT');
-        this.updateShape_(bot);
+        var left = xmlElement.getAttribute('LEFT') || '0';
+        var right = xmlElement.getAttribute('RIGHT') || '0';
+        this.updateShape_({"BOT": bot, "LEFT": left, "RIGHT": right});
     },
     updateShape_: function (details) {
-        var bot = details || this.getFieldValue('BOT');
-        p_left = this.getFieldValue('LEFT');
-        p_right = this.getFieldValue('RIGHT');
+        var bot = details['BOT'];
+        if (details['BOT'] === undefined) {
+            bot = this.getFieldValue('BOT');
+        }
 
         this.removeInput('PINS');
+        this.appendDummyInput("PINS");
+        var inputPins = this.getInput('PINS');
         if (bot === 'servodiffdrive.h') {
-            this.appendDummyInput("PINS")
-                    .appendField(" left PIN")
+            inputPins.appendField(" left PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
                     .appendField("right PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT");
-            if (p_left) {
-                this.setFieldValue(p_left, "LEFT");
-            }
-            if (p_right) {
-                this.setFieldValue(p_right, "RIGHT");
-            }
+            this.setFieldValue(details['LEFT'], "LEFT");
+            this.setFieldValue(details['RIGHT'], "RIGHT");
         }
 
         // Go through all of the blocks and run the "newRobot" function in each one that has it.
