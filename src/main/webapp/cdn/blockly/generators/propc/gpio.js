@@ -1334,15 +1334,15 @@ Blockly.Blocks.ab_drive_init = {
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
-        container.setAttribute('BOT', this.getFieldValue('BOT'));
-        container.setAttribute('LEFT', this.getFieldValue('LEFT') || '0');
-        container.setAttribute('RIGHT', this.getFieldValue('RIGHT') || '0');
+        container.setAttribute('bot', this.getFieldValue('BOT'));
+        container.setAttribute('lpin', this.getFieldValue('LEFT') || '');
+        container.setAttribute('rpin', this.getFieldValue('RIGHT') || '');
         return container;
     },
     domToMutation: function (xmlElement) {
-        var bot = xmlElement.getAttribute('BOT');
-        var left = xmlElement.getAttribute('LEFT') || '0';
-        var right = xmlElement.getAttribute('RIGHT') || '0';
+        var bot = xmlElement.getAttribute('bot');
+        var left = xmlElement.getAttribute('lpin') || '0';
+        var right = xmlElement.getAttribute('rpin') || '0';
         this.updateShape_({"BOT": bot, "LEFT": left, "RIGHT": right});
     },
     updateShape_: function (details) {
@@ -1359,8 +1359,12 @@ Blockly.Blocks.ab_drive_init = {
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "LEFT")
                     .appendField("right PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital), "RIGHT");
-            this.setFieldValue(details['LEFT'], "LEFT");
-            this.setFieldValue(details['RIGHT'], "RIGHT");
+            if (details['LEFT']) {
+                this.setFieldValue(details['LEFT'], "LEFT");
+            }
+            if (details['RIGHT']) {
+                this.setFieldValue(details['RIGHT'], "RIGHT");
+            }
         }
 
         // Go through all of the blocks and run the "newRobot" function in each one that has it.
