@@ -1931,8 +1931,10 @@ Blockly.Blocks.keypad_initialize = {
 
 Blockly.propc.keypad_initialize = function () {
     if (!this.disabled) {
-        var keyFunc = 'int keypad_button(int __a, int __b, int __c, int __d, int __e, ';
-        keyFunc += 'int __f, int __g, int __h) {int __press = 0, __k, __j, ';
+        var keyDecl = 'int keypad_button(int __a, int __b, int __c, int __d, int __e, ';
+        keyDecl += 'int __f, int __g, int __h)';
+        
+        var keyFunc = ' {int __press = 0, __k, __j, ';
         keyFunc += '__keytimeout = CNT + CLKFREQ/10;\nint __keypad[] = {__a, __b, ';
         keyFunc += '__c, __d, __e, __f, __g, __h};\nint __keyval[] = {1,4,7,15,2,5,';
         keyFunc += '8,0,3,6,9,14,10,11,12,13};\nwhile(CNT < __keytimeout) {';
@@ -1944,7 +1946,8 @@ Blockly.propc.keypad_initialize = function () {
         keyFunc += 'if(__press) return __keyval[__k | ((__j - 4) << 2)];}}';
         keyFunc += 'return -1;}';
 
-        Blockly.propc.global_vars_["4x4keypad"] = keyFunc;
+        Blockly.propc.methods_["4x4keypad"] = keyDecl + keyFunc;
+        Blockly.propc.method_declarations_["4x4keypad"] = keyDecl + ';\n';
     }
     return '';
 };

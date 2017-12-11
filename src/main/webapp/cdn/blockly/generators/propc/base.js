@@ -1372,11 +1372,41 @@ Blockly.Blocks.logic_negate = {
             this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
         }
         this.setTooltip(Blockly.MSG_LOGIC_NEGATE_TOOLTIP);
-        this.setColour(colorPalette.getColor('math'));
-        this.setOutput(true, 'Number');
         this.appendValueInput('BOOL')
                 .setCheck('Number')
-                .appendField(new Blockly.FieldDropdown([["not", '!'], ["negate", '-'], ["abs", 'abs(']]), 'OP');
+                .appendField(new Blockly.FieldDropdown([
+                        ["not", '!'], 
+                        ["negate", '-'], 
+                        ["abs", 'abs('], 
+                        ['( )', '(']
+                    ], function(op) {this.sourceBlock_.updateBlock_(op);}), 'OP');
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Number');
+        this.setInputsInline(false);
+    }, 
+    mutationToDom: function() {
+        var container = document.createElement('mutation');
+        container.setAttribute('op', this.getFieldValue('OP'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var op = xmlElement.getAttribute('op');
+        this.updateBlock_(op);
+    },
+    updateBlock_: function(op) {
+        if (op === '(') {
+            var conn = this.getInput('BOOL').connection.targetConnection;
+            this.removeInput('BOOL');
+            this.appendValueInput('BOOL')
+                    .appendField('(', 'OP')
+                    .setCheck('Number');
+            this.appendDummyInput('')
+                    .appendField(')');
+            this.setInputsInline(true);
+            if (conn) {
+                conn.connect(this.getInput('BOOL').connection);
+            }
+        }
     }
 };
 
@@ -1386,7 +1416,7 @@ Blockly.propc.logic_negate = function () {
     var operator = this.getFieldValue('OP');
     var argument0 = Blockly.propc.valueToCode(this, 'BOOL', order) || '0';
     var code = operator + argument0;
-    if (operator === 'abs(') {
+    if (operator === 'abs(' || operator === '(') {
         code += ')';
         order = Blockly.propc.ORDER_NONE;
     }

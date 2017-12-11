@@ -1410,31 +1410,13 @@
  */
 'use strict';
 
-var array_contains = function (needle) {
-    // Per spec, the way to identify NaN is that it is not equal to itself
-    var findNaN = needle !== needle;
-    var indexOf;
-
-    if (!findNaN && typeof Array.prototype.indexOf === 'function') {
-        indexOf = Array.prototype.indexOf;
-    } else {
-        indexOf = function (needle) {
-            var i = -1, index = -1;
-
-            for (i = 0; i < this.length; i++) {
-                var item = this[i];
-
-                if ((findNaN && item !== item) || item === needle) {
-                    index = i;
-                    break;
-                }
-            }
-
-            return index;
-        };
+var array_contains = function (haystack, needle) {
+    for (var straw = 0; straw < haystack.length; straw++) {
+        if (haystack[straw] === needle) {
+            return straw;
+        }
     }
-
-    return indexOf.call(this, needle) > -1;
+    return null;
 };
 
 /**
@@ -1686,17 +1668,15 @@ Blockly.propc.finish = function (code) {
         }
     }
 
-    for (var method in Blockly.propc.methods_) {
-        if (array_contains.call(cog_function, method) === true) {
-            var var_group_str = (Blockly.propc.methods_[method].match(/[;|\n](.*) = /g) || '').toString().replace(/ = /g, '').replace(/[\n| ]/g, '') || '';
-            if (var_group_str)
-                var_group_str += ',';
-            var_group_str += (Blockly.propc.methods_[method].match(/&(.*)[;|/)]/g) || '').toString().replace(/[;|&|/)|\n| ]/g, '') || '';
-            var var_group = var_group_str.split(',');
-
-            for (var a_var in var_group)
-                function_vars.push(var_group[a_var]);
+    for (var method in Blockly.propc.cog_methods_) {
+        for (var variable in Blockly.propc.vartype_) {
+            if (Blockly.propc.methods_[method].indexOf(variable) > -1) {
+                function_vars.push(variable);
+            }
         }
+    }
+
+    for (var method in Blockly.propc.methods_) {
         methods.push(Blockly.propc.methods_[method]);
     }
 
@@ -1727,7 +1707,7 @@ Blockly.propc.finish = function (code) {
         // This is for when we are ready to switch from pointers to character arrays
         // Currently applying a fix to allocate ~128 bytes to char array pointers because they are myseriouly getting compiled to the same memory location in the prop - ugh.
         // Excludes variables with "__" in the name for now because those are buffers for private functions
-        // This is a temporary patch until I can figure something better out -MM
+        // TODO: This is a temporary patch until I can figure something better out -MM
         if (definitions[def].indexOf("char *") > -1 && definitions[def].indexOf("__") === -1 && definitions[def].indexOf("rfidBfr") === -1 ) {
         //    definitions[def] = definitions[def].replace("char *", "char ").replace(";", "[128];");
             definitions[def] = definitions[def].replace(/char \*(\s*)(\w+);/g, 'char *$1$2' + bigStr + spaceAdd + endStr);
@@ -1755,6 +1735,7 @@ Blockly.propc.finish = function (code) {
     for (var idx = user_var_start; idx < user_var_end; idx++) {
         for (var idk in function_vars) {
             if (definitions[idx].indexOf(function_vars[idk]) > 2 && definitions[idx].indexOf('volatile') === -1) {
+                //TODO: uncomment this when optimization is utilized!
                 //definitions[idx] = 'volatile ' + definitions[idx];
             }
         }
@@ -1775,8 +1756,12 @@ Blockly.propc.finish = function (code) {
     } else {
         // Indent every line.
         code = '  ' + code.replace(/\n/g, '\n  ');
+        // Comment out any instance of 'pause(0);' - causes a compiler error
         code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
+        // Remove redundant casts
         code = code.replace(/\(float\)\s*\(int\)/g, '(float)');
+        // Sweep for doubled-up parentheses
+        code = code.replace(/\(\(([^()]*)\)\)/g, '($1)');
         code = 'int main() {\n' + varInits + code + '\n}';
         var setup = '';
         if (Blockly.propc.serial_terminal_) {
