@@ -612,15 +612,17 @@ function graphing_console() {
 check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
-            $.get(client_url + "ports.json", function (data) {
-                if ((client_version >= minEnc64Ver) && (typeof(data) == 'object')) {
+            if (client_version >= minEnc64Ver) {
+                // Client is >= minimum base64-encoded version
+                $.get(client_url + "ports.json", function (data) {
                     set_port_list(data);
-                } else {
+                }).fail(function () {
                     set_port_list([]);
-                }    
-            }).fail(function () {
+                });
+            } else {
+                // else always keep port list clear
                 set_port_list([]);
-            });
+            }    
         }
     }
 };
@@ -628,7 +630,7 @@ check_com_ports = function () {
 set_port_list = function (data) {
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
-    if (data.length > 0) {
+    if (typeof(data) == 'object') {
         data.forEach(function (port) {
             $("#comPort").append($('<option>', {
                 text: port
