@@ -13,8 +13,8 @@ var client_version = 0;
 var client_domain_name = "localhost";
 var client_domain_port = 6009;
 
-var client_min_version = 0.2;
-var client_baud_rate_min_version = 0.4;
+var client_min_version = "0.7.0";
+var client_baud_rate_min_version = "0.4.0";
 
 var client_use_type = 'none';
 var client_ws_connection = null;
@@ -75,7 +75,7 @@ check_client = function () {
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
                     // wrong server
                 } else if (client_version < version_as_number(client_min_version)) {
-                    bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
+                    bootbox.alert("This system now requires at least version " + client_min_version + " of BlocklyPropClient- yours is: " + data.version);
                 }
 
                 if (version_as_number(data.version) >= version_as_number(client_baud_rate_min_version)) {
@@ -245,7 +245,7 @@ function establish_socket() {
                 console.log("Websocket client found - version " + ws_msg.version);
 
                 if (version_as_number(ws_msg.version) < version_as_number(client_min_version)) {
-                    bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
+                    bootbox.alert("This system now requires at least version " + client_min_version + " of BlocklyPropClient- yours is: " + ws_msg.version);
                 }
                 if (version_as_number(ws_msg.version) >= version_as_number(client_baud_rate_min_version)) {
                     baud_rate_compatible = true;

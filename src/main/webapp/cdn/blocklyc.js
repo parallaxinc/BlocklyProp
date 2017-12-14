@@ -63,8 +63,8 @@ var graph_data = {
     ]
 };
 
+// Minimum BP Client/Launcher version accepted
 const minEnc64Ver = version_as_number('0.7.0');
-
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -348,8 +348,7 @@ function serial_console() {
             };
 
             connection.onmessage = function (e) {
-                var c_buf = (client_version >= minEnc64Ver) ? atob(e.data) : e.data;
-                //term.write(e.data);
+                var c_buf = atob(e.data);
                 if(connStrYet) {
                     displayInTerm(c_buf);
                 } else {
@@ -615,14 +614,23 @@ check_com_ports = function () {
         if (client_url !== undefined) {
             var selected_port = $("#comPort").val();
             $.get(client_url + "ports.json", function (data) {
-                $("#comPort").empty();
-                data.forEach(function (port) {
+                if (client_version >= minEnc64Ver) {
+                    $("#comPort").empty();
+                    data.forEach(function (port) {
+                        $("#comPort").append($('<option>', {
+                            text: port
+                        }));
+                    });
+                    select_com_port(selected_port);
+                    client_available = true;
+                } else {
+                    $("#comPort").empty();
                     $("#comPort").append($('<option>', {
-                        text: port
+                        text: 'Searching...'
                     }));
-                });
-                select_com_port(selected_port);
-                client_available = true;
+                    select_com_port(selected_port);
+                    client_available = false;
+                }    
             }).fail(function () {
                 $("#comPort").empty();
                 $("#comPort").append($('<option>', {
