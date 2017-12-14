@@ -6,7 +6,11 @@
 
 //var terminal_dump = null;
 
+// client_available flags whether BP Client/Launcher is found
 var client_available = false;
+// ports_available flags whether one or more communication ports are available
+var ports_available = false;
+
 var client_url = 'http://localhost:6009/';
 var client_version = 0;
 
@@ -70,7 +74,6 @@ check_client = function () {
     if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
-                console.log(data);
                 client_version = version_as_number(data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
                     // wrong server
@@ -100,6 +103,7 @@ check_client = function () {
             clearInterval(check_com_ports_interval);
             client_use_type = 'none';
             client_available = false;
+            ports_available = false;
 
             $("#client-searching").addClass("hidden");
             $("#client-available").addClass("hidden");
@@ -185,13 +189,7 @@ function establish_socket() {
     if (!client_available) {
 
         // Clear the port list
-        var selected_port = $("#comPort").val();
-        $("#comPort").empty();
-        $("#comPort").append($('<option>', {
-            text: 'Searching...'
-        }));
-        select_com_port(selected_port);
-
+        set_port_list();
 
         var url = client_url.replace('http', 'ws');
         var connection = new WebSocket(url);
@@ -275,20 +273,7 @@ function establish_socket() {
                     client_ws_heartbeat_interval = setInterval(connection_heartbeat, 4000);
                 }
 
-                selected_port = $("#comPort").val();
-                $("#comPort").empty();
-                if (ws_msg.ports.length > 0) {
-                    ws_msg.ports.forEach(function (port) {
-                        $("#comPort").append($('<option>', {
-                            text: port
-                        }));
-                    });
-                } else {
-                    $("#comPort").append($('<option>', {
-                        text: 'No devices found'
-                    }));
-                }
-                select_com_port(selected_port);
+                set_port_list(ws_msg.ports);
             }
 
             // --- serial terminal/graph
@@ -375,6 +360,7 @@ function lostWSConnection() {
     client_ws_connection = null;
     client_use_type = 'none';
     client_available = false;
+    ports_available = false;
 
     $("#client-searching").addClass("hidden");
     $("#client-available").addClass("hidden");
@@ -383,12 +369,8 @@ function lostWSConnection() {
     term = null;
     newTerminal = false;
 
-    selected_port = $("#comPort").val();
-    $("#comPort").empty();
-    $("#comPort").append($('<option>', {
-        text: 'Searching...'
-    }));
-    select_com_port(selected_port);
+    // Clear ports list
+    set_port_list();
 
     if (client_ws_heartbeat_interval) {
         clearInterval(client_ws_heartbeat_interval);
