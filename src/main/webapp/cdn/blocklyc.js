@@ -612,36 +612,37 @@ function graphing_console() {
 check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
-            var selected_port = $("#comPort").val();
             $.get(client_url + "ports.json", function (data) {
-                if (client_version >= minEnc64Ver) {
-                    $("#comPort").empty();
-                    data.forEach(function (port) {
-                        $("#comPort").append($('<option>', {
-                            text: port
-                        }));
-                    });
-                    select_com_port(selected_port);
-                    client_available = true;
+                if ((client_version >= minEnc64Ver) && (typeof(data) == 'object')) {
+                    set_port_list(data);
                 } else {
-                    $("#comPort").empty();
-                    $("#comPort").append($('<option>', {
-                        text: 'Searching...'
-                    }));
-                    select_com_port(selected_port);
-                    client_available = false;
+                    set_port_list([]);
                 }    
             }).fail(function () {
-                $("#comPort").empty();
-                $("#comPort").append($('<option>', {
-                    text: 'Searching...'
-                }));
-                select_com_port(selected_port);
-                client_available = false;
+                set_port_list([]);
             });
         }
     }
 };
+
+set_port_list = function (data) {
+    var selected_port = $("#comPort").val();
+    $("#comPort").empty();
+    if (data.length > 0) {
+        data.forEach(function (port) {
+            $("#comPort").append($('<option>', {
+                text: port
+            }));
+        });
+        client_available = true;
+    } else {
+        client_available = false;
+        $("#comPort").append($('<option>', {
+            text: 'Searching...'
+        }));
+    };
+    select_com_port(selected_port);
+}
 
 select_com_port = function (com_port) {
     if (com_port !== null) {
