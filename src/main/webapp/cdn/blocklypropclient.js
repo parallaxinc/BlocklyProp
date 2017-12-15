@@ -9,25 +9,44 @@
 var client_available = false;
 var client_url = 'http://localhost:6009/';
 var client_version = 0;
+var version_control_info = {};
+var show_client_warning = true;
 
 var client_domain_name = "localhost";
 var client_domain_port = 6009;
-
-var client_min_version = 0.2;
-var client_baud_rate_min_version = 0.4;
 
 var client_use_type = 'none';
 var client_ws_connection = null;
 var client_ws_heartbeat;
 var client_ws_heartbeat_interval = null;
 
-var baud_rate_compatible = false;
-
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
 var check_ws_client_timeout = null;   // unused?  safe to delete?
         
 $(document).ready(function () {
+
+    // Retrieve the version control info
+    // TODO: the cdnUrl global needs to be positioned correctly in the file structure once condensed...
+    $.get($("meta[name=cdn]").attr("content") + "client-version.json", function (data) {
+        version_control_info = data;
+    }).fail(function () {
+        version_control_info = {
+            "recommended": {
+                "client_version" : "0.6.0",
+                "client_text" : "Please update your BlocklyProp Client application to version 0.6.0 or higher.  Some features may not work correctly with the version you are currently using.",
+                "launcher_version" : "0.7.0",
+                "launcher_text" : "Please update your BlocklyProp Launcher app to version 0.7.0 or higher.  Some features may not work correctly with the version you are currently using."
+            },
+            "minimum": {
+                "client_version" : "0.5.0",
+                "client_text" : "Please update your BlocklyProp Client application to version 0.6.0 or higher.  The version you are currently using is no longer compatible with BlocklyProp.",
+                "launcher_version" : "0.6.0",
+                "launcher_text" : "Please update your BlocklyProp Launcher app to version 0.7.0 or higher.  The version you are currently using is no longer compatible with BlocklyProp."
+            }
+        };
+    });
+
     find_client();
 });
 
@@ -90,22 +109,44 @@ var set_ui_buttons = function (ui_btn_state) {
     }
 };
 
+var closeClientWarning = function () {
+    show_client_warning = false;
+    $('#client-warning').css('display', 'none');
+    Blockly.mainWorkspace.render();
+};
+
 var check_client = function () {
-    if (client_use_type !== 'ws') {
+        if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
                 console.log(data);
                 client_version = version_as_number(data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
-                    // wrong server
-                } else if (client_version < version_as_number(client_min_version)) {
-                    bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
-                }
-
-                if (version_as_number(data.version) >= version_as_number(client_baud_rate_min_version)) {
-                    baud_rate_compatible = true;
-                }
-
+                    /*
+                    $('#client-warning').css('background-color', '#f2dede');
+                    $('#client-warning').css('color', '#a94442');
+                    $('#client-warning-text').html('A different program or application appears to be using the PORT needed by BlocklyProp!');
+                    $('#client-warning').css('display', 'block');
+                    */
+                } else if (client_version >= version_as_number(version_control_info.minimum.client_version) && client_version < version_as_number(version_control_info.recommended.client_version) && show_client_warning) {
+                    /*
+                    $('#client-warning').css('background-color', '#fcf8e3');
+                    $('#client-warning').css('color', '#8a6d3b');
+                    $('#client-warning-text').html(version_control_info.recommended.client_text);
+                    $('#client-warning').css('display', 'block');
+                    */
+                } else if (client_version < version_as_number(version_control_info.minimum.client_version) && show_client_warning) {
+                    /*
+                    $('#client-warning').css('background-color', '#f2dede');
+                    $('#client-warning').css('color', '#a94442');
+                    $('#client-warning-text').html(version_control_info.minimum.client_text);
+                    $('#client-warning').css('display', 'block');
+                    */
+                } else {
+                    /*
+                    $('#client-warning').css('display', 'none');
+                    */
+                }                 
                 client_use_type = 'http';
                 client_available = true;
                 set_ui_buttons('available');
@@ -118,6 +159,9 @@ var check_client = function () {
             setTimeout(check_client, 20000);
 
         }).fail(function () {
+            
+            // CLOSE ALERT AREA
+            
             clearInterval(check_com_ports_interval);
             client_use_type = 'none';
             client_available = false;
@@ -263,14 +307,28 @@ function establish_socket() {
                  }, 10000);
                  */
 
-                console.log("Websocket client found - version " + ws_msg.version);
+                console.log("Websocket client/launcher found - version " + ws_msg.version);
 
-                if (version_as_number(ws_msg.version) < version_as_number(client_min_version)) {
-                    bootbox.alert("This now requires at least version " + client_min_version + " of BlocklyPropClient.");
-                }
-                if (version_as_number(ws_msg.version) >= version_as_number(client_baud_rate_min_version)) {
-                    baud_rate_compatible = true;
-                }
+                if (client_version >= version_as_number(version_control_info.minimum.launcher_version) && client_version < version_as_number(version_control_info.recommended.launcher_version) && show_client_warning) {
+                    /*
+                    $('#client-warning').css('background-color', '#fcf8e3');
+                    $('#client-warning').css('color', '#8a6d3b');
+                    $('#client-warning').html(version_control_info.recommended.launcher_text);
+                    $('#client-warning').css('display', 'block');
+                    */
+                } else if (client_version < version_as_number(version_control_info.minimum.launcher_version) && show_client_warning) {
+                    /*
+                    $('#client-warning').css('background-color', '#f2dede');
+                    $('#client-warning').css('color', '#a94442');
+                    $('#client-warning').html(version_control_info.minimum.launcher_text);
+                    $('#client-warning').css('display', 'block');
+                    */
+                } else {
+                    /*
+                    $('#client-warning').css('display', 'none');
+                    */
+                }                 
+                
                 client_use_type = 'ws';
                 client_available = true;
 

@@ -134,7 +134,7 @@ function tabClick(id) {
         Blockly.unbindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
         Blockly.codeOnlyKeybind = true;
 
-        if ($('#editor-full-mode') === 'true') {
+        if ($("meta[name=cdn]").attr("user-auth") === 'true') {
             document.getElementById('prop-btn-graph').style.display = 'none';
             document.getElementById('upload-project').style.display = 'none';
         }
@@ -429,11 +429,7 @@ function serial_console() {
             connection.onopen = function () {
                 connString = '';
                 connStrYet = false;
-                if (baud_rate_compatible && baudrate) {
-                    connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
-                } else {
-                    connection.send('+++ open port ' + getComPort());
-                }
+                connection.send('+++ open port ' + getComPort() + (baudrate ? ' ' + baudrate : ''));
                 active_connection = connection;
             };
             // Log errors
