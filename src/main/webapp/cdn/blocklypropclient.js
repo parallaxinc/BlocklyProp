@@ -6,7 +6,11 @@
 
 //var terminal_dump = null;
 
+// client_available flags whether BP Client/Launcher is found
 var client_available = false;
+// ports_available flags whether one or more communication ports are available
+var ports_available = false;
+
 var client_url = 'http://localhost:6009/';
 var client_version = 0;
 var version_control_info = {};
@@ -14,6 +18,9 @@ var show_client_warning = true;
 
 var client_domain_name = "localhost";
 var client_domain_port = 6009;
+
+var client_min_version = "0.7.0";
+var client_baud_rate_min_version = "0.4.0";
 
 var client_use_type = 'none';
 var client_ws_connection = null;
@@ -119,34 +126,35 @@ var check_client = function () {
         if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
-                console.log(data);
                 client_version = version_as_number(data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
-                    /*
+/*
                     $('#client-warning').css('background-color', '#f2dede');
                     $('#client-warning').css('color', '#a94442');
                     $('#client-warning-text').html('A different program or application appears to be using the PORT needed by BlocklyProp!');
                     $('#client-warning').css('display', 'block');
-                    */
                 } else if (client_version >= version_as_number(version_control_info.minimum.client_version) && client_version < version_as_number(version_control_info.recommended.client_version) && show_client_warning) {
-                    /*
                     $('#client-warning').css('background-color', '#fcf8e3');
                     $('#client-warning').css('color', '#8a6d3b');
                     $('#client-warning-text').html(version_control_info.recommended.client_text);
                     $('#client-warning').css('display', 'block');
-                    */
                 } else if (client_version < version_as_number(version_control_info.minimum.client_version) && show_client_warning) {
-                    /*
                     $('#client-warning').css('background-color', '#f2dede');
                     $('#client-warning').css('color', '#a94442');
                     $('#client-warning-text').html(version_control_info.minimum.client_text);
                     $('#client-warning').css('display', 'block');
-                    */
                 } else {
-                    /*
                     $('#client-warning').css('display', 'none');
-                    */
-                }                 
+                }                
+*/
+                } else if (client_version < version_as_number(client_min_version)) {
+                    bootbox.alert("This system now requires at least version " + client_min_version + " of BlocklyPropClient- yours is: " + data.version);
+                }
+
+                if (version_as_number(data.version) >= version_as_number(client_baud_rate_min_version)) {
+                    baud_rate_compatible = true;
+                }
+
                 client_use_type = 'http';
                 client_available = true;
                 set_ui_buttons('available');
@@ -165,6 +173,7 @@ var check_client = function () {
             clearInterval(check_com_ports_interval);
             client_use_type = 'none';
             client_available = false;
+            ports_available = false;
             set_ui_buttons('unavailable');
             check_ws_socket_timeout = setTimeout(find_client, 3000);
         });
@@ -250,14 +259,8 @@ function establish_socket() {
     if (!client_available) {
 
         // Clear the port list
-        var selected_port = $("#comPort").val();
-        $("#comPort").empty();
-        $("#comPort").append($('<option>', {
-            text: 'Searching...'
-        }));
-        select_com_port(selected_port);
-
-
+        set_port_list();
+        
         var url = client_url.replace('http', 'ws');
         var connection = new WebSocket(url);
 
@@ -352,20 +355,7 @@ function establish_socket() {
                     client_ws_heartbeat_interval = setInterval(connection_heartbeat, 4000);
                 }
 
-                selected_port = $("#comPort").val();
-                $("#comPort").empty();
-                if (ws_msg.ports.length > 0) {
-                    for (var pts = 0; pts < ws_msg.ports.length; pts++) {
-                        $("#comPort").append($('<option>', {
-                            text: ws_msg.ports[pts]
-                        }));
-                    }
-                } else {
-                    $("#comPort").append($('<option>', {
-                        text: 'No devices found'
-                    }));
-                }
-                select_com_port(selected_port);
+                set_port_list(ws_msg.ports);
             }
 
             // --- serial terminal/graph
@@ -457,18 +447,15 @@ function lostWSConnection() {
     client_ws_connection = null;
     client_use_type = 'none';
     client_available = false;
+    ports_available = false;
 
     set_ui_buttons('unavailable');
     term = null;
     newTerminal = false;
 
-    selected_port = $("#comPort").val();
-    $("#comPort").empty();
-    $("#comPort").append($('<option>', {
-        text: 'Searching...'
-    }));
-    select_com_port(selected_port);
-
+    // Clear ports list
+    set_port_list();
+ 
     if (client_ws_heartbeat_interval) {
         clearInterval(client_ws_heartbeat_interval);
         client_ws_heartbeat_interval = null;
