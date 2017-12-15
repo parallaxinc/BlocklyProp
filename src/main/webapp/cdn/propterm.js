@@ -95,7 +95,11 @@ $(document).ready(function () {
 function processKey(code) {
     //Emit key code to properly destination
     if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
-        active_connection.send(String.fromCharCode(code));
+        if (client_version >= minEnc64Ver) {
+            active_connection.send(btoa(String.fromCharCode(code)));
+        } else {
+            active_connection.send(String.fromCharCode(code));
+        }    
         if (trap_echos) {
             echo_trap.push(code);
         }
