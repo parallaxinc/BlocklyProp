@@ -19,7 +19,7 @@ var show_client_warning = true;
 var client_domain_name = "localhost";
 var client_domain_port = 6009;
 
-var client_min_version = "0.7.0";
+var client_min_version = "0.6.0";
 var client_baud_rate_min_version = "0.4.0";
 
 var client_use_type = 'none';

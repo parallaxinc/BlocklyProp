@@ -133,9 +133,9 @@ var showInfo = function (data) {
     
     // Does the current user own the project?
     if (!data['yours']) {
-        // If not, display owner username and hide save-as menu option
+        // If not, display owner username [and hide save-as menu option - nevermind :) ]
         $(".project-owner").text("(" + data['user'] + ")");
-        $("#save-as-menu-item").css('display', 'none');
+        // $("#save-as-menu-item").css('display', 'none');
     }
     var projectBoardIcon = {
         "activity-board": "images/board-icons/IconActivityBoard.png",
