@@ -63,7 +63,10 @@ var graph_data = {
     ]
 };
 
+// Minimum client/launcher version supporting base64-encoding
 const minEnc64Ver = version_as_number('0.7.0');
+// Minimum client/launcher allowed for use with this system
+const minVer = version_as_number(client_min_version);
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -447,7 +450,7 @@ function serial_console() {
             };
 
             connection.onmessage = function (e) {
-                var c_buf = atob(e.data);
+                var c_buf = (client_version >= minEnc64Ver) ? atob(e.data) : e.data;
                 if (connStrYet) {
                     displayInTerm(c_buf);
                 } else {
@@ -682,7 +685,7 @@ function graphing_console() {
 var check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
-            if (client_version >= minEnc64Ver) {
+            if (client_version >= minVer) {
                 // Client is >= minimum base64-encoded version
                 $.get(client_url + "ports.json", function (data) {
                     set_port_list(data);
@@ -699,7 +702,7 @@ var check_com_ports = function () {
 
 // set communication port list
 //   leave data unspecified when searching
-set_port_list = function (data = 'searching') {
+var set_port_list = function (data = 'searching') {
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
     if (typeof(data) == 'object') {
