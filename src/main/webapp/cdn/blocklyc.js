@@ -599,7 +599,7 @@ function graphing_console() {
 
             // When the connection is open, open com port
             connection.onopen = function () {
-                if (baud_rate_compatible && baudrate) {
+                if (baudrate) {
                     connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
                 } else {
                     connection.send('+++ open port ' + getComPort());
