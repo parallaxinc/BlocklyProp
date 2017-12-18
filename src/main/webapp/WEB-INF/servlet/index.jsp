@@ -1029,7 +1029,7 @@
                 });
 
                 // Retrieve the Message of the Day content
-                $.getJSON(cdnUrl + "motd-feeder.txt", function (data) {
+                $.get(cdnUrl + "motd-feeder.txt", function (data) {
                     $('#message-of-the-day').css('display', 'block');
                     $('#message-of-the-day-text').html(data + ' - click for more information');
                 });
