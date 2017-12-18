@@ -877,7 +877,7 @@ Blockly.Blocks.fb360_setup = {
                 ['I for position max to', 'setControlSys,S360_SETTING_IA_MAX']];
         this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendValueInput("VALUE")
-                .appendField('configure set')
+                .appendField('configure')
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
