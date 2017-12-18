@@ -64,9 +64,9 @@ var graph_data = {
 };
 
 // Minimum client/launcher version supporting base64-encoding
-const minEnc64Ver = version_as_number('0.7.0');
+var minEnc64Ver = version_as_number('0.7.0');
 // Minimum client/launcher allowed for use with this system
-const minVer = version_as_number(client_min_version);
+var minVer = version_as_number(client_min_version);
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -139,7 +139,7 @@ function tabClick(id) {
         Blockly.unbindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
         Blockly.codeOnlyKeybind = true;
 
-        if ($('#editor-full-mode') === 'true') {
+        if ($("meta[name=cdn]").attr("user-auth") === 'true') {
             document.getElementById('prop-btn-graph').style.display = 'none';
             document.getElementById('upload-project').style.display = 'none';
         }
@@ -436,11 +436,7 @@ function serial_console() {
             connection.onopen = function () {
                 connString = '';
                 connStrYet = false;
-                if (baud_rate_compatible && baudrate) {
-                    connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
-                } else {
-                    connection.send('+++ open port ' + getComPort());
-                }
+                connection.send('+++ open port ' + getComPort() + (baudrate ? ' ' + baudrate : ''));
                 active_connection = connection;
             };
             // Log errors
@@ -603,7 +599,7 @@ function graphing_console() {
 
             // When the connection is open, open com port
             connection.onopen = function () {
-                if (baud_rate_compatible && baudrate) {
+                if (baudrate) {
                     connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
                 } else {
                     connection.send('+++ open port ' + getComPort());
@@ -702,10 +698,11 @@ var check_com_ports = function () {
 
 // set communication port list
 //   leave data unspecified when searching
-var set_port_list = function (data = 'searching') {
+set_port_list = function (data) {
+    data = (data ? data : data = 'searching');
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
-    if (typeof(data) == 'object') {
+    if (typeof(data) === 'object') {
         data.forEach(function (port) {
             $("#comPort").append($('<option>', {
                 text: port

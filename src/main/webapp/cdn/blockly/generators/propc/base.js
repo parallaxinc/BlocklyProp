@@ -2035,7 +2035,7 @@ Blockly.Blocks.custom_code_multiple = {
                 'globals, setups, main, and functions sections.\n' +
                 'Use "@#@" to insert values from inputs into your custom C code.\n' +
                 'Use "\\n" to insert line breaks in the code');
-        //this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldCheckbox('FALSE', function (blockEdit) {

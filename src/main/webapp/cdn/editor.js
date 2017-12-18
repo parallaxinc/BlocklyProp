@@ -5,7 +5,7 @@
  */
 
 var baseUrl = $("meta[name=base]").attr("content");
-var cdnUrl = $("meta[name=cdn]").attr("content");
+var cdnUrl = $("meta[name=cdn]").attr("content");   // TODO: this is used in the  blocklypropclient.js file, but that file is loaded first, so when JS is condensed, make sure this global is decalred at the top of the file
 var user_authenticated = ($("meta[name=user-auth]").attr("content") === 'true') ? true : false;
 
 var projectData = null;
@@ -60,16 +60,14 @@ $(document).ready(function () {
                 setProfile(data['board']);
                 initToolbox(data['board'], []);
             }
-            if ($('#editor-full-mode') === 'true') {
-                if (projectData['board'] === 's3') {
-                    $('#load-ram-button').addClass('hidden');
-                    $('#open-graph-output').addClass('hidden');
-                    document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-                } else {
-                    $('#load-ram-button').removeClass('hidden');
-                    $('#open-graph-output').removeClass('hidden');
-                    document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
-                }
+            if (projectData['board'] === 's3') {
+                $('#prop-btn-ram').addClass('hidden');
+                $('#prop-btn-graph').addClass('hidden');
+                document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+            } else {
+                $('#prop-btn-ram').removeClass('hidden');
+                $('#prop-btn-graph').removeClass('hidden');
+                document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
 
             timestampSaveTime(20, true);
@@ -123,7 +121,7 @@ var checkLastSavedTime = function () {
         // TODO: It's been to long - autosave, then close/set URL back to login page.
     //}
 
-    if (t_now > last_saved_timestamp && checkLeave() && $('#editor-full-mode').html() === 'true') {
+    if (t_now > last_saved_timestamp && checkLeave() && user_authenticated) {
         // It's time to pop up a modal to remind the user to save.
         $('#save-check-dialog').modal('show');
     }
@@ -135,9 +133,9 @@ var showInfo = function (data) {
     
     // Does the current user own the project?
     if (!data['yours']) {
-        // If not, display owner username and hide save-as menu option
+        // If not, display owner username [and hide save-as menu option - nevermind :) ]
         $(".project-owner").text("(" + data['user'] + ")");
-        $("#save-as-menu-item").css('display', 'none');
+        // $("#save-as-menu-item").css('display', 'none');
     }
     var projectBoardIcon = {
         "activity-board": "images/board-icons/IconActivityBoard.png",

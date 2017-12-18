@@ -19,7 +19,7 @@
         <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
         <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>">
         <meta name="user-name" content="<shiro:principal></shiro:principal>">
-        <meta name="oath-on" content="<c:if test="${properties:oauth('google')}">true</c:if>">
+        <meta name="oauth-on" content="<c:if test="${properties:oauth('google')}">true</c:if>">
         <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
         <meta name="win64client" content="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
         <meta name="macOSclient" content="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">

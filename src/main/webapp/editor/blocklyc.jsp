@@ -121,11 +121,9 @@
                                             <span id="client-available-long" class="hidden">
                                                 <span class="keyed-lang-string" key="editor_client_available"></span>
                                             </span>
-                                            <span id="editor-full-mode" class="hidden">true</span>
                                         </div>
                                         <div style="display:inline; padding-left: 10px; line-height: 30px;" class="auth-false" displayas="inline">
                                             <span style="font-size:13px;"><span class="keyed-lang-string" key="editor_demonstration_mode_info"></span></span>
-                                            <span id="editor-full-mode" class="hidden">false</span>
                                         </div>
                                         <div class="project-name-wrapper" align="right">        
                                             <span id="project-icon" class="editor-icon"></span> <span class="project-name"></span> <span class="project-owner"></span>
@@ -758,6 +756,7 @@
                                                 </block>
                                             </value>
                                         </block>
+                                        <block type="debug_lcd_print_multiple"></block>
                                         <block type="debug_lcd_action"></block>
                                         <block type="debug_lcd_set_cursor">
                                             <value name="ROW">
@@ -1894,40 +1893,43 @@
                             </div>
                             <hr />
                             
-                            <!-- MacOS client -->
-                            <div class="client-instructions MacOS">
-                                <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
-                            </div>
-                            <div class="client MacOS">
-                                <img src="" data-src="images/os-icons/mac_os.png"/>
-                                <a href="#" id="client-mac-link">
-                                    <span class="keyed-lang-string" key="clientdownload_client_macos_installer"></span></a>
-                            </div>
+                            <span id="client-download-links">
+                                <!-- THESE ARE ALSO COPIED BELOW - CHANGES HERE NEED TO BE MIRRORED BELOW -->
+                                <!-- MacOS client -->
+                                <div class="client-instructions MacOS">
+                                    <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
+                                </div>
+                                <div class="client MacOS">
+                                    <img src="" data-src="images/os-icons/mac_os.png"/>
+                                    <a href="#" id="client-mac-link">
+                                        <span class="keyed-lang-string" key="clientdownload_client_macos_installer"></span></a>
+                                </div>
 
-                            <!-- Windows clients -->
-                            <div class="client-instructions Windows">
-                                <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
-                            </div>
-                            <div class="client Windows">
-                                <img src="" data-src="images/os-icons/windows.png"/>
-                                <a href="#" id="client-win32-link">
-                                    <span class="keyed-lang-string" key="clientdownload_client_windows32_installer"></span></a>
-                            </div>
-                            <div class="client Windows">
-                                <img src="" data-src="images/os-icons/windows.png"/>
-                                <a href="#" id="client-win64-link">
-                                    <span class="keyed-lang-string" key="clientdownload_client_windows64_installer"></span></a>
-                            </div>
+                                <!-- Windows clients -->
+                                <div class="client-instructions Windows">
+                                    <h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>
+                                </div>
+                                <div class="client Windows">
+                                    <img src="" data-src="images/os-icons/windows.png"/>
+                                    <a href="#" id="client-win32-link">
+                                        <span class="keyed-lang-string" key="clientdownload_client_windows32_installer"></span></a>
+                                </div>
+                                <div class="client Windows">
+                                    <img src="" data-src="images/os-icons/windows.png"/>
+                                    <a href="#" id="client-win64-link">
+                                        <span class="keyed-lang-string" key="clientdownload_client_windows64_installer"></span></a>
+                                </div>
 
-                            <!-- ChromeOS client -->
-                            <div class="client-instructions ChromeOS">
-                                <h4><span class="keyed-lang-string" key="clientdownload_download_launcher"></span></h4>
-                            </div>
-                            <div class="client ChromeOS">
-                                <img src="" data-src="images/os-icons/chrome_os.png"/>
-                                <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
-                                    <span class="keyed-lang-string" key="clientdownload_client_chromeos_installer"></span></a>
-                            </div>
+                                <!-- ChromeOS client -->
+                                <div class="client-instructions ChromeOS">
+                                    <h4><span class="keyed-lang-string" key="clientdownload_download_launcher"></span></h4>
+                                </div>
+                                <div class="client ChromeOS">
+                                    <img src="" data-src="images/os-icons/chrome_os.png"/>
+                                    <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
+                                        <span class="keyed-lang-string" key="clientdownload_client_chromeos_installer"></span></a>
+                                </div>
+                            </span>
                         </div>
                         <hr />
                         <div class="dropup">
@@ -1942,6 +1944,46 @@
                             </ul>
                         </div>
                     </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        
+        
+        <div class="modal fade" id="client-version-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><span class="keyed-lang-string" key="editor_client_title"></span></h4></td><td>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- BPC/BPL version warning -->
+                        <div class="row" >
+                            <span id="client-warning-span" class="bp-client-warning bpc-version hidden">
+                                <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#8a6d3b;"/></svg>
+                                <span class="keyed-lang-string" key="client_update_warning"></span>
+                            </span>
+                            <span id="client-unknown-span" class="bp-client-danger bpc-version hidden">
+                                <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg>
+                                <span class="keyed-lang-string" key="client_unknown"></span>
+                            </span>
+                            <span id="client-danger-span" class="bp-client-danger bpc-version hidden">
+                                <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg>
+                                <span class="keyed-lang-string" key="client_update_danger"></span>
+                            </span>
+                        </div>
+
+                        <div class="row" align="center">
+                            <span id="client-warning-download-links"></span>
+                        </div> 
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" key="editor_button_close"></span></button>
+                    </div>
+
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->

@@ -301,6 +301,7 @@ Blockly.MSG_GET_PINS_TOOLTIP = "binary get pins: gets the value of a group of pi
 Blockly.MSG_SET_PINS_BINARY_TOOLTIP = "binary set pins: define group then set each pins using a binary value. Highest pin is MSB. Do not use on P29-P31.";
 Blockly.MSG_DEBUG_LCD_INIT_TOOLTIP = "LCD initialize: set I/O pin to LCD; match baud to LCD switches.";
 Blockly.MSG_DEBUG_LCD_PRINT_TOOLTIP = "LCD print text: display on serial LCD.";
+Blockly.MSG_DEBUG_LCD_PRINT_MULTIPLE_TOOLTIP = "LCD print multiple: send attached values or text to the LCD.";
 Blockly.MSG_DEBUG_LCD_NUMBER_TOOLTIP = "LCD print number: display on serial LCD.";
 Blockly.MSG_DEBUG_LCD_ACTION_TOOLTIP = "LCD command: select from dropdown.";
 Blockly.MSG_DEBUG_LCD_SET_CURSOR_TOOLTIP = "LCD set cursor: row and column.";
@@ -315,6 +316,7 @@ Blockly.MSG_OLED_TEXT_SIZE_TOOLTIP = "OLED set text: Med, large, script and bubb
 Blockly.MSG_OLED_SET_CURSOR_TOOLTIP = "OLED set cursor: 0,0 is top-left corner of display.";
 Blockly.MSG_OLED_PRINT_TEXT_TOOLTIP = "OLED print text: send string to display.";
 Blockly.MSG_OLED_PRINT_NUMBER_TOOLTIP = "OLED print number: display value as decimal, hex, or binary.";
+Blockly.MSG_OLED_PRINT_MULTIPLE_TOOLTIP = "OLED print multiple: send attached values or text to the OLED.";
 Blockly.MSG_OLED_DRAW_PIXEL_TOOLTIP = "OLED draw pixel: at x, y from top-left corner.";
 Blockly.MSG_OLED_DRAW_LINE_TOOLTIP = "OLED draw line: set start and end points; 0,0 is top-left.";
 Blockly.MSG_OLED_DRAW_TRIANGLE_TOOLTIP = "OLED draw triangle: set x,y position of each corner.";
@@ -344,6 +346,7 @@ Blockly.MSG_SWX_READ_TOOLTIP = "Simple WX read widgets: Requires simplewx.html f
 Blockly.MSG_SWX_GET_TOOLTIP = "Simple WX widget value: Requires simplewx.html file. Provides the value of a widget from when it was last read.";
 Blockly.MSG_SWX_SEND_TOOLTIP = "Simple WX send to widget: Requires simplewx.html file. Send a value to a widget.";
 Blockly.MSG_AWX_INIT_ADV_TOOLTIP = "Advanced WX initialize: Match DO/DI to Propeller I/O pin connections, set terminal and program routing.";
+Blockly.MSG_AWX_GET_IP_TOOLTIP = "WX Get IP address: provides the module's IP address as a text string.";
 Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP = "Advanced WX scan multiple: scans the incoming string and stores the data as specified.";
 Blockly.MSG_AWX_PRINT_TOOLTIP = "Advanced WX print: prints the specified data to the WX module.";
 Blockly.MSG_AWX_SCAN_STRING_TOOLTIP = "Advanced WX scan string: stores an incoming string in the specified variable.";
@@ -428,9 +431,10 @@ Blockly.MSG_SERVO_MOVE_TOOLTIP = "Standard servo: sets the position of a standar
 Blockly.MSG_SERVO_SPEED_TOOLTIP = "CR servo speed: sets the speed of a continuous rotation servo connected to the I/O pin.";
 Blockly.MSG_SERVO_SET_RAMP_TOOLTIP = "CR servo set ramp: sets the amount a servo's speed can change each update cycle.";
 Blockly.MSG_FB360_INIT_TOOLTIP = "Feedback 360 servo initialize: sets up the feedback control system for the servo.  Match the signal and feedback pins to the Propeller I/O pin connections.";
-Blockly.MSG_FB360_SETUP_TOOLTIP = "Feedback 360 servo setup: use to set the maximum acceleration or maximum speed of the servo. Specify either the servo's signal or feedback pin.";
+Blockly.MSG_FB360_SETUP_TOOLTIP = "Feedback 360 servo configure: use to set the maximum acceleration or maximum speed of the servo. Specify either the servo's signal or feedback pin.";
 Blockly.MSG_FB360_SET_TOOLTIP = "Feedback 360 servo set: sets the speed, absolute angle (where 0 is the position the servo was initialized in), or relative angle (change from current position). Specify either the servo's signal or feedback pin.";
 Blockly.MSG_FB360_GET_TOOLTIP = "Feedback 360 servo get: retrieves the servo's absolute angle (where 0 is the position the servo was initialized in). Specify either the servo's signal or feedback pin.";
+Blockly.MSG_FB360_STATUS_TOOLTIP = "Feedback 360 servo status: returns whether the FB360 servo is (true) or is not (false) in the state selected in the dropdown.";
 Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP = "Robot drive init: set up the Robot's drive system on the Propeller.";
 Blockly.MSG_ROBOT_DRIVE_DISTANCE_TOOLTIP = "Robot drive distance: drives each wheel a specified distance.";
 Blockly.MSG_ROBOT_RAMPING_TOOLTIP = "Robot set acceleration: sets how slowly or quickly the robot is\nable to change its speed.  Higher values allow for faster speed changes.";
@@ -662,6 +666,11 @@ page_text_label['clientdownload_instructions'] = "The BlocklyProp Client/Launche
 page_text_label['clientdownload_os_menu'] = "Choose a different operating system";
 page_text_label['clientdownload_showall'] = "Show clients for all operating systems";
 page_text_label['clientdownload_title'] = "BlocklyProp Client/Launcher";
+
+page_text_label['client_unknown'] = "BlocklyProp is unable to determine what version of BlocklyPropClient is installed on your computer.<br>You may need to install or reinstall the BlocklyPropClient.";
+page_text_label['client_update_warning'] = "BlocklyProp now recommends BlocklyPropClient version <span class=\"client-required-version\"></span>.<br>You appear to be using BlocklyPropClient version <span class=\"client-your-version\"></span>.<br>Please use the link below to download the newest version of BlocklyPropClient.";
+page_text_label['client_update_danger'] = "BlocklyProp now requires BlocklyPropClient version <span class=\"client-required-version\"></span>.<br>You appear to be using BlocklyPropClient version <span class=\"client-your-version\"></span>.<br>You will not be able to load projects to your device until you upgrade your BlocklyPropClient.<br>Please use the link below to download the newest version.";
+
 page_text_label['confirm_do_email'] = "Email:";
 page_text_label['confirm_do_error_invalid_combination'] = "Invalid token/email combination";
 page_text_label['confirm_do_submit'] = "Confirm";
