@@ -13,13 +13,12 @@ var ports_available = false;
 
 var client_url = 'http://localhost:6009/';
 var client_version = 0;
-var version_control_info = {};
-var show_client_warning = true;
 
 var client_domain_name = "localhost";
 var client_domain_port = 6009;
 
 var client_min_version = "0.6.0";
+var client_recommended_version = "0.7.0";
 
 var client_use_type = 'none';
 var client_ws_connection = null;
@@ -32,6 +31,11 @@ var check_ws_client_timeout = null;   // unused?  safe to delete?
         
 $(document).ready(function () {
     find_client();
+    
+    $("#client-danger-span").addClass("hidden");
+    $("#client-warning-span").addClass("hidden");
+    $("#client-unknown-span").addClass("hidden");
+    $("#client-warning-download-links").html($("#client-download-links").html());
 });
 
 var find_client = function () {
@@ -53,9 +57,15 @@ var version_as_number = function (rawVersion) {
     tempVersion.push('0');
 
     if (tempVersion.length < 3) {
-        bootbox.alert("BlocklyProp is unable to determine what version of " +
-                "BlocklyPropClient is installed on your computer.\nYou may need to install" +
-                "or reinstall the BlocklyPropClient.");
+        $("#client-unknown-span").removeClass("hidden");
+        $(".client-required-version").html(client_recommended_version);
+        $(".client-your-version").html('<b>UNKNOWN</b>');
+        $('#client-version-modal').modal('show');                 
+
+        //bootbox.alert("BlocklyProp is unable to determine what version of " +
+        //        "BlocklyPropClient is installed on your computer.\nYou may need to install" +
+        //        "or reinstall the BlocklyPropClient.");
+        
         if (tempVersion.length === 1)
             tempVersion = '0.0.0';
         else
@@ -93,21 +103,28 @@ var set_ui_buttons = function (ui_btn_state) {
     }
 };
 
-var closeClientWarning = function () {
-    show_client_warning = false;
-    $('#client-warning').css('display', 'none');
-    Blockly.mainWorkspace.render();
-};
-
 var check_client = function () {
-        if (client_use_type !== 'ws') {
+    $('.bpc-version').addClass('hidden');
+    if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
                 client_version = version_as_number(data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
-                    // Wrong application/client/server
+                    $("#client-unknown-span").removeClass("hidden");
+                    $(".client-required-version").html(client_min_version);
+                    $(".client-your-version").html(data.version || '<b>UNKNOWN</b>');
+                    $('#client-version-modal').modal('show');                 
                 } else if (client_version < version_as_number(client_min_version)) {
-                    bootbox.alert("This system now requires at least version " + client_min_version + " of BlocklyPropClient- yours is: " + data.version);
+                    //bootbox.alert("This system now requires at least version " + client_min_version + " of BlocklyPropClient- yours is: " + data.version);                    
+                    $("#client-danger-span").removeClass("hidden");
+                    $(".client-required-version").html(client_min_version);
+                    $(".client-your-version").html(data.version);
+                    $('#client-version-modal').modal('show');
+                } else if (client_version < version_as_number(client_recommended_version)) {
+                    $("#client-warning-span").removeClass("hidden");
+                    $(".client-required-version").html(client_recommended_version);
+                    $(".client-your-version").html(data.version);
+                    $('#client-version-modal').modal('show');
                 }
 
                 client_use_type = 'http';

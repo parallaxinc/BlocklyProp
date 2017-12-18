@@ -1028,13 +1028,10 @@
                     });
                 });
 
-                // Retrieve the Client/Launcher minimums
+                // Retrieve the Message of the Day content
                 $.getJSON(cdnUrl + "motd-feeder.txt", function (data) {
-                    
-                    if (data.length > 5) {
-                        $('#client-warning').css('display', 'block');
-                        $('#client-warning-text').html(data.text + ' - click for more information');
-                    }
+                    $('#message-of-the-day').css('display', 'block');
+                    $('#message-of-the-day-text').html(data + ' - click for more information');
                 });
 
                 // Grab the release list from github, format it, and

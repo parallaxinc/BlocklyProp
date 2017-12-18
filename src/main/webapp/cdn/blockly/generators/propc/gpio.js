@@ -877,7 +877,7 @@ Blockly.Blocks.fb360_setup = {
                 ['I for position max to', 'setControlSys,S360_SETTING_IA_MAX']];
         this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendValueInput("VALUE")
-                .appendField('set')
+                .appendField('configure set')
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
@@ -1038,7 +1038,7 @@ Blockly.propc.fb360_get = function () {
 
 Blockly.Blocks.fb360_status = {
     init: function () {
-        //this.setTooltip(Blockly.MSG_FB360_GET_TOOLTIP);
+        this.setTooltip(Blockly.MSG_FB360_STATUS_TOOLTIP);
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
