@@ -525,8 +525,51 @@ Blockly.Blocks.console_print_float = {
 };
 
 Blockly.propc.console_print_multiple = function () {
-    Blockly.propc.serial_terminal_ = true;
-    var code = 'print("';
+    var code = '';
+    var initBlock = null;
+    var errorString = '';
+    
+    switch (this.type) {
+        case 'console_print_multiple':
+            code += 'print("';
+            Blockly.propc.serial_terminal_ = true;
+            break;
+        case 'serial_print_multiple':
+            initBlock = 'Serial initialize';
+            errorString = '// ERROR: Serial is not initialized!\n';
+            var p = '';
+            if (this.ser_pins.length > 0) {
+                p = this.ser_pins[0][0].replace(',', '_');
+            }
+            if (this.getInput('SERPIN')) {
+                p = this.getFieldValue('SER_PIN').replace(',', '_');
+            }
+            code += 'dprint(fdser' + p + ', "';
+            break;
+        case 'debug_lcd_print_multiple':
+            initBlock = 'LCD initialize';
+            errorString = '// ERROR: LCD is not initialized!\n';
+            code += 'dprint(debug_lcd, "';
+            break;
+        case 'oled_print_multiple':
+            initBlock = 'OLED initialize';
+            errorString = '// ERROR: OLED is not initialized!\n';
+            code += 'oledc_print("';
+            break;
+        case 'xbee_print_multiple':
+            initBlock = 'XBee initialize';
+            errorString = '// ERROR: XBEE is not initialized!\n';
+            code += 'dprint(xbee, "';
+            break;
+        case 'wx_print_multiple':
+            initBlock = 'WX initialize';
+            errorString = '// ERROR: WX is not initialized!\n';
+            var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
+            var conn = this.getFieldValue('CONNECTION');
+            code += 'wifi_print(' + conn + ', ' + handle + ', "';
+            break;
+    }
+
     var varList = '';
     var orIt = '';
     var i = 0;
@@ -561,8 +604,7 @@ Blockly.propc.console_print_multiple = function () {
         if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
             varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE).replace('\/%\g', '%%') || orIt);
         } else {
-            var t = Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE);
-            varList += ', ((float) ' + (t || orIt) +
+            varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
                     ') / ' + this.getFieldValue('DIV' + i) + '.0';
         }
         i++;
@@ -571,6 +613,15 @@ Blockly.propc.console_print_multiple = function () {
         code += '\\r';
     }
     code += '"' + varList + ');\n';
+    
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (initBlock && allBlocks.indexOf(initBlock) === -1) {
+        code = errorString;
+    }
+    if (this.type === 'wx_print_multiple' && allBlocks.indexOf('Simple WX initialize') > -1) {
+        code = '// ERROR: You cannot use Advanced WX blocks with Simple WX blocks!';
+    }
+    
     return code;
 };
 
@@ -1290,59 +1341,7 @@ Blockly.Blocks.serial_print_multiple = {
     }
 };
 
-Blockly.propc.serial_print_multiple = function () {
-    var p = '';
-    if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
-    }
-    if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
-    }
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('Serial initialize') === -1)
-    {
-        return '// ERROR: Serial is not initialized!\n';
-    } else {
-        var code = 'dprint(fdser' + p + ', "';
-        var varList = '';
-        var orIt = '';
-        var i = 0;
-        while (this.getInput('PRINT' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-                code += '%d';
-                orIt = '0';
-            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
-                code += '%x';
-                orIt = '0x0';
-            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
-                code += '%b';
-                orIt = '0b0';
-            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
-                code += '%s';
-                orIt = '" "';
-            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
-                code += '%c';
-                orIt = '32';
-            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                code += '%f';
-                orIt = '0';
-            }
-
-            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE).replace('\/%\g', '%%') || orIt);
-            } else {
-                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
-                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
-            }
-            i++;
-        }
-        if (this.getFieldValue('ck_nl') === 'TRUE') {
-            code += '\\r';
-        }
-        code += '"' + varList + ');\n';
-        return code;
-    }
-};
+Blockly.propc.serial_print_multiple = Blockly.propc.console_print_multiple;
 
 Blockly.Blocks.serial_scan_multiple = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
@@ -2009,56 +2008,7 @@ Blockly.Blocks.debug_lcd_print_multiple = {
     }
 };
 
-Blockly.propc.debug_lcd_print_multiple = function () {
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('LCD initialize') === -1)
-    {
-        return '// ERROR: LCD is not initialized!\n';
-    } else {
-        var code = 'dprint(debug_lcd, "';
-        var varList = '';
-        var orIt = '';
-        var i = 0;
-        while (this.getInput('PRINT' + i)) {
-            var digitsPlaces = this.getFieldValue('DIGIT' + i) || '';
-            if (this.getFieldValue('PLACE' + i) && this.getFieldValue('PLACE' + i) !== '') {
-                digitsPlaces += '.' + this.getFieldValue('PLACE' + i);
-            }
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-                code += '%' + digitsPlaces + 'd';
-                orIt = '0';
-            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
-                code += '%' + digitsPlaces + 'x';
-                orIt = '0x0';
-            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
-                code += '%' + digitsPlaces + 'b';
-                orIt = '0b0';
-            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
-                code += '%s';
-                orIt = '" "';
-            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
-                code += '%c';
-                orIt = '32';
-            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                code += '%' + digitsPlaces + 'f';
-                orIt = '0';
-            }
-
-            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE).replace('\/%\g', '%%') || orIt);
-            } else {
-                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
-                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
-            }
-            i++;
-        }
-        if (this.getFieldValue('ck_nl') === 'TRUE') {
-            code += '\\r';
-        }
-        code += '"' + varList + ');\n';
-        return code;
-    }
-};
+Blockly.propc.debug_lcd_print_multiple = Blockly.propc.console_print_multiple;
 
 
 //--------------- XBee Blocks --------------------------------------------------
@@ -2280,52 +2230,7 @@ Blockly.Blocks.xbee_print_multiple = {
     }
 };
 
-Blockly.propc.xbee_print_multiple = function () {
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('XBee initialize') === -1)
-    {
-        return '// ERROR: XBee is not initialized!\n';
-    } else {
-        var code = 'dprint(xbee, "';
-        var varList = '';
-        var orIt = '';
-        var i = 0;
-        while (this.getInput('PRINT' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-                code += '%d';
-                orIt = '0';
-            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
-                code += '%x';
-                orIt = '0x0';
-            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
-                code += '%b';
-                orIt = '0b0';
-            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
-                code += '%s';
-                orIt = '" "';
-            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
-                code += '%c';
-                orIt = '32';
-            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                code += '%f';
-                orIt = '0';
-            }
-
-            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE).replace('\/%\g', '%%') || orIt);
-            } else {
-                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
-                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
-            }
-            i++;
-        }
-        if (this.getFieldValue('ck_nl') === 'TRUE') {
-            code += '\\r';
-        }
-        code += '"' + varList + ');\n';
-        return code;
-    }
-};
+Blockly.propc.xbee_print_multiple = Blockly.propc.console_print_multiple;
 
 Blockly.Blocks.xbee_scan_multiple = {
     helpUrl: Blockly.MSG_XBEE_HELPURL,
@@ -3197,56 +3102,7 @@ Blockly.Blocks.oled_print_multiple = {
     }
 };
 
-Blockly.propc.oled_print_multiple = function () {
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('OLED initialize') === -1)
-    {
-        return '// ERROR: OLED is not initialized!\n';
-    } else {
-        var code = 'oledc_print("';
-        var varList = '';
-        var orIt = '';
-        var i = 0;
-        while (this.getInput('PRINT' + i)) {
-            var digitsPlaces = this.getFieldValue('DIGIT' + i) || '';
-            if (this.getFieldValue('PLACE' + i) && this.getFieldValue('PLACE' + i) !== '') {
-                digitsPlaces += '.' + this.getFieldValue('PLACE' + i);
-            }
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-                code += '%' + digitsPlaces + 'd';
-                orIt = '0';
-            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
-                code += '%' + digitsPlaces + 'x';
-                orIt = '0x0';
-            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
-                code += '%' + digitsPlaces + 'b';
-                orIt = '0b0';
-            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
-                code += '%s';
-                orIt = '" "';
-            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
-                code += '%c';
-                orIt = '32';
-            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                code += '%' + digitsPlaces + 'f';
-                orIt = '0';
-            }
-
-            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE).replace('\/%\g', '%%') || orIt);
-            } else {
-                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE) || orIt) +
-                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
-            }
-            i++;
-        }
-        if (this.getFieldValue('ck_nl') === 'TRUE') {
-            code += '\\r';
-        }
-        code += '"' + varList + ');\n';
-        return code;
-    }
-};
+Blockly.propc.oled_print_multiple = Blockly.propc.console_print_multiple;
 
 // -------------- RGB LEDs (WS2812B module) blocks -----------------------------
 Blockly.Blocks.ws2812b_init = {
@@ -4445,53 +4301,7 @@ Blockly.Blocks.wx_print_multiple = {
     }
 };
 
-Blockly.propc.wx_print_multiple = function () {
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
-    {
-        var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
-        var conn = this.getFieldValue('CONNECTION');
-
-        var code = 'wifi_print(' + conn + ', ' + handle + ', "';
-        var varList = '';
-        var i = 0;
-        var orIt = '';
-        while (this.getInput('PRINT' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-                code += '%d';
-                orIt = '0';
-            } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
-                code += '%x';
-                orIt = '0x0';
-            } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
-                code += '%b';
-                orIt = '0b0';
-            } else if (this.getFieldValue('TYPE' + i).includes('text')) {
-                code += '%s';
-                orIt = '" "';
-            } else if (this.getFieldValue('TYPE' + i).includes('ASCII character')) {
-                code += '%c';
-                orIt = '32';
-            } else if (this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                code += '%f';
-                orIt = '0';
-            }
-
-            if (!this.getFieldValue('TYPE' + i).includes('float point  divide by')) {
-                varList += ', ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE).replace('\/%\g', '%%') || orIt);
-            } else {
-                varList += ', ((float) ' + (Blockly.propc.valueToCode(this, 'PRINT' + i, Blockly.propc.NONE).replace('\/%\g', '%%') || orIt) +
-                        ') / ' + this.getFieldValue('DIV' + i) + '.0';
-            }
-            i++;
-        }
-        code += '"' + varList + ');\n';
-
-        return code;
-    } else {
-        return '// ERROR: WX is not initialized!\n';
-    }
-};
+Blockly.propc.wx_print_multiple = Blockly.propc.console_print_multiple;
 
 Blockly.Blocks.wx_scan_string = {
     helpUrl: Blockly.MSG_AWX_HELPURL,
