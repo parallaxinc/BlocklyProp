@@ -31,11 +31,6 @@ var check_ws_client_timeout = null;   // unused?  safe to delete?
         
 $(document).ready(function () {
     find_client();
-    
-    $("#client-danger-span").addClass("hidden");
-    $("#client-warning-span").addClass("hidden");
-    $("#client-unknown-span").addClass("hidden");
-    $("#client-warning-download-links").html($("#client-download-links").html());
 });
 
 var find_client = function () {
@@ -104,23 +99,26 @@ var set_ui_buttons = function (ui_btn_state) {
 };
 
 var check_client = function () {
-    $('.bpc-version').addClass('hidden');
+
     if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
                 client_version = version_as_number(data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
+                    $('.bpc-version').addClass('hidden');
                     $("#client-unknown-span").removeClass("hidden");
                     $(".client-required-version").html(client_min_version);
                     $(".client-your-version").html(data.version || '<b>UNKNOWN</b>');
                     $('#client-version-modal').modal('show');                 
                 } else if (client_version < version_as_number(client_min_version)) {
                     //bootbox.alert("This system now requires at least version " + client_min_version + " of BlocklyPropClient- yours is: " + data.version);                    
+                    $('.bpc-version').addClass('hidden');
                     $("#client-danger-span").removeClass("hidden");
                     $(".client-required-version").html(client_min_version);
                     $(".client-your-version").html(data.version);
                     $('#client-version-modal').modal('show');
                 } else if (client_version < version_as_number(client_recommended_version)) {
+                    $('.bpc-version').addClass('hidden');
                     $("#client-warning-span").removeClass("hidden");
                     $(".client-required-version").html(client_recommended_version);
                     $(".client-your-version").html(data.version);
