@@ -99,10 +99,10 @@ function processKey(code) {
             active_connection.send(btoa(String.fromCharCode(code)));
         } else {
             active_connection.send(String.fromCharCode(code));
+            if (trap_echos) {
+                echo_trap.push(code);
+            }
         }    
-        if (trap_echos) {
-            echo_trap.push(code);
-        }
     } else if (active_connection === 'simulated') {
         updateTermBox(String.fromCharCode(code));
     } else if (active_connection === 'websocket') {
