@@ -43,9 +43,9 @@ $(document).ready(function () {
     }
     
     // Set the client download links
-    $('#client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
-    $('#client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
-    $('#client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
+    $('.client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
+    $('.client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
+    $('.client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
 
     idProject = getURLParameter('project');
     if (!idProject) {
