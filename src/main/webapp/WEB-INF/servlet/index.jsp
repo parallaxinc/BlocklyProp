@@ -1051,20 +1051,20 @@
                  downloads = result.assets;
                  for (i = 0; i < downloads.length; i++) {
                  if (downloads[i].name.indexOf('32.exe') > -1) {
-                 $('#client-win32-link').attr('href', downloads[i].browser_download_url);
+                 $('.client-win32-link').attr('href', downloads[i].browser_download_url);
                  } else if (downloads[i].name.indexOf('64.exe') > -1) {
-                 $('#client-win64-link').attr('href', downloads[i].browser_download_url);
+                 $('.client-win64-link').attr('href', downloads[i].browser_download_url);
                  } else if (downloads[i].name.indexOf('.pkg') > -1) {
-                 $('#client-mac-link').attr('href', downloads[i].browser_download_url);
+                 $('.client-mac-link').attr('href', downloads[i].browser_download_url);
                  }
                  }
                  });
                  */
 
                 // Set the links for the released clients
-                $('#client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
-                $('#client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
-                $('#client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
+                $('.client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
+                $('.client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
+                $('.client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
 
                 // Set visibility of COPPA related elements
                 if (user_copparestricted) {

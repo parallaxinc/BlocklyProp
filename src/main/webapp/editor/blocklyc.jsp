@@ -1900,7 +1900,7 @@
                             </div>
                             <div class="client MacOS">
                                 <img src="" data-src="images/os-icons/mac_os.png"/>
-                                <a href="#" id="client-mac-link">
+                                <a href="#" class="client-mac-link">
                                     <span class="keyed-lang-string" key="clientdownload_client_macos_installer"></span></a>
                             </div>
 
@@ -1910,12 +1910,12 @@
                             </div>
                             <div class="client Windows">
                                 <img src="" data-src="images/os-icons/windows.png"/>
-                                <a href="#" id="client-win32-link">
+                                <a href="#" class="client-win32-link">
                                     <span class="keyed-lang-string" key="clientdownload_client_windows32_installer"></span></a>
                             </div>
                             <div class="client Windows">
                                 <img src="" data-src="images/os-icons/windows.png"/>
-                                <a href="#" id="client-win64-link">
+                                <a href="#" class="client-win64-link">
                                     <span class="keyed-lang-string" key="clientdownload_client_windows64_installer"></span></a>
                             </div>
 
@@ -1978,7 +1978,7 @@
                         </div>
                         <div class="client MacOS">
                             <img src="" data-src="images/os-icons/mac_os.png"/>
-                            <a href="#" id="client-mac-link">
+                            <a href="#" class="client-mac-link">
                                 <span class="keyed-lang-string" key="clientdownload_client_macos_installer"></span></a>
                         </div>
 
@@ -1988,12 +1988,12 @@
                         </div>
                         <div class="client Windows">
                             <img src="" data-src="images/os-icons/windows.png"/>
-                            <a href="#" id="client-win32-link">
+                            <a href="#" class="client-win32-link">
                                 <span class="keyed-lang-string" key="clientdownload_client_windows32_installer"></span></a>
                         </div>
                         <div class="client Windows">
                             <img src="" data-src="images/os-icons/windows.png"/>
-                            <a href="#" id="client-win64-link">
+                            <a href="#" class="client-win64-link">
                                 <span class="keyed-lang-string" key="clientdownload_client_windows64_installer"></span></a>
                         </div>
 
