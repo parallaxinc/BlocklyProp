@@ -468,19 +468,10 @@ public class SecurityServiceImpl implements SecurityService {
                             LOG.warn("Warning! Setting BP user id to zero");
                             sessionData.setIdUser(0L);
                         }
-                        
-                        
-//                        sessionData.setIdUser(
-//                                instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
 
-                        /**
-                         * This is no longer required.
-                         * 
-                         * instance.userDao.updateScreenname(
-                         *      sessionData.getIdUser(), 
-                         *      user.getScreenname());
-                        */
-                        
+                        instance.userDao.updateScreenname(
+                                sessionData.getIdUser(), 
+                                user.getScreenname());
                     }
                 } catch (UnknownUserException ex) {
                     LOG.error("Unknown user ID. {}", ex);
