@@ -1138,11 +1138,6 @@ Blockly.propc.serial_receive_text = function () {
     } else {
         var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
 
-        if (!this.disabled) {
-            Blockly.propc.global_vars_["ser_rx"] = "int __idx;";
-            Blockly.propc.vartype_[data] = 'char *';
-        }
-
         var type = this.getFieldValue('TYPE');
 
         if (type === "BYTE") {
@@ -1154,12 +1149,17 @@ Blockly.propc.serial_receive_text = function () {
         } else if (type === "HEX") {
             return 'dscan(fdser' + p + ', "%x", &' + data + ');\n';
         } else {
-            var code = '__idx = 0;\n';
-            code += 'do {\n';
-            code += '  ' + data + '[__idx] = fdserial_rxChar(fdser' + p + ');\n';
-            code += '  __idx++;\n';
-            code += '} while(fdserial_rxPeek(fdser' + p + ') != 0);\n';
-            code += data + '[__idx] = 0;\nfdserial_rxFlush(fdser' + p + ');\n';
+            if (!this.disabled) {
+                Blockly.propc.global_vars_["ser_rx" + p] = "int __iS" + p + ";";
+                Blockly.propc.vartype_[data] = 'char *';
+            }
+            var code = '__iS' + p + ' = 0;\n';
+            code += 'while(1) {';
+            code += '  ' + data + '[__i' + p + '] = fdserial_rxChar(fdser' + p + ');\n';
+            code += '  __i' + p + '++;\n';
+            code += '  if(' + data + '[__i' + p + '] == 10 || ' + data + '[__i';
+            code += p + '] == 13 || ' + data + '[__i' + p + '] == 0) break;}';
+            code += data + '[__i' + p + '] = 0;\nfdserial_rxFlush(fdser' + p + ');\n';
 
             return code;
         }
@@ -1528,7 +1528,7 @@ Blockly.propc.serial_scan_multiple = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') > -1)
     {
-        var code = 'dprint(fdser' + p + ', "';
+        var code = 'dscan(fdser' + p + ', "';
         var varList = '';
         var code_add = '';
         var i = 0;
@@ -2173,8 +2173,10 @@ Blockly.propc.xbee_receive = function () {
         } else if (type === "HEX") {
             return 'dscan(xbee, "%x", &' + data + ');\n';
         } else {
-            Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
-            Blockly.propc.vartype_[data] = 'char *';
+            if (!this.disabled) {
+                Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
+                Blockly.propc.vartype_[data] = 'char *';
+            }
 
             var code = '__XBidx = 0;\n';
             code += 'while(1) {\n';
