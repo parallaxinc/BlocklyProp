@@ -45,7 +45,16 @@ public class UserDaoImpl implements UserDao {
         this.create = dsl;
     }
 
+    /**
+     * Create a blocklyprop user record
+     * 
+     * @deprecated use create(idCloudSession, screenName) instead.
+     * 
+     * @param idCloudSession
+     * @return 
+     */
     @Override
+    @Deprecated
     public UserRecord create(Long idCloudSession) {
         //create.insertInto(Tables.PROJECT).set(project).execute();
         
@@ -73,6 +82,45 @@ public class UserDaoImpl implements UserDao {
 
         return record;
     }
+    
+    @Override
+    public UserRecord create(Long idCloudSession, String screenName) {
+        //create.insertInto(Tables.PROJECT).set(project).execute();
+        
+        if (idCloudSession == 0) {
+            LOG.warn("Cannot create cloud session user. Invalid cloud session ID.");
+            return null;
+        }
+        
+        if (screenName == null) {
+            LOG.warn("Cannot create cloud session user. Invalid screen name.");
+            return null;
+        }
+        
+        UserRecord record = create.insertInto(
+                Tables.USER, 
+                Tables.USER.IDCLOUDSESSION, Tables.USER.SCREENNAME)
+                .values(idCloudSession, screenName)
+                .returning()
+                .fetchOne();
+
+        if (record != null && record.getId() != null && record.getId() > 0) {
+            Set<Role> roles = new HashSet<>();
+            roles.add(Role.USER);
+            try {
+                setRoles(record.getId(), roles);
+            } catch (UnauthorizedException ue) {
+                // Can be dismissed because of hard coded user role
+                // Print exception in case anything should change
+                LOG.error("Creating a user should have no problem with creating its role (only USER role)", ue);
+            }
+
+        }
+
+        return record;
+    }
+    
+    
 
     @Override
     public List<UserRecord> getAll() {
@@ -81,9 +129,22 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public UserRecord getUser(Long idUser) {
-        return create.selectFrom(Tables.USER).where(Tables.USER.ID.equal(idUser)).fetchOne();
+        return create
+                .selectFrom(Tables.USER)
+                .where(Tables.USER.ID.equal(idUser))
+                .fetchOne();
     }
 
+    @Override
+    public UserRecord getUser(Long idCloudSession, String screenName) {
+        // Obtain the BP user id from the CS user id
+        return create
+                .selectFrom(Tables.USER)
+                .where(Tables.USER.IDCLOUDSESSION.eq(idCloudSession))
+                .and(Tables.USER.SCREENNAME.eq(screenName))
+                .fetchOne();
+    }
+    
     @Override
     public void setRoles(Long idUser, Set<Role> roles) {
         for (Role role : roles) {
@@ -99,7 +160,11 @@ public class UserDaoImpl implements UserDao {
 
         for (SecRoleRecord roleRecord : currentAssignedRoles) {
             if (!roles.contains(roleRecord.getName())) {
-                create.delete(Tables.SEC_USER_ROLE).where(Tables.SEC_USER_ROLE.ID_USER.equal(idUser)).and(Tables.SEC_USER_ROLE.ID_ROLE.equal(roleRecord.getId())).execute();
+                create
+                    .delete(Tables.SEC_USER_ROLE)
+                    .where(Tables.SEC_USER_ROLE.ID_USER.equal(idUser))
+                    .and(Tables.SEC_USER_ROLE.ID_ROLE.equal(roleRecord.getId()))
+                    .execute();
             }
         }
         for (Role role : roles) {
@@ -136,9 +201,26 @@ public class UserDaoImpl implements UserDao {
         return record;
     }
 
+    /**
+     * Obtain the BP user ID from a user's cloud session account
+     * 
+     * @deprecated  Use the standard User object instead.
+     * 
+     * @param id the cloud session user account id
+     * 
+     * @return The BP user id
+     */
     @Override
+    @Deprecated
     public Long getUserIdForCloudSessionUserId(Long id) {
-        Long idUser = create.select(Tables.USER.ID).from(Tables.USER).where(Tables.USER.IDCLOUDSESSION.eq(id)).fetchOneInto(Long.class);
+        
+        // Obtain the BP user id from the CS user id
+        Long idUser = create
+                .select(Tables.USER.ID)
+                .from(Tables.USER)
+                .where(Tables.USER.IDCLOUDSESSION.eq(id))
+                .fetchOneInto(Long.class);
+        
         if (idUser == null) {
             UserRecord user = create(id);
             return user.getId();

@@ -16,6 +16,8 @@ import java.util.List;
 public interface UserService {
 
     User getUser(Long idUser);
+    
+    User getUser(Long idCloudSessionUser, String screenName);
 
     List<UserRecord> getAllUsers();
 
