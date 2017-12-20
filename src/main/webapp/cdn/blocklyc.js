@@ -320,9 +320,10 @@ function cloudCompile(text, action, successHandler) {
             'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
             'data': {"code": propcCode}
         }).done(function (data) {
-            if (data.error) {
-                console.log(data);
-                var message = (typeof data['message'] === "string") ? data['message'] : data['message'].toString();
+            if (data.error || typeof data.error === "undefined") {
+                // console.log(data);
+                // Get message as a string, or blank if undefined
+                var message = (typeof data['message'] === "string") ? data['message'] : (typeof data.error !== "undefined") ? data['message'].toString() : "";
                 alert("BlocklyProp was unable to compile your project:\n" + message
                     + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
@@ -336,7 +337,7 @@ function cloudCompile(text, action, successHandler) {
                 document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
             }
         }).fail(function (data) {
-            console.log(data);
+            // console.log(data);
             var message = (typeof data === "string") ? data : data.toString();
             alert("BlocklyProp was unable to compile your project:\n----------\n" + message
                 + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
