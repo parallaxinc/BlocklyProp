@@ -103,7 +103,7 @@ var check_client = function () {
     if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
-                client_version = version_as_number(data.version);
+                client_version = version_as_number((typeof data.version_str !== "undefined") ? data.version_str : data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
                     $('.bpc-version').addClass('hidden');
                     $("#client-unknown-span").removeClass("hidden");

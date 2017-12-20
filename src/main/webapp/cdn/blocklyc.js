@@ -65,6 +65,8 @@ var graph_data = {
 
 // Minimum client/launcher version supporting base64-encoding
 var minEnc64Ver = version_as_number('0.7.0');
+// Minimum client/launcher version supporting optional coded/verbose responses
+var minOptionVer = version_as_number('0.7.5');
 // Minimum client/launcher allowed for use with this system
 var minVer = version_as_number(client_min_version);
 
@@ -355,11 +357,12 @@ function compile() {
 /**
  * begins loading process
  * @param modal_message message shown at the top of the compile/load modal.
- * @param compile_command command for the cloud compiler (bin/eeprom).
+ * @param compile_command for the cloud compiler (bin/eeprom).
+ * @param load_option command for the loader (CODE/VERBOSE/CODE_VERBOSE).
  * @param load_action command for the loader (RAM/EEPROM).
  *
  */
-function loadInto(modal_message, compile_command, load_action) {
+function loadInto(modal_message, compile_command, load_option, load_action) {
     if (ports_available) {
         cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
@@ -369,7 +372,8 @@ function loadInto(modal_message, compile_command, load_action) {
                 if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
                     dbug = terminalNeeded;
                 }
-
+                //todo - Add load_option above load_action
+                //todo - Determine backwards compatibility with BP Loader
                 var prog_to_send = {
                     type: 'load-prop',
                     action: load_action,
@@ -383,19 +387,38 @@ function loadInto(modal_message, compile_command, load_action) {
 
             } else {
 
-                $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
-                    $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                if (client_version >= minOptionVer) {
+                    //Request load with options from BlocklyProp Client
+                    $.post(client_url + 'load.action', {option: load_option, action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                        $("#compile-console").val($("#compile-console").val() + loaddata.message);
 
-                    // Scoll automatically to the bottom after new data is added
-                    document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+                        // Scoll automatically to the bottom after new data is added
+                        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
 
-                    console.log(loaddata);
-                    if (terminalNeeded === 'term' && loaddata.success) {
-                        serial_console();
-                    } else if (terminalNeeded === 'graph' && loaddata.success) {
-                        graphing_console();
-                    }
-                });
+                        //console.log(loaddata);
+                        if (terminalNeeded === 'term' && loaddata.success) {
+                            serial_console();
+                        } else if (terminalNeeded === 'graph' && loaddata.success) {
+                            graphing_console();
+                        }
+                    });
+                } else {
+                    //todo - Remove this once client_min_version (and thus minVer) is >= minOptionVer
+                    //Request load without options from old BlocklyProp Client
+                    $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                        $("#compile-console").val($("#compile-console").val() + loaddata.message);
+
+                        // Scoll automatically to the bottom after new data is added
+                        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+
+                        //console.log(loaddata);
+                        if (terminalNeeded === 'term' && loaddata.success) {
+                            serial_console();
+                        } else if (terminalNeeded === 'graph' && loaddata.success) {
+                            graphing_console();
+                        }
+                    });
+                }
             }
         });
     } else if (client_available) {
