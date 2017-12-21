@@ -1,12 +1,6 @@
 var BlocklyProp = {};
 
-/**
- * List of tab names.
- * @private
- */
-var TABS_ = ['blocks', 'propc', 'xml'];
-
-var selected = 'blocks';
+//var selected = 'blocks';
 
 var term = null;
 var graph = null;
@@ -63,12 +57,19 @@ var graph_data = {
     ]
 };
 
+// Minimum client/launcher version supporting base64-encoding
+var minEnc64Ver = version_as_number('0.7.0');
+// Minimum client/launcher allowed for use with this system
+var minVer = version_as_number(client_min_version);
 
 /**
  * Switch the visible pane when a tab is clicked.
  * @param {string} id ID of tab clicked.
  */
 function tabClick(id) {
+    
+    var TABS_ = ['blocks', 'propc', 'xml'];
+    
     // If the XML tab was open, save and render the content.
     /* if (document.getElementById('tab_xml').className == 'active') {
      var xmlTextarea = document.getElementById('textarea_xml');
@@ -91,68 +92,133 @@ function tabClick(id) {
      }*/
 
     // Deselect all tabs and hide all panes.
+    // document.getElementById('menu-save-as-propc').style.display = 'none';
     for (var x in TABS_) {
-        //if (document.getElementById('tab_' + TABS_[x])) {
-        //    document.getElementById('tab_' + TABS_[x]).className = 'taboff';
-        //}
         document.getElementById('content_' + TABS_[x]).style.display = 'none';
     }
 
     // Select the active tab.
-    selected = id.replace('tab_', '');
-    //document.getElementById(id).className = 'active';
+    var selectedTab = id.replace('tab_', '');
+    var tbxs = document.getElementsByClassName('blocklyToolboxDiv');
+    var btns = document.getElementsByClassName("btn-view-code");
+    document.getElementById('btn-view-blocks').style.display = 'none';
+    if (document.getElementById('menu-save-as-propc'))
+        document.getElementById('menu-save-as-propc').style.display = 'none';
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].style.display = 'none';
+    }
+    if (projectData['board'] !== 'propcfile') {
 
-    if (id === 'tab_blocks') {
-        document.getElementById('btn-view-blocks').style.display = 'none';
-        var btns = document.getElementsByClassName("btn-view-code");
-        for (var i = 0; i < btns.length; i++)
-        {
-            btns[i].style.display = 'inline';
+        // Reinstate keybindings from block workspace if this is a code-only project.
+        if (Blockly.codeOnlyKeybind === true) {
+            Blockly.bindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
+            Blockly.codeOnlyKeybind = false;
+        }
+        
+        if (id === 'tab_blocks') {
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.display = 'inline';
+            }
+            for (var xt = 0; xt < tbxs.length; xt++) {
+                tbxs[xt].style.display = 'block';
+            }
+        } else {
+            for (var xt = 0; xt < tbxs.length; xt++) {
+                tbxs[xt].style.display = 'none';
+            }
+            document.getElementById('btn-view-blocks').style.display = 'inline';
+            if (document.getElementById('menu-save-as-propc'))
+                document.getElementById('menu-save-as-propc').style.display = 'block';
         }
     } else {
-        document.getElementById('btn-view-blocks').style.display = 'inline';
-        var btns = document.getElementsByClassName("btn-view-code");
-        for (var i = 0; i < btns.length; i++)
-        {
-            btns[i].style.display = 'none';
+        
+        // Remove keybindings from block workspace if this is a code-only project.
+        Blockly.unbindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
+        Blockly.codeOnlyKeybind = true;
+
+        if ($("meta[name=cdn]").attr("user-auth") === 'true') {
+            document.getElementById('prop-btn-graph').style.display = 'none';
+            document.getElementById('upload-project').style.display = 'none';
         }
+        document.getElementById('prop-btn-pretty').style.display = 'inline-block';
+        document.getElementById('prop-btn-find-replace').style.display = 'inline-block';
+        document.getElementById('prop-btn-undo').style.display = 'inline-block';
+        document.getElementById('prop-btn-redo').style.display = 'inline-block';
+        document.getElementById('download-project').style.display = 'none';
     }
 
+    document.getElementById('content_' + selectedTab).style.display = 'block';
     // Show the selected pane.
-    var content = document.getElementById('content_' + selected);
-    content.style.display = 'block';
-    renderContent();
+    if (projectData['board'] === 'propcfile' && selectedTab === 'xml' && getURLParameter('debug')) {
+        document.getElementById('btn-view-propc').style.display = 'inline';
+        document.getElementById('btn-view-xml').style.display = 'none';
+    } else if (projectData['board'] === 'propcfile' && selectedTab === 'propc' && getURLParameter('debug')) {
+        document.getElementById('btn-view-xml').style.display = 'inline';
+        document.getElementById('btn-view-propc').style.display = 'none';
+    }
+    renderContent(selectedTab);
 }
 
-/**
- * Populate the currently selected pane with content generated from the blocks.
- */
-function renderContent() {
-    var content = document.getElementById('content_' + selected);
+// Populate the currently selected pane with content generated from the blocks.
+function renderContent(pane) {
     // Initialize the pane.
-    if (content.id === 'content_blocks') {
+    if (pane === 'blocks') {
         Blockly.mainWorkspace.render();
-    } else if (content.id === 'content_xml') {
-        var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    } else if (pane === 'xml') {
+        var xmlDom = null;
+        if (projectData['board'] === 'propcfile') {
+            xmlDom = Blockly.Xml.textToDom(propcAsBlocksXml());
+        } else {
+            xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        }
         var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
         codeXml.setValue(xmlText);
         codeXml.gotoLine(0);
-    } else if (content.id === 'content_propc') {
-        var code = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
-        code = js_beautify(code, {
-            'brace_style': 'expand',
-            'indent_size': 2
-        });
-        code = code.replace(/,\n[\s\xA0]+/g, ", ");
-        code = code.replace(/, & /g, ", &");
-        code = code.replace(/, \* /g, ", *");
-        code = code.replace(/\( & /g, "(&");
-        code = code.replace(/\( \* /g, "(*");
-        code = code.replace(/char \* /g, "char *");
-        codePropC.setValue(code);
+    } else if (pane === 'propc' && projectData['board'] !== 'propcfile') {
+        prettyCode(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+    } else if (pane === 'propc') {
+        if (codePropC.getValue() === '') {
+            codePropC.setValue(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+        }
         codePropC.gotoLine(0);
     }
 }
+
+var prettyCode = function (raw_code) {
+    if (!raw_code) {
+        raw_code = codePropC.getValue();
+    }
+    raw_code = js_beautify(raw_code, {
+        'brace_style': 'expand',
+        'indent_size': 2
+    });
+    raw_code = raw_code.replace(/,\n[\s\xA0]+/g, ", ")
+    
+            // improve the way reference and dereference operands are rendered
+            .replace(/, & /g, ", &")
+            .replace(/, \* /g, ", *")
+            .replace(/\( & /g, "(&")
+            .replace(/\( \* /g, "(*")
+            .replace(/char \* /g, "char *")
+            .replace(/serial \* /g, "serial *")
+            .replace(/colorPal \* /g, "colorPal *")
+            .replace(/ws2812 \* /g, "ws2812 *")
+    
+            // improve the way functions and arrays are rendered
+            .replace(/\)\s*[\n\r]\s*{/g,") {")
+            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, "[$1] = {$2};");
+    
+    codePropC.setValue(raw_code);
+    codePropC.gotoLine(0);
+};
+
+var findReplaceCode = function () {
+    if (document.getElementById('find-replace').style.display === 'none') {
+        document.getElementById('find-replace').style.display = 'block';
+    } else {
+        document.getElementById('find-replace').style.display = 'none';
+    }
+};
 
 /**
  * Initialize Blockly.  Called on page load.
@@ -162,6 +228,7 @@ function init(blockly) {
     codePropC = ace.edit("code-propc");
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
+    codePropC.getSession().setTabSize(2);
     codePropC.setReadOnly(true);
 
     codeXml = ace.edit("code-xml");
@@ -182,7 +249,42 @@ function init(blockly) {
      }
      */
 
-    loadProject();
+    if (projectData !== null) {
+        if (projectData['code'].length < 43) {
+            projectData['code'] = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
+        }
+        loadToolbox(projectData['code']);
+    }
+
+    // if the project is a propc code-only project, enable code editing.
+    if (projectData['board'] === 'propcfile') {
+        codePropC.setReadOnly(false);
+        codePropC.commands.addCommand({
+            name: "undo",
+            bindKey: {win: "Ctrl-z", mac: "Command-z"},
+            exec: function (codePropC) {
+                codePropC.undo();
+            },
+            readOnly: true
+        });
+        codePropC.commands.addCommand({
+            name: "redo",
+            bindKey: {win: "Ctrl-y", mac: "Command-y"},
+            exec: function (codePropC) {
+                codePropC.redo();
+            },
+            readOnly: true
+        });
+        codePropC.commands.addCommand({
+            name: "find_replace",
+            bindKey: {win: "Ctrl-f", mac: "Command-f"},
+            exec: function () {
+                findReplaceCode();
+            },
+            readOnly: true
+        });
+        tabClick('tab_propc');
+    }
 }
 
 function setBaudrate(_baudrate) {
@@ -191,13 +293,20 @@ function setBaudrate(_baudrate) {
 
 function cloudCompile(text, action, successHandler) {
 
-    var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+    // if PropC is in edit mode, get it from the editor, otherwise render it from the blocks.
+    var propcCode = '';
+    if (codePropC.getReadOnly()) {
+        propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
+    } else {
+        propcCode = codePropC.getValue();
+    }
+
     var isEmptyProject = propcCode.indexOf("EMPTY_PROJECT") > -1;
     if (isEmptyProject) {
         alert("You can't compile an empty project");
     } else {
         $("#compile-dialog-title").text(text);
-        $("#compile-console").val('');
+        $("#compile-console").val('Compile... ');
         $('#compile-dialog').modal('show');
 
 
@@ -218,6 +327,7 @@ function cloudCompile(text, action, successHandler) {
             'data': {"code": propcCode}
         }).done(function (data) {
             if (data.error) {
+                console.log(data);
                 if (typeof data['message'] === "string")
                     alert("BlocklyProp was unable to compile your project:\n" + data['message']
                             + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
@@ -230,13 +340,17 @@ function cloudCompile(text, action, successHandler) {
                     loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
                 }
                 if (data.success) {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
                 } else {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
+                
+                // Scoll automatically to the bottom after new data is added
+                document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
             }
         }).fail(function (data) {
+            console.log(data);
             if (typeof data === "string")
                 alert("BlocklyProp was unable to compile your project:\n----------\n" + data
                         + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
@@ -259,10 +373,10 @@ function compile() {
  * @param modal_message message shown at the top of the compile/load modal.
  * @param compile_command command for the cloud compiler (bin/eeprom).
  * @param load_action command for the loader (RAM/EEPROM).
- * 
+ *
  */
 function loadInto(modal_message, compile_command, load_action) {
-    if (client_available) {
+    if (ports_available) {
         cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
             if (client_use_type === 'ws') {
@@ -287,6 +401,10 @@ function loadInto(modal_message, compile_command, load_action) {
 
                 $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                     $("#compile-console").val($("#compile-console").val() + loaddata.message);
+
+                    // Scoll automatically to the bottom after new data is added
+                    document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+
                     console.log(loaddata);
                     if (terminalNeeded === 'term' && loaddata.success) {
                         serial_console();
@@ -296,9 +414,11 @@ function loadInto(modal_message, compile_command, load_action) {
                 });
             }
         });
+    } else if (client_available) {
+        alert("No device detected - ensure it is connected, powered, and selected in the ports list.\n\nMake sure your BlocklyPropClient is up-to-date.");
     } else {
-        alert("BlocklyPropClient not available to communicate with a microcontroller"
-                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+        alert("BlocklyPropClient not available to communicate with a microcontroller."
+            + "\n\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac).");
     }
 }
 
@@ -307,23 +427,13 @@ function serial_console() {
 
     if (client_use_type !== 'ws') {
         if (term === null) {
-            /*
-            term = new Terminal({
-                cols: 256,
-                rows: 24,
-                useStyle: true,
-                screenKeys: true,
-                portPath: getComPort()
-            });
-            */
             term = {
-               portPath: getComPort()
+                portPath: getComPort()
             };
-
             newTerminal = true;
         }
 
-        if (client_available) {
+        if (ports_available) {
             var url = client_url + 'serial.connect';
             url = url.replace('http', 'ws');
             var connection = new WebSocket(url);
@@ -332,11 +442,7 @@ function serial_console() {
             connection.onopen = function () {
                 connString = '';
                 connStrYet = false;
-                if (baud_rate_compatible && baudrate) {
-                    connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
-                } else {
-                    connection.send('+++ open port ' + getComPort());
-                }
+                connection.send('+++ open port ' + getComPort() + (baudrate ? ' ' + baudrate : ''));
                 active_connection = connection;
             };
             // Log errors
@@ -346,35 +452,25 @@ function serial_console() {
             };
 
             connection.onmessage = function (e) {
-                var c_buf;
-                if (version_as_number('0.7.0') > client_version) {
-                    c_buf = e.data;
+                var c_buf = (client_version >= minEnc64Ver) ? atob(e.data) : e.data;
+                if (connStrYet) {
+                    displayInTerm(c_buf);
                 } else {
-                    c_buf = atob(e.data);
-                }
-                //term.write(e.data);
-                if(connStrYet) {
-                    displayInTerm(e.data);
-                } else {
-                    connString += e.data;
+                    connString += c_buf;
                     if (connString.indexOf(baudrate.toString(10)) > -1) {
                         connStrYet = true;
-                        document.getElementById('serial-conn-info').innerHTML = connString.trim();
+                        if(document.getElementById('serial-conn-info')) {
+                            document.getElementById('serial-conn-info').innerHTML = connString.trim();
+                            // send remainder of string to terminal???  Haven't seen any leak through yet...
+                        }
+                    } else {
+                        displayInTerm(e.data);
                     }
                 }
-                
+                $('#serial_console').focus();
             };
 
-            /*
-            term.on('data', function (data) {
-                connection.send(data);
-            });
-            */
-
-            if (newTerminal) {
-                //term.open(document.getElementById("serial_console"));
-            } else {
-                //term.reset();
+            if (!newTerminal) {
                 updateTermBox(0);
             }
 
@@ -386,33 +482,22 @@ function serial_console() {
 
             $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
-                document.getElementById('serial-conn-info').innerHTML = '';
-                // for prop-term:
+                if(document.getElementById('serial-conn-info')) {
+                    document.getElementById('serial-conn-info').innerHTML = '';
+                }
                 updateTermBox(0);
+                term_been_scrolled = false;
                 term = null;
                 active_connection = null;
             });
         } else {
             active_connection = 'simulated';
-            /*
-            term.on('data', function (data) {
-                data = data.replace('\r', '\r\n');
-                term.write(data);
-            });
 
-            if (newTerminal) {
-                term.open(document.getElementById("serial_console"));
-                term.write("Simulated terminal because you are in demo mode\n\r");
-
-                term.write("Connection established with: " + getComPort() + "\n\r");
-            }
-            */
-           
             if (newTerminal) {
                 displayInTerm("Simulated terminal because you are in demo mode\n");
                 displayInTerm("Connection established with: " + getComPort() + "\n");
             }
-           
+
             $('#console-dialog').on('hidden.bs.modal', function () {
                 term_been_scrolled = false;
                 active_connection = null;
@@ -421,17 +506,8 @@ function serial_console() {
             });
         }
     } else if (client_use_type === 'ws') {
-    // using Websocket-only client
+        // using Websocket-only client
 
-        /*
-        term = new Terminal({
-            cols: 256,
-            rows: 24,
-            useStyle: true,
-            screenKeys: true,
-            portPath: getComPort()
-        });
-        */
         term = {
             portPath: getComPort()
         };
@@ -447,36 +523,30 @@ function serial_console() {
             action: 'msg'
         };
 
-        /*
-        term.on('data', function (data) {
-            msg_to_send.msg = data;
-            msg_to_send.action = 'msg';
-            client_ws_connection.send(JSON.stringify(msg_to_send));
-        });
-        */
-
         if (newTerminal === true) {
             //term.open(document.getElementById("serial_console"));
             msg_to_send.action = 'open';
             active_connection = 'websocket';
-            document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
-                    msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
+            if(document.getElementById('serial-conn-info')) {
+                document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
+                        msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
+            }
             client_ws_connection.send(JSON.stringify(msg_to_send));
         } else {
-            //term.reset();
             updateTermBox(0);
         }
 
         $('#console-dialog').on('hidden.bs.modal', function () {
             if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
                 msg_to_send.action = 'close';
-                document.getElementById('serial-conn-info').innerHTML = '';
-                active_connection = null;                
+                if(document.getElementById('serial-conn-info')) {
+                    document.getElementById('serial-conn-info').innerHTML = '';
+                }
+                active_connection = null;
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
             term_been_scrolled = false;
             newTerminal = false;
-            //term.destroy();
             updateTermBox(0);
         });
     }
@@ -528,14 +598,14 @@ function graphing_console() {
             graph.update(graph_data, graph_options);
         }
 
-        if (client_use_type !== 'ws' && client_available) {
+        if (client_use_type !== 'ws' && ports_available) {
             var url = client_url + 'serial.connect';
             url = url.replace('http', 'ws');
             var connection = new WebSocket(url);
 
             // When the connection is open, open com port
             connection.onopen = function () {
-                if (baud_rate_compatible && baudrate) {
+                if (baudrate) {
                     connection.send('+++ open port ' + getComPort() + ' ' + baudrate);
                 } else {
                     connection.send('+++ open port ' + getComPort());
@@ -571,8 +641,8 @@ function graphing_console() {
                 connection.close();
                 graph_reset();
             });
-            
-        } else if (client_use_type === 'ws' && client_available) {
+
+        } else if (client_use_type === 'ws' && ports_available) {
             var msg_to_send = {
                 type: 'serial-terminal',
                 outTo: 'graph',
@@ -600,45 +670,61 @@ function graphing_console() {
                 }
                 graph_reset();
             });
-            
+
         } else {
             // create simulated graph?
         }
 
         $('#graphing-dialog').modal('show');
-        document.getElementById('btn-graph-play').innerHTML = '<i class="glyphicon glyphicon-pause"></i>';
-
+        if(document.getElementById('btn-graph-play')) {
+            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+        }
     } else {
         alert('To use the graphing feature, your program must have both a graph initialize block and a graph value block.');
     }
 }
 
-check_com_ports = function () {
+var check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
-            var selected_port = $("#comPort").val();
-            $.get(client_url + "ports.json", function (data) {
-                $("#comPort").empty();
-                data.forEach(function (port) {
-                    $("#comPort").append($('<option>', {
-                        text: port
-                    }));
+            if (client_version >= minVer) {
+                // Client is >= minimum base64-encoded version
+                $.get(client_url + "ports.json", function (data) {
+                    set_port_list(data);
+                }).fail(function () {
+                    set_port_list();
                 });
-                select_com_port(selected_port);
-                client_available = true;
-            }).fail(function () {
-                $("#comPort").empty();
-                $("#comPort").append($('<option>', {
-                    text: 'Searching...'
-                }));
-                select_com_port(selected_port);
-                client_available = false;
-            });
+            } else {
+                // else keep port list clear (searching...)
+                set_port_list();
+            }      
         }
     }
 };
 
-select_com_port = function (com_port) {
+// set communication port list
+//   leave data unspecified when searching
+set_port_list = function (data) {
+    data = (data ? data : data = 'searching');
+    var selected_port = $("#comPort").val();
+    $("#comPort").empty();
+    if (typeof(data) === 'object') {
+        data.forEach(function (port) {
+            $("#comPort").append($('<option>', {
+                text: port
+            }));
+        });
+        ports_available = true;
+    } else {
+        $("#comPort").append($('<option>', {
+            text: (data === 'searching') ? 'Searching...' : 'No devices found'
+        }));
+        ports_available = false;
+    };
+    select_com_port(selected_port);
+};
+
+ var select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);
     }
@@ -650,7 +736,8 @@ select_com_port = function (com_port) {
 $(document).ready(function () {
     check_com_ports();
 });
-getComPort = function () {
+
+var getComPort = function () {
     return $('#comPort').find(":selected").text();
 };
 
@@ -736,9 +823,9 @@ function graph_new_data(stream) {
                             graph_data.series[j - 2].shift();
                     }
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
-                    
+
                     // limits total number of data point collected to prevent memory issues
-                    if(graph_csv_data.length > 15000) {
+                    if (graph_csv_data.length > 15000) {
                         graph_csv_data.shift();
                     }
                 }
@@ -747,7 +834,7 @@ function graph_new_data(stream) {
             } else {
                 if (!graph_data_ready) {          // wait for a full set of data to
                     if (stream[k] === '\r')       // come in before graphing, ends up
-                        graph_data_ready = true;  // tossing the first point but prevents 
+                        graph_data_ready = true;  // tossing the first point but prevents
                 } else {                          // garbage from mucking up the graph.
                     graph_temp_string += stream[k];
                 }
@@ -758,7 +845,7 @@ function graph_new_data(stream) {
 
 function graph_reset() {
     clearInterval(graph_interval_id);
-    if(graph) {
+    if (graph) {
         graph.detach();
     }
     $("#serial_graphing").html('');
@@ -793,15 +880,17 @@ function graph_redraw() {
 }
 
 function graph_play() {
-    var play_state = document.getElementById('btn-graph-play').innerHTML;
-    if (play_state.indexOf('pause') > -1) {
-        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-        clearInterval(graph_interval_id);
-    } else {
-        document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-        graph_interval_id = setInterval(function () {
-            graph.update(graph_data);
-        }, graph_options.refreshRate);
+    if(document.getElementById('btn-graph-play')) {
+        var play_state = document.getElementById('btn-graph-play').innerHTML;
+        if (play_state.indexOf('pause') > -1) {
+            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            clearInterval(graph_interval_id);
+        } else {
+            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            graph_interval_id = setInterval(function () {
+                graph.update(graph_data);
+            }, graph_options.refreshRate);
+        }
     }
 }
 
@@ -903,3 +992,21 @@ function graph_update_labels() {
     }
 }
 
+function encodeXml(string) {
+    var xml_special_to_escaped_one_map = {
+        '&': '&amp;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return string.replace(/([\&"<>])/g, function (str, item) {
+        return xml_special_to_escaped_one_map[item];
+    });
+}
+
+function decodeXml(string) {
+    return string.replace(/\&quot;/g, '"')
+            .replace(/\&lt;/g, '<')
+            .replace(/\&gt;/g, '>')
+            .replace(/\&amp;/g, '&');
+}

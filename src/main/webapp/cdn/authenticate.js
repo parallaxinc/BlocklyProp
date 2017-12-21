@@ -6,7 +6,7 @@ $(document).ready(function () {
         // Stop form from submitting normally
         event.preventDefault();
 
-        var jqxhr = $.post(loginForm.attr('action'), loginForm.serialize(), onSuccess);
+        var jqxhr = $.post(loginForm.attr('action'), loginForm.serialize(), onLoginSuccess);
         jqxhr.fail(function (jqXHR, textStatus, errorThrown) {
             alert("An unexpected error occured. Please try again later or contact the webmaster.");
         });
@@ -14,8 +14,7 @@ $(document).ready(function () {
     });
 });
 
-function onSuccess(response, statusText, xhr, $form) {
-    // alert(response.data.token);
+function onLoginSuccess(response, statusText, xhr, $form) {
     if (response.success === true) {
         if (typeof window['post-authenticate'] === 'function') {
             window['post-authenticate']();
