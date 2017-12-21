@@ -325,12 +325,19 @@ window.onbeforeunload = function () {
 };
 
 var checkLeave = function () {
+    var savedXml = projectData['code'];
+    // Wipe out the IDs for the propc code blocks since they change frequently and don't necessarily mean that the user's project has changed.
+    if (projectData['board'] === 'propcfile') {
+        savedXml = savedXml.replace(/type="propc_file" id="[A-Z0-9a-z]*"/g, 'type="propc_file" id="zzzz"');
+    }
+    var currentXml = '';
     if (ignoreSaveCheck) {
         return false;
     }
-    var currentXml = getXml();
     if (projectData['board'] === 'propcfile') {
-        currentXml = propcAsBlocksXml();
+        currentXml = propcAsBlocksXml().replace(/type="propc_file" id="[A-Z0-9a-z]*"/g, 'type="propc_file" id="zzzz"');
+    } else {
+        currentXml = getXml();
     }
     if (projectData === null) {
         if (currentXml === '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>') {
@@ -339,7 +346,7 @@ var checkLeave = function () {
             return true;
         }
     } else {
-        if (projectData['code'] === currentXml) {
+        if (savedXml === currentXml) {
             return false;
         } else {
             return true;
