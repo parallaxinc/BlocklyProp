@@ -21,6 +21,10 @@ import javax.servlet.ServletContextEvent;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ch.qos.logback.classic.LoggerContext;
+
 
 /**
  *
@@ -29,6 +33,8 @@ import org.apache.commons.configuration.DefaultConfigurationBuilder;
 public class SetupConfig extends GuiceServletContextListener {
 
     private Configuration configuration;
+    
+    private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
     @Override
     protected Injector getInjector() {
@@ -46,7 +52,10 @@ public class SetupConfig extends GuiceServletContextListener {
                 bind(HelpFileInitializer.class).asEagerSingleton();
                 bind(Monitor.class).asEagerSingleton();
 
+                // Configure the backend data store
                 install(new PersistenceModule(configuration));
+
+                // Bind data classes with their implementations. 
                 install(new DaoModule());
                 install(new ServiceModule());
                 install(new ServletsModule());
@@ -60,32 +69,55 @@ public class SetupConfig extends GuiceServletContextListener {
         );
     }
 
+    /*
+     * The application configuration is stored in the blocklyprop.properties
+     * file in user home directory. The config.xml contains the actual file
+     * name of the configuation file. If the file is not found, the app will
+     * use a set of default values. 
+    */
     private void readConfiguration() {
         try {
-            System.out.println("Looking for blocklyprop.properties in: " + System.getProperty("user.home"));
-            DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(getClass().getResource("/config.xml"));
+            LOG.info(
+                    "Looking for blocklyprop.properties in: {}", 
+                    System.getProperty("user.home"));
+            
+            DefaultConfigurationBuilder configurationBuilder 
+                    = new DefaultConfigurationBuilder(getClass()
+                            .getResource("/config.xml"));
+            
             configuration = configurationBuilder.getConfiguration();
         } catch (ConfigurationException ce) {
-            ce.printStackTrace();
+            LOG.error("{}", ce.getMessage());
         } catch (Throwable t) {
-            t.printStackTrace();
+            LOG.error(t.getMessage());
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
-        // This manually deregisters JDBC driver, which prevents Tomcat 7 from complaining about memory leaks wrto this class
+        
         Enumeration<Driver> drivers = DriverManager.getDrivers();
+
+        // This manually deregisters JDBC driver, which prevents Tomcat 7 from
+        // complaining about memory leaks into this class
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                //  LOG.log(Level.INFO, String.format("deregistering jdbc driver: %s", driver));
+                LOG.info("deregistering jdbc driver: {}",driver);
             } catch (SQLException sqlE) {
-                //   LOG.log(Level.SEVERE, String.format("Error deregistering driver %s", driver), e);
+                LOG.error("Error deregistering driver %s", driver);
+                LOG.error("{}", sqlE.getSQLState());
             }
 
+        }
+        
+        // Shut down the loggers. Assume SLF4J is bound to logback-classic
+        // in the current environment
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        if (loggerContext != null) {
+            loggerContext.stop();
         }
     }
 

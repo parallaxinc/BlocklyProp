@@ -20,11 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 public class PingServlet extends HttpServlet {
 
     /*
-     * Get user information
+     * Respond to a ping request
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().write("pong");
+        resp.getWriter().write("<html><body>pong</body></html>");
     }
 
 }

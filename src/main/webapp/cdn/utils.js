@@ -5,17 +5,16 @@ var utils = {
             message: message,
             buttons: {
                 confirm: {
-                    lable: "Ok",
+                    label: "Ok",
                     className: "btn-primary"
                 }
             }
         });
     },
-    prompt: function (title, message, defaultValue, callback) {
+    prompt: function (title, defaultValue, callback) {
         bootbox.prompt({
             title: title,
             value: defaultValue,
-            message: message,
             callback: callback,
             buttons: {
                 cancel: {
@@ -24,7 +23,7 @@ var utils = {
                     callback: callback
                 },
                 confirm: {
-                    lable: "Confirm",
+                    label: "Confirm",
                     className: "btn-primary",
                     callback: callback
                 }
@@ -45,7 +44,7 @@ var utils = {
                     }
                 },
                 confirm: {
-                    lable: "Confirm",
+                    label: "Confirm",
                     className: "btn-primary",
                     callback: function () {
                         callback(true);
@@ -72,9 +71,9 @@ var utils = {
 
         for (var i = 0; i < parArr.length; i++) {
             parr = parArr[i].split("=");
-            if (parr[0] == parameter) {
-                return (decode) ? decodeURIComponent(parr[1]) : parr[1];
+            if (parr[0] === parameter) {
                 returnBool = true;
+                return (decode) ? decodeURIComponent(parr[1]) : parr[1];
             } else {
                 returnBool = false;
             }

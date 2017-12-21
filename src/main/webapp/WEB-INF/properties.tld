@@ -9,15 +9,31 @@
     <tlib-version>1.0</tlib-version>
     <uri>http://blocklyprop.parallax.com/properties</uri>
 
+    <!-- Return the base uri for downloadable files such as BlocklyProp clients -->
     <function>
         <name>downloadfiles</name>
         <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
         <function-signature>String getDownloadFilesBaseUrl(java.lang.String)</function-signature>
     </function>
 
+    <!-- Return flag to indicate if the Oauth mechanism is enabled  -->
     <function>
         <name>oauth</name>
         <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
         <function-signature>boolean isOauthEnabled(java.lang.String)</function-signature>
+    </function>
+
+    <!-- Return flag to indicate if experimental menus are enabled  -->
+    <function>
+        <name>experimentalmenu</name>
+        <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
+        <function-signature>boolean isExperimentalMenu(java.lang.Boolean)</function-signature>
+    </function>
+
+    <!-- Return flag to indicate if COPPA restrictions are anabled -->
+    <function>
+        <name>copparestricted</name>
+        <function-class>com.parallax.server.blocklyprop.jsp.Properties</function-class>
+        <function-signature>boolean isCoppaRestricted()</function-signature>
     </function>
 </taglib>

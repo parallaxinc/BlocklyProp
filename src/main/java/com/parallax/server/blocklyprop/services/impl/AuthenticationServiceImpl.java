@@ -44,10 +44,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private Provider<HttpSession> sessionProvider;
 
+    /**
+     * Constructor
+     *
+     */
     public AuthenticationServiceImpl() {
+        // TODO: Fix leaking 'this' in constructor.
         _instance = this;
     }
 
+    /**
+     * Get the active AuthenticationService object
+     * 
+     * @return AthenticationService instance 
+     */
     public static AuthenticationService get() {
         return _instance;
     }
@@ -68,19 +78,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.tokenGeneratorService = tokenGeneratorService;
     }
 
+    /**
+     * Authenticate a local user
+     * 
+     * @param username
+     * @param password
+     * @return a valid User object or null 
+     */
     @Override
     public User authenticate(String username, String password) {
-        Subject currentUser = SecurityUtils.getSubject();
+        log.info("Authenticating user");
 
-        UsernamePasswordToken authenticationToken = new UsernamePasswordToken(username, password);
+        Subject currentUser = SecurityUtils.getSubject();
+        
+        UsernamePasswordToken authenticationToken 
+                = new UsernamePasswordToken(username, password);
 
         try {
             currentUser.login(authenticationToken);
         } catch (UnknownAccountException e) {
-            log.info("Unknown account (wrong password?)", e);
+            log.info("Unknown account (wrong password?): {}", e.getMessage());
             return null;
         } catch (Throwable t) {
-            log.error("Error while authenticating", t);
+            log.error("Error while authenticating: {}", t.getMessage());
             return null;
         }
 

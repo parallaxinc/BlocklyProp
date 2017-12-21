@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-
-    <!-- filters ORDER MATTERS! -->
-    <!-- Shiro -->
+    <!-- ============================================================== -->
+    <!-- What does this file do?                                        -->
+    <!-- Java web applications use a deployment descriptor file to      -->
+    <!-- determine how URLs map to servlets, which URLs require         -->
+    <!-- authentication, and other information. This file is named      -->
+    <!-- web.xml, and resides in the app's WAR under the WEB-INF/       -->
+    <!-- directory. web.xml is part of the servlet standard for web     -->
+    <!-- applications.                                                  -->
+    <!--                                                                -->
+    <!-- This is the he Web Application Deployment Descriptor for the   -->
+    <!-- BlocklyProp application. This file describes the servlets and  -->
+    <!-- other components that make up your application, along with any -->
+    <!-- initialization parameters and container-managed security       -->
+    <!-- constraints that the server should enforce.                    -->
+    <!-- Reference:                                                     -->
+    <!-- http://tomcat.apache.org/tomcat-7.0-doc/appdev/deployment.html -->
+    <!-- WARNING: The order in which the filters appear in this file    -->
+    <!--          are critical.                                         -->
+    <!--                                                                -->
+    <!--                      ORDER MATTERS!!                           -->
+    <!--                                                                -->
+    <!-- ============================================================== -->
+    <!-- Shiro - Apache application security framework                  -->
+    <!-- no init-param means the configuration will be loaded from the  -->
+    <!-- config located in classpath:shiro.ini                          -->
+    <!-- Reference:                                                     -->
+    <!-- https://shiro.apache.org/documentation.html                    -->
+    <!-- ============================================================== -->
+    <!--
+    A filter is a class that acts on a request like a servlet, but may 
+    allow the handling of the request to continue with other filters or 
+    servlets. A filter may perform an auxiliary task such as logging, 
+    performing specialized authentication checks, or annotating the 
+    request or response objects before calling the servlet. Filters allow
+    you to compose request processing tasks from the deployment descriptor.
+    -->
+    <!--
+    Similar to servlets, you configure a filter in the deployment descriptor
+    by declaring the filter with the <filter> element, then mapping it to a 
+    URL pattern with the <filter-mapping> element. You can also map filters
+    directly to other servlets.
+    
+    The <filter> element contains a <filter-name>, <filter-class>, and 
+    optional <init-param> elements.
+    -->
+    
+    <!--
+    Assuming that a Shiro INI Configuration file is located at either of the
+    following two locations, using whichever is found first:
+        /WEB-INF/shiro.ini
+        shiro.ini file at the root of the classpath.
+    -->
     <filter>
         <filter-name>ShiroFilter</filter-name>
         <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>ShiroFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -16,13 +64,15 @@
         <dispatcher>INCLUDE</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
-
-    <!-- Guice -->
+    
+    
+    <!-- Guice - A lightweight dependency injection framework           -->
+    <!-- Reference:                                                     -->
+    <!-- https://github.com/google/guice                                -->
     <filter>
         <filter-name>GuiceFilter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>GuiceFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -33,14 +83,11 @@
     <listener>
         <listener-class>com.parallax.server.blocklyprop.config.SetupConfig</listener-class>
     </listener>
-
     <!-- Shiro -->
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
-
     <!-- Rest API Visualizer -->
-
     <!-- Cuubez API Visualizer configurations -->
     <!-- Created alternate implementation because of a bug on windows in coodez API visualizer version 1.0.1 -->
     <!-- https://code.google.com/p/cuubez/issues/detail?id=5  -->
@@ -49,27 +96,26 @@
             <listener-class>com.cuubez.visualizer.servlet.VzBootstrapContextListener</listener-class>
         </listener>
     -->
-
     <listener>
         <listener-class>com.parallax.server.blocklyprop.config.RestAPIVisualizeBootstrap</listener-class>
     </listener>
-
+    
     <servlet>
         <servlet-name>vapi_servlet</servlet-name>
         <servlet-class>com.cuubez.visualizer.servlet.VzHttpServletDispatcher</servlet-class>
     </servlet>
-
+    
+    <!-- URL of the visual REST API documentation -->
     <servlet-mapping>
         <servlet-name>vapi_servlet</servlet-name>
         <url-pattern>/apidoc</url-pattern>
     </servlet-mapping>
-
+    
     <!-- Monitor -->
     <listener>
         <description>Add Metrics to context</description>
         <listener-class>com.parallax.server.blocklyprop.monitoring.BlocklyPropInstrumentedFilterContextListener</listener-class>
     </listener>
-
     <filter>
         <filter-name>instrumentedFilter</filter-name>
         <filter-class>com.codahale.metrics.servlet.InstrumentedFilter</filter-class>
@@ -78,13 +124,10 @@
         <filter-name>instrumentedFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
     <!-- Other servlets -->
-
     <welcome-file-list>
         <welcome-file>index</welcome-file>
     </welcome-file-list>
-
     <jsp-config>
         <taglib>
             <taglib-uri>http://blocklyprop.parallax.com/properties</taglib-uri>
@@ -99,5 +142,4 @@
             <taglib-location>/WEB-INF/url.tld</taglib-location>
         </taglib>
     </jsp-config>
-
 </web-app>
