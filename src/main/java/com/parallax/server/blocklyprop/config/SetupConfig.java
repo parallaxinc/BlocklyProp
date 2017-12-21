@@ -37,6 +37,7 @@ import ch.qos.logback.classic.LoggerContext;
 public class SetupConfig extends GuiceServletContextListener {
 
     private Configuration configuration;
+    
     private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
     @Override
@@ -55,7 +56,10 @@ public class SetupConfig extends GuiceServletContextListener {
                 //bind(HelpFileInitializer.class).asEagerSingleton();
                 bind(Monitor.class).asEagerSingleton();
 
+                // Configure the backend data store
                 install(new PersistenceModule(configuration));
+
+                // Bind data classes with their implementations. 
                 install(new DaoModule());
                 install(new ServiceModule());
                 install(new ServletsModule());
