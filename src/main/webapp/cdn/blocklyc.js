@@ -1,12 +1,6 @@
 var BlocklyProp = {};
 
-/**
- * List of tab names.
- * @private
- */
-var TABS_ = ['blocks', 'propc', 'xml'];
-
-var selected = 'blocks';
+//var selected = 'blocks';
 
 var term = null;
 var graph = null;
@@ -73,6 +67,9 @@ var minVer = version_as_number(client_min_version);
  * @param {string} id ID of tab clicked.
  */
 function tabClick(id) {
+    
+    var TABS_ = ['blocks', 'propc', 'xml'];
+    
     // If the XML tab was open, save and render the content.
     /* if (document.getElementById('tab_xml').className == 'active') {
      var xmlTextarea = document.getElementById('textarea_xml');
@@ -101,7 +98,7 @@ function tabClick(id) {
     }
 
     // Select the active tab.
-    selected = id.replace('tab_', '');
+    var selectedTab = id.replace('tab_', '');
     var tbxs = document.getElementsByClassName('blocklyToolboxDiv');
     var btns = document.getElementsByClassName("btn-view-code");
     document.getElementById('btn-view-blocks').style.display = 'none';
@@ -150,31 +147,33 @@ function tabClick(id) {
         document.getElementById('download-project').style.display = 'none';
     }
 
-    document.getElementById('content_' + selected).style.display = 'block';
+    document.getElementById('content_' + selectedTab).style.display = 'block';
     // Show the selected pane.
-    if (projectData['board'] === 'propcfile' && selected === 'xml' && getURLParameter('debug')) {
+    if (projectData['board'] === 'propcfile' && selectedTab === 'xml' && getURLParameter('debug')) {
         document.getElementById('btn-view-propc').style.display = 'inline';
         document.getElementById('btn-view-xml').style.display = 'none';
-    } else if (projectData['board'] === 'propcfile' && selected === 'propc' && getURLParameter('debug')) {
+    } else if (projectData['board'] === 'propcfile' && selectedTab === 'propc' && getURLParameter('debug')) {
         document.getElementById('btn-view-xml').style.display = 'inline';
         document.getElementById('btn-view-propc').style.display = 'none';
     }
-    renderContent();
+    renderContent(selectedTab);
 }
 
 // Populate the currently selected pane with content generated from the blocks.
-function renderContent() {
-    var content = document.getElementById('content_' + selected);
+function renderContent(pane) {
     // Initialize the pane.
-    if (content.id === 'content_blocks') {
+    if (pane === 'blocks') {
         Blockly.mainWorkspace.render();
-    } else if (content.id === 'content_xml') {
+    } else if (pane === 'xml') {
         var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
         codeXml.setValue(xmlText);
         codeXml.gotoLine(0);
-    } else if (content.id === 'content_propc') {
+    } else if (pane === 'propc' && projectData['board'] !== 'propcfile') {
         prettyCode(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+    } else if (pane === 'propc') {
+        codePropC.setValue(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+        codePropC.gotoLine(0);
     }
 }
 
@@ -194,7 +193,7 @@ var prettyCode = function (raw_code) {
             .replace(/\( & /g, "(&")
             .replace(/\( \* /g, "(*")
             .replace(/char \* /g, "char *")
-            .replace(/fdserial \* /g, "fdserial *")
+            .replace(/serial \* /g, "serial *")
             .replace(/colorPal \* /g, "colorPal *")
             .replace(/ws2812 \* /g, "ws2812 *")
     

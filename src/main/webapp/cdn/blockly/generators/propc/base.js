@@ -2033,7 +2033,7 @@ Blockly.Blocks.custom_code_multiple = {
         this.setTooltip('User defined code: Set label, color, code, block type, and inputs.\n' +
                 'Add correctly formatted Propeller C code to the includes,\n' +
                 'globals, setups, main, and functions sections.\n' +
-                'Use "@#@" to insert values from inputs into your custom C code.\n' +
+                'Use "@1, @2, @3, @4, or @5" to insert values from inputs 1, 2, 3, 4, or 5 into your custom C code.\n' +
                 'Use "\\n" to insert line breaks in the code');
         this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
