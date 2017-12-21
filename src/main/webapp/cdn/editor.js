@@ -150,7 +150,7 @@ var showInfo = function (data) {
 };
 
 function generateBlockId() {
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,.:;=?@[]^_`{|}~';
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var blockId = 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.round(Math.random()*(chars.length-1));
         return chars[r];

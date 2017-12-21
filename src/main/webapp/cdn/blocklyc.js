@@ -165,14 +165,21 @@ function renderContent(pane) {
     if (pane === 'blocks') {
         Blockly.mainWorkspace.render();
     } else if (pane === 'xml') {
-        var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        var xmlDom = null;
+        if (projectData['board'] === 'propcfile') {
+            xmlDom = Blockly.Xml.textToDom(propcAsBlocksXml());
+        } else {
+            xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        }
         var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
         codeXml.setValue(xmlText);
         codeXml.gotoLine(0);
     } else if (pane === 'propc' && projectData['board'] !== 'propcfile') {
         prettyCode(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
     } else if (pane === 'propc') {
-        codePropC.setValue(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+        if (codePropC.getValue() === '') {
+            codePropC.setValue(Blockly.propc.workspaceToCode(Blockly.mainWorkspace));
+        }
         codePropC.gotoLine(0);
     }
 }
