@@ -149,21 +149,25 @@ var showInfo = function (data) {
     $("#project-icon").html('<img src="' + cdnUrl + projectBoardIcon[data['board']] + '"/>');
 };
 
-function generateBlockId() {
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var blockId = 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.round(Math.random()*(chars.length-1));
-        return chars[r];
-    });
+function generateBlockId(nonce) {
+    var blockId = btoa(nonce).replace(/=/g, '');
+    var l = blockId.length;
+    if (l < 20) {
+        blockId = 'zzzzzzzzzzzzzzzzzzzz'.substr(l - 20) + blockId;
+    } else {
+    	blockId = blockId.substr(l - 20);
+    }
+    
     return blockId;
 };
 
 var propcAsBlocksXml = function () {
     var code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
-    code += '<block type="propc_file" id="' + generateBlockId() + '" x="100" y="100">';
+    code += '<block type="propc_file" id="' + generateBlockId(codePropC.getValue()) + '" x="100" y="100">';
     code += '<field name="FILENAME">single.c</field>';
     code += '<field name="CODE">';
-    code += encodeXml(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
+    code += btoa(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
+    //code += encodeXml(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
     code += '</field></block></xml>';
     return code;
 };
@@ -325,17 +329,13 @@ window.onbeforeunload = function () {
 };
 
 var checkLeave = function () {
-    var savedXml = projectData['code'];
-    // Wipe out the IDs for the propc code blocks since they change frequently and don't necessarily mean that the user's project has changed.
-    if (projectData['board'] === 'propcfile') {
-        savedXml = savedXml.replace(/type="propc_file" id="[A-Z0-9a-z]*"/g, 'type="propc_file" id="zzzz"');
-    }
     var currentXml = '';
+    var savedXml = projectData['code'];
     if (ignoreSaveCheck) {
         return false;
     }
     if (projectData['board'] === 'propcfile') {
-        currentXml = propcAsBlocksXml().replace(/type="propc_file" id="[A-Z0-9a-z]*"/g, 'type="propc_file" id="zzzz"');
+        currentXml = propcAsBlocksXml();
     } else {
         currentXml = getXml();
     }

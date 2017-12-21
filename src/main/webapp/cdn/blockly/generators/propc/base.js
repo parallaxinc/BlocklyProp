@@ -2297,6 +2297,9 @@ Blockly.Blocks.propc_file = {
 Blockly.propc.propc_file = function () {
     var fnme = this.getFieldValue('FILENAME');
     var code = this.getFieldValue('CODE');
+    if (code.indexOf(' ') === -1 && code.indexOf('{') === -1) {
+        code = atob(code);
+    }
     return '// RAW PROPC CODE\n//{{||}}\n' + fnme + '//{{||}}\n' + code;
 };
 
