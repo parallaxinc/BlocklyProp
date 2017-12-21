@@ -63,6 +63,8 @@ var graph_data = {
     ]
 };
 
+// Minimum BP Client/Launcher version accepted
+const minEnc64Ver = version_as_number('0.7.0');
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -197,7 +199,7 @@ function cloudCompile(text, action, successHandler) {
         alert("You can't compile an empty project");
     } else {
         $("#compile-dialog-title").text(text);
-        $("#compile-console").val('');
+        $("#compile-console").val('Compile...');
         $('#compile-dialog').modal('show');
 
 
@@ -230,10 +232,10 @@ function cloudCompile(text, action, successHandler) {
                     loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
                 }
                 if (data.success) {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
                 } else {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
             }
         }).fail(function (data) {
@@ -262,7 +264,7 @@ function compile() {
  * 
  */
 function loadInto(modal_message, compile_command, load_action) {
-    if (client_available) {
+    if (ports_available) {
         cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
             if (client_use_type === 'ws') {
@@ -296,9 +298,11 @@ function loadInto(modal_message, compile_command, load_action) {
                 });
             }
         });
+    } else if (client_available) {
+        alert("No device detected - ensure it is connected, powered, and selected in the ports list.\n\nMake sure your BlocklyPropClient is up-to-date.");
     } else {
-        alert("BlocklyPropClient not available to communicate with a microcontroller"
-                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+        alert("BlocklyPropClient not available to communicate with a microcontroller."
+                + "\n\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac).");
     }
 }
 
@@ -323,7 +327,7 @@ function serial_console() {
             newTerminal = true;
         }
 
-        if (client_available) {
+        if (ports_available) {
             var url = client_url + 'serial.connect';
             url = url.replace('http', 'ws');
             var connection = new WebSocket(url);
@@ -346,17 +350,11 @@ function serial_console() {
             };
 
             connection.onmessage = function (e) {
-                var c_buf;
-                if (version_as_number('0.7.0') > client_version) {
-                    c_buf = e.data;
-                } else {
-                    c_buf = atob(e.data);
-                }
-                //term.write(e.data);
+                var c_buf = atob(e.data);
                 if(connStrYet) {
-                    displayInTerm(e.data);
+                    displayInTerm(c_buf);
                 } else {
-                    connString += e.data;
+                    connString += c_buf;
                     if (connString.indexOf(baudrate.toString(10)) > -1) {
                         connStrYet = true;
                         document.getElementById('serial-conn-info').innerHTML = connString.trim();
@@ -528,7 +526,7 @@ function graphing_console() {
             graph.update(graph_data, graph_options);
         }
 
-        if (client_use_type !== 'ws' && client_available) {
+        if (client_use_type !== 'ws' && ports_available) {
             var url = client_url + 'serial.connect';
             url = url.replace('http', 'ws');
             var connection = new WebSocket(url);
@@ -572,7 +570,7 @@ function graphing_console() {
                 graph_reset();
             });
             
-        } else if (client_use_type === 'ws' && client_available) {
+        } else if (client_use_type === 'ws' && ports_available) {
             var msg_to_send = {
                 type: 'serial-terminal',
                 outTo: 'graph',
@@ -616,26 +614,40 @@ function graphing_console() {
 check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
-            var selected_port = $("#comPort").val();
-            $.get(client_url + "ports.json", function (data) {
-                $("#comPort").empty();
-                data.forEach(function (port) {
-                    $("#comPort").append($('<option>', {
-                        text: port
-                    }));
+            if (client_version >= minEnc64Ver) {
+                // Client is >= minimum base64-encoded version
+                $.get(client_url + "ports.json", function (data) {
+                    set_port_list(data);
+                }).fail(function () {
+                    set_port_list();
                 });
-                select_com_port(selected_port);
-                client_available = true;
-            }).fail(function () {
-                $("#comPort").empty();
-                $("#comPort").append($('<option>', {
-                    text: 'Searching...'
-                }));
-                select_com_port(selected_port);
-                client_available = false;
-            });
+            } else {
+                // else keep port list clear (searching...)
+                set_port_list();
+            }    
         }
     }
+};
+
+// set communication port list
+//   leave data unspecified when searching
+set_port_list = function (data = 'searching') {
+    var selected_port = $("#comPort").val();
+    $("#comPort").empty();
+    if (typeof(data) == 'object') {
+        data.forEach(function (port) {
+            $("#comPort").append($('<option>', {
+                text: port
+            }));
+        });
+        ports_available = true;
+    } else {
+        $("#comPort").append($('<option>', {
+            text: (data === 'searching') ? 'Searching...' : 'No devices found'
+        }));
+        ports_available = false;
+    };
+    select_com_port(selected_port);
 };
 
 select_com_port = function (com_port) {
@@ -650,6 +662,7 @@ select_com_port = function (com_port) {
 $(document).ready(function () {
     check_com_ports();
 });
+
 getComPort = function () {
     return $('#comPort').find(":selected").text();
 };
