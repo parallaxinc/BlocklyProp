@@ -63,6 +63,8 @@ var graph_data = {
     ]
 };
 
+const minEnc64Ver = version_as_number('0.7.0');
+
 
 /**
  * Switch the visible pane when a tab is clicked.
@@ -197,7 +199,7 @@ function cloudCompile(text, action, successHandler) {
         alert("You can't compile an empty project");
     } else {
         $("#compile-dialog-title").text(text);
-        $("#compile-console").val('');
+        $("#compile-console").val('Compile...');
         $('#compile-dialog').modal('show');
 
 
@@ -230,10 +232,10 @@ function cloudCompile(text, action, successHandler) {
                     loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
                 }
                 if (data.success) {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
                 } else {
-                    $("#compile-console").val(data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
             }
         }).fail(function (data) {
@@ -346,17 +348,12 @@ function serial_console() {
             };
 
             connection.onmessage = function (e) {
-                var c_buf;
-                if (version_as_number('0.7.0') > client_version) {
-                    c_buf = e.data;
-                } else {
-                    c_buf = atob(e.data);
-                }
+                var c_buf = (client_version >= minEnc64Ver) ? atob(e.data) : e.data;
                 //term.write(e.data);
                 if(connStrYet) {
-                    displayInTerm(e.data);
+                    displayInTerm(c_buf);
                 } else {
-                    connString += e.data;
+                    connString += c_buf;
                     if (connString.indexOf(baudrate.toString(10)) > -1) {
                         connStrYet = true;
                         document.getElementById('serial-conn-info').innerHTML = connString.trim();

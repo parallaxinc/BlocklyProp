@@ -26,6 +26,7 @@ var updateTermInterval = null;
 var bufferAlert = false;
 var scrollerTimeout = null;
 
+
 $(document).ready(function () {
 
     fontSize = $('#serial_console').css('font-size');
@@ -51,7 +52,11 @@ $(document).ready(function () {
         if (keycode === 8 || keycode === 13) {
 
             if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
-                active_connection.send(String.fromCharCode(keycode));
+                if (client_version >= minEnc64Ver) {
+                    active_connection.send(btoa(String.fromCharCode(keycode)));
+                } else {
+                    active_connection.send(String.fromCharCode(keycode));
+                }
                 if (trap_echos) {
                     echo_trap.push(keycode);
                 }
@@ -80,7 +85,11 @@ $(document).ready(function () {
         var charcode = e.charCode;
 
         if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
-            active_connection.send(String.fromCharCode(charcode));
+            if (client_version >= minEnc64Ver) {
+                active_connection.send(btoa(String.fromCharCode(charcode)));
+            } else {
+                active_connection.send(String.fromCharCode(charcode));
+            }
             if (trap_echos) {
                 echo_trap.push(charcode);
             }
