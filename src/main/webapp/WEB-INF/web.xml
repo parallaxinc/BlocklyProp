@@ -99,15 +99,18 @@
     <listener>
         <listener-class>com.parallax.server.blocklyprop.config.RestAPIVisualizeBootstrap</listener-class>
     </listener>
+    
     <servlet>
         <servlet-name>vapi_servlet</servlet-name>
         <servlet-class>com.cuubez.visualizer.servlet.VzHttpServletDispatcher</servlet-class>
     </servlet>
+    
     <!-- URL of the visual REST API documentation -->
     <servlet-mapping>
         <servlet-name>vapi_servlet</servlet-name>
         <url-pattern>/apidoc</url-pattern>
     </servlet-mapping>
+    
     <!-- Monitor -->
     <listener>
         <description>Add Metrics to context</description>
