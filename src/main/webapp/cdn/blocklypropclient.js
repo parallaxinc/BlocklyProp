@@ -27,7 +27,6 @@ var client_ws_heartbeat_interval = null;
 
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
-var check_ws_client_timeout = null;   // unused?  safe to delete?
         
 $(document).ready(function () {
     find_client();
@@ -37,7 +36,6 @@ var find_client = function () {
     if (check_ws_socket_timeout) {
         //Clear timeout if it exists; without this, back-to-back find_client() calls seem to occur
         clearTimeout(check_ws_socket_timeout);
-        check_ws_client_timeout = null;
     }
     
     establish_socket();
