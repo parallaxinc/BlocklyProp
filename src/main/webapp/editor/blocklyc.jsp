@@ -1765,6 +1765,7 @@
                         </table>
                     </div>
                     <div class="modal-footer clearfix">
+<<<<<<< HEAD
                         <button type="button" id="btn-graph-play" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></button>&nbsp;
                         <button type="button" id="btn-graph-snapshot" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-success btn-circle pull-left" onclick="downloadGraph();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M1.5,13.5 L.5,12.5 .5,5.5 1.5,4.5 2.5,4.5 4,3 7,3 8.5,4.5 12.5,4.5 13.5,5.5 13.5,12.5 12.5,13.5 Z M 2,9 A 4,4,0,0,0,10,9 A 4,4,0,0,0,2,9 Z M 4.5,9 A 1.5,1.5,0,0,0,7.5,9 A 1.5,1.5,0,0,0,4.5,9 Z M 10.5,6.5 A 1,1,0,0,0,13.5,6.5 A 1,1,0,0,0,10.5,6.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;" fill-rule="evenodd"/></svg></button>&nbsp;
                         <button type="button" id="btn-graph-csv" data-toggle="tooltip" title="" data-placement="bottom" class="btn btn-success btn-circle pull-left" onclick="downloadCSV();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M2,.5 L2,13.5 12,13.5 12,7.5 5.5,7.5 5.5,.5 Z M 8,1.5 L8,5 11,5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;" fill-rule="evenodd"/></svg></button>
@@ -1941,6 +1942,12 @@
                                 <!-- <li><a href="#" onmouseup="showOS('Linux');">Linux</a></li> -->
                             </ul>
                         </div>
+=======
+                        <button type="button" id="btn-graph-play" data-toggle="tooltip" title="Pause/Resume the graph" data-placement="bottom" class="btn btn-primary btn-circle pull-left" onclick="graph_play();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg></button>&nbsp;
+                        <button type="button" id="btn-graph-snapshot" data-toggle="tooltip" title="Download a snapshot of the graph" data-placement="bottom" class="btn btn-success btn-circle pull-left" onclick="downloadGraph();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M1.5,13.5 L.5,12.5 .5,5.5 1.5,4.5 2.5,4.5 4,3 7,3 8.5,4.5 12.5,4.5 13.5,5.5 13.5,12.5 12.5,13.5 Z M 2,9 A 4,4,0,0,0,10,9 A 4,4,0,0,0,2,9 Z M 4.5,9 A 1.5,1.5,0,0,0,7.5,9 A 1.5,1.5,0,0,0,4.5,9 Z M 10.5,6.5 A 1,1,0,0,0,13.5,6.5 A 1,1,0,0,0,10.5,6.5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;" fill-rule="evenodd"/></svg></button>&nbsp;
+                        <button type="button" id="btn-graph-csv" data-toggle="tooltip" title="Download graph data as CSV" data-placement="bottom" class="btn btn-success btn-circle pull-left" onclick="downloadCSV();"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M2,.5 L2,13.5 12,13.5 12,7.5 5.5,7.5 5.5,.5 Z M 8,1.5 L8,5 11,5 Z" style="stroke:#fff;stroke-width:1;fill:#fff;" fill-rule="evenodd"/></svg></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="editor.button.close" /></button>
+>>>>>>> 2017-1219
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

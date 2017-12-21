@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.dbcp2.ConnectionFactory;
 import org.apache.commons.dbcp2.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp2.PoolableConnection;
 import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.dbcp2.PoolingDataSource;
+
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
@@ -53,6 +55,7 @@ public class DataSourceSetup {
     public static PoolingDataSource connect(Configuration configuration)
             throws ClassNotFoundException {
         
+        // Database connection details drawn from a configuratipn file
         String driver = configuration.getString("database.driver");
         String url = configuration.getString("database.url");
         String username = configuration.getString("database.username");
@@ -74,15 +77,27 @@ public class DataSourceSetup {
         // using the connect string passed in the command line
         // arguments.
         //
-        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(url, username, password);
+        ConnectionFactory connectionFactory 
+                = new DriverManagerConnectionFactory(url, username, password);
 
         //
         // Next we'll create the PoolableConnectionFactory, which wraps
         // the "real" Connections created by the ConnectionFactory with
         // the classes that implement the pooling functionality.
         //
-        PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
+        PoolableConnectionFactory poolableConnectionFactory 
+                = new PoolableConnectionFactory(connectionFactory, null);
+        
+        // Sets a query to submit to the database to validate that there is
+        // an actual connection available to the database
         poolableConnectionFactory.setValidationQuery("SELECT 1");
+        
+        // Set the time to wait (seconds) before giving up on the validation query
+        poolableConnectionFactory.setValidationQueryTimeout(10);
+        
+        // Sets the maximum lifetime, in milliseconds, of a connection after
+        // which the connection will always fail activation, passivation and
+        // validation
         poolableConnectionFactory.setMaxConnLifetimeMillis(5000);
 
         //
@@ -97,10 +112,8 @@ public class DataSourceSetup {
         // Set the factory's pool property to the owning pool
         poolableConnectionFactory.setPool(connectionPool);
 
-        //
         // Finally, we create the PoolingDriver itself,
         // passing in the object pool we created.
-        //
         PoolingDataSource<PoolableConnection> dataSourceInstance
                 = new PoolingDataSource<>(connectionPool);
 

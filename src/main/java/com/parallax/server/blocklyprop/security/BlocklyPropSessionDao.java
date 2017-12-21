@@ -23,13 +23,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Session persistence manager
+ * 
  * @author Michel
  */
 public class BlocklyPropSessionDao implements SessionDAO {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(SessionServiceImpl.class);
 
+    /**
+     * 
+     * @param session
+     * @return 
+     */
     @Override
     public Serializable create(Session session) {
         LOG.debug("Create BlocklyProp session");
@@ -45,11 +51,17 @@ public class BlocklyPropSessionDao implements SessionDAO {
         simpleSession.setId(uuid);
         SessionServiceImpl.getSessionService().create(convert(simpleSession));
         LOG.debug("Session timeout is: {}", simpleSession.getTimeout());
-        LOG.debug("Creating session: {}", simpleSession.getId());
+        LOG.info("Creating session: {}", simpleSession.getId());
 
         return uuid;
     }
 
+    /**
+     * 
+     * @param sessionId
+     * @return
+     * @throws UnknownSessionException 
+     */
     @Override
     public Session readSession(Serializable sessionId) throws UnknownSessionException {
         LOG.debug("Reading session: {}", sessionId);
@@ -72,6 +84,11 @@ public class BlocklyPropSessionDao implements SessionDAO {
         }
     }
 
+    /**
+     * 
+     * @param session
+     * @throws UnknownSessionException 
+     */
     @Override
     public void update(Session session) throws UnknownSessionException {
         LOG.debug("Update session: {}", session.getId());
@@ -86,12 +103,20 @@ public class BlocklyPropSessionDao implements SessionDAO {
         }
     }
 
+    /**
+     * 
+     * @param session 
+     */
     @Override
     public void delete(Session session) {
         LOG.debug("Removing session {}", session.getId());
         SessionServiceImpl.getSessionService().deleteSession(session.getId().toString());
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public Collection<Session> getActiveSessions() {
         LOG.debug("Getting all active sessions");
@@ -132,6 +157,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
 
     /***
      * Convert a SessionRecord object to a Session object
+     * 
      * @param sessionRecord
      * @return 
      */
