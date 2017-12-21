@@ -1935,7 +1935,6 @@ Blockly.Names.prototype.safeName_ = function (name) {
     return name;
 };
 
-
 // polyfill that removes duplicates from an array and sorts it
 // From: https://stackoverflow.com/questions/9229645/remove-duplicates-from-javascript-array
 function uniq_fast(a) {
@@ -1971,6 +1970,7 @@ function uniq_fast(a) {
         return tmpOut;
     }
 }
+
 /**
  * @license
  * Visual Blocks Editor
@@ -3206,3 +3206,4 @@ $(document).ready(function () {
         }
     }
 });
+
