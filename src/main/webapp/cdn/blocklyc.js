@@ -329,7 +329,7 @@ function cloudCompile(text, action, successHandler) {
                 alert("BlocklyProp was unable to compile your project:\n" + message
                     + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
-                var loadWaitMsg = (action !== 'compile') ? '\nDownloading...' : '';
+                var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
                 $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 if (data.success) {
                     successHandler(data, terminalNeeded);
@@ -390,7 +390,27 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
                 if (client_version >= minOptionVer) {
                     //Request load with options from BlocklyProp Client
                     $.post(client_url + 'load.action', {option: load_option, action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
-                        $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                        //Replace response message's consecutive white space with a new-line, then split at new lines
+                        var message = loaddata.message.replace(/\s{2,}/g, '\n').split('\n');
+                        //If responses have codes, check for all success codes (< 100)
+                        var success = true;
+                        var coded = (load_option === "CODE" || load_option === "CODE_VERBOSE");
+                        if (coded) {
+                            message.forEach(function(x){success = success && x.substr(0,3) < 100});
+                        }
+                        //Display results
+                        var result = '';
+                        if (success && coded) {
+                            //Success! Keep it simple
+                            result = ' Succeeded.';
+                        } else {
+                            //Failed (or not coded); Show the details
+                            var error = [];
+                            message.forEach(function(x){error.push(x.substr((coded) ? 4 : 0))});
+                            result = ((coded) ? ' Failed!' : "") + '\n\n-------- loader messages --------\n' + error.join('\n');
+                        }
+
+                        $("#compile-console").val($("#compile-console").val() + result);
 
                         // Scoll automatically to the bottom after new data is added
                         document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
