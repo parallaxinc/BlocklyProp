@@ -86,6 +86,11 @@ public class ConfirmServlet extends HttpServlet {
             try {
                 // Validate the email and token with the Cloud Session server
                 if (cloudSessionLocalUserService.doConfirm(email, token)) {
+
+                    // Add a user record to the blocklyprop database
+                    // Long idCloudSessionUser = 0L;
+                    // userDao.create(idCloudSessionUser);
+                            
                     // req.getRequestDispatcher("WEB-INF/servlet/confirm/confirmed.jsp").forward(req, resp);
                     showTextilePage(req, resp, ConfirmPage.CONFIRMED);
                 } else {
