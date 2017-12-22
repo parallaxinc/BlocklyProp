@@ -35,7 +35,7 @@
         <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
 
         <title>BlocklyProp</title>
-        <%--
+
         <!-- JavaScript libraries -->
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/chartist.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>"></script>
@@ -78,7 +78,7 @@
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
 
 
-        
+        <%--        
         <!-- Minified/Compressed versions of the above files -->
         <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_libs.js"/>"></script>
@@ -88,8 +88,9 @@
         <link type="text/css" href="<url:getCdnUrl url="/compressed/propc_styles.css"/>" rel="stylesheet" />
         --%>
         
+        <%--        
         <%@ include file="/WEB-INF/includes/jsheaders.jsp"%>
-        
+        --%>
     </head>
     
     <body onload="blocklyReady();">
