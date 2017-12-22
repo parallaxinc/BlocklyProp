@@ -635,12 +635,11 @@ var findOne = function (haystack, arr) {
 
 function initToolbox(profileName, peripherals) {
     filterToolbox(profileName, peripherals);
-    isPropC = (profileName === 'propcfile' ? true : false);
     Blockly.inject('content_blocks', {
         toolbox: document.getElementById('toolbox'),
         trashcan: true,
         media: cdnUrl + 'blockly/media/',
-        readOnly: isPropC,
+        readOnly: (profileName === 'propcfile' ? true : false),
         //path: cdnUrl + 'blockly/',
         comments: false,
         zoom: {

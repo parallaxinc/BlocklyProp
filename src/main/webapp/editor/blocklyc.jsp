@@ -77,14 +77,19 @@
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
 
-        <%--
+
+        <%--        
         <!-- Minified/Compressed versions of the above files -->
         <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_libs.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_setups.min.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_cores.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/compressed/propc_gens.min.js"/>"></script>
-        <link href="<url:getCdnUrl url="/compressed/propc_styles.css"/>" rel="stylesheet" type="text/css" />
+        <link type="text/css" href="<url:getCdnUrl url="/compressed/propc_styles.css"/>" rel="stylesheet" />
+        --%>
+        
+        <%--        
+        <%@ include file="/WEB-INF/includes/jsheaders.jsp"%>
         --%>
     </head>
     
