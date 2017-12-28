@@ -257,6 +257,7 @@
                                         <block type="math_bitwise"></block>
                                         <block type="logic_operation"></block>
                                         <block type="logic_negate"></block>
+                                        <block type="perens"></block>
                                         <block type="logic_compare"></block>
                                         <block type="map_value"></block>
                                         <block type="math_advanced"></block>
@@ -1346,7 +1347,15 @@
                                                 </block>
                                             </value>
                                         </block>
-                                        <block type="sound_init" exclude="activity-board" experimental="true"></block>
+                                        <block type="sound_init" include="heb" experimental="true">
+                                            <field name="PINL">9</field>
+                                            <field name="PINR">10</field>
+                                        </block>
+                                        <block type="sound_init" include="activity-board" experimental="true">
+                                            <field name="PINL">26</field>
+                                            <field name="PINR">27</field>
+                                        </block>                                        
+                                        <block type="sound_init" exclude="activity-board,heb" experimental="true"></block>
                                         <block type="sound_play" experimental="true"></block>
                                     </category>
                                     <category name="120" key="category_audio_audio" include="activity-board">
