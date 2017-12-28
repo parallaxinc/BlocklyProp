@@ -1376,9 +1376,9 @@ Blockly.propc.sound_play = function () {
         Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
         Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';
         if (projectData['board'] === 'activity-board') {
-            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(26, 27)';
+            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(26, 27);';
         } else if (projectData['board'] === 'heb') {
-            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(9, 10)';
+            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(9, 10);';
         }
     }
 
