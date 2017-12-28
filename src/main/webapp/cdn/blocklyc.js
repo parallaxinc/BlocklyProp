@@ -203,10 +203,16 @@ var prettyCode = function (raw_code) {
             .replace(/serial \* /g, "serial *")
             .replace(/colorPal \* /g, "colorPal *")
             .replace(/ws2812 \* /g, "ws2812 *")
+            .replace(/i2c \* /g, "i2c *")
+            .replace(/sound \* /g, "sound *")
+            .replace(/FILE \* /g, "FILE* ")
     
             // improve the way functions and arrays are rendered
             .replace(/\)\s*[\n\r]\s*{/g,") {")
-            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, "[$1] = {$2};");
+            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, function (str, m1, m2) {
+                    m2 = m2.replace(/\s/g, '').replace(/,/g, ', ');
+                    return "[" + m1 + "] = {" + m2 + "};";
+                });
     
     codePropC.setValue(raw_code);
     codePropC.gotoLine(0);
@@ -229,6 +235,7 @@ function init(blockly) {
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
     codePropC.getSession().setTabSize(2);
+    codePropC.$blockScrolling = Infinity;
     codePropC.setReadOnly(true);
 
     codeXml = ace.edit("code-xml");

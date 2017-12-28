@@ -177,16 +177,16 @@ Blockly.Blocks.console_print_multiple = {
         var value = JSON.parse(container.getAttribute('options'));
         var divs = JSON.parse(container.getAttribute('divisors'));
         this.optionList_ = value;
-        
+
         var places = [];
         var digits = [];
-        this.specDigits_ = false;        
+        this.specDigits_ = false;
         if (container.getAttribute('places') || container.getAttribute('digits')) {
             this.specDigits_ = true;
             places = JSON.parse(container.getAttribute('places'));
             digits = JSON.parse(container.getAttribute('digits'));
         }
-        
+
         for (var i = 0; i < this.optionList_.length; i++) {
             var label = 'decimal number';
             var chk = 'Number';
@@ -230,30 +230,30 @@ Blockly.Blocks.console_print_multiple = {
                             ['1,000,000', '1000000']
                         ]), 'DIV' + i)
                         .appendField('digits')
-                        .appendField(new Blockly.FieldTextInput('', function(text) {
-                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
-                                return text || '';
-                            }), 'DIGIT' + i)
+                        .appendField(new Blockly.FieldTextInput('', function (text) {
+                            text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                            return text || '';
+                        }), 'DIGIT' + i)
                         .appendField('places')
-                        .appendField(new Blockly.FieldTextInput('', function(text) {
-                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
-                                return text || '';
-                            }), 'PLACE' + i);
+                        .appendField(new Blockly.FieldTextInput('', function (text) {
+                            text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                            return text || '';
+                        }), 'PLACE' + i);
                 this.setFieldValue(divs[i] || '100', 'DIV' + i);
                 this.setFieldValue(places[i] || '', 'PLACE' + i);
-                this.setFieldValue(digits[i] || '', 'DIGIT' + i);                
-            } else if (this.specDigits_ &&  (this.optionList_[i] === 'hex' || 
-                            this.optionList_[i] === 'dec' || 
-                            this.optionList_[i] === 'bin')) {
+                this.setFieldValue(digits[i] || '', 'DIGIT' + i);
+            } else if (this.specDigits_ && (this.optionList_[i] === 'hex' ||
+                    this.optionList_[i] === 'dec' ||
+                    this.optionList_[i] === 'bin')) {
                 this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField(label, 'TYPE' + i)
                         .appendField('digits')
-                        .appendField(new Blockly.FieldTextInput('', function(text) {
-                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
-                                return text || '';
-                            }), 'DIGIT' + i);
+                        .appendField(new Blockly.FieldTextInput('', function (text) {
+                            text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                            return text || '';
+                        }), 'DIGIT' + i);
                 this.setFieldValue(digits[i] || '', 'DIGIT' + i);
             } else {
                 this.appendValueInput('PRINT' + i)
@@ -368,30 +368,30 @@ Blockly.Blocks.console_print_multiple = {
                             ['1,000,000', '1000000']
                         ]), 'DIV' + i)
                         .appendField('digits')
-                        .appendField(new Blockly.FieldTextInput('', function(text) {
-                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
-                                return text || '';
-                            }), 'DIGIT' + i)
+                        .appendField(new Blockly.FieldTextInput('', function (text) {
+                            text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                            return text || '';
+                        }), 'DIGIT' + i)
                         .appendField('places')
-                        .appendField(new Blockly.FieldTextInput('', function(text) {
-                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
-                                return text || '';
-                            }), 'PLACE' + i);
+                        .appendField(new Blockly.FieldTextInput('', function (text) {
+                            text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                            return text || '';
+                        }), 'PLACE' + i);
                 this.setFieldValue(divs[i] || '100', 'DIV' + i);
                 this.setFieldValue(places[i] || '', 'PLACE' + i);
                 this.setFieldValue(digits[i] || '', 'DIGIT' + i);
-            } else if (this.specDigits_ &&  (this.optionList_[i] === 'hex' || 
-                            this.optionList_[i] === 'dec' || 
-                            this.optionList_[i] === 'bin')) {
+            } else if (this.specDigits_ && (this.optionList_[i] === 'hex' ||
+                    this.optionList_[i] === 'dec' ||
+                    this.optionList_[i] === 'bin')) {
                 printInput = this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField(label, 'TYPE' + i)
                         .appendField('digits')
-                        .appendField(new Blockly.FieldTextInput('', function(text) {
-                                text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
-                                return text || '';
-                            }), 'DIGIT' + i);
+                        .appendField(new Blockly.FieldTextInput('', function (text) {
+                            text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
+                            return text || '';
+                        }), 'DIGIT' + i);
                 this.setFieldValue(digits[i] || '', 'DIGIT' + i);
             } else {
                 printInput = this.appendValueInput('PRINT' + i)
@@ -528,7 +528,7 @@ Blockly.propc.console_print_multiple = function () {
     var code = '';
     var initBlock = null;
     var errorString = '';
-    
+
     switch (this.type) {
         case 'console_print_multiple':
             code += 'print("';
@@ -613,7 +613,7 @@ Blockly.propc.console_print_multiple = function () {
         code += '\\r';
     }
     code += '"' + varList + ');\n';
-    
+
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (initBlock && allBlocks.indexOf(initBlock) === -1) {
         code = errorString;
@@ -621,7 +621,7 @@ Blockly.propc.console_print_multiple = function () {
     if (this.type === 'wx_print_multiple' && allBlocks.indexOf('Simple WX initialize') > -1) {
         code = '// ERROR: You cannot use Advanced WX blocks with Simple WX blocks!';
     }
-    
+
     return code;
 };
 
@@ -827,7 +827,7 @@ Blockly.Blocks.serial_open = {
         this.otherBaud = false;
         this.otherMode = false;
         this.serialPin = this.getFieldValue('RXPIN') + ',' + this.getFieldValue('TXPIN');
-        this.onchange({oldXml:true});
+        this.onchange({oldXml: true});
     },
     onchange: function (event) {
         this.serialPin = this.getFieldValue('RXPIN') + ',' + this.getFieldValue('TXPIN');
@@ -863,7 +863,7 @@ Blockly.Blocks.serial_open = {
     },
     setToMode: function (details) {
         if (!details) {
-            var details = ['FALSE','FALSE', 'FALSE', 'FALSE'];
+            var details = ['FALSE', 'FALSE', 'FALSE', 'FALSE'];
         }
         this.removeInput('MODE');
         this.appendDummyInput('MODE')
@@ -893,7 +893,7 @@ Blockly.Blocks.serial_open = {
             this.otherBaud = true;
             this.setToOther(br);
         }
-        var ck_bits = ['FALSE','FALSE', 'FALSE', 'FALSE'];
+        var ck_bits = ['FALSE', 'FALSE', 'FALSE', 'FALSE'];
         var otherMode = false;
         for (var k = 0; k < 4; k++) {
             ck_bits[k] = xmlElement.getAttribute('ck_bit' + k.toString(10));
@@ -3143,7 +3143,7 @@ Blockly.Blocks.ws2812b_init = {
             if (func && myPin) {
                 func.call(allBlocks[x], oldPin, myPin);
                 if (fund) {
-                    fund.call(allBlocks[x], {xml:true});
+                    fund.call(allBlocks[x], {xml: true});
                 }
             } else if (func) {
                 func.call(allBlocks[x]);
@@ -5528,4 +5528,373 @@ Blockly.Blocks.xbee_configure = {
 
 Blockly.propc.xbee_configure = function () {
     return '// XBee configure is not yet ready and working';
+};
+
+Blockly.Blocks.i2c_send = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_I2C_SEND_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendValueInput("DATA")
+                .appendField("i2c SDA")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (pin) {
+                    this.sourceBlock_.checkI2cPins(null, pin, null);
+                }), "SDA")
+                .appendField("SCL")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (pin) {
+                    this.sourceBlock_.checkI2cPins(null, null, pin);
+                }), "SCL")
+                .appendField(" send")
+                .appendField(new Blockly.FieldTextInput('2',
+                        Blockly.FieldTextInput.numberValidator), "COUNT")
+                .appendField("bytes of data");
+        this.appendValueInput("ADDR")
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField(new Blockly.FieldDropdown([["MSB", "1"], ["LSB", "-1"]]), "ORDER")
+                .appendField("first  to register");
+        this.appendValueInput("DEVICE")
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(new Blockly.FieldDropdown([
+                    ["length 1 byte", "1"],
+                    ["length 2 bytes", "2"],
+                    ["length 3 bytes", "3"],
+                    ["length 4 bytes", "4"]
+                ]), "ADDRCOUNT")
+                .setCheck('Number')
+                .appendField(" at address");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.pinWarn = null;
+        //this.checkI2cPins(null);
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        if (this.pinWarn) {
+            container.setAttribute('pinwarn', this.pinWarn);
+        }
+        return container;
+    },
+    domToMutation: function (container) {
+        var warnTxt = container.getAttribute('pinwarn') || null;
+        this.pinWarn = warnTxt;
+        this.setWarningText(warnTxt);
+    },
+    checkI2cPins: function (action, zda, zcl) {
+        var sda = zda || this.getFieldValue('SDA');
+        var scl = zcl || this.getFieldValue('SCL');
+        var warnTxt = 'WARNING: Both SDA and SCL must be equal to \nSDA and SCL on ';
+        warnTxt += 'other blocks if sharing \nan i2c bus, or both must be different ';
+        warnTxt += '\nif on seperate i2c busses, and SDA and SCL \nmust be different ';
+        warnTxt += 'from each other!';
+        this.pinWarn = null;
+
+        if (action === null) {
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+            for (var x = 0; x < allBlocks.length; x++) {
+                var func = allBlocks[x].checkI2cPins;
+                if (func) {
+                    var xda = allBlocks[x].getFieldValue('SDA');
+                    var xcl = allBlocks[x].getFieldValue('SCL');
+                    if (((sda === scl) || (xda === sda && xcl !== scl) ||
+                            (xda !== sda && xcl === scl) ||
+                            (xda === scl && xcl !== sda) ||
+                            (xcl === sda && xda !== scl)) &&
+                            allBlocks[x] !== this &&
+                            allBlocks[x].type !== 'i2c_busy') {
+                        this.pinWarn = warnTxt;
+                    }
+                }
+            }
+            for (var x = 0; x < allBlocks.length; x++) {
+                var func = allBlocks[x].checkI2cPins;
+                if (func) {
+                    func.call(allBlocks[x], (this.pinWarn ? true : false));
+                }
+                func = allBlocks[x].setSdaPins;
+                if (func && sda !== this.getFieldValue('SDA')) {
+                    func.call(allBlocks[x], sda, this.getFieldValue('SDA'));
+                }
+                func = allBlocks[x].setSclPins;
+                if (func && scl !== this.getFieldValue('SCL')) {
+                    func.call(allBlocks[x], scl, this.getFieldValue('SCL'));
+                }
+            }
+        } else if (action === true) {
+            this.pinWarn = warnTxt;
+        } else if (action === false) {
+            this.pinWarn = null;
+        }
+        this.setWarningText(this.pinWarn);
+    }
+};
+
+Blockly.propc.i2c_send = function () {
+    var code = (this.pinWarn ? '// ' + this.pinWarn.replace(/\n/g, '') : '');
+    var sda = this.getFieldValue('SDA');
+    var mode = '0';
+    var scl = this.getFieldValue('SCL');
+    var order = this.getFieldValue('ORDER');
+    var adct = this.getFieldValue('ADDRCOUNT');
+    var val = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_NONE) || '0';
+    var cnt = this.getFieldValue('COUNT') || '1';
+    var addr = Blockly.propc.valueToCode(this, 'ADDR', Blockly.propc.ORDER_NONE) || '0';
+    var devc = Blockly.propc.valueToCode(this, 'DEVICE', Blockly.propc.ORDER_NONE) || '0';
+
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+    for (var x = 0; x < allBlocks.length; x++) {
+        if (allBlocks[x].type === 'i2c_mode') {
+            var xcl = allBlocks[x].getFieldValue('SCL');
+            if (xcl === scl) {
+                mode = allBlocks[x].getFieldValue('MODE');
+            }
+        }
+    }
+
+    if (!this.disabled) {
+        Blockly.propc.definitions_['i2c_init' + sda] = 'i2c *i2c' + sda + ';';
+        Blockly.propc.setups_['i2c_init' + sda] = 'i2c' + sda + ' = i2c_newbus(' + sda + ', ' + scl + ', ' + mode + ');';
+    }
+
+    var bufCode = '';
+    var dType = 'Number';
+    var connBlock = this.getInput('DATA').connection.targetBlock();
+    if (connBlock) {
+        var connOutput = connBlock.outputConnection.check_;
+        if (connOutput && connOutput.toString().indexOf('String') > -1) {
+            dType = 'String';
+        }
+    }
+
+    if (dType === 'Number') {
+        Blockly.propc.definitions_['i2c_InBuf'] = 'unsigned char i2cInBuf[4] = {0, 0, 0, 0};';
+        switch (cnt) {
+            default:
+            case '4':
+                bufCode += 'i2cInBuf[3] = (' + val + ' >> 24) & 255; ';
+            case '3':
+                bufCode += 'i2cInBuf[2] = (' + val + ' >> 16) & 255; ';
+            case '2':
+                bufCode += 'i2cInBuf[1] = (' + val + ' >> 8) & 255; ';
+            case '1':
+                bufCode += 'i2cInBuf[0] = (' + val + ') & 255;';
+                break;
+        }
+        val = 'i2cInBuf';
+    }
+
+    code += 'i2c_out(i2c' + sda + ', ' + devc + ' & 0x7F, ' + addr;
+    code += ', ' + adct + ' * ' + order + ', ' + val + ', ' + cnt + ');\n';
+    code += bufCode;
+    return code;
+};
+
+Blockly.Blocks.i2c_receive = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_I2C_RECEIVE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("i2c SDA")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (pin) {
+                    this.sourceBlock_.checkI2cPins(null, pin, null);
+                }), "SDA")
+                .appendField("SCL")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (pin) {
+                    this.sourceBlock_.checkI2cPins(null, null, pin);
+                }), "SCL")
+                .appendField("receive")
+                .appendField(new Blockly.FieldTextInput('2',
+                        Blockly.FieldTextInput.numberValidator), "COUNT")
+                .appendField("bytes of data");
+        this.appendValueInput("ADDR")
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck(null)
+                .appendField(new Blockly.FieldDropdown([["MSB", "1"], ["LSB", "-1"]]), "ORDER")
+                .appendField("first  from register");
+        this.appendValueInput("DEVICE")
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(new Blockly.FieldDropdown([
+                    ["length 1 byte", "1"],
+                    ["length 2 bytes", "2"],
+                    ["length 3 bytes", "3"],
+                    ["length 4 bytes", "4"]
+                ]), "ADDRCOUNT")
+                .setCheck(null)
+                .appendField(" at address");
+        this.appendDummyInput()
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .appendField("as")
+                .appendField(new Blockly.FieldDropdown([["Decimal", "int"], ["String", "str"]]), "TYPE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.pinWarn = null;
+        //this.checkI2cPins(null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VAR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+            this.setFieldValue(newName, 'VAR');
+        }
+    },
+    mutationToDom: Blockly.Blocks['i2c_send'].mutationToDom,
+    domToMutation: Blockly.Blocks['i2c_send'].domToMutation,
+    checkI2cPins: Blockly.Blocks['i2c_send'].checkI2cPins
+};
+
+Blockly.propc.i2c_receive = function () {
+    var code = (this.pinWarn ? '// ' + this.pinWarn.replace(/\n/g, '') : '');
+    var sda = this.getFieldValue('SDA');
+    var mode = '0';
+    var scl = this.getFieldValue('SCL');
+    var order = this.getFieldValue('ORDER');
+    var adct = this.getFieldValue('ADDRCOUNT');
+    var type = this.getFieldValue('TYPE');
+    var val = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+    var cnt = this.getFieldValue('COUNT') || '1';
+    var addr = Blockly.propc.valueToCode(this, 'ADDR', Blockly.propc.ORDER_NONE) || '0';
+    var devc = Blockly.propc.valueToCode(this, 'DEVICE', Blockly.propc.ORDER_NONE) || '0';
+
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+    for (var x = 0; x < allBlocks.length; x++) {
+        if (allBlocks[x].type === 'i2c_mode') {
+            var xcl = allBlocks[x].getFieldValue('SCL');
+            if (xcl === scl) {
+                mode = allBlocks[x].getFieldValue('MODE');
+            }
+        }
+    }
+
+    if (!this.disabled) {
+        Blockly.propc.definitions_['i2c_init' + sda] = 'i2c *i2c' + sda + ';';
+        Blockly.propc.setups_['i2c_init' + sda] = 'i2c' + sda + ' = i2c_newbus(' + sda + ', ' + scl + ', ' + mode + ');';
+    }
+
+    var bufCode = val + ' = ';
+    if (type === 'str') {
+        Blockly.propc.vartype_[val] = 'char *';
+        bufCode = '';
+    } else {
+        Blockly.propc.definitions_['i2c_InBuf'] = 'unsigned char i2cInBuf[4] = {0, 0, 0, 0};';
+        val = 'i2cInBuf';
+        bufCode += '(';
+        switch (cnt) {
+            case '4':
+                bufCode += '(i2cInBuf[3] << 24) | ';
+            case '3':
+                bufCode += '(i2cInBuf[2] << 16) | ';
+            case '2':
+                bufCode += '(i2cInBuf[1] << 8) | ';
+            case '1':
+                bufCode += 'i2cInBuf[0]';
+                break;
+        }
+        bufCode += ');\n';
+    }
+
+    code += 'i2c_in(i2c' + sda + ', ' + devc + ' & 0x7F, ' + addr;
+    code += ', ' + adct + ' * ' + order + ', &' + val + ', ' + cnt + ');\n';
+    code += bufCode;
+    return code;
+};
+
+Blockly.Blocks.i2c_mode = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_I2C_MODE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput('SCLPIN')
+                .appendField("i2c SCL")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL")
+                .appendField("set mode")
+                .appendField(new Blockly.FieldDropdown([
+                    ["normal (open-collector)", "0"],
+                    ["push-pull", "1"]
+                ]), "MODE");
+        this.warnFlag = 0;
+        this.pinWarn = null;
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    onchange: function (event) {
+        // only fire when a block got deleted or created, the SCL field was changed
+        if (event.oldXml || event.type === Blockly.Events.CREATE || 
+                event.name === 'SCL' || event.name === 'SDA'|| 
+                event.blockId === this.id || this.warnFlag > 0) {
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+            this.warnFlag--;
+            var sda = null;
+            this.pinWarn = 'WARNING: SCL on this block must match SCL on at least one i2c receieve or i2c send block!';
+            for (var x = 0; x < allBlocks.length; x++) {
+                if (allBlocks[x].type === 'i2c_send' || allBlocks[x].type === 'i2c_receive') {
+                    if (allBlocks[x].getFieldValue('SCL') === this.getFieldValue('SCL')) {
+                        if (sda && sda !== allBlocks[x].getFieldValue('SDA')) {
+                            this.pinWarn = 'WARNING: Both SDA and SCL must match SDA and SCL on other i2c blocks if sharing ';
+                            this.pinWarn += 'an i2c bus, or both must be different if on seperate i2c busses!';
+                            sda = '-1';
+                        } else {
+                            sda = allBlocks[x].getFieldValue('SDA');
+                            this.pinWarn = null;
+                        }
+                    }
+                    if (allBlocks[x].getFieldValue('SCL') === allBlocks[x].getFieldValue('SDA')) {
+                        this.pinWarn = 'WARNING: SDA and SCL cannot be on the same pin!';
+                        x = allBlocks.length + 1;
+                    }
+                }
+            this.setWarningText(this.pinWarn);
+            }
+        }
+    }
+};
+
+
+Blockly.propc.i2c_mode = function () {
+    return '';
+};
+
+Blockly.Blocks.i2c_busy = {
+    helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_I2C_BUSY_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
+        this.appendDummyInput()
+                .appendField("i2c SCL")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SCL");
+        this.appendValueInput("DEVICE")
+                .setCheck('Number')
+                .appendField(" address");
+        this.appendDummyInput()
+                .appendField("busy");
+        this.setInputsInline(true);
+        this.setOutput(true, 'Number');
+        this.pinWarn = null;
+    },
+    mutationToDom: Blockly.Blocks['i2c_send'].mutationToDom,
+    domToMutation: Blockly.Blocks['i2c_send'].domToMutation,
+    onchange: Blockly.Blocks['i2c_mode'].onchange
+};
+
+Blockly.propc.i2c_busy = function () {
+    var scl = this.getFieldValue('SCL');
+    var devc = Blockly.propc.valueToCode(this, 'DEVICE', Blockly.propc.ORDER_NONE) || '0';
+    if (this.pinWarn) {
+        return '// ' + this.pinWarn;
+    } else {
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        var sda = '0';
+        for (var x = 0; x < allBlocks.length; x++) {
+            if ((allBlocks[x].type === 'i2c_send' || allBlocks[x].type === 'i2c_receive') &&
+                    allBlocks[x].getFieldValue('SCL') === this.getFieldValue('SCL')) {
+                sda = allBlocks[x].getFieldValue('SDA');
+            }
+        }
+        return ['i2c_busy(i2c' + sda + ', ' + devc + ')', Blockly.propc.ORDER_ATOMIC];
+    }
 };

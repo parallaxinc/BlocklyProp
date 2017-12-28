@@ -402,7 +402,7 @@ Blockly.Blocks.base_freqout = {
         if (op === 'true') {
             this.setToOther('other', this.moveBefore);
         }
-    }    
+    }
 };
 
 Blockly.propc.base_freqout = function () {
@@ -559,7 +559,7 @@ Blockly.Blocks.eeprom_write = {
     helpUrl: Blockly.MSG_EEPROM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_EEPROM_WRITE_TOOLTIP);
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('output'));
         this.appendValueInput("DATA")
                 .setCheck(null)
                 .appendField("EEPROM write")
@@ -632,7 +632,7 @@ Blockly.Blocks.eeprom_read = {
     helpUrl: Blockly.MSG_EEPROM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_EEPROM_READ_TOOLTIP);
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('output'));
         this.appendValueInput("ADDRESS")
                 .setCheck("Number")
                 .appendField("EEPROM read")
@@ -862,19 +862,19 @@ Blockly.Blocks.fb360_setup = {
             this.setColour(colorPalette.getColor('output'));
         }
         this._menuOptions = [['acceleration (\u00B0/s\u00B2) to', 'setAcceleration'],
-                ['max speed (\u00B0/s) to', 'setMaxSpeed'],
-                //['home to current position', ''],
-                //['home to servo zero', ''],
-                ['turn count (+/- revolutions) to', 'setTurns'],
-                ['home to position (+/- \u00B0)', 'setAngleOffset'],
-                ['kP for speed to', 'setControlSys,S360_SETTING_KPV'],
-                ['kI for speed to', 'setControlSys,S360_SETTING_KIV'],
-                ['kD for speed to', 'setControlSys,S360_SETTING_KDV'],
-                ['I for speed max to', 'setControlSys,S360_SETTING_IV_MAX'],                
-                ['kP for position to', 'setControlSys,S360_SETTING_KPA'],
-                ['kI for position to', 'setControlSys,S360_SETTING_KIA'],
-                ['kD for position to', 'setControlSys,S360_SETTING_KDA'],
-                ['I for position max to', 'setControlSys,S360_SETTING_IA_MAX']];
+            ['max speed (\u00B0/s) to', 'setMaxSpeed'],
+            //['home to current position', ''],
+            //['home to servo zero', ''],
+            ['turn count (+/- revolutions) to', 'setTurns'],
+            ['home to position (+/- \u00B0)', 'setAngleOffset'],
+            ['kP for speed to', 'setControlSys,S360_SETTING_KPV'],
+            ['kI for speed to', 'setControlSys,S360_SETTING_KIV'],
+            ['kD for speed to', 'setControlSys,S360_SETTING_KDV'],
+            ['I for speed max to', 'setControlSys,S360_SETTING_IV_MAX'],
+            ['kP for position to', 'setControlSys,S360_SETTING_KPA'],
+            ['kI for position to', 'setControlSys,S360_SETTING_KIA'],
+            ['kD for position to', 'setControlSys,S360_SETTING_KDA'],
+            ['I for position max to', 'setControlSys,S360_SETTING_IA_MAX']];
         this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendValueInput("VALUE")
                 .appendField('configure')
@@ -933,14 +933,15 @@ Blockly.Blocks.fb360_setup = {
 
 Blockly.propc.fb360_setup = function () {
     var param = this.getFieldValue("PARAM");
-    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';;
+    var value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
+    ;
     var pin = '0';
     if (this.otherPin) {
         pin = Blockly.propc.valueToCode(this, 'PIN', Blockly.propc.ORDER_ATOMIC) || '0';
     } else {
         pin = this.getFieldValue("PIN");
     }
-    
+
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Feedback 360\u00b0 servo initialize') > -1) {
         if (param.indexOf(',') > -1) {
@@ -965,8 +966,8 @@ Blockly.Blocks.fb360_set = {
             this.setColour(colorPalette.getColor('output'));
         }
         this._menuOptions = [['set speed to (+/- \u00B0/s)', 'speed'],
-                ['set position to (+/- \u00B0)', 'angle'],
-                ['change position by (+/- \u00B0)', 'goto']];
+            ['set position to (+/- \u00B0)', 'angle'],
+            ['change position by (+/- \u00B0)', 'goto']];
         this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendValueInput('VALUE')
                 .setCheck('Number')
@@ -1049,10 +1050,10 @@ Blockly.Blocks.fb360_status = {
         this.addPinMenu("Feedback 360\u00b0 servo PIN", 'VALUE');
         this.appendDummyInput('VALUE')
                 .appendField(new Blockly.FieldDropdown([
-                        ['is turning a speed','S360_SPEED'],
-                        ['is moving to a position', 'S360_GOTO'],
-                        ['is holding at a position', 'S360_POSITION']
-                    ]), "STATUS");
+                    ['is turning a speed', 'S360_SPEED'],
+                    ['is moving to a position', 'S360_GOTO'],
+                    ['is holding at a position', 'S360_POSITION']
+                ]), "STATUS");
         this.setOutput(true, "Number");
         this.setInputsInline(true);
     },
@@ -1216,6 +1217,179 @@ Blockly.propc.pwm_stop = function () {
     return code;
 };
 
+// ----------------- Sound audio player blocks ---------------------------------
+Blockly.Blocks.sound_init = {
+    helpUrl: Blockly.MSG_AUDIO_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_SOUND_INIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('io'));
+        this.appendDummyInput()
+                .appendField("sound initialize left/+ PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINL")
+                .appendField("right/\u2212 PIN")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINR");
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.sound_init = function () {
+    if (!this.disabled) {
+        var l_pin = this.getFieldValue('PINL');
+        var r_pin = this.getFieldValue('PINR');
+        Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(' + l_pin + ', ' + r_pin + ')';
+    }
+};
+
+Blockly.Blocks.sound_play = {
+    helpUrl: Blockly.MSG_AUDIO_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_SOUND_PLAY_TOOLTIP);
+        this.actionMenuItems = [
+            ["set frequency", "freq"],
+            ["set volume", "volume"],
+            ["set waveform", "wave"],
+            ["stop", "stop"]
+        ];
+        this.setColour(colorPalette.getColor('io'));
+        this.addChannelMenu("sound channel", 'VALUE');
+        this.appendValueInput("VALUE")
+                .setCheck(null)
+                .appendField(' ')
+                .appendField(new Blockly.FieldDropdown(this.actionMenuItems,
+                        function (act) {
+                            this.sourceBlock_.setSoundAction(act);
+                        }), "ACTION");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+        this.waveInput = false;
+    },
+    addChannelMenu: function (label, moveBefore) {
+        this.appendDummyInput('SET_CHANNEL')
+                .appendField(label, 'LABEL')
+                .appendField(new Blockly.FieldDropdown([
+                    ['1', '1'],
+                    ['2', '2'],
+                    ['3', '3'],
+                    ['4', '4'],
+                    ['other', 'other']
+                ], function (op) {
+                    this.sourceBlock_.setToOther(op, moveBefore);
+                }), "CHANNEL");
+        this.moveBefore = moveBefore;
+        this.otherChannel = false;
+    },
+    setSoundAction: function (act) {
+        if (act !== this.getFieldValue('ACTION')) {
+            if (this.getInput('VALUE')) {
+                this.removeInput('VALUE');
+            }
+            if (act === 'wave') {
+                this.appendDummyInput('VALUE')
+                        .appendField(" ")
+                        .appendField(new Blockly.FieldDropdown(this.actionMenuItems,
+                                function (act) {
+                                    this.sourceBlock_.setSoundAction(act);
+                                }), "ACTION")
+                        .appendField(new Blockly.FieldDropdown([
+                            ["sine", "SINE"],
+                            ["square", "SQUARE"],
+                            ["triangle", "TRIANGLE"],
+                            ["sawtooth", "SAW"],
+                            ["noise", "NOISE"]
+                        ]), "WAVE");
+                this.waveInput = true;
+            } else if (act === 'stop') {
+                this.appendDummyInput("VALUE")
+                        .appendField(' ')
+                        .appendField(new Blockly.FieldDropdown(this.actionMenuItems,
+                                function (act) {
+                                    this.sourceBlock_.setSoundAction(act);
+                                }), "ACTION");
+                this.waveInput = true;
+            } else {
+                this.appendValueInput("VALUE")
+                        .setCheck(null)
+                        .appendField(" ")
+                        .appendField(new Blockly.FieldDropdown(this.actionMenuItems,
+                                function (act) {
+                                    this.sourceBlock_.setSoundAction(act);
+                                }), "ACTION");
+                if (act === 'volume') {
+                    this.getInput("VALUE")
+                            .appendField('R,0,127,64', 'RANGEVALS1');
+                    this.getField('RANGEVALS1').setVisible(false);
+                }
+                this.waveInput = false;
+            }
+            this.setFieldValue(act, 'ACTION');
+        }
+    },
+    setToOther: function (op, moveBefore) {
+        if (op === 'other') {
+            this.otherChannel = true;
+            var label = this.getFieldValue('LABEL');
+            this.removeInput('SET_CHANNEL');
+            this.appendValueInput('CHANNEL')
+                    .appendField(label)
+                    .setCheck('Number')
+                    .appendField('R,1,4,1', 'RANGEVALS0');
+            this.getField('RANGEVALS0').setVisible(false);
+            if (moveBefore) {
+                this.moveInputBefore('CHANNEL', moveBefore);
+            }
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('otherchannel', this.otherChannel);
+        container.setAttribute('action', this.getFieldValue('ACTION'));
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var op = xmlElement.getAttribute('otherchannel');
+        var act = xmlElement.getAttribute('action');
+        if (op === 'true') {
+            this.setToOther('other', this.moveBefore);
+        }
+        this.setSoundAction(act);
+    }
+};
+
+Blockly.propc.sound_play = function () {
+    var channel = '';
+    if (this.otherChannel) {
+        channel = Blockly.propc.valueToCode(this, 'CHANNEL', Blockly.propc.ORDER_ATOMIC);
+    } else {
+        channel = this.getFieldValue('CHANNEL');
+    }
+    var action = this.getFieldValue('ACTION');
+    var value = '';
+    if (this.waveInput) {
+        value = this.getFieldValue('WAVE');
+    } else {
+        value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
+    }
+
+    if (!this.disabled) {
+        Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
+        Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';
+        if (projectData['board'] === 'activity-board') {
+            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(26, 27)';
+        } else if (projectData['board'] === 'heb') {
+            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(9, 10)';
+        }
+    }
+
+    if (action === 'stop') {
+        action = 'freq';
+        value = '0';
+    }
+    var code = 'sound_' + action + '(audio0, ' + channel + ', ' + value + ');';
+    return code;
+};
+
 // ----------------- .WAV file audio player blocks -----------------------------
 Blockly.Blocks.wav_play = {
     helpUrl: Blockly.MSG_AUDIO_HELPURL,
@@ -1236,7 +1410,18 @@ Blockly.propc.wav_play = function () {
     var filename = this.getFieldValue('FILENAME');
     if (!this.disabled) {
         Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
-        Blockly.propc.setups_["sd_card"] = 'int DO = 22, CLK = 23, DI = 24, CS = 25;\n\tsd_mount(DO, CLK, DI, CS);\n';
+
+        var initFound = false;
+
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        for (var x = 0; x < allBlocks.length; x++) {
+            if (allBlocks[x].type === 'sd_init') {
+                initFound = true;
+            }
+        }
+        if (!initFound) {
+            Blockly.propc.setups_["sd_card"] = 'sd_mount(22, 23, 24, 25);\n';
+        }
     }
     var code = 'wav_play("' + filename + '.wav");\n';
     return code;
@@ -1314,6 +1499,267 @@ Blockly.propc.wav_stop = function () {
     return code;
 };
 
+// ----------------- SD Card file blocks --------------------------
+Blockly.Blocks.sd_init = {
+    //helpUrl: Blockly.MSG_SD_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_SD_OPEN_CLOSE_TOOLTIP);
+        this.setColour(colorPalette.getColor('output'));
+        this.appendDummyInput()
+                .appendField("SD initialize DO")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "DO")
+                .appendField("CLK")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "CLK")
+                .appendField("DI")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "DI")
+                .appendField("CS")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital), "CS"),
+                this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.sd_init = function () {
+    var pin_do = this.getFieldValue('DO');
+    var pin_clk = this.getFieldValue('CLK');
+    var pin_di = this.getFieldValue('DI');
+    var pin_cs = this.getFieldValue('CS');
+
+    if (!this.disabled) {
+        Blockly.propc.setups_["sd_card"] = 'sd_mount(' + pin_do + ', ' + pin_clk + ', ' + pin_di + ', ' + pin_cs + ');\n';
+    }
+
+    return '';
+};
+
+Blockly.Blocks.sd_open = {
+    //helpUrl: Blockly.MSG_SD_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_SD_OPEN_CLOSE_TOOLTIP);
+        this.setColour(colorPalette.getColor('output'));
+        this.appendDummyInput("MODE")
+                .appendField("SD file open")
+                .appendField(new Blockly.FieldTextInput("MYFILE.TXT", function (fn) {
+                    fn = fn.replace(/[^A-Z0-9a-z_\.]/g, '');
+                    var fn_part = fn.split('.');
+                    if (fn_part[0].length > 8) {
+                        fn_part[0].length = 8;
+                    }
+                    if (!fn_part[1]) {
+                        fn_part[1] = 'TXT';
+                    } else if (fn_part[1].length > 3) {
+                        fn_part[1].length = 3;
+                    }
+                    return fn_part[0] + '.' + fn_part[1];
+                }), "FILENAME")
+                .appendField(new Blockly.FieldDropdown([
+                    ["as read-only", "r"],
+                    ["as read-write", "w"]
+                ]), "MODE");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.sd_open = function () {
+    var fp = this.getFieldValue('FILENAME');
+    var mode = this.getFieldValue('MODE');
+    var head = '';
+    var i = 0;
+    var initFound = false;
+
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+    for (var x = 0; x < allBlocks.length; x++) {
+        if (allBlocks[x].type === 'sd_open') {
+            i++;
+            if (allBlocks[x] === this && i === 1) {
+                head = 'FILE* ';
+            }
+        }
+        if (allBlocks[x].type === 'sd_init') {
+            initFound = true;
+        }
+    }
+
+    if (!this.disabled && !initFound) {
+        Blockly.propc.setups_["sd_card"] = 'sd_mount(22, 23, 24, 25);\n';
+    }
+
+    return head + 'fp = fopen("' + fp + '","' + mode + '");';
+};
+
+Blockly.Blocks.sd_read = {
+    //helpUrl: Blockly.MSG_SD_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_SD_READ_WRITE_TOOLTIP);
+        this.setColour(colorPalette.getColor('output'));
+        this.appendValueInput("SIZE")
+                .setCheck(null)
+                .appendField("SD file")
+                .appendField(new Blockly.FieldDropdown([
+                    ["read", "fread"],
+                    ["write", "fwrite"],
+                    ["close", "fclose"]
+                ], function (mode) {
+                    this.sourceBlock_.setSdMode(mode);
+                }), "MODE");
+        this.appendDummyInput("VALUE")
+                .appendField("bytes of")
+                .appendField(new Blockly.FieldDropdown([
+                    ["text", "TEXT"],
+                    ["an integer", "INT"]
+                ]), "TYPE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+    },
+    getVars: function () {
+        return [this.getFieldValue('VAR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+            this.setFieldValue(newName, 'VAR');
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('mode', this.getFieldValue('MODE'));
+        return container;
+    },
+    domToMutation: function (container) {
+        var mode = container.getAttribute('mode');
+        if (mode) {
+            this.setFieldValue(mode, 'MODE');
+        }
+        this.setSdMode(mode);
+    },
+    setSdMode: function (mode) {
+        this.removeInput("SIZE");
+        if (this.getInput("VALUE")) {
+            this.removeInput("VALUE");
+        }
+        if (mode === "fwrite") {
+            this.appendValueInput("SIZE");
+            this.appendValueInput("VALUE")
+                    .setCheck(null)
+                    .appendField("bytes of");
+        } else if (mode === "fread") {
+            this.appendValueInput("SIZE");
+            this.appendDummyInput("VALUE")
+                    .appendField("bytes of")
+                    .appendField(new Blockly.FieldDropdown([
+                        ["text", "TEXT"],
+                        ["an integer", "INT"]
+                    ]), "TYPE")
+                    .appendField("store in")
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'VAR');
+        } else {
+            this.appendDummyInput("SIZE");
+        }
+        this.getInput("SIZE")
+                .appendField("SD file")
+                .appendField(new Blockly.FieldDropdown([
+                    ["read", "fread"],
+                    ["write", "fwrite"],
+                    ["close", "fclose"]
+                ], function (mode) {
+                    this.sourceBlock_.setSdMode(mode);
+                }), "MODE");
+        this.setFieldValue(mode, "MODE");
+    }
+};
+
+Blockly.propc.sd_read = function () {
+    var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.ORDER_NONE) || '1';
+    var mode = this.getFieldValue('MODE');
+    var type = '';
+    var value = '';
+    var valType = 'int';
+
+    if (mode === 'fread') {
+        value = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+        type = this.getFieldValue('TYPE');
+        if (type === 'TEXT') {
+            Blockly.propc.vartype_[value] = 'char *';
+        }
+    } else if (mode === 'fwrite') {
+        value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_NONE) || '0';
+        type = 'INT';
+        var connBlock = this.getInput('VALUE').connection.targetBlock();
+        if (connBlock) {
+            var connOutput = connBlock.outputConnection.check_;
+            if (connOutput && connOutput.toString().indexOf('String') > -1) {
+                type = 'TEXT';
+            }
+        }
+    }
+    if (mode === 'fclose') {
+        return mode + '(fp);';
+    } else {
+        return mode + '(' + (type === 'INT' ? '&' : '') + value + ', 1, ' + size + ', fp);';
+    }
+};
+
+Blockly.Blocks.sd_file_pointer = {
+    //helpUrl: Blockly.MSG_SD_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_SD_FILE_POINTER_TOOLTIP);
+        this.setColour(colorPalette.getColor('output'));
+        this.appendValueInput("FP")
+                .setCheck("Number")
+                .appendField("SD file")
+                .appendField(new Blockly.FieldDropdown([
+                    ["set", "set"],
+                    ["get", "get"]
+                ], function (m) {
+                    this.sourceBlock_.setSdMode(m);
+                }), "MODE")
+                .appendField("pointer");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    mutationToDom: Blockly.Blocks['sd_read'].mutationToDom,
+    domToMutation: Blockly.Blocks['sd_read'].domToMutation,
+    setSdMode: function (m) {
+        this.removeInput('FP');
+        if (m === 'set') {
+            this.setOutput(false);
+            this.appendValueInput('FP')
+                    .setCheck("Number");
+        } else {
+            this.setOutput(true, 'Number');
+            this.appendDummyInput('FP');
+        }
+        this.getInput('FP')
+                .appendField("SD file")
+                .appendField(new Blockly.FieldDropdown([
+                    ["set", "set"],
+                    ["get", "get"]
+                ], function (m) {
+                    this.sourceBlock_.setTo(m);
+                }), "MODE")
+                .appendField("pointer");
+        this.setFieldValue(m, 'MODE');
+        var n = (m === 'get' ? false : true);
+        this.setPreviousStatement(n, "Block");
+        this.setNextStatement(n, null);
+
+    }
+};
+
+Blockly.propc.sd_file_pointer = function () {
+    if (this.getFieldValue('MODE') === 'set') {
+        var fp = Blockly.propc.valueToCode(this, 'FP', Blockly.propc.ORDER_NONE) || '0';
+        return 'fp = ' + fp + ';';
+    } else {
+        return ['fp', Blockly.propc.ORDER_ATOMIC];
+    }
+};
+
 // ----------------- Robot (drive) blocks --------------------------------------
 Blockly.Blocks.ab_drive_init = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
@@ -1324,7 +1770,7 @@ Blockly.Blocks.ab_drive_init = {
                 .appendField("Robot")
                 .appendField(new Blockly.FieldDropdown([
                     ["ActivityBot", "abdrive.h"],
-                    ["ActivityBot 360\u00b0", "abdrive360.h"], 
+                    ["ActivityBot 360\u00b0", "abdrive360.h"],
                     ["Arlo", "arlodrive.h"],
                     ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
                     this.sourceBlock_.updateShape_({"BOT": bot});
@@ -1465,24 +1911,24 @@ Blockly.Blocks.ab_drive_ramping = {
     newRobot: function (robot, type, ramp) {
         this.setWarningText(null);
         var accelMenu = [
-                    ["2000 ticks/s\u00B2", "2000"],
-                    ["1600 ticks/s\u00B2 (jerky)", "1600"],
-                    ["1200 ticks/s\u00B2", "1200"],
-                    ["800 ticks/s\u00B2 (peppy)", "800"],
-                    ["600 ticks/s\u00B2", "600"],
-                    ["400 ticks/s\u00B2 (smooth)", "400"],
-                    ["200 ticks/s\u00B2", "200"],
-                    ["100 ticks/s\u00B2 (sluggish)", "100"]
-                ];
+            ["2000 ticks/s\u00B2", "2000"],
+            ["1600 ticks/s\u00B2 (jerky)", "1600"],
+            ["1200 ticks/s\u00B2", "1200"],
+            ["800 ticks/s\u00B2 (peppy)", "800"],
+            ["600 ticks/s\u00B2", "600"],
+            ["400 ticks/s\u00B2 (smooth)", "400"],
+            ["200 ticks/s\u00B2", "200"],
+            ["100 ticks/s\u00B2 (sluggish)", "100"]
+        ];
         this.removeInput('ACCEL');
         if (robot === 'abdrive.h' || robot === 'arlodrive.h' || robot === 'abdrive360.h') {
             this.appendDummyInput('ACCEL')
-                .appendField("Robot set acceleration for")
-                .appendField(new Blockly.FieldDropdown([
-                    ["speed blocks to", "FOR_SPEED"],
-                    ["distance blocks to", "FOR_GOTO"]
-                ]), "OPS")
-                .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
+                    .appendField("Robot set acceleration for")
+                    .appendField(new Blockly.FieldDropdown([
+                        ["speed blocks to", "FOR_SPEED"],
+                        ["distance blocks to", "FOR_GOTO"]
+                    ]), "OPS")
+                    .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
             this.setFieldValue(type || 'FOR_SPEED', 'OPS');
             this.setFieldValue(ramp || '600', 'RAMPING');
             if (robot === 'arlodrive.h')
@@ -1490,11 +1936,11 @@ Blockly.Blocks.ab_drive_ramping = {
         } else if (robot === '') {
             this.setWarningText('WARNING: You must use a Robot initialize\nblock at the beginning of your program!');
             this.appendDummyInput('ACCEL')
-                .appendField("Robot set acceleration");
+                    .appendField("Robot set acceleration");
         } else {
             this.appendDummyInput('ACCEL')
-                .appendField("Robot set acceleration to")
-                .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
+                    .appendField("Robot set acceleration to")
+                    .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
             this.setFieldValue(ramp || '600', 'RAMPING');
         }
     }
@@ -1840,7 +2286,7 @@ Blockly.Blocks.activitybot_display_calibration = {
                     ["ActivityBot 360\u00b0", "abcalibrate360.h"]]), "BOT")
                 .appendField("display calibration")
                 .appendField(new Blockly.FieldDropdown([
-                    ['results', 'result'], 
+                    ['results', 'result'],
                     ['data', 'table']]), 'TYPE');
     }
 };
@@ -1854,7 +2300,7 @@ Blockly.propc.activitybot_display_calibration = function () {
     Blockly.propc.definitions_["activitybot_calibrate"] = servo + '#include "' + bot + '"';
     Blockly.propc.serial_terminal_ = true;
 
-    if(bot === 'abdrive.h') {
+    if (bot === 'abdrive.h') {
         if (this.getFieldValue('TYPE') === 'table') {
             return 'drive_displayInterpolation();\n';
         } else {
@@ -1865,7 +2311,7 @@ Blockly.propc.activitybot_display_calibration = function () {
             return 'cal_displayData();\n';
         } else {
             return 'cal_displayResults();\n';
-        }        
+        }
     }
 };
 

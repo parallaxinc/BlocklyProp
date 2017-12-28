@@ -615,6 +615,23 @@ function filterToolbox(profileName, peripherals) {
         if (experimental && inDemo !== 'demo') {
             toolboxEntry.remove();
         }
+        
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+
     });
 
 }
