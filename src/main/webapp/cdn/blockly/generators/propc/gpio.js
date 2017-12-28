@@ -1225,9 +1225,9 @@ Blockly.Blocks.sound_init = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("sound initialize left/+ PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINL")
+                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['None','-1']])), "PINL")
                 .appendField("right/\u2212 PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "PINR");
+                .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['None','-1']])), "PINR");
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
@@ -1238,6 +1238,8 @@ Blockly.propc.sound_init = function () {
         var l_pin = this.getFieldValue('PINL');
         var r_pin = this.getFieldValue('PINR');
         Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(' + l_pin + ', ' + r_pin + ')';
+        Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
+        Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';
     }
 };
 
@@ -1269,10 +1271,10 @@ Blockly.Blocks.sound_play = {
         this.appendDummyInput('SET_CHANNEL')
                 .appendField(label, 'LABEL')
                 .appendField(new Blockly.FieldDropdown([
-                    ['1', '1'],
-                    ['2', '2'],
-                    ['3', '3'],
-                    ['4', '4'],
+                    ['A', '0'],
+                    ['B', '1'],
+                    ['C', '2'],
+                    ['D', '3'],
                     ['other', 'other']
                 ], function (op) {
                     this.sourceBlock_.setToOther(op, moveBefore);
@@ -1334,7 +1336,7 @@ Blockly.Blocks.sound_play = {
             this.appendValueInput('CHANNEL')
                     .appendField(label)
                     .setCheck('Number')
-                    .appendField('R,1,4,1', 'RANGEVALS0');
+                    .appendField('R,0,3,0', 'RANGEVALS0');
             this.getField('RANGEVALS0').setVisible(false);
             if (moveBefore) {
                 this.moveInputBefore('CHANNEL', moveBefore);
@@ -1354,6 +1356,16 @@ Blockly.Blocks.sound_play = {
             this.setToOther('other', this.moveBefore);
         }
         this.setSoundAction(act);
+    },
+    onchange: function (event) {
+        //if (event.oldXml || event.type === Blockly.Events.CREATE) {
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+            if (allBlocks.indexOf('sound initialize') === -1) {
+                this.setWarningText('WARNING: You must use a sound initialize\nblock at the beginning of your program!');
+            } else {
+                this.setWarningText(null);
+            }
+        //}
     }
 };
 
@@ -1372,21 +1384,17 @@ Blockly.propc.sound_play = function () {
         value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
     }
 
-    if (!this.disabled) {
-        Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
-        Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';
-        if (projectData['board'] === 'activity-board') {
-            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(26, 27);';
-        } else if (projectData['board'] === 'heb') {
-            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(9, 10);';
-        }
-    }
-
     if (action === 'stop') {
         action = 'freq';
         value = '0';
     }
     var code = 'sound_' + action + '(audio0, ' + channel + ', ' + value + ');';
+    
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    if (allBlocks.indexOf('sound initialize') === -1) {
+        code = '// WARNING: You must use a sound initialize\nblock at the beginning of your program!';
+    }
+
     return code;
 };
 

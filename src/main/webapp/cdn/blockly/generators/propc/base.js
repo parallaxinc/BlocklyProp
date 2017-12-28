@@ -1361,6 +1361,31 @@ Blockly.propc.logic_operation = function () {
     var code = argument0 + ' ' + operator + argument1;
     return [code, order];
 };
+Blockly.Blocks.parens = {
+        init: function () {
+        if (profile.default.description === "Scribbler Robot") {
+            this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
+        } else {
+            this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
+        }
+        this.setTooltip(Blockly.MSG_PARENS_TOOLTIP);
+            this.appendValueInput('BOOL')
+                    .appendField('(', 'OP')
+                    .setCheck('Number');
+            this.appendDummyInput('')
+                    .appendField(')');
+            this.setInputsInline(true);
+        this.setColour(colorPalette.getColor('math'));
+        this.setOutput(true, 'Number');
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.propc.parens = function () {
+    var argument0 = Blockly.propc.valueToCode(this, 'BOOL', order) || '0';
+    var code = '(' + argument0 + ')';
+    return [code, Blockly.propc.ORDER_ATOMIC];
+};
 
 Blockly.Blocks.logic_negate = {
     // Negation.
@@ -1378,37 +1403,10 @@ Blockly.Blocks.logic_negate = {
                     ["not", '!'],
                     ["negate", '-'],
                     ["abs", 'abs('],
-                    ['( )', '(']
-                ], function (op) {
-                    this.sourceBlock_.updateBlock_(op);
-                }), 'OP');
+                ]), 'OP');
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
         this.setInputsInline(false);
-    },
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
-        container.setAttribute('op', this.getFieldValue('OP'));
-        return container;
-    },
-    domToMutation: function (xmlElement) {
-        var op = xmlElement.getAttribute('op');
-        this.updateBlock_(op);
-    },
-    updateBlock_: function (op) {
-        if (op === '(') {
-            var conn = this.getInput('BOOL').connection.targetConnection;
-            this.removeInput('BOOL');
-            this.appendValueInput('BOOL')
-                    .appendField('(', 'OP')
-                    .setCheck('Number');
-            this.appendDummyInput('')
-                    .appendField(')');
-            this.setInputsInline(true);
-            if (conn) {
-                conn.connect(this.getInput('BOOL').connection);
-            }
-        }
     }
 };
 
@@ -1418,7 +1416,7 @@ Blockly.propc.logic_negate = function () {
     var operator = this.getFieldValue('OP');
     var argument0 = Blockly.propc.valueToCode(this, 'BOOL', order) || '0';
     var code = operator + argument0;
-    if (operator === 'abs(' || operator === '(') {
+    if (operator === 'abs(') {
         code += ')';
         order = Blockly.propc.ORDER_NONE;
     }

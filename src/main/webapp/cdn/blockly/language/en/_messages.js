@@ -265,6 +265,7 @@ Blockly.MSG_MATH_RANDOM_TOOLTIP = "random: Pick random number between the low â€
 Blockly.MSG_MATH_BITWISE_TOOLTIP = "bitwise:& AND, | OR, ^ XOR, >> right shift, << left shift.";
 Blockly.MSG_LOGIC_OPERATION_TOOLTIP = "boolean comparison: and, or, and not, or not; return 1/true or 0/false.";
 Blockly.MSG_LOGIC_NEGATE_TOOLTIP = "not: Get boolean (1/true or 0/false) opposite,\nnegate: get the negative decimal value,\nabs: get the absolute value of.";
+Blockly.MSG_PARENS_TOOLTIP = "parentheses: Surrounds the enclosed block with parentheses ().  Use to change the order of mathematical operations in a series of blocks.";
 Blockly.MSG_LOGIC_COMPARE_TOOLTIP = "compare values: boolean comparison returns 1/true or 0/false.";
 Blockly.MSG_STRING_COMPARE_TOOLTIP = "compare strings: returns 1/true or 0/false. Case sensitive.";
 Blockly.MSG_STRING_LENGTH_TOOLTIP = "length of string: number of characters in string or string variable.";
