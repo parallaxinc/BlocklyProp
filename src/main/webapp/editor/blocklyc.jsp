@@ -196,7 +196,7 @@
                     <td id="content">
                         <div id="content_blocks">
                             <xml id="toolbox" style="display: none">
-                                <category name="1" key="category_control" exclude="s3" colour="205">
+                                <category name="2" key="category_control" exclude="s3" colour="205">
                                     <block type="comment"></block>
                                     <block type="controls_if"></block>
                                     <block type="controls_repeat">
@@ -236,8 +236,8 @@
                                     <block type="controls_return"></block>
                                     <block type="custom_code_multiple" experimental="true"></block>
                                 </category>
-                                <category name="2" key="category_operators" exclude="s3" colour="275">
-                                    <category name="3" key="category_operators_numbers" >
+                                <category name="4" key="category_operators" exclude="s3" colour="275">
+                                    <category name="6" key="category_operators_numbers" >
                                         <block type="math_arithmetic"></block>
                                         <block type="math_limit"></block>
                                         <block type="constrain_value"></block>
@@ -268,7 +268,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="4" key="category_operators_strings" >
+                                    <category name="8" key="category_operators_strings" >
                                         <block type="string_compare"></block>
                                         <block type="string_length"></block>
                                         <block type="combine_strings"></block>
@@ -305,7 +305,7 @@
                                 </category>
                                 <sep></sep>
                                 <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE FOLLOWING MENU AS WELL -->
-                                <category name="5" key="category_values" include="other" colour="275">
+                                <category name="10" key="category_values" include="other" colour="275">
                                     <block type="math_number"></block>
                                     <block type="string_type_block"></block>
                                     <block type="char_type_block"></block>
@@ -316,7 +316,8 @@
                                     <block type="number_hex"></block>
                                     <block type="logic_boolean"></block>
                                     <block type="high_low_value"></block>
-                                    <block type="color_picker"></block>
+                                    <block type="constant_define" experimental="true"></block>
+                                    <block type="constant_value" experimental="true"></block>                                    <block type="color_picker"></block>
                                     <block type="color_value_from">
                                         <value name="RED_VALUE">
                                             <block type="math_number">
@@ -349,7 +350,7 @@
                                     </block>
                                 </category>
                                 <!-- IF THIS MENU GETS CHANGED BE SURE TO CHANGE THE PREVIOUS MENU AS WELL -->
-                                <category name="6" key="category_values" include="heb" colour="205">
+                                <category name="12" key="category_values" include="heb" colour="205">
                                     <block type="math_number"></block>
                                     <block type="string_type_block"></block>
                                     <block type="char_type_block"></block>
@@ -363,7 +364,7 @@
                                     <block type="heb_color_val"></block>
                                     <block type="system_counter"></block>
                                 </category>
-                                <category name="7" key="category_values" include="activity-board,flip" colour="205">
+                                <category name="14" key="category_values" include="activity-board,flip" colour="205">
                                     <block type="math_number"></block>
                                     <block type="string_type_block"></block>
                                     <block type="char_type_block"></block>
@@ -374,6 +375,8 @@
                                     <block type="number_hex"></block>
                                     <block type="logic_boolean"></block>
                                     <block type="high_low_value"></block>
+                                    <block type="constant_define" experimental="true"></block>
+                                    <block type="constant_value" experimental="true"></block>
                                     <block type="color_picker"></block>
                                     <block type="color_value_from">
                                         <value name="RED_VALUE">
@@ -407,7 +410,7 @@
                                     </block>
                                     <block type="system_counter"></block>
                                 </category>
-                                <category name="8" key="category_operators_arrays" exclude="s3" colour="250">
+                                <category name="16" key="category_operators_arrays" exclude="s3" colour="250">
                                     <block type="array_init"></block>
                                     <block type="array_fill"></block>
                                     <block type="array_get">
@@ -431,7 +434,7 @@
                                     </block>
                                     <block type="array_clear"></block>
                                 </category>
-                                <category name="13" key="category_control" include="s3" colour=205>
+                                <category name="18" key="category_control" include="s3" colour=205>
                                     <block type="controls_repeat">
                                         <mutation TYPE="FOREVER"></mutation>
                                     </block>
@@ -478,8 +481,8 @@
                                     </block>
                                     <block type="comment"></block>
                                 </category>
-                                <category name="14" key="category_variables" custom="VARIABLE" colour="250"></category>
-                                <category name="15" key="category_operators_arrays" include="s3" colour="250">
+                                <category name="20" key="category_variables" custom="VARIABLE" colour="250"></category>
+                                <category name="22" key="category_operators_arrays" include="s3" colour="250">
                                     <block type="array_init"></block>
                                     <block type="array_fill"></block>
                                     <block type="array_get">
@@ -503,8 +506,8 @@
                                     </block>
                                     <block type="array_clear"></block>
                                 </category>
-                                <category name="16" key="category_functions" custom="PROCEDURE" colour="225"></category>
-                                <category name="17" key="category_input-output_pin-states" exclude="s3,heb" colour="185">
+                                <category name="24" key="category_functions" custom="PROCEDURE" colour="225"></category>
+                                <category name="26" key="category_input-output_pin-states" exclude="s3,heb" colour="185">
                                     <block type="make_pin"></block>
                                     <block type="make_pin_input">
                                         <value name="PIN">
@@ -528,14 +531,14 @@
                                             <block type="number_binary"></block>
                                         </value>
                                 </category>
-                                <category name="18" key="category_communicate" include="activity-board,flip,other" colour="340">
-                                    <category name="19" key="category_communicate_graphing" include="activity-board,flip,other">
+                                <category name="28" key="category_communicate" include="activity-board,flip,other" colour="340">
+                                    <category name="30" key="category_communicate_graphing" include="activity-board,flip,other">
                                         <block type="graph_settings">
                                             <field name="XAXIS">40,S</field>
                                         </block>                
                                         <block type="graph_output"></block>
                                     </category>
-                                    <category name="20" key="category_communicate_oled" >
+                                    <category name="32" key="category_communicate_oled" >
                                         <block type="oled_initialize"></block>
                                         <block type="oled_font_loader"></block>
                                         <block type="oled_get_max_height"></block>
@@ -701,7 +704,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="21" key="category_communicate_protocols" >
+                                    <category name="34" key="category_communicate_protocols" >
                                         <block type="serial_open"></block>
                                         <!-- <block type="serial_tx"></block> -->
                                         <block type="serial_send_text"></block>
@@ -709,6 +712,33 @@
                                         <block type="serial_print_multiple" experimental="true"></block>
                                         <block type="serial_receive_text"></block>
                                         <block type="serial_scan_multiple" experimental="true"></block>
+                                        <block type="i2c_send" experimental="true">
+                                            <value name="DATA">
+                                                <block type="math_number">
+                                                    <field name="NUM">10</field>
+                                                </block>
+                                            </value>
+                                            <value name="ADDR">
+                                                <block type="number_hex"></block>
+                                            </value>
+                                            <value name="DEVICE">
+                                                <block type="number_hex"></block>
+                                            </value>
+                                        </block>
+                                        <block type="i2c_receive" experimental="true">
+                                            <value name="ADDR">
+                                                <block type="number_hex"></block>
+                                            </value>
+                                            <value name="DEVICE">
+                                                <block type="number_hex"></block>
+                                            </value>
+                                        </block>
+                                        <block type="i2c_busy" experimental="true">
+                                            <value name="DEVICE">
+                                                <block type="number_hex"></block>
+                                            </value>
+                                        </block>
+                                        <block type="i2c_mode" experimental="true"></block>
                                         <block type="shift_in"></block>
                                         <block type="shift_out">
                                             <value name="VALUE">
@@ -718,7 +748,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="22" key="category_communicate_WS2812B" >
+                                    <category name="36" key="category_communicate_WS2812B" >
                                         <block type="ws2812b_init"></block>
                                         <block type="ws2812b_set">
                                             <value name="LED">
@@ -747,7 +777,7 @@
                                         </block>
                                         <block type="ws2812b_update"></block>
                                     </category>
-                                    <category name="23" key="category_communicate_serial-lcd" >
+                                    <category name="38" key="category_communicate_serial-lcd" >
                                         <block type="debug_lcd_init"></block>
                                         <block type="debug_lcd_print">
                                             <value name="MESSAGE">
@@ -777,7 +807,7 @@
                                         </block>
                                         <block type="debug_lcd_music_note"></block>
                                     </category>
-                                    <category name="24" key="category_communicate_serial-terminal" >
+                                    <category name="40" key="category_communicate_serial-terminal" >
                                         <block type="console_print">
                                             <value name="MESSAGE">
                                                 <block type="string_type_block"></block>
@@ -879,7 +909,7 @@
                                         </category>
                                     </category>
 
-                                    <category name="28" key="category_communicate_xbee">
+                                    <category name="42" key="category_communicate_xbee">
                                         <block type="xbee_setup"></block>
                                         <block type="xbee_transmit"></block>
                                         <block type="xbee_print_multiple" experimental="true"></block>
@@ -891,8 +921,8 @@
 
                                 <sep include="heb"></sep>
 
-                                <category name="29" key="category_communicate" include="heb" colour="340">
-                                    <category name="30" key="category_communicate_serial-terminal">
+                                <category name="44" key="category_communicate" include="heb" colour="340">
+                                    <category name="46" key="category_communicate_serial-terminal">
                                         <block type="console_print">
                                             <value name="MESSAGE">
                                                 <block type="string_type_block"></block>
@@ -922,7 +952,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="31" key="category_hackable-electronic-badge_oled" >
+                                    <category name="48" key="category_hackable-electronic-badge_oled" >
                                         <block type="heb_print_numeric_var">
                                             <value name="VALUE">
                                                 <block type="math_number">
@@ -1058,7 +1088,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="32" key="category_hackable-electronic-badge_ir-communication" >
+                                    <category name="50" key="category_hackable-electronic-badge_ir-communication" >
                                         <block type="heb_ir_send_signal">
                                             <value name="MESSAGE">
                                                 <block type="string_type_block">
@@ -1070,8 +1100,8 @@
                                         <block type="heb_ir_clear_buffer"></block>
                                     </category>
                                 </category>
-                                <category name="33" key="category_audio" include="heb" colour="295">
-                                    <category name="34" key="category_hackable-electronic-badge_text-to-speech" >
+                                <category name="52" key="category_audio" include="heb" colour="295">
+                                    <category name="54" key="category_hackable-electronic-badge_text-to-speech" >
                                         <block type="heb_text_to_speech_say">
                                             <value name="STRING">
                                                 <block type="string_type_block">
@@ -1088,7 +1118,7 @@
                                         </block>
                                     </category>
                                 </category>
-                                <category name="35" key="category_hackable-electronic-badge_led_control" include="heb" colour="225">
+                                <category name="56" key="category_hackable-electronic-badge_led_control" include="heb" colour="225">
                                     <block type="heb_toggle_led"></block>
                                     <block type="heb_toggle_led_open">
                                         <value name="LED_NUM">
@@ -1108,16 +1138,16 @@
                                         </value>
                                     </block>
                                 </category>
-                                <category name="36" key="category_sensor-input" include="heb" colour="185">
-                                    <category name="37" key="category_hackable-electronic-badge_accelerometer" >
+                                <category name="58" key="category_sensor-input" include="heb" colour="185">
+                                    <category name="60" key="category_hackable-electronic-badge_accelerometer" >
                                         <block type="heb_badge_axis_acceleration"></block>
                                         <block type="heb_badge_was_shaken"></block>
                                     </category>
-                                    <category name="38" key="category_hackable-electronic-badge_touchpad-control" >
+                                    <category name="62" key="category_hackable-electronic-badge_touchpad-control" >
                                         <block type="heb_touchpad_status"></block>
                                     </category>
                                 </category>
-                                <category name="39" key="category_memory" include="heb" colour="140">
+                                <category name="64" key="category_memory" include="heb" colour="140">
                                     <block type="heb_badge_eeprom_store">
                                         <value name="CONTACT">
                                             <block type="string_type_block">
@@ -1142,24 +1172,24 @@
                                     <block type="heb_count_contacts"></block>
                                     <block type="heb_erase_all_contacts"></block>
                                 </category>
-                                <category name="40" key="category_sensor-input" exclude="s3,heb" colour="140">
-                                    <category name="41" key="category_sensor-input_2axis-joystick" include="activity-board">
+                                <category name="66" key="category_sensor-input" exclude="s3,heb" colour="140">
+                                    <category name="68" key="category_sensor-input_2axis-joystick" include="activity-board">
                                         <block type="joystick_input_xaxis"></block>
                                         <block type="joystick_input_yaxis"></block>
                                     </category>
-                                    <category name="42" key="category_sensor-input_4x4-keypad" >
+                                    <category name="70" key="category_sensor-input_4x4-keypad" >
                                         <block type="keypad_initialize"></block>
                                         <block type="keypad_read"></block>
                                     </category>
-                                    <category name="43" key="category_sensor-input_colorpal" >
+                                    <category name="72" key="category_sensor-input_colorpal" >
                                         <block type="colorpal_enable"></block>
                                         <block type="colorpal_get_colors_raw"></block>
                                         <block type="colorpal_get_colors"></block>
                                     </category>
-                                    <category name="44" key="category_sensor-input_ping" >
+                                    <category name="74" key="category_sensor-input_ping" >
                                         <block type="sensor_ping"></block>
                                     </category>
-                                    <category name="45" key="category_sensor-input_gps" >
+                                    <category name="76" key="category_sensor-input_gps" >
                                         <block type="GPS_init"></block>
                                         <block type="GPS_hasFix"></block>
                                         <block type="GPS_latitude"></block>
@@ -1170,7 +1200,7 @@
                                         <block type="GPS_satsTracked"></block>
                                         <block type="GPS_date_time"></block>
                                     </category>
-                                    <category name="46" key="category_sensor-input_fingerprint" >
+                                    <category name="78" key="category_sensor-input_fingerprint" >
                                         <block type="fp_scanner_init"></block>
                                         <block type="fp_scanner_add">
                                             <value name="USER">
@@ -1182,19 +1212,19 @@
                                         <block type="fp_scanner_scan"></block>
                                     </category>
                                     <!--
-                                                <category name="47" key="category_sensor-input_hmc5883l" >
+                                                <category name="80" key="category_sensor-input_hmc5883l" >
                                                     <block type="HMC5883L_init"></block>
                                                     <block type="HMC5883L_read"></block>
                                                 </category>
                                     -->
-                                    <category name="48" key="category_sensor-input_LSM9DS1" >
+                                    <category name="82" key="category_sensor-input_LSM9DS1" >
                                         <block type="lsm9ds1_init"></block>
                                         <block type="lsm9ds1_mag_calibrate"></block>
                                         <block type="lsm9ds1_read"></block>
                                         <block type="lsm9ds1_tilt"></block>
                                         <block type="lsm9ds1_heading"></block>
                                     </category>
-                                    <category name="49" key="category_sensor-input_memsic-2axis" >
+                                    <category name="84" key="category_sensor-input_memsic-2axis" >
                                         <block type="MX2125_acceleration_xaxis"></block>
                                         <block type="MX2125_acceleration_yaxis"></block>
                                         <block type="MX2125_rotation"></block>
@@ -1202,31 +1232,31 @@
                                         <block type="MX2125_tilt_yaxis"></block>
                                     </category>
                                     <!--
-                                                <category name="50" key="category_sensor-input_mma7455" >
+                                                <category name="86" key="category_sensor-input_mma7455" >
                                                     <block type="MMA7455_init"></block>
                                                     <block type="MMA7455_acceleration"></block>
                                                 </category>
                                     -->
-                                    <category name="51" key="category_sensor-input_pir" >
+                                    <category name="88" key="category_sensor-input_pir" >
                                         <block type="PIR_Sensor"></block>
                                     </category>
-                                    <category name="52" key="category_sensor-input_rfid" >
+                                    <category name="90" key="category_sensor-input_rfid" >
                                         <block type="rfid_enable"></block>
                                         <block type="rfid_get"></block>
                                         <block type="rfid_disable"></block>
                                         <block type="rfid_close"></block>
                                     </category>
-                                    <category name="53" key="category_sensor-input_sony-remote" >
+                                    <category name="92" key="category_sensor-input_sony-remote" >
                                         <block type="sirc_get"></block>
                                     </category>
-                                    <category name="54" key="category_sensor-input_sound-impact-sensor" >
+                                    <category name="94" key="category_sensor-input_sound-impact-sensor" >
                                         <block type="sound_impact_run"></block>
                                         <block type="sound_impact_get"></block>
                                         <block type="sound_impact_end"></block>
                                     </category>
                                 </category>
-                                <category name="55" key="category_memory" include="activity-board,flip,other" colour="165">
-                                    <category name="56" key="category_memory_eeprom" >
+                                <category name="96" key="category_memory" include="activity-board,flip,other" colour="165">
+                                    <category name="98" key="category_memory_eeprom" >
                                         <block type="eeprom_read">
                                             <value name="ADDRESS">
                                                 <block type="math_number">
@@ -1242,9 +1272,21 @@
                                             </value>
                                         </block>
                                     </category>
+                                    <category name="102" key="category_memory_sdcard" include="activity-board,flip,other" experimental="true">
+                                        <block type="sd_init" exclude="activity-board"></block>
+                                        <block type="sd_open"></block>
+                                        <block type="sd_read">
+                                            <value name="SIZE">
+                                                <block type="math_number">
+                                                    <field name="NUM">10</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                        <block type="sd_file_pointer"></block>
+                                     </category>
                                 </category>
-                                <category name="57" key="category_analog-pulses" exclude="s3,heb" colour="185">
-                                    <category name="58" key="category_analog-pulses_pulse-in-out" exclude="s3">
+                                <category name="104" key="category_analog-pulses" exclude="s3,heb" colour="185">
+                                    <category name="106" key="category_analog-pulses_pulse-in-out" exclude="s3">
                                         <block type="pulse_in"></block>
                                         <block type="pulse_out">
                                             <value name="PULSE_LENGTH">
@@ -1261,7 +1303,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="59" key="category_analog-pulses_pwm" exclude="s3">
+                                    <category name="108" key="category_analog-pulses_pwm" exclude="s3">
                                         <!-- <block type="pwm_start"></block> -->
                                         <block type="pwm_set">
                                             <value name="DUTY_CYCLE">
@@ -1272,10 +1314,10 @@
                                         </block>
                                         <block type="pwm_stop"></block>
                                     </category>
-                                    <category name="60" key="category_analog-pulses_rc" exclude="s3">
+                                    <category name="110" key="category_analog-pulses_rc" exclude="s3">
                                         <block type="rc_charge_discharge"></block>
                                     </category>
-                                    <category name="61" key="category_analog-pulses_voltage" include="activity-board">
+                                    <category name="112" key="category_analog-pulses_voltage" include="activity-board">
                                         <block type="ab_volt_in"></block>
                                         <block type="ab_volt_out">
                                             <value name="VALUE">
@@ -1285,13 +1327,13 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="62" key="category_analog-pulses_voltage" include="flip,other">
+                                    <category name="114" key="category_analog-pulses_voltage" include="flip,other">
                                         <block type="mcp320x_read"></block>
                                         <block type="mcp320x_set_vref"></block>
                                     </category>
                                 </category>
-                                <category name="63" key="category_audio" exclude="s3,heb" colour="185">
-                                    <category name="64" key="category_audio_freqout" exclude="s3">
+                                <category name="116" key="category_audio" exclude="s3,heb" colour="185">
+                                    <category name="118" key="category_audio_freqout">
                                         <block type="base_freqout">
                                             <value name="DURATION">
                                                 <block type="math_number">
@@ -1304,8 +1346,10 @@
                                                 </block>
                                             </value>
                                         </block>
+                                        <block type="sound_init" exclude="activity-board" experimental="true"></block>
+                                        <block type="sound_play" experimental="true"></block>
                                     </category>
-                                    <category name="65" key="category_audio_audio" include="activity-board">
+                                    <category name="120" key="category_audio_audio" include="activity-board">
                                         <block type="wav_play"></block>
                                         <block type="wav_status"></block>
                                         <block type="wav_volume">
@@ -1318,7 +1362,7 @@
                                         <block type="wav_stop"></block>
                                     </category>
                                 </category>
-                                <category name="66" key="category_servo" exclude="s3,heb" colour="165">
+                                <category name="122" key="category_servo" exclude="s3,heb" colour="165">
                                     <block type="servo_move">
                                         <value name="ANGLE">
                                             <block type="math_number">
@@ -1355,7 +1399,7 @@
                                     <block type="fb360_status"></block>
                                     <block type="scribbler_stop_servo"></block>
                                 </category>
-                                <category name="67" key="category_robot"  include="activity-board" colour="295">
+                                <category name="124" key="category_robot"  include="activity-board" colour="295">
                                     <block type="ab_drive_init"></block>
                                     <block type="ab_drive_ramping">
                                         <field name="RAMPING">600</field>
@@ -1396,7 +1440,7 @@
                                     <block type="activitybot_calibrate"></block>
                                     <block type="activitybot_display_calibration"></block>
                                 </category>
-                                <category name="68" key="category_s3-math" include="s3" colour="275">
+                                <category name="126" key="category_s3-math" include="s3" colour="275">
                                     <block type="math_number"></block>
                                     <block type="scribbler_boolean"></block>
                                     <block type="scribbler_random_boolean"></block>
@@ -1429,40 +1473,40 @@
                                         </value>
                                     </block>
                                 </category>
-                                <category name="69" key="category_sensor-input" include="s3" colour=140>
-                                    <category name="70" key="category_sensor-input_s3-line" >
+                                <category name="128" key="category_sensor-input" include="s3" colour=140>
+                                    <category name="130" key="category_sensor-input_s3-line" >
                                         <block type="calibrate_line_sensor"></block>
                                         <!-- <block type="scribbler_if_line"></block> -->
                                         <block type="scribbler_simple_line"></block>
                                         <block type="line_sensor"></block>
                                     </category>
-                                    <category name="71" key="category_sensor-input_s3-obstacle" >
+                                    <category name="132" key="category_sensor-input_s3-obstacle" >
                                         <!-- <block type="scribbler_if_obstacle"></block>
                                         <block type="obstacle_sensor"></block> -->
                                         <block type="scribbler_simple_obstacle"></block>
                                     </category>
-                                    <category name="72" key="category_sensor-input_s3-light" >
+                                    <category name="134" key="category_sensor-input_s3-light" >
                                         <!-- <block type="scribbler_if_light"></block> -->
                                         <block type="scribbler_simple_light"></block>
                                         <block type="light_sensor"></block>
                                     </category>
-                                    <category name="73" key="category_sensor-input_s3-stall" >
+                                    <category name="136" key="category_sensor-input_s3-stall" >
                                         <!-- <block type="scribbler_if_stalled"></block> -->
                                         <block type="stall_sensor"></block>
                                         <!-- <block type="spinning_sensor"></block> -->
                                     </category>
-                                    <category name="74" key="category_sensor-input_s3-sirc" >
+                                    <category name="138" key="category_sensor-input_s3-sirc" >
                                         <block type="sirc_s3_get"></block>
                                     </category>
-                                    <category name="75" key="category_sensor-input_s3-mic" >
+                                    <category name="140" key="category_sensor-input_s3-mic" >
                                         <block type="mic_s3_get"></block>
                                     </category>
-                                    <category name="76" key="category_sensor-input_s3-button" >
+                                    <category name="142" key="category_sensor-input_s3-button" >
                                         <block type="reset_button_presses"></block>
                                     </category>
                                 </category>
-                                <category name="77" key="category_s3-actions" include="s3" colour="185">
-                                    <category name="78" key="category_s3-actions_motors" >
+                                <category name="144" key="category_s3-actions" include="s3" colour="185">
+                                    <category name="146" key="category_s3-actions_motors" >
                                         <block type="scribbler_drive">
                                             <field name="DRIVE_ANGLE">STRAIGHT</field>
                                         </block>
@@ -1537,7 +1581,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="79" key="category_s3-actions_sound" include="s3">
+                                    <category name="148" key="category_s3-actions_sound" include="s3">
                                         <block type="scribbler_play">
                                             <field name="NOTE_DURATION">250</field>
                                             <field name="NOTE_OCTAVE">4</field>
@@ -1567,10 +1611,10 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="80" key="category_s3-actions_leds" include="s3">
+                                    <category name="150" key="category_s3-actions_leds" include="s3">
                                         <block type="scribbler_LED"></block>
                                     </category>
-                                    <category name="81" key="category_communicate" include="s3">
+                                    <category name="152" key="category_communicate" include="s3">
                                         <block type="scribbler_serial_send_text"></block>
                                         <block type="scribbler_serial_send_decimal"></block>
                                         <block type="scribbler_serial_send_char"></block>
@@ -1591,7 +1635,7 @@
                                         -->
                                         <block type="scribbler_serial_rx_byte"></block>
                                     </category>
-                                    <category name="82" key="category_memory" include="s3">
+                                    <category name="154" key="category_memory" include="s3">
                                         <block type="s3_eeprom_read">
                                             <value name="ADDR">
                                                 <block type="math_number">
@@ -1612,20 +1656,20 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="83" key="category_s3-actions_reset" include="s3">
+                                    <category name="156" key="category_s3-actions_reset" include="s3">
                                         <block type="factory_reset"></block>
                                     </category>
                                 </category>
-                                <category name="84" key="category_s3-hacker-port" include="s3" colour="295">
-                                    <category name="85" key="category_s3-hacker-port_sensors" >
+                                <category name="158" key="category_s3-hacker-port" include="s3" colour="295">
+                                    <category name="160" key="category_s3-hacker-port_sensors" >
                                         <block type="scribbler_ping"></block>
                                     </category>
-                                    <category name="86" key="category_s3-hacker-port_pins" >
+                                    <category name="162" key="category_s3-hacker-port_pins" >
                                         <block type="make_pin"></block>
                                         <block type="check_pin"></block>
                                         <block type="analog_input"></block>
                                     </category>
-                                    <category name="87" key="category_s3-hacker-port_servo" >
+                                    <category name="164" key="category_s3-hacker-port_servo" >
                                         <block type="servo_move">
                                             <value name="ANGLE">
                                                 <block type="math_number">
@@ -1637,7 +1681,7 @@
                                     </category>
                                 </category>
 
-                                <category name="88" key="category_system" include="other" colour="320">
+                                <category name="166" key="category_system" include="other" colour="320">
                                     <block type="waitcnt">
                                         <value name="TARGET">
                                             <block type="math_arithmetic">
@@ -1652,8 +1696,7 @@
                                     <block type="system_counter"></block>
                                     <block type="custom_code" experimental="true"></block>
                                 </category>
-                            </xml>
-                        </div>
+                            </xml>                        </div>
                         <div id="content_propc">
                             <div id="code-propc"></div>
                         </div>
