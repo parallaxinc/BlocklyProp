@@ -712,7 +712,7 @@
                                         <block type="serial_print_multiple" experimental="true"></block>
                                         <block type="serial_receive_text"></block>
                                         <block type="serial_scan_multiple" experimental="true"></block>
-                                        <block type="i2c_send">
+                                        <block type="i2c_send" experimental="true">
                                             <value name="DATA">
                                                 <block type="math_number">
                                                     <field name="NUM">10</field>
@@ -725,7 +725,7 @@
                                                 <block type="number_hex"></block>
                                             </value>
                                         </block>
-                                        <block type="i2c_receive">
+                                        <block type="i2c_receive" experimental="true">
                                             <value name="ADDR">
                                                 <block type="number_hex"></block>
                                             </value>
@@ -733,12 +733,12 @@
                                                 <block type="number_hex"></block>
                                             </value>
                                         </block>
-                                        <block type="i2c_busy">
+                                        <block type="i2c_busy" experimental="true">
                                             <value name="DEVICE">
                                                 <block type="number_hex"></block>
                                             </value>
                                         </block>
-                                        <block type="i2c_mode"></block>
+                                        <block type="i2c_mode" experimental="true"></block>
                                         <block type="shift_in"></block>
                                         <block type="shift_out">
                                             <value name="VALUE">
@@ -1272,7 +1272,7 @@
                                             </value>
                                         </block>
                                     </category>
-                                    <category name="102" key="category_memory_sdcard" include="activity-board,flip,other">
+                                    <category name="102" key="category_memory_sdcard" include="activity-board,flip,other" experimental="true">
                                         <block type="sd_init" exclude="activity-board"></block>
                                         <block type="sd_open"></block>
                                         <block type="sd_read">
@@ -1346,8 +1346,8 @@
                                                 </block>
                                             </value>
                                         </block>
-                                        <block type="sound_init" exclude="activity-board"></block>
-                                        <block type="sound_play"></block>
+                                        <block type="sound_init" exclude="activity-board" experimental="true"></block>
+                                        <block type="sound_play" experimental="true"></block>
                                     </category>
                                     <category name="120" key="category_audio_audio" include="activity-board">
                                         <block type="wav_play"></block>
