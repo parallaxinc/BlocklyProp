@@ -369,16 +369,15 @@ function establish_socket() {
                             launcher_result = launcher_result + msg[1] + "\n";
                             launcher_download |= (msg[0] == nsDownloading);
                         }
-                        if (msg[0] == nsDownloading) {
-                            //Show progress during downloading
-                            $('#compile-console').val($('#compile-console').val() + ".");
-                        }
                         if (msg[0] == nsDownloadSuccessful) {
                             //Success! Keep it simple
                             $('#compile-console').val($('#compile-console').val() + ' Succeeded.');
                         } else if (msg[0] == neDownloadFailed) {
                             //Failed! Show the details
                             $('#compile-console').val($('#compile-console').val() + ' Failed!\n\n-------- loader messages --------\n' + launcher_result);
+                        } else {
+                            //Show progress during downloading
+                            $('#compile-console').val($('#compile-console').val() + ".");
                         }
                     } else {
                         //todo - Remove this once client_min_version (and thus minVer) is >= minOptionVer
