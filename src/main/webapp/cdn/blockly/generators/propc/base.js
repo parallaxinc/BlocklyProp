@@ -2028,7 +2028,7 @@ Blockly.propc.math_inv_trig = function () {
 Blockly.Blocks.constant_define = {
     helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_CONSTANT_DEF_TOOLTIP);
+        this.setTooltip(Blockly.MSG_CONSTANT_DEF_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput('MAIN')
                 .appendField("constant")
@@ -2099,7 +2099,7 @@ Blockly.propc.constant_define = function () {
 Blockly.Blocks.constant_value = {
     helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_CHAR_TYPE_BLOCK_TOOLTIP);
+        this.setTooltip(Blockly.MSG_CONSTANT_VALUE_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput('VALUE_LIST')
                 .appendField(new Blockly.FieldDropdown([

@@ -1221,7 +1221,7 @@ Blockly.propc.pwm_stop = function () {
 Blockly.Blocks.sound_init = {
     helpUrl: Blockly.MSG_AUDIO_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_SOUND_INIT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SOUND_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("sound initialize left (+) PIN")
@@ -1247,7 +1247,7 @@ Blockly.propc.sound_init = function () {
 Blockly.Blocks.sound_play = {
     helpUrl: Blockly.MSG_AUDIO_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_SOUND_PLAY_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SOUND_PLAY_TOOLTIP);
         this.actionMenuItems = [
             ["set frequency", "freq"],
             ["set volume", "volume"],
@@ -1515,9 +1515,9 @@ Blockly.propc.wav_stop = function () {
 
 // ----------------- SD Card file blocks --------------------------
 Blockly.Blocks.sd_init = {
-    //helpUrl: Blockly.MSG_SD_HELPURL,
+    helpUrl: Blockly.MSG_SD_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_SD_OPEN_CLOSE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SD_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
                 .appendField("SD initialize DO")
@@ -1547,9 +1547,9 @@ Blockly.propc.sd_init = function () {
 };
 
 Blockly.Blocks.sd_open = {
-    //helpUrl: Blockly.MSG_SD_HELPURL,
+    helpUrl: Blockly.MSG_SD_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_SD_OPEN_CLOSE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SD_OPEN_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput("MODE")
                 .appendField("SD file open")
@@ -1604,9 +1604,9 @@ Blockly.propc.sd_open = function () {
 };
 
 Blockly.Blocks.sd_read = {
-    //helpUrl: Blockly.MSG_SD_HELPURL,
+    helpUrl: Blockly.MSG_SD_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_SD_READ_WRITE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SD_READ_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendValueInput("SIZE")
                 .setCheck(null)
@@ -1713,14 +1713,21 @@ Blockly.propc.sd_read = function () {
     if (mode === 'fclose') {
         return mode + '(fp);';
     } else {
-        return mode + '(' + (type === 'INT' ? '&' : '') + value + ', 1, ' + size + ', fp);';
+        var s = '';
+        if (type === 'INT' && mode === 'fwrite') {
+            s = 'int __temp = ' + value + ';\n';
+            value = '&__temp';
+        } else if (type === 'INT' && mode === 'fread') {
+            value = '&' + value;
+        }
+        return s + mode + '(' + value + ', 1, ' + size + ', fp);';
     }
 };
 
 Blockly.Blocks.sd_file_pointer = {
-    //helpUrl: Blockly.MSG_SD_HELPURL,
+    helpUrl: Blockly.MSG_SD_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_SD_FILE_POINTER_TOOLTIP);
+        this.setTooltip(Blockly.MSG_SD_FILE_POINTER_TOOLTIP);
         this.setColour(colorPalette.getColor('output'));
         this.appendValueInput("FP")
                 .setCheck("Number")
