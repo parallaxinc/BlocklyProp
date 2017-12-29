@@ -363,7 +363,7 @@ function establish_socket() {
                     $('#compile-console').val('');
 
                 } else if (ws_msg.action === 'message-compile') {
-                    if (client_version >= minOptionVer) {
+                    if (client_version >= minCodedVer) {
                         //Messages are coded; check codes, log all and filter out nsDownloading duplicates
                         var msg = ws_msg.msg.split("-");
                         if (msg[0] != nsDownloading || !launcher_download) {
@@ -381,7 +381,7 @@ function establish_socket() {
                             $('#compile-console').val($('#compile-console').val() + ".");
                         }
                     } else {
-                        //todo - Remove this once client_min_version (and thus minVer) is >= minOptionVer
+                        //todo - Remove this once client_min_version (and thus minVer) is >= minCodedVer
                         //Messages are not coded; display all as they come
                         $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
                     }
