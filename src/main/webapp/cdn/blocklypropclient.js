@@ -28,6 +28,7 @@ var client_ws_heartbeat_interval = null;
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
 
+// BP Launcher result log and download message flag
 var launcher_result = "";
 var launcher_download = false;
 
