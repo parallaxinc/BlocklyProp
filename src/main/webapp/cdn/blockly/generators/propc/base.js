@@ -1358,6 +1358,7 @@ Blockly.propc.logic_operation = function () {
     var code = argument0 + ' ' + operator + argument1;
     return [code, order];
 };
+
 Blockly.Blocks.parens = {
         init: function () {
         if (profile.default.description === "Scribbler Robot") {

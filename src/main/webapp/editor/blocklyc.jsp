@@ -257,7 +257,7 @@
                                         <block type="math_bitwise"></block>
                                         <block type="logic_operation"></block>
                                         <block type="logic_negate"></block>
-                                        <block type="perens"></block>
+                                        <block type="parens"></block>
                                         <block type="logic_compare"></block>
                                         <block type="map_value"></block>
                                         <block type="math_advanced"></block>
