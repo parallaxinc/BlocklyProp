@@ -5533,7 +5533,7 @@ Blockly.propc.xbee_configure = function () {
 Blockly.Blocks.i2c_send = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_I2C_SEND_TOOLTIP);
+        this.setTooltip(Blockly.MSG_I2C_SEND_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("DATA")
                 .appendField("i2c SDA")
@@ -5693,7 +5693,7 @@ Blockly.propc.i2c_send = function () {
 Blockly.Blocks.i2c_receive = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_I2C_RECEIVE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_I2C_RECEIVE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("i2c SDA")
@@ -5807,7 +5807,7 @@ Blockly.propc.i2c_receive = function () {
 Blockly.Blocks.i2c_mode = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_I2C_MODE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_I2C_MODE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput('SCLPIN')
                 .appendField("i2c SCL")
