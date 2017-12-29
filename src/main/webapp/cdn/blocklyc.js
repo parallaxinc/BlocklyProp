@@ -59,6 +59,8 @@ var graph_data = {
 
 // Minimum client/launcher version supporting base64-encoding
 var minEnc64Ver = version_as_number('0.7.0');
+// Minimum client/launcher version supporting coded/verbose responses
+var minCodedVer = version_as_number('0.7.5');
 // Minimum client/launcher allowed for use with this system
 var minVer = version_as_number(client_min_version);
 
@@ -333,37 +335,27 @@ function cloudCompile(text, action, successHandler) {
             'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
             'data': {"code": propcCode}
         }).done(function (data) {
-            if (data.error) {
-                console.log(data);
-                if (typeof data['message'] === "string")
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message']
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-                else
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+            if (data.error || typeof data.error === "undefined") {
+                // console.log(data);
+                // Get message as a string, or blank if undefined
+                var message = (typeof data['message'] === "string") ? data['message'] : (typeof data.error !== "undefined") ? data['message'].toString() : "";
+                alert("BlocklyProp was unable to compile your project:\n" + message
+                    + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
-                var loadWaitMsg = '';
-                if (action !== 'compile') {
-                    loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
-                }
+                var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
+                $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 if (data.success) {
-                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
-                } else {
-                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
                 
                 // Scoll automatically to the bottom after new data is added
                 document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
             }
         }).fail(function (data) {
-            console.log(data);
-            if (typeof data === "string")
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-            else
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString()
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+            // console.log(data);
+            var message = (typeof data === "string") ? data : data.toString();
+            alert("BlocklyProp was unable to compile your project:\n----------\n" + message
+                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
         });
     }
 }
@@ -378,21 +370,25 @@ function compile() {
 /**
  * begins loading process
  * @param modal_message message shown at the top of the compile/load modal.
- * @param compile_command command for the cloud compiler (bin/eeprom).
+ * @param compile_command for the cloud compiler (bin/eeprom).
+ * @param load_option command for the loader (CODE/VERBOSE/CODE_VERBOSE).
  * @param load_action command for the loader (RAM/EEPROM).
  *
  */
-function loadInto(modal_message, compile_command, load_action) {
+function loadInto(modal_message, compile_command, load_option, load_action) {
     if (ports_available) {
         cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
             if (client_use_type === 'ws') {
 
+                //Prep for new download messages
+                launcher_result = "";
+                launcher_download = false;
+                //Set dbug flag if needed
                 var dbug = 'none';
                 if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
                     dbug = terminalNeeded;
                 }
-
                 var prog_to_send = {
                     type: 'load-prop',
                     action: load_action,
@@ -406,19 +402,58 @@ function loadInto(modal_message, compile_command, load_action) {
 
             } else {
 
-                $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
-                    $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                if (client_version >= minCodedVer) {
+                    //Request load with options from BlocklyProp Client
+                    $.post(client_url + 'load.action', {option: load_option, action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                        //Replace response message's consecutive white space with a new-line, then split at new lines
+                        var message = loaddata.message.replace(/\s{2,}/g, '\n').split('\n');
+                        //If responses have codes, check for all success codes (< 100)
+                        var success = true;
+                        var coded = (load_option === "CODE" || load_option === "CODE_VERBOSE");
+                        if (coded) {
+                            message.forEach(function(x){success = success && x.substr(0,3) < 100});
+                        }
+                        //Display results
+                        var result = '';
+                        if (success && coded) {
+                            //Success! Keep it simple
+                            result = ' Succeeded.';
+                        } else {
+                            //Failed (or not coded); Show the details
+                            var error = [];
+                            message.forEach(function(x){error.push(x.substr((coded) ? 4 : 0))});
+                            result = ((coded) ? ' Failed!' : "") + '\n\n-------- loader messages --------\n' + error.join('\n');
+                        }
 
-                    // Scoll automatically to the bottom after new data is added
-                    document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+                        $("#compile-console").val($("#compile-console").val() + result);
 
-                    console.log(loaddata);
-                    if (terminalNeeded === 'term' && loaddata.success) {
-                        serial_console();
-                    } else if (terminalNeeded === 'graph' && loaddata.success) {
-                        graphing_console();
-                    }
-                });
+                        // Scoll automatically to the bottom after new data is added
+                        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+
+                        //console.log(loaddata);
+                        if (terminalNeeded === 'term' && loaddata.success) {
+                            serial_console();
+                        } else if (terminalNeeded === 'graph' && loaddata.success) {
+                            graphing_console();
+                        }
+                    });
+                } else {
+                    //todo - Remove this once client_min_version (and thus minVer) is >= minCodedVer
+                    //Request load without options from old BlocklyProp Client
+                    $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                        $("#compile-console").val($("#compile-console").val() + loaddata.message);
+
+                        // Scoll automatically to the bottom after new data is added
+                        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+
+                        //console.log(loaddata);
+                        if (terminalNeeded === 'term' && loaddata.success) {
+                            serial_console();
+                        } else if (terminalNeeded === 'graph' && loaddata.success) {
+                            graphing_console();
+                        }
+                    });
+                }
             }
         });
     } else if (client_available) {
@@ -715,7 +750,7 @@ var set_port_list = function (data) {
     data = (data ? data : data = 'searching');
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
-    if (typeof(data) === 'object') {
+    if (typeof(data) === 'object' && data.length) {
         data.forEach(function (port) {
             $("#comPort").append($('<option>', {
                 text: port
