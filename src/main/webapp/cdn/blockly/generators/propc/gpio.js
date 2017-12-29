@@ -1224,9 +1224,9 @@ Blockly.Blocks.sound_init = {
         //this.setTooltip(Blockly.MSG_SOUND_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
-                .appendField("sound initialize left/+ PIN")
+                .appendField("sound initialize left (+) PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['None','-1']])), "PINL")
-                .appendField("right/\u2212 PIN")
+                .appendField("right (\u2212) PIN")
                 .appendField(new Blockly.FieldDropdown(profile.default.digital.concat([['None','-1']])), "PINR");
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
@@ -1241,6 +1241,7 @@ Blockly.propc.sound_init = function () {
         Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
         Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';
     }
+    return '';
 };
 
 Blockly.Blocks.sound_play = {
@@ -1406,8 +1407,13 @@ Blockly.Blocks.wav_play = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("WAV play file")
-                .appendField(new Blockly.FieldTextInput('File_name'), 'FILENAME');
-
+                .appendField(new Blockly.FieldTextInput('filename', function (fn) {
+                    fn = fn.replace(/[^A-Z0-9a-z_]/g, '').toLowerCase();
+                    if (fn.length > 8) {
+                        fn.length = 8;
+                    }
+                    return fn;
+                }), 'FILENAME');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
@@ -1548,7 +1554,7 @@ Blockly.Blocks.sd_open = {
         this.appendDummyInput("MODE")
                 .appendField("SD file open")
                 .appendField(new Blockly.FieldTextInput("MYFILE.TXT", function (fn) {
-                    fn = fn.replace(/[^A-Z0-9a-z_\.]/g, '');
+                    fn = fn.replace(/[^A-Z0-9a-z_\.]/g, '').toLowerCase();
                     var fn_part = fn.split('.');
                     if (fn_part[0].length > 8) {
                         fn_part[0].length = 8;

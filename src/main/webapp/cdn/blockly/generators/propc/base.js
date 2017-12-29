@@ -703,14 +703,11 @@ Blockly.Blocks.base_delay = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
-
-    ,
+    }//,
     // For testing purposes - use the pause block to capture onchange events and report them to the console.
-    onchange: function (event) {
-        //console.log(event);
-    }
-
+    //onchange: function (event) {
+    //    console.log(event);
+    //}
 };
 
 Blockly.propc.base_delay = function () {
@@ -2036,7 +2033,7 @@ Blockly.Blocks.constant_define = {
                 .appendField("constant")
                 .appendField(new Blockly.FieldTextInput('MYVALUE', function (a) {
                     a = a.toUpperCase();
-                    a = a.replace(/[^A-Z0-9_]/g, '');
+                    a = a.replace(/ /g, '_').replace(/[^A-Z0-9_]/g, '');
                     this.sourceBlock_.sendConstantVal(this.sourceBlock_.getFieldValue('CONSTANT_NAME'), a);
                     return a;
                 }), "CONSTANT_NAME")
@@ -2045,14 +2042,47 @@ Blockly.Blocks.constant_define = {
                         Blockly.FieldTextInput.numberValidator), 'VALUE');
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+        this.sendUpdate = true;
     },
     sendConstantVal: function (ov, nv) {
-        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-        for (var x = 0; x < allBlocks.length; x++) {
-            if (allBlocks[x].type === 'constant_value') {
-                allBlocks[x].updateConstMenu.call(allBlocks[x], ov, nv);
+        if (this.sendUpdate || (ov === '-1' && nv === '-1')) {
+            if (ov === '-1' && nv === '-1') {
+                ov = null;
+                nv = null;
+            }
+            // Find all the blocks that have my value and tell them to update it
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+            for (var x = 0; x < allBlocks.length; x++) {
+                if (allBlocks[x] && allBlocks[x].type === 'constant_value') {
+                    allBlocks[x].updateConstMenu.call(allBlocks[x], ov, nv);
+                }
             }
         }
+        this.sendUpdate = true;
+    },
+    onchange: function (event) {
+        var myName = this.getFieldValue('CONSTANT_NAME');
+        var theBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+
+        // If I get deleted, broadcast that to other blocks.
+        if (event.oldXml) {
+            var oldName = '';
+            var oSerializer = new XMLSerializer();
+            var sXML = oSerializer.serializeToString(event.oldXml);
+            var f_start = sXML.indexOf('CONSTANT_NAME');
+            if (f_start > -1 && sXML.indexOf('constant_define') > -1) {
+                var f_end = sXML.indexOf('</field', f_start);
+                oldName = sXML.substring(f_start + 15, f_end);
+                this.sendConstantVal(oldName, null);
+            }
+        }
+        
+        var warnTxt = null;
+        var f_start = theBlocks.indexOf('constant ' + myName + '  =');
+        if (theBlocks.indexOf('constant ' + myName + '  =', f_start + 1) > -1) {
+            warnTxt = 'WARNING! you can only define the constant "' + myName + '" once!';
+        }
+        this.setWarningText(warnTxt);
     }
 };
 
@@ -2077,38 +2107,46 @@ Blockly.Blocks.constant_value = {
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, null);
-        this.warnText = null;
-        this.updateConstMenu();  
+        this.updateConstMenu();
     },
     updateConstMenu: function (ov, nv) {
-        this.warnText = 'WARNING: Your propgram must include a constant define block!';
+        var v_check = true;
         var v_list = [];
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
         for (var x = 0; x < allBlocks.length; x++) {
             if (allBlocks[x].type === 'constant_define') {
                 var v_name = allBlocks[x].getFieldValue('CONSTANT_NAME');
-                if (v_name === ov) {
+                if (v_name === ov && nv) {
                     v_name = nv;
                 }
-                v_list.push([v_name, v_name]);
-                this.warnText = null;
+                if (v_name) {
+                    v_list.push([v_name, v_name]);
+                }
+                v_check = false;
             }
         }
-        if (this.warnText) {
+        if (v_check) {
             v_list.push(['MYVALUE', 'MYVALUE']);
-        } else {
-            var m = this.getFieldValue('VALUE');
-
-            this.removeInput('VALUE_LIST');               
-            this.appendDummyInput('VALUE_LIST')
-            .appendField(new Blockly.FieldDropdown(v_list), "VALUE");
-            if (m && m === ov) {
-                this.setFieldValue(nv, 'VALUE');
-            } else if (m) {
-                this.setFieldValue(m, 'VALUE');
-            }
         }
-        this.setWarningText(this.warnText);
+        var m = this.getFieldValue('VALUE');
+
+        this.removeInput('VALUE_LIST');               
+        this.appendDummyInput('VALUE_LIST')
+                .appendField(new Blockly.FieldDropdown(uniq_fast(v_list)), "VALUE");
+        if (m && m === ov && nv) {
+            this.setFieldValue(nv, 'VALUE');
+        } else if (m) {
+            this.setFieldValue(m, 'VALUE');
+        }
+    },
+    onchange: function() {
+        var val = this.getFieldValue('VALUE');
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+        if (allBlocks.indexOf('constant ' + val) === -1) {
+            this.setWarningText('WARNING: Your program must include a constant define block for this value!');
+        } else {
+            this.setWarningText(null);
+        }
     }
 };
 
