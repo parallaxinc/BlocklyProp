@@ -1380,7 +1380,7 @@ Blockly.Blocks.parens = {
 };
 
 Blockly.propc.parens = function () {
-    var argument0 = Blockly.propc.valueToCode(this, 'BOOL', order) || '0';
+    var argument0 = Blockly.propc.valueToCode(this, 'BOOL', Blockly.propc.ORDER_ATOMIC) || '0';
     var code = '(' + argument0 + ')';
     return [code, Blockly.propc.ORDER_ATOMIC];
 };
