@@ -368,6 +368,7 @@ function establish_socket() {
                         if (msg[0] != nsDownloading || !launcher_download) {
                             launcher_result = launcher_result + msg[1] + "\n";
                             launcher_download |= (msg[0] == nsDownloading);
+                        }
                         if (msg[0] == nsDownloading) {
                             //Show progress during downloading
                             $('#compile-console').val($('#compile-console').val() + ".");
@@ -375,9 +376,9 @@ function establish_socket() {
                         if (msg[0] == nsDownloadSuccessful) {
                             //Success! Keep it simple
                             $('#compile-console').val($('#compile-console').val() + ' Succeeded.');
-                        } else if (msg[0] == nsDownloadFailed) {
+                        } else if (msg[0] == neDownloadFailed) {
                             //Failed! Show the details
-                            $('#compile-console').val($('#compile-console').val() + ' Failed!' + '\n\n-------- loader messages --------\n' + launcher_result;
+                            $('#compile-console').val($('#compile-console').val() + ' Failed!\n\n-------- loader messages --------\n' + launcher_result);
                         }
                     } else {
                         //todo - Remove this once client_min_version (and thus minVer) is >= minOptionVer
