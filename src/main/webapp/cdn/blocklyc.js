@@ -368,6 +368,7 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
 
             if (client_use_type === 'ws') {
 
+                launcher_msg = "";
                 var dbug = 'none';
                 if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
                     dbug = terminalNeeded;
