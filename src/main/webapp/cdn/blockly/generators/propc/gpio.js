@@ -1237,7 +1237,7 @@ Blockly.propc.sound_init = function () {
     if (!this.disabled) {
         var l_pin = this.getFieldValue('PINL');
         var r_pin = this.getFieldValue('PINR');
-        Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(' + l_pin + ', ' + r_pin + ')';
+        Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(' + l_pin + ', ' + r_pin + ');';
         Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
         Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';
     }
@@ -1393,7 +1393,7 @@ Blockly.propc.sound_play = function () {
     
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('sound initialize') === -1) {
-        code = '// WARNING: You must use a sound initialize\nblock at the beginning of your program!';
+        code = '// WARNING: You must use a sound initialize block at the beginning of your program!\n';
     }
 
     return code;
