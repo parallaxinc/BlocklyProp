@@ -28,6 +28,8 @@ var client_ws_heartbeat_interval = null;
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
         
+var launcher_msg = "";
+
 $(document).ready(function () {
     find_client();
 });
@@ -353,7 +355,17 @@ function establish_socket() {
                     $('#compile-console').val('');
 
                 } else if (ws_msg.action === 'message-compile') {
-                    $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
+                    if (client_version >= minOptionVer) {
+                        var msg = ws_msg.msg.split("-");
+                        if (msg[0] != 002) {
+                            launcher_msg = launcher_msg + msg[1] + "\n";
+                        } else {
+                            $('#compile-console').val($('#compile-console').val() + ".");
+                        }
+//                        $('#compile-console').val(launcher_msg);
+                    } else {
+                        $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
+                    }
                     
                     // Scoll automatically to the bottom after new data is added
                     var compileConsoleObj = document.getElementById("compile-console");
