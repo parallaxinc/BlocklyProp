@@ -59,8 +59,8 @@ var graph_data = {
 
 // Minimum client/launcher version supporting base64-encoding
 var minEnc64Ver = version_as_number('0.7.0');
-// Minimum client/launcher version supporting optional coded/verbose responses
-var minOptionVer = version_as_number('0.7.5');
+// Minimum client/launcher version supporting coded/verbose responses
+var minCodedVer = version_as_number('0.7.5');
 // Minimum client/launcher allowed for use with this system
 var minVer = version_as_number(client_min_version);
 
@@ -374,14 +374,14 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
 
             if (client_use_type === 'ws') {
 
+                //Prep for new download messages
                 launcher_result = "";
                 launcher_download = false;
+                //Set dbug flag if needed
                 var dbug = 'none';
                 if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
                     dbug = terminalNeeded;
                 }
-                //todo - Add load_option above load_action
-                //todo - Determine backwards compatibility with BP Loader
                 var prog_to_send = {
                     type: 'load-prop',
                     action: load_action,
@@ -395,7 +395,7 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
 
             } else {
 
-                if (client_version >= minOptionVer) {
+                if (client_version >= minCodedVer) {
                     //Request load with options from BlocklyProp Client
                     $.post(client_url + 'load.action', {option: load_option, action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                         //Replace response message's consecutive white space with a new-line, then split at new lines
@@ -431,7 +431,7 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
                         }
                     });
                 } else {
-                    //todo - Remove this once client_min_version (and thus minVer) is >= minOptionVer
+                    //todo - Remove this once client_min_version (and thus minVer) is >= minCodedVer
                     //Request load without options from old BlocklyProp Client
                     $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
                         $("#compile-console").val($("#compile-console").val() + loaddata.message);

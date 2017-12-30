@@ -28,6 +28,7 @@ var client_ws_heartbeat_interval = null;
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
         
+// BP Launcher result log and download message flag
 var launcher_result = "";
 var launcher_download = false;
 
@@ -363,25 +364,25 @@ function establish_socket() {
                     $('#compile-console').val('');
 
                 } else if (ws_msg.action === 'message-compile') {
-                    if (client_version >= minOptionVer) {
+                    if (client_version >= minCodedVer) {
                         //Messages are coded; check codes, log all and filter out nsDownloading duplicates
                         var msg = ws_msg.msg.split("-");
                         if (msg[0] != nsDownloading || !launcher_download) {
                             launcher_result = launcher_result + msg[1] + "\n";
                             launcher_download |= (msg[0] == nsDownloading);
-                        if (msg[0] == nsDownloading) {
-                            //Show progress during downloading
-                            $('#compile-console').val($('#compile-console').val() + ".");
                         }
                         if (msg[0] == nsDownloadSuccessful) {
                             //Success! Keep it simple
                             $('#compile-console').val($('#compile-console').val() + ' Succeeded.');
-                        } else if (msg[0] == nsDownloadFailed) {
+                        } else if (msg[0] == neDownloadFailed) {
                             //Failed! Show the details
-                            $('#compile-console').val($('#compile-console').val() + ' Failed!' + '\n\n-------- loader messages --------\n' + launcher_result;
+                            $('#compile-console').val($('#compile-console').val() + ' Failed!\n\n-------- loader messages --------\n' + launcher_result);
+                        } else {
+                            //Show progress during downloading
+                            $('#compile-console').val($('#compile-console').val() + ".");
                         }
                     } else {
-                        //todo - Remove this once client_min_version (and thus minVer) is >= minOptionVer
+                        //todo - Remove this once client_min_version (and thus minVer) is >= minCodedVer
                         //Messages are not coded; display all as they come
                         $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
                     }
