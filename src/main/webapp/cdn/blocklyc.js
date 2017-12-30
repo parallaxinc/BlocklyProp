@@ -741,7 +741,7 @@ set_port_list = function (data) {
     data = (data ? data : data = 'searching');
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
-    if (typeof(data) === 'object') {
+    if (typeof(data) === 'object' && data.length) {
         data.forEach(function (port) {
             $("#comPort").append($('<option>', {
                 text: port
