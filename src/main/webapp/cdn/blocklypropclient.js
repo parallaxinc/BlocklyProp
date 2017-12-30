@@ -27,8 +27,18 @@ var client_ws_heartbeat_interval = null;
 
 var check_com_ports_interval = null;
 var check_ws_socket_timeout = null;
-var check_ws_client_timeout = null;   // unused?  safe to delete?
         
+// BP Launcher result log and download message flag
+var launcher_result = "";
+var launcher_download = false;
+
+// Status Notice IDs
+const nsDownloading                = 002;
+const nsDownloadSuccessful         = 005;
+// Error Notice IDs
+const neDownloadFailed             = 102;
+
+
 $(document).ready(function () {
     find_client();
 });
@@ -37,7 +47,6 @@ var find_client = function () {
     if (check_ws_socket_timeout) {
         //Clear timeout if it exists; without this, back-to-back find_client() calls seem to occur
         clearTimeout(check_ws_socket_timeout);
-        check_ws_client_timeout = null;
     }
     
     establish_socket();
@@ -103,7 +112,7 @@ var check_client = function () {
     if (client_use_type !== 'ws') {
         $.get(client_url, function (data) {
             if (!client_available) {
-                client_version = version_as_number(data.version);
+                client_version = version_as_number((typeof data.version_str !== "undefined") ? data.version_str : data.version);
                 if (!data.server || data.server !== 'BlocklyPropHTTP') {
                     $('.bpc-version').addClass('hidden');
                     $("#client-unknown-span").removeClass("hidden");
@@ -355,7 +364,28 @@ function establish_socket() {
                     $('#compile-console').val('');
 
                 } else if (ws_msg.action === 'message-compile') {
-                    $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
+                    if (client_version >= minCodedVer) {
+                        //Messages are coded; check codes, log all and filter out nsDownloading duplicates
+                        var msg = ws_msg.msg.split("-");
+                        if (msg[0] != nsDownloading || !launcher_download) {
+                            launcher_result = launcher_result + msg[1] + "\n";
+                            launcher_download |= (msg[0] == nsDownloading);
+                        }
+                        if (msg[0] == nsDownloadSuccessful) {
+                            //Success! Keep it simple
+                            $('#compile-console').val($('#compile-console').val() + ' Succeeded.');
+                        } else if (msg[0] == neDownloadFailed) {
+                            //Failed! Show the details
+                            $('#compile-console').val($('#compile-console').val() + ' Failed!\n\n-------- loader messages --------\n' + launcher_result);
+                        } else {
+                            //Show progress during downloading
+                            $('#compile-console').val($('#compile-console').val() + ".");
+                        }
+                    } else {
+                        //todo - Remove this once client_min_version (and thus minVer) is >= minCodedVer
+                        //Messages are not coded; display all as they come
+                        $('#compile-console').val($('#compile-console').val() + ws_msg.msg);
+                    }
                     
                     // Scoll automatically to the bottom after new data is added
                     var compileConsoleObj = document.getElementById("compile-console");
