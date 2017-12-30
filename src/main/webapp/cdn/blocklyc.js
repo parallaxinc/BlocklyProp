@@ -328,22 +328,14 @@ function cloudCompile(text, action, successHandler) {
         }).done(function (data) {
             if (data.error) {
                 console.log(data);
-                if (typeof data['message'] === "string")
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message']
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-                else
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+                var message = (typeof data['message'] === "string") ? data['message'] : data['message'].toString();
+                alert("BlocklyProp was unable to compile your project:\n" + message
+                    + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
-                var loadWaitMsg = '';
-                if (action !== 'compile') {
-                    loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
-                }
+                var loadWaitMsg = (action !== 'compile') ? '\nDownloading...' : '';
+                $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 if (data.success) {
-                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
-                } else {
-                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
                 
                 // Scoll automatically to the bottom after new data is added
@@ -351,12 +343,9 @@ function cloudCompile(text, action, successHandler) {
             }
         }).fail(function (data) {
             console.log(data);
-            if (typeof data === "string")
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-            else
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString()
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+            var message = (typeof data === "string") ? data : data.toString();
+            alert("BlocklyProp was unable to compile your project:\n----------\n" + message
+                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
         });
     }
 }
