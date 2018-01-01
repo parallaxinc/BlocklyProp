@@ -1573,6 +1573,16 @@ Blockly.Blocks.sd_open = {
         this.setInputsInline(false);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+    },
+    onchange: function () {
+        if (projectData["board"] !== "activity-board") {
+            var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+            if (allBlocks.indexOf('SD initialize') === -1) {
+                this.setWarningText('WARNING: You must use a SD initialize\nblock at the beginning of your program!');
+            } else {
+                this.setWarningText(null);
+            }
+        }
     }
 };
 
@@ -1600,7 +1610,13 @@ Blockly.propc.sd_open = function () {
         Blockly.propc.setups_["sd_card"] = 'sd_mount(22, 23, 24, 25);\n';
     }
 
-    return head + 'fp = fopen("' + fp + '","' + mode + '");';
+    if (projectData["board"] !== "activity-board") {
+        if (allBlocks.toString().indexOf('SD initialize') === -1) {
+            return '// WARNING: You must use a SD initialize block at the beginning of your program!';
+        } else {
+            return head + 'fp = fopen("' + fp + '","' + mode + '");';
+        }
+    }
 };
 
 Blockly.Blocks.sd_read = {
