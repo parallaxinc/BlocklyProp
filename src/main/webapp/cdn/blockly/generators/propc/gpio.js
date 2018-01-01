@@ -881,7 +881,7 @@ Blockly.Blocks.fb360_setup = {
                 .appendField(new Blockly.FieldDropdown(this._menuOptions, function (param) {
                     this.sourceBlock_.updateShape_(param);
                 }), "PARAM")
-                .appendField('R,0,7200,0', 'RANGEVALS1');
+                .appendField('R,36,3600,0', 'RANGEVALS1');
         this.getField('RANGEVALS1').setVisible(false);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
@@ -891,9 +891,9 @@ Blockly.Blocks.fb360_setup = {
     setToOther: Blockly.Blocks['base_freqout'].setToOther,
     updateShape_: function (param) {
         if (param === 'setAcceleration') {
-            this.setFieldValue('R,0,7200,0', 'RANGEVALS1');
+            this.setFieldValue('R,36,3600,1800', 'RANGEVALS1');
         } else if (param === 'setMaxSpeed') {
-            this.setFieldValue('R,0,1080,0', 'RANGEVALS1');
+            this.setFieldValue('R,10,1080,540', 'RANGEVALS1');
         } else {
             this.setFieldValue('R,-2147483648,2147483647,0', 'RANGEVALS1');
         }
@@ -1921,7 +1921,7 @@ Blockly.Blocks.ab_drive_ramping = {
         else if (allBlocks.indexOf('Robot Servo Differential Drive initialize') > -1)
             whichRobot = 'servodiffdrive.h';
         if (this.type === 'ab_drive_ramping') {
-            var ramp = this.getFieldValue('RAMPING') || '600';
+            var ramp = this.getFieldValue('RAMPING') || (whichRobot === 'abdrive.h' ? '600' : '300');
             var type = this.getFieldValue('OPS') || 'FOR_SPEED';
             this.isBot = whichRobot;
             this.newRobot(whichRobot, type, ramp);
@@ -1931,16 +1931,29 @@ Blockly.Blocks.ab_drive_ramping = {
     },
     newRobot: function (robot, type, ramp) {
         this.setWarningText(null);
-        var accelMenu = [
-            ["2000 ticks/s\u00B2", "2000"],
-            ["1600 ticks/s\u00B2 (jerky)", "1600"],
-            ["1200 ticks/s\u00B2", "1200"],
-            ["800 ticks/s\u00B2 (peppy)", "800"],
-            ["600 ticks/s\u00B2", "600"],
-            ["400 ticks/s\u00B2 (smooth)", "400"],
-            ["200 ticks/s\u00B2", "200"],
-            ["100 ticks/s\u00B2 (sluggish)", "100"]
-        ];
+        var accelMenu = [];
+        if (robot === 'abdrive.h') {
+            accelMenu = [
+                ["not limited", "2400"],
+                ["1200 ticks/s\u00B2", "1200"],
+                ["800 ticks/s\u00B2 (peppy)", "800"],
+                ["600 ticks/s\u00B2", "600"],
+                ["400 ticks/s\u00B2 (smooth)", "400"],
+                ["200 ticks/s\u00B2", "200"],
+                ["100 ticks/s\u00B2 (sluggish)", "100"]
+            ];
+        } else if (robot === 'abdrive360.h') {
+        accelMenu = [
+                ["Not limited", "1200"],
+                ["600 ticks/s\u00B2 (peppy)", "600"],
+                ["500 ticks/s\u00B2", "450"],
+                ["400 ticks/s\u00B2", "300"],
+                ["300 ticks/s\u00B2", "225"],
+                ["200 ticks/s\u00B2", "150"],
+                ["100 ticks/s\u00B2", "75"],
+                ["50 ticks/s\u00B2 (sluggish)", "50"]
+            ];
+        }
         this.removeInput('ACCEL');
         if (robot === 'abdrive.h' || robot === 'arlodrive.h' || robot === 'abdrive360.h') {
             this.appendDummyInput('ACCEL')
@@ -1951,7 +1964,7 @@ Blockly.Blocks.ab_drive_ramping = {
                     ]), "OPS")
                     .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
             this.setFieldValue(type || 'FOR_SPEED', 'OPS');
-            this.setFieldValue(ramp || '600', 'RAMPING');
+            this.setFieldValue(ramp || (robot === 'abdrive.h' ? '600' : '300'), 'RAMPING');
             if (robot === 'arlodrive.h')
                 this.setWarningText('WARNING: This block does not currently work for the Arlo robot.');
         } else if (robot === '') {
