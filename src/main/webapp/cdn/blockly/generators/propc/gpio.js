@@ -1761,7 +1761,7 @@ Blockly.Blocks.sd_file_pointer = {
                     ["set", "set"],
                     ["get", "get"]
                 ], function (m) {
-                    this.sourceBlock_.setTo(m);
+                    this.sourceBlock_.setSdMode(m);
                 }), "MODE")
                 .appendField("pointer");
         this.setFieldValue(m, 'MODE');
