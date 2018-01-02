@@ -1610,7 +1610,7 @@ Blockly.propc.sd_open = function () {
         Blockly.propc.setups_["sd_card"] = 'sd_mount(22, 23, 24, 25);\n';
     }
 
-    code = head + 'fp = fopen("' + fp + '","' + mode + '");';
+    var code = head + 'fp = fopen("' + fp + '","' + mode + '");';
     if (projectData["board"] !== "activity-board" && 
             allBlocks.toString().indexOf('SD initialize') === -1) {
         code = '// WARNING: You must use a SD initialize block at the beginning of your program!';
