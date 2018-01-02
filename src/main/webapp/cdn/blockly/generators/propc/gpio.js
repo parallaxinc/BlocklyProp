@@ -1610,13 +1610,12 @@ Blockly.propc.sd_open = function () {
         Blockly.propc.setups_["sd_card"] = 'sd_mount(22, 23, 24, 25);\n';
     }
 
-    if (projectData["board"] !== "activity-board") {
-        if (allBlocks.toString().indexOf('SD initialize') === -1) {
-            return '// WARNING: You must use a SD initialize block at the beginning of your program!';
-        } else {
-            return head + 'fp = fopen("' + fp + '","' + mode + '");';
-        }
+    code = head + 'fp = fopen("' + fp + '","' + mode + '");';
+    if (projectData["board"] !== "activity-board" && 
+            allBlocks.toString().indexOf('SD initialize') === -1) {
+        code = '// WARNING: You must use a SD initialize block at the beginning of your program!';
     }
+    return code;
 };
 
 Blockly.Blocks.sd_read = {
@@ -1811,16 +1810,18 @@ Blockly.Blocks.sd_file_pointer = {
 
 Blockly.propc.sd_file_pointer = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+    var code = null;
     if (allBlocks.indexOf('SD file open') === -1) {
-        return '// WARNING: You must use a SD file open block before using the file pointer!';
+        code = '// WARNING: You must use a SD file open block before using the file pointer!';
     } else if (allBlocks.indexOf('SD initialize') === -1 && projectData["board"] !== "activity-board") {
-        return '// WARNING: You must use a SD initialize block at the beginning of your program!';
+        code = '// WARNING: You must use a SD initialize block at the beginning of your program!';
     } else if (this.getFieldValue('MODE') === 'set') {
         var fp = Blockly.propc.valueToCode(this, 'FP', Blockly.propc.ORDER_NONE) || '0';
-        return 'fp = ' + fp + ';';
+        code = 'fp = ' + fp + ';';
     } else {
-        return ['fp', Blockly.propc.ORDER_ATOMIC];
+        code = ['fp', Blockly.propc.ORDER_ATOMIC];
     }
+    return code;
 };
 
 // ----------------- Robot (drive) blocks --------------------------------------
