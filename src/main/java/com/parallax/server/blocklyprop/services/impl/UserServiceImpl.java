@@ -59,10 +59,14 @@ public class UserServiceImpl implements UserService {
             UserRecord userObject = userDao.getUser(idUser);
             if (userObject != null) { 
                 return userObject.into(User.class);
+            } else {
+                LOG.error("Unable to retreive user record for id: {}", idUser);
             }
+        } else {
+            LOG.error("UserDAO is not initialized before first use!");
         }
-
-        LOG.error("UserDAO is not initialized before first use!");
+        
+        // Cannot obtain the user record.
         return null;
     }
     
@@ -73,8 +77,9 @@ public class UserServiceImpl implements UserService {
         }
         else {
             LOG.error("UserDAO is not initialized before first use!");
-            return null;
         }
+
+        return null;
     }
 
     @Override
