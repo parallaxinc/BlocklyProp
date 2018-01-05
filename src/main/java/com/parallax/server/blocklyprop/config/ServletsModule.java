@@ -46,7 +46,10 @@ public class ServletsModule extends ServletModule {
         serve("/authenticate").with(AuthenticationServlet.class);
 
         serve("/project").with(ProjectServlet.class);
+        
+        // Register a new user account
         serve("/register").with(RegisterServlet.class);
+        
         serve("/profile").with(ProfileServlet.class);
 
         serve("/confirmrequest").with(ConfirmRequestServlet.class);

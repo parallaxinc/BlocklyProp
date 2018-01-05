@@ -66,6 +66,13 @@ body {
     line-height: 22px;
 }
 
+.icon-board-propc.editor-icon {
+    background-image: url('images/board-icons/IconC.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
 .navbar-brand#nav-logo {
     background-image: url('images/logo_small.png');
     background-repeat: no-repeat;
@@ -134,9 +141,12 @@ li.project {
 }
 
 /* Markdown editor */
-.CodeMirror {
-    height: 200px;
-    min-height: 200px;
+.CodeMirror, .CodeMirror-scroll {
+    max-height: 150px !important;
+}
+
+.CodeMirror-fullscreen .CodeMirror, .CodeMirror-fullscreen .CodeMirror-scroll {
+    max-height: none;
 }
 
 div#project div.wizard-container {

@@ -16,10 +16,29 @@ import java.util.Set;
  */
 public interface UserDao {
 
+    @Deprecated
     UserRecord create(Long idCloudSession);
+    
+    UserRecord create(Long idCloudSession, String screenName);
 
+    /**
+     * Retrieve a BP user record
+     * 
+     * @param idUser
+     * @return 
+     */
     UserRecord getUser(Long idUser);
+    
+    /**
+     * Retrieve a BP user record
+     * 
+     * @param idCloudSession
+     * @param screenName
+     * @return 
+     */
+    UserRecord getUser(Long idCloudSession, String screenName);
 
+    
     List<UserRecord> getAll();
 
     void setRoles(Long idUser, Set<Role> roles);

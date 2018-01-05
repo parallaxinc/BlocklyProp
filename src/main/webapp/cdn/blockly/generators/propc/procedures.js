@@ -28,13 +28,13 @@ Blockly.Blocks['procedures_defnoreturn'] = {
      * Block for defining a procedure with no return value.
      * @this Blockly.Block
      */
-    init: function() {
-        if(profile.default.description === "Scribbler Robot") {
+    init: function () {
+        if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_FUNCTIONS_HELPURL);
         } else {
             this.setHelpUrl(Blockly.MSG_FUNCTIONS_HELPURL);
         }
-	this.setTooltip(Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP);
+        this.setTooltip(Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP);
         var nameField = new Blockly.FieldTextInput(
                 Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE,
                 Blockly.Procedures.rename);
@@ -387,26 +387,36 @@ Blockly.Blocks['procedures_callnoreturn'] = {
      * Block for calling a procedure with no return value.
      * @this Blockly.Block
      */
-    init: function() {
-        if(profile.default.description === "Scribbler Robot") {
+    init: function () {
+        if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_FUNCTIONS_HELPURL);
         } else {
             this.setHelpUrl(Blockly.MSG_FUNCTIONS_HELPURL);
         }
-	this.setTooltip(Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP);
+        this.setTooltip(Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP);
         this.appendDummyInput('TOPROW')
                 .appendField("run function ")
-                .appendField(quotes.newQuote_(this.RTL))
+                .appendField("\u201C")
                 .appendField(this.id, 'NAME')
-                .appendField(quotes.newQuote_(this.LTR));
-        this.setPreviousStatement(true);
+                .appendField("\u201D");
+        this.setPreviousStatement(true, "Function");
         this.setNextStatement(true);
         this.setColour(colorPalette.getColor('functions'));
-        // Tooltip is set in renameProcedure.
-        //this.setHelpUrl(Blockly.Msg.PROCEDURES_CALLNORETURN_HELPURL);
         this.arguments_ = [];
         this.quarkConnections_ = {};
         this.quarkIds_ = null;
+    },
+    onchange: function () {
+        var tBlock = this.previousConnection.targetBlock();
+        if (tBlock) {
+            if (tBlock.toString().indexOf('new processor ') === 0) {
+                this.setNextStatement(false);
+            } else {
+                this.setNextStatement(true);
+            }
+        } else {
+            this.setNextStatement(true);
+        }
     },
     /**
      * Returns the name of the procedure this block calls.
@@ -661,7 +671,7 @@ Blockly.Blocks['procedures_callreturn'] = {
     customContextMenu: Blockly.Blocks['procedures_callnoreturn'].customContextMenu
 };
 
-Blockly.propc.procedures_defreturn = function() {
+Blockly.propc.procedures_defreturn = function () {
     // Define a procedure with a return value.
     var funcName = Blockly.propc.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
@@ -689,10 +699,10 @@ Blockly.propc.procedures_defreturn = function() {
     }
     var code = returnType + ' ' + funcName + '(' + args.join(', ') + ') {\n' +
             branch + returnValue + '}\n';
-    
-    Blockly.propc.method_declarations_[funcName] = returnType + ' ' + 
+
+    Blockly.propc.method_declarations_[funcName] = returnType + ' ' +
             funcName + '(' + args.join(', ') + ');\n';
-    
+
     code = Blockly.propc.scrub_(this, code);
     Blockly.propc.methods_[funcName] = code;
     return null;
@@ -702,7 +712,7 @@ Blockly.propc.procedures_defreturn = function() {
 // a procedure with a return value.
 Blockly.propc.procedures_defnoreturn = Blockly.propc.procedures_defreturn;
 
-Blockly.propc.procedures_callreturn = function() {
+Blockly.propc.procedures_callreturn = function () {
     // Call a procedure with a return value.
     var funcName = Blockly.propc.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
@@ -715,7 +725,7 @@ Blockly.propc.procedures_callreturn = function() {
     return [code, Blockly.propc.ORDER_UNARY_POSTFIX];
 };
 
-Blockly.propc.procedures_callnoreturn = function() {
+Blockly.propc.procedures_callnoreturn = function () {
     // Call a procedure with no return value.
     var funcName = Blockly.propc.variableDB_.getName(this.getFieldValue('NAME'),
             Blockly.Procedures.NAME_TYPE);
@@ -728,7 +738,7 @@ Blockly.propc.procedures_callnoreturn = function() {
     return code;
 };
 
-Blockly.propc.procedures_ifreturn = function() {
+Blockly.propc.procedures_ifreturn = function () {
     // Conditionally return value from a procedure.
     var condition = Blockly.propc.valueToCode(this, 'CONDITION',
             Blockly.propc.ORDER_NONE) || 'false';

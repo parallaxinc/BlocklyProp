@@ -16,10 +16,12 @@
 //              change was recorded.
 //--------------------------------------------------------------
 */
-CREATE TABLE if not exists `admin` (
+CREATE TABLE if not exists blocklyprop.admin (
   `id` bigint(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `db_version` int NOT NULL,
   `db_script` varchar(255) NOT NULL,
   `notes` varchar(255),
   `last_change_date` DATETIME NOT NULL DEFAULT NOW()
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB
+  AUTO_INCREMENT=0
+  DEFAULT CHARSET=utf8;
