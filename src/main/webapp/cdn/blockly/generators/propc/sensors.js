@@ -1996,3 +1996,54 @@ Blockly.propc.keypad_read = function () {
         return ['keypad_button(' + pins + ')', Blockly.propc.ORDER_ATOMIC];
     }
 };
+
+
+// ------------------ DHT22 Temp & Humidity Sensor -----------------------------
+Blockly.Blocks.dht22_read = {
+    helpUrl: Blockly.MSG_TEMPERATURE_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_DHT22_READ_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+            .appendField("Temp & Humidity read PIN")
+            .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+      }
+};
+
+Blockly.propc.dht22_read = function () {
+    if (!this.disabled) {
+        Blockly.propc.definitions_["dht22"] = '#include "dht22.h"';
+    }
+    var pin = this.getFieldValue('PIN');
+    return 'dht22_read(' + pin + ');';
+};
+
+
+Blockly.Blocks.dht22_value = {
+    helpUrl: Blockly.MSG_TEMPERATURE_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_DHT22_VALUE_TOOLTIP);
+        this.setColour(colorPalette.getColor('input'));
+        this.appendDummyInput()
+            .appendField("Temp & Humidity")
+            .appendField(new Blockly.FieldDropdown([
+                ["temperature (\u00b0F)","Temp,FAHRENHEIT"], 
+                ["temperature (\u00b0C)","Temp,CELSIUS"], 
+                ["temperature (Kelvin)","Temp,KELVIN"], 
+                ["relative humidity (%)","Humidity,"]
+            ]), "ACTION")
+            .appendField("\u2715 10");
+        this.setInputsInline(false);
+        this.setOutput(true, "Number");
+    }
+};
+
+Blockly.propc.dht22_value = function () {
+    if (!this.disabled) {
+        Blockly.propc.definitions_["dht22"] = '#include "dht22.h"';
+    }
+    var action = this.getFieldValue('ACTION').split(',');
+    return ['dht22_get' + action[0] + '(' + action[1] + ')', Blockly.propc.ORDER_ATOMIC];
+};
