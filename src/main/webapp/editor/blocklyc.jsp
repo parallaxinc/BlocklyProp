@@ -1255,6 +1255,10 @@
                                         <block type="sound_impact_get"></block>
                                         <block type="sound_impact_end"></block>
                                     </category>
+                                    <category name="95" key="category_sensor-input_temperature-humidity" >
+                                        <block type="dht22_read"></block>
+                                        <block type="dht22_value"></block>
+                                    </category>
                                 </category>
                                 <category name="96" key="category_memory" include="activity-board,flip,other" colour="165">
                                     <category name="98" key="category_memory_eeprom" >
