@@ -615,6 +615,23 @@ function filterToolbox(profileName, peripherals) {
         if (experimental && inDemo !== 'demo') {
             toolboxEntry.remove();
         }
+        
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+
     });
 
 }
@@ -635,17 +652,16 @@ var findOne = function (haystack, arr) {
 
 function initToolbox(profileName, peripherals) {
     filterToolbox(profileName, peripherals);
-    isPropC = (profileName === 'propcfile' ? true : false);
     Blockly.inject('content_blocks', {
         toolbox: document.getElementById('toolbox'),
         trashcan: true,
         media: cdnUrl + 'blockly/media/',
-        readOnly: isPropC,
+        readOnly: (profileName === 'propcfile' ? true : false),
         //path: cdnUrl + 'blockly/',
         comments: false,
         zoom: {
           controls: true,
-          wheel: true,
+          wheel: false,
           startScale: 1.0,
           maxScale: 3,
           minScale: 0.3,
