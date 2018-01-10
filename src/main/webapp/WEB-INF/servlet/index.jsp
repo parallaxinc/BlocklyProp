@@ -48,7 +48,7 @@
         
         <script>
             // Retrieve the Message of the Day content
-            $.get(cdnUrl + "motd-feeder.txt", function (data) {
+            $.get(<url:getCdnUrl url="/"/> + "motd-feeder.txt", function (data) {
                 $('#message-of-the-day').css('display', 'block');
                 $('#message-of-the-day-text').html(data + ' - click for more information');
             });
