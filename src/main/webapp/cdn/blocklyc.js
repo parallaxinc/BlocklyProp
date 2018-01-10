@@ -205,10 +205,16 @@ var prettyCode = function (raw_code) {
             .replace(/serial \* /g, "serial *")
             .replace(/colorPal \* /g, "colorPal *")
             .replace(/ws2812 \* /g, "ws2812 *")
+            .replace(/i2c \* /g, "i2c *")
+            .replace(/sound \* /g, "sound *")
+            .replace(/FILE \* /g, "FILE* ")
     
             // improve the way functions and arrays are rendered
             .replace(/\)\s*[\n\r]\s*{/g,") {")
-            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, "[$1] = {$2};");
+            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, function (str, m1, m2) {
+                    m2 = m2.replace(/\s/g, '').replace(/,/g, ', ');
+                    return "[" + m1 + "] = {" + m2 + "};";
+                });
     
     codePropC.setValue(raw_code);
     codePropC.gotoLine(0);
@@ -231,6 +237,7 @@ function init(blockly) {
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
     codePropC.getSession().setTabSize(2);
+    codePropC.$blockScrolling = Infinity;
     codePropC.setReadOnly(true);
 
     codeXml = ace.edit("code-xml");
@@ -345,7 +352,7 @@ function cloudCompile(text, action, successHandler) {
                 document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
             }
         }).fail(function (data) {
-            //console.log(data);
+            // console.log(data);
             var message = (typeof data === "string") ? data : data.toString();
             alert("BlocklyProp was unable to compile your project:\n----------\n" + message
                 + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
@@ -739,7 +746,7 @@ var check_com_ports = function () {
 
 // set communication port list
 //   leave data unspecified when searching
-set_port_list = function (data) {
+var set_port_list = function (data) {
     data = (data ? data : data = 'searching');
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
