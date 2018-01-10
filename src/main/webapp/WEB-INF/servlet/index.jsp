@@ -49,8 +49,10 @@
         <script>
             // Retrieve the Message of the Day content
             $.get('<url:getCdnUrl url="/motd-feeder.txt"/>', function (data) {
-                $('#message-of-the-day').css('display', 'block');
-                $('#message-of-the-day-text').html(data + ' - click for more information');
+                if (data && data.length > 11) {
+                    $('#message-of-the-day').css('display', 'block');
+                    $('#message-of-the-day-text').html(data + ' - click for more information');
+                }
             });
         </script>
 
