@@ -70,6 +70,12 @@ $(document).ready(function () {
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
 
+            if (data && data['yours'] === false) {
+                $('#edit-project-details').html(page_text_label['editor_view-details']);
+            } else {
+                $('#edit-project-details').html(page_text_label['editor_edit-details']);
+            }
+
             timestampSaveTime(20, true);
             setInterval(checkLastSavedTime, 60000);
         }).fail(function () {
@@ -235,6 +241,25 @@ var saveProject = function () {
 };
 
 var saveAsDialog = function () {
+    
+    // Old function - still in use because save-as+board type is not approved for use.
+    utils.prompt("Save project as", projectData['name'], function (value) {
+        if (value) {
+            var code = window.frames["content_blocks"].getXml();
+            projectData['code'] = code;
+            projectData['name'] = value;
+            $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
+                var previousOwner = projectData['yours'];
+                projectData = data;
+                projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
+                // Reloading project with new id
+                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+            });
+        }
+    });
+    
+    /*
     // Prompt user to save current project first if unsaved
     if (checkLeave() && projectData['yours']) {
         utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
@@ -257,7 +282,9 @@ var saveAsDialog = function () {
     }
     
     // Open modal
-    $('#save-as-type-dialog').modal('show');    
+    $('#save-as-type-dialog').modal('show');   
+    
+    */
 };
 
 var checkBoardType = function () {
@@ -303,7 +330,7 @@ var saveProjectAs = function () {
 };
 
 var editProjectDetails = function () {
-    window.location.href = baseUrl + 'my-projects?id=' + idProject;
+    window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
 };
 
 var blocklyReady = function () {
