@@ -69,6 +69,12 @@ $(document).ready(function () {
                 $('#prop-btn-graph').removeClass('hidden');
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
+            
+            if (data && data['yours'] === false) {
+                $('#edit-project-details').html(page_text_label['editor_view-details']);
+            } else {
+                $('#edit-project-details').html(page_text_label['editor_edit-details']);
+            }
 
             timestampSaveTime(20, true);
             setInterval(checkLastSavedTime, 60000);
