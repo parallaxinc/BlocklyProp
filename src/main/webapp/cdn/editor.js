@@ -245,7 +245,7 @@ var saveAsDialog = function () {
     // Old function - still in use because save-as+board type is not approved for use.
     utils.prompt("Save project as", projectData['name'], function (value) {
         if (value) {
-            var code = window.frames["content_blocks"].getXml();
+            var code = getXml();
             projectData['code'] = code;
             projectData['name'] = value;
             $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
