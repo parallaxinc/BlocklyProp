@@ -318,7 +318,8 @@
                                     <block type="logic_boolean"></block>
                                     <block type="high_low_value"></block>
                                     <block type="constant_define" experimental="true"></block>
-                                    <block type="constant_value" experimental="true"></block>                                    <block type="color_picker"></block>
+                                    <block type="constant_value" experimental="true"></block>
+                                    <block type="color_picker"></block>
                                     <block type="color_value_from">
                                         <value name="RED_VALUE">
                                             <block type="math_number">
@@ -1709,7 +1710,8 @@
                                     <block type="system_counter"></block>
                                     <block type="custom_code" experimental="true"></block>
                                 </category>
-                            </xml>                        </div>
+                            </xml>
+                        </div>
                         <div id="content_propc">
                             <div id="code-propc"></div>
                         </div>
