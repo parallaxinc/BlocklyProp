@@ -927,8 +927,9 @@ function graph_reset() {
     graph_csv_data = new Array;
     // graph_data = null;
     for (var k = 0; k < 10; k++) {
-        graph_data.series[k].length = 0;
+        graph_data.series[k] = [];
     }
+    graph.update(graph_data);
     /*
     graph_data = {
         series: [// add more here for more possible lines...
