@@ -664,7 +664,7 @@ function graphing_console() {
 
             // Log messages from the server
             connection.onmessage = function (e) {
-                graph_new_data(e.data);
+                graph_new_data((client_version >= minEnc64Ver) ? atob(e.data) : e.data);
             };
 
             if (newGraph || graph !== null) {
