@@ -921,10 +921,8 @@ function graph_reset() {
     //$("#serial_graphing").html('');
 
     graph_interval_id = null;
-    graph_temp_data = null;
-    graph_temp_data = new Array;
-    graph_csv_data = null;
-    graph_csv_data = new Array;
+    graph_temp_data.length = 0;
+    graph_csv_data.length = 0;
     // graph_data = null;
     for (var k = 0; k < 10; k++) {
         graph_data.series[k] = [];
@@ -949,10 +947,6 @@ function graph_reset() {
     graph_temp_string = '';
     graph_timestamp_start = null;
     graph_data_ready = false;
-}
-
-function graph_redraw() {
-    graph.update(graph_data);
 }
 
 function graph_play() {
