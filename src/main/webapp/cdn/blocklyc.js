@@ -667,6 +667,24 @@ function graphing_console() {
                 graph_new_data((client_version >= minEnc64Ver) ? atob(e.data) : e.data);
             };
 
+            connection.onmessage = function (e) {
+                var c_buf = (client_version >= minEnc64Ver) ? atob(e.data) : e.data;
+                if (connStrYet) {
+                    graph_new_data(c_buf);
+                } else {
+                    connString += c_buf;
+                    if (connString.indexOf(baudrate.toString(10)) > -1) {
+                        connStrYet = true;
+                        if(document.getElementById('graph-conn-info')) {
+                            document.getElementById('graph-conn-info').innerHTML = connString.trim();
+                            // send remainder of string to terminal???  Haven't seen any leak through yet...
+                        }
+                    } else {
+                        graph_new_data(c_buf);
+                    }
+                }
+            };
+
             if (newGraph || graph !== null) {
                 graph_new_labels();
                 graph_interval_id = setInterval(function () {
@@ -676,6 +694,9 @@ function graphing_console() {
             }
 
             connection.onClose = function () {
+                //active_connection = null;
+                connString = '';
+                connStrYet = false;
                 graph_reset();
             };
 
