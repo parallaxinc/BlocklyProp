@@ -696,13 +696,14 @@ function graphing_console() {
             connection.onClose = function () {
                 //active_connection = null;
                 connString = '';
+
                 connStrYet = false;
                 graph_reset();
             };
 
             $('#graphing-dialog').on('hidden.bs.modal', function () {
                 connection.close();
-                graph_reset();
+                document.getElementById('graph-conn-info').innerHTML = '';
             });
 
         } else if (client_use_type === 'ws' && ports_available) {
@@ -854,7 +855,7 @@ var stream_out = ''; // for testing - delete when finished
 //
     // Check for a failed connection:
     if (stream.indexOf('ailed') > -1) {
-        $("#serial_graphing").html(stream);
+        $("#graph-conn-info").html(stream);
 
     } else {
         for (k = 0; k < stream.length; k++) {
@@ -900,13 +901,11 @@ var stream_out = ''; // for testing - delete when finished
                 if (!graph_data_ready) {          // wait for a full set of data to
                     if (stream[k] === '\r')  {     // come in before graphing, ends up
                         graph_data_ready = true;  // tossing the first point but prevents
-                        console.log(btoa(stream_out));
-                    } else
+                    } else {
                         stream_out += stream[k];
+                    }
                 } else {                          // garbage from mucking up the graph.
                     graph_temp_string += stream[k];
-                    
-                    // for testing - delete when finished:
 
                 }
             }
@@ -916,17 +915,21 @@ var stream_out = ''; // for testing - delete when finished
 
 function graph_reset() {
     clearInterval(graph_interval_id);
-    if (graph) {
-        graph.detach();
-    }
-    $("#serial_graphing").html('');
+    //if (graph) {
+        //graph.detach();
+    //}
+    //$("#serial_graphing").html('');
 
     graph_interval_id = null;
     graph_temp_data = null;
     graph_temp_data = new Array;
     graph_csv_data = null;
     graph_csv_data = new Array;
-    graph_data = null;
+    // graph_data = null;
+    for (var k = 0; k < 10; k++) {
+        graph_data.series[k].length = 0;
+    }
+    /*
     graph_data = {
         series: [// add more here for more possible lines...
             [],
@@ -941,6 +944,7 @@ function graph_reset() {
             []
         ]
     };
+    */
     graph_temp_string = '';
     graph_timestamp_start = null;
     graph_data_ready = false;
