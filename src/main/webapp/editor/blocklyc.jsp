@@ -1809,7 +1809,8 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="graphing-dialog-title"><span class="keyed-lang-string" key="editor_title_graphing"></span></h4>
                     </div>
-                    <div class="modal-body" style="height: 430px;">
+                    <div class="modal-body" style="height: 445px;">
+                        <div id="graph-conn-info"></div>
                         <table>
                             <tr>
                                 <td>
