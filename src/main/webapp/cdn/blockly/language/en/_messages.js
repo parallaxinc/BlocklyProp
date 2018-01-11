@@ -721,6 +721,7 @@ page_text_label['editor_demonstration_mode_info'] = "<strong>Demo mode:</strong>
 page_text_label['editor_demonstration_mode_instructions'] = "Click here to log in or sign up";
 page_text_label['editor_download'] = "Download blocks file";
 page_text_label['editor_edit-details'] = "Edit Project details";
+page_text_label['editor_view-details'] = "View Project details";
 page_text_label['editor_find_next'] = "Find Next";
 page_text_label['editor_replace'] = "Replace";
 page_text_label['editor_newproject_c'] = "Propeller C";
