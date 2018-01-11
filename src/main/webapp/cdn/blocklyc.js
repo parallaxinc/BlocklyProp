@@ -829,6 +829,8 @@ function downloadPropC() {
 
 function graph_new_data(stream) {
 
+var stream_out = ''; // for testing - delete when finished
+//
     // Check for a failed connection:
     if (stream.indexOf('ailed') > -1) {
         $("#serial_graphing").html(stream);
@@ -877,8 +879,13 @@ function graph_new_data(stream) {
                 if (!graph_data_ready) {          // wait for a full set of data to
                     if (stream[k] === '\r')       // come in before graphing, ends up
                         graph_data_ready = true;  // tossing the first point but prevents
+                    else
+                        stream_out += stream[k];
                 } else {                          // garbage from mucking up the graph.
                     graph_temp_string += stream[k];
+                    
+                    // for testing - delete when finished:
+                    console.log(stream_out);
                 }
             }
         }
