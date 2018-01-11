@@ -877,15 +877,16 @@ var stream_out = ''; // for testing - delete when finished
                 graph_temp_string = '';
             } else {
                 if (!graph_data_ready) {          // wait for a full set of data to
-                    if (stream[k] === '\r')       // come in before graphing, ends up
+                    if (stream[k] === '\r')  {     // come in before graphing, ends up
                         graph_data_ready = true;  // tossing the first point but prevents
-                    else
+                        console.log(btoa(stream_out));
+                    } else
                         stream_out += stream[k];
                 } else {                          // garbage from mucking up the graph.
                     graph_temp_string += stream[k];
                     
                     // for testing - delete when finished:
-                    console.log(stream_out);
+
                 }
             }
         }
