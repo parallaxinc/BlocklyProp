@@ -14,10 +14,11 @@
         <script>
     function initCoppaElements() {               
         document.getElementById("birthdayMonth").onchange = checkCoppaDate;
-        document.getElementById("birthdayYear").onchange - checkCoppaDate;
+        document.getElementById("birthdayYear").onchange = checkCoppaDate;
         
         // Hard-coded year value is probably not what we want here.
-        if (document.getElementById('birthdayYear').value === 2017) {
+        var currYear = currentTime.getFullYear();
+        if (document.getElementById('birthdayYear').value === currYear) {
             hideSponsorInfo();
         }
         else {
@@ -53,13 +54,12 @@
         var currentTime = new Date();
         var currYear = currentTime.getFullYear();
         var currMonth = currentTime.getMonth() + 1;
+        
         // Is the user 13 years old this year?
         if (((userYear + 13) + ((userMonth - 1) / 12)) >= (currYear + ((currMonth - 1) / 12))) {
             // The user is restricted if their birth month is less than
             // or equal the current month.
-            //if (userMonth <= currMonth) {
-                return true;
-            //}
+            return true;
         }
         
         return false;
@@ -71,6 +71,7 @@
     };
     
     function showSponsorInfo() {
+        
         document.getElementById('sponsor-info').style = "display:inherit;";
         $('#sponsor-info').show();
     }
@@ -286,6 +287,16 @@
                                    value="<%= request.getAttribute("sponsoremail")%>" 
                                    placeholder="Enter a contact email address">
                         </div>
+                        <div class="form-group" id="sponsor-info" style="display:none;">
+                            <p>
+                                <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
+                                <select name="sponsoremailtype" id="sponsor-email-type-1">
+                                    <option value="0" selected="selected">Contact</option>
+                                    <option value="1">Parent/Guardian</option>
+                                    <option value="3">Teacher/Instructor</option>
+                                </select>
+                            </p>
+                        </div>
                         <div class="form-group">
                             <label for="bdyear">
                                 <fmt:message key="register.do.birth.year" />&nbsp;*
@@ -338,7 +349,7 @@
                                     } // End for loop
                                 %>
                             </select>
-                            <span>&nbsp;&nbsp;</span>
+                            <br />
                             <a id="coppa-msg-1" 
                                onclick="$('#coppa-msg-1').hide(); $('#coppa-msg-2').removeClass('hidden');">
                                 <fmt:message key="register.do.coppa.msg0" /></a>
@@ -351,17 +362,7 @@
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
                             </p>
                         </div>
-                        <div class="form-group" id="sponsor-info" style="display:none;">
-                            <p>
-                                <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
-                                <select name="sponsoremailtype">
-                                    <option value="0" selected="selected">Contact</option>
-                                    <option value="1">Parent/Guardian</option>
-                                    <option value="3">Teacher/Instructor</option>
-                                </select>
-                            </p>
-                        </div>
-                        <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="register.do.submit" />">
+                        <input class="btn btn-default" type="submit" id="btn-submit" name="submit" value="<fmt:message key="register.do.submit" />">
                     </form>
                 </div>
             </div>
