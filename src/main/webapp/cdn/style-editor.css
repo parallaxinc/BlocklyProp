@@ -164,7 +164,7 @@ button:hover {
     }
 }
 
-#serial-conn-info {
+#serial-conn-info, #graph-conn-info {
     color: #bbb;
     font-size: 11px;
     overflow: hidden;
