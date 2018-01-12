@@ -516,13 +516,10 @@ function serial_console() {
                 updateTermBox(0);
             }
 
-            connection.onClose = function () {
+            $('#console-dialog').on('hidden.bs.modal', function () {
                 active_connection = null;
                 connString = '';
                 connStrYet = false;
-            };
-
-            $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
                 if(document.getElementById('serial-conn-info')) {
                     document.getElementById('serial-conn-info').innerHTML = '';
@@ -530,7 +527,6 @@ function serial_console() {
                 updateTermBox(0);
                 term_been_scrolled = false;
                 term = null;
-                active_connection = null;
             });
         } else {
             active_connection = 'simulated';
@@ -554,29 +550,21 @@ function serial_console() {
             portPath: getComPort()
         };
 
-        newTerminal = true;
-
         var msg_to_send = {
             type: 'serial-terminal',
             outTo: 'terminal',
             portPath: getComPort(),
             baudrate: baudrate.toString(10),
             msg: 'none',
-            action: 'msg'
+            action: 'open'
         };
 
-        if (newTerminal === true) {
-            //term.open(document.getElementById("serial_console"));
-            msg_to_send.action = 'open';
-            active_connection = 'websocket';
-            if(document.getElementById('serial-conn-info')) {
-                document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
-                        msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
-            }
-            client_ws_connection.send(JSON.stringify(msg_to_send));
-        } else {
-            updateTermBox(0);
+        active_connection = 'websocket';
+        if(document.getElementById('serial-conn-info')) {
+            document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
+                    msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
         }
+        client_ws_connection.send(JSON.stringify(msg_to_send));
 
         $('#console-dialog').on('hidden.bs.modal', function () {
             if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
@@ -588,7 +576,6 @@ function serial_console() {
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
             term_been_scrolled = false;
-            newTerminal = false;
             updateTermBox(0);
         });
     }
@@ -635,7 +622,6 @@ function graphing_console() {
             graph_reset();
             graph_temp_string = '';
             graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
-            newGraph = true;
         } else {
             graph.update(graph_data, graph_options);
         }
@@ -680,29 +666,19 @@ function graphing_console() {
                             // send remainder of string to terminal???  Haven't seen any leak through yet...
                         }
                     } else {
+                        if (!graph_interval_id) {
+                            graphStartStop('start');
+                        }
                         graph_new_data(c_buf);
                     }
                 }
             };
 
-            if (newGraph || graph !== null) {
-                graph_new_labels();
-                graph_interval_id = setInterval(function () {
-                    graph.update(graph_data);
-                    graph_update_labels();
-                }, graph_options.refreshRate);
-            }
-
-            connection.onClose = function () {
-                //active_connection = null;
-                connString = '';
-
-                connStrYet = false;
-                graph_reset();
-            };
-
             $('#graphing-dialog').on('hidden.bs.modal', function () {
                 connection.close();
+                graphStartStop('stop');
+                connString = '';
+                connStrYet = false;
                 document.getElementById('graph-conn-info').innerHTML = '';
             });
 
@@ -713,26 +689,29 @@ function graphing_console() {
                 portPath: getComPort(),
                 baudrate: baudrate.toString(10),
                 msg: 'none',
-                action: 'msg'
+                action: 'open'
             };
 
-            if (newGraph || graph !== null) {
-                graph_new_labels();
-                graph_interval_id = setInterval(function () {
-                    graph.update(graph_data);
-                    graph_update_labels();
-                }, graph_options.refreshRate);
-                msg_to_send.action = 'open';
-                client_ws_connection.send(JSON.stringify(msg_to_send));
+            if(document.getElementById('graph-conn-info')) {
+                document.getElementById('graph-conn-info').innerHTML = 'Connection established with ' +
+                        msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
+            }
+            
+            client_ws_connection.send(JSON.stringify(msg_to_send));
+            
+            if (!graph_interval_id) {
+                graphStartStop('start');
             }
 
             $('#graphing-dialog').on('hidden.bs.modal', function () {
+                graphStartStop('stop');
                 if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
                     msg_to_send.action = 'close';
+                    if(document.getElementById('graph-conn-info')) {
+                        document.getElementById('graph-conn-info').innerHTML = '';
+                    }
                     client_ws_connection.send(JSON.stringify(msg_to_send));
-                    //console.log('closing: ' + JSON.stringify(msg_to_send));
-                }
-                graph_reset();
+                }  
             });
 
         } else {
@@ -747,6 +726,30 @@ function graphing_console() {
         alert('To use the graphing feature, your program must have both a graph initialize block and a graph value block.');
     }
 }
+
+var graphStartStop = function(action) {
+    if (action === 'start' || action === 'play') {
+        if (newGraph || graph !== null) {
+            graph_new_labels();
+        }
+        graph_interval_id = setInterval(function () {
+            graph.update(graph_data);
+            graph_update_labels();
+        }, graph_options.refreshRate);        
+    } else if (action === 'stop' || action === 'pause') {
+        clearInterval(graph_interval_id);
+        graph_interval_id = null;
+    } 
+    if (action === 'stop') {
+        graph_reset();        
+    }
+    if (action === 'play') {
+        
+    } 
+    if (action === 'pause') {
+        
+    }
+};
 
 var check_com_ports = function () {
     if (client_use_type !== 'ws') {
@@ -851,8 +854,6 @@ function downloadPropC() {
 
 function graph_new_data(stream) {
 
-var stream_out = ''; // for testing - delete when finished
-//
     // Check for a failed connection:
     if (stream.indexOf('ailed') > -1) {
         $("#graph-conn-info").html(stream);
@@ -866,7 +867,7 @@ var stream_out = ''; // for testing - delete when finished
                 var row = graph_temp_data.length - 1;
                 var ts = Number(graph_temp_data[row][0]) || 0;
                 ts = ts / 1220.703125; // convert to seconds - Propeller system clock left shifted by 16;
-                if (!graph_timestamp_start)
+                if (!graph_timestamp_start || graph_timestamp_start === 0)
                     graph_timestamp_start = ts;
                 if (row > 0) {
                     if (parseFloat(graph_temp_data[row][0]) < parseFloat(graph_temp_data[row - 1][1])) {
@@ -885,7 +886,7 @@ var stream_out = ''; // for testing - delete when finished
                             x: graph_temp_data[row][0],
                             y: graph_temp_data[row][j] || null
                         });
-                        if (graph_temp_data[row][0] > graph_options.sampleTotal)
+                        if (graph_temp_data[row][0] > graph_options.sampleTotal)                         
                             graph_data.series[j - 2].shift();
                     }
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
@@ -898,15 +899,15 @@ var stream_out = ''; // for testing - delete when finished
 
                 graph_temp_string = '';
             } else {
-                if (!graph_data_ready) {          // wait for a full set of data to
-                    if (stream[k] === '\r')  {     // come in before graphing, ends up
-                        graph_data_ready = true;  // tossing the first point but prevents
-                    } else {
-                        stream_out += stream[k];
+                if (!graph_data_ready) {            // wait for a full set of data to
+                    if (stream[k] === '\r')  {      // come in before graphing, ends up
+                        graph_data_ready = true;    // tossing the first point but prevents
+                    }                               // garbage from mucking up the graph.
+                } else { 
+                    // make sure it's a number, comma, CR, or LF
+                    if ('0123456789.,\r\n'.indexOf(stream[k]) > -1) {
+                        graph_temp_string += stream[k];
                     }
-                } else {                          // garbage from mucking up the graph.
-                    graph_temp_string += stream[k];
-
                 }
             }
         }
@@ -914,52 +915,31 @@ var stream_out = ''; // for testing - delete when finished
 }
 
 function graph_reset() {
-    clearInterval(graph_interval_id);
-    //if (graph) {
-        //graph.detach();
-    //}
-    //$("#serial_graphing").html('');
-
-    graph_interval_id = null;
     graph_temp_data.length = 0;
     graph_csv_data.length = 0;
-    // graph_data = null;
     for (var k = 0; k < 10; k++) {
         graph_data.series[k] = [];
     }
-    graph.update(graph_data);
-    /*
-    graph_data = {
-        series: [// add more here for more possible lines...
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            []
-        ]
-    };
-    */
+    if (graph) {
+        graph.update(graph_data, graph_options, true);
+    }
     graph_temp_string = '';
-    graph_timestamp_start = null;
+    graph_timestamp_start = 0;
+    graph_time_multiplier = 0;
     graph_data_ready = false;
 }
 
 function graph_play() {
     if(document.getElementById('btn-graph-play')) {
         var play_state = document.getElementById('btn-graph-play').innerHTML;
-        if (play_state.indexOf('pause') > -1) {
-            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-            clearInterval(graph_interval_id);
+        if (play_state.indexOf('pause') > -1 || play_state.indexOf('<!--p') === -1) {
+            document.getElementById('btn-graph-play').innerHTML = '<!--play--><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            graphStartStop('pause');
         } else {
-            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-            graph_interval_id = setInterval(function () {
-                graph.update(graph_data);
-            }, graph_options.refreshRate);
+            document.getElementById('btn-graph-play').innerHTML = '<!--pause--><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            if (!graph_interval_id) {
+                graphStartStop('play');
+            }
         }
     }
 }
@@ -1057,7 +1037,10 @@ function graph_update_labels() {
     if (graph_temp_data[row]) {
         var col = graph_temp_data[row].length;
         for (var w = 2; w < col; w++) {
-            document.getElementById('gValue' + (w - 1).toString(10)).textContent = graph_temp_data[row][w];
+            var theLabel = document.getElementById('gValue' + (w - 1).toString(10));
+            if (theLabel) {
+                theLabel.textContent = graph_temp_data[row][w];
+            }
         }
     }
 }
