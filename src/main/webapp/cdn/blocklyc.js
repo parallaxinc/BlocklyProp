@@ -16,6 +16,7 @@ var graph_connection_string = '';
 var graph_timestamp_start = null;
 var graph_timestamp_restart = 0;
 var graph_paused = false;
+var graph_start_playing = false;
 var graph_temp_string = new String;
 var graph_time_multiplier = 0;
 var graph_interval_id = null;
@@ -638,7 +639,9 @@ function graphing_console() {
                 } else {
                     connection.send('+++ open port ' + getComPort());
                 }
-
+                
+            graphStartStop('start');
+            
             };
             // Log errors
             connection.onerror = function (error) {
@@ -666,9 +669,6 @@ function graphing_console() {
                             // send remainder of string to terminal???  Haven't seen any leak through yet...
                         }
                     } else {
-                        if (!graph_interval_id) {
-                            graphStartStop('start');
-                        }
                         graph_new_data(c_buf);
                     }
                 }
@@ -729,8 +729,9 @@ function graphing_console() {
 
 var graphStartStop = function(action) {
     if (action === 'start' || action === 'play') {
-        if (newGraph || graph !== null) {
-            graph_new_labels();
+        graph_new_labels();
+        if (graph_interval_id) {
+            clearInterval(graph_interval_id);            
         }
         graph_interval_id = setInterval(function () {
             graph.update(graph_data);
@@ -744,10 +745,12 @@ var graphStartStop = function(action) {
         graph_reset();        
     }
     if (action === 'play') {
-        
+        graph_paused = false;
+        graph_start_playing = true;
     } 
     if (action === 'pause') {
-        
+        graph_paused = true;
+        graph_timestamp_start = 0;
     }
 };
 
@@ -866,9 +869,15 @@ function graph_new_data(stream) {
                 graph_temp_data.push(graph_temp_string.split(','));
                 var row = graph_temp_data.length - 1;
                 var ts = Number(graph_temp_data[row][0]) || 0;
-                ts = ts / 1220.703125; // convert to seconds - Propeller system clock left shifted by 16;
-                if (!graph_timestamp_start || graph_timestamp_start === 0)
+                
+                // convert to seconds:
+                // Uses Propeller system clock (CNT) left shifted by 16.
+                // Assumes 80MHz clock frequency.
+                ts = ts / 1220.703125; 
+                if ((!graph_timestamp_start || graph_timestamp_start === 0) && !graph_start_playing) {
                     graph_timestamp_start = ts;
+                }
+                graph_start_playing = false;
                 if (row > 0) {
                     if (parseFloat(graph_temp_data[row][0]) < parseFloat(graph_temp_data[row - 1][1])) {
                         graph_time_multiplier += fullCycleTime;
@@ -891,7 +900,7 @@ function graph_new_data(stream) {
                     }
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
 
-                    // limits total number of data point collected to prevent memory issues
+                    // limits total number of data points collected to prevent memory issues
                     if (graph_csv_data.length > 15000) {
                         graph_csv_data.shift();
                     }
