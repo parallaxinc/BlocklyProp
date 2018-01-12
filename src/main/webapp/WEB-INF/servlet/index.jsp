@@ -51,7 +51,7 @@
             $.get('<url:getCdnUrl url="/motd-feeder.txt"/>', function (data) {
                 if (data && data.length > 11) {
                     $('#message-of-the-day').css('display', 'block');
-                    $('#message-of-the-day-text').html(data + ' - click for more information');
+                    $('#message-of-the-day-text').html(data);
                 }
             });
         </script>
