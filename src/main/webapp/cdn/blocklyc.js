@@ -741,16 +741,21 @@ var graphStartStop = function(action) {
         clearInterval(graph_interval_id);
         graph_interval_id = null;
     } 
-    if (action === 'stop') {
+    if (action === 'stop' || action === 'clear') {
         graph_reset();        
+        graph_paused = false;
     }
     if (action === 'play') {
         graph_paused = false;
         graph_start_playing = true;
     } 
-    if (action === 'pause') {
+    if (action === 'pause' && graph_temp_data.slice(-1)[0]) {
         graph_paused = true;
+        graph_temp_string = '';
         graph_timestamp_start = 0;
+        graph_time_multiplier = 0;
+        graph_timestamp_restart = graph_temp_data.slice(-1)[0][0];
+        console.log(graph_timestamp_restart);
     }
 };
 
@@ -866,28 +871,32 @@ function graph_new_data(stream) {
             if (stream[k] === '\n')
                 stream[k] = '\r';
             if (stream[k] === '\r' && graph_data_ready) {
-                graph_temp_data.push(graph_temp_string.split(','));
-                var row = graph_temp_data.length - 1;
-                var ts = Number(graph_temp_data[row][0]) || 0;
-                
-                // convert to seconds:
-                // Uses Propeller system clock (CNT) left shifted by 16.
-                // Assumes 80MHz clock frequency.
-                ts = ts / 1220.703125; 
-                if ((!graph_timestamp_start || graph_timestamp_start === 0) && !graph_start_playing) {
-                    graph_timestamp_start = ts;
+                if (!graph_paused) {
+                    graph_temp_data.push(graph_temp_string.split(','));
+                    var row = graph_temp_data.length - 1;
+                    var ts = Number(graph_temp_data[row][0]) || 0;
+
+                    // convert to seconds:
+                    // Uses Propeller system clock (CNT) left shifted by 16.
+                    // Assumes 80MHz clock frequency.
+                    ts = ts / 1220.703125; 
                 }
-                graph_start_playing = false;
-                if (row > 0) {
+                if (!graph_timestamp_start || graph_timestamp_start === 0) {
+                    graph_timestamp_start = ts;
+                    if (graph_start_playing) {
+                        graph_timestamp_start -= graph_timestamp_restart;
+                        graph_timestamp_restart = 0;
+                    }
+                }
+                if (row > 0 && !graph_start_playing) {
                     if (parseFloat(graph_temp_data[row][0]) < parseFloat(graph_temp_data[row - 1][1])) {
                         graph_time_multiplier += fullCycleTime;
                     }
                 }
-                if (graph_paused) {
-                    graph_timestamp_restart = ts + graph_time_multiplier - graph_timestamp_start;
-                } else {
+                graph_start_playing = false;
+                if (!graph_paused) {
                     graph_temp_data[row].unshift(ts + graph_time_multiplier -
-                            graph_timestamp_start + graph_timestamp_restart);
+                            graph_timestamp_start);
                     var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
                     for (var j = 2; j < graph_temp_data[row].length; j++) {
                         graph_csv_temp += graph_temp_data[row][j] + ',';
@@ -935,6 +944,7 @@ function graph_reset() {
     graph_temp_string = '';
     graph_timestamp_start = 0;
     graph_time_multiplier = 0;
+    graph_timestamp_restart = 0;
     graph_data_ready = false;
 }
 
