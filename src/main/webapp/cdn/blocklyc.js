@@ -762,7 +762,7 @@ var graphStartStop = function(action) {
 var check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
-            if (client_version >= minVer) {
+            if (client_version >= minEnc64Ver) {
                 // Client is >= minimum base64-encoded version
                 $.get(client_url + "ports.json", function (data) {
                     set_port_list(data);
@@ -780,7 +780,7 @@ var check_com_ports = function () {
 // set communication port list
 //   leave data unspecified when searching
 var set_port_list = function (data) {
-    data = (data ? data : data = 'searching');
+    data = (data ? data : 'searching');
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
     if (typeof(data) === 'object' && data.length) {
