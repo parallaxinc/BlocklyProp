@@ -757,8 +757,8 @@ var graphStartStop = function(action) {
 var check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
-            if (client_version >= minEnc64Ver) {
-                // Client is >= minimum base64-encoded version
+            if (client_version >= minVer) {
+                // Client is >= minimum supported version
                 $.get(client_url + "ports.json", function (data) {
                     set_port_list(data);
                 }).fail(function () {
