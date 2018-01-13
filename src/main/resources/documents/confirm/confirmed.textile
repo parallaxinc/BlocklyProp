@@ -2,4 +2,4 @@ h3. Congratulations!
 
 Your account has been activated. You are ready to build your own projects. 
 
-Click here to return to home page":/blockly/index
+Click "here":/blockly/index to return to home page
