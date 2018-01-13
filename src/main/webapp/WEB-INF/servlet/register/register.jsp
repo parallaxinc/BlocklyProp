@@ -240,7 +240,10 @@
                         </div>
                         <script>
                             $("#screenname").bind("keyup", function(e) {
-                                this.value = this.value.replace(/[^\w\.\-]/g, '');  //removes any non-word characters except "." and "-"
+                                this.value = this.value
+                                    .replace(/[^A-Za-z0-9/._/- ]/g, '')  // removes any non-word characters except ".", " ", "-" and "_"
+                                    .replace(/[ ]+/g, ' ')               // removes excessive spaces
+                                    .trim();                             // trims whitespace from before and after
                             });
                         </script>
                         <div class="form-group">
