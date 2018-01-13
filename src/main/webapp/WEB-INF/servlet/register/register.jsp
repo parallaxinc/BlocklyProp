@@ -276,51 +276,6 @@
                                    maxlength="100">
                         </div>
                         <div class="form-group">
-                            <label for="sponsoremail" >
-                                <fmt:message key="register.do.sponsor.email" />
-                            </label>
-                            <input class="form-control" 
-                                   type="text" 
-                                   name="sponsoremail"
-                                   size="30"
-                                   maxlength="250"
-                                   value="<%= request.getAttribute("sponsoremail")%>" 
-                                   placeholder="Enter a contact email address">
-                        </div>
-                        <div class="form-group" id="sponsor-info" style="display:none;">
-                            <p>
-                                <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
-                                <select name="sponsoremailtype" id="sponsor-email-type-1">
-                                    <option value="0" selected="selected">Contact</option>
-                                    <option value="1">Parent/Guardian</option>
-                                    <option value="3">Teacher/Instructor</option>
-                                </select>
-                            </p>
-                        </div>
-                        <div class="form-group">
-                            <label for="bdyear">
-                                <fmt:message key="register.do.birth.year" />&nbsp;*
-                            </label>
-                            <select name="bdyear" id="birthdayYear">
-                                <%
-                                    int byLoop;
-                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-                                    String bdYear = (String) request.getAttribute("bdyear");
-                                    if (bdYear == null) {
-                                            bdYear = String.valueOf(thisYear);
-                                    }
-                        
-                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
-                                        out.print("<option value=\"");
-                                        out.print(String.valueOf(byLoop));
-                                        out.print("\"");
-                                        if (Integer.parseInt(bdYear) == byLoop) {
-                                            out.print(" selected=\"selected\"");
-                                        }
-                                        out.println(">" + String.valueOf(byLoop) + "</option>");
-                                    }
-                                %>
-                            </select>&nbsp;&nbsp;
                             <label for="bdmonth">
                                 <fmt:message key="register.do.birth.month" />&nbsp;*
                             </label>
@@ -348,6 +303,29 @@
                                         out.println(">" + months[bdLoop] + "</option>");
                                     } // End for loop
                                 %>
+                            </select>&nbsp;&nbsp;
+                            <label for="bdyear">
+                                <fmt:message key="register.do.birth.year" />&nbsp;*
+                            </label>
+                            <select name="bdyear" id="birthdayYear">
+                                <%
+                                    int byLoop;
+                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+                                    String bdYear = (String) request.getAttribute("bdyear");
+                                    if (bdYear == null) {
+                                            bdYear = String.valueOf(thisYear);
+                                    }
+                        
+                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
+                                        out.print("<option value=\"");
+                                        out.print(String.valueOf(byLoop));
+                                        out.print("\"");
+                                        if (Integer.parseInt(bdYear) == byLoop) {
+                                            out.print(" selected=\"selected\"");
+                                        }
+                                        out.println(">" + String.valueOf(byLoop) + "</option>");
+                                    }
+                                %>
                             </select>
                             <br />
                             <a id="coppa-msg-1" 
@@ -360,6 +338,28 @@
                                 <a href="https://www.ftc.gov/tips-advice/business-center/guidance/childrens-online-privacy-protection-rule-not-just-kids-sites"
                                    target ="_blank">
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="sponsoremail" >
+                                <fmt:message key="register.do.sponsor.email" />
+                            </label>
+                            <input class="form-control" 
+                                   type="text" 
+                                   name="sponsoremail"
+                                   size="30"
+                                   maxlength="250"
+                                   value="<%= request.getAttribute("sponsoremail")%>" 
+                                   placeholder="Enter a contact email address">
+                        </div>
+                        <div class="form-group" id="sponsor-info" style="display:none;">
+                            <p>
+                                <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
+                                <select name="sponsoremailtype" id="sponsor-email-type-1">
+                                    <option value="0" selected="selected">Contact</option>
+                                    <option value="1">Parent/Guardian</option>
+                                    <option value="3">Teacher/Instructor</option>
+                                </select>
                             </p>
                         </div>
                         <input class="btn btn-default" type="submit" id="btn-submit" name="submit" value="<fmt:message key="register.do.submit" />">
