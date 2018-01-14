@@ -651,11 +651,6 @@ function graphing_console() {
                 //connection = new WebSocket(url);
             };
 
-            // Log messages from the server
-            connection.onmessage = function (e) {
-                graph_new_data((client_version >= minEnc64Ver) ? atob(e.data) : e.data);
-            };
-
             connection.onmessage = function (e) {
                 var c_buf = (client_version >= minEnc64Ver) ? atob(e.data) : e.data;
                 if (connStrYet) {
