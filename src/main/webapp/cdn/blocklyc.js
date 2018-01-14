@@ -736,9 +736,13 @@ var graphStartStop = function(action) {
         clearInterval(graph_interval_id);
         graph_interval_id = null;
     } 
-    if (action === 'stop' || action === 'clear') {
+    if (action === 'stop') {
         graph_reset();        
         graph_paused = false;
+        graph_play('play');        
+    }
+    if (action === 'clear') {
+        graph_reset();                
     }
     if (action === 'play') {
         graph_paused = false;
@@ -943,15 +947,17 @@ function graph_reset() {
     graph_data_ready = false;
 }
 
-function graph_play() {
+function graph_play(setTo) {
     if(document.getElementById('btn-graph-play')) {
         var play_state = document.getElementById('btn-graph-play').innerHTML;
-        if (play_state.indexOf('pause') > -1 || play_state.indexOf('<!--p') === -1) {
+        if (setTo !== 'play' && (play_state.indexOf('pause') > -1 || play_state.indexOf('<!--p') === -1)) {
             document.getElementById('btn-graph-play').innerHTML = '<!--play--><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-            graphStartStop('pause');
+            if (!setTo) {
+                graphStartStop('pause');
+            }
         } else {
             document.getElementById('btn-graph-play').innerHTML = '<!--pause--><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-            if (!graph_interval_id) {
+            if (!graph_interval_id && !setTo) {
                 graphStartStop('play');
             }
         }
