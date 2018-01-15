@@ -745,6 +745,11 @@ var graphStartStop = function(action) {
         graph_reset();                
     }
     if (action === 'play') {
+        console.log(graph_data.series[0].length);
+        if (graph_data.series[0].length === 0) {
+            graph_timestamp_restart = 0;
+            graph_reset();
+        }
         graph_paused = false;
         graph_start_playing = true;
     } 
@@ -754,7 +759,6 @@ var graphStartStop = function(action) {
         graph_timestamp_start = 0;
         graph_time_multiplier = 0;
         graph_timestamp_restart = graph_temp_data.slice(-1)[0][0];
-        console.log(graph_timestamp_restart);
     }
 };
 
@@ -943,9 +947,7 @@ function graph_reset() {
     graph_temp_string = '';
     graph_timestamp_start = 0;
     graph_time_multiplier = 0;
-    if (!graph_paused) {
-        graph_timestamp_restart = 0;
-    }
+    graph_timestamp_restart = 0;
     graph_data_ready = false;
 }
 
