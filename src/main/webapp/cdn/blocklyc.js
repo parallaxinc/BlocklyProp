@@ -747,7 +747,6 @@ var graphStartStop = function(action) {
     if (action === 'play') {
         console.log(graph_data.series[0].length);
         if (graph_data.series[0].length === 0) {
-            graph_timestamp_restart = 0;
             graph_reset();
         }
         graph_paused = false;
