@@ -737,8 +737,8 @@ var graphStartStop = function(action) {
         graph_interval_id = null;
     } 
     if (action === 'stop') {
-        graph_reset();        
         graph_paused = false;
+        graph_reset();        
         graph_play('play');        
     }
     if (action === 'clear') {
@@ -943,7 +943,9 @@ function graph_reset() {
     graph_temp_string = '';
     graph_timestamp_start = 0;
     graph_time_multiplier = 0;
-    graph_timestamp_restart = 0;
+    if (!graph_paused) {
+        graph_timestamp_restart = 0;
+    }
     graph_data_ready = false;
 }
 
