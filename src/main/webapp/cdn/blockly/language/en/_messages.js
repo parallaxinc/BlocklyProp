@@ -978,6 +978,7 @@ var tooltip_text = [
     ['btn-graph-play','Pause/Resume the graph'],
     ['btn-graph-snapshot','Download a snapshot of the graph'],
     ['btn-graph-csv','Download graph data as CSV'],
+    ['btn-graph-clear','Clear the graph'],
     ['project-form-shared', 'Make project visible to other users'],
     ['project-form-private', 'Hide project from other users']
     ['project-form-edit-shared', 'Make project visible to other users'],
