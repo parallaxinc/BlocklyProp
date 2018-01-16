@@ -325,17 +325,16 @@
                                         "November", "December"};
 
                                     String bdMonth = (String) request.getAttribute("bdmonth");
-                                    if (bdMonth == null) {
-                                            bdMonth = "0";
-                                    }
 
                                     for (bdLoop = 0; bdLoop <= 12; bdLoop++) {
                                         out.print("<option value=\"");
                                         out.print(String.valueOf(bdLoop));
                                         out.print("\"");
                         
-                                        if (Integer.parseInt(bdMonth) == bdLoop) {
-                                            out.print(" selected=\"selected\"");
+                                        if (bdMonth != null) {
+                                            if (Integer.parseInt(bdMonth) == bdLoop) {
+                                                out.print(" selected=\"selected\"");
+                                            }
                                         }
                             
                                         out.println(">" + months[bdLoop] + "</option>");
@@ -348,9 +347,6 @@
                                     int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
 
                                     String bdYear = (String) request.getAttribute("bdyear");
-                                    if (bdYear == null) {
-                                            bdYear = String.valueOf(thisYear);
-                                    }
                                     
                                     out.print("<option value=\"0\">Year</option>");
                                     
@@ -359,8 +355,10 @@
                                         out.print(String.valueOf(byLoop));
                                         out.print("\"");
                                         
-                                        if (Integer.parseInt(bdYear) == byLoop) {
-                                            out.print(" selected=\"selected\"");
+                                        if (bdYear != null) {
+                                            if (Integer.parseInt(bdYear) == byLoop) {
+                                                out.print(" selected=\"selected\"");
+                                            }
                                         }
                                         
                                         out.println(">" + String.valueOf(byLoop) + "</option>");
