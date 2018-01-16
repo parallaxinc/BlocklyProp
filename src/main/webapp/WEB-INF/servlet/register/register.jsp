@@ -12,40 +12,48 @@
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
         <script>
-    function initCoppaElements() {               
-        document.getElementById("birthdayMonth").onchange = checkCoppaDate;
-        document.getElementById("birthdayYear").onchange - checkCoppaDate;
-        
-        // Hard-coded year value is probably not what we want here.
-        if (document.getElementById('birthdayYear').value === 2017) {
-            hideSponsorInfo();
-        }
-        else {
-            checkCoppaDate();
-        }
-    };
             
-    function checkCoppaDate() {
+    function checkCoppaForm() {
+        var secondEmailCheckbox = document.getElementById("add-secondary-email").checked;
         // Show sponsor inputs if Coppa restriction is enabled
         if (checkCoppaRestriction() === true) {
-            showSponsorInfo();
+            // Hide "secondary" info, show "parent/teacher" info, require email
+            $("#sponsor-checkbox").addClass('hidden');
+            $("#sponsoremail").attr('placeholder', '<fmt:message key="register.do.sponsor.placeholder.parent" />');
+            $("#sponsoremailtype").empty();
+            $("#sponsoremailtype").append($('<option />').val('1').text('Parent/Guardian email'));
+            $("#sponsoremailtype").append($('<option />').val('3').text('Teacher/Instructor email'));
+            $("#sponsor-email-label").html('<fmt:message key="register.do.sponsor.parent.email" />');
+            $("#sponsor-info").removeClass('hidden');
+            $("#sponsor-email").removeClass('hidden');
         } else {
-            hideSponsorInfo();
+            $("#sponsor-checkbox").removeClass('hidden');
+            $("#sponsor-info").addClass('hidden');
+            $("#sponsoremail").attr('placeholder', '<fmt:message key="register.do.sponsor.placeholder.secondary" />');
+            $("#sponsoremailtype").empty();
+            $("#sponsoremailtype").append($('<option />').val('0').text('Secondary email'));
+            $("#sponsor-email-label").html('<fmt:message key="register.do.sponsor.secondary.email" />');
+            if (secondEmailCheckbox) {
+                $("#sponsor-email").removeClass('hidden');            
+            } else {
+                $("#sponsor-email").addClass('hidden');                            
+            }
         }
+
     };
     
     // Return true if age is < 13
     function checkCoppaRestriction() {
         // Validate form data
         var formYearValue = document.getElementById('birthdayYear');
-        if (formYearValue === null) {
+        if (!formYearValue || (formYearValue && formYearValue.value === '0')) {
             return false;
         }
         var userYear = parseInt(formYearValue.value);
 
         // Validate the month component
         var formMonthValue = document.getElementById('birthdayMonth');
-        if (formMonthValue === null) {
+        if (!formMonthValue || (formMonthValue && formMonthValue.value === '0')) {
             return false;
         }
         var userMonth = parseInt(formMonthValue.value);
@@ -59,9 +67,7 @@
         if (((userYear + 13) + ((userMonth - 1) / 12)) >= (currYear + ((currMonth - 1) / 12))) {
             // The user is restricted if their birth month is less than
             // or equal the current month.
-            //if (userMonth <= currMonth) {
-                return true;
-            //}
+            return true;
         }
         
         return false;
@@ -76,9 +82,18 @@
         document.getElementById('sponsor-info').style = "display:inherit;";
         $('#sponsor-info').show();
     }
+    
+    $(document).ready(function () {
+        document.getElementById("birthdayMonth").onchange = checkCoppaForm;
+        document.getElementById("birthdayYear").onchange = checkCoppaForm;
+        document.getElementById("add-secondary-email").onchange = checkCoppaForm;
+        
+        // Run it incase values are passed in url parameters
+        checkCoppaForm();
+    });
         </script>
     </head>
-    <body onload="initCoppaElements()">
+    <body>
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
@@ -244,7 +259,7 @@
                     <form name="registerForm" action="" method="post">
                         <div class="form-group">
                             <label for="screenname" >
-                                <fmt:message key="register.do.screenname" />&nbsp;*
+                                <fmt:message key="register.do.screenname" />
                             </label>
                             <input class="form-control" 
                                    type="text" 
@@ -256,12 +271,17 @@
                         </div>
                         <script>
                             $("#screenname").bind("keyup", function(e) {
-                                this.value = this.value.replace(/[^\w\.\-]/g, '');  //removes any non-word characters except "." and "-"
+                                this.value = this.value
+                                    .replace(/[^A-Za-z0-9\._\- ]/g, '')  // removes any non-word characters except ".", " ", "-" and "_"
+                                    .replace(/ {2,}/g, ' ');             // removes excessive spaces                       
+                            });
+                            $("#screenname").bind("blur", function() {
+                                this.value = this.value.trim();          // trims whitespace from before and after
                             });
                         </script>
                         <div class="form-group">
                             <label for="email" >
-                                <fmt:message key="register.do.email" />&nbsp;*
+                                <fmt:message key="register.do.email" />
                             </label>
                             <input class="form-control" 
                                    type="email" 
@@ -272,7 +292,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password" >
-                                <fmt:message key="register.do.password" />&nbsp;*
+                                <fmt:message key="register.do.password" />
                             </label>
                             <input class="form-control" 
                                    type="password" 
@@ -283,7 +303,7 @@
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" >
-                                <fmt:message key="register.do.confirm_password" />&nbsp;*
+                                <fmt:message key="register.do.confirm_password" />
                             </label>
                             <input class="form-control" 
                                    type="password" 
@@ -292,52 +312,14 @@
                                    maxlength="100">
                         </div>
                         <div class="form-group">
-                            <label for="sponsoremail" >
-                                <fmt:message key="register.do.sponsor.email" />
-                            </label>
-                            <input class="form-control" 
-                                   type="text" 
-                                   name="sponsoremail"
-                                   size="30"
-                                   maxlength="250"
-                                   value="<%= request.getAttribute("sponsoremail")%>" 
-                                   placeholder="Enter a contact email address">
-                        </div>
-                        <div class="form-group">
-                            <label for="bdyear">
-                                <fmt:message key="register.do.birth.year" />&nbsp;*
-                            </label>
-                            <select name="bdyear" id="birthdayYear">
-                                <%
-                                    int byLoop;
-                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-
-                                    String bdYear = (String) request.getAttribute("bdyear");
-                                    if (bdYear == null) {
-                                            bdYear = String.valueOf(thisYear);
-                                    }
-                        
-                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
-                                        out.print("<option value=\"");
-                                        out.print(String.valueOf(byLoop));
-                                        out.print("\"");
-
-                                        if (Integer.parseInt(bdYear) == byLoop) {
-                                            out.print(" selected=\"selected\"");
-                                        }
-
-                                        out.println(">" + String.valueOf(byLoop) + "</option>");
-                                    }
-                                %>
-                            </select>&nbsp;&nbsp;
                             <label for="bdmonth">
-                                <fmt:message key="register.do.birth.month" />&nbsp;*
+                                <fmt:message key="register.do.birth.date" />
                             </label>
                             <select name="bdmonth" id="birthdayMonth">
                                 <%
                                     int bdLoop;
                                     String[] months={
-                                        "Select month",
+                                        "Month",
                                         "January", "February", "March", "April", "May",
                                         "June", "July", "August", "September", "October",
                                         "November", "December"};
@@ -359,27 +341,71 @@
                                         out.println(">" + months[bdLoop] + "</option>");
                                     } // End for loop
                                 %>
-                            </select>
-                            <span>&nbsp;&nbsp;</span>
-                            <a id="coppa-msg-1" 
-                               onclick="$('#coppa-msg-1').hide(); $('#coppa-msg-2').removeClass('hidden');">
-                                <fmt:message key="register.do.coppa.msg0" /></a>
+                            </select>&nbsp;&nbsp;
+                            <select name="bdyear" id="birthdayYear">
+                                <%
+                                    int byLoop;
+                                    int thisYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+
+                                    String bdYear = (String) request.getAttribute("bdyear");
+                                    if (bdYear == null) {
+                                            bdYear = String.valueOf(thisYear);
+                                    }
+                                    
+                                    out.print("<option value=\"0\">Year</option>");
+                                    
+                                    for (byLoop = thisYear; byLoop > thisYear - 90; byLoop-- ){
+                                        out.print("<option value=\"");
+                                        out.print(String.valueOf(byLoop));
+                                        out.print("\"");
+                                        
+                                        if (Integer.parseInt(bdYear) == byLoop) {
+                                            out.print(" selected=\"selected\"");
+                                        }
+                                        
+                                        out.println(">" + String.valueOf(byLoop) + "</option>");
+                                    }
+                                %>
+                            </select>&nbsp;&nbsp;
+                            <a data-toggle="collapse" href="#coppa-msg-2" class="infolink"></a>
                         </div>
-                        <div class="alert alert-info hidden" id="coppa-msg-2">
-                            <p>
-                                <fmt:message key="register.do.coppa.msg1" />
+                        <div class="alert alert-info collapse" id="coppa-msg-2">
+                            <p><fmt:message key="register.do.coppa.msg1" />
                                 <a href="https://www.ftc.gov/tips-advice/business-center/guidance/childrens-online-privacy-protection-rule-not-just-kids-sites"
                                    target ="_blank">
                                     <fmt:message key="register.do.coppa.msg2" /></a>.
                             </p>
                         </div>
-                        <div class="form-group" id="sponsor-info" style="display:none;">
+                        <div class="form-group" id="sponsor-checkbox">
+                            <label for="sponsoremail" >
+                                <fmt:message key="register.do.sponsor.add.secondary.email" />
+                            </label>
+                            <input id="add-secondary-email" type="checkbox">&nbsp;&nbsp;
+                            <a data-toggle="collapse" href="#email-info-msg" class="infolink"></a>
+                        </div>
+                        <div class="alert alert-info collapse" id="email-info-msg">
+                            <p><fmt:message key="register.do.sponsor.email.info" /></p>
+                        </div>
+                        <div class="form-group hidden" id="sponsor-email">
+                            <label for="sponsoremail" id="sponsor-email-label">
+                                <fmt:message key="register.do.sponsor.secondary.email" />
+                            </label>
+                            <input class="form-control" 
+                                   id="sponsoremail"
+                                   type="text" 
+                                   name="sponsoremail"
+                                   size="30"
+                                   maxlength="250"
+                                   value="<%= request.getAttribute("sponsoremail")%>" 
+                                   placeholder="<fmt:message key="register.do.sponsor.placeholder.secondary" />">
+                        </div>
+                        <div class="form-group hidden" id="sponsor-info">
                             <p>
                                 <label for="sponsoremailtype"><fmt:message key="register.do.sponsor.emailtype" /></label>
-                                <select name="sponsoremailtype">
-                                    <option value="0" selected="selected">Contact</option>
-                                    <option value="1">Parent/Guardian</option>
-                                    <option value="3">Teacher/Instructor</option>
+                                <select name="sponsoremailtype" id="sponsoremailtype">
+                                    <option value="0" selected="selected">Secondary email</option>
+                                    <option value="1">Parent/Guardian email</option>
+                                    <option value="3">Teacher/Instructor email</option>
                                 </select>
                             </p>
                         </div>
