@@ -299,8 +299,8 @@ Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP = "define function: group blocks to r
 Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP = "return: use in a “define function” block to go back to the main code.";
 Blockly.MSG_MAKE_PIN_TOOLTIP = "make PIN (dropdown): Select I/O pin and setting with menus.";
 Blockly.MSG_MAKE_PIN_INPUT_TOOLTIP = "make PIN (programmable): Select I/O pin with value and setting with menu.";
-Blockly.MSG_CHECK_PIN_TOOLTIP = "check PIN (dropdown): Get the state of I/O pin; high = 1, low = 0.";
-Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP = "check PIN (programmable): Get state of I/O pin at inserted value; high = 1, low = 0.";
+Blockly.MSG_CHECK_PIN_TOOLTIP = "check PIN (dropdown): Set I/O pin to an input and get its state; high = 1, low = 0.";
+Blockly.MSG_CHECK_PIN_INPUT_TOOLTIP = "check PIN (programmable): Set I/O pin of inserted value to an input and get its state; high = 1, low = 0.";
 Blockly.MSG_SET_PINS_TOOLTIP = "set multiple pins: define group then set each pin. Do not use on P29-P31.";
 Blockly.MSG_GET_PINS_TOOLTIP = "binary get pins: gets the value of a group of pins as a binary value. Highest pin is MSB.";
 Blockly.MSG_SET_PINS_BINARY_TOOLTIP = "binary set pins: define group then set each pins using a binary value. Highest pin is MSB. Do not use on P29-P31.";
