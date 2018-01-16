@@ -17,12 +17,16 @@ import com.parallax.server.blocklyprop.services.ProjectSharingService;
 import com.parallax.server.blocklyprop.services.UserService;
 import com.parallax.server.blocklyprop.utils.DateConversion;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Michel
  */
 public class ProjectConverter {
+    // Get a logger instance
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectConverter.class);
 
     private ProjectDao projectDao;
     private UserService userService;
@@ -49,10 +53,19 @@ public class ProjectConverter {
         this.projectSharingService = projectSharingService;
     }
 
+    /**
+     * 
+     * @param project
+     * @return 
+     */
     public JsonObject toListJson(ProjectRecord project) {
-        JsonObject result = new JsonObject();
+        LOG.info("Converting project record to JSON list");
+        
+        JsonObject result = null;
 
         if (project != null) {
+            result = new JsonObject();
+            
             result.addProperty("id", project.getId());
             result.addProperty("name", project.getName());
             result.addProperty("description", project.getDescription());
@@ -75,11 +88,16 @@ public class ProjectConverter {
                 result.addProperty("user", "anonymous");
                 result.addProperty("id-user", 0);
             }
+        } else {
+            LOG.error("Cannot convert a null project to JSON");
         }
+
         return result;
     }
 
     public JsonObject toJson(ProjectRecord project) {
+        LOG.info("Converting project record to JSON object");
+        
         JsonObject result = new JsonObject();
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
@@ -120,6 +138,8 @@ public class ProjectConverter {
     }
 
     public JsonObject toJson(Project project) {
+        LOG.info("Converting project to JSON object");
+        
         JsonObject result = new JsonObject();
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
@@ -150,5 +170,4 @@ public class ProjectConverter {
         }
         return result;
     }
-
 }
