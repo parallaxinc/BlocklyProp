@@ -1103,6 +1103,9 @@
                                     </category>
                                 </category>
                                 <category name="52" key="category_audio" include="heb" colour="295">
+                                    <category name="53" key="category_audio_freqout" >
+                                        <block type="sound_play"></block>
+                                    </category>
                                     <category name="54" key="category_hackable-electronic-badge_text-to-speech" >
                                         <block type="heb_text_to_speech_say">
                                             <value name="STRING">
@@ -1352,15 +1355,11 @@
                                                 </block>
                                             </value>
                                         </block>
-                                        <block type="sound_init" include="heb" experimental="true">
-                                            <field name="PINL">9</field>
-                                            <field name="PINR">10</field>
-                                        </block>
                                         <block type="sound_init" include="activity-board" experimental="true">
                                             <field name="PINL">26</field>
                                             <field name="PINR">27</field>
                                         </block>                                        
-                                        <block type="sound_init" exclude="activity-board,heb" experimental="true"></block>
+                                        <block type="sound_init" exclude="activity-board" experimental="true"></block>
                                         <block type="sound_play" experimental="true"></block>
                                     </category>
                                     <category name="120" key="category_audio_audio" include="activity-board">
