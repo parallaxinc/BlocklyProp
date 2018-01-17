@@ -1757,7 +1757,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" key="editor_button_close"></span></button>
-                        <button type="button" class="btn btn-default" onclick="saveProjectAs();"><span class="keyed-lang-string" key="project_saveaslink"></span></button>
+                        <button type="button" class="btn btn-default" onclick="saveAsDialog();"><span class="keyed-lang-string" key="project_saveaslink"></span></button>
                         <button type="button" class="btn btn-primary" onclick="saveProject();" data-dismiss="modal"><span class="keyed-lang-string" key="project_savelink"></span></button>
                     </div>
                 </div><!-- /.modal-content -->
