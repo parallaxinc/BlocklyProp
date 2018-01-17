@@ -284,7 +284,6 @@ Blockly.Blocks.heb_oled_line = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendDummyInput()
-                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
@@ -330,7 +329,6 @@ Blockly.Blocks.heb_oled_circle = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('radius');
         this.appendDummyInput()
-                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('filled')
                 .appendField(new Blockly.FieldCheckbox('TRUE'), 'FILL');
@@ -741,7 +739,7 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("Accelerometer get")
-                .appendField(new Blockly.FieldDropdown([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
+                .appendField(new Blockly.Field([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);

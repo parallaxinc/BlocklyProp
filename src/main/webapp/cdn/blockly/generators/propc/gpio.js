@@ -1254,7 +1254,11 @@ Blockly.Blocks.sound_play = {
             ["set waveform", "wave"],
             ["stop", "stop"]
         ];
-        this.setColour(colorPalette.getColor('io'));
+        if (projectData['board'] && projectData['board'] === "heb") {
+            this.setColour(colorPalette.getColor('heb'));
+        } else {
+            this.setColour(colorPalette.getColor('io'));            
+        }
         this.addChannelMenu("sound channel", 'VALUE');
         this.appendValueInput("VALUE")
                 .setCheck(null)
@@ -1359,6 +1363,7 @@ Blockly.Blocks.sound_play = {
         this.setSoundAction(act);
     },
     onchange: function (event) {
+        if (!(projectData['board'] && projectData['board'] === "heb")) {
         //if (event.oldXml || event.type === Blockly.Events.CREATE) {
             var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
             if (allBlocks.indexOf('sound initialize') === -1) {
@@ -1367,6 +1372,7 @@ Blockly.Blocks.sound_play = {
                 this.setWarningText(null);
             }
         //}
+        }
     }
 };
 
@@ -1382,7 +1388,7 @@ Blockly.propc.sound_play = function () {
     if (this.waveInput) {
         value = this.getFieldValue('WAVE');
     } else {
-        value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC);
+        value = Blockly.propc.valueToCode(this, 'VALUE', Blockly.propc.ORDER_ATOMIC) || '0';
     }
 
     if (action === 'stop') {
@@ -1392,8 +1398,14 @@ Blockly.propc.sound_play = function () {
     var code = 'sound_' + action + '(audio0, ' + channel + ', ' + value + ');';
     
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('sound initialize') === -1) {
+    if (allBlocks.indexOf('sound initialize') === -1 && !(projectData['board'] && projectData['board'] === "heb")) {
         code = '// WARNING: You must use a sound initialize block at the beginning of your program!\n';
+    }
+    
+    if (projectData['board'] && projectData['board'] === "heb" && !this.disabled) {
+        Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(9, 10);';
+        Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
+        Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';       
     }
 
     return code;
