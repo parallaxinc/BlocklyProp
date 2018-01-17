@@ -284,7 +284,6 @@ Blockly.Blocks.heb_oled_line = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendDummyInput()
-                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
@@ -330,7 +329,6 @@ Blockly.Blocks.heb_oled_circle = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('radius');
         this.appendDummyInput()
-                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('filled')
                 .appendField(new Blockly.FieldCheckbox('TRUE'), 'FILL');
