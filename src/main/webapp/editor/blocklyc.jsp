@@ -924,6 +924,12 @@
                                 <sep include="heb"></sep>
 
                                 <category name="44" key="category_communicate" include="heb" colour="340">
+                                    <category name="45" key="category_communicate_graphing" include="activity-board,flip,other">
+                                        <block type="graph_settings">
+                                            <field name="XAXIS">40,S</field>
+                                        </block>                
+                                        <block type="graph_output"></block>
+                                    </category>
                                     <category name="46" key="category_communicate_serial-terminal">
                                         <block type="console_print">
                                             <value name="MESSAGE">
@@ -937,6 +943,7 @@
                                                 </block>
                                             </value>
                                         </block>
+                                        <block type="console_print_multiple"></block>
                                         <block type="console_scan_text"></block>
                                         <block type="console_scan_number"></block>
                                         <block type="console_newline"></block>
