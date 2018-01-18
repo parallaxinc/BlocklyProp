@@ -36,7 +36,7 @@
                 <div class="logo">
                     <h1 id="BlocklyProp">BlocklyProp</h1>
                 </div>
-                <p><strong>Blockly for Propeller Multicore:</strong>Making amazing projects and learning to code just became easier</p>
+                <p><strong>Blockly for Propeller Multicore:</strong>&nbsp;Making amazing projects and learning to code just became easier</p>
                 <p><img class="cdn full-width" border="0" src="<url:getCdnUrl url="/images/home-banner.png"/>"></p>
             </div>
             <h2 class="pad-latest-projects"><fmt:message key="home.latest_projects.title" /></h2>
