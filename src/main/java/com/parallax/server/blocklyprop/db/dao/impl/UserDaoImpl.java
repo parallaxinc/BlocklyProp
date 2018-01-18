@@ -14,6 +14,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.SecRoleRecord
 import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -238,7 +239,7 @@ public class UserDaoImpl implements UserDao {
                 .fetchOne();
         
         if (user != null) {
-            if (user.getScreenname() != screenname) {
+            if ( ! Objects.equals(user.getScreenname(), screenname)) {
                 LOG.info("Changing screen name from {} to {}", user.getScreenname(), screenname);
 
                 user.setScreenname(screenname);
