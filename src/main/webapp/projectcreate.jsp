@@ -9,7 +9,7 @@
 
 <c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
 <c:set var="copparestricted" scope="page" value="${properties:copparestricted()}" />
-
+<!DOCTYPE html>
 <html>
     <!-- manifest=node.manifest> -->
     <head>
