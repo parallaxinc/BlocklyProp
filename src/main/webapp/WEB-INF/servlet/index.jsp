@@ -3,13 +3,12 @@
     Created on : 24-mei-2015, 18:41:02
     Author     : Michel
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html>
     <head>
-        <meta name="application-name" content="&nbsp;"/>
+        <meta name="application-name" content="BlocklyProp"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
         <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />
         <link type="image/png" rel="apple-touch-icon-precomposed" sizes="57x57" href="<url:getCdnUrl url="/images/apple-touch-icon-57x57.png"/>" />
@@ -32,15 +31,14 @@
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
 
         <div class="container">
-                <%
-                String html = (String) request.getAttribute("html");
-                if (html != null) {
-            %>
-            <%= html%>
-            <% } else {%>
-            <h2><fmt:message key="html.content_missing" /></h2>
-            <% }%>
-
+            <!-- Splash image -->
+            <div class="jumbotron">
+                <div class="logo">
+                    <h1 id="BlocklyProp">BlocklyProp</h1>
+                </div>
+                <p><strong>Blockly for Propeller Multicore:</strong>Making amazing projects and learning to code just became easier</p>
+                <p><img class="cdn full-width" border="0" src="<url:getCdnUrl url="/images/home-banner.png"/>"></p>
+            </div>
             <h2 class="pad-latest-projects"><fmt:message key="home.latest_projects.title" /></h2>
             <hr>
             <ul class="latest-projects"></ul>
