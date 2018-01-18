@@ -634,7 +634,7 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('CONTACT')
-                .setCheck('Number')
+                .setCheck('String')
                 .appendField("EEPROM contact");
         this.appendDummyInput()
                 .appendField("already stored");
