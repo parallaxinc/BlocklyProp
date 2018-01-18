@@ -924,7 +924,7 @@
                                 <sep include="heb"></sep>
 
                                 <category name="44" key="category_communicate" include="heb" colour="340">
-                                    <category name="45" key="category_communicate_graphing" include="activity-board,flip,other">
+                                    <category name="45" key="category_communicate_graphing">
                                         <block type="graph_settings">
                                             <field name="XAXIS">40,S</field>
                                         </block>                
