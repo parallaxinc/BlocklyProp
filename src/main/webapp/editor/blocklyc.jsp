@@ -10,7 +10,7 @@
 <!-- Support for experimental blocks in Demo builds  -->
 <!-- See developer notes to use this feature         -->
 <c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -104,7 +104,7 @@
                                 </div>
                                 <div style="display:inline;">
                                     <div style="width:100%; ">
-                                        <div style="display:inline; padding-left: 10px; line-height: 30px;" class="auth-true" displayas="inline">
+                                        <div style="display:inline; padding-left: 10px; line-height: 30px;" class="auth-true">
                                             <span id="client-searching" class="bp-client-warning">
                                                 <a class="client-searching-link" data-toggle="modal" data-target="#client-download-modal" href="#">
                                                     <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#8a6d3b;"/></svg>
