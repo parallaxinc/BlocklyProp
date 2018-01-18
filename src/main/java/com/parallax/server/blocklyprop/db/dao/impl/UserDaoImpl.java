@@ -238,10 +238,12 @@ public class UserDaoImpl implements UserDao {
                 .fetchOne();
         
         if (user != null) {
-            LOG.info("Changing screen name from {} to {}", user.getScreenname(), screenname);
+            if (user.getScreenname() != screenname) {
+                LOG.info("Changing screen name from {} to {}", user.getScreenname(), screenname);
 
-            user.setScreenname(screenname);
-            user.update();
+                user.setScreenname(screenname);
+                user.update();
+            }
         }
     }
 
