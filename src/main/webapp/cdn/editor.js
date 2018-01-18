@@ -179,65 +179,73 @@ var propcAsBlocksXml = function () {
 };
 
 var saveProject = function () {
-    var code = '';
-    if (projectData['board'] === 'propcfile') {
-        code = propcAsBlocksXml();
+    if (projectData['yours']) {
+        var code = '';
+        if (projectData['board'] === 'propcfile') {
+            code = propcAsBlocksXml();
 
-        Blockly.mainWorkspace.clear();
-        loadToolbox(code);
-    } else {
-        code = getXml();
-    }
-    projectData['code'] = code;
-    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
-        var previousOwner = projectData['yours'];
-        projectData = data;
-        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-
-        // If the current user doesn't own this project, a new one is created and the page is redirected to the new project.
-        if (!previousOwner) {
-            window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+            Blockly.mainWorkspace.clear();
+            loadToolbox(code);
+        } else {
+            code = getXml();
         }
-    }).done(function () {
-        // Save was successful, show green with checkmark
-        var elem = document.getElementById('save-project');
-        elem.style.paddingLeft = '10px';
-        elem.style.background = 'rgb(92, 184, 92)';
-        elem.style.borderColor = 'rgb(76, 174, 76)';
+        projectData['code'] = code;
+        $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+            var previousOwner = projectData['yours'];
+            projectData = data;
+            projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save &#x2713;';
-        }, 600);
+            // If the current user doesn't own this project, a new one is created and the page is redirected to the new project.
+            if (!previousOwner) {
+                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+            }
+        }).done(function () {
+            // Save was successful, show green with checkmark
+            var elem = document.getElementById('save-project');
+            elem.style.paddingLeft = '10px';
+            elem.style.background = 'rgb(92, 184, 92)';
+            elem.style.borderColor = 'rgb(76, 174, 76)';
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save&nbsp;&nbsp;';
-            elem.style.paddingLeft = '15px';
-            elem.style.background = '#337ab7';
-            elem.style.borderColor = '#2e6da4';
-        }, 1750);
-    }).fail(function () {
-        // Save failed.  Show red with "x"
-        var elem = document.getElementById('save-project');
-        elem.style.paddingLeft = '10px';
-        elem.style.background = 'rgb(214, 44, 44)';
-        elem.style.borderColor = 'rgb(191, 38, 38)';
+            setTimeout(function () {
+                elem.innerHTML = 'Save &#x2713;';
+            }, 600);
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save &times;';
-        }, 600);
+            setTimeout(function () {
+                elem.innerHTML = 'Save&nbsp;&nbsp;';
+                elem.style.paddingLeft = '15px';
+                elem.style.background = '#337ab7';
+                elem.style.borderColor = '#2e6da4';
+            }, 1750);
+        }).fail(function () {
+            // Save failed.  Show red with "x"
+            var elem = document.getElementById('save-project');
+            elem.style.paddingLeft = '10px';
+            elem.style.background = 'rgb(214, 44, 44)';
+            elem.style.borderColor = 'rgb(191, 38, 38)';
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save&nbsp;&nbsp;';
-            elem.style.paddingLeft = '15px';
-            elem.style.background = '#337ab7';
-            elem.style.borderColor = '#2e6da4';
-        }, 1750);
+            setTimeout(function () {
+                elem.innerHTML = 'Save &times;';
+            }, 600);
+
+            setTimeout(function () {
+                elem.innerHTML = 'Save&nbsp;&nbsp;';
+                elem.style.paddingLeft = '15px';
+                elem.style.background = '#337ab7';
+                elem.style.borderColor = '#2e6da4';
+            }, 1750);
+
+            utils.showMessage('Not logged in', 'BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.');
+        });
+
+        // Mark the time when saved, add 20 minutes to it.
+        timestampSaveTime(20, true);
         
-        utils.showMessage('Not logged in', 'BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.');
-    });
-
-    // Mark the time when saved, add 20 minutes to it.
-    timestampSaveTime(20, true);
+    } else {
+        
+        // If user doesn't own the project - prompt for a new project name and route through
+        // an endpoint that will make the project private.
+        saveAsDialog();
+    }
 };
 
 var saveAsDialog = function () {
