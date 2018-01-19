@@ -686,8 +686,8 @@ page_text_label['clientdownload_showall'] = "Show clients for all operating syst
 page_text_label['clientdownload_title'] = "BlocklyProp Client/Launcher";
 
 page_text_label['client_unknown'] = "BlocklyProp is unable to determine what version of BlocklyPropClient is installed on your computer.<br>You may need to install or reinstall the BlocklyPropClient.";
-page_text_label['client_update_warning'] = "BlocklyProp now recommends BlocklyPropClient version <span class=\"client-required-version\"></span>.<br>You appear to be using BlocklyPropClient version <span class=\"client-your-version\"></span>.<br>Please use the link below to download the newest version of BlocklyPropClient.";
-page_text_label['client_update_danger'] = "BlocklyProp now requires BlocklyPropClient version <span class=\"client-required-version\"></span>.<br>You appear to be using BlocklyPropClient version <span class=\"client-your-version\"></span>.<br>You will not be able to load projects to your device until you upgrade your BlocklyPropClient.<br>Please use the link below to download the newest version.";
+page_text_label['client_update_warning'] = "BlocklyProp now recommends at least version <span class=\"client-required-version\"></span> of BlocklyPropClient.<br>You appear to be using BlocklyPropClient version <span class=\"client-your-version\"></span>.<br>Please use the link below to download the newest version of BlocklyPropClient.";
+page_text_label['client_update_danger'] = "BlocklyProp now requires at least version <span class=\"client-required-version\"></span> of BlocklyPropClient.<br>You appear to be using BlocklyPropClient version <span class=\"client-your-version\"></span>.<br>You will not be able to load projects to your device until you upgrade your BlocklyPropClient.<br>Please use the link below to download the newest version.";
 
 page_text_label['confirm_do_email'] = "Email:";
 page_text_label['confirm_do_error_invalid_combination'] = "Invalid token/email combination";
