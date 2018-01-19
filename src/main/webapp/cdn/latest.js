@@ -14,11 +14,13 @@ var projectBoard = {
     "s3": "icon-board-s3",
     "heb": "icon-board-heb",
     "flip": "icon-board-flip",
-    "other": "icon-board-other"
+    "other": "icon-board-other",
+    "propcfile": "icon-board-propc"
 };
 
 $.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", function (data) {
     $.each(data['rows'], function (index, project) {
+        console.log(project);
         var user = '';
         if (project['user']) {
             user = ' (' + project['user'] + ')';

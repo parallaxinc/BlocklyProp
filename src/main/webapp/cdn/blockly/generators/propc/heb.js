@@ -37,7 +37,7 @@ Blockly.Blocks.heb_toggle_led = {
                 .appendField('state')
                 .appendField(new Blockly.FieldDropdown([["on/high", "1"], ["off/low", "0"]]), "STATE");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -61,10 +61,10 @@ Blockly.Blocks.heb_toggle_led_open = {
         this.appendValueInput('LED_NUM')
                 .setCheck('Number');
         this.appendValueInput('LED_STATE')
-                .appendField('state');
-
+                .appendField('state')
+                .setCheck('Number');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -105,10 +105,11 @@ Blockly.Blocks.heb_set_led_rgb = {
     init: function () {
         this.setColour(colorPalette.getColor('functions'));
         this.appendValueInput('RGB')
+                .setCheck('Number')
                 .appendField('RGB LED set state of')
                 .appendField(new Blockly.FieldDropdown([["left LED", "L"], ["right LED", "R"], ["both LEDs", "B"]]), "SIDE")
                 .appendField('to');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -134,8 +135,9 @@ Blockly.Blocks.heb_print_numeric_var = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
+                .setCheck('Number')
                 .appendField("Display print number");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -159,8 +161,9 @@ Blockly.Blocks.heb_print_string_var = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
+                .setCheck('String')
                 .appendField("Display print text");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -182,7 +185,7 @@ Blockly.Blocks.heb_cursor_position_large = {
                 .appendField('Display set font size')
                 .appendField(new Blockly.FieldDropdown([["Large", "LARGE"], ["Small", "SMALL"]]), "SIZE");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -201,11 +204,13 @@ Blockly.Blocks.heb_cursor_position_small = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('COLS')
+                .setCheck('Number')
                 .appendField('Display set cursor column');
         this.appendValueInput('ROWS')
+                .setCheck('Number')
                 .appendField('row');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -227,14 +232,16 @@ Blockly.Blocks.heb_oled_point = {
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
+                .setCheck('Number')
                 .appendField('Display draw pixel at (x)');
         this.appendValueInput('Y0')
+                .setCheck('Number')
                 .appendField('(y)');
         this.appendDummyInput()
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -262,14 +269,18 @@ Blockly.Blocks.heb_oled_line = {
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
+                .setCheck('Number')
                 .appendField('Display draw line from 1 (x)');
         this.appendValueInput('Y0')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendValueInput('X1')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('to 2 (x)');
         this.appendValueInput('Y1')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendDummyInput()
@@ -277,7 +288,7 @@ Blockly.Blocks.heb_oled_line = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -307,11 +318,14 @@ Blockly.Blocks.heb_oled_circle = {
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
+                .setCheck('Number')
                 .appendField('Display draw circle at (x)');
         this.appendValueInput('Y0')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendValueInput('R')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('radius');
         this.appendDummyInput()
@@ -323,7 +337,7 @@ Blockly.Blocks.heb_oled_circle = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -357,14 +371,18 @@ Blockly.Blocks.heb_oled_box = {
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
+                .setCheck('Number')
                 .appendField('Display draw rectangle at 1 (x)');
         this.appendValueInput('Y0')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendValueInput('W')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('width');
         this.appendValueInput('H')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('height');
         this.appendDummyInput()
@@ -376,7 +394,7 @@ Blockly.Blocks.heb_oled_box = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -412,20 +430,26 @@ Blockly.Blocks.heb_oled_triangle = {
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('X0')
+                .setCheck('Number')
                 .appendField('Display draw triangle from 1 (x)');
         this.appendValueInput('Y0')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendValueInput('X1')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('to 2 (x)');
         this.appendValueInput('Y1')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendValueInput('X2')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('to 3 (x)');
         this.appendValueInput('Y2')
+                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendDummyInput()
@@ -437,7 +461,7 @@ Blockly.Blocks.heb_oled_triangle = {
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -475,7 +499,7 @@ Blockly.Blocks.heb_clear_screen = {
         this.appendDummyInput()
                 .appendField('Display clear screen');
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -494,7 +518,7 @@ Blockly.Blocks.heb_rotate = {
         this.appendDummyInput()
                 .appendField('Display rotate 180\u00B0');
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -511,9 +535,10 @@ Blockly.Blocks.heb_ir_send_signal = {
     init: function () {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('MESSAGE')
+                .setCheck('String')
                 .appendField('IR send text');
         this.setInputsInline(true);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -536,7 +561,7 @@ Blockly.Blocks.heb_ir_read_signal = {
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'BUFFER')
                 .appendField('length in')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'LENGTH');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
     },
@@ -552,8 +577,8 @@ Blockly.Blocks.heb_ir_read_signal = {
 };
 
 Blockly.propc.heb_ir_read_signal = function () {
-    var buffer = this.getFieldValue('BUFFER');
-    var len = this.getFieldValue('LENGTH');
+    var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
+    var len = Blockly.propc.variableDB_.getName(this.getFieldValue('LENGTH'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
     Blockly.propc.setups_["badgetools"] = 'badge_setup();';
@@ -571,7 +596,7 @@ Blockly.Blocks.heb_ir_clear_buffer = {
                 // @TODO : Should the title be something else? This might be confusing for beginners...
                 .appendField("IR clear buffer");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -588,8 +613,9 @@ Blockly.Blocks.heb_badge_eeprom_store = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('CONTACT')
+                .setCheck('String')
                 .appendField("EEPROM store contact");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -608,6 +634,7 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('CONTACT')
+                .setCheck('String')
                 .appendField("EEPROM contact");
         this.appendDummyInput()
                 .appendField("already stored");
@@ -632,12 +659,16 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('INDEX')
+                .setCheck('Number')
                 .appendField("EEPROM get contact at index");
         this.appendDummyInput()
                 .appendField('store in')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_SET_ITEM), 'BUFFER');
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        return "String";
     },
     getVars: function () {
         return [this.getFieldValue('BUFFER')];
@@ -651,7 +682,7 @@ Blockly.Blocks.heb_badge_eeprom_retrieve = {
 
 Blockly.propc.heb_badge_eeprom_retrieve = function () {
     var index = Blockly.propc.valueToCode(this, "INDEX", Blockly.propc.ORDER_NONE);
-    var buffer = this.getFieldValue("BUFFER");
+    var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
     var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
     setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
@@ -671,7 +702,6 @@ Blockly.Blocks.heb_count_contacts = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("EEPROM count contacts");
-
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -691,8 +721,7 @@ Blockly.Blocks.heb_erase_all_contacts = {
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
                 .appendField("EEPROM erase all contacts");
-
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -711,7 +740,6 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
         this.appendDummyInput()
                 .appendField("Accelerometer get")
                 .appendField(new Blockly.FieldDropdown([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
-
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -733,7 +761,6 @@ Blockly.Blocks.heb_badge_was_shaken = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("Accelerometer was shaken?");
-
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -780,8 +807,9 @@ Blockly.Blocks.heb_text_to_speech_say = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendValueInput('STRING')
+                .setCheck('String')
                 .appendField("TTS say");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };
@@ -804,8 +832,9 @@ Blockly.Blocks.heb_text_to_speech_spell = {
     init: function () {
         this.setColour(colorPalette.getColor('heb'));
         this.appendValueInput('STRING')
+                .setCheck('String')
                 .appendField("TTS spell");
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     }
 };

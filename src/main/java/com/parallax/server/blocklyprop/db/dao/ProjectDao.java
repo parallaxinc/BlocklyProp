@@ -27,7 +27,8 @@ public interface ProjectDao {
             ProjectType type, 
             String board, 
             boolean privateProject, 
-            boolean sharedProject);
+            boolean sharedProject,
+            Long idProjectBasedOn);
 
     ProjectRecord createProject(
             String name, 

@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html><!-- manifest=node.manifest> -->
     <head>
         <meta name="application-name" content="&nbsp;"/>

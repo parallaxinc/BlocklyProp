@@ -87,92 +87,44 @@ public class ProjectDaoImpl implements ProjectDao {
      *
      * Create a new project with supplied code.
      *
-     * TODO: add details.
-     *
-     * @param name
-     * @param description
-     * @param descriptionHtml
-     * @param code
-     * @param type
-     * @param board
-     * @param privateProject
-     * @param sharedProject
+     * @param name Project name
+     * @param description Project description
+     * @param descriptionHtml HTML version of the project description
+     * @param code  XML representing the project blocks
+     * @param type  Project type TODO: Expand on this
+     * @param board Text representing the hardware being programmed
+     * @param privateProject Flag to indicate if the project is private
+     * @param sharedProject Flag to indicate if the project is a community project
      * @return
      */
     @Override
-    public ProjectRecord createProject(
-            String name, String description, String descriptionHtml,
-            String code, ProjectType type, String board, boolean privateProject,
-            boolean sharedProject) {
+    public ProjectRecord createProject( 
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            ProjectType type, 
+            String board, 
+            boolean privateProject,
+            boolean sharedProject,
+            Long idProjectBasedOn) {
 
         LOG.info("Creating a new project with existing code.");
-        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
         ProjectRecord record = null;
-        try {
-            
-            record = create
-                .insertInto(Tables.PROJECT,
-                        Tables.PROJECT.ID_USER,
-                        Tables.PROJECT.ID_CLOUDUSER,
-                        Tables.PROJECT.NAME,
-                        Tables.PROJECT.DESCRIPTION,
-                        Tables.PROJECT.DESCRIPTION_HTML,
-                        Tables.PROJECT.CODE,
-                        Tables.PROJECT.TYPE,
-                        Tables.PROJECT.BOARD,
-                        Tables.PROJECT.PRIVATE,
-                        Tables.PROJECT.SHARED)
-                .values(idUser,
-                        idCloudUser,
-                        name,
-                        description,
-                        descriptionHtml,
-                        code,
-                        type,
-                        board,
-                        privateProject,
-                        sharedProject)
-                .returning()
-                .fetchOne();
-        }
-        catch (org.jooq.exception.DataAccessException sqex) {
-            LOG.error("Database error encountered {}", sqex.getMessage());
-        }
-        finally {
+
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (idUser == null) {
+            LOG.error("Null BP UserID");
             return record;
         }
-    }
-
-    /**
-     *
-     * Create a new project based on an existing project.
-     *
-     * Note: This is an overload of createProject() with existing blocks.
-     *
-     * TODO: add details.
-     *
-     * @param name
-     * @param description
-     * @param descriptionHtml
-     * @param code
-     * @param type
-     * @param board
-     * @param privateProject
-     * @param sharedProject
-     * @param idProjectBasedOn
-     * @return
-     */
-    public ProjectRecord createProject(
-            String name, String description, String descriptionHtml,
-            String code, ProjectType type, String board, boolean privateProject,
-            boolean sharedProject, Long idProjectBasedOn) {
-
-        LOG.info("Creating a new project from existing project.");
-        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
-
-        ProjectRecord record = create
+        if (idCloudUser == null) {
+            LOG.error("Null cloud user ID");
+        }
+        
+        try {
+            record = create
                 .insertInto(Tables.PROJECT,
                         Tables.PROJECT.ID_USER,
                         Tables.PROJECT.ID_CLOUDUSER,
@@ -198,8 +150,11 @@ public class ProjectDaoImpl implements ProjectDao {
                         idProjectBasedOn)
                 .returning()
                 .fetchOne();
-
-        LOG.info("New project saved as {}.", record.getName());
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database error encountered {}", sqex.getMessage());
+        }
+        
         return record;
     }
 
@@ -225,7 +180,18 @@ public class ProjectDaoImpl implements ProjectDao {
             boolean sharedProject) {
 
         LOG.info("Creating a new, empty project from existing project.");
-        return createProject(name, description, descriptionHtml, "", type, board, privateProject, sharedProject);
+        
+        // TODO: Add based_on field to end of argument list
+        return createProject(
+                name, 
+                description, 
+                descriptionHtml, 
+                "", 
+                type, 
+                board, 
+                privateProject, 
+                sharedProject,
+                null);
     }
 
 
@@ -578,7 +544,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     /**
-     * TODO: add details.
+     * Save the current project as a new project
      *
      * @param idProject
      * @param code
@@ -587,28 +553,40 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+        
         LOG.info("Saving project code as '{}'", newName);
 
+        // Retreive the source project
         ProjectRecord original = getProject(idProject);
         if (original == null) {
             LOG.error("Original project {} is missing. Unable to save code as...", idProject);
             throw new NullPointerException("Project doesn't exist");
         }
-
+        
+        // Obtain the current bp user record. 
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
-            ProjectRecord cloned = createProject(
-                    newName,
-                    original.getDescription(),
-                    original.getDescriptionHtml(),
-                    code,
-                    original.getType(),
-                    original.getBoard(),
-                    original.getPrivate(),
-                    original.getShared(),
-                    original.getId());
+        
+        if (idUser != null) {
+            // Create a copy of the source project is the source project is owned
+            // by the current user OR if the source project is designated as a
+            // shared or community project
+            // --------------------------------------------------------------------
+            if (original.getIdUser().equals(idUser) || original.getShared()) {
+                ProjectRecord cloned = createProject(
+                        newName, 
+                        original.getDescription(),
+                        original.getDescriptionHtml(),
+                        code,
+                        original.getType(),
+                        original.getBoard(),
+                        true,                   // Set project private
+                        false,                  // Set project unshared
+                        original.getId());
 
-            return cloned;
+                return cloned;
+            }
+        } else {
+            LOG.info("Unable to retreive BP user id");
         }
         return null;
     }
@@ -646,6 +624,8 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     private ProjectRecord doProjectClone(ProjectRecord original) {
+        
+        // TODO: Add based_on parameter as last argument
         ProjectRecord cloned = createProject(
                 original.getName(),
                 original.getDescription(),
@@ -654,14 +634,18 @@ public class ProjectDaoImpl implements ProjectDao {
                 original.getType(),
                 original.getBoard(),
                 original.getPrivate(),
-                original.getShared());
+                original.getShared(),
+                original.getId()
+        );
 
-        cloned.setBasedOn(original.getId());
-        cloned.update();
+//        cloned.setBasedOn(original.getId());
+//        cloned.update();
 
+        // WHAT IS THIS DOING?
         create.update(Tables.PROJECT)
                 .set(Tables.PROJECT.BASED_ON, original.getId())
                 .where(Tables.PROJECT.ID.equal(cloned.getId()));
+        
         return cloned;
     }
 

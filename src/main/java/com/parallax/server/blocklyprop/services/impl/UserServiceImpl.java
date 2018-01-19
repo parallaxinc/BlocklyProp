@@ -64,6 +64,17 @@ public class UserServiceImpl implements UserService {
         }
         
     }
+    
+    @Override
+    public User getUser(Long idCloudSessionUser, String screenName) {
+        if (userDao != null) {
+            return userDao.getUser(idCloudSessionUser, screenName).into(User.class);
+        }
+        else {
+            LOG.error("UserDAO is not initialized before first use!");
+            return null;
+        }
+    }
 
     @Override
     public List<UserRecord> getAllUsers() {

@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!--basic.jsp-->
 <meta name="application-name" content="BlocklyProp"/>
 <meta name="msapplication-TileColor" content="#FFFFFF" />
 <meta name="msapplication-TileImage" content="<url:getCdnUrl url="/images/mstile-144x144.png" />" />

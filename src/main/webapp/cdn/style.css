@@ -66,6 +66,13 @@ body {
     line-height: 22px;
 }
 
+.icon-board-propc.editor-icon {
+    background-image: url('images/board-icons/IconC.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
 .navbar-brand#nav-logo {
     background-image: url('images/logo_small.png');
     background-repeat: no-repeat;
@@ -134,9 +141,12 @@ li.project {
 }
 
 /* Markdown editor */
-.CodeMirror {
-    height: 200px;
-    min-height: 200px;
+.CodeMirror, .CodeMirror-scroll {
+    max-height: 150px !important;
+}
+
+.CodeMirror-fullscreen .CodeMirror, .CodeMirror-fullscreen .CodeMirror-scroll {
+    max-height: none;
 }
 
 div#project div.wizard-container {
@@ -147,4 +157,32 @@ div#project div.wizard-container {
     padding: 10px;
     margin: 10px;
     background-color: #f5f5f5;
+}
+
+.infolink:before
+{
+    content: '?';
+    display: inline-block;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: center;
+    width: 2ex;
+    height: 2ex;
+    font-size: 1.6ex;
+    line-height: 2ex;
+    border-radius: 1.4ex;
+    margin-right: 2px;
+    padding: 1px;
+    color: white;
+    background: grey;
+    border: 1px solid grey;
+    text-decoration: none;
+}
+
+.infolink:hover:before
+{
+    color: grey;
+    background: white;
+    border-color: grey;
+    text-decoration: none;
 }

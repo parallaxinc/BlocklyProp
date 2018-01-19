@@ -1130,23 +1130,64 @@ Blockly.Blocks.scribbler_stop_servo = {
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('robot'));
+            this.pinSet = profile.default.digital;
         } else {
             this.setHelpUrl(Blockly.MSG_SERVO_HELPURL);
             this.setColour(colorPalette.getColor('output'));
+            this.pinSet = profile.default.digital.concat([['other', 'other']]);
         }
         this.setTooltip(Blockly.MSG_S3_SCRIBBLER_STOP_SERVO_TOOLTIP);
-        this.appendDummyInput("")
-                .appendField("servo PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital), "SERVO_PIN")
+        this.addPinMenu("servo PIN", 'VALUE');
+        this.appendDummyInput("VALUE")
                 .appendField("disable");
-        this.setInputsInline(false);
+        this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-    }
+    },
+    addPinMenu: function (label, moveBefore) {
+        this.appendDummyInput('SET_PIN')
+                .appendField(label, 'LABEL')
+                .appendField(new Blockly.FieldDropdown(this.pinSet, function (op) {
+                    this.sourceBlock_.setToOther(op, moveBefore);
+                }), "SERVO_PIN");
+        this.moveBefore = moveBefore;
+        this.otherPin = false;
+    },
+    setToOther: function (op, moveBefore) {
+        if (op === 'other') {
+            this.otherPin = true;
+            var label = this.getFieldValue('LABEL');
+            this.removeInput('SET_PIN');
+            this.appendValueInput('SERVO_PIN')
+                    .appendField(label)
+                    .setCheck('Number')
+                    .appendField('A,' + profile.default.digital.toString(), 'RANGEVALS0');
+            this.getField('RANGEVALS0').setVisible(false);
+            if (moveBefore) {
+                this.moveInputBefore('SERVO_PIN', moveBefore);
+            }
+        }
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('otherpin', this.otherPin);
+        return container;
+    },
+    domToMutation: function (xmlElement) {
+        var op = xmlElement.getAttribute('otherpin');
+        if (op === 'true') {
+            this.setToOther('other', this.moveBefore);
+        }
+    }    
 };
 
 Blockly.propc.scribbler_stop_servo = function () {
-    var pin = this.getFieldValue('SERVO_PIN');
+    var pin = '0';
+    if (this.otherPin) {
+        pin = Blockly.propc.valueToCode(this, 'SERVO_PIN', Blockly.propc.ORDER_ATOMIC) || '0';
+    } else {
+        pin = this.getFieldValue("SERVO_PIN");
+    }
     var addType = '';
     var blocks = Blockly.getMainWorkspace().getAllBlocks();
 
@@ -1204,9 +1245,8 @@ Blockly.Blocks.analog_input = {
     }
 };
 
-// TODO: create this function in s3 library.
 Blockly.propc.analog_input = function () {
-    var pin = this.getFieldValue('PIN');
+    var pin = this.getFieldValue('ANALOG_PIN') || "0";
     return ['s3_readADC(S3_ADC_A' + pin + ')', Blockly.propc.ORDER_ATOMIC];
 };
 
@@ -1494,7 +1534,7 @@ Blockly.Blocks.s3_eeprom_read = {
         this.getField('RANGEVALS0').setVisible(false);
         this.setInputsInline(true);
         this.setOutput(true, 'Number');
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('output'));
   }
 };
 
@@ -1519,7 +1559,7 @@ Blockly.Blocks.s3_eeprom_write = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setInputsInline(true);
-        this.setColour(colorPalette.getColor('input'));
+        this.setColour(colorPalette.getColor('output'));
   }
 };
 

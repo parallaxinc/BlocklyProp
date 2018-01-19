@@ -1,4 +1,5 @@
- <div class="jumbotron">
+<!-- Deprecated. Replaced with inline code --> 
+<div class="jumbotron">
 
  <div class="logo">
 

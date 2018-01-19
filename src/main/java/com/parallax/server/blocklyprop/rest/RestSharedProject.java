@@ -137,12 +137,14 @@ public class RestSharedProject {
     @Name("Get project by id for editor")
     @Produces("application/json")
     public Response getEditor(@HeaderParam("X-Authorization") String authorization, @HeaderParam("X-Timestamp") Long timestamp, @PathParam("id") Long idProject) {
-        LOG.info("Authorization: {}", authorization);
+        
+        LOG.info("REST get project id {} for the editor", idProject);
 
         try {
             ProjectRecord project = projectService.getProject(idProject);
 
             if (project == null) {
+                LOG.info("Project {} was not found.", idProject);
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
 

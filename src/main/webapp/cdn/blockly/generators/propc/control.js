@@ -54,7 +54,7 @@ Blockly.Blocks.controls_repeat = {
                 .appendField(fieldDropdown, "TYPE");
         this.appendStatementInput("DO")
                 .appendField(Blockly.LANG_CONTROLS_REPEAT_INPUT_DO);
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setInputsInline(true);
     },
@@ -146,7 +146,7 @@ Blockly.Blocks.controls_if = {
                 .appendField(Blockly.LANG_CONTROLS_IF_MSG_IF);
         this.appendStatementInput('DO0')
                 .appendField(Blockly.LANG_CONTROLS_IF_MSG_THEN);
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['controls_if_elseif',
             'controls_if_else']));
@@ -293,7 +293,7 @@ Blockly.Blocks.controls_if_elseif = {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_ELSEIF_TITLE_ELSEIF);
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setTooltip(Blockly.LANG_CONTROLS_IF_ELSEIF_TOOLTIP);
         this.contextMenu = false;
@@ -306,7 +306,7 @@ Blockly.Blocks.controls_if_else = {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(Blockly.LANG_CONTROLS_IF_ELSE_TITLE_ELSE);
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setTooltip(Blockly.LANG_CONTROLS_IF_ELSE_TOOLTIP);
         this.contextMenu = false;
     }
@@ -343,7 +343,7 @@ Blockly.propc.controls_if = function () {
  this.appendDummyInput()
  .appendField("return");
  this.setInputsInline(true);
- this.setPreviousStatement(true, null);
+ this.setPreviousStatement(true, "Block");
  this.setNextStatement(true, null);
  }
  };
@@ -356,7 +356,6 @@ Blockly.propc.controls_if = function () {
  */
 
 Blockly.Blocks.control_repeat_for_loop = {
-    //helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function () {
         var block_label = 'repeat';
         if (profile.default.description === "Scribbler Robot") {
@@ -383,7 +382,7 @@ Blockly.Blocks.control_repeat_for_loop = {
         this.appendStatementInput("DO")
                 .appendField("do");
 
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setInputsInline(true);
     },
@@ -434,7 +433,7 @@ Blockly.Blocks.controls_return = {
                 .appendField("return");
 
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setColour(colorPalette.getColor('programming'));
     }
 };
@@ -451,7 +450,7 @@ Blockly.Blocks.controls_break = {
                 .appendField("break");
 
         this.setInputsInline(false);
-        this.setPreviousStatement(true, null);
+        this.setPreviousStatement(true, "Block");
         this.setColour(colorPalette.getColor('programming'));
     }
 };
@@ -480,7 +479,7 @@ Blockly.Blocks.controls_select = {
                 .appendField('do (then break')
                 .appendField(new Blockly.FieldCheckbox("TRUE"), 'BREAK1')
                 .appendField(')');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['controls_select_case',
             'controls_select_default']));
@@ -634,7 +633,7 @@ Blockly.Blocks.controls_select_case = {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField('case');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.contextMenu = false;
     }
@@ -646,7 +645,7 @@ Blockly.Blocks.controls_select_default = {
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField('default');
-        this.setPreviousStatement(true);
+        this.setPreviousStatement(true, "Block");
         this.contextMenu = false;
     }
 };

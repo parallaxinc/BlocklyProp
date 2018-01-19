@@ -58,7 +58,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void updateSession(SessionRecord session) throws NullPointerException {
-        log.debug("Updating a user session: {}", session.getIdsession());
+        log.debug("Updating user session: {}", session.getIdsession());
 
         sessionDao.updateSession(session);
     }

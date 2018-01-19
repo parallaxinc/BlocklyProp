@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+
 import com.parallax.client.cloudsession.CloudSessionAuthenticateService;
 import com.parallax.client.cloudsession.CloudSessionRegisterService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
@@ -26,10 +27,15 @@ import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
 import com.parallax.client.cloudsession.objects.User;
+
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
+
+import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
+
 import java.util.Calendar;
+import java.util.Set;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
@@ -46,7 +52,7 @@ import org.slf4j.LoggerFactory;
 public class SecurityServiceImpl implements SecurityService {
 
     /**
-     * 
+     * Handle to logging facility
      */
     private static final Logger LOG = LoggerFactory.getLogger(SecurityServiceImpl.class);
     
@@ -56,12 +62,12 @@ public class SecurityServiceImpl implements SecurityService {
     private static SecurityServiceImpl instance;
 
     /**
-     * 
+     * Web client session details
      */
     private Provider<SessionData> sessionData;
 
     /**
-     * 
+     * Application configuration settings
      */
     private Configuration configuration;
     
@@ -71,22 +77,22 @@ public class SecurityServiceImpl implements SecurityService {
     private EmailValidator emailValidator = EmailValidator.getInstance();
 
     /**
-     * 
+     * Interface to the Cloud Session user account registration service
      */
     private CloudSessionRegisterService registerService;
     
     /**
-     * 
+     * Interface to the Cloud Session user authentication service
      */
     private CloudSessionAuthenticateService authenticateService;
     
     /**
-     * 
+     * Interface to the Cloud Session user account/profile services
      */
     private CloudSessionUserService userService;
 
     /**
-     * 
+     *  Access to the BlocklyProp user details
      */
     private UserDao userDao;
     
@@ -108,6 +114,9 @@ public class SecurityServiceImpl implements SecurityService {
     /**
      * Set the session's data provider
      * 
+     * This is a callback used by the Shiro package to provide a connection
+     * between the application and the Shiro session management services.
+     * 
      * @param sessionDataProvider 
      */
     @Inject
@@ -116,7 +125,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     /**
-     * Set the session's user database object
+     * Set the session's user database object in the blocklyprop system.
      * 
      * @param userDao 
      */
@@ -154,13 +163,19 @@ public class SecurityServiceImpl implements SecurityService {
     /**
      * Validate new user data and create a new user account
      * 
+     * Details:
+     * If the request passes all validity tests, create a user account
+     * in the cloud session system. If that account is created successfully, 
+     * create a user record in the blocklyprop system from data stored in
+     * the cloud session user record.
+     * 
      * @param screenname String user screen name
      * @param email String user email address
      * @param password String user password
      * @param passwordConfirm String user password confirmation
      * @param birthMonth int Month component of user's birthday. COPPA field
      * @param birthYear int Year component of the user's birthday. COPPA field
-     * @param parentEmail String Sponsor's email address. COPPA field
+     * @param parentEmail String sponsor email address. COPPA field
      * @param parentEmailSource int Sponsor classification. COPPA
      * @return
      * @throws NonUniqueEmailException
@@ -255,8 +270,9 @@ public class SecurityServiceImpl implements SecurityService {
                     email, password, passwordConfirm, "en", screenname,
                     birthMonth, birthYear, parentEmail, parentEmailSource);
             
+            // Create a BlocklyProp user account record
             if (id > 0) {
-                userDao.create(id);
+                userDao.create(id, screenname);
             }
             
             return id;
@@ -338,7 +354,7 @@ public class SecurityServiceImpl implements SecurityService {
             WrongAuthenticationSourceException {
         
         try {
-            LOG.debug("Attempting to authenticate {}",email);
+            LOG.info("Attempting to authenticate {}",email);
             
             // Query Cloud Session interface
             User user = authenticateService.authenticateLocalUser(email, password);
@@ -346,7 +362,7 @@ public class SecurityServiceImpl implements SecurityService {
             return user;
 
         } catch (NullPointerException npe) {
-            LOG.debug("Authetication threw Null Pointer Exception");
+            LOG.error("Authetication threw Null Pointer Exception");
             throw npe;
 
         } catch (ServerException se) {
@@ -389,22 +405,49 @@ public class SecurityServiceImpl implements SecurityService {
      */
     public static SessionData getSessionData() {
         LOG.debug("Getting user session data");
+        
         SessionData sessionData = instance.sessionData.get();
         
+        if (sessionData == null) {
+            LOG.warn("Error obtaining session data");
+        }
+        
+        LOG.debug("Session data - {}", sessionData.toString());
+        
+        // Check for a BP user id
         if (sessionData.getIdUser() == null) {
             
-            // Did not get a valid session
+            // No BP user id found, is the user in this session authenticated?
             if (SecurityUtils.getSubject().isAuthenticated()) {
                 
+                // The user identified by this session is authenticated. Perform
+                // a fun exercise to locate the BP user id for this authenticated
+                // user.
+                LOG.debug("Session data missing a valid BP id for an authenticated user");
+                
                 try {
+                    // Getting a user record using the account email address
+                    String principal = (String) SecurityUtils.getSubject().getPrincipal();
+                    // Display the user's email address
+                    LOG.debug("Getting pricipal: {}", principal );
+                    
+                    // Get the user account/profile record
                     User user = instance.userService.getUser(
                             (String) SecurityUtils.getSubject().getPrincipal());
                     
+                    // Did we get a user account object
                     if (user != null) {
-                        // User account local may have changed
+                        LOG.debug("Session User: {}", user.getScreenname());
+                        LOG.debug("Session UserId: {}", user.getId());
+                        LOG.debug("Session locale: {}", user.getLocale());
+                        
+                        // Yes, User account local may have changed
                         if (!Strings.isNullOrEmpty(sessionData.getLocale())) {
                             if (!sessionData.getLocale().equals(user.getLocale())) {
                                 try {
+                                    // User local changed. Let's update the user 
+                                    // account with new locale
+                                    LOG.info("Changing user {} locale", user.getScreenname());
                                     user = instance.userService.changeUserLocale(
                                             user.getId(), sessionData.getLocale());
                                 } catch (UnknownUserIdException ex) {
@@ -413,10 +456,19 @@ public class SecurityServiceImpl implements SecurityService {
                             }
                         }
                         
-                        sessionData.setUser(user);
-                        sessionData.setIdUser(
-                                instance.userDao.getUserIdForCloudSessionUserId(user.getId()));
+                        LOG.debug("Setting session user data for {}", user.getScreenname());
+                        sessionData.setUser(user);       
                         
+                        LOG.debug("Getting BP user id");
+                        UserRecord bpUser = instance.userDao.getUser(user.getId(), user.getScreenname());
+                        if (bpUser != null) {
+                            LOG.debug("Setting BP user id to: {}", bpUser.getId());
+                            sessionData.setIdUser(bpUser.getId());                            
+                        }else{
+                            LOG.warn("Warning! Setting BP user id to zero");
+                            sessionData.setIdUser(0L);
+                        }
+
                         instance.userDao.updateScreenname(
                                 sessionData.getIdUser(), 
                                 user.getScreenname());

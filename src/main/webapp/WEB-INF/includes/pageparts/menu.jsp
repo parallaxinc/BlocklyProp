@@ -63,16 +63,23 @@
                     <form style="margin-bottom: 0;">
                         <select id="language" name="language" onchange="submit()">
                             <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-                            <%-- Multi-lingual support is under development
-                            <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
-                            <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option>
-                            --%>
                         </select>
                     </form>
                 </li>
                 -->
             </ul>
             </span>
+        </div>
+    </div>
+    
+    <!-- Message of the Day goes here. -->
+    <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; display: none;" id="message-of-the-day">
+        <div class="row">
+            <div class="col-sm-12" align="center">
+                <a id="message-of-the-day-link" href="http://learn.parallax.com/node/1692" target="_blank" style="color:#8a6d3b;">
+                    <span id="message-of-the-day-text"></span>
+                </a>
+            </div>
         </div>
     </div>
 </nav>

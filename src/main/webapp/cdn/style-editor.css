@@ -1,4 +1,4 @@
-body {
+html, body {
     background-color: white;
     font-family: sans-serif;
     margin: 0;
@@ -9,6 +9,20 @@ body {
     height: 100%;
     width: 100%;
 }
+
+#content_blocks {
+    background-color: #fff;
+    margin: 0;
+    padding:0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%
+}
+
+.blocklyMinimalBody {
+    height: 64px;
+}
+
 h1 {
     font-weight: normal;
     font-size: 140%;
@@ -150,7 +164,7 @@ button:hover {
     }
 }
 
-#serial-conn-info {
+#serial-conn-info, #graph-conn-info {
     color: #bbb;
     font-size: 11px;
     overflow: hidden;
