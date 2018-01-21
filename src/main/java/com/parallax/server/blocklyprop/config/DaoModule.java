@@ -10,10 +10,13 @@ import com.parallax.server.blocklyprop.db.dao.ProjectDao;
 import com.parallax.server.blocklyprop.db.dao.ProjectSharingDao;
 import com.parallax.server.blocklyprop.db.dao.SessionDao;
 import com.parallax.server.blocklyprop.db.dao.UserDao;
+import com.parallax.server.blocklyprop.db.dao.MotdDao;
+
 import com.parallax.server.blocklyprop.db.dao.impl.ProjectDaoImpl;
 import com.parallax.server.blocklyprop.db.dao.impl.ProjectSharingDaoImpl;
 import com.parallax.server.blocklyprop.db.dao.impl.SessionDaoImpl;
 import com.parallax.server.blocklyprop.db.dao.impl.UserDaoImpl;
+import com.parallax.server.blocklyprop.db.dao.impl.MotdDaoImpl;
 
 
 /**
@@ -44,6 +47,7 @@ public class DaoModule extends AbstractModule {
         bind(UserDao.class).to(UserDaoImpl.class);
         bind(SessionDao.class).to(SessionDaoImpl.class);
         bind(ProjectSharingDao.class).to(ProjectSharingDaoImpl.class);
+        bind(MotdDao.class).to(MotdDaoImpl.class);        
     }
 
 }
