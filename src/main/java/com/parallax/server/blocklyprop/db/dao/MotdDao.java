@@ -9,6 +9,7 @@ package com.parallax.server.blocklyprop.db.dao;
 import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
 import java.util.List;
 import java.sql.Timestamp;
+import org.joda.time.DateTime;
 
 
 
@@ -29,8 +30,8 @@ public interface  MotdDao {
      */
     MotdRecord create(
             String message,
-            Timestamp enableDate,
-            Timestamp disableDate); 
+            DateTime enableDate,
+            DateTime disableDate); 
             
             
     /**
@@ -40,7 +41,7 @@ public interface  MotdDao {
      * 
      * @return a single MotdRecord or null if record is not found
      */
-    MotdRecord getMotd(Long idMotd);
+    MotdRecord getMotd(Integer idMotd);
     
     /**
      * List all MOTD records
@@ -55,6 +56,6 @@ public interface  MotdDao {
      * @param idMotd
      * @return True if the action was successful, otherwise false
      */
-    Boolean delete(Long idMotd);
+    Boolean delete(Integer idMotd);
     
 }
