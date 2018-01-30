@@ -14,6 +14,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.SecRoleRecord
 import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -231,10 +232,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateScreenname(Long idUser, String screenname) {
-        UserRecord user = create.selectFrom(Tables.USER).where(Tables.USER.ID.eq(idUser)).fetchOne();
+        LOG.info("Attempting to update screen name for user: {} ", idUser);
+        
+        UserRecord user = create.selectFrom(Tables.USER)
+                .where(Tables.USER.ID.eq(idUser))
+                .fetchOne();
+        
         if (user != null) {
-            user.setScreenname(screenname);
-            user.update();
+            if ( ! Objects.equals(user.getScreenname(), screenname)) {
+                LOG.info("Changing screen name from {} to {}", user.getScreenname(), screenname);
+
+                user.setScreenname(screenname);
+                user.update();
+            }
         }
     }
 

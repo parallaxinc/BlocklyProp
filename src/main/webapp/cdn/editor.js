@@ -70,6 +70,12 @@ $(document).ready(function () {
                 document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
             }
 
+            if (data && data['yours'] === false) {
+                $('#edit-project-details').html(page_text_label['editor_view-details']);
+            } else {
+                $('#edit-project-details').html(page_text_label['editor_edit-details']);
+            }
+
             timestampSaveTime(20, true);
             setInterval(checkLastSavedTime, 60000);
         }).fail(function () {
@@ -173,68 +179,95 @@ var propcAsBlocksXml = function () {
 };
 
 var saveProject = function () {
-    var code = '';
-    if (projectData['board'] === 'propcfile') {
-        code = propcAsBlocksXml();
+    if (projectData['yours']) {
+        var code = '';
+        if (projectData['board'] === 'propcfile') {
+            code = propcAsBlocksXml();
 
-        Blockly.mainWorkspace.clear();
-        loadToolbox(code);
-    } else {
-        code = getXml();
-    }
-    projectData['code'] = code;
-    $.post(baseUrl + 'rest/project/code', projectData, function (data) {
-        var previousOwner = projectData['yours'];
-        projectData = data;
-        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-
-        // If the current user doesn't own this project, a new one is created and the page is redirected to the new project.
-        if (!previousOwner) {
-            window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+            Blockly.mainWorkspace.clear();
+            loadToolbox(code);
+        } else {
+            code = getXml();
         }
-    }).done(function () {
-        // Save was successful, show green with checkmark
-        var elem = document.getElementById('save-project');
-        elem.style.paddingLeft = '10px';
-        elem.style.background = 'rgb(92, 184, 92)';
-        elem.style.borderColor = 'rgb(76, 174, 76)';
+        projectData['code'] = code;
+        $.post(baseUrl + 'rest/project/code', projectData, function (data) {
+            var previousOwner = projectData['yours'];
+            projectData = data;
+            projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save &#x2713;';
-        }, 600);
+            // If the current user doesn't own this project, a new one is created and the page is redirected to the new project.
+            if (!previousOwner) {
+                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+            }
+        }).done(function () {
+            // Save was successful, show green with checkmark
+            var elem = document.getElementById('save-project');
+            elem.style.paddingLeft = '10px';
+            elem.style.background = 'rgb(92, 184, 92)';
+            elem.style.borderColor = 'rgb(76, 174, 76)';
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save&nbsp;&nbsp;';
-            elem.style.paddingLeft = '15px';
-            elem.style.background = '#337ab7';
-            elem.style.borderColor = '#2e6da4';
-        }, 1750);
-    }).fail(function () {
-        // Save failed.  Show red with "x"
-        var elem = document.getElementById('save-project');
-        elem.style.paddingLeft = '10px';
-        elem.style.background = 'rgb(214, 44, 44)';
-        elem.style.borderColor = 'rgb(191, 38, 38)';
+            setTimeout(function () {
+                elem.innerHTML = 'Save &#x2713;';
+            }, 600);
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save &times;';
-        }, 600);
+            setTimeout(function () {
+                elem.innerHTML = 'Save&nbsp;&nbsp;';
+                elem.style.paddingLeft = '15px';
+                elem.style.background = '#337ab7';
+                elem.style.borderColor = '#2e6da4';
+            }, 1750);
+        }).fail(function () {
+            // Save failed.  Show red with "x"
+            var elem = document.getElementById('save-project');
+            elem.style.paddingLeft = '10px';
+            elem.style.background = 'rgb(214, 44, 44)';
+            elem.style.borderColor = 'rgb(191, 38, 38)';
 
-        setTimeout(function () {
-            elem.innerHTML = 'Save&nbsp;&nbsp;';
-            elem.style.paddingLeft = '15px';
-            elem.style.background = '#337ab7';
-            elem.style.borderColor = '#2e6da4';
-        }, 1750);
+            setTimeout(function () {
+                elem.innerHTML = 'Save &times;';
+            }, 600);
+
+            setTimeout(function () {
+                elem.innerHTML = 'Save&nbsp;&nbsp;';
+                elem.style.paddingLeft = '15px';
+                elem.style.background = '#337ab7';
+                elem.style.borderColor = '#2e6da4';
+            }, 1750);
+
+            utils.showMessage('Not logged in', 'BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.');
+        });
+
+        // Mark the time when saved, add 20 minutes to it.
+        timestampSaveTime(20, true);
         
-        utils.showMessage('Not logged in', 'BlocklyProp was unable to save your project.\n\nYou may still be able to download it as a Blockls file.\n\nYou will need to return to the homepage to log back in.');
-    });
-
-    // Mark the time when saved, add 20 minutes to it.
-    timestampSaveTime(20, true);
+    } else {
+        
+        // If user doesn't own the project - prompt for a new project name and route through
+        // an endpoint that will make the project private.
+        saveAsDialog();
+    }
 };
 
 var saveAsDialog = function () {
+    
+    // Old function - still in use because save-as+board type is not approved for use.
+    utils.prompt("Save project as", projectData['name'], function (value) {
+        if (value) {
+            var code = getXml();
+            projectData['code'] = code;
+            projectData['name'] = value;
+            $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
+                var previousOwner = projectData['yours'];
+                projectData = data;
+                projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
+                // Reloading project with new id
+                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+            });
+        }
+    });
+    
+    /*
     // Prompt user to save current project first if unsaved
     if (checkLeave() && projectData['yours']) {
         utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
@@ -257,7 +290,9 @@ var saveAsDialog = function () {
     }
     
     // Open modal
-    $('#save-as-type-dialog').modal('show');    
+    $('#save-as-type-dialog').modal('show');   
+    
+    */
 };
 
 var checkBoardType = function () {
@@ -303,7 +338,7 @@ var saveProjectAs = function () {
 };
 
 var editProjectDetails = function () {
-    window.location.href = baseUrl + 'my-projects?id=' + idProject;
+    window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
 };
 
 var blocklyReady = function () {
@@ -615,6 +650,23 @@ function filterToolbox(profileName, peripherals) {
         if (experimental && inDemo !== 'demo') {
             toolboxEntry.remove();
         }
+        
+        var include = toolboxEntry.attr('include');
+        if (include) {
+            var includes = include.split(",");
+            if (!findOne(componentlist, includes)) {
+                toolboxEntry.remove();
+            }
+        }
+
+        var exclude = toolboxEntry.attr('exclude');
+        if (exclude) {
+            var excludes = exclude.split(",");
+            if (findOne(componentlist, excludes)) {
+                toolboxEntry.remove();
+            }
+        }
+
     });
 
 }
@@ -635,17 +687,16 @@ var findOne = function (haystack, arr) {
 
 function initToolbox(profileName, peripherals) {
     filterToolbox(profileName, peripherals);
-    isPropC = (profileName === 'propcfile' ? true : false);
     Blockly.inject('content_blocks', {
         toolbox: document.getElementById('toolbox'),
         trashcan: true,
         media: cdnUrl + 'blockly/media/',
-        readOnly: isPropC,
+        readOnly: (profileName === 'propcfile' ? true : false),
         //path: cdnUrl + 'blockly/',
         comments: false,
         zoom: {
           controls: true,
-          wheel: true,
+          wheel: false,
           startScale: 1.0,
           maxScale: 3,
           minScale: 0.3,

@@ -284,7 +284,6 @@ Blockly.Blocks.heb_oled_line = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('(y)');
         this.appendDummyInput()
-                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('color')
                 .appendField(oled_colors, 'COLOR');
@@ -330,7 +329,6 @@ Blockly.Blocks.heb_oled_circle = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('radius');
         this.appendDummyInput()
-                .setCheck('Number')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('filled')
                 .appendField(new Blockly.FieldCheckbox('TRUE'), 'FILL');
@@ -636,7 +634,7 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('CONTACT')
-                .setCheck('Number')
+                .setCheck('String')
                 .appendField("EEPROM contact");
         this.appendDummyInput()
                 .appendField("already stored");

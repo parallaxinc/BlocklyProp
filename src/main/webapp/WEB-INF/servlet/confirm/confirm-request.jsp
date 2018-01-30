@@ -18,7 +18,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                <div class="col-md-12 col-sm-12">
                     <h2><fmt:message key="confirm.request.title" /></h2>
                     <%
                         Boolean error = (Boolean) request.getAttribute("error");
@@ -61,7 +60,7 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="confirm.request.submit" />">
                     </form>
-                    <p><a href="<url:getUrl url="/index"/>" >Go to home</a></p>
+                    <p><a href="<url:getUrl url="/index"/>" >Go to home page</a></p>
                 </div>
             </div>
         </div>

@@ -356,7 +356,6 @@ Blockly.propc.controls_if = function () {
  */
 
 Blockly.Blocks.control_repeat_for_loop = {
-    //helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function () {
         var block_label = 'repeat';
         if (profile.default.description === "Scribbler Robot") {

@@ -16,6 +16,7 @@ var graph_connection_string = '';
 var graph_timestamp_start = null;
 var graph_timestamp_restart = 0;
 var graph_paused = false;
+var graph_start_playing = false;
 var graph_temp_string = new String;
 var graph_time_multiplier = 0;
 var graph_interval_id = null;
@@ -59,6 +60,8 @@ var graph_data = {
 
 // Minimum client/launcher version supporting base64-encoding
 var minEnc64Ver = version_as_number('0.7.0');
+// Minimum client/launcher version supporting coded/verbose responses
+var minCodedVer = version_as_number('0.7.5');
 // Minimum client/launcher allowed for use with this system
 var minVer = version_as_number(client_min_version);
 
@@ -203,10 +206,16 @@ var prettyCode = function (raw_code) {
             .replace(/serial \* /g, "serial *")
             .replace(/colorPal \* /g, "colorPal *")
             .replace(/ws2812 \* /g, "ws2812 *")
+            .replace(/i2c \* /g, "i2c *")
+            .replace(/sound \* /g, "sound *")
+            .replace(/FILE \* /g, "FILE* ")
     
             // improve the way functions and arrays are rendered
             .replace(/\)\s*[\n\r]\s*{/g,") {")
-            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, "[$1] = {$2};");
+            .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, function (str, m1, m2) {
+                    m2 = m2.replace(/\s/g, '').replace(/,/g, ', ');
+                    return "[" + m1 + "] = {" + m2 + "};";
+                });
     
     codePropC.setValue(raw_code);
     codePropC.gotoLine(0);
@@ -229,6 +238,7 @@ function init(blockly) {
     codePropC.setTheme("ace/theme/chrome");
     codePropC.getSession().setMode("ace/mode/c_cpp");
     codePropC.getSession().setTabSize(2);
+    codePropC.$blockScrolling = Infinity;
     codePropC.setReadOnly(true);
 
     codeXml = ace.edit("code-xml");
@@ -326,37 +336,27 @@ function cloudCompile(text, action, successHandler) {
             'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
             'data': {"code": propcCode}
         }).done(function (data) {
-            if (data.error) {
-                console.log(data);
-                if (typeof data['message'] === "string")
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message']
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-                else
-                    alert("BlocklyProp was unable to compile your project:\n" + data['message'].toString()
-                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+            if (data.error || typeof data.error === "undefined") {
+                // console.log(data);
+                // Get message as a string, or blank if undefined
+                var message = (typeof data['message'] === "string") ? data['message'] : (typeof data.error !== "undefined") ? data['message'].toString() : "";
+                alert("BlocklyProp was unable to compile your project:\n" + message
+                    + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
-                var loadWaitMsg = '';
-                if (action !== 'compile') {
-                    loadWaitMsg = '\nLoading program on the Propeller - Please Wait...\n';
-                }
+                var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
+                $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 if (data.success) {
-                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                     successHandler(data, terminalNeeded);
-                } else {
-                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 }
                 
                 // Scoll automatically to the bottom after new data is added
                 document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
             }
         }).fail(function (data) {
-            console.log(data);
-            if (typeof data === "string")
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-            else
-                alert("BlocklyProp was unable to compile your project:\n----------\n" + data.toString()
-                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+            // console.log(data);
+            var message = (typeof data === "string") ? data : data.toString();
+            alert("BlocklyProp was unable to compile your project:\n----------\n" + message
+                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
         });
     }
 }
@@ -371,21 +371,25 @@ function compile() {
 /**
  * begins loading process
  * @param modal_message message shown at the top of the compile/load modal.
- * @param compile_command command for the cloud compiler (bin/eeprom).
+ * @param compile_command for the cloud compiler (bin/eeprom).
+ * @param load_option command for the loader (CODE/VERBOSE/CODE_VERBOSE).
  * @param load_action command for the loader (RAM/EEPROM).
  *
  */
-function loadInto(modal_message, compile_command, load_action) {
+function loadInto(modal_message, compile_command, load_option, load_action) {
     if (ports_available) {
         cloudCompile(modal_message, compile_command, function (data, terminalNeeded) {
 
             if (client_use_type === 'ws') {
 
+                //Prep for new download messages
+                launcher_result = "";
+                launcher_download = false;
+                //Set dbug flag if needed
                 var dbug = 'none';
                 if (terminalNeeded === 'term' || terminalNeeded === 'graph') {
                     dbug = terminalNeeded;
                 }
-
                 var prog_to_send = {
                     type: 'load-prop',
                     action: load_action,
@@ -399,19 +403,58 @@ function loadInto(modal_message, compile_command, load_action) {
 
             } else {
 
-                $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
-                    $("#compile-console").val($("#compile-console").val() + loaddata.message);
+                if (client_version >= minCodedVer) {
+                    //Request load with options from BlocklyProp Client
+                    $.post(client_url + 'load.action', {option: load_option, action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                        //Replace response message's consecutive white space with a new-line, then split at new lines
+                        var message = loaddata.message.replace(/\s{2,}/g, '\n').split('\n');
+                        //If responses have codes, check for all success codes (< 100)
+                        var success = true;
+                        var coded = (load_option === "CODE" || load_option === "CODE_VERBOSE");
+                        if (coded) {
+                            message.forEach(function(x){success = success && x.substr(0,3) < 100});
+                        }
+                        //Display results
+                        var result = '';
+                        if (success && coded) {
+                            //Success! Keep it simple
+                            result = ' Succeeded.';
+                        } else {
+                            //Failed (or not coded); Show the details
+                            var error = [];
+                            message.forEach(function(x){error.push(x.substr((coded) ? 4 : 0))});
+                            result = ((coded) ? ' Failed!' : "") + '\n\n-------- loader messages --------\n' + error.join('\n');
+                        }
 
-                    // Scoll automatically to the bottom after new data is added
-                    document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+                        $("#compile-console").val($("#compile-console").val() + result);
 
-                    console.log(loaddata);
-                    if (terminalNeeded === 'term' && loaddata.success) {
-                        serial_console();
-                    } else if (terminalNeeded === 'graph' && loaddata.success) {
-                        graphing_console();
-                    }
-                });
+                        // Scoll automatically to the bottom after new data is added
+                        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+
+                        //console.log(loaddata);
+                        if (terminalNeeded === 'term' && loaddata.success) {
+                            serial_console();
+                        } else if (terminalNeeded === 'graph' && loaddata.success) {
+                            graphing_console();
+                        }
+                    });
+                } else {
+                    //todo - Remove this once client_min_version (and thus minVer) is >= minCodedVer
+                    //Request load without options from old BlocklyProp Client
+                    $.post(client_url + 'load.action', {action: load_action, binary: data.binary, extension: data.extension, "comport": getComPort()}, function (loaddata) {
+                        $("#compile-console").val($("#compile-console").val() + loaddata.message);
+
+                        // Scoll automatically to the bottom after new data is added
+                        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+
+                        //console.log(loaddata);
+                        if (terminalNeeded === 'term' && loaddata.success) {
+                            serial_console();
+                        } else if (terminalNeeded === 'graph' && loaddata.success) {
+                            graphing_console();
+                        }
+                    });
+                }
             }
         });
     } else if (client_available) {
@@ -474,13 +517,10 @@ function serial_console() {
                 updateTermBox(0);
             }
 
-            connection.onClose = function () {
+            $('#console-dialog').on('hidden.bs.modal', function () {
                 active_connection = null;
                 connString = '';
                 connStrYet = false;
-            };
-
-            $('#console-dialog').on('hidden.bs.modal', function () {
                 connection.close();
                 if(document.getElementById('serial-conn-info')) {
                     document.getElementById('serial-conn-info').innerHTML = '';
@@ -488,7 +528,6 @@ function serial_console() {
                 updateTermBox(0);
                 term_been_scrolled = false;
                 term = null;
-                active_connection = null;
             });
         } else {
             active_connection = 'simulated';
@@ -512,29 +551,21 @@ function serial_console() {
             portPath: getComPort()
         };
 
-        newTerminal = true;
-
         var msg_to_send = {
             type: 'serial-terminal',
             outTo: 'terminal',
             portPath: getComPort(),
             baudrate: baudrate.toString(10),
             msg: 'none',
-            action: 'msg'
+            action: 'open'
         };
 
-        if (newTerminal === true) {
-            //term.open(document.getElementById("serial_console"));
-            msg_to_send.action = 'open';
-            active_connection = 'websocket';
-            if(document.getElementById('serial-conn-info')) {
-                document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
-                        msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
-            }
-            client_ws_connection.send(JSON.stringify(msg_to_send));
-        } else {
-            updateTermBox(0);
+        active_connection = 'websocket';
+        if(document.getElementById('serial-conn-info')) {
+            document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
+                    msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
         }
+        client_ws_connection.send(JSON.stringify(msg_to_send));
 
         $('#console-dialog').on('hidden.bs.modal', function () {
             if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
@@ -546,7 +577,6 @@ function serial_console() {
                 client_ws_connection.send(JSON.stringify(msg_to_send));
             }
             term_been_scrolled = false;
-            newTerminal = false;
             updateTermBox(0);
         });
     }
@@ -593,7 +623,6 @@ function graphing_console() {
             graph_reset();
             graph_temp_string = '';
             graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
-            newGraph = true;
         } else {
             graph.update(graph_data, graph_options);
         }
@@ -610,7 +639,9 @@ function graphing_console() {
                 } else {
                     connection.send('+++ open port ' + getComPort());
                 }
-
+                
+            graphStartStop('start');
+            
             };
             // Log errors
             connection.onerror = function (error) {
@@ -620,26 +651,30 @@ function graphing_console() {
                 //connection = new WebSocket(url);
             };
 
-            // Log messages from the server
             connection.onmessage = function (e) {
-                graph_new_data(e.data);
-            };
-
-            if (newGraph || graph !== null) {
-                graph_new_labels();
-                graph_interval_id = setInterval(function () {
-                    graph.update(graph_data);
-                    graph_update_labels();
-                }, graph_options.refreshRate);
-            }
-
-            connection.onClose = function () {
-                graph_reset();
+                var c_buf = (client_version >= minEnc64Ver) ? atob(e.data) : e.data;
+                if (connStrYet) {
+                    graph_new_data(c_buf);
+                } else {
+                    connString += c_buf;
+                    if (connString.indexOf(baudrate.toString(10)) > -1) {
+                        connStrYet = true;
+                        if(document.getElementById('graph-conn-info')) {
+                            document.getElementById('graph-conn-info').innerHTML = connString.trim();
+                            // send remainder of string to terminal???  Haven't seen any leak through yet...
+                        }
+                    } else {
+                        graph_new_data(c_buf);
+                    }
+                }
             };
 
             $('#graphing-dialog').on('hidden.bs.modal', function () {
                 connection.close();
-                graph_reset();
+                graphStartStop('stop');
+                connString = '';
+                connStrYet = false;
+                document.getElementById('graph-conn-info').innerHTML = '';
             });
 
         } else if (client_use_type === 'ws' && ports_available) {
@@ -649,26 +684,29 @@ function graphing_console() {
                 portPath: getComPort(),
                 baudrate: baudrate.toString(10),
                 msg: 'none',
-                action: 'msg'
+                action: 'open'
             };
 
-            if (newGraph || graph !== null) {
-                graph_new_labels();
-                graph_interval_id = setInterval(function () {
-                    graph.update(graph_data);
-                    graph_update_labels();
-                }, graph_options.refreshRate);
-                msg_to_send.action = 'open';
-                client_ws_connection.send(JSON.stringify(msg_to_send));
+            if(document.getElementById('graph-conn-info')) {
+                document.getElementById('graph-conn-info').innerHTML = 'Connection established with ' +
+                        msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
+            }
+            
+            client_ws_connection.send(JSON.stringify(msg_to_send));
+            
+            if (!graph_interval_id) {
+                graphStartStop('start');
             }
 
             $('#graphing-dialog').on('hidden.bs.modal', function () {
+                graphStartStop('stop');
                 if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
                     msg_to_send.action = 'close';
+                    if(document.getElementById('graph-conn-info')) {
+                        document.getElementById('graph-conn-info').innerHTML = '';
+                    }
                     client_ws_connection.send(JSON.stringify(msg_to_send));
-                    //console.log('closing: ' + JSON.stringify(msg_to_send));
-                }
-                graph_reset();
+                }  
             });
 
         } else {
@@ -684,11 +722,50 @@ function graphing_console() {
     }
 }
 
+var graphStartStop = function(action) {
+    if (action === 'start' || action === 'play') {
+        graph_new_labels();
+        if (graph_interval_id) {
+            clearInterval(graph_interval_id);            
+        }
+        graph_interval_id = setInterval(function () {
+            graph.update(graph_data);
+            graph_update_labels();
+        }, graph_options.refreshRate);        
+    } else if (action === 'stop' || action === 'pause') {
+        clearInterval(graph_interval_id);
+        graph_interval_id = null;
+    } 
+    if (action === 'stop') {
+        graph_paused = false;
+        graph_reset();        
+        graph_play('play');        
+    }
+    if (action === 'clear') {
+        graph_reset();                
+    }
+    if (action === 'play') {
+        console.log(graph_data.series[0].length);
+        if (graph_data.series[0].length === 0) {
+            graph_reset();
+        }
+        graph_paused = false;
+        graph_start_playing = true;
+    } 
+    if (action === 'pause' && graph_temp_data.slice(-1)[0]) {
+        graph_paused = true;
+        graph_temp_string = '';
+        graph_timestamp_start = 0;
+        graph_time_multiplier = 0;
+        graph_timestamp_restart = graph_temp_data.slice(-1)[0][0];
+    }
+};
+
 var check_com_ports = function () {
     if (client_use_type !== 'ws') {
         if (client_url !== undefined) {
             if (client_version >= minVer) {
-                // Client is >= minimum base64-encoded version
+                // Client is >= minimum supported version
                 $.get(client_url + "ports.json", function (data) {
                     set_port_list(data);
                 }).fail(function () {
@@ -704,11 +781,11 @@ var check_com_ports = function () {
 
 // set communication port list
 //   leave data unspecified when searching
-set_port_list = function (data) {
-    data = (data ? data : data = 'searching');
+var set_port_list = function (data) {
+    data = (data ? data : 'searching');
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
-    if (typeof(data) === 'object') {
+    if (typeof(data) === 'object' && data.length) {
         data.forEach(function (port) {
             $("#comPort").append($('<option>', {
                 text: port
@@ -789,29 +866,39 @@ function graph_new_data(stream) {
 
     // Check for a failed connection:
     if (stream.indexOf('ailed') > -1) {
-        $("#serial_graphing").html(stream);
+        $("#graph-conn-info").html(stream);
 
     } else {
         for (k = 0; k < stream.length; k++) {
             if (stream[k] === '\n')
                 stream[k] = '\r';
             if (stream[k] === '\r' && graph_data_ready) {
-                graph_temp_data.push(graph_temp_string.split(','));
-                var row = graph_temp_data.length - 1;
-                var ts = Number(graph_temp_data[row][0]) || 0;
-                ts = ts / 1220.703125; // convert to seconds - Propeller system clock left shifted by 16;
-                if (!graph_timestamp_start)
+                if (!graph_paused) {
+                    graph_temp_data.push(graph_temp_string.split(','));
+                    var row = graph_temp_data.length - 1;
+                    var ts = Number(graph_temp_data[row][0]) || 0;
+
+                    // convert to seconds:
+                    // Uses Propeller system clock (CNT) left shifted by 16.
+                    // Assumes 80MHz clock frequency.
+                    ts = ts / 1220.703125; 
+                }
+                if (!graph_timestamp_start || graph_timestamp_start === 0) {
                     graph_timestamp_start = ts;
-                if (row > 0) {
+                    if (graph_start_playing) {
+                        graph_timestamp_start -= graph_timestamp_restart;
+                        graph_timestamp_restart = 0;
+                    }
+                }
+                if (row > 0 && !graph_start_playing) {
                     if (parseFloat(graph_temp_data[row][0]) < parseFloat(graph_temp_data[row - 1][1])) {
                         graph_time_multiplier += fullCycleTime;
                     }
                 }
-                if (graph_paused) {
-                    graph_timestamp_restart = ts + graph_time_multiplier - graph_timestamp_start;
-                } else {
+                graph_start_playing = false;
+                if (!graph_paused) {
                     graph_temp_data[row].unshift(ts + graph_time_multiplier -
-                            graph_timestamp_start + graph_timestamp_restart);
+                            graph_timestamp_start);
                     var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
                     for (var j = 2; j < graph_temp_data[row].length; j++) {
                         graph_csv_temp += graph_temp_data[row][j] + ',';
@@ -819,12 +906,12 @@ function graph_new_data(stream) {
                             x: graph_temp_data[row][0],
                             y: graph_temp_data[row][j] || null
                         });
-                        if (graph_temp_data[row][0] > graph_options.sampleTotal)
+                        if (graph_temp_data[row][0] > graph_options.sampleTotal)                         
                             graph_data.series[j - 2].shift();
                     }
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
 
-                    // limits total number of data point collected to prevent memory issues
+                    // limits total number of data points collected to prevent memory issues
                     if (graph_csv_data.length > 15000) {
                         graph_csv_data.shift();
                     }
@@ -832,11 +919,15 @@ function graph_new_data(stream) {
 
                 graph_temp_string = '';
             } else {
-                if (!graph_data_ready) {          // wait for a full set of data to
-                    if (stream[k] === '\r')       // come in before graphing, ends up
-                        graph_data_ready = true;  // tossing the first point but prevents
-                } else {                          // garbage from mucking up the graph.
-                    graph_temp_string += stream[k];
+                if (!graph_data_ready) {            // wait for a full set of data to
+                    if (stream[k] === '\r')  {      // come in before graphing, ends up
+                        graph_data_ready = true;    // tossing the first point but prevents
+                    }                               // garbage from mucking up the graph.
+                } else { 
+                    // make sure it's a number, comma, CR, or LF
+                    if ('0123456789.,\r\n'.indexOf(stream[k]) > -1) {
+                        graph_temp_string += stream[k];
+                    }
                 }
             }
         }
@@ -844,52 +935,34 @@ function graph_new_data(stream) {
 }
 
 function graph_reset() {
-    clearInterval(graph_interval_id);
-    if (graph) {
-        graph.detach();
+    graph_temp_data.length = 0;
+    graph_csv_data.length = 0;
+    for (var k = 0; k < 10; k++) {
+        graph_data.series[k] = [];
     }
-    $("#serial_graphing").html('');
-
-    graph_interval_id = null;
-    graph_temp_data = null;
-    graph_temp_data = new Array;
-    graph_csv_data = null;
-    graph_csv_data = new Array;
-    graph_data = null;
-    graph_data = {
-        series: [// add more here for more possible lines...
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            []
-        ]
-    };
+    if (graph) {
+        graph.update(graph_data, graph_options, true);
+    }
     graph_temp_string = '';
-    graph_timestamp_start = null;
+    graph_timestamp_start = 0;
+    graph_time_multiplier = 0;
+    graph_timestamp_restart = 0;
     graph_data_ready = false;
 }
 
-function graph_redraw() {
-    graph.update(graph_data);
-}
-
-function graph_play() {
+function graph_play(setTo) {
     if(document.getElementById('btn-graph-play')) {
         var play_state = document.getElementById('btn-graph-play').innerHTML;
-        if (play_state.indexOf('pause') > -1) {
-            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-            clearInterval(graph_interval_id);
+        if (setTo !== 'play' && (play_state.indexOf('pause') > -1 || play_state.indexOf('<!--p') === -1)) {
+            document.getElementById('btn-graph-play').innerHTML = '<!--play--><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            if (!setTo) {
+                graphStartStop('pause');
+            }
         } else {
-            document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
-            graph_interval_id = setInterval(function () {
-                graph.update(graph_data);
-            }, graph_options.refreshRate);
+            document.getElementById('btn-graph-play').innerHTML = '<!--pause--><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
+            if (!graph_interval_id && !setTo) {
+                graphStartStop('play');
+            }
         }
     }
 }
@@ -987,7 +1060,10 @@ function graph_update_labels() {
     if (graph_temp_data[row]) {
         var col = graph_temp_data[row].length;
         for (var w = 2; w < col; w++) {
-            document.getElementById('gValue' + (w - 1).toString(10)).textContent = graph_temp_data[row][w];
+            var theLabel = document.getElementById('gValue' + (w - 1).toString(10));
+            if (theLabel) {
+                theLabel.textContent = graph_temp_data[row][w];
+            }
         }
     }
 }
