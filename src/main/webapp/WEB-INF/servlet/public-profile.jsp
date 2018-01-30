@@ -72,8 +72,10 @@
                                         "activity-board": "icon-board-ab",
                                         "s3": "icon-board-s3",
                                         "heb": "icon-board-heb",
+                                        "heb-wx": "icon-board-heb-wx",
                                         "flip": "icon-board-flip",
-                                        "other": "icon-board-other"
+                                        "other": "icon-board-other",
+                                        "propcfile": "icon-board-propc"
                                     };
 
                                     var page = 0;
