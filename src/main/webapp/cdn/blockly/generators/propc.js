@@ -155,7 +155,16 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 11,
-        saves_to: [["Hackable Electronic Badge", "heb"]]
+        saves_to: [["Hackable Electronic Badge", "heb"], ["Hackable Electronic Badge WX", "heb-wx"]]
+    },
+    "heb-wx": {
+        description: "Hackable Electronic Badge WX",
+        digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"]],
+        analog: [],
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 11,
+        saves_to: [["Hackable Electronic Badge", "heb"], ["Hackable Electronic Badge", "heb-wx"]]
     },
     "flip": {
         description: "Propeller FLiP or Project Board",

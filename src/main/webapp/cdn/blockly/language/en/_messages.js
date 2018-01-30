@@ -886,6 +886,7 @@ page_text_label['project_board'] = "Board Type";
 page_text_label['project_board_activity-board'] = "Propeller Activity Board WX";
 page_text_label['project_board_flip'] = "Propeller FLiP or Project Board";
 page_text_label['project_board_heb'] = "Hackable Electronic Badge";
+page_text_label['project_board_heb-wx'] = "Hackable Electronic Badge WX";
 page_text_label['project_board_other'] = "Other Propeller Board";
 page_text_label['project_board_propcfile'] = "Propeller C (code-only)";
 page_text_label['project_board_s3'] = "Scribbler Robot";

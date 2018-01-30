@@ -147,6 +147,7 @@ var showInfo = function (data) {
         "activity-board": "images/board-icons/IconActivityBoard.png",
         "s3": "images/board-icons/IconS3.png",
         "heb": "images/board-icons/IconBadge.png",
+        "heb-wx": "images/board-icons/IconBadgeWX.png",
         "flip": "images/board-icons/IconFlip.png",
         "other": "images/board-icons/IconOtherBoards.png",
         "propcfile": "images/board-icons/IconC.png"
@@ -250,49 +251,52 @@ var saveProject = function () {
 
 var saveAsDialog = function () {
     
-    // Old function - still in use because save-as+board type is not approved for use.
-    utils.prompt("Save project as", projectData['name'], function (value) {
-        if (value) {
-            var code = getXml();
-            projectData['code'] = code;
-            projectData['name'] = value;
-            $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
-                var previousOwner = projectData['yours'];
-                projectData = data;
-                projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-                utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
-                // Reloading project with new id
-                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
-            });
-        }
-    });
-    
-    /*
-    // Prompt user to save current project first if unsaved
-    if (checkLeave() && projectData['yours']) {
-        utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
+    // Hide the board-as save option behind the experiemental tag
+    if (inDemo !== 'demo') {
+        
+        // Old function - still in use because save-as+board type is not approved for use.
+        utils.prompt("Save project as", projectData['name'], function (value) {
             if (value) {
-                saveProject();
+                var code = getXml();
+                projectData['code'] = code;
+                projectData['name'] = value;
+                $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
+                    var previousOwner = projectData['yours'];
+                    projectData = data;
+                    projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                    utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
+                    // Reloading project with new id
+                    window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+                });
             }
-        }, 'Yes', 'No');
+        });
+
+    } else {
+        
+        // Prompt user to save current project first if unsaved
+        if (checkLeave() && projectData['yours']) {
+            utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
+                if (value) {
+                    saveProject();
+                }
+            }, 'Yes', 'No');
+        }
+
+        // Reset the save-as modal's fields
+        $('#save-as-project-name').val(projectData['name']);
+        $("#save-as-board-type").empty();
+        profile.default.saves_to.forEach(function (bt) {
+            $("#save-as-board-type").append($('<option />').val(bt[1]).text(bt[0]));
+        });
+
+        // Until release to production, make sure we are on demo before displaying the propc option
+        if (inDemo === 'demo') {
+            $("#save-as-board-type").append($('<option />').val('propcfile').text('Propeller C (code-only)'));
+        }
+
+        // Open modal
+        $('#save-as-type-dialog').modal('show');   
     }
-     
-    // Reset the save-as modal's fields
-    $('#save-as-project-name').val(projectData['name']);
-    $("#save-as-board-type").empty();
-    profile.default.saves_to.forEach(function (bt) {
-        $("#save-as-board-type").append($('<option />').val(bt[1]).text(bt[0]));
-    });
-    
-    // Until release to production, make sure we are on demo before displaying the propc option
-    if (inDemo === 'demo') {
-        $("#save-as-board-type").append($('<option />').val('propcfile').text('Propeller C (code-only)'));
-    }
-    
-    // Open modal
-    $('#save-as-type-dialog').modal('show');   
-    
-    */
 };
 
 var checkBoardType = function () {
