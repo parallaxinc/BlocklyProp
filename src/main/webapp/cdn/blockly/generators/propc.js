@@ -212,8 +212,17 @@ Blockly.propc.init = function (workspace) {
 // Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
-    if (profile.default.description === "Scribbler Robot")
+    
+    if (profile.default.description === "Scribbler Robot") {
         Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
+    } else if (profile.default.description === "Hackable Electronic Badge") {
+        Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+        Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+    } else if (profile.default.description === "Hackable Electronic Badge WX") {
+        Blockly.propc.definitions_["badgetools"] = '#include "badgewxtools.h"';
+        Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+    }
+    
     Blockly.propc.methods_ = {};
     Blockly.propc.method_declarations_ = {};
     // Create a dictionary of setups to be printed before the code.
