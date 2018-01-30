@@ -59,6 +59,13 @@ body {
     line-height: 22px;
 }
 
+.icon-board-heb-wx.editor-icon {
+    background-image: url('images/board-icons/IconBadgeWX.png');
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    line-height: 22px;
+}
+
 .icon-board-other.editor-icon {
     background-image: url('images/board-icons/IconOtherBoards.png');
     background-repeat: no-repeat;
