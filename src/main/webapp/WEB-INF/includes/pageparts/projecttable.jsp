@@ -32,6 +32,7 @@
         "activity-board": "<url:getCdnUrl url="/images/board-icons/IconActivityBoard.png" />",
         "s3": "<url:getCdnUrl url="/images/board-icons/IconS3.png" />",
         "heb": "<url:getCdnUrl url="/images/board-icons/IconBadge.png" />",
+        "heb-wx": "<url:getCdnUrl url="/images/board-icons/IconBadgeWX.png" />",
         "flip": "<url:getCdnUrl url="/images/board-icons/IconFlip.png" />",
         "propcfile": "<url:getCdnUrl url="/images/board-icons/IconC.png" />",
         "other": "<url:getCdnUrl url="/images/board-icons/IconOtherBoards.png" />"
@@ -65,7 +66,9 @@
         "activity-board": "<fmt:message key="project.board.activity-board" />",
         "s3": "<fmt:message key="project.board.s3" />",
         "heb": "<fmt:message key="project.board.heb" />",
+        "heb-wx": "<fmt:message key="project.board.heb-wx" />",
         "flip": "<fmt:message key="project.board.flip" />",
+        "propcfile": "<fmt:message key="project.board.propcfile" />",
         "other": "<fmt:message key="project.board.other" />"
     };
 
