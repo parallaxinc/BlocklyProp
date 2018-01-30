@@ -147,6 +147,7 @@ var showInfo = function (data) {
         "activity-board": "images/board-icons/IconActivityBoard.png",
         "s3": "images/board-icons/IconS3.png",
         "heb": "images/board-icons/IconBadge.png",
+        "heb-wx": "images/board-icons/IconBadgeWX.png",
         "flip": "images/board-icons/IconFlip.png",
         "other": "images/board-icons/IconOtherBoards.png",
         "propcfile": "images/board-icons/IconC.png"
