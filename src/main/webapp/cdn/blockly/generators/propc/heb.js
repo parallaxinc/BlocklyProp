@@ -46,9 +46,6 @@ Blockly.propc.heb_toggle_led = function () {
     var led_number = this.getFieldValue("LED_#");
     var led_state = this.getFieldValue("STATE");
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
     var code = 'led(' + led_number + ', ' + led_state + ');\n';
     return code;
 };
@@ -72,9 +69,6 @@ Blockly.Blocks.heb_toggle_led_open = {
 Blockly.propc.heb_toggle_led_open = function () {
     var led_number = Blockly.propc.valueToCode(this, "LED_NUM", Blockly.propc.ORDER_NONE);
     var led_state = Blockly.propc.valueToCode(this, "LED_STATE", Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'led(' + led_number + ', ' + led_state + ');\n';
     return code;
@@ -124,9 +118,6 @@ Blockly.propc.heb_set_led_rgb = function () {
         both_leds = 's';
     }
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
     var code = 'rgb' + both_leds + '(' + led_side + ', ' + led_rgb + ');\n';
     return code;
 };
@@ -144,10 +135,6 @@ Blockly.Blocks.heb_print_numeric_var = {
 
 Blockly.propc.heb_print_numeric_var = function () {
     var value = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
 
     if (value.startsWith('"') && value.endsWith('"')) {
         return 'oledprint(' + value + ');\n';
@@ -171,10 +158,6 @@ Blockly.Blocks.heb_print_string_var = {
 Blockly.propc.heb_print_string_var = function () {
     var value = Blockly.propc.valueToCode(this, "VALUE", Blockly.propc.ORDER_NONE);
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-
     return 'oledprint(' + value + ');\n';
 };
 
@@ -192,9 +175,6 @@ Blockly.Blocks.heb_cursor_position_large = {
 
 Blockly.propc.heb_cursor_position_large = function () {
     var size = this.getFieldValue("SIZE");
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'text_size(' + size + ');\n';
     return code;
@@ -218,9 +198,6 @@ Blockly.Blocks.heb_cursor_position_small = {
 Blockly.propc.heb_cursor_position_small = function () {
     var columns = Blockly.propc.valueToCode(this, "COLS", Blockly.propc.ORDER_NONE);
     var rows = Blockly.propc.valueToCode(this, "ROWS", Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'cursor(' + columns + ', ' + rows + ');\n';
     return code;
@@ -255,9 +232,6 @@ Blockly.propc.heb_oled_point = function () {
         c = '0';
     else
         c = '1';
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'point(' + x + ', ' + y + ', ' + c + ');\n';
     return code;
@@ -304,9 +278,6 @@ Blockly.propc.heb_oled_line = function () {
         c = '0';
     else
         c = '1';
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'line(' + x0 + ', ' + y0 + ', ' + x1 + ', ' + y1 + ', ' + c + ');\n';
     return code;
@@ -357,9 +328,6 @@ Blockly.propc.heb_oled_circle = function () {
         f = 'Filled';
     else
         f = '';
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'circle' + f + '(' + x + ', ' + y + ', ' + r + ', ' + c + ');\n';
     return code;
@@ -415,9 +383,6 @@ Blockly.propc.heb_oled_box = function () {
         f = 'Filled';
     else
         f = '';
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'box' + f + '(' + x0 + ', ' + y0 + ', (' + x0 + '+' + w + '-1),';
     code += '(' + y0 + '+' + h + '-1), ' + c + ');\n';
@@ -485,9 +450,6 @@ Blockly.propc.heb_oled_triangle = function () {
     else
         f = '';
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
     var code = 'triangle' + f + '(' + x0 + ', ' + y0 + ', ' + x1 + ', ';
     code += y1 + ', ' + x2 + ', ' + y2 + ', ' + c + ');\n';
     return code;
@@ -505,11 +467,7 @@ Blockly.Blocks.heb_clear_screen = {
 };
 
 Blockly.propc.heb_clear_screen = function () {
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'clear();\n';
-    return code;
+    return 'clear();\n';
 };
 
 Blockly.Blocks.heb_rotate = {
@@ -524,9 +482,6 @@ Blockly.Blocks.heb_rotate = {
 };
 
 Blockly.propc.heb_rotate = function () {
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
     var code = 'rotate180();\n';
     return code;
 };
@@ -545,9 +500,6 @@ Blockly.Blocks.heb_ir_send_signal = {
 
 Blockly.propc.heb_ir_send_signal = function () {
     var message = Blockly.propc.valueToCode(this, "MESSAGE", Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     var code = 'send(' + message + ');\n';
     return code;
@@ -580,8 +532,6 @@ Blockly.propc.heb_ir_read_signal = function () {
     var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
     var len = Blockly.propc.variableDB_.getName(this.getFieldValue('LENGTH'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
     Blockly.propc.vartype_[buffer] = 'char';
     Blockly.propc.varlength_[buffer] = 128;
 
@@ -602,11 +552,7 @@ Blockly.Blocks.heb_ir_clear_buffer = {
 };
 
 Blockly.propc.heb_ir_clear_buffer = function () {
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'irclear();\n';
-    return code;
+    return 'irclear();\n';
 };
 
 Blockly.Blocks.heb_badge_eeprom_store = {
@@ -623,18 +569,14 @@ Blockly.Blocks.heb_badge_eeprom_store = {
 Blockly.propc.heb_badge_eeprom_store = function () {
     var contact = Blockly.propc.valueToCode(this, "CONTACT", Blockly.propc.ORDER_NONE);
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'store(new char[]{"' + contact + '"});\n';
-    return code;
+    return 'store(new char[]{"' + contact + '"});\n';
 };
 
 Blockly.Blocks.heb_badge_eeprom_is_stored = {
     init: function () {
         this.setColour(colorPalette.getColor('input'));
         this.appendValueInput('CONTACT')
-                .setCheck('String')
+                .setCheck('Number')
                 .appendField("EEPROM contact");
         this.appendDummyInput()
                 .appendField("already stored");
@@ -648,11 +590,7 @@ Blockly.Blocks.heb_badge_eeprom_is_stored = {
 Blockly.propc.heb_badge_eeprom_is_stored = function () {
     var contact = Blockly.propc.valueToCode(this, "CONTACT", Blockly.propc.ORDER_NONE);
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'stored(new char[]{"' + contact + '"})';
-    return [code, Blockly.propc.ORDER_ATOMIC];
+    return ['stored(new char[]{"' + contact + '"})', Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.Blocks.heb_badge_eeprom_retrieve = {
@@ -690,11 +628,7 @@ Blockly.propc.heb_badge_eeprom_retrieve = function () {
     Blockly.propc.methods_["constrain_function"] = setup_code;
     Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
 
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'retrieve(' + buffer + ', constrain(' + index + ', 0, contacts_count() - 1));\n';
-    return code;
+    return 'retrieve(' + buffer + ', constrain(' + index + ', 0, contacts_count() - 1));\n';
 };
 
 Blockly.Blocks.heb_count_contacts = {
@@ -709,11 +643,7 @@ Blockly.Blocks.heb_count_contacts = {
 };
 
 Blockly.propc.heb_count_contacts = function () {
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'contacts_count()';
-    return [code, Blockly.propc.ORDER_NONE];
+    return ['contacts_count()', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.heb_erase_all_contacts = {
@@ -727,11 +657,7 @@ Blockly.Blocks.heb_erase_all_contacts = {
 };
 
 Blockly.propc.heb_erase_all_contacts = function () {
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'contacts_eraseAll();\n';
-    return code;
+    return 'contacts_eraseAll();\n';
 };
 
 Blockly.Blocks.heb_badge_axis_acceleration = {
@@ -739,7 +665,7 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("Accelerometer get")
-                .appendField(new Blockly.FieldDropdown([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
+                .appendField(new Blockly.Field([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
@@ -747,13 +673,7 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
 };
 
 Blockly.propc.heb_badge_axis_acceleration = function () {
-    var axis = this.getFieldValue("AXIS");
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'accel(' + axis + ')';
-    return [code, Blockly.propc.ORDER_NONE];
+    return ['accel(' + this.getFieldValue("AXIS") + ')', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.heb_badge_was_shaken = {
@@ -768,11 +688,7 @@ Blockly.Blocks.heb_badge_was_shaken = {
 };
 
 Blockly.propc.heb_badge_was_shaken = function () {
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = 'accel_shaken()';
-    return [code, Blockly.propc.ORDER_NONE];
+    return ['accel_shaken()', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.heb_touchpad_status = {
@@ -790,17 +706,7 @@ Blockly.Blocks.heb_touchpad_status = {
 
 Blockly.propc.heb_touchpad_status = function () {
     var touchpad = this.getFieldValue("TOUCHPAD");
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-
-    var code = '';
-    if (touchpad === "-1") {
-        code += 'buttons()';
-    } else {
-        code += 'button(' + touchpad + ')';
-    }
-    return [code, Blockly.propc.ORDER_NONE];
+    return ['button(' + (touchpad === '-1' ? '' : touchpad) + ')', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.heb_text_to_speech_say = {
@@ -816,9 +722,6 @@ Blockly.Blocks.heb_text_to_speech_say = {
 
 Blockly.propc.heb_text_to_speech_say = function () {
     var str = Blockly.propc.valueToCode(this, "STRING", Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     Blockly.propc.definitions_["TTS"] = '#include "text2speech.h"';
     Blockly.propc.global_vars_["TTS"] = 'talk *tts_talk;';
@@ -841,9 +744,6 @@ Blockly.Blocks.heb_text_to_speech_spell = {
 
 Blockly.propc.heb_text_to_speech_spell = function () {
     var str = Blockly.propc.valueToCode(this, "STRING", Blockly.propc.ORDER_NONE);
-
-    Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
-    Blockly.propc.setups_["badgetools"] = 'badge_setup();';
 
     Blockly.propc.definitions_["TTS"] = '#include "text2speech.h"';
     Blockly.propc.global_vars_["TTS"] = 'talk *tts_talk;';
