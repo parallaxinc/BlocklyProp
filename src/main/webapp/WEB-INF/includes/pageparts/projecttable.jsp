@@ -33,6 +33,7 @@
         "s3": "<url:getCdnUrl url="/images/board-icons/IconS3.png" />",
         "heb": "<url:getCdnUrl url="/images/board-icons/IconBadge.png" />",
         "flip": "<url:getCdnUrl url="/images/board-icons/IconFlip.png" />",
+        "propcfile": "<url:getCdnUrl url="/images/board-icons/IconC.png" />",
         "other": "<url:getCdnUrl url="/images/board-icons/IconOtherBoards.png" />"
     };
 
