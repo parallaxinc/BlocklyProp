@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+    The com.parallax.server.blocklyprop.config package reads this file to
+    determine the name of the application configuration file.
+-->
 <configuration>
-  <properties fileName="blocklyprop.properties" config-name="applicationConfig" config-optional="true" config-forceCreate="true"/>
-  <properties fileName="application.properties"/>
+  <properties 
+      fileName="blocklyprop.properties" 
+      config-name="applicationConfig" 
+      config-optional="true" 
+      config-forceCreate="true"/>
+  
+  <properties 
+      fileName="application.properties"/>
 </configuration>

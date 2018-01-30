@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
+
 import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
 import com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
