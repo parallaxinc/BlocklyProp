@@ -3111,21 +3111,28 @@ Blockly.Blocks.ws2812b_init = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_INIT_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("RGB-LED initialize PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
-                    this.sourceBlock_.onPinSet(myPin);
-                }), "PIN")
-                .appendField("number of LEDs")
-                .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM")
-                .appendField("type")
-                .appendField(new Blockly.FieldDropdown([["WS2812", "WS2812"]]), "TYPE");
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.rgbPin = this.getFieldValue('PIN');
-        this.onPinSet();
+        if (projectData && projectData['board'] === 'heb-wx') {
+            this.setColour(colorPalette.getColor('functions'));
+            this.appendDummyInput()
+                    .appendField("RGB-LED set number of LEDs")
+                    .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM");
+        } else {
+            this.setColour(colorPalette.getColor('protocols'));
+            this.appendDummyInput()
+                    .appendField("RGB-LED initialize PIN")
+                    .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
+                        this.sourceBlock_.onPinSet(myPin);
+                    }), "PIN")
+                    .appendField("number of LEDs")
+                    .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM")
+                    .appendField("type")
+                    .appendField(new Blockly.FieldDropdown([["WS2812", "WS2812"]]), "TYPE");
+            this.rgbPin = this.getFieldValue('PIN');
+            this.onPinSet();
+        }
     },
     onchange: function (event) {
         this.rgbPin = this.getFieldValue('PIN');
@@ -3154,8 +3161,11 @@ Blockly.Blocks.ws2812b_init = {
 
 Blockly.propc.ws2812b_init = function () {
     if (!this.disabled) {
-        var pin = this.getFieldValue('PIN');
-        var num = window.parseInt(this.getFieldValue('LEDNUM'));
+        var pin = '';
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            pin = this.getFieldValue('PIN');
+        }
+        var num = window.parseInt(this.getFieldValue('LEDNUM')) || '4';
 
         if (num < 1)
             num = 1;
@@ -3163,7 +3173,11 @@ Blockly.propc.ws2812b_init = function () {
             num = 1500;
 
         Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
-        Blockly.propc.definitions_["ws2812b_sets" + pin] = '#define LED_PIN' + pin + '   ' + pin + '\n#define LED_COUNT' + pin + '   ' + num;
+        Blockly.propc.definitions_["ws2812b_sets" + pin] = '';
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            Blockly.propc.definitions_["ws2812b_sets" + pin] += '#define RGB_PIN' + pin + '   ' + pin;
+        }
+        Blockly.propc.definitions_["ws2812b_sets" + pin] += '\n#define RGB_COUNT' + pin + '   ' + num;
         Blockly.propc.global_vars_["ws2812b_array" + pin] = 'ws2812 *ws2812b' + pin + ';\nint RGBleds' + pin + '[' + num + '];\n';
         Blockly.propc.setups_["ws2812b_init" + pin] = 'ws2812b' + pin + ' = ws2812b_open();\n';
     }
@@ -3174,7 +3188,7 @@ Blockly.Blocks.ws2812b_set = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_SET_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
+
         this.appendValueInput("LED")
                 .setCheck("Number")
                 .appendField("RGB-LED set LED number");
@@ -3187,7 +3201,12 @@ Blockly.Blocks.ws2812b_set = {
         this.setWarningText(null);
         this.rgb_pins = [];
         this.warnFlag = 0;
-        this.rgbPins();
+        if (projectData && projectData['board'] === 'heb-wx') {
+            this.setColour(colorPalette.getColor('functions'));
+        } else {
+            this.setColour(colorPalette.getColor('protocols'));
+            this.rgbPins();
+        }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -3253,26 +3272,30 @@ Blockly.Blocks.ws2812b_set = {
         this.rgb_pins = uniq_fast(this.rgb_pins);
     },
     onchange: function (event) {
-        // only fire when a block got deleted or created, the RGB_PIN field was changed
-        if (event.oldXml || event.type === Blockly.Events.CREATE || (event.name === 'RGB_PIN' && event.blockId === this.id) || this.warnFlag > 0) {
-            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-            if (allBlocks.toString().indexOf('RGB-LED initialize') === -1)
-            {
-                this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
-            } else {
-                this.setWarningText(null);
-                this.warnFlag--;
-                if (this.getInput('RGBPIN')) {
-                    var allRGBpins = '';
-                    for (var x = 0; x < allBlocks.length; x++) {
-                        if (allBlocks[x].type === 'ws2812b_init') {
-                            allRGBpins += (allBlocks[x].rgbPin || allBlocks[x].getFieldValue('PIN')) + ',';
+        // Don't fire if BadgeWX
+        if (projectData && projectData['board'] !== 'heb-wx') {
+
+            // only fire when a block got deleted or created, the RGB_PIN field was changed
+            if (event.oldXml || event.type === Blockly.Events.CREATE || (event.name === 'RGB_PIN' && event.blockId === this.id) || this.warnFlag > 0) {
+                var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+                if (allBlocks.toString().indexOf('RGB-LED initialize') === -1)
+                {
+                    this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
+                } else {
+                    this.setWarningText(null);
+                    this.warnFlag--;
+                    if (this.getInput('RGBPIN')) {
+                        var allRGBpins = '';
+                        for (var x = 0; x < allBlocks.length; x++) {
+                            if (allBlocks[x].type === 'ws2812b_init') {
+                                allRGBpins += (allBlocks[x].rgbPin || allBlocks[x].getFieldValue('PIN')) + ',';
+                            }
                         }
-                    }
-                    if (allRGBpins.indexOf(this.getFieldValue('RGB_PIN')) === -1) {
-                        this.setWarningText('WARNING: You must use choose a new PIN for this block!');
-                        // let all changes through long enough to ensure this is set properly.
-                        this.warnFlag = allBlocks.length * 3;
+                        if (allRGBpins.indexOf(this.getFieldValue('RGB_PIN')) === -1) {
+                            this.setWarningText('WARNING: You must use choose a new PIN for this block!');
+                            // let all changes through long enough to ensure this is set properly.
+                            this.warnFlag = allBlocks.length * 3;
+                        }
                     }
                 }
             }
@@ -3281,11 +3304,19 @@ Blockly.Blocks.ws2812b_set = {
 };
 
 Blockly.propc.ws2812b_set = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
     this.updateRGBpin();
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('RGB-LED initialize') === -1)
-    {
-        return '// ERROR: RGB-LED is not initialized!\n';
+    
+    
+    if (allBlocks.toString().indexOf('RGB-LED initialize') === -1 ) {
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            return '// ERROR: RGB-LED is not initialized!\n';
+        } else if (!this.disabled) {
+            Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
+            Blockly.propc.definitions_["ws2812b_sets"] = '#define RGB_COUNT   4';
+            Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *ws2812b;\nint RGBleds[4];\n';
+            Blockly.propc.setups_["ws2812b_init"] = 'ws2812b = ws2812b_open();\n';
+        }
     } else {
         var led = Blockly.propc.valueToCode(this, 'LED', Blockly.propc.ORDER_NONE);
         var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
@@ -3298,13 +3329,17 @@ Blockly.propc.ws2812b_set = function () {
             Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
         }
         var p = '0';
-        if (this.rgb_pins.length > 0) {
-            p = this.rgb_pins[0][0];
+        if (projectData && projectData['board'] === 'heb-wx') {
+            p = '';
+        } else {
+            if (this.rgb_pins.length > 0) {
+                p = this.rgb_pins[0][0];
+            }
+            if (this.getInput('RGBPIN')) {
+                p = this.getFieldValue('RGB_PIN');
+            } 
         }
-        if (this.getInput('RGBPIN')) {
-            p = this.getFieldValue('RGB_PIN');
-        }
-        var code = 'RGBleds' + p + '[constrain(' + led + ', 1, LED_COUNT' + p + ') - 1] = ' + color + ';\n';
+        var code = 'RGBleds' + p + '[constrain(' + led + ', 1, RGB_COUNT' + p + ') - 1] = ' + color + ';\n';
         return code;
     }
 };
@@ -3313,7 +3348,6 @@ Blockly.Blocks.ws2812b_set_multiple = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_MULTIPLE_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("START")
                 .setCheck("Number")
                 .appendField("RGB-LED set LEDs from");
@@ -3328,7 +3362,12 @@ Blockly.Blocks.ws2812b_set_multiple = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.rgb_pins = [];
-        this.rgbPins();
+        if (projectData && projectData['board'] === 'heb-wx') {
+            this.setColour(colorPalette.getColor('functions'));
+        } else {
+            this.setColour(colorPalette.getColor('protocols'));
+            this.rgbPins();
+        }
     },
     mutationToDom: Blockly.Blocks['ws2812b_set'].mutationToDom,
     domToMutation: Blockly.Blocks['ws2812b_set'].domToMutation,
@@ -3342,17 +3381,28 @@ Blockly.propc.ws2812b_set_multiple = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('RGB-LED initialize') === -1)
     {
-        return '// ERROR: RGB-LED is not initialized!\n';
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            return '// ERROR: RGB-LED is not initialized!\n';
+        } else if (!this.disabled) {
+            Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
+            Blockly.propc.definitions_["ws2812b_sets"] = '#define RGB_COUNT   4';
+            Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *ws2812b;\nint RGBleds[4];\n';
+            Blockly.propc.setups_["ws2812b_init"] = 'ws2812b = ws2812b_open();\n';
+        }
     } else {
         var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE);
         var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE);
         var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
         var p = '0';
-        if (this.rgb_pins.length > 0) {
-            p = this.rgb_pins[0][0];
-        }
-        if (this.getInput('RGBPIN')) {
-            p = this.getFieldValue('RGB_PIN');
+        if (projectData && projectData['board'] === 'heb-wx') {
+            p = '';
+        } else {
+            if (this.rgb_pins.length > 0) {
+                p = this.rgb_pins[0][0];
+            }
+            if (this.getInput('RGBPIN')) {
+                p = this.getFieldValue('RGB_PIN');
+            } 
         }
         var code = '';
         if (!this.disabled) {
@@ -3363,7 +3413,7 @@ Blockly.propc.ws2812b_set_multiple = function () {
             Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
         }
         code += 'for(int __ldx = ' + start + '; __ldx <= ' + end + '; __ldx++) {';
-        code += 'RGBleds' + p + '[constrain(__ldx, 1, LED_COUNT' + p + ') - 1] = ' + color + ';}';
+        code += 'RGBleds' + p + '[constrain(__ldx, 1, RGB_COUNT' + p + ') - 1] = ' + color + ';}';
         return code;
     }
 };
@@ -3372,7 +3422,6 @@ Blockly.Blocks.ws2812b_update = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_UPDATE_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("RGB-LED update LEDs");
         this.setInputsInline(true);
@@ -3380,7 +3429,12 @@ Blockly.Blocks.ws2812b_update = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.rgb_pins = [];
-        this.rgbPins();
+        if (projectData && projectData['board'] === 'heb-wx') {
+            this.setColour(colorPalette.getColor('functions'));
+        } else {
+            this.setColour(colorPalette.getColor('protocols'));
+            this.rgbPins();
+        }
     },
     mutationToDom: Blockly.Blocks['ws2812b_set'].mutationToDom,
     domToMutation: Blockly.Blocks['ws2812b_set'].domToMutation,
@@ -3394,17 +3448,26 @@ Blockly.propc.ws2812b_update = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('RGB-LED initialize') === -1)
     {
-        return '// ERROR: RGB-LED is not initialized!\n';
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            return '// ERROR: RGB-LED is not initialized!\n';
+        } else if (!this.disabled) {
+            Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
+            Blockly.propc.definitions_["ws2812b_sets"] = '#define RGB_COUNT   4';
+            Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *ws2812b;\nint RGBleds[4];\n';
+            Blockly.propc.setups_["ws2812b_init"] = 'ws2812b = ws2812b_open();\n';
+        }
+    }
+    if (projectData && projectData['board'] === 'heb-wx') {
+        p = '';
     } else {
-        var p = '0';
         if (this.rgb_pins.length > 0) {
             p = this.rgb_pins[0][0];
         }
         if (this.getInput('RGBPIN')) {
             p = this.getFieldValue('RGB_PIN');
-        }
-        return 'ws2812_set(ws2812b' + p + ', LED_PIN' + p + ', RGBleds' + p + ', LED_COUNT' + p + ');\n';
+        } 
     }
+    return 'ws2812_set(ws2812b' + p + ', RGB_PIN' + p + ', RGBleds' + p + ', RGB_COUNT' + p + ');\n';
 };
 
 // --------------------- Simple WX Module --------------------------------------
