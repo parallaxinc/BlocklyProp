@@ -694,10 +694,36 @@ Blockly.propc.heb_badge_was_shaken = function () {
 Blockly.Blocks.heb_touchpad_status = {
     init: function () {
         this.setColour(colorPalette.getColor('io'));
-        this.appendDummyInput()
-                .appendField("Touchpad is")
-                .appendField(new Blockly.FieldDropdown([["0 - P27", "0"], ["1 - P26", "1"], ["2 - P25", "2"], ["3 - P15", "3"], ["4 - P16", "4"], ["5 - P17", "5"], ["6 - Center Button", "6"], ["Any button", "-1"]]), "TOUCHPAD")
-                .appendField("pressed?");
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            this.appendDummyInput()
+                    .appendField("Touchpad is")
+                    .appendField(new Blockly.FieldDropdown([
+                            ["0 - P27", "0"], 
+                            ["1 - P26", "1"], 
+                            ["2 - P25", "2"], 
+                            ["3 - P15", "3"], 
+                            ["4 - P16", "4"], 
+                            ["5 - P17", "5"], 
+                            ["6 - Center Button", "6"], 
+                            ["Any button", "-1"]
+                        ]), "TOUCHPAD")
+                    .appendField("pressed?");
+        } else {
+            this.appendDummyInput()
+                    .appendField("Button ")
+                    .appendField(new Blockly.FieldDropdown([
+                            ["B", "7"], 
+                            ["Left \u21E6", "6"], 
+                            ["Left \u21E9", "5"], 
+                            ["Left \u21E8", "4"], 
+                            ["Right \u21E6", "3"], 
+                            ["Right \u21E9", "2"], 
+                            ["Right \u21E8", "1"], 
+                            ["A", "0"], 
+                            ["Any button", "-1"]
+                        ]), "TOUCHPAD")
+                    .appendField("pressed?");
+        }
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
