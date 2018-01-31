@@ -3308,7 +3308,7 @@ Blockly.propc.ws2812b_set = function () {
     this.updateRGBpin();
     
     
-    if (allBlocks.toString().indexOf('RGB-LED initialize') === -1 ) {
+    if (allBlocks.toString().indexOf('RGB-LED initialize') === -1 && allBlocks.toString().indexOf('RGB-LED set number') === -1) {
         if (projectData && projectData['board'] !== 'heb-wx') {
             return '// ERROR: RGB-LED is not initialized!\n';
         } else if (!this.disabled) {
@@ -3379,8 +3379,7 @@ Blockly.Blocks.ws2812b_set_multiple = {
 Blockly.propc.ws2812b_set_multiple = function () {
     this.updateRGBpin();
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('RGB-LED initialize') === -1)
-    {
+    if (allBlocks.indexOf('RGB-LED initialize') === -1 && allBlocks.toString().indexOf('RGB-LED set number')) {
         if (projectData && projectData['board'] !== 'heb-wx') {
             return '// ERROR: RGB-LED is not initialized!\n';
         } else if (!this.disabled) {
@@ -3446,8 +3445,7 @@ Blockly.Blocks.ws2812b_update = {
 Blockly.propc.ws2812b_update = function () {
     this.updateRGBpin();
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('RGB-LED initialize') === -1)
-    {
+    if (allBlocks.indexOf('RGB-LED initialize') === -1 && allBlocks.toString().indexOf('RGB-LED set number')) {
         if (projectData && projectData['board'] !== 'heb-wx') {
             return '// ERROR: RGB-LED is not initialized!\n';
         } else if (!this.disabled) {

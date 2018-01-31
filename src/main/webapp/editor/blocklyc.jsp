@@ -1085,7 +1085,7 @@
                                         <block type="sd_file_pointer"></block>
                                      </category>
                                 </category>
-                                <category name="66" key="category_sensor-input" exclude="s3,heb" colour="140">
+                                <category name="66" key="category_sensor-input" exclude="s3,heb,heb-wx" colour="140">
                                     <category name="68" key="category_sensor-input_2axis-joystick" include="activity-board">
                                         <block type="joystick_input_xaxis"></block>
                                         <block type="joystick_input_yaxis"></block>
