@@ -732,7 +732,7 @@ Blockly.Blocks.heb_touchpad_status = {
 
 Blockly.propc.heb_touchpad_status = function () {
     var touchpad = this.getFieldValue("TOUCHPAD");
-    return ['button(' + (touchpad === '-1' ? '' : touchpad) + ')', Blockly.propc.ORDER_NONE];
+    return ['button' + (touchpad === '-1' ? 's(' : '(' + touchpad) + ')', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.heb_text_to_speech_say = {
