@@ -665,7 +665,7 @@ Blockly.Blocks.heb_badge_axis_acceleration = {
         this.setColour(colorPalette.getColor('io'));
         this.appendDummyInput()
                 .appendField("Accelerometer get")
-                .appendField(new Blockly.Field([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
+                .appendField(new Blockly.FieldDropdown([["x-axis", "AX"], ["y-axis", "AY"], ["z-axis", "AZ"]]), "AXIS");
         this.setOutput(true, 'Number');
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
