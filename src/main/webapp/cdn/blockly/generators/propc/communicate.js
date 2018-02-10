@@ -4638,7 +4638,11 @@ Blockly.Blocks.wx_listen = {
         this.appendValueInput("PATH")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("WX connect")
-                .appendField(new Blockly.FieldDropdown([['HTTP', 'HTTP'], ['Websocket', 'WS'], ['TCP', 'TCP']], function (action) {
+                .appendField(new Blockly.FieldDropdown([
+                        ['HTTP', 'HTTP'], 
+                        ['Websocket', 'WS'], 
+                        ['TCP', 'TCP']
+                    ], function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
                 }), 'PROTOCOL')
                 .appendField("store ID in", 'TEXT')
@@ -4691,19 +4695,25 @@ Blockly.Blocks.wx_listen = {
         this.getInput('PORT').setVisible(prefixVisible);
     },
     getVars: function () {
-        return [this.getFieldValue('ID'), this.getFieldValue('ID1'), this.getFieldValue('ID2'), this.getFieldValue('ID3'), this.getFieldValue('ID4')];
+        if (this.getFieldValue('PROTOCOL') !== 'TCP') {
+            return [this.getFieldValue('ID'), this.getFieldValue('ID1'), this.getFieldValue('ID2'), this.getFieldValue('ID3'), this.getFieldValue('ID4')];
+        } else {
+            return [this.getFieldValue('ID')];
+        }
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID')))
             this.setFieldValue(newName, 'ID');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID1')))
-            this.setFieldValue(newName, 'ID1');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID2')))
-            this.setFieldValue(newName, 'ID2');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID3')))
-            this.setFieldValue(newName, 'ID3');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID4')))
-            this.setFieldValue(newName, 'ID4');
+        if (this.getFieldValue('PROTOCOL') !== 'TCP') {
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID1')))
+                this.setFieldValue(newName, 'ID1');
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID2')))
+                this.setFieldValue(newName, 'ID2');
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID3')))
+                this.setFieldValue(newName, 'ID3');
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID4')))
+                this.setFieldValue(newName, 'ID4');
+        }
     },
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
