@@ -384,12 +384,18 @@ Blockly.propc.finish = function (code) {
     } else {
         // Indent every line.
         code = '  ' + code.replace(/\n/g, '\n  ');
+        
         // Comment out any instance of 'pause(0);' - causes a compiler error
         code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
+        
         // Remove redundant casts
         code = code.replace(/\(float\)\s*\(int\)/g, '(float)');
+        
         // Sweep for doubled-up parentheses
-        code = code.replace(/\(\(([^()]*)\)\)/g, '($1)');
+        while (code.match(/\(\(([^()]*)\)\)/g)) {
+            code = code.replace(/\(\(([^()]*)\)\)/g, '($1)');
+        }
+        
         code = 'int main() {\n' + varInits + code + '\n}';
         var setup = '';
         if (Blockly.propc.serial_terminal_) {
