@@ -251,8 +251,8 @@ var saveProject = function () {
 
 var saveAsDialog = function () {
     
-    // Hide the board-as save option behind the experiemental tag
-    if (inDemo !== 'demo') {
+    // use the plain 'save-as' endpoint for now.
+    if (1 === 1) {   // if (inDemo !== 'demo') {
         
         // Old function - still in use because save-as+board type is not approved for use.
         utils.prompt("Save project as", projectData['name'], function (value) {
