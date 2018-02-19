@@ -58,8 +58,10 @@
                 </executions>
                 <configuration>
                     <files>
-                        <file>build.properties</file>
+                        <file>src/main/config/${environment}/build.properties</file>
                     </files>
+                    <properties combine.self="append" />
+                    <outputFile combine.self="append" />
                 </configuration>
             </plugin>
 
