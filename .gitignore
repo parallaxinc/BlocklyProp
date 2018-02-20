@@ -5,7 +5,12 @@ build.properties
 #################
 # /src/main/**/logback.xml
 nb*
-/src/main/java/com/parallax/server/blocklyprop/db/generated/*
+#
+# The JooQ package generates all of the classes referenced
+# by the BlocklyProp code to access database services.
+#
+# /src/main/java/com/parallax/server/blocklyprop/db/generated/*
+#
 
 #################
 ## NetBeans
