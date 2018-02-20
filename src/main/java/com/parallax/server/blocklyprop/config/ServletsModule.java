@@ -6,6 +6,7 @@
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.servlet.ServletModule;
+
 import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
 import com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
@@ -32,6 +33,8 @@ import com.parallax.server.blocklyprop.servlets.TextileIndexServlet;
 import com.parallax.server.blocklyprop.servlets.TextileLibrariesServlet;
 import com.parallax.server.blocklyprop.servlets.TextileLicenseServlet;
 
+import com.parallax.server.blocklyprop.servlets.MessageOfTheDayServlet;
+
 /**
  * Map each URI to a class that will handle the request
  * 
@@ -42,6 +45,7 @@ public class ServletsModule extends ServletModule {
     @Override
     protected void configureServlets() {
         serve("/ping").with(PingServlet.class);
+        serve("/motd").with(MessageOfTheDayServlet.class);
 
         serve("/authenticate").with(AuthenticationServlet.class);
 

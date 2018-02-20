@@ -120,7 +120,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
         LOG.debug("Getting all active sessions");
         
         Collection<SessionRecord> sessionRecords = SessionServiceImpl.getSessionService().getActiveSessions();
-        List<Session> sessions = new ArrayList<>();
+        List<Session> sessions = new ArrayList<Session>();
         for (SessionRecord sessionRecord : sessionRecords) {
             sessions.add(convert(sessionRecord));
         }
