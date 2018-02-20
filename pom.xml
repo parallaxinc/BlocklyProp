@@ -58,7 +58,7 @@
                 </executions>
                 <configuration>
                     <files>
-                        <file>src/main/config/${environment}/build.properties</file>
+                        <file>build.properties</file>
                     </files>
                     <properties combine.self="append" />
                     <outputFile combine.self="append" />
@@ -102,7 +102,6 @@
                     Include the <execution> element to generate a new set of 
                     source files that represent the current state of the 
                     target database schema.
-                -->
                 <executions>
                     <execution>
                         <id>jooq-codegen</id>
@@ -112,6 +111,7 @@
                         </goals>
                     </execution>
                 </executions>
+                -->
                 
                 <dependencies>
                     <dependency>
