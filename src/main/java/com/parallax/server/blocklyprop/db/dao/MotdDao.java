@@ -41,7 +41,7 @@ public interface  MotdDao {
      * 
      * @return a single MotdRecord or null if record is not found
      */
-    MotdRecord getMotd(Integer idMotd);
+    MotdRecord getMotd(Long idMotd);
     
     /**
      * List all MOTD records
@@ -56,6 +56,6 @@ public interface  MotdDao {
      * @param idMotd
      * @return True if the action was successful, otherwise false
      */
-    Boolean delete(Integer idMotd);
+    Boolean delete(Long idMotd);
     
 }

@@ -74,7 +74,7 @@ public class MotdDaoImpl implements MotdDao {
      * @return a single MotdRecord or null if record is not found
      */
     @Override
-    public MotdRecord getMotd(Integer idMotd) {
+    public MotdRecord getMotd(Long idMotd) {
         
         MotdRecord record = create
                 .selectFrom(Tables.MOTD)
@@ -106,7 +106,7 @@ public class MotdDaoImpl implements MotdDao {
      * @return True if the action was successful, otherwise false
      */
     @Override
-    public Boolean delete(Integer idMotd) {
+    public Boolean delete(Long idMotd) {
         
         return true;
     }

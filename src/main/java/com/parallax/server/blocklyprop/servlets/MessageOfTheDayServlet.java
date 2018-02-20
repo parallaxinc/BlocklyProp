@@ -42,9 +42,9 @@ public class MessageOfTheDayServlet  extends HttpServlet {
             HttpServletResponse resp) throws ServletException, IOException {
         
         
-        MotdRecord record = motdDao.getMotd(1);
+        MotdRecord record = motdDao.getMotd(1L);
                 
-        resp.getWriter().write("<html><body>" + record.getMessage() + "</body></html>");
+        resp.getWriter().write("<html><body>" + record.getMessageHtml() + "</body></html>");
     }
 
     
