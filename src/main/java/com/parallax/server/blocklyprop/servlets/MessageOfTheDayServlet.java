@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.parallax.server.blocklyprop.db.dao.MotdDao;
-import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
 
 /**
