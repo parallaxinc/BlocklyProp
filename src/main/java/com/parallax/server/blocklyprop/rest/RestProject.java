@@ -9,6 +9,8 @@ import com.cuubez.visualizer.annotation.Detail;
 import com.cuubez.visualizer.annotation.Group;
 import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
+import com.cuubez.visualizer.annotation.M;
+import com.cuubez.visualizer.annotation.ParameterDetail;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -46,48 +48,86 @@ public class RestProject {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(RestProject.class);
 
+    // Connector to project services object
     private ProjectService projectService;
+    
+    // Connector to project converter object
     private ProjectConverter projectConverter;
 
+    /**
+     * Connect to the project service object
+     * @param projectService 
+     */
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
     }
 
+    /**
+     * Connect to the project converter object
+     * @param projectConverter 
+     */
     @Inject
     public void setProjectConverter(ProjectConverter projectConverter) {
         this.projectConverter = projectConverter;
     }
 
+    /**
+     * Return a list of projects owned by the currently authenticated user.
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * 
+     * @return JSON formatted list of project details
+     */
     @GET
     @Path("/list")
     @Detail("Get all projects for the authenticated user")
-    @Name("Get all projects for the authenticated user")
+    @Name("ListProjects")
     @Produces("application/json")
     public Response get(
-            @QueryParam("sort") TableSort sort, 
-            @QueryParam("order") TableOrder order, 
-            @QueryParam("limit") Integer limit, 
-            @QueryParam("offset") Integer offset) {
+            @QueryParam("sort") @ParameterDetail("Sort detail") @M() TableSort sort, 
+            @QueryParam("order") @ParameterDetail("Sort order") @M() TableOrder order, 
+            @QueryParam("limit") @ParameterDetail("Number of rows to return") @M() Integer limit, 
+            @QueryParam("offset") @ParameterDetail("Offset to next row returned") @M() Integer offset) {
         
         LOG.info("Retreiving project list");
-
-        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        List<ProjectRecord> userProjects = 
-                projectService.getUserProjects(idUser, sort, order, limit, offset);
         
-        int projectCount = projectService.countUserProjects(idUser);
+        /**
+         * Sanity checks - is the request reasonable
+         */
+        try {
+            // Get the logged in user id for the current session
+            Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+            if (idUser == 0) {
+                // Current session is not logged in.
+                return Response.noContent().build();
+            }
 
-        JsonObject result = new JsonObject();
-        JsonArray jsonProjects = new JsonArray();
-        for (ProjectRecord project : userProjects) {
-            jsonProjects.add(projectConverter.toListJson(project));
+            List<ProjectRecord> userProjects = 
+                    projectService.getUserProjects(idUser, sort, order, limit, offset);
+        
+            int projectCount = projectService.countUserProjects(idUser);
+
+            JsonObject result = new JsonObject();
+            JsonArray jsonProjects = new JsonArray();
+            for (ProjectRecord project : userProjects) {
+                jsonProjects.add(projectConverter.toListJson(project));
+            }
+
+            result.add("rows", jsonProjects);
+            result.addProperty("total", projectCount);
+
+            return Response.ok(result.toString()).build();
+            }
+        catch(Exception ex) {
+            LOG.warn("Unable to process REST request.");
+            LOG.warn("Error is {}", ex.getMessage());
+            return Response.serverError().build();
         }
 
-        result.add("rows", jsonProjects);
-        result.addProperty("total", projectCount);
-
-        return Response.ok(result.toString()).build();
     }
 
     @GET
@@ -95,7 +135,7 @@ public class RestProject {
     @Detail("Get project by id")
     @Name("Get project by id")
     @Produces("application/json")
-    public Response get(@PathParam("id") Long idProject) {
+    public Response get(@PathParam("id") @ParameterDetail("Project identifier") Long idProject) {
         LOG.info("Retreiving project {}", idProject);
 
         ProjectRecord project = projectService.getProject(idProject);

@@ -348,7 +348,13 @@ public class ProjectDaoImpl implements ProjectDao {
      * @return
      */
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
+    public List<ProjectRecord> getUserProjects(
+            Long idUser, 
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset) {
+        
         LOG.info("Retreive projects for user {}.", idUser);
 
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
