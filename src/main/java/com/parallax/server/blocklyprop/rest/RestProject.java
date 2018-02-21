@@ -95,16 +95,27 @@ public class RestProject {
         
         LOG.info("Retreiving project list");
         
-        /**
-         * Sanity checks - is the request reasonable
-         */
         try {
             // Get the logged in user id for the current session
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+            
             if (idUser == 0) {
                 // Current session is not logged in.
                 return Response.noContent().build();
             }
+
+            //Sanity checks - is the request reasonable
+            if (sort == null)
+                sort = TableSort.modified;
+            
+            if (order == null) 
+                order = TableOrder.asc;
+            
+            if (limit == null)
+                limit = 20;
+            
+            if (offset == null)
+                offset = 0;
 
             List<ProjectRecord> userProjects = 
                     projectService.getUserProjects(idUser, sort, order, limit, offset);
