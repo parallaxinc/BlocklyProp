@@ -69,11 +69,19 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
+    public List<ProjectRecord> getUserProjects(
+            Long idUser, 
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset) {
+        
         Long idCurrentUser = BlocklyPropSecurityUtils.getCurrentUserId();
+
         if (idCurrentUser == null) {
             throw new UnauthorizedException();
         }
+        
         if (idCurrentUser.equals(idUser)) {
             return projectDao.getUserProjects(idUser, sort, order, limit, offset);
         } else {
