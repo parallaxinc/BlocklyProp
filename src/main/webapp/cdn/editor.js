@@ -174,7 +174,6 @@ var propcAsBlocksXml = function () {
     code += '<field name="FILENAME">single.c</field>';
     code += '<field name="CODE">';
     code += btoa(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
-    //code += encodeXml(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
     code += '</field></block></xml>';
     return code;
 };

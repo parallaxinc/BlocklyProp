@@ -266,7 +266,6 @@ Blockly.propc.finish = function (code) {
     var imports = [];
     var methods = [];
     var declarations = [];
-    var objects = [];
     var definitions = [];
     var function_vars = [];
     var cog_function = [];
@@ -375,7 +374,6 @@ Blockly.propc.finish = function (code) {
 
     var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') +
             spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
-    var varInits = setups.join('\n') + '\n';
 
     if (code.indexOf('// RAW PROPC CODE\n//{{||}}\n') > -1) {
         var pcc = code.split('//{{||}}\n');
@@ -396,7 +394,7 @@ Blockly.propc.finish = function (code) {
             code = code.replace(/\(\(([^()]*)\)\)/g, '($1)');
         }
         
-        code = 'int main() {\n' + varInits + code + '\n}';
+        code = 'int main()\n{\n' + setups.join('\n') + '\n' + code + '\n}';
         var setup = '';
         if (Blockly.propc.serial_terminal_) {
             setup += "/* SERIAL_TERMINAL USED */\n";
