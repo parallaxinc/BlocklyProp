@@ -1126,10 +1126,10 @@ Blockly.Blocks.serial_receive_text = {
 Blockly.propc.serial_receive_text = function () {
     var p = '';
     if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
+        p = this.ser_pins[0][0].replace(',', '_').replace(/None/g, 'N');
     }
     if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
+        p = this.getFieldValue('SER_PIN').replace(',', '_').replace(/None/g, 'N');
     }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') === -1)
@@ -1520,10 +1520,10 @@ Blockly.Blocks.serial_scan_container = {
 Blockly.propc.serial_scan_multiple = function () {
     var p = '';
     if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
+        p = this.ser_pins[0][0].replace(',', '_').replace(/None/g, 'N');
     }
     if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
+        p = this.getFieldValue('SER_PIN').replace(',', '_').replace(/None/g, 'N');
     }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') > -1)

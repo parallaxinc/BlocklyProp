@@ -1067,22 +1067,3 @@ function graph_update_labels() {
         }
     }
 }
-
-function encodeXml(string) {
-    var xml_special_to_escaped_one_map = {
-        '&': '&amp;',
-        '"': '&quot;',
-        '<': '&lt;',
-        '>': '&gt;'
-    };
-    return string.replace(/([\&"<>])/g, function (str, item) {
-        return xml_special_to_escaped_one_map[item];
-    });
-}
-
-function decodeXml(string) {
-    return string.replace(/\&quot;/g, '"')
-            .replace(/\&lt;/g, '<')
-            .replace(/\&gt;/g, '>')
-            .replace(/\&amp;/g, '&');
-}
