@@ -581,12 +581,12 @@ Blockly.propc.console_print_multiple = function () {
         if (digitsPlaces !== '') {
             digitsPlaces = '0' + digitsPlaces;
         }
-        if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-            code += '%' + digitsPlaces + 'd';
-            orIt = '0';
-        } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+        if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
             code += '%' + digitsPlaces + 'x';
             orIt = '0x0';
+        } else if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            code += '%' + digitsPlaces + 'd';
+            orIt = '0';
         } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
             code += '%' + digitsPlaces + 'b';
             orIt = '0b0';
