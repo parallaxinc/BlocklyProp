@@ -365,7 +365,9 @@ function cloudCompile(text, action, successHandler) {
  *
  */
 function compile() {
-    cloudCompile('Compile', 'compile', function (data, terminalNeeded) {});
+    cloudCompile('Compile', 'compile', function (data, terminalNeeded) {
+        console.log(data);
+    });
 }
 
 /**
