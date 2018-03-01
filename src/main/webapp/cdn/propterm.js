@@ -21,6 +21,7 @@ var ascii2unicode = ['\u00C7', '\u00FC', '\u00E9', '\u00E2', '\u00E4', '\u00E0',
 
 var echo_trap = [];
 var trap_echos = true;
+var echo_keys = false;
 var terminal_buffer = '';
 var updateTermInterval = null;
 var bufferAlert = false;
@@ -96,7 +97,11 @@ function processKey(code) {
     //Emit key code to properly destination
     if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
         if (client_version >= minEnc64Ver) {
-            active_connection.send(btoa(String.fromCharCode(code)));
+            var t_chars = btoa(String.fromCharCode(code));
+            active_connection.send(t_chars);
+            if (echo_keys) {
+                displayInTerm(t_chars);
+            }
         } else {
             active_connection.send(String.fromCharCode(code));
             if (trap_echos) {
