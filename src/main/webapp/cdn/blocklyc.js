@@ -365,9 +365,7 @@ function cloudCompile(text, action, successHandler) {
  *
  */
 function compile() {
-    cloudCompile('Compile', 'compile', function (data, terminalNeeded) {
-        console.log(data);
-    });
+    cloudCompile('Compile', 'compile', function (data, terminalNeeded) {});
 }
 
 /**
@@ -414,7 +412,7 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
                         var success = true;
                         var coded = (load_option === "CODE" || load_option === "CODE_VERBOSE");
                         if (coded) {
-                            message.forEach(function(x){success = success && x.substr(0,3) < 100});
+                            message.forEach(function(x){success = success && x.substr(0,3) < 100;});
                         }
                         //Display results
                         var result = '';
@@ -424,7 +422,7 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
                         } else {
                             //Failed (or not coded); Show the details
                             var error = [];
-                            message.forEach(function(x){error.push(x.substr((coded) ? 4 : 0))});
+                            message.forEach(function(x){error.push(x.substr((coded) ? 4 : 0));});
                             result = ((coded) ? ' Failed!' : "") + '\n\n-------- loader messages --------\n' + error.join('\n');
                         }
 
