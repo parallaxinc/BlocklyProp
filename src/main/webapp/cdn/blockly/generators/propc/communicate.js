@@ -581,12 +581,12 @@ Blockly.propc.console_print_multiple = function () {
         if (digitsPlaces !== '') {
             digitsPlaces = '0' + digitsPlaces;
         }
-        if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-            code += '%' + digitsPlaces + 'd';
-            orIt = '0';
-        } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+        if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
             code += '%' + digitsPlaces + 'x';
             orIt = '0x0';
+        } else if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            code += '%' + digitsPlaces + 'd';
+            orIt = '0';
         } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
             code += '%' + digitsPlaces + 'b';
             orIt = '0b0';
@@ -699,7 +699,7 @@ Blockly.propc.console_scan_number = function () {
 
     if (data !== '') {
         if (type === 'NUMBER') {
-            code += 'scan("%d\\n", &' + data + ');\n';
+            code += 'scan("%d", &' + data + ');\n';
         } else {
             code += data + ' = getChar();\n';
         }
@@ -1126,10 +1126,10 @@ Blockly.Blocks.serial_receive_text = {
 Blockly.propc.serial_receive_text = function () {
     var p = '';
     if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
+        p = this.ser_pins[0][0].replace(',', '_').replace(/None/g, 'N');
     }
     if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
+        p = this.getFieldValue('SER_PIN').replace(',', '_').replace(/None/g, 'N');
     }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') === -1)
@@ -1520,10 +1520,10 @@ Blockly.Blocks.serial_scan_container = {
 Blockly.propc.serial_scan_multiple = function () {
     var p = '';
     if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
+        p = this.ser_pins[0][0].replace(',', '_').replace(/None/g, 'N');
     }
     if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
+        p = this.getFieldValue('SER_PIN').replace(',', '_').replace(/None/g, 'N');
     }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') > -1)
