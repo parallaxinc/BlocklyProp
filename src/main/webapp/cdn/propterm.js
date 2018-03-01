@@ -97,10 +97,9 @@ function processKey(code) {
     //Emit key code to properly destination
     if (active_connection !== null && active_connection !== 'simulated' && active_connection !== 'websocket') {
         if (client_version >= minEnc64Ver) {
-            var t_chars = btoa(String.fromCharCode(code));
-            active_connection.send(t_chars);
+            active_connection.send(btoa(String.fromCharCode(code)));
             if (echo_keys) {
-                displayInTerm(t_chars);
+                displayInTerm(code);
             }
         } else {
             active_connection.send(String.fromCharCode(code));
