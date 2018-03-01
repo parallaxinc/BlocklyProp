@@ -699,7 +699,7 @@ Blockly.propc.console_scan_number = function () {
 
     if (data !== '') {
         if (type === 'NUMBER') {
-            code += 'scan("%d\\n", &' + data + ');\n';
+            code += 'scan("%d", &' + data + ');\n';
         } else {
             code += data + ' = getChar();\n';
         }
