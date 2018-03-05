@@ -213,9 +213,8 @@ Blockly.propc.init = function (workspace) {
     Blockly.propc.definitions_ = {};
     Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';    
     Blockly.propc.methods_ = {};
-    Blockly.propc.method_declarations_ = {};
-    // Create a dictionary of setups to be printed before the code.
     Blockly.propc.setups_ = {};
+    Blockly.propc.method_declarations_ = {};
     Blockly.propc.global_vars_ = {};
     Blockly.propc.cog_methods_ = {};
     // Create a list of stacks
