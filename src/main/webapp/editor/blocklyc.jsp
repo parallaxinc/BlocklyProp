@@ -323,7 +323,7 @@
                                     </category>
                                 </category>
                                 <sep></sep>
-                                <category name="10" key="category_values" exclude="s3" colour="275">
+                                <category name="10" key="category_values" exclude="s3" colour="205">
                                     <block type="math_number"></block>
                                     <block type="string_type_block"></block>
                                     <block type="char_type_block"></block>

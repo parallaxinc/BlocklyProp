@@ -3455,9 +3455,8 @@ Blockly.propc.ws2812b_update = function () {
             Blockly.propc.setups_["ws2812b_init"] = 'ws2812b = ws2812b_open();\n';
         }
     }
-    if (projectData && projectData['board'] === 'heb-wx') {
-        p = '';
-    } else {
+    var p = '';
+    if (projectData && projectData['board'] !== 'heb-wx') {
         if (this.rgb_pins.length > 0) {
             p = this.rgb_pins[0][0];
         }
