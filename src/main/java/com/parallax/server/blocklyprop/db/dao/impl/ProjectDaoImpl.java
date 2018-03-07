@@ -361,11 +361,16 @@ public class ProjectDaoImpl implements ProjectDao {
         if (TableOrder.desc == order) {
             orderField = Tables.PROJECT.NAME.desc();
         }
-
-        return create.selectFrom(Tables.PROJECT)
-                .where(Tables.PROJECT.ID_USER.equal(idUser))
-                .orderBy(orderField).limit(limit).offset(offset)
-                .fetch();
+        
+        if (limit == null) {
+            return create.selectFrom(Tables.PROJECT)
+                    .where(Tables.PROJECT.ID_USER.equal(idUser)).orderBy(orderField).fetch();
+        } else {
+            return create.selectFrom(Tables.PROJECT)
+                    .where(Tables.PROJECT.ID_USER.equal(idUser))
+                    .orderBy(orderField).limit(limit).offset(offset)
+                    .fetch();
+        }
     }
 
     /**
@@ -390,10 +395,16 @@ public class ProjectDaoImpl implements ProjectDao {
         if (idUser != null) {
             conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
         }
-        return create.selectFrom(Tables.PROJECT)
-                .where(conditions)
-                .orderBy(orderField).limit(limit).offset(offset)
-                .fetch();
+        
+        if (limit == null) {
+            return create.selectFrom(Tables.PROJECT)
+                    .where(conditions).orderBy(orderField).fetch();
+        } else {
+            return create.selectFrom(Tables.PROJECT)
+                    .where(conditions)
+                    .orderBy(orderField).limit(limit).offset(offset)
+                    .fetch();
+        }
     }
 
     /**
@@ -418,10 +429,16 @@ public class ProjectDaoImpl implements ProjectDao {
         if (idUser != null) {
             conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
         }
-        return create.selectFrom(Tables.PROJECT)
-                .where(conditions)
-                .orderBy(orderField).limit(limit).offset(offset)
-                .fetch();
+        
+        if (limit == null) {
+            return create.selectFrom(Tables.PROJECT)
+                    .where(conditions).orderBy(orderField).fetch();
+        } else {
+            return create.selectFrom(Tables.PROJECT)
+                    .where(conditions)
+                    .orderBy(orderField).limit(limit).offset(offset)
+                    .fetch();
+        }
     }
 
     /**
