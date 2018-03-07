@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Random;
 
-
 /**
  *
  * @author Michel
@@ -35,17 +34,18 @@ import java.util.Random;
 public class ProjectDaoImpl implements ProjectDao {
 
     /**
-     * 
+     * The absolute lowest number of bytes that can exist in an
+     * unpopulated project.
      */
     private static final int Min_BlocklyCodeSize = 48;
     
     /**
-     * 
+     * Application logging facility
      */
     private static final Logger LOG = LoggerFactory.getLogger(ProjectDao.class);
     
     /**
-     * 
+     * Database connection
      */
     private DSLContext create;
 
@@ -348,7 +348,13 @@ public class ProjectDaoImpl implements ProjectDao {
      * @return
      */
     @Override
-    public List<ProjectRecord> getUserProjects(Long idUser, TableSort sort, TableOrder order, Integer limit, Integer offset) {
+    public List<ProjectRecord> getUserProjects(
+            Long idUser, 
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset) {
+        
         LOG.info("Retreive projects for user {}.", idUser);
 
         SortField<String> orderField = Tables.PROJECT.NAME.asc();
@@ -649,10 +655,10 @@ public class ProjectDaoImpl implements ProjectDao {
         return cloned;
     }
 
-    // Evaluate project code and replace any depricated or updated blocks
+    // Evaluate project code and replace any deprecated or updated blocks
     //
     // Return a ProjectRecord object. The code field may be altered to correct
-    // any old, depricated or updated blocks. The method will throw an
+    // any old, deprecated or updated blocks. The method will throw an
     // exception if the ProjectRecord parameter is null or something has gone
     // horribly wrong with the string conversions.
     //
@@ -660,7 +666,7 @@ public class ProjectDaoImpl implements ProjectDao {
         String currentCode, newCode;
 
         if (record == null) {
-            LOG.error("alterReadRecod detected a null project record.");
+            LOG.error("alterReadRecord detected a null project record.");
             return null;
         }
 

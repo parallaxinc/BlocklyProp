@@ -9,6 +9,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
+
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.monitoring.Monitor;
@@ -32,8 +33,14 @@ import ch.qos.logback.classic.LoggerContext;
  */
 public class SetupConfig extends GuiceServletContextListener {
 
+    /**
+     * Application-specific configuration options
+     */
     private Configuration configuration;
     
+    /**
+     * Application logging connector
+     */
     private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
     @Override
