@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class PasswordResetRequestServlet extends HttpServlet {
 
-    private static Logger log = LoggerFactory.getLogger(PasswordResetRequestServlet.class);
+    private final static Logger LOG = LoggerFactory.getLogger(PasswordResetRequestServlet.class);
 
     private final TextileReader textileFileReader = new TextileReader();
 
@@ -74,9 +74,12 @@ public class PasswordResetRequestServlet extends HttpServlet {
                 req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
             } catch (WrongAuthenticationSourceException ex) {
-                log.info("Trying to request password reset of non local user!");
+                LOG.info("Trying to request password reset of non local user!");
                 req.setAttribute("wrongAuthenticationSource", true);
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+            } catch (Exception ex) {
+                LOG.error("Unhandled exception while resetting user password. Message: {}"
+                        ,ex.getMessage());
             }
         }
     }
