@@ -7,11 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<table id="project-table" class="table">
-    <tr id="page-loading-text"><td align="center">Loading...<br><img src="<url:getCdnUrl url="/images/please-wait.gif" />" width="100" height="100"/></td></tr>
-</table>
-
-<%--
 <table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="${param.url}"/>"  
        data-toolbar="#toolbar" data-search="false" data-side-pagination="server" data-pagination="true">
     <thead>
@@ -26,55 +21,46 @@
         </tr>
     </thead>
 </table>
---%>
 
 <script>
-
-    $(document).ready(function () {
-        
-        var projData = [];        
-        $.getJSON('<url:getUrl url="${param.url}"/>', function(projects) {
-            for (i = 0; i < projects.rows.length; i++) {
-                projData.push([
-                    boardIconUrls[projects.rows[i].board],
-                    '<a href="#' + projects.rows[i].id + '">' + projects.rows[i].name + '</a>', 
-                    formatBoard(projects.rows[i].board),
-                    formatDescription(projects.rows[i].description),
-                    '<a href="<url:getUrl url="/public/profile" />?id-user=' + projects.rows[i]['id-user'] + '">' + projects.rows[i].user + '</a>'
-                ]);
-            }            
-
-            // TODO: add spinny image/icon...
-            $('#page-loading-text').remove();
-
-            $('#project-table').dataTable({
-                data: projData,
-                deferRender: true,
-                scrollY: 300,
-                scroller: {
-                    loadingIndicator: true
-                },
-                columns: [
-                    {title: " ", "orderable": false},
-                    {title: "Name"},
-                    {title: "Board"},
-                    {title: "Description"},
-                    {title: "User"}
-                ]
-            });
-        });
-    });
-    
-
-    var boardIconUrls = {
-        "activity-board": '<img src="<url:getCdnUrl url="/images/board-icons/IconActivityBoard.png" />" />',
-        "s3": '<img src="<url:getCdnUrl url="/images/board-icons/IconS3.png" />" />',
-        "heb": '<img src="<url:getCdnUrl url="/images/board-icons/IconBadge.png" />" />',
-        "heb-wx": '<img src="<url:getCdnUrl url="/images/board-icons/IconBadgeWX.png" />" />',
-        "flip": '<img src="<url:getCdnUrl url="/images/board-icons/IconFlip.png" />" />',
-        "propcfile": '<img src="<url:getCdnUrl url="/images/board-icons/IconC.png" />" />',
-        "other": '<img src="<url:getCdnUrl url="/images/board-icons/IconOtherBoards.png" />" />'
+    var languageUrls = {
+        "PROPC": "<url:getCdnUrl url="/images/lang-icons/c.png" />",
+        "SPIN": "<url:getCdnUrl url="/images/lang-icons/spin.png" />"
     };
+    
+    var boardIconUrls = {
+        "activity-board": "<url:getCdnUrl url="/images/board-icons/IconActivityBoard.png" />",
+        "s3": "<url:getCdnUrl url="/images/board-icons/IconS3.png" />",
+        "heb": "<url:getCdnUrl url="/images/board-icons/IconBadge.png" />",
+        "heb-wx": "<url:getCdnUrl url="/images/board-icons/IconBadgeWX.png" />",
+        "flip": "<url:getCdnUrl url="/images/board-icons/IconFlip.png" />",
+        "propcfile": "<url:getCdnUrl url="/images/board-icons/IconC.png" />",
+        "other": "<url:getCdnUrl url="/images/board-icons/IconOtherBoards.png" />"
+    };
+
+    function formatType(value, row) {
+        return '<img src="' + boardIconUrls[value] + '" />';
+    }
+
+    function formatProject(value, row) {
+        return [
+            "<a href='#",
+            row['id'],
+            "'>",
+            value,
+            "</a>"
+        ].join('');
+    }
+
+    function formatUser(value, row) {
+        return [
+            "<a href='<url:getUrl url="/public/profile" />?id-user=",
+            row['id-user'],
+            "'>",
+            value,
+            "</a>"
+        ].join('');
+    }
 
     var boards = {
         "activity-board": "<fmt:message key="project.board.activity-board" />",
@@ -86,7 +72,7 @@
         "other": "<fmt:message key="project.board.other" />"
     };
 
-    function formatBoard(value) {
+    function formatBoard(value, row) {
         var boardTranslation = boards[value];
         if (!boardTranslation) {
             boardTranslation = boards['other'];
@@ -94,7 +80,7 @@
         return boardTranslation;
     }
 
-    function formatDescription(value) {
+    function formatDescription(value, row) {
         if (value) {
             if (value.length > 30) {
                 return value.substring(0, 27) + '&hellip;';
