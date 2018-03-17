@@ -101,7 +101,7 @@ public class RestProject {
             
             if (idUser == 0) {
                 // Current session is not logged in.
-                return Response.noContent().build();
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
 
             //Sanity checks - is the request reasonable
@@ -111,8 +111,8 @@ public class RestProject {
             if (order == null) 
                 order = TableOrder.asc;
             
-            //if (limit == null)
-            //    limit = 20;
+            if (limit == null)
+                limit = 20;
             
             if (offset == null)
                 offset = 0;
@@ -133,10 +133,11 @@ public class RestProject {
 
             return Response.ok(result.toString()).build();
             }
+        
         catch(Exception ex) {
             LOG.warn("Unable to process REST request.");
             LOG.warn("Error is {}", ex.getMessage());
-            return Response.serverError().build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
     }
@@ -148,33 +149,50 @@ public class RestProject {
     @Produces("application/json")
     public Response get(@PathParam("id") @ParameterDetail("Project identifier") Long idProject) {
         LOG.info("Retreiving project {}", idProject);
+        
+        try {
+            ProjectRecord project = projectService.getProject(idProject);
 
-        ProjectRecord project = projectService.getProject(idProject);
-
-        if (project != null) {
-            if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
-                LOG.info("User not authorized to get project {}", idProject);
-                return Response.status(Response.Status.UNAUTHORIZED).build();
+            if (project != null) {
+                // Verify that the current user owns the requested project
+                if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+                    LOG.info("User not authorized to get project {}", idProject);
+                    return Response.status(Response.Status.UNAUTHORIZED).build();
+                }
+            } else {
+                LOG.info("Project {} was not found", idProject);
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
-        } else {
-            LOG.info("Project {} was not found", idProject);
-            return Response.status(Response.Status.NOT_FOUND).build();
+
+            // The currect user owns this project
+            JsonObject result = projectConverter.toJson(project);
+            return Response.ok(result.toString()).build();
         }
-
-        JsonObject result = projectConverter.toJson(project);
-        LOG.debug("Returning JSON: {}", result);
-
-        return Response.ok(result.toString()).build();
+        
+        catch(Exception ex) {
+            LOG.warn("Unable to process REST request.");
+            LOG.warn("Error is {}", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
+    /**
+     * Update the code in an existing project.
+     * 
+     * This assumes that the project already exists. 
+     * 
+     * @param idProject
+     * @param code
+     * @return 
+     */
     @POST
     @Path("/code")
     @Detail("Save project code")
-    @Name("Save project code")
+    @Name("UpdateProjectCode")
     @Produces("application/json")
     public Response saveProjectCode(
-            @FormParam("id") Long idProject, 
-            @FormParam("code") String code) {
+            @FormParam("id") @ParameterDetail("Project identifier") @M() Long idProject, 
+            @FormParam("code") @ParameterDetail("Project code") @M() String code) {
         
         LOG.info("Saving project {} code", idProject);
         
