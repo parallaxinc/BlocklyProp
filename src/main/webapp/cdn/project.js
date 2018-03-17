@@ -100,8 +100,7 @@ $(document).ready(function () {
 });
 
 function showTable() {
-    //TODO: Re-enable
-//    $("#project-table").bootstrapTable('refresh');
+    $("#project-table").bootstrapTable('refresh');
     $("#project-table-container").collapse('show');
     $("#project-form-container").collapse('hide');
 }

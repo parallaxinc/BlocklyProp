@@ -21,19 +21,13 @@
         <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
         <meta name="base" content="<url:getUrl url="/"/>">
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
-<%--        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />      --%>
-
-        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/datatables.min.css"/>" />
-        
-        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/simplemde.min.css"/>" />
-        <link rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
+        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
+        <link href="<url:getCdnUrl url="/lib/simplemde.min.css"/>" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
         <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
-
-        <script src="<url:getCdnUrl url="/lib/datatables.min.js"/>" ></script>
-
         <script src="<url:getCdnUrl url="/lib/jquery.form.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>" ></script>
-<%--        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>      --%>
+        <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/project.js"/>" ></script>
     </head>
