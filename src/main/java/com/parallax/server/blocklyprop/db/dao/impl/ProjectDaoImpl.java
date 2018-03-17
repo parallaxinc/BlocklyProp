@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Random;
 
+
 /**
  *
  * @author Michel
@@ -35,25 +36,39 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      * The absolute lowest number of bytes that can exist in an
-     * unpopulated project.
+     * un-populated project.
      */
     private static final int Min_BlocklyCodeSize = 48;
+
     
     /**
      * Application logging facility
      */
     private static final Logger LOG = LoggerFactory.getLogger(ProjectDao.class);
+
     
     /**
      * Database connection
      */
     private DSLContext create;
 
+    
+    // Used by the randomString function
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#()*-+./:;=@[]^_`{|}~";
+    static Random rnd = new Random();
+
+    
+    // Constants to clarify the edit flag in method calls
+    static final boolean EDIT_MODE_OFF = false;
+    static final boolean EDIT_MODE_ON = true;
+    
+    
     @Inject
     public void setDSLContext(DSLContext dsl) {
         this.create = dsl;
     }
 
+    
     /**
      *
      * Create a ProjectRecord object from an existing project.
@@ -70,19 +85,33 @@ public class ProjectDaoImpl implements ProjectDao {
     public ProjectRecord getProject(Long idProject) {
         LOG.info("Retreiving project: {}", idProject);
 
-        ProjectRecord record = create
-                .selectFrom(Tables.PROJECT)
-                .where(Tables.PROJECT.ID.equal(idProject))
-                .fetchOne();
+        ProjectRecord record = null;
 
-        if (record == null) {
-            LOG.warn("Unable to retreive project {}", idProject);
+        try {
+            record = create
+                    .selectFrom(Tables.PROJECT)
+                    .where(Tables.PROJECT.ID.equal(idProject))
+                    .fetchOne();
+
+            if (record == null) {
+                LOG.warn("Unable to retreive project {}", idProject);
+                return null;
+            }
+            
+        } catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database error encountered {}", sqex.getMessage());
+            return null;
+        } catch (Exception ex) {
+            LOG.error("Unexpected exception retreiving a project record");
+            LOG.error("Error Message: {}", ex.getMessage());
             return null;
         }
+
         // Return the project after checking if for depricated blocks
         return alterReadRecord(record);
     }
 
+    
     /**
      *
      * Create a new project with supplied code.
@@ -95,7 +124,8 @@ public class ProjectDaoImpl implements ProjectDao {
      * @param board Text representing the hardware being programmed
      * @param privateProject Flag to indicate if the project is private
      * @param sharedProject Flag to indicate if the project is a community project
-     * @return
+     * 
+     * @return a fully formed ProjectRecord or a null if an error is detected.
      */
     @Override
     public ProjectRecord createProject( 
@@ -110,17 +140,21 @@ public class ProjectDaoImpl implements ProjectDao {
             Long idProjectBasedOn) {
 
         LOG.info("Creating a new project with existing code.");
+        
         ProjectRecord record = null;
 
+        // Get the logged in user's userID
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
         if (idUser == null) {
             LOG.error("Null BP UserID");
-            return record;
+            return null;
         }
         
+        // Get the cloud session user id from the current authenticated session
         Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
         if (idCloudUser == null) {
             LOG.error("Null cloud user ID");
+            return null;
         }
         
         try {
@@ -153,6 +187,11 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         catch (org.jooq.exception.DataAccessException sqex) {
             LOG.error("Database error encountered {}", sqex.getMessage());
+            return null;
+        } catch (Exception ex) {
+            LOG.error("Unexpected exception creating a project record");
+            LOG.error("Error Message: {}", ex.getMessage());
+            return null;
         }
         
         return record;
@@ -160,9 +199,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      *
-     * Create a new project with a blank canvas.
+     * Create a new project with a blank canvas (no blocks).
      *
-     * TODO: add details.
+     * This is an overload of the base createProject method that omits
+     * the code block.
      *
      * @param name
      * @param description
@@ -175,14 +215,18 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord createProject(
-            String name, String description, String descriptionHtml,
-            ProjectType type, String board, boolean privateProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            ProjectType type,
+            String board,
+            boolean privateProject,
             boolean sharedProject) {
 
         LOG.info("Creating a new, empty project from existing project.");
         
         // TODO: Add based_on field to end of argument list
-        return createProject(
+        return createProject( 
                 name, 
                 description, 
                 descriptionHtml, 
@@ -195,34 +239,12 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
 
-    // Used by the randomString function
-    
-    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#()*-+./:;=@[]^_`{|}~";
-    static Random rnd = new Random();
-
     /**
      *
-     * Create a random string to use as a blockID.
+     * Update project meta data.
      *
-     * TODO: add details.
-     *
-     * @param len
-     * @return
-     */
-    String randomString(int len) {
-        StringBuilder sb = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            sb.append(AB.charAt(rnd.nextInt(AB.length())));
-        }
-        return sb.toString();
-    }
-    
-
-    /**
-     *
-     * Update a project.
-     *
-     * TODO: add details.
+     * This method updates the project meta data but does not alter the project
+     * code blocks.
      *
      * @param idProject
      * @param name
@@ -234,7 +256,8 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord updateProject(
-            Long idProject, String name,
+            Long idProject,
+            String name,
             String description,
             String descriptionHtml,
             boolean privateProject,
@@ -242,7 +265,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
         LOG.info("Update project {}.", idProject);
 
-        ProjectRecord record = getProject(idProject, true);
+        ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
         if (record == null) {
             LOG.warn("Unable to locate project {} to update it.", idProject);
             return null;
@@ -253,11 +276,7 @@ public class ProjectDaoImpl implements ProjectDao {
         record.setDescriptionHtml(descriptionHtml);
         record.setPrivate(privateProject);
         record.setShared(sharedProject);
-
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.setTime(new java.util.Date());
-
-        record.setModified(cal);
+        record.setModified(getCurrentTimestamp());
         record.update();
 
         return record;
@@ -265,7 +284,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     /**
      *
-     * Update a project.
+     * Update project meta data and code.
      *
      * TODO: add details.
      *
@@ -290,7 +309,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
         LOG.info("Update project {}.", idProject);
 
-        ProjectRecord record = getProject(idProject, true);
+        ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
         if (record != null) {
             record.setName(name);
             record.setDescription(description);
@@ -298,11 +317,7 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setCode(code);
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
-
-            GregorianCalendar cal = new GregorianCalendar();
-            cal.setTime(new java.util.Date());
-
-            record.setModified(cal);
+            record.setModified(getCurrentTimestamp());
             record.update();
 
             return record;
@@ -313,7 +328,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     /**
-     * TODO: add details.
+     * Update the code blocks for a project
      *
      * @param idProject
      * @param code
@@ -323,16 +338,23 @@ public class ProjectDaoImpl implements ProjectDao {
     public ProjectRecord saveCode(Long idProject, String code) {
         LOG.info("Saving code for project {}.", idProject);
 
-        ProjectRecord record = getProject(idProject, true);
+        ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
         if (record != null) {
+            // Update project record details
             record.setCode(code);
+            record.setModified(getCurrentTimestamp());
+            
+            // Update the record
             ProjectRecord returningRecord = create
                     .update(Tables.PROJECT)
                     .set(record)
                     .returning()
                     .fetchOne();
+            
+            // Return a copy of the updated project record
             return returningRecord;
         }
+        
         LOG.error("Unable to save code for project {}", idProject);
         return null;
     }
@@ -379,7 +401,13 @@ public class ProjectDaoImpl implements ProjectDao {
      * @return
      */
     @Override
-    public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
+    public List<ProjectRecord> getSharedProjects(
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset, 
+            Long idUser) {
+        
         LOG.info("Retreive shared projects.");
 
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
@@ -407,7 +435,13 @@ public class ProjectDaoImpl implements ProjectDao {
      * @return
      */
     @Override
-    public List<ProjectRecord> getSharedProjectsByUser(TableSort sort, TableOrder order, Integer limit, Integer offset, Long idUser) {
+    public List<ProjectRecord> getSharedProjectsByUser(
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset, 
+            Long idUser) {
+        
         LOG.info("Retreive shared projects.");
 
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
@@ -655,6 +689,20 @@ public class ProjectDaoImpl implements ProjectDao {
         return cloned;
     }
 
+    
+    // Produce a current timestamp
+    private GregorianCalendar getCurrentTimestamp() {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new java.util.Date());
+        
+        return cal;
+    }
+    
+
+
+    
+    
+    
     // Evaluate project code and replace any deprecated or updated blocks
     //
     // Return a ProjectRecord object. The code field may be altered to correct
@@ -708,6 +756,24 @@ public class ProjectDaoImpl implements ProjectDao {
         }
 
         return record;
+    }
+
+        /**
+     *
+     * Create a random string to use as a blockID.
+     *
+     * This method is used to create a random block name for blocks that are
+     * replaced in the deprecated block conversion routines.
+     *
+     * @param len
+     * @return
+     */
+    private String randomString(int len) {
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
     }
 
     // Correct depricated block details related to Spin blocks

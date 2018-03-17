@@ -40,6 +40,71 @@ public class ProjectServiceImpl implements ProjectService {
         this.projectSharingService = projectSharingService;
     }
 
+    
+    /**
+     * Create a new project record
+     * 
+     * @param name
+     * @param description
+     * @param descriptionHtml
+     * @param privateProject
+     * @param sharedProject
+     * @param type
+     * @param board
+     * @return 
+     */
+    @Override
+    public ProjectRecord createProject(
+            String name, String description, String descriptionHtml, 
+            boolean privateProject, boolean sharedProject, ProjectType type, 
+            String board) {
+        
+        // Calling saveProject with a null project id will force underlying code
+        // to create a new project
+        return saveProject(
+                null, name, description, descriptionHtml, privateProject, 
+                sharedProject, type, board);
+    }
+
+    /**
+     * Update an existing project or create a new project.
+     * 
+     * If the project id is not supplied, a new project will be created.
+     * Otherwise, the supplied project id will be used to update that project.
+     * 
+     * Note: There are no sanity checks to ensure that we are updating the
+     * correct project
+     * .
+     * @param idProject
+     * @param name
+     * @param description
+     * @param descriptionHtml
+     * @param privateProject
+     * @param sharedProject
+     * @param type
+     * @param board
+     * @return 
+     */
+    @Override
+    public ProjectRecord saveProject(
+            Long idProject, String name, String description, 
+            String descriptionHtml, boolean privateProject, 
+            boolean sharedProject, ProjectType type, String board) {
+        
+        // Check if project is from the current user, if not, unset idProject and create new
+        if (idProject != null) {
+            return projectDao.updateProject(
+                    idProject, name, description, descriptionHtml, 
+                    privateProject, sharedProject);
+        } else {
+            return projectDao.createProject(
+                    name, description, descriptionHtml, type, board, 
+                    privateProject, sharedProject);
+        }
+    }
+
+
+    
     @Override
     public ProjectRecord getProjectOwnedByThisUser(Long idProject) {
         ProjectRecord projectRecord = projectDao.getProject(idProject);
@@ -115,23 +180,8 @@ public class ProjectServiceImpl implements ProjectService {
     }    
 
     @Override
-    public ProjectRecord saveProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
-        // Check if project is from the current user, if not, unset idProject and create new
-        if (idProject != null) {
-            return projectDao.updateProject(idProject, name, description, descriptionHtml, privateProject, sharedProject);
-        } else {
-            return projectDao.createProject(name, description, descriptionHtml, type, board, privateProject, sharedProject);
-        }
-    }
-
-    @Override
     public ProjectRecord cloneProject(Long idProject) {
         return projectDao.cloneProject(idProject);
-    }
-
-    @Override
-    public ProjectRecord createProject(String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board) {
-        return saveProject(null, name, description, descriptionHtml, privateProject, sharedProject, type, board);
     }
 
     @Override
