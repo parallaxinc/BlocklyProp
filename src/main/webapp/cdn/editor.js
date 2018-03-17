@@ -33,15 +33,17 @@ $(document).ready(function () {
         $('.auth-false').css('display', $(this).attr('displayas'));
         $('.auth-true').css('display', 'none');
     }
-    
-    $('.url-prefix').attr('href', function(idx, cur) {return baseUrl + cur;});
-    
+
+    $('.url-prefix').attr('href', function (idx, cur) {
+        return baseUrl + cur;
+    });
+
     // set the URLs for all of the CDN-sourced images
     var imgs = document.getElementsByTagName('img');
     for (var l = 0; l < imgs.length; l++) {
         imgs[l].src = cdnUrl + imgs[l].getAttribute('data-src');
     }
-    
+
     // Set the client download links
     $('.client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
     $('.client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
@@ -87,7 +89,7 @@ $(document).ready(function () {
     }
 
     $('#save-project').on('click', function () {
-        saveProject();  
+        saveProject();
     });
     $('#save-project-as').on('click', function () {
         saveAsDialog();
@@ -106,7 +108,7 @@ $(document).ready(function () {
 var timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
     var d_save = new Date();
-    
+
     // If the proposed delay is less than the delay that's already in 
     // process, don't update the delay to a new shorter time.
     if (d_save.getTime() + (mins * 60000) > last_saved_timestamp) {
@@ -124,7 +126,7 @@ var checkLastSavedTime = function () {
     $('#save-check-warning-time').html(s_save.toString(10));
 
     //if (s_save > 58) {
-        // TODO: It's been to long - autosave, then close/set URL back to login page.
+    // TODO: It's been to long - autosave, then close/set URL back to login page.
     //}
 
     if (t_now > last_saved_timestamp && checkLeave() && user_authenticated) {
@@ -136,7 +138,7 @@ var checkLastSavedTime = function () {
 var showInfo = function (data) {
     //console.log(data);
     $(".project-name").text(data['name']);
-    
+
     // Does the current user own the project?
     if (!data['yours']) {
         // If not, display owner username [and hide save-as menu option - nevermind :) ]
@@ -162,11 +164,11 @@ function generateBlockId(nonce) {
     if (l < 20) {
         blockId = 'zzzzzzzzzzzzzzzzzzzz'.substr(l - 20) + blockId;
     } else {
-    	blockId = blockId.substr(l - 20);
+        blockId = blockId.substr(l - 20);
     }
-    
+
     return blockId;
-};
+}
 
 var propcAsBlocksXml = function () {
     var code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
@@ -239,9 +241,9 @@ var saveProject = function () {
 
         // Mark the time when saved, add 20 minutes to it.
         timestampSaveTime(20, true);
-        
+
     } else {
-        
+
         // If user doesn't own the project - prompt for a new project name and route through
         // an endpoint that will make the project private.
         saveAsDialog();
@@ -249,10 +251,10 @@ var saveProject = function () {
 };
 
 var saveAsDialog = function () {
-    
+
     // use the plain 'save-as' endpoint for now.
     if (1 === 1) {   // if (inDemo !== 'demo') {
-        
+
         // Old function - still in use because save-as+board type is not approved for use.
         utils.prompt("Save project as", projectData['name'], function (value) {
             if (value) {
@@ -271,7 +273,7 @@ var saveAsDialog = function () {
         });
 
     } else {
-        
+
         // Prompt user to save current project first if unsaved
         if (checkLeave() && projectData['yours']) {
             utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
@@ -294,7 +296,7 @@ var saveAsDialog = function () {
         }
 
         // Open modal
-        $('#save-as-type-dialog').modal('show');   
+        $('#save-as-type-dialog').modal('show');
     }
 };
 
@@ -313,7 +315,7 @@ var saveProjectAs = function () {
     // Retrieve the field values
     var p_type = $('#save-as-board-type').val();
     var p_name = $('#save-as-project-name').val();
-    
+
     //get the project's XML code
     var code = '';
     if (projectData['board'] === 'propcfile') {
@@ -337,7 +339,7 @@ var saveProjectAs = function () {
         // Reloading project with new id
         window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
     });
-    timestampSaveTime(20, true);      
+    timestampSaveTime(20, true);
 };
 
 var editProjectDetails = function () {
@@ -351,7 +353,7 @@ var blocklyReady = function () {
     } else {
         document.getElementById('btn-view-xml').style.display = 'none';
     }
-    
+
     if (projectLoaded) {
         setProfile(projectData['board']);
         initToolbox(projectData['board'], []);
@@ -520,7 +522,6 @@ function uploadHandler(files) {
                 }
             }
         }
-        ;
 
         if (xmlValid === true) {
             document.getElementById("selectfile-verify-valid").style.display = "block";
@@ -539,7 +540,7 @@ function uploadHandler(files) {
 
     if (uploadedXML !== '') {
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
-    };
+    }
 }
 
 function clearUploadInfo() {
@@ -599,7 +600,7 @@ function filterToolbox(profileName, peripherals) {
         if (experimental && inDemo !== 'demo') {
             toolboxEntry.remove();
         }
-        
+
         // Set the category's label
         var catKey = toolboxEntry.attr('key');
         if (catKey) {
@@ -647,13 +648,13 @@ function filterToolbox(profileName, peripherals) {
 
     $("#toolbox").find('block').each(function () {
         var toolboxEntry = $(this);
-        
+
         // Remove toolbox categories that are experimental if not in demo
         var experimental = toolboxEntry.attr('experimental');
         if (experimental && inDemo !== 'demo') {
             toolboxEntry.remove();
         }
-        
+
         var include = toolboxEntry.attr('include');
         if (include) {
             var includes = include.split(",");
@@ -698,15 +699,15 @@ function initToolbox(profileName, peripherals) {
         //path: cdnUrl + 'blockly/',
         comments: false,
         zoom: {
-          controls: true,
-          wheel: false,
-          startScale: 1.0,
-          maxScale: 3,
-          minScale: 0.3,
-          scaleSpeed: 1.2
+            controls: true,
+            wheel: false,
+            startScale: 1.0,
+            maxScale: 3,
+            minScale: 0.3,
+            scaleSpeed: 1.2
         }
     });
-    
+
     init(Blockly);
 }
 
