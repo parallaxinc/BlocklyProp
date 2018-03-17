@@ -111,8 +111,8 @@ public class RestProject {
             if (order == null) 
                 order = TableOrder.asc;
             
-            //if (limit == null)
-            //    limit = 20;
+            if (limit == null)
+                limit = 20;
             
             if (offset == null)
                 offset = 0;
