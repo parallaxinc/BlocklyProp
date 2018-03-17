@@ -49,7 +49,6 @@ public class ServletsModule extends ServletModule {
 
         serve("/authenticate").with(AuthenticationServlet.class);
 
-        serve("/project").with(ProjectServlet.class);
         
         // Register a new user account
         serve("/register").with(RegisterServlet.class);
@@ -62,10 +61,19 @@ public class ServletsModule extends ServletModule {
         serve("/resetrequest").with(PasswordResetRequestServlet.class);
         serve("/reset").with(PasswordResetServlet.class);
 
+        // Manage project details
+        serve("/project").with(ProjectServlet.class);
+        
+        //Create a new project record
         serve("/createproject").with(ProjectCreationServlet.class);
+        
+        // Maintain a publicly accessible URI for any specific projet
         serve("/projectlink").with(ProjectLinkServlet.class);
+        
+        // Load a project into the canvas
         serve("/projecteditor").with(ProjectEditorServlet.class);
 
+        
         serve("/public/profile").with(PublicProfileServlet.class);
 
         // Textile pages
