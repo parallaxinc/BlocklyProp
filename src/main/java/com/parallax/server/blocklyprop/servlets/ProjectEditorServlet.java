@@ -16,6 +16,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -26,6 +29,12 @@ public class ProjectEditorServlet extends HttpServlet {
 
     private ProjectService projectService;
     private ProjectConverter projectConverter;
+
+    /**
+     * Application logging facility
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectEditorServlet.class);
+
 
     @Inject
     public void setProjectService(ProjectService projectService) {
@@ -38,7 +47,11 @@ public class ProjectEditorServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("REST: GET projecteditor");
+        
         String idProjectString = req.getParameter("id");
 
         Long idProject = null;

@@ -68,7 +68,11 @@ public class ProjectConverter {
 
             // Get user screen name only if it's a registered user
             if (project.getId() > 0) {
-                result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+                // Get the project owner's screen name
+                String screenName = userService.getUserScreenName(project.getIdUser());
+                result.addProperty("user",(screenName == "" ? "unknown" : screenName));
+
+                // Add the project user's BP user id
                 result.addProperty("id-user", project.getIdUser());
             }
             else {
@@ -81,6 +85,7 @@ public class ProjectConverter {
 
     public JsonObject toJson(ProjectRecord project) {
         JsonObject result = new JsonObject();
+        
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
         result.addProperty("description", project.getDescription());
@@ -91,9 +96,12 @@ public class ProjectConverter {
         result.addProperty("shared", project.getShared());
         result.addProperty("created", DateConversion.toDateTimeString(project.getCreated().getTime()));
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
+        
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
+
         result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
+
         if (isYours) {
             List<ProjectSharingRecord> projectSharingRecords = projectSharingService.getSharingInfo(project.getId());
             if (projectSharingRecords != null && !projectSharingRecords.isEmpty()) {
@@ -101,6 +109,7 @@ public class ProjectConverter {
             }
         }
 
+        // Look for parent project
         if (project.getBasedOn() != null) {
             JsonObject basedOn = new JsonObject();
             ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());

@@ -64,7 +64,7 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
         
-        LOG.info("Sort: {}", sort);
+        LOG.info("REST: GET Sort: sort type:{}", sort);
 
         List<ProjectRecord> projects 
                 = projectService.getSharedProjects(sort, order, limit, offset);
@@ -147,10 +147,14 @@ public class RestSharedProject {
                 LOG.info("Project {} was not found.", idProject);
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-
+            
+            LOG.info("REST: GET project/shared/editor/id - converting project to JSON");
             JsonObject result = projectConverter.toJson(project);
+            
+            LOG.info("REST: GET project/shared/editor/id - getting project code");
             result.addProperty("code", project.getCode());
 
+            LOG.info("Returning meta data on project {}", idProject);
             return Response.ok(result.toString()).build();
         }
         catch (Exception e) {
