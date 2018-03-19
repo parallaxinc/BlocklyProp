@@ -93,7 +93,7 @@ public class RestProject {
             @QueryParam("limit") @ParameterDetail("Number of rows to return") @M() Integer limit, 
             @QueryParam("offset") @ParameterDetail("Offset to next row returned") @M() Integer offset) {
         
-        LOG.info("Retreiving project list");
+        LOG.info("REST: GET project/list");
         
         try {
             // Get the logged in user id for the current session
@@ -148,7 +148,8 @@ public class RestProject {
     @Name("Get project by id")
     @Produces("application/json")
     public Response get(@PathParam("id") @ParameterDetail("Project identifier") Long idProject) {
-        LOG.info("Retreiving project {}", idProject);
+        
+        LOG.info("REST: GET project/get/id - {}", idProject);
         
         try {
             ProjectRecord project = projectService.getProject(idProject);
@@ -194,7 +195,7 @@ public class RestProject {
             @FormParam("id") @ParameterDetail("Project identifier") @M() Long idProject, 
             @FormParam("code") @ParameterDetail("Project code") @M() String code) {
         
-        LOG.info("Saving project {} code", idProject);
+        LOG.info("REST: POST project/code - Saving project {} code", idProject);
         
         try {
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
@@ -226,7 +227,7 @@ public class RestProject {
             @FormParam("code") String code, 
             @FormParam("name") String newName) {
         
-        LOG.info("Saving project {} code as new {}", idProject, newName);
+        LOG.info("REST: POST project/code-as - Saving project {} code as new {}", idProject, newName);
 
         try {
             ProjectRecord savedProject = projectService.saveProjectCodeAs(
@@ -265,7 +266,7 @@ public class RestProject {
             @FormParam("type") ProjectType type, 
             @FormParam("board") String board) {
         
-        LOG.info("Received POST REST call. Saving project {}.", idProject);
+        LOG.info("REST: POST project - Saving project {}.", idProject);
 
         try {
             boolean privateProject = false;
