@@ -17,6 +17,8 @@ import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import com.parallax.server.blocklyprop.services.ProjectSharingService;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.shiro.authz.UnauthorizedException;
 
 /**
@@ -29,6 +31,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     private ProjectDao projectDao;
     private ProjectSharingService projectSharingService;
+
+        
+    /**
+     * Application logging facility
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectServiceImpl.class);
+
 
     @Inject
     public void setProjectDao(ProjectDao projectDao) {
@@ -121,9 +130,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectRecord getProject(Long idProject) {
+        
+        LOG.info("Retrieving project record #{}", idProject);
+        
         ProjectRecord projectRecord = projectDao.getProject(idProject);
+        
         if (projectRecord != null) {
             if (projectRecord.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId()) || projectRecord.getShared()) {
+                LOG.info("Returning project record #{}", projectRecord.getId());
                 return projectRecord;
             } else {
                 throw new UnauthorizedException("Not the current user's project");

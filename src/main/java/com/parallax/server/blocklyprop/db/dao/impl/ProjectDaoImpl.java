@@ -83,7 +83,7 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord getProject(Long idProject) {
-        LOG.info("Retreiving project: {}", idProject);
+        LOG.info("Retreiving data for project #{}", idProject);
 
         ProjectRecord record = null;
 
@@ -732,19 +732,12 @@ public class ProjectDaoImpl implements ProjectDao {
                 LOG.warn("Project code appears to be missing");
             }
 
-            /*
-             * Make a copy of the project. We will use this after the updates
-             * to determine if anything was changed. This ensures that we do
-             * not do any database I/O unless we actually changed something.
+            /* Store the evaluated code in a new variable so we can compare
+             * the copy with the original project code. If the two images
+             * are unalike, update the project code in the database with the
+             * updated code.
              */
-            newCode = currentCode;
-
-            //if (record.getType() == ProjectType.SPIN) {
-            //    newCode = fixSpinProjectBlocks(newCode);
-
-            //} else if (record.getType() == ProjectType.PROPC) {
-                newCode = fixPropcProjectBlocks(newCode, record.getType());
-            //}
+            newCode = fixPropcProjectBlocks(currentCode, record.getType());
 
             // Check for any difference from the original code
             if (!currentCode.equals(newCode)) {
@@ -755,6 +748,7 @@ public class ProjectDaoImpl implements ProjectDao {
             LOG.error("Exception trapped. Message is: {}", ex.getMessage());
         }
 
+        LOG.info("Project blocks unchanged.");
         return record;
     }
 
@@ -777,6 +771,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     // Correct depricated block details related to Spin blocks
+    @Deprecated
     private String fixSpinProjectBlocks(String newCode) {
         LOG.info("Looking for depricated Spin blocks.");
 
@@ -797,8 +792,18 @@ public class ProjectDaoImpl implements ProjectDao {
         return newCode;
     }
 
-    private String fixPropcProjectBlocks(String newCode, ProjectType projType) {
+    /**
+     * Find and replace deprecated project code blocks
+     * 
+     * @param originalCode is the project code that will be evaluated.
+     * @param projType
+     * @return 
+     */
+    private String fixPropcProjectBlocks(String originalCode, ProjectType projType) {
         LOG.info("Looking for depricated PropC blocks.");
+        
+        // Copy the original project code into a working variable
+        String newCode = originalCode;
 
         newCode = newCode.replaceAll("field name=\"OP\">ADD</field",
                 "field name=\"OP\"> + </field");

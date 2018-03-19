@@ -45,7 +45,7 @@ public class ProjectCreationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("REST:createproject ({})",req.getParameter("project-name") );
+        LOG.info("REST:POST createproject ({})",req.getParameter("project-name") );
 
         resp.setContentType("text/json");
         JsonObject result = new JsonObject();
