@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Handler for the /project REST endpoint
@@ -25,7 +28,11 @@ import org.apache.shiro.authz.UnauthorizedException;
 @Singleton
 public class ProjectServlet extends HttpServlet {
 
+    // Get a logger instance
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectServlet.class);
+
     private ProjectService projectService;
+    
 
     @Inject
     public void setProjectService(ProjectService projectService) {
@@ -43,6 +50,8 @@ public class ProjectServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
+        LOG.info("REST: GET project ");
+        
         String clone = req.getParameter("clone");
         if (!Strings.isNullOrEmpty(clone)) {
             clone(Long.parseLong(clone), req, resp);
@@ -54,7 +63,11 @@ public class ProjectServlet extends HttpServlet {
         }
     }
 
-    private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("REST: GET project/clone ");
+        
         try {
             ProjectRecord clonedProject = projectService.cloneProject(idProject);
             if (clonedProject == null) {
@@ -67,7 +80,11 @@ public class ProjectServlet extends HttpServlet {
         }
     }
 
-    private void delete(Long idProject, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void delete(Long idProject, HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("REST: GET project/delete ");
+        
         try {
             try {
                 ProjectRecord project = projectService.getProjectOwnedByThisUser(idProject);
