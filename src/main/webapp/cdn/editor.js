@@ -22,10 +22,10 @@ var uploadedXML = '';
 
 $(document).ready(function () {
     if (user_authenticated) {
-        $('.auth-true').css('display', $(this).attr('displayas'));
+        $('.auth-true').css('display', $(this).attr('data-displayas'));
         $('.auth-false').css('display', 'none');
     } else {
-        $('.auth-false').css('display', $(this).attr('displayas'));
+        $('.auth-false').css('display', $(this).attr('data-displayas'));
         $('.auth-true').css('display', 'none');
     }
 
