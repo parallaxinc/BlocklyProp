@@ -13,7 +13,7 @@ $(document).ready(function () {
     $('[rel="tooltip"]').tooltip();
     simplemde = new SimpleMDE({element: document.getElementById("project-description"), hideIcons: ["link"], spellChecker: false});
 
-    $('#project-type').val(utils.getUrlParameters('lang'));
+    $('#project-type').val(getURLParameter('lang'));
 
     $('[data-toggle="wizard-radio"]').click(function () {
         wizard = $(this).closest('.wizard-card');
@@ -82,7 +82,7 @@ $('#finish').on('click', function () {
         formData['project-description-html'] = simplemde.options.previewRender(simplemde.value());
         $.post('createproject', formData, function (data) {
             if (data['success']) {
-                window.location = $('#finish').data('editor') + projectTypes[utils.getUrlParameters('lang')] + "?project=" + data['id'];
+                window.location = $('#finish').data('editor') + projectTypes[getURLParameter('lang')] + "?project=" + data['id'];
             } else {
                 if (typeof data['message'] === "string")
                     alert("There was an error when BlocklyProp tried to create your project:\n" + data['message']);

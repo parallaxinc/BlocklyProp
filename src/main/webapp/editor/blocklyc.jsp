@@ -16,6 +16,7 @@
         <meta charset="utf-8">
         <meta name="base" content="<url:getUrl url="/"/>">
         <meta name="cdn" content="<url:getCdnUrl url="/"/>">
+        <meta name="projectlink" content="<%= request.getAttribute("project")%>">
         <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
         <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>">
         <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
@@ -45,11 +46,10 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
 
         <!-- Javascript helpers -->
+        <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/propterm.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/detect.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blocklypropclient.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blocklyc.js"/>"></script>
-        <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/editor.js"/>"></script>
 
         <!-- Blockly core/PropC generator -->
@@ -70,7 +70,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/sensors.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/heb.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc/s3.js"/>"></script>
-
+        
         <!-- Style sheets -->
         <link href="<url:getCdnUrl url="/lib/chartist.min.css" />" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" rel="stylesheet" type="text/css" />

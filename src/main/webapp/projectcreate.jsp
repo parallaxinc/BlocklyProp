@@ -85,7 +85,7 @@
                             <label for="project-description"><fmt:message key="project.create.description" /></label>
                             <textarea class="form-control" id="project-description" rows="7" name="project-description"></textarea>
                         </div>
-                        <input type="hidden" id="project-type" name="project-type"/>
+                        <input type="hidden" id="project-type" name="project-type" value="PROPC"/>
                     </div>
                     <div class="row">
                         <div class="col-sm-5 col-sm-offset-1">

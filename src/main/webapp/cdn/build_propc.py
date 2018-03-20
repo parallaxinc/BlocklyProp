@@ -41,7 +41,6 @@ filenames_libs = [
 
 filenames_setups = [
     "propterm.js",
-    "detect.js",
     "blocklypropclient.js",
     "blocklyc.js",
     "utils.js",
