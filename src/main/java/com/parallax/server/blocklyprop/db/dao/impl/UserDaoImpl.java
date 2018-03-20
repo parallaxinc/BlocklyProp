@@ -98,24 +98,28 @@ public class UserDaoImpl implements UserDao {
             return null;
         }
         
-        UserRecord record = create.insertInto(
+        UserRecord record = create.insertInto( 
                 Tables.USER, 
-                Tables.USER.IDCLOUDSESSION, Tables.USER.SCREENNAME)
+                Tables.USER.IDCLOUDSESSION,
+                Tables.USER.SCREENNAME)
                 .values(idCloudSession, screenName)
                 .returning()
                 .fetchOne();
 
+        // Set the User role for this new account
         if (record != null && record.getId() != null && record.getId() > 0) {
             Set<Role> roles = new HashSet<>();
             roles.add(Role.USER);
+            
+            // Update the Roles table
             try {
                 setRoles(record.getId(), roles);
             } catch (UnauthorizedException ue) {
                 // Can be dismissed because of hard coded user role
                 // Print exception in case anything should change
                 LOG.error("Creating a user should have no problem with creating its role (only USER role)", ue);
+                return null;
             }
-
         }
 
         return record;
@@ -231,6 +235,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Deprecated
     public void updateScreenname(Long idUser, String screenname) {
         LOG.info("Attempting to update screen name for user: {} ", idUser);
         

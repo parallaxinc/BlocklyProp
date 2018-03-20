@@ -114,8 +114,8 @@ public class RegisterServlet extends HttpServlet {
         String sponsorEmail = Strings.emptyToNull(req.getParameter("sponsoremail"));
         String sponsorEmailType = Strings.emptyToNull(req.getParameter("sponsoremailtype"));
        
-        LOG.info("Raw screen name: {}", screenname);
-        LOG.info("Raw sponsor email address is: {}", sponsorEmail);
+        LOG.debug("Raw screen name: {}", screenname);
+        LOG.debug("Raw sponsor email address is: {}", sponsorEmail);
 
         // Clean up any possible null fields
         req.setAttribute("screenname", screenname == null ? "" : screenname);
@@ -126,14 +126,13 @@ public class RegisterServlet extends HttpServlet {
         req.setAttribute("sponsoremailtype", sponsorEmailType == null ? "0" : sponsorEmailType);
                 
         // Log a few things
-        LOG.info("Registering screen name: {}", screenname);
-        LOG.info("Registering email: {}", email);
-        LOG.info("Registering month: {}", birthMonth);
-        LOG.info("Registering year: {}", birthYear);
-        LOG.info("Registering sponsor email: {}", sponsorEmail);
-        LOG.info("Registering sponsor type selection: {}", sponsorEmailType);
-
-        LOG.info("Checking REQ Year setting: {}",req.getAttribute("bdmonth"));
+        LOG.debug("Registering screen name: {}", screenname);
+        LOG.debug("Registering email: {}", email);
+        LOG.debug("Registering month: {}", birthMonth);
+        LOG.debug("Registering year: {}", birthYear);
+        LOG.debug("Registering sponsor email: {}", sponsorEmail);
+        LOG.debug("Registering sponsor type selection: {}", sponsorEmailType);
+        LOG.debug("Checking REQ Year setting: {}",req.getAttribute("bdmonth"));
         
         Long idUser;
         
