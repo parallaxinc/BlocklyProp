@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
+import java.util.Base64;
 
 /**
  *
@@ -68,9 +69,13 @@ public class ProjectLinkServlet extends HttpServlet {
         } else {
             JsonObject result = projectConverter.toJson(project);
             result.addProperty("code", project.getCode());
-            req.setAttribute("project", result.toString());
+            
+            //Convert result to base64
+            byte[] projectBytes = Base64.getEncoder().encode(result.toString().getBytes());
+            
+            req.setAttribute("project", new String(projectBytes));
             //if (ProjectType.PROPC == project.getType()) {
-                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-c.jsp").forward(req, resp);
+                req.getRequestDispatcher("/editor/blocklyc.jsp").forward(req, resp);
             //} else if (ProjectType.SPIN == project.getType()) {
             //    req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
             //}

@@ -20,11 +20,6 @@ var idProject = 0;
 
 var uploadedXML = '';
 
-// http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
-function getURLParameter(name) {
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-}
-
 $(document).ready(function () {
     if (user_authenticated) {
         $('.auth-true').css('display', $(this).attr('displayas'));
@@ -50,36 +45,19 @@ $(document).ready(function () {
     $('.client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
 
     idProject = getURLParameter('project');
-    if (!idProject) {
+    var projectlink = null;
+    
+    if (window.location.href.indexOf('projectlink') > -1) {
+        //Decode and parse project data coming from a sharelink
+        var projectRaw = atob($("meta[name=projectlink]").attr("content"));
+        projectlink = JSON.parse(projectRaw);
+        console.log(projectlink);
+        loadProjectData(projectlink);
+    } else if (!idProject) {
         window.location = baseUrl;
     } else {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
-            console.log(data);
-            projectData = data;
-            showInfo(data);
-            projectLoaded = true;
-            if (ready) {
-                setProfile(data['board']);
-                initToolbox(data['board'], []);
-            }
-            if (projectData['board'] === 's3') {
-                $('#prop-btn-ram').addClass('hidden');
-                $('#prop-btn-graph').addClass('hidden');
-                document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-            } else {
-                $('#prop-btn-ram').removeClass('hidden');
-                $('#prop-btn-graph').removeClass('hidden');
-                document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
-            }
-
-            if (data && data['yours'] === false) {
-                $('#edit-project-details').html(page_text_label['editor_view-details']);
-            } else {
-                $('#edit-project-details').html(page_text_label['editor_edit-details']);
-            }
-
-            timestampSaveTime(20, true);
-            setInterval(checkLastSavedTime, 60000);
+            loadProjectData(data);
         }).fail(function () {
             // Failed to load project - this probably means that it belongs to another user and is not shared.
             utils.showMessage('Unable to Access Project', 'The BlocklyProp Editor was unable to access the project you requested.  If you are sure the project exists, you may need to contact the project\'s owner and ask them to share their project before you will be able to view it.', function () {
@@ -87,6 +65,35 @@ $(document).ready(function () {
             });
         });
     }
+    
+    function loadProjectData(data) {
+        console.log(data);
+        projectData = data;
+        showInfo(data);
+        projectLoaded = true;
+        if (ready) {
+            setProfile(data['board']);
+            initToolbox(data['board'], []);
+        }
+        if (projectData['board'] === 's3') {
+            $('#prop-btn-ram').addClass('hidden');
+            $('#prop-btn-graph').addClass('hidden');
+            document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+        } else {
+            $('#prop-btn-ram').removeClass('hidden');
+            $('#prop-btn-graph').removeClass('hidden');
+            document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+        }
+
+        if (data && data['yours'] === false) {
+            $('#edit-project-details').html(page_text_label['editor_view-details']);
+        } else {
+            $('#edit-project-details').html(page_text_label['editor_edit-details']);
+        }
+
+        timestampSaveTime(20, true);
+        setInterval(checkLastSavedTime, 60000);
+    };
 
     $('#save-project').on('click', function () {
         saveProject();
