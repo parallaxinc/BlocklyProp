@@ -8,6 +8,7 @@ html, body {
 .blocklySvg {
     height: 100%;
     width: 100%;
+    position: absolute; /* Safari height clipping fix */
 }
 
 #content_blocks {
