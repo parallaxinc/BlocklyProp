@@ -11,7 +11,7 @@
 <!-- See developer notes to use this feature         -->
 <c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
 
-<!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="utf-8">

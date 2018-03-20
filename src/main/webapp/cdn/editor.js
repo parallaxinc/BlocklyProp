@@ -609,7 +609,7 @@ function filterToolbox(profileName, peripherals) {
         }
 
         // Set the category's label
-        var catKey = toolboxEntry.attr('key');
+        var catKey = toolboxEntry.attr('data-key');
         if (catKey) {
             toolboxEntry.attr('name', toolbox_label[catKey]);
         }
