@@ -1788,19 +1788,19 @@
                                 <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                     <div id="mac1">
                                         <p><span class="keyed-lang-string" data-key="client_macOS_run_instructions1"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/mac_os1.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/mac_os1.png"/></div>
                                     </div>
                                     <div id="mac2" class="hidden">
                                         <p><span class="keyed-lang-string" data-key="client_macOS_run_instructions2"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/mac_os2.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/mac_os2.png"/></div>
                                     </div>
                                     <div id="mac3" class="hidden">
                                         <p><span class="keyed-lang-string" data-key="client_macOS_run_instructions3"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/mac_os3.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/mac_os3.png"/></div>
                                     </div>
                                     <div id="mac4" class="hidden">
                                         <p><span class="keyed-lang-string" data-key="client_run_instructions2"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/usbok.png"/></div>
                                     </div>
                                 </div>
                                 <div style="padding-top:10px;">
@@ -1817,16 +1817,16 @@
                                 <div style="background:#f5f5f5; border-radius:6px; height:250px; padding:6px;">
                                     <div id="win1">
                                         <p><span class="keyed-lang-string" data-key="client_windows_run_instructions1"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/windows1.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/windows1.png"/></div>
                                     </div>
                                     <div id="win2" class="hidden">
                                         <p><span class="keyed-lang-string" data-key="client_windows_run_instructions2"></span></p>
                                         <p><span class="keyed-lang-string" data-key="client_windows_run_instructions3"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/windows2.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/windows2.png"/></div>
                                     </div>
                                     <div id="win3" class="hidden">
                                         <p><span class="keyed-lang-string" data-key="client_run_instructions2"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/usbok.png"/></div>
                                     </div>
                                 </div>
                                 <div style="padding-top:10px;">
@@ -1842,15 +1842,15 @@
                                 <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                     <div id="chr1">
                                         <p><span class="keyed-lang-string" data-key="client_chrome_run_instructions1"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/chrome1.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/chrome1.png"/></div>
                                     </div>
                                     <div id="chr2" class="hidden">
                                         <p><span class="keyed-lang-string" data-key="client_chrome_run_instructions2"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/chrome2.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/chrome2.png"/></div>
                                     </div>
                                     <div id="chr3" class="hidden">
                                         <p><span class="keyed-lang-string" data-key="client_run_instructions2"></span></p>
-                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
+                                        <div align="center"><img src="//:0" data-src="images/client-run/usbok.png"/></div>
                                     </div>
                                 </div>
                                 <div style="padding-top:10px;">
@@ -1867,7 +1867,7 @@
                                 <h4><span class="keyed-lang-string" data-key="clientdownload_download_installer"></span></h4>
                             </div>
                             <div class="client MacOS">
-                                <img src="" data-src="images/os-icons/mac_os.png"/>
+                                <img src="//:0" data-src="images/os-icons/mac_os.png"/>
                                 <a href="#" class="client-mac-link">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_macos_installer"></span></a>
                             </div>
@@ -1877,12 +1877,12 @@
                                 <h4><span class="keyed-lang-string" data-key="clientdownload_download_installer"></span></h4>
                             </div>
                             <div class="client Windows">
-                                <img src="" data-src="images/os-icons/windows.png"/>
+                                <img src="//:0" data-src="images/os-icons/windows.png"/>
                                 <a href="#" class="client-win32-link">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_windows32_installer"></span></a>
                             </div>
                             <div class="client Windows">
-                                <img src="" data-src="images/os-icons/windows.png"/>
+                                <img src="//:0" data-src="images/os-icons/windows.png"/>
                                 <a href="#" class="client-win64-link">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_windows64_installer"></span></a>
                             </div>
@@ -1892,7 +1892,7 @@
                                 <h4><span class="keyed-lang-string" data-key="clientdownload_download_launcher"></span></h4>
                             </div>
                             <div class="client ChromeOS">
-                                <img src="" data-src="images/os-icons/chrome_os.png"/>
+                                <img src="//:0" data-src="images/os-icons/chrome_os.png"/>
                                 <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_chromeos_installer"></span></a>
                             </div>
@@ -1946,7 +1946,7 @@
                                 <h4><span class="keyed-lang-string" data-key="clientdownload_download_installer"></span></h4>
                             </div>
                             <div class="client MacOS">
-                                <img src="" data-src="images/os-icons/mac_os.png"/>
+                                <img src="//:0" data-src="images/os-icons/mac_os.png"/>
                                 <a href="#" class="client-mac-link">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_macos_installer"></span></a>
                             </div>
@@ -1956,12 +1956,12 @@
                                 <h4><span class="keyed-lang-string" data-key="clientdownload_download_installer"></span></h4>
                             </div>
                             <div class="client Windows">
-                                <img src="" data-src="images/os-icons/windows.png"/>
+                                <img src="//:0" data-src="images/os-icons/windows.png"/>
                                 <a href="#" class="client-win32-link">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_windows32_installer"></span></a>
                             </div>
                             <div class="client Windows">
-                                <img src="" data-src="images/os-icons/windows.png"/>
+                                <img src="//:0" data-src="images/os-icons/windows.png"/>
                                 <a href="#" class="client-win64-link">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_windows64_installer"></span></a>
                             </div>
@@ -1971,7 +1971,7 @@
                                 <h4><span class="keyed-lang-string" data-key="clientdownload_download_launcher"></span></h4>
                             </div>
                             <div class="client ChromeOS">
-                                <img src="" data-src="images/os-icons/chrome_os.png"/>
+                                <img src="//:0" data-src="images/os-icons/chrome_os.png"/>
                                 <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
                                     <span class="keyed-lang-string" data-key="clientdownload_client_chromeos_installer"></span></a>
                             </div>
