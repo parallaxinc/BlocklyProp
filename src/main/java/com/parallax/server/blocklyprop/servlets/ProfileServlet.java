@@ -84,13 +84,20 @@ public class ProfileServlet extends HttpServlet {
     }
 
     //@Override
+    @Deprecated
     protected void oldDoPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             log.info("Updating user info");
             User user = cloudSessionUserService.getUser(BlocklyPropSecurityUtils.getUserInfo().getId());
             if (user != null) {
                 SecurityServiceImpl.getSessionData().setUser(user);
-                userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+                
+                /*
+                 * User screen name updates are disabled until the user profile page
+                 * is capable of supporting this feature
+                */
+//                userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+
             }
         } catch (UnknownUserIdException uuie) {
             log.error("Unknown user", uuie);
@@ -168,6 +175,7 @@ public class ProfileServlet extends HttpServlet {
         req.setAttribute("email", user.getEmail());
         req.setAttribute("screenname", user.getScreenname());
         String screenname = req.getParameter("screenname");
+
         if (Strings.isNullOrEmpty(screenname)) {
             req.setAttribute("base-error", "Missing fields");
             req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
@@ -176,7 +184,13 @@ public class ProfileServlet extends HttpServlet {
                 user = cloudSessionUserService.changeUserInfo(BlocklyPropSecurityUtils.getCurrentSessionUserId(), screenname);
                 if (user != null) {
                     SecurityServiceImpl.getSessionData().setUser(user);
-                    userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+                    
+                    /*
+                     * Not allowing changed to the screen name until the user profile
+                     * page is capble of supporting this feature
+                    */
+//                    userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+
                     req.setAttribute("base-success", "Info changed");
                     req.setAttribute("screenname", user.getScreenname());
                     req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
