@@ -994,7 +994,7 @@ $(document).ready(function () {
         var span_tag = $(this);
         
         // Set the text of the label spans
-        var pageLabel = span_tag.attr('key');
+        var pageLabel = span_tag.attr('data-key');
         if (pageLabel) {
             if (span_tag.is('a')) {
                 span_tag.attr('href', page_text_label[pageLabel]);
