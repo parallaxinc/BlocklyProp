@@ -201,52 +201,51 @@ public class SecurityServiceImpl implements SecurityService {
                 IllegalStateException{
 
         User user = new User();
-        assert(!user.isCoppaEligible(1,2017));
 
         // Log a few things
-        LOG.info("In register: parameter screen name: {}", screenname);
-        LOG.info("In register: parameter email: {}", email);
-        LOG.info("In register: parameter month: {}", birthMonth);
-        LOG.info("In register: parameter year: {}", birthYear);
-        LOG.info("In register: parameter sponsor email: {}", parentEmail);
-        LOG.info("In register: parameter sponsor type selection: {}", parentEmailSource);
+        LOG.debug("In register: parameter screen name: {}", screenname);
+        LOG.debug("In register: parameter email: {}", email);
+        LOG.debug("In register: parameter month: {}", birthMonth);
+        LOG.debug("In register: parameter year: {}", birthYear);
+        LOG.debug("In register: parameter sponsor email: {}", parentEmail);
+        LOG.debug("In register: parameter sponsor type selection: {}", parentEmailSource);
         
         // Perform basic sanity checks on inputs
         // Throws NullPointerException if screenname is null
-        LOG.info("Resgistering new user: {}", screenname);
+        LOG.debug("Resgistering new user: {}", screenname);
         Preconditions.checkNotNull(screenname, "ScreenNameNull");
 
         // User email address is required and must be reasonably valid
-        LOG.info("Verifying email address has been supplied");
+        LOG.debug("Verifying email address has been supplied");
         Preconditions.checkNotNull(email, "UserEmailNull");
 
-        LOG.info("Verifying email address is reasonable");
+        LOG.debug("Verifying email address is reasonable");
         Preconditions.checkState(
                 emailValidator.isValid(email),
                 "Email address format is incorrect");
 
-        LOG.info("Verifying that a password was provided");
+        LOG.debug("Verifying that a password was provided");
         Preconditions.checkNotNull(password, "PasswordIsNull");
         
-        LOG.info("Verify that second copy of password was provided");
+        LOG.debug("Verify that second copy of password was provided");
         Preconditions.checkNotNull(passwordConfirm, "PasswordConfirmIsNull");
  
         // Verify that we have valid COPPA data before continuing
         // Birth month
         Preconditions.checkNotNull(birthMonth, "BirthMonthNull");
-        LOG.info("Verify that month is provided: {}", birthMonth);
+        LOG.debug("Verify that month is provided: {}", birthMonth);
         Preconditions.checkState((birthMonth != 0), "BirthMonthNotSet");
 
         // Birth year
         Preconditions.checkNotNull(birthYear, "BirthYearNull");
-        LOG.info("Verify that year is provided: {}", birthYear);
+        LOG.debug("Verify that year is provided: {}", birthYear);
         Preconditions.checkState(
                 (Calendar.getInstance().get(Calendar.YEAR) != birthYear),
                 "BirthYearNotSet");
 
         // Get additional information if the registrant is under 13 years old
         if (user.isCoppaEligible(birthMonth, birthYear)) {
-            LOG.info("User is subject to COPPA regulations");
+            LOG.debug("User is subject to COPPA regulations");
 
             // We must have a sponsor email address for COPPA eligible users
             Preconditions.checkNotNull(
@@ -255,7 +254,7 @@ public class SecurityServiceImpl implements SecurityService {
             
             // Verify that the sponsor email address is reasonable
             if (parentEmail != null && parentEmail.length() > 0) {
-                LOG.info("Verify that optional user email address is reasonable");
+                LOG.debug("Verify that optional user email address is reasonable");
                 Preconditions.checkState(
                     emailValidator.isValid(parentEmail),
                     "SponsorEmail");
@@ -264,18 +263,26 @@ public class SecurityServiceImpl implements SecurityService {
 
         try {
             // Attempt to register the user account data with the cloud session
-            // service
+            // service. If successful, the method call will return a cloud
+            // session user id for the newly created account
             LOG.info("Registering user account with cloud-service");
-            Long id = registerService.registerUser(
-                    email, password, passwordConfirm, "en", screenname,
-                    birthMonth, birthYear, parentEmail, parentEmailSource);
+            Long idCloudSessionUser = registerService.registerUser(
+                    email, 
+                    password, 
+                    passwordConfirm, 
+                    "en", 
+                    screenname,
+                    birthMonth, 
+                    birthYear, 
+                    parentEmail, 
+                    parentEmailSource);
             
             // Create a BlocklyProp user account record
-            if (id > 0) {
-                userDao.create(id, screenname);
+            if (idCloudSessionUser > 0) {
+                userDao.create(idCloudSessionUser, screenname);
             }
             
-            return id;
+            return idCloudSessionUser;
         }
         catch (ServerException se) {
             LOG.error("Server error detected");
@@ -445,7 +452,7 @@ public class SecurityServiceImpl implements SecurityService {
                         if (!Strings.isNullOrEmpty(sessionData.getLocale())) {
                             if (!sessionData.getLocale().equals(user.getLocale())) {
                                 try {
-                                    // User local changed. Let's update the user 
+                                    // User locale changed. Let's update the user 
                                     // account with new locale
                                     LOG.info("Changing user {} locale", user.getScreenname());
                                     user = instance.userService.changeUserLocale(
@@ -469,9 +476,13 @@ public class SecurityServiceImpl implements SecurityService {
                             sessionData.setIdUser(0L);
                         }
 
-                        instance.userDao.updateScreenname(
-                                sessionData.getIdUser(), 
-                                user.getScreenname());
+                        /*
+                         * This should never be necessary until the user profile page
+                         * offers the capability to change the user's screen name
+                         */
+//                        instance.userDao.updateScreenname(
+//                                sessionData.getIdUser(), 
+//                                user.getScreenname());
                     }
                 } catch (UnknownUserException ex) {
                     LOG.error("Unknown user ID. {}", ex);
