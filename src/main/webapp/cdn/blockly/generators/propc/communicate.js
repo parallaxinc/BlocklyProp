@@ -1533,13 +1533,13 @@ Blockly.propc.serial_scan_multiple = function () {
         var code_add = '';
         var i = 0;
         while (this.getFieldValue('CPU' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            if (this.getFieldValue('TYPE' + i).includes('store decimal number')) {
                 code += '%d';
-            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character')) {
                 code += '%c';
-            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number')) {
                 code += '%x';
-            } else if (this.getFieldValue('TYPE' + i).includes('store binary number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store binary number')) {
                 code += '%b';
             } else if (this.getFieldValue('TYPE' + i) === 'in') {
                 code += '%f';
@@ -1718,11 +1718,11 @@ Blockly.propc.debug_lcd_init = function () {
         var dropdown_pin = this.getFieldValue('PIN');
         var baud = this.getFieldValue('BAUD');
 
-        Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
+        Blockly.propc.global_vars_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
     }
 
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('Serial initialize') === -1)
+    if (allBlocks.indexOf('LCD initialize') === -1)
     {
         return '// ERROR: LCD is not initialized!\n';
     } else {
@@ -2293,13 +2293,13 @@ Blockly.propc.xbee_scan_multiple = function () {
         var code_add = '';
         var i = 0;
         while (this.getFieldValue('CPU' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            if (this.getFieldValue('TYPE' + i).includes('store decimal number')) {
                 code += '%d';
-            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character')) {
                 code += '%c';
-            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number')) {
                 code += '%x';
-            } else if (this.getFieldValue('TYPE' + i).includes('store binary number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store binary number')) {
                 code += '%b';
             } else if (this.getFieldValue('TYPE' + i) === 'in') {
                 code += '%f';
