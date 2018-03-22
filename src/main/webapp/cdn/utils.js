@@ -76,6 +76,20 @@ if (!String.prototype.startsWith) {
     };
 }
 
+// http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
+/**
+ * @description determine if an array contains one or more items from another array.
+ * @param {array} haystack the array to search.
+ * @param {array} arr the array providing items to check for in the haystack.
+ * @return {boolean} true|false if haystack contains at least one item from arr.
+ */
+var findOne = function (haystack, arr) {
+    return arr.some(function (v) {
+        // console.log(v + " " + (haystack.indexOf(v) >= 0));
+        return haystack.indexOf(v) >= 0;
+    });
+};
+
 // http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
@@ -116,5 +130,9 @@ $(document).ready(function () {
     
     // Set up divs to hide/show OS-specific content
     $("body").addClass(osName);
+    
+    // Copy the client download and run instructions 
+    // from the client instruction page to the modal that also shows them
+    $("#client-instructions-copy").html($("#client-instructions-original").html());
 });
 

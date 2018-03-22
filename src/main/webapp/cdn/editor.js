@@ -73,7 +73,7 @@ $(document).ready(function () {
         projectLoaded = true;
         if (ready) {
             setProfile(data['board']);
-            initToolbox(data['board'], []);
+            initToolbox(data['board']);
         }
         if (projectData['board'] === 's3') {
             $('#prop-btn-ram').addClass('hidden');
@@ -363,7 +363,7 @@ var blocklyReady = function () {
 
     if (projectLoaded) {
         setProfile(projectData['board']);
-        initToolbox(projectData['board'], []);
+        initToolbox(projectData['board']);
     } else {
         ready = true;
     }
@@ -580,126 +580,9 @@ function uploadMergeCode(append) {
     }
 }
 
-function filterToolbox(profileName, peripherals) {
-    var componentlist = peripherals.slice();
-    componentlist.push(profileName);
-
-    $("#toolbox").find('category').each(function () {
-        var toolboxEntry = $(this);
-        var include = toolboxEntry.attr('include');
-        if (include) {
-            var includes = include.split(",");
-            if (!findOne(componentlist, includes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-        var exclude = toolboxEntry.attr('exclude');
-        if (exclude) {
-            var excludes = exclude.split(",");
-            if (findOne(componentlist, excludes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-        // Remove toolbox categories that are experimental if not in demo
-        var experimental = toolboxEntry.attr('experimental');
-        if (experimental && inDemo !== 'demo') {
-            toolboxEntry.remove();
-        }
-
-        // Set the category's label
-        var catKey = toolboxEntry.attr('data-key');
-        if (catKey) {
-            toolboxEntry.attr('name', toolbox_label[catKey]);
-        }
-
-        if (document.referrer.indexOf('?') !== -1) {
-            if (document.referrer.split('?')[1].indexOf('grayscale=1') > -1) {
-                var colorChanges = {
-                    '140': '#AAAAAA',
-                    '165': '#222222',
-                    '185': '#333333',
-                    '205': '#444444',
-                    '225': '#555555',
-                    '250': '#666666',
-                    '275': '#777777',
-                    '295': '#888888',
-                    '320': '#999999',
-                    '340': '#111111'
-                };
-                var colour = toolboxEntry.attr('colour');
-                if (colour)
-                    toolboxEntry.attr('colour', colorChanges[colour]);
-            }
-        }
-    });
-    $("#toolbox").find('sep').each(function () {
-        var toolboxEntry = $(this);
-        var include = toolboxEntry.attr('include');
-        if (include) {
-            var includes = include.split(",");
-            if (!findOne(componentlist, includes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-        var exclude = toolboxEntry.attr('exclude');
-        if (exclude) {
-            var excludes = exclude.split(",");
-            if (findOne(componentlist, excludes)) {
-                toolboxEntry.remove();
-            }
-        }
-    });
-
-    $("#toolbox").find('block').each(function () {
-        var toolboxEntry = $(this);
-
-        // Remove toolbox categories that are experimental if not in demo
-        var experimental = toolboxEntry.attr('experimental');
-        if (experimental && inDemo !== 'demo') {
-            toolboxEntry.remove();
-        }
-
-        var include = toolboxEntry.attr('include');
-        if (include) {
-            var includes = include.split(",");
-            if (!findOne(componentlist, includes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-        var exclude = toolboxEntry.attr('exclude');
-        if (exclude) {
-            var excludes = exclude.split(",");
-            if (findOne(componentlist, excludes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-    });
-
-}
-
-// http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
-/**
- * @description determine if an array contains one or more items from another array.
- * @param {array} haystack the array to search.
- * @param {array} arr the array providing items to check for in the haystack.
- * @return {boolean} true|false if haystack contains at least one item from arr.
- */
-var findOne = function (haystack, arr) {
-    return arr.some(function (v) {
-        // console.log(v + " " + (haystack.indexOf(v) >= 0));
-        return haystack.indexOf(v) >= 0;
-    });
-};
-
-function initToolbox(profileName, peripherals) {
-    filterToolbox(profileName, peripherals);
+function initToolbox(profileName) {
     Blockly.inject('content_blocks', {
-        toolbox: document.getElementById('toolbox'),
+        toolbox: filterToolbox(profileName),
         trashcan: true,
         media: cdnUrl + 'blockly/media/',
         readOnly: (profileName === 'propcfile' ? true : false),
