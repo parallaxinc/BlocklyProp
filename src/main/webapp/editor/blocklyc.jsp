@@ -81,6 +81,7 @@
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
 
         <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Arimo">
 
         <%--        
         <!-- Minified/Compressed versions of the above files -->

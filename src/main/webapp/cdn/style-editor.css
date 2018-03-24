@@ -15,7 +15,7 @@
 
 html, body {
     background-color: white;
-    font-family: Ubuntu, sans-serif;
+    font-family: Arimo, sans-serif;
     margin: 0;
     padding:0;
     overflow: hidden;
@@ -28,7 +28,7 @@ html, body {
 }
 
 .blocklyWidgetDiv .goog-menuitem-content {
-    font: normal 14px Ubuntu, sans-serif !important;
+    font: normal 14px Arimo, sans-serif !important;
 }
 
 #content_blocks {
