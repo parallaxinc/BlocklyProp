@@ -269,9 +269,9 @@ Blockly.Blocks.math_arithmetic = {
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown([
                     ["+", ' + '],
-                    ["-", ' - '],
-                    ["×", ' * '],
-                    ["÷", ' / '],
+                    ["\u2212", ' - '],
+                    ["\u00D7", ' * '],
+                    ["\u00F7", ' / '],
                     ["% (remainder after division)", ' % '],
                     ["^ (raise to the power of)", ' p ']]), 'OP');
         this.setInputsInline(true);
@@ -294,9 +294,9 @@ Blockly.Blocks.math_arithmetic = {
                         .setCheck('Number')
                         .appendField(new Blockly.FieldDropdown([
                             ["+", ' + '],
-                            ["-", ' - '],
-                            ["×", ' * '],
-                            ["÷", ' / '],
+                            ["\u2212", ' - '],
+                            ["\u00D7", ' * '],
+                            ["\u00F7", ' / '],
                             ["% (remainder after division)", ' % '],
                             ["^ (raise to the power of)", ' p ']]), 'OP' + String.fromCharCode(i));
             }
@@ -334,9 +334,9 @@ Blockly.Blocks.math_arithmetic = {
                     .setCheck('Number')
                     .appendField(new Blockly.FieldDropdown([
                         ["+", ' + '],
-                        ["-", ' - '],
-                        ["×", ' * '],
-                        ["÷", ' / '],
+                        ["\u2212", ' - '],
+                        ["\u00D7", ' * '],
+                        ["\u00F7", ' / '],
                         ["% (remainder after division)", ' % '],
                         ["^ (raise to the power of)", ' p ']]), 'OP' + String.fromCharCode(i));
             if (clauseBlock.valueConnection_) {

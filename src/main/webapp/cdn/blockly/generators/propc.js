@@ -605,3 +605,26 @@ function uniq_fast(a) {
         return tmpOut;
     }
 }
+
+
+/*
+// REPLACES CORE FUNCTION!
+Blockly.Field.prototype.render_ = function() {
+  var width = 0;
+  if (this.visible_ && this.textElement_) {
+    try {
+      width = this.textElement_.getComputedTextLength();  // Change multiplier because it doesn't seem to calculate for the Open Sans font correctly.
+    } catch (e) {
+      // MSIE 11 is known to throw "Unexpected call to method or property
+      // access." if Blockly is hidden.
+      
+      width = this.textElement_.textContent.length * 8;
+    }
+    if (this.borderRect_) {
+      this.borderRect_.setAttribute('width',
+          width + Blockly.BlockSvg.SEP_SPACE_X);
+    }
+  }
+  this.size_.width = width;
+};
+*/
