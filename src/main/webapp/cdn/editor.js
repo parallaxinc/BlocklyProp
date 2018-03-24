@@ -21,6 +21,7 @@ var idProject = 0;
 var uploadedXML = '';
 
 $(document).ready(function () {
+    
     if (user_authenticated) {
         $('.auth-true').css('display', $(this).attr('data-displayas'));
         $('.auth-false').css('display', 'none');
@@ -581,6 +582,12 @@ function uploadMergeCode(append) {
 }
 
 function initToolbox(profileName) {
+        
+    // Replace font family in Blockly's inline CSS
+    for (var f = 0; f < Blockly.Css.CONTENT.length; f++) {
+        Blockly.Css.CONTENT[f] = Blockly.Css.CONTENT[f].replace(/Arial, /g, '').replace(/sans-serif;/g, 'Ubuntu, sans-serif;');
+    }
+    
     Blockly.inject('content_blocks', {
         toolbox: filterToolbox(profileName),
         trashcan: true,
