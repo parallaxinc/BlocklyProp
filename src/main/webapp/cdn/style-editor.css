@@ -1,4 +1,5 @@
 /* open-sans-regular - latin */
+/*
 @font-face {
   font-family: Ubuntu;
   font-style: normal;
@@ -10,6 +11,7 @@
        url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.ttf') format('truetype'),
        url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.svg#Ubuntu') format('svg');
 }
+*/
 
 html, body {
     background-color: white;
