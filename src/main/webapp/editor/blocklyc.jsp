@@ -82,6 +82,7 @@
 
         <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Arimo">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed">
 
         <%--        
         <!-- Minified/Compressed versions of the above files -->

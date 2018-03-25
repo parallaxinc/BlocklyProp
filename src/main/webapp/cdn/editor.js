@@ -585,7 +585,7 @@ function initToolbox(profileName) {
         
     // Replace font family in Blockly's inline CSS
     for (var f = 0; f < Blockly.Css.CONTENT.length; f++) {
-        Blockly.Css.CONTENT[f] = Blockly.Css.CONTENT[f].replace(/Arial, /g, '').replace(/sans-serif;/g, 'Arimo, sans-serif;');
+        Blockly.Css.CONTENT[f] = Blockly.Css.CONTENT[f].replace(/Arial, /g, '').replace(/sans-serif;/g, '\'Encode Sans Semi Condensed\', sans-serif;');
     }
     
     Blockly.inject('content_blocks', {
