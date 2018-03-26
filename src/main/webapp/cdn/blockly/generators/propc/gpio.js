@@ -1422,7 +1422,7 @@ Blockly.Blocks.wav_play = {
                 .appendField(new Blockly.FieldTextInput('filename', function (fn) {
                     fn = fn.replace(/[^A-Z0-9a-z_]/g, '').toLowerCase();
                     if (fn.length > 8) {
-                        fn.length = 8;
+                        fn = fn.substring(0,7);
                     }
                     return fn;
                 }), 'FILENAME');

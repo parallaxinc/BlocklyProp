@@ -51,7 +51,8 @@ filenames_cores = [
     "blockly/apps/blockly_compressed.js",
     "blockly/generators/propc.js",
     "blockly/generators/field_range.js",
-    "blockly/language/en/_messages.js"
+    "blockly/language/en/_messages.js",
+    "blockly/generators/propcToolbox.js"
 ]
 
 filenames_gens = [

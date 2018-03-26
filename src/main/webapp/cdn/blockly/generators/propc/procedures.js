@@ -395,7 +395,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
         }
         this.setTooltip(Blockly.MSG_PROCEDURES_CALLNORETURN_TOOLTIP);
         this.appendDummyInput('TOPROW')
-                .appendField("run function ")
+                .appendField("run function")
                 .appendField("\u201C")
                 .appendField(this.id, 'NAME')
                 .appendField("\u201D");

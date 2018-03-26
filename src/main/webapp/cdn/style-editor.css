@@ -1,14 +1,34 @@
+/* open-sans-regular - latin */
+/*
+@font-face {
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: 400;
+  src: url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.ttf');
+  src: url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.eot?#iefix') format('embedded-opentype'),
+       url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.woff2') format('woff2'),
+       url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.woff') format('woff'),
+       url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.ttf') format('truetype'),
+       url('/blockly/cdn/fonts/ubuntu-v11-latin-ext_latin-regular.svg#Ubuntu') format('svg');
+}
+*/
+
 html, body {
     background-color: white;
-    font-family: sans-serif;
+    font-family: Arimo, sans-serif;
     margin: 0;
     padding:0;
     overflow: hidden;
 }
+
 .blocklySvg {
     height: 100%;
     width: 100%;
     position: absolute; /* Safari height clipping fix */
+}
+
+.blocklyWidgetDiv .goog-menuitem-content {
+    font: normal 14px Arimo, sans-serif !important;
 }
 
 #content_blocks {
@@ -301,7 +321,7 @@ nav .nav > li > a:first-child {
 }
 
 .btn-view-blocks {
-    padding:7px 10px 7px 10px; 
+    padding:5px 10px 5px 10px; 
     font-size: 12px;
     line-height: 1.5;
     color: #fff;
@@ -318,7 +338,7 @@ nav .nav > li > a:first-child {
 }
 
 .btn-view-code {
-    padding:7px 10px 7px 10px; 
+    padding:5px 10px 5px 10px; 
     font-size: 12px;
     line-height: 1.5;
     color: #333;

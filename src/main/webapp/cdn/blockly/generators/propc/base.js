@@ -269,9 +269,9 @@ Blockly.Blocks.math_arithmetic = {
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown([
                     ["+", ' + '],
-                    ["-", ' - '],
-                    ["×", ' * '],
-                    ["÷", ' / '],
+                    ["\u2212", ' - '],
+                    ["\u00D7", ' * '],
+                    ["\u00F7", ' / '],
                     ["% (remainder after division)", ' % '],
                     ["^ (raise to the power of)", ' p ']]), 'OP');
         this.setInputsInline(true);
@@ -294,9 +294,9 @@ Blockly.Blocks.math_arithmetic = {
                         .setCheck('Number')
                         .appendField(new Blockly.FieldDropdown([
                             ["+", ' + '],
-                            ["-", ' - '],
-                            ["×", ' * '],
-                            ["÷", ' / '],
+                            ["\u2212", ' - '],
+                            ["\u00D7", ' * '],
+                            ["\u00F7", ' / '],
                             ["% (remainder after division)", ' % '],
                             ["^ (raise to the power of)", ' p ']]), 'OP' + String.fromCharCode(i));
             }
@@ -334,9 +334,9 @@ Blockly.Blocks.math_arithmetic = {
                     .setCheck('Number')
                     .appendField(new Blockly.FieldDropdown([
                         ["+", ' + '],
-                        ["-", ' - '],
-                        ["×", ' * '],
-                        ["÷", ' / '],
+                        ["\u2212", ' - '],
+                        ["\u00D7", ' * '],
+                        ["\u00F7", ' / '],
                         ["% (remainder after division)", ' % '],
                         ["^ (raise to the power of)", ' p ']]), 'OP' + String.fromCharCode(i));
             if (clauseBlock.valueConnection_) {
@@ -883,7 +883,7 @@ Blockly.Blocks.music_note = {
                 .appendField(new Blockly.FieldDropdown([
                     ['1st', '0.015625'],
                     ['2nd', '0.03125'],
-                    ['3th', '0.0625'],
+                    ['3rd', '0.0625'],
                     ['4th', '0.125'],
                     ['5th', '0.25'],
                     ['6th', '0.5'],
