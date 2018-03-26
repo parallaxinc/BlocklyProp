@@ -27,24 +27,55 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
         this.create = dsl;
     }
 
+    
+    /**
+     * 
+     * @param idProject
+     * @param accessKey
+     * @return 
+     */
     @Override
     public ProjectSharingRecord getProject(Long idProject, String accessKey) {
         return create.selectFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject).and(Tables.PROJECT_SHARING.SHAREKEY.equal(accessKey))).fetchOne();
     }
 
+    
+    /**
+     * 
+     * @param idProject
+     * @param shareKey
+     * @return 
+     */
     @Override
     public ProjectSharingRecord shareProject(Long idProject, String shareKey) {
         return create.insertInto(Tables.PROJECT_SHARING).columns(Tables.PROJECT_SHARING.ID_PROJECT, Tables.PROJECT_SHARING.SHAREKEY).values(idProject, shareKey).returning().fetchOne();
     }
 
+    
+    /**
+     * 
+     * @param idProject
+     * @return 
+     */
     @Override
     public int revokeSharing(Long idProject) {
         return create.deleteFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject)).execute();
     }
 
+    
+    /**
+     * Return the project sharing details for an individual project
+     * 
+     * @param idProject
+     * @return 
+     */
     @Override
     public List<ProjectSharingRecord> getSharingInfo(Long idProject) {
-        return create.selectFrom(Tables.PROJECT_SHARING).where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject)).fetch();
+        return create
+                .selectFrom(Tables.PROJECT_SHARING)
+                .where(Tables.PROJECT_SHARING.ID_PROJECT
+                        .equal(idProject))
+                .fetch();
     }
 
 }

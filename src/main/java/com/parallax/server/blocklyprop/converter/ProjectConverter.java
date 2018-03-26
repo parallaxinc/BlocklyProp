@@ -19,7 +19,8 @@ import com.parallax.server.blocklyprop.utils.DateConversion;
 import java.util.List;
 
 /**
- *
+ * Convert a ProjectRecord object into a JSON object
+ * 
  * @author Michel
  */
 public class ProjectConverter {
@@ -49,6 +50,13 @@ public class ProjectConverter {
         this.projectSharingService = projectSharingService;
     }
 
+    
+    /**
+     * Convert a ProjectRecord to a JSON object
+     * 
+     * @param project
+     * @return 
+     */
     public JsonObject toListJson(ProjectRecord project) {
         JsonObject result = new JsonObject();
 
@@ -83,6 +91,12 @@ public class ProjectConverter {
         return result;
     }
 
+    
+    /**
+     * 
+     * @param project
+     * @return 
+     */
     public JsonObject toJson(ProjectRecord project) {
         JsonObject result = new JsonObject();
         
@@ -103,7 +117,9 @@ public class ProjectConverter {
         result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
 
         if (isYours) {
-            List<ProjectSharingRecord> projectSharingRecords = projectSharingService.getSharingInfo(project.getId());
+            List<ProjectSharingRecord> projectSharingRecords = 
+                    projectSharingService.getSharingInfo(project.getId());
+            
             if (projectSharingRecords != null && !projectSharingRecords.isEmpty()) {
                 result.addProperty("share-key", projectSharingRecords.get(0).getSharekey());
             }
