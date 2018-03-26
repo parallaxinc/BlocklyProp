@@ -120,7 +120,7 @@ function tabClick(id) {
         
         if (id === 'tab_blocks') {
             for (var i = 0; i < btns.length; i++) {
-                btns[i].style.display = 'inline';
+                btns[i].style.display = 'inline-block';
             }
             for (var xt = 0; xt < tbxs.length; xt++) {
                 tbxs[xt].style.display = 'block';
@@ -129,7 +129,7 @@ function tabClick(id) {
             for (var xt = 0; xt < tbxs.length; xt++) {
                 tbxs[xt].style.display = 'none';
             }
-            document.getElementById('btn-view-blocks').style.display = 'inline';
+            document.getElementById('btn-view-blocks').style.display = 'inline-block';
             if (document.getElementById('menu-save-as-propc'))
                 document.getElementById('menu-save-as-propc').style.display = 'block';
         }
@@ -153,10 +153,10 @@ function tabClick(id) {
     document.getElementById('content_' + selectedTab).style.display = 'block';
     // Show the selected pane.
     if (projectData['board'] === 'propcfile' && selectedTab === 'xml' && getURLParameter('debug')) {
-        document.getElementById('btn-view-propc').style.display = 'inline';
+        document.getElementById('btn-view-propc').style.display = 'inline-block';
         document.getElementById('btn-view-xml').style.display = 'none';
     } else if (projectData['board'] === 'propcfile' && selectedTab === 'propc' && getURLParameter('debug')) {
-        document.getElementById('btn-view-xml').style.display = 'inline';
+        document.getElementById('btn-view-xml').style.display = 'inline-block';
         document.getElementById('btn-view-propc').style.display = 'none';
     }
     renderContent(selectedTab);

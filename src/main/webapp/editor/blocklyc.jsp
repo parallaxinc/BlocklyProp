@@ -80,10 +80,8 @@
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
 
-        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Arimo">
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed">
-
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu|Lato|Share+Tech|PT+Sans|Heebo|Cabin|ABeeZee|Arimo|Encode+Sans+Semi+Condensed|Exo+2|Open+Sans">
+        
         <%--        
         <!-- Minified/Compressed versions of the above files -->
         <script type="text/javascript" src="<url:getCdnUrl url="/ace/ace.js"/>"></script>
@@ -158,7 +156,7 @@
                                         </div>
                                         <div style="display:inline; clear:right; float:right;  padding-right: 10px;" align="right">
                                             <select class="dropdown port-dropdown auth-true" data-displayas="inline-block" title="Ports" data-placement="left" id="comPort"></select>
-                                            <a class="btn-view-code" id="btn-view-propc" style="display:inline;" href="#" onclick="tabClick('tab_propc')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" style="vertical-align: middle;"><path d="M0.5,7 C4,1.5 10,1.5 13.5,7 C10,12.5 4,12.5 0.5,7 M0.5,7 C4,3.5 10,3.5 13.5,7" style="stroke:#000;stroke-width:1.5;fill:none;"/><circle cx="7" cy="6.5" r="2.75" style="stroke:#000;stroke-width:1.5;fill:none;"></circle><circle cx="7" cy="6.5" r=".5" style="stroke:#000;stroke-width:1.5;fill:#000;"></circle></svg> <span class="keyed-lang-string" data-key="menu_code"></span></a>
+                                            <a class="btn-view-code" id="btn-view-propc" style="display:inline-block;" href="#" onclick="tabClick('tab_propc')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" style="vertical-align: middle;"><path d="M0.5,7 C4,1.5 10,1.5 13.5,7 C10,12.5 4,12.5 0.5,7 M0.5,7 C4,3.5 10,3.5 13.5,7" style="stroke:#000;stroke-width:1.5;fill:none;"/><circle cx="7" cy="6.5" r="2.75" style="stroke:#000;stroke-width:1.5;fill:none;"></circle><circle cx="7" cy="6.5" r=".5" style="stroke:#000;stroke-width:1.5;fill:#000;"></circle></svg> <span class="keyed-lang-string" data-key="menu_code"></span></a>
                                             <a class="btn-view-blocks" id="btn-view-blocks" style="display:none;" href="#" onclick="tabClick('tab_blocks')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" style="vertical-align: middle;"><path d="M0.5,7 C4,1.5 10,1.5 13.5,7 C10,12.5 4,12.5 0.5,7 M0.5,7 C4,3.5 10,3.5 13.5,7" style="stroke:#fff;stroke-width:1.5;fill:none;"/><circle cx="7" cy="6.5" r="2.75" style="stroke:#fff;stroke-width:1.5;fill:none;"></circle><circle cx="7" cy="6.5" r=".5" style="stroke:#fff;stroke-width:1.5;fill:#fff;"></circle></svg> <span class="keyed-lang-string" data-key="menu_blocks"></span></a>                    
                                             <a href="#" class="btn btn-sm btn-primary" id="btn-view-xml" onclick="tabClick('tab_xml')" style="display: none;"><span class="keyed-lang-string" data-key="editor_view_xml"></span></a>
                                             <div style="display:inline-block;" class="auth-true" data-displayas="inline-block"><a href="#" class="demo-function" id="save-project"><span class="keyed-lang-string" data-key="editor_save"></span></a></div>

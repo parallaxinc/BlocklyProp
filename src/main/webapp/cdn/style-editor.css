@@ -15,7 +15,7 @@
 
 html, body {
     background-color: white;
-    font-family: 'Encode Sans Semi Condensed', sans-serif;
+    font-family: Arimo, sans-serif;
     margin: 0;
     padding:0;
     overflow: hidden;
@@ -28,7 +28,7 @@ html, body {
 }
 
 .blocklyWidgetDiv .goog-menuitem-content {
-    font: normal 14px 'Encode Sans Semi Condensed', sans-serif !important;
+    font: normal 14px Arimo, sans-serif !important;
 }
 
 #content_blocks {
@@ -321,7 +321,7 @@ nav .nav > li > a:first-child {
 }
 
 .btn-view-blocks {
-    padding:8px 10px 7px 10px; 
+    padding:5px 10px 5px 10px; 
     font-size: 12px;
     line-height: 1.5;
     color: #fff;
@@ -338,7 +338,7 @@ nav .nav > li > a:first-child {
 }
 
 .btn-view-code {
-    padding:8px 10px 7px 10px; 
+    padding:5px 10px 5px 10px; 
     font-size: 12px;
     line-height: 1.5;
     color: #333;
