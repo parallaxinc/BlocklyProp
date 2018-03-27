@@ -12,13 +12,16 @@
 <div id="project-form-container"  class="container collapse">
     <div class="row">
         <div class="col-md-12">
-            <h2>
-                <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <fmt:message key="back" /></a>
-                <fmt:message key="project.details_title" />
-                <a class="btn btn-primary open-project-link editor-view-link" href="#" ><fmt:message key="project.viewcode" /></a>
-            </h2>
-            <!-- Post the form contents to /blockly/rest/project  -->
+           <!-- Post the form contents to /blockly/rest/project  -->
             <form id="project-form" action="<url:getUrl url="/rest/project"/>" method="post">
+                <h2>
+                    <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <fmt:message key="back" /></a>
+                    <fmt:message key="project.details_title" />
+                    <a class="btn btn-primary open-project-link editor-view-link" href="#" ><fmt:message key="project.viewcode" /></a>
+                    <shiro:authenticated>
+                        <button class="btn btn-primary your-project hidden" style="float:right;"><fmt:message key="project.savelink" /></button>
+                    </shiro:authenticated>
+                </h2>
                 <div class="alert alert-success alert-dismissible hidden project-changed" id="project-changed">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <p><fmt:message key="project.changed" /></p>
