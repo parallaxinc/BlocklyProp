@@ -1718,7 +1718,7 @@ Blockly.propc.debug_lcd_init = function () {
         var dropdown_pin = this.getFieldValue('PIN');
         var baud = this.getFieldValue('BAUD');
 
-        Blockly.propc.global_vars_['setup_debug_lcd'] = 'serial *debug_lcd';
+        Blockly.propc.global_vars_['setup_debug_lcd'] = 'serial *debug_lcd;';
         Blockly.propc.setups_['setup_debug_lcd'] = 'debug_lcd  = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
     }
 
