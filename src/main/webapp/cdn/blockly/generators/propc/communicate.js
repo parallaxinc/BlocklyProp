@@ -939,13 +939,12 @@ Blockly.Blocks.serial_send_text = {
                     ["hexadecimal number", "HEX"],
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
-                ]), 'TYPE');
+                ], function(type) {this.sourceBlock_.stringTypeCheck(type);}), 'TYPE');
         this.appendValueInput('VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
-        this.stringTypeCheck();
         this.ser_pins = [];
         this.serPins();
     },
@@ -956,6 +955,7 @@ Blockly.Blocks.serial_send_text = {
 
         }
         container.setAttribute('pinmenu', JSON.stringify(this.ser_pins));
+        container.setAttribute('type', this.getFieldValue('TYPE'));
         return container;
     },
     domToMutation: function (xmlElement) {
@@ -971,6 +971,7 @@ Blockly.Blocks.serial_send_text = {
                     .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
             this.setFieldValue(serpin, 'SER_PIN');
         }
+        this.stringTypeCheck(xmlElement.getAttribute('type'));
     },
     serPins: function (oldPin, newPin) {
         var currentPin = '-1';
@@ -1017,7 +1018,7 @@ Blockly.Blocks.serial_send_text = {
         }
         this.ser_pins = uniq_fast(this.ser_pins);
     },
-    onchange: function (event) {
+    onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('Serial initialize') === -1)
         {
@@ -1025,13 +1026,12 @@ Blockly.Blocks.serial_send_text = {
         } else {
             this.setWarningText(null);
         }
-        if (this.stringTypeCheck) {
-            this.stringTypeCheck();
-        }
     },
-    stringTypeCheck: function () {
+    stringTypeCheck: function (type) {
         var setType = "Number";
-        if (this.getFieldValue('TYPE') === 'TEXT') {
+        if (!type) {
+            setType = null;
+        } else if (type === 'TEXT') {
             setType = "String";
         }
         this.getInput('VALUE').setCheck(setType);
@@ -1718,7 +1718,8 @@ Blockly.propc.debug_lcd_init = function () {
         var dropdown_pin = this.getFieldValue('PIN');
         var baud = this.getFieldValue('BAUD');
 
-        Blockly.propc.global_vars_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
+        Blockly.propc.global_vars_['setup_debug_lcd'] = 'serial *debug_lcd';
+        Blockly.propc.setups_['setup_debug_lcd'] = 'debug_lcd  = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
     }
 
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
@@ -2056,13 +2057,20 @@ Blockly.Blocks.xbee_transmit = {
                     ["hexadecimal number", "HEX"],
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
-                ]), "TYPE");
+                ], function(type) {this.sourceBlock_.stringTypeCheck(type);}), 'TYPE');
         this.appendValueInput('VALUE')
                 .setCheck(null);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.stringTypeCheck();
+    },
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('type', this.getFieldValue('TYPE'));
+        return container;
+    },
+    domToMutation: function (container) {
+        this.stringTypeCheck(container.getAttribute('type'));
     },
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
@@ -2072,15 +2080,8 @@ Blockly.Blocks.xbee_transmit = {
         } else {
             this.setWarningText(null);
         }
-        this.stringTypeCheck();
     },
-    stringTypeCheck: function () {
-        var setType = "Number";
-        if (this.getFieldValue('TYPE') === 'TEXT') {
-            setType = "String";
-        }
-        this.getInput('VALUE').setCheck(setType);
-    }
+    stringTypeCheck: Blockly.Blocks['serial_send_text'].stringTypeCheck
 };
 
 Blockly.propc.xbee_transmit = function () {

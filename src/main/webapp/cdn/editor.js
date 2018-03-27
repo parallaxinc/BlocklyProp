@@ -582,7 +582,7 @@ function uploadMergeCode(append) {
 }
 
 function initToolbox(profileName) {
-        
+
     var ff = getURLParameter('font');
     
     if(ff) {
@@ -594,6 +594,10 @@ function initToolbox(profileName) {
         $('html, body').css('font-family', "'" + ff + "', sans-serif");
         $('.blocklyWidgetDiv .goog-menuitem-content').css('font', "'normal 14px '" + ff + "', sans-serif !important'"); //    font: normal 14px Arimo, sans-serif !important;
 
+    } else {
+        for (var f = 0; f < Blockly.Css.CONTENT.length; f++) {
+            Blockly.Css.CONTENT[f] = Blockly.Css.CONTENT[f].replace(/Arial, /g, '').replace(/sans-serif;/g, "Arimo, sans-serif;");
+        }   
     }
     
     Blockly.inject('content_blocks', {

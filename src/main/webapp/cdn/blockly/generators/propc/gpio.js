@@ -1845,8 +1845,8 @@ Blockly.Blocks.ab_drive_init = {
         this.appendDummyInput()
                 .appendField("Robot")
                 .appendField(new Blockly.FieldDropdown([
-                    ["ActivityBot", "abdrive.h"],
                     ["ActivityBot 360\u00b0", "abdrive360.h"],
+                    ["ActivityBot", "abdrive.h"],
                     ["Arlo", "arlodrive.h"],
                     ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
                     this.sourceBlock_.updateShape_({"BOT": bot});

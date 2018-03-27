@@ -80,7 +80,7 @@
         <link href="<url:getCdnUrl url="/style-editor.css"/>" rel="stylesheet" type="text/css" />
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
 
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu|Lato|Share+Tech|PT+Sans|Heebo|Cabin|ABeeZee|Arimo|Encode+Sans+Semi+Condensed|Exo+2|Open+Sans">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu|Rambla|Basic|Oxygen|Rubik|Nunito+Sans|Varela+Round|Puritan|Signika|Magra|Archivo|Itim|Neucha|Lato|Share+Tech|PT+Sans|Heebo|Cabin|ABeeZee|Arimo|Encode+Sans+Semi+Condensed|Exo+2|Open+Sans">
         
         <%--        
         <!-- Minified/Compressed versions of the above files -->
