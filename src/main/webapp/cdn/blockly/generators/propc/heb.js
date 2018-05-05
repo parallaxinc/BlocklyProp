@@ -50,6 +50,30 @@ Blockly.propc.heb_toggle_led = function () {
     return code;
 };
 
+Blockly.Blocks.heb_pwm_led = {
+    init: function () {
+        this.setColour(colorPalette.getColor('functions'));
+        this.appendValueInput("BRIGHTNESS")
+                .setCheck('Number')
+                .appendField('LED')
+                .appendField(new Blockly.FieldDropdown([["0 (left)", "0"], ["1 (right)", "1"]]), "LED")
+                .appendField('brightness')
+                .appendField('R,0,15,0', 'RANGEVALS0');
+        this.getField('RANGEVALS0').setVisible(false);
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.heb_pwm_led = function () {
+    var led_number = this.getFieldValue("LED");
+    var led_state = Blockly.propc.valueToCode(this, "BRIGHTNESS", Blockly.propc.ORDER_NONE);
+
+    var code = 'led_pwm_set(' + led_number + ', ' + led_state + ');\n';
+    return code;
+};
+
 Blockly.Blocks.heb_toggle_led_open = {
     init: function () {
         this.setColour(colorPalette.getColor('functions'));
@@ -733,6 +757,38 @@ Blockly.Blocks.heb_touchpad_status = {
 Blockly.propc.heb_touchpad_status = function () {
     var touchpad = this.getFieldValue("TOUCHPAD");
     return ['button' + (touchpad === '-1' ? 's(' : '(' + touchpad) + ')', Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.heb_touchpad_sensitivity = {
+    init: function () {
+        this.setColour(colorPalette.getColor('io'));
+            this.appendDummyInput()
+                    .appendField("Touchpad sensitivity ")
+                    .appendField(new Blockly.FieldDropdown([
+                            ["0 (low)", "0"], 
+                            ["1", "1"], 
+                            ["2", "2"], 
+                            ["3", "3"], 
+                            ["4", "4"], 
+                            ["5", "5"], 
+                            ["6", "6"], 
+                            ["7 (medium)", "7"], 
+                            ["8", "8"], 
+                            ["9", "9"], 
+                            ["10", "10"], 
+                            ["11", "11"], 
+                            ["12", "12"], 
+                            ["13", "13"], 
+                            ["14", "14"], 
+                            ["15 (high)", "15"]
+                       ]), "LEVEL");
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    }
+};
+
+Blockly.propc.heb_touchpad_sensitivity = function () {
+    return 'touch_sensitivity_set(' + this.getFieldValue("LEVEL") + ')';
 };
 
 Blockly.Blocks.heb_text_to_speech_say = {
