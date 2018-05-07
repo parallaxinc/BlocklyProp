@@ -400,13 +400,14 @@ Blockly.Blocks.array_fill = {
         this.updateArrayMenu();
     },
     buildArrayMenu: function (v_list) {
+        var currList = this.getFieldValue("NUM") || '10,20,30,40,50';
         this.removeInput('NUMS');
         var fi = this.getFieldValue('NUM');
         this.appendDummyInput('NUMS')
                 .appendField('array fill')
                 .appendField(new Blockly.FieldDropdown(v_list || [["list", "list"]]), "VAR")
                 .appendField("with values")
-                .appendField(new Blockly.FieldTextInput('10,20,30,40,50'), 'NUM');
+                .appendField(new Blockly.FieldTextInput(currList), 'NUM');
         this.setFieldValue(fi, 'NUM');
     },
     updateArrayMenu: Blockly.Blocks['array_get'].updateArrayMenu,
