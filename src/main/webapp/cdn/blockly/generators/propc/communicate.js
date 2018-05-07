@@ -1034,7 +1034,7 @@ Blockly.Blocks.serial_send_text = {
         } else if (type === 'TEXT') {
             setType = "String";
         }
-        this.getInput('VALUE').setCheck(setType);
+        //this.getInput('VALUE').setCheck(setType);               // DISABLED FOR NOW - CREATES BROKEN PROJECTS ON RELOAD.  NEED TO FIND A BETTER WAY TO DO THIS
     }
 };
 
