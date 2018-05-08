@@ -698,7 +698,11 @@ Blockly.Blocks.base_delay = {
         this.setTooltip(Blockly.MSG_BASE_DELAY_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput("DELAY_TIME", 'Number')
-                .appendField("pause (ms)")
+                .appendField("pause")
+                .appendField(new Blockly.FieldDropdown([
+                    ["ms", ""],
+                    ["\u00B5s", "_us"]
+                ]), "UNIT")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
@@ -712,7 +716,8 @@ Blockly.Blocks.base_delay = {
 
 Blockly.propc.base_delay = function () {
     var delay_time = Blockly.propc.valueToCode(this, 'DELAY_TIME', Blockly.propc.ORDER_ATOMIC) || '1000';
-    var code = 'pause(' + delay_time + ');\n';
+    var unit = this.getFieldValue("UNIT");
+    var code = 'pause' + unit + '(' + delay_time + ');\n';
     return code;
 };
 

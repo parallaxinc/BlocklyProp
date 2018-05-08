@@ -1987,18 +1987,8 @@ Blockly.Blocks.ab_drive_ramping = {
     newRobot: function (robot, type, ramp) {
         this.setWarningText(null);
         var accelMenu = [];
-        if (robot === 'abdrive.h') {
+        if (robot === 'abdrive360.h') {
             accelMenu = [
-                ["not limited", "2400"],
-                ["1200 ticks/s\u00B2", "1200"],
-                ["800 ticks/s\u00B2 (peppy)", "800"],
-                ["600 ticks/s\u00B2", "600"],
-                ["400 ticks/s\u00B2 (smooth)", "400"],
-                ["200 ticks/s\u00B2", "200"],
-                ["100 ticks/s\u00B2 (sluggish)", "100"]
-            ];
-        } else if (robot === 'abdrive360.h') {
-        accelMenu = [
                 ["Not limited", "1200"],
                 ["600 ticks/s\u00B2 (peppy)", "600"],
                 ["500 ticks/s\u00B2", "450"],
@@ -2007,6 +1997,16 @@ Blockly.Blocks.ab_drive_ramping = {
                 ["200 ticks/s\u00B2", "150"],
                 ["100 ticks/s\u00B2", "75"],
                 ["50 ticks/s\u00B2 (sluggish)", "50"]
+            ];
+        } else {
+            accelMenu = [
+                ["not limited", "2400"],
+                ["1200 ticks/s\u00B2", "1200"],
+                ["800 ticks/s\u00B2 (peppy)", "800"],
+                ["600 ticks/s\u00B2", "600"],
+                ["400 ticks/s\u00B2 (smooth)", "400"],
+                ["200 ticks/s\u00B2", "200"],
+                ["100 ticks/s\u00B2 (sluggish)", "100"]
             ];
         }
         this.removeInput('ACCEL');
@@ -2019,7 +2019,7 @@ Blockly.Blocks.ab_drive_ramping = {
                     ]), "OPS")
                     .appendField(new Blockly.FieldDropdown(accelMenu), "RAMPING");
             this.setFieldValue(type || 'FOR_SPEED', 'OPS');
-            this.setFieldValue(ramp || (robot === 'abdrive.h' ? '600' : '300'), 'RAMPING');
+            this.setFieldValue(ramp || (robot === 'abdrive360.h' ? '300' : '600'), 'RAMPING');
             if (robot === 'arlodrive.h')
                 this.setWarningText('WARNING: This block does not currently work for the Arlo robot.');
         } else if (robot === '') {
