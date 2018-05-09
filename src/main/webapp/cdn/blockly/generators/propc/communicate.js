@@ -939,7 +939,9 @@ Blockly.Blocks.serial_send_text = {
                     ["hexadecimal number", "HEX"],
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
-                ], function(type) {this.sourceBlock_.stringTypeCheck(type);}), 'TYPE');
+                ]
+                //, function(type) {this.sourceBlock_.stringTypeCheck(type);}
+                ), 'TYPE');
         this.appendValueInput('VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
@@ -971,7 +973,7 @@ Blockly.Blocks.serial_send_text = {
                     .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
             this.setFieldValue(serpin, 'SER_PIN');
         }
-        this.stringTypeCheck(xmlElement.getAttribute('type'));
+        // this.stringTypeCheck(xmlElement.getAttribute('type'));
     },
     serPins: function (oldPin, newPin) {
         var currentPin = '-1';
@@ -1026,7 +1028,8 @@ Blockly.Blocks.serial_send_text = {
         } else {
             this.setWarningText(null);
         }
-    },
+    }
+    /*,
     stringTypeCheck: function (type) {
         var setType = "Number";
         if (!type) {
@@ -1036,6 +1039,7 @@ Blockly.Blocks.serial_send_text = {
         }
         //this.getInput('VALUE').setCheck(setType);               // DISABLED FOR NOW - CREATES BROKEN PROJECTS ON RELOAD.  NEED TO FIND A BETTER WAY TO DO THIS
     }
+    */
 };
 
 Blockly.propc.serial_send_text = function () {
@@ -2057,13 +2061,18 @@ Blockly.Blocks.xbee_transmit = {
                     ["hexadecimal number", "HEX"],
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
-                ], function(type) {this.sourceBlock_.stringTypeCheck(type);}), 'TYPE');
+                ]
+                //, function(type) {
+                //    this.sourceBlock_.stringTypeCheck(type);
+                //}
+                        ), 'TYPE');
         this.appendValueInput('VALUE')
                 .setCheck(null);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
+    /*
     mutationToDom: function () {
         var container = document.createElement('mutation');
         container.setAttribute('type', this.getFieldValue('TYPE'));
@@ -2072,6 +2081,7 @@ Blockly.Blocks.xbee_transmit = {
     domToMutation: function (container) {
         this.stringTypeCheck(container.getAttribute('type'));
     },
+    */
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('XBee initialize') === -1)
@@ -2080,8 +2090,9 @@ Blockly.Blocks.xbee_transmit = {
         } else {
             this.setWarningText(null);
         }
-    },
-    stringTypeCheck: Blockly.Blocks['serial_send_text'].stringTypeCheck
+    }
+    //,
+    //stringTypeCheck: Blockly.Blocks['serial_send_text'].stringTypeCheck
 };
 
 Blockly.propc.xbee_transmit = function () {
