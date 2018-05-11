@@ -1254,11 +1254,7 @@ Blockly.Blocks.sound_play = {
             ["set waveform", "wave"],
             ["stop", "stop"]
         ];
-        if (projectData['board'] && projectData['board'] === "heb") {
-            this.setColour(colorPalette.getColor('heb'));
-        } else {
-            this.setColour(colorPalette.getColor('io'));            
-        }
+        this.setColour(colorPalette.getColor('io'));            
         this.addChannelMenu("sound channel", 'VALUE');
         this.appendValueInput("VALUE")
                 .setCheck(null)
@@ -1398,12 +1394,17 @@ Blockly.propc.sound_play = function () {
     var code = 'sound_' + action + '(audio0, ' + channel + ', ' + value + ');';
     
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('sound initialize') === -1 && !(projectData['board'] && projectData['board'] === "heb")) {
+    if (allBlocks.indexOf('sound initialize') === -1 && !(projectData['board'] && 
+            (projectData['board'] === "heb") || (projectData['board'] === "heb-wx"))) {
         code = '// WARNING: You must use a sound initialize block at the beginning of your program!\n';
     }
     
-    if (projectData['board'] && projectData['board'] === "heb" && !this.disabled) {
-        Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(9, 10);';
+    if (projectData['board'] && !this.disabled) {
+        if (projectData['board'] === "heb") {
+            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(9, 10);';
+        } else if (projectData['board'] === "heb-wx") {
+            Blockly.propc.setups_["sound_start"] = 'audio0 = sound_run(0, 1);';
+        }
         Blockly.propc.definitions_["include_soundplayer"] = '#include "sound.h"';
         Blockly.propc.definitions_["sound_define_0"] = 'sound* audio0;';       
     }
@@ -1446,7 +1447,7 @@ Blockly.propc.wav_play = function () {
             }
         }
         if (!initFound) {
-            Blockly.propc.setups_["sd_card"] = 'sd_mount(22, 23, 24, 25);\n';
+            Blockly.propc.setups_["sd_card"] = 'sd_mount(' + profile.default.sd_card + ');\n';
         }
     }
     var code = 'wav_play("' + filename + '.wav");\n';
@@ -1587,7 +1588,7 @@ Blockly.Blocks.sd_open = {
         this.setNextStatement(true, null);
     },
     onchange: function () {
-        if (projectData["board"] !== "activity-board") {
+        if (projectData["board"] !== "activity-board" && projectData["board"] !== "heb-wx") {
             var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
             if (allBlocks.indexOf('SD initialize') === -1) {
                 this.setWarningText('WARNING: You must use a SD initialize\nblock at the beginning of your program!');
@@ -1618,12 +1619,12 @@ Blockly.propc.sd_open = function () {
         }
     }
 
-    if (!this.disabled && !initFound) {
-        Blockly.propc.setups_["sd_card"] = 'sd_mount(22, 23, 24, 25);\n';
+    if (!this.disabled && !initFound && profile.default.sd_card) {
+        Blockly.propc.setups_["sd_card"] = 'sd_mount(' + profile.default.sd_card + ');\n';
     }
 
     var code = head + 'fp = fopen("' + fp + '","' + mode + '");';
-    if (projectData["board"] !== "activity-board" && 
+    if (projectData["board"] !== "activity-board" && projectData["board"] !== "heb-wx" && 
             allBlocks.toString().indexOf('SD initialize') === -1) {
         code = '// WARNING: You must use a SD initialize block at the beginning of your program!';
     }
@@ -1717,7 +1718,8 @@ Blockly.Blocks.sd_read = {
             var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
             if (allBlocks.indexOf('SD file open') === -1) {
                 warnTxt = 'WARNING: You must use a SD file open block\nbefore reading, writing, or closing an SD file!';
-            } else if (allBlocks.indexOf('SD initialize') === -1 && projectData["board"] !== "activity-board") {
+            } else if (allBlocks.indexOf('SD initialize') === -1 && projectData["board"] !== "heb-wx"
+                    && projectData["board"] !== "activity-board") {
                 warnTxt = 'WARNING: You must use a SD initialize\nblock at the beginning of your program!';
             }
         //}
@@ -1765,9 +1767,22 @@ Blockly.propc.sd_read = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('SD file open') === -1) {
         code = '// WARNING: You must use a SD file open block before reading, writing, or closing an SD file!';
-    } else if (allBlocks.indexOf('SD initialize') === -1 && projectData["board"] !== "activity-board") {
+    } else if (allBlocks.indexOf('SD initialize') === -1 && projectData["board"] !== "heb-wx"
+            && projectData["board"] !== "activity-board") {
         code = '// WARNING: You must use a SD initialize block at the beginning of your program!';
     }
+    
+    var initFound = false;
+    for (var x = 0; x < allBlocks.length; x++) {
+        if (allBlocks[x].type === 'sd_init') {
+            initFound = true;
+        }
+    }
+
+    if (!this.disabled && !initFound && profile.default.sd_card) {
+        Blockly.propc.setups_["sd_card"] = 'sd_mount(' + profile.default.sd_card + ');\n';
+    }
+
     return code;
 };
 
@@ -1785,7 +1800,7 @@ Blockly.Blocks.sd_file_pointer = {
                 ], function (m) {
                     this.sourceBlock_.setSdMode(m);
                 }), "MODE")
-                .appendField("pointer");
+                .appendField("pointer = ");
         this.setInputsInline(false);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
@@ -1794,7 +1809,9 @@ Blockly.Blocks.sd_file_pointer = {
     domToMutation: Blockly.Blocks['sd_read'].domToMutation,
     setSdMode: function (m) {
         this.removeInput('FP');
+        var meq = '';
         if (m === 'set') {
+            meq = ' = ';
             this.setOutput(false);
             this.appendValueInput('FP')
                     .setCheck("Number");
@@ -1810,7 +1827,7 @@ Blockly.Blocks.sd_file_pointer = {
                 ], function (m) {
                     this.sourceBlock_.setSdMode(m);
                 }), "MODE")
-                .appendField("pointer");
+                .appendField("pointer" + meq);
         this.setFieldValue(m, 'MODE');
         var n = (m === 'get' ? false : true);
         this.setPreviousStatement(n, "Block");
@@ -1823,9 +1840,21 @@ Blockly.Blocks.sd_file_pointer = {
 Blockly.propc.sd_file_pointer = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     var code = null;
+    var initFound = false;
+    for (var x = 0; x < allBlocks.length; x++) {
+        if (allBlocks[x].type === 'sd_init') {
+            initFound = true;
+        }
+    }
+
+    if (!this.disabled && !initFound && profile.default.sd_card) {
+        Blockly.propc.setups_["sd_card"] = 'sd_mount(' + profile.default.sd_card + ');\n';
+    }
+
     if (allBlocks.indexOf('SD file open') === -1) {
         code = '// WARNING: You must use a SD file open block before using the file pointer!';
-    } else if (allBlocks.indexOf('SD initialize') === -1 && projectData["board"] !== "activity-board") {
+    } else if (allBlocks.indexOf('SD initialize') === -1 && projectData["board"] !== "heb-wx"
+            && projectData["board"] !== "activity-board") {
         code = '// WARNING: You must use a SD initialize block at the beginning of your program!';
     } else if (this.getFieldValue('MODE') === 'set') {
         var fp = Blockly.propc.valueToCode(this, 'FP', Blockly.propc.ORDER_NONE) || '0';

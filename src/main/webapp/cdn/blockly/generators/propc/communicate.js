@@ -3126,13 +3126,12 @@ Blockly.Blocks.ws2812b_init = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+        this.setColour(colorPalette.getColor('protocols'));
         if (projectData && projectData['board'] === 'heb-wx') {
-            this.setColour(colorPalette.getColor('functions'));
             this.appendDummyInput()
                     .appendField("RGB-LED set number of LEDs")
                     .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM");
-        } else {
-            this.setColour(colorPalette.getColor('protocols'));
+        } else {  
             this.appendDummyInput()
                     .appendField("RGB-LED initialize PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
@@ -3200,7 +3199,7 @@ Blockly.Blocks.ws2812b_set = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_SET_TOOLTIP);
-
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("LED")
                 .setCheck("Number")
                 .appendField("RGB-LED set LED number");
@@ -3213,10 +3212,7 @@ Blockly.Blocks.ws2812b_set = {
         this.setWarningText(null);
         this.rgb_pins = [];
         this.warnFlag = 0;
-        if (projectData && projectData['board'] === 'heb-wx') {
-            this.setColour(colorPalette.getColor('functions'));
-        } else {
-            this.setColour(colorPalette.getColor('protocols'));
+        if (projectData && projectData['board'] !== 'heb-wx') {
             this.rgbPins();
         }
     },
@@ -3360,6 +3356,7 @@ Blockly.Blocks.ws2812b_set_multiple = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("START")
                 .setCheck("Number")
                 .appendField("RGB-LED set LEDs from");
@@ -3374,10 +3371,7 @@ Blockly.Blocks.ws2812b_set_multiple = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.rgb_pins = [];
-        if (projectData && projectData['board'] === 'heb-wx') {
-            this.setColour(colorPalette.getColor('functions'));
-        } else {
-            this.setColour(colorPalette.getColor('protocols'));
+        if (projectData && projectData['board'] !== 'heb-wx') {
             this.rgbPins();
         }
     },
@@ -3440,10 +3434,8 @@ Blockly.Blocks.ws2812b_update = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.rgb_pins = [];
-        if (projectData && projectData['board'] === 'heb-wx') {
-            this.setColour(colorPalette.getColor('functions'));
-        } else {
-            this.setColour(colorPalette.getColor('protocols'));
+        this.setColour(colorPalette.getColor('protocols'));
+        if (projectData && projectData['board'] !== 'heb-wx') {
             this.rgbPins();
         }
     },
