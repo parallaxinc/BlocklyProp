@@ -2034,7 +2034,7 @@ Blockly.propc.math_inv_trig = function () {
 };
 
 Blockly.Blocks.constant_define = {
-    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_CONSTANT_DEF_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
