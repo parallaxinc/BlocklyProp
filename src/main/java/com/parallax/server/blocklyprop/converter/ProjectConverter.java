@@ -29,7 +29,11 @@ public class ProjectConverter {
     private UserService userService;
     private ProjectService projectService;
     private ProjectSharingService projectSharingService;
+    
+    // Internal flag to enable/disable parent project details
+    private Boolean includeParentProjectDetails = false;
 
+    
     @Inject
     public void setProjectDao(ProjectDao projectDao) {
         this.projectDao = projectDao;
@@ -91,8 +95,21 @@ public class ProjectConverter {
         return result;
     }
 
+    // Overrride method to provide option to turn off parent project details
+    public JsonObject toJson(ProjectRecord project, Boolean includeParentDetails) {
+        includeParentProjectDetails = includeParentDetails;
+        return toJson(project);
+    }
+    
+    // Overrride method to provide option to turn off parent project details
+    public JsonObject toJson(Project project, Boolean includeParentDetails) {
+        includeParentProjectDetails = includeParentDetails;
+        return toJson(project);
+    }
+
     
     /**
+     * Convert a project record to a JSON payload
      * 
      * @param project
      * @return 
@@ -110,12 +127,14 @@ public class ProjectConverter {
         result.addProperty("shared", project.getShared());
         result.addProperty("created", DateConversion.toDateTimeString(project.getCreated().getTime()));
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
-        
+       
+        // Does current user own this project?
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
 
         result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
 
+        // Obtain a project share key if it is available
         if (isYours) {
             List<ProjectSharingRecord> projectSharingRecords = 
                     projectSharingService.getSharingInfo(project.getId());
@@ -125,25 +144,28 @@ public class ProjectConverter {
             }
         }
 
-        // Look for parent project
-        if (project.getBasedOn() != null) {
-            JsonObject basedOn = new JsonObject();
-            ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
-            if (basedOnProject != null) {
-                basedOn.addProperty("id", basedOnProject.getId());
-                basedOn.addProperty("name", basedOnProject.getName());
-                boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
-                basedOn.addProperty("yours", basedOnProjectisYours);
-                if (!isYours) {
-                    basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+        if (includeParentProjectDetails) {
+            // Look for parent project - WHY????
+            if (project.getBasedOn() != null) {
+                JsonObject basedOn = new JsonObject();
+                ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
+                if (basedOnProject != null) {
+                    basedOn.addProperty("id", basedOnProject.getId());
+                    basedOn.addProperty("name", basedOnProject.getName());
+                    boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+                    basedOn.addProperty("yours", basedOnProjectisYours);
+                    if (!isYours) {
+                        basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+                    }
+                    result.add("basedOn", basedOn);
                 }
-                result.add("basedOn", basedOn);
             }
         }
 
         return result;
     }
 
+    
     public JsonObject toJson(Project project) {
         JsonObject result = new JsonObject();
         result.addProperty("id", project.getId());
@@ -159,20 +181,23 @@ public class ProjectConverter {
         result.addProperty("yours", isYours);
         result.addProperty("user", userService.getUserScreenName(project.getIdUser()));
 
-        if (project.getBasedOn() != null) {
-            JsonObject basedOn = new JsonObject();
-            ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
-            if (basedOnProject != null) {
-                basedOn.addProperty("id", basedOnProject.getId());
-                basedOn.addProperty("name", basedOnProject.getName());
-                boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
-                basedOn.addProperty("yours", basedOnProjectisYours);
-                if (!isYours) {
-                    basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+        if (includeParentProjectDetails) {
+            if (project.getBasedOn() != null) {
+                JsonObject basedOn = new JsonObject();
+                ProjectRecord basedOnProject = projectDao.getProject(project.getBasedOn());
+                if (basedOnProject != null) {
+                    basedOn.addProperty("id", basedOnProject.getId());
+                    basedOn.addProperty("name", basedOnProject.getName());
+                    boolean basedOnProjectisYours = basedOnProject.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
+                    basedOn.addProperty("yours", basedOnProjectisYours);
+                    if (!isYours) {
+                        basedOn.addProperty("user", userService.getUserScreenName(basedOnProject.getIdUser()));
+                    }
+                    result.add("basedOn", basedOn);
                 }
-                result.add("basedOn", basedOn);
             }
         }
+        
         return result;
     }
 
