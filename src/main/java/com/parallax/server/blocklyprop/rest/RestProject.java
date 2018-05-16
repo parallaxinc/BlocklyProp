@@ -166,7 +166,7 @@ public class RestProject {
             }
 
             // The currect user owns this project
-            JsonObject result = projectConverter.toJson(project);
+            JsonObject result = projectConverter.toJson(project,false);
             return Response.ok(result.toString()).build();
         }
         
@@ -201,7 +201,7 @@ public class RestProject {
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
             LOG.debug("Code for project {} has been saved", idProject);
 
-            JsonObject result = projectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject,false);
             LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
@@ -236,7 +236,7 @@ public class RestProject {
                     newName);
             LOG.debug("Code for project {} has been saved as {}", idProject, newName);
             
-            JsonObject result = projectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject,false);
             LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
@@ -289,7 +289,7 @@ public class RestProject {
                     board);
             LOG.debug("Project {} has been saved.", idProject);
 
-            JsonObject result = projectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject,false);
             LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);

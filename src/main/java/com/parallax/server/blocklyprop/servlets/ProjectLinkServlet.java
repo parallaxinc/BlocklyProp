@@ -22,13 +22,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
 import java.util.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
- *
+ * Process the REST endpoint /projectlink
+ * 
  * @author Michel
  */
 @Singleton
 public class ProjectLinkServlet extends HttpServlet {
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectLinkServlet.class);
 
     private ProjectService projectService;
     private ProjectSharingService projectSharingService;
@@ -49,25 +54,52 @@ public class ProjectLinkServlet extends HttpServlet {
         this.projectConverter = projectConverter;
     }
 
+    /**
+     * Process a get request to the endpoint /projectlink
+     * 
+     * @param req
+     * @param resp
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("ProjectLinkServlet - Get()");
+        
+        // Project ID
         String idProjectString = req.getParameter("id");
+        
+        // Share key token
         String shareKey = req.getParameter("key");
 
         Long idProject = null;
+        
+        // Convert the project id from a string to a long
         try {
             idProject = Long.parseLong(idProjectString);
         } catch (NumberFormatException nfe) {
             // Show error screen
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         }
-
+        
+        LOG.info("ProjectLinkServlet - Get(" + idProject.toString() + ")");
+        
+        // Retreive the project. Project meta data will be retruned if the project exists
+        // and the project share key is known and active
         ProjectRecord project = projectSharingService.getSharedProject(idProject, shareKey);
+        
         if (project == null) {
             // Project not found, or invalid share key
+            LOG.info("Unable to retrieve project");
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         } else {
-            JsonObject result = projectConverter.toJson(project);
+            // Add project meta data to result object
+            JsonObject result = projectConverter.toJson(project,false);
+            
+            // Add the project code block to the result object
             result.addProperty("code", project.getCode());
             
             //Convert result to base64
