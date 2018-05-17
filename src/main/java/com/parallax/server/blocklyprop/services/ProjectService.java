@@ -19,6 +19,7 @@ public interface ProjectService {
 
     ProjectRecord getProjectOwnedByThisUser(Long idProject);
 
+    // Return a project
     ProjectRecord getProject(Long idProject);
 
     List<ProjectRecord> getUserProjects(Long idUser, TableSort tablesSort, TableOrder order, Integer limit, Integer offset);

@@ -28,25 +28,33 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class OAuthServlet extends HttpServlet {
 
-    private static final Logger log = LoggerFactory.getLogger(OAuthServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OAuthServlet.class);
 
     protected abstract OAuthAuthenticator getAuthenticator();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        LOG.info("Initating an OAuth request");
+        
+        // Authenticate code
         String code = req.getParameter("code");
+        
         if (Strings.isNullOrEmpty(code)) {
             // Save url if provided
             String url = req.getParameter("url");
+            
             if (!Strings.isNullOrEmpty(url)) {
+                // Invoke the supplied URL                
                 ServletRequest request = new HttpServletRequestImpl(url);
                 WebUtils.saveRequest(request);
             }
 
-            log.info("Sending redirect");
+            LOG.info("Sending redirect");
             resp.sendRedirect(getAuthenticator().getAuthorizationUrl());
         } else {
-            log.info("Received authentication code: {}", code);
+            LOG.info("Received authentication code from OAuth provider");
 
             try {
                 String userEmail = getAuthenticator().handleAuthentication(code);
@@ -76,7 +84,7 @@ public abstract class OAuthServlet extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/servlet/oauth/wrong-authentication-source.jsp").forward(req, resp);
             } catch (ServerException ex) {
                 // Show error
-                log.error("A server exception accured in the oauth authentication process", ex);
+                LOG.error("A server exception accured in the oauth authentication process", ex);
                 req.getRequestDispatcher("/WEB-INF/servlet/oauth/server-error.jsp").forward(req, resp);
             }
         }
