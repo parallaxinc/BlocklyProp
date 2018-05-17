@@ -61,7 +61,8 @@ public class ProjectSharingServiceImpl implements ProjectSharingService {
         List<ProjectSharingRecord> projectList = projectSharingDao.getSharingInfo(idProject);
         
         if (projectList == null | projectList.size() == 0) {
-            LOG.info("Project sharing record does not exist for project: {}", idProject);
+            LOG.info("Project sharing record does not exist for project: {}.", idProject);
+            LOG.info("Creating new project sharing link for project {}.", idProject);
             
             // Create a shared project record
             return projectSharingDao.shareProject(
