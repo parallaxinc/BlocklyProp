@@ -17,6 +17,9 @@ import com.parallax.server.blocklyprop.services.ProjectSharingService;
 import com.parallax.server.blocklyprop.services.UserService;
 import com.parallax.server.blocklyprop.utils.DateConversion;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Convert a ProjectRecord object into a JSON object
@@ -24,6 +27,12 @@ import java.util.List;
  * @author Michel
  */
 public class ProjectConverter {
+
+            
+    /**
+     * Application logging facility
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectConverter.class);
 
     private ProjectDao projectDao;
     private UserService userService;
@@ -115,7 +124,15 @@ public class ProjectConverter {
      * @return 
      */
     public JsonObject toJson(ProjectRecord project) {
+        
+        if (project == null) {
+            LOG.error("Recieved a null project. Unable to convert it to JSON");
+            return null;
+        }
+        
         JsonObject result = new JsonObject();
+        
+        LOG.info("Converting a ProjectRecord object to JSON");
         
         result.addProperty("id", project.getId());
         result.addProperty("name", project.getName());
@@ -128,6 +145,7 @@ public class ProjectConverter {
         result.addProperty("created", DateConversion.toDateTimeString(project.getCreated().getTime()));
         result.addProperty("modified", DateConversion.toDateTimeString(project.getModified().getTime()));
        
+        LOG.debug("Evaluating project owner");
         // Does current user own this project?
         boolean isYours = project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId());
         result.addProperty("yours", isYours);
@@ -136,9 +154,14 @@ public class ProjectConverter {
 
         // Obtain a project share key if it is available
         if (isYours) {
+
+            LOG.debug("Retrieving the project sharing record for project {}",project.getId());
+
             List<ProjectSharingRecord> projectSharingRecords = 
                     projectSharingService.getSharingInfo(project.getId());
-            
+
+            LOG.debug("Checking results from project sharing request");
+
             if (projectSharingRecords != null && !projectSharingRecords.isEmpty()) {
                 result.addProperty("share-key", projectSharingRecords.get(0).getSharekey());
             }
