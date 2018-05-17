@@ -12,7 +12,7 @@
  * key.
  */
 
-ALTER TABLE project_sharing ADD active BIT DEFAULT 0 NULL AFTER sharekey;
+ALTER TABLE blocklyprop.project_sharing ADD active BIT DEFAULT 0 NULL AFTER sharekey;
 
 /* 
  * All of the current rows in the project_sharing table are active. Set the

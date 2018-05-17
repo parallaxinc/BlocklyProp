@@ -128,12 +128,15 @@ public class RestSharedProject {
         LOG.info("REST: /get/" + idProject.toString() + "/");
         
         try {
+            LOG.info("Getting project record.");
             ProjectRecord project = projectService.getProject(idProject);
             
             if (project == null) {
+                LOG.info("project record was not found");
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
 
+            LOG.info("Converting project to JSON string");
             JsonObject result = projectConverter.toJson(project, false);
             LOG.info("REST: /get/" + idProject.toString() + "/ returning project {}.", project.getId());
 
