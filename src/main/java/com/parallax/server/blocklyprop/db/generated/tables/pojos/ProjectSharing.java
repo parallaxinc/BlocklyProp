@@ -23,11 +23,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectSharing implements Serializable {
 
-	private static final long serialVersionUID = 936868624;
+	private static final long serialVersionUID = 1490196343;
 
 	private Long      id;
 	private Long      idProject;
 	private String    sharekey;
+	private Boolean   active;
 	private Boolean   expires;
 	private Timestamp exprireDate;
 
@@ -37,6 +38,7 @@ public class ProjectSharing implements Serializable {
 		this.id = value.id;
 		this.idProject = value.idProject;
 		this.sharekey = value.sharekey;
+		this.active = value.active;
 		this.expires = value.expires;
 		this.exprireDate = value.exprireDate;
 	}
@@ -45,12 +47,14 @@ public class ProjectSharing implements Serializable {
 		Long      id,
 		Long      idProject,
 		String    sharekey,
+		Boolean   active,
 		Boolean   expires,
 		Timestamp exprireDate
 	) {
 		this.id = id;
 		this.idProject = idProject;
 		this.sharekey = sharekey;
+		this.active = active;
 		this.expires = expires;
 		this.exprireDate = exprireDate;
 	}
@@ -79,6 +83,14 @@ public class ProjectSharing implements Serializable {
 		this.sharekey = sharekey;
 	}
 
+	public Boolean getActive() {
+		return this.active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	public Boolean getExpires() {
 		return this.expires;
 	}
@@ -102,6 +114,7 @@ public class ProjectSharing implements Serializable {
 		sb.append(id);
 		sb.append(", ").append(idProject);
 		sb.append(", ").append(sharekey);
+		sb.append(", ").append(active);
 		sb.append(", ").append(expires);
 		sb.append(", ").append(exprireDate);
 

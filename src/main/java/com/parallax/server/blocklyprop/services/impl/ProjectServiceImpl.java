@@ -133,18 +133,27 @@ public class ProjectServiceImpl implements ProjectService {
         
         LOG.info("Retrieving project record #{}", idProject);
         
+        // Retrieve the project record
         ProjectRecord projectRecord = projectDao.getProject(idProject);
         
         if (projectRecord != null) {
-            if (projectRecord.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId()) || projectRecord.getShared()) {
-                LOG.info("Returning project record #{}", projectRecord.getId());
+            LOG.info("Project {} found", projectRecord.getId());
+    
+            if (projectRecord.getShared()) {
+                LOG.info("Returning community project record #{}", projectRecord.getId());
                 return projectRecord;
-            } else {
-                throw new UnauthorizedException("Not the current user's project");
+            }else{
+                if (projectRecord.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())){
+                LOG.info("Returning private project record #{}", projectRecord.getId());
+                return projectRecord;
+                } else {
+                    throw new UnauthorizedException("Not the current user's project");
+                }
             }
-        } else {
-            return null;
-        }
+        } 
+        
+        // Project record is unavailable
+        return null;
     }
 
     @Override

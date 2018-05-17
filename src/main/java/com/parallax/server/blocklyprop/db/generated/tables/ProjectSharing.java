@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectSharing extends TableImpl<ProjectSharingRecord> {
 
-	private static final long serialVersionUID = 1589250114;
+	private static final long serialVersionUID = -101707122;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project_sharing</code>
@@ -65,6 +65,11 @@ public class ProjectSharing extends TableImpl<ProjectSharingRecord> {
 	 * The column <code>blocklyprop.project_sharing.sharekey</code>.
 	 */
 	public final TableField<ProjectSharingRecord, String> SHAREKEY = createField("sharekey", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
+
+	/**
+	 * The column <code>blocklyprop.project_sharing.active</code>.
+	 */
+	public final TableField<ProjectSharingRecord, Boolean> ACTIVE = createField("active", org.jooq.impl.SQLDataType.BIT.defaulted(true), this, "");
 
 	/**
 	 * The column <code>blocklyprop.project_sharing.expires</code>.
