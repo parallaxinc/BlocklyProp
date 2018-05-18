@@ -70,29 +70,32 @@
                 </c:if>
 
                 <c:if test="${copparestricted == false}">
-                    <div class="form-group">
-                        <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default">
-                                <input type="radio" name="sharing" data-toggle="tooltip" title="<fmt:message key="project.sharing.tooltip.private" />" data-placement="top" class="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" name="sharing" data-toggle="tooltip" title="<fmt:message key="project.sharing.tooltip.shared" />" checked="checked" data-placement="top" class="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
-                            </label>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type="radio" name="sharing" data-toggle="tooltip" title="<fmt:message key="project.sharing.tooltip.private" />" data-placement="top" class="sharing" value="private" id="project-form-private"/><fmt:message key="project.sharing.private" />
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="sharing" data-toggle="tooltip" title="<fmt:message key="project.sharing.tooltip.shared" />" checked="checked" data-placement="top" class="sharing" value="shared" id="project-form-shared"/><fmt:message key="project.sharing.shared" />
+                                </label>
+                            </div>
                         </div>
                     </div>
-
-                    <shiro:authenticated>
-                        <div class="form-group your-project hidden">
-                            <label for="share-link"><fmt:message key="project.share-link" /></label>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <input type="checkbox" id="project-link-share-enable">
-                                </span>
-                                <input type="text" class="form-control"  name="share-link" id="project-link-share" data-href="<url:getUrl url="/projectlink?id="/>" title="Ctrl/&#8984; + c to copy" readonly="readonly"/>
-                            </div><!-- /input-group -->
-                        </div>
-                    </shiro:authenticated>
+                    <div class="col-md-9">
+                        <shiro:authenticated>
+                            <div class="form-group your-project hidden">
+                                <label for="share-link"><fmt:message key="project.share-link" /></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" id="project-link-share-enable">
+                                    </span>
+                                    <input type="text" class="form-control"  name="share-link" id="project-link-share" data-href="<url:getUrl url="/projectlink?id="/>" title="Ctrl/&#8984; + c to copy" readonly="readonly"/>
+                                </div><!-- /input-group -->
+                            </div>
+                        </shiro:authenticated>
+                    </div>
                 </c:if>
 
                 <shiro:authenticated>

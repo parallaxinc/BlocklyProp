@@ -150,6 +150,7 @@ li.project {
 /* Markdown editor */
 .CodeMirror, .CodeMirror-scroll {
     min-height: 150px !important;
+    height: 150px;
 }
 
 .CodeMirror-fullscreen .CodeMirror, .CodeMirror-fullscreen .CodeMirror-scroll {

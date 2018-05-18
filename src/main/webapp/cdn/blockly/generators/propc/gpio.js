@@ -2375,8 +2375,8 @@ Blockly.Blocks.activitybot_calibrate = {
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([
-                    ["ActivityBot", "abcalibrate.h"],
-                    ["ActivityBot 360\u00b0", "abcalibrate360.h"]]), "BOT")
+                    ["ActivityBot 360\u00b0", "abcalibrate360.h"],
+                    ["ActivityBot", "abcalibrate.h"]]), "BOT")
                 .appendField("calibrate");
     }
 };
@@ -2400,8 +2400,8 @@ Blockly.Blocks.activitybot_display_calibration = {
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown([
-                    ["ActivityBot", "abdrive.h"],
-                    ["ActivityBot 360\u00b0", "abcalibrate360.h"]]), "BOT")
+                    ["ActivityBot 360\u00b0", "abcalibrate360.h"],
+                    ["ActivityBot", "abcalibrate.h"]]), "BOT")
                 .appendField("display calibration")
                 .appendField(new Blockly.FieldDropdown([
                     ['results', 'result'],
