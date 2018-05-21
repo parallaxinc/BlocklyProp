@@ -14,4 +14,4 @@
  * scanned against the current block version.
  */
 
-ALTER TABLE blocklyprop.project_sharing ADD code_block_version SMALLINT DEFAULT 0 NOT NULL AFTER code;
+ALTER TABLE blocklyprop.project ADD code_block_version SMALLINT DEFAULT 0 NOT NULL AFTER code;
