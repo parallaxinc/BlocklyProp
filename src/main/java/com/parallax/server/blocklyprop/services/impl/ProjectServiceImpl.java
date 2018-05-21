@@ -38,7 +38,6 @@ public class ProjectServiceImpl implements ProjectService {
      */
     private static final Logger LOG = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
-
     @Inject
     public void setProjectDao(ProjectDao projectDao) {
         this.projectDao = projectDao;
