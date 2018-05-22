@@ -27,7 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Process a user account confirmation email URL
+ * 
  * @author Michel
  */
 @Singleton
@@ -65,6 +66,8 @@ public class ConfirmRequestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
+        LOG.info("REST:/confirmrequest/ Get request received");
+
         req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
                 .forward(req, resp);
     }
@@ -74,6 +77,7 @@ public class ConfirmRequestServlet extends HttpServlet {
      * 
      * @param req
      * @param resp
+     * 
      * @throws ServletException
      * @throws IOException 
      */
@@ -81,6 +85,8 @@ public class ConfirmRequestServlet extends HttpServlet {
     protected void doPost(
             HttpServletRequest req, 
             HttpServletResponse resp) throws ServletException, IOException {
+
+        LOG.info("REST:/confirmrequest/ Post request received");
         
         String email = req.getParameter("email");
         
@@ -93,7 +99,6 @@ public class ConfirmRequestServlet extends HttpServlet {
                 LOG.info("Processing account confirmation for {}",email);
                 if (cloudSessionLocalUserService.requestNewConfirmEmail(email)) {
                     showTextilePage(req, resp, ConfirmPage.CONFIRM_REQUESTED);
-                    //req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-requested.jsp").forward(req, resp);
                 } else {
                     LOG.warn("Unable to process account confirmation for {}",email);
                     req.setAttribute("error", true);
@@ -105,21 +110,24 @@ public class ConfirmRequestServlet extends HttpServlet {
                 req.setAttribute("unknownEmail", true);
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
                         .forward(req, resp);
+
             } catch (InsufficientBucketTokensException ex) {
                 LOG.warn("Account confirmation failed: Insufficient tokens");
                 req.setAttribute("insufficientTokens", true);
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
                         .forward(req, resp);
+
             } catch (EmailAlreadyConfirmedException ex) {
                 LOG.warn("Account confirmation failed: Account already confimed");
                 showTextilePage(req, resp, ConfirmPage.ALREADY_CONFIRMED);
-                //req.getRequestDispatcher("WEB-INF/servlet/confirm/already-confirmed.jsp").forward(req, resp);
+
             } catch (ServerException se) {
                 LOG.error("Account confirmation failed with a server exception");
                 LOG.error("Server error message: {}", se.getMessage());
                 req.setAttribute("server-exception", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
                         .forward(req, resp);
+
             } catch (WrongAuthenticationSourceException ex) {
                 LOG.info("Trying to request email confirm of non local user!");
                 req.setAttribute("wrongAuthenticationSource", true);

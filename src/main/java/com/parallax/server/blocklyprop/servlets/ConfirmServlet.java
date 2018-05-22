@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class ConfirmServlet extends HttpServlet {
 
-    private static Logger log = LoggerFactory.getLogger(ConfirmServlet.class);
+    private static Logger LOG = LoggerFactory.getLogger(ConfirmServlet.class);
 
     private final TextileReader textileFileReader = new TextileReader();
 
@@ -58,12 +58,18 @@ public class ConfirmServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
             throws ServletException, IOException {
+        
+        LOG.info("REST:/confirm/ Get request received");
+
         confirmToken(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+        LOG.info("REST:/confirm/ Post request received");
+
         confirmToken(req, resp);
     }
 
@@ -104,7 +110,7 @@ public class ConfirmServlet extends HttpServlet {
                 req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
             } catch (WrongAuthenticationSourceException ex) {
-                log.warn("Trying to confirm email of non local user!");
+                LOG.warn("Trying to confirm email of non local user!");
                 req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm.jsp").forward(req, resp);
             }

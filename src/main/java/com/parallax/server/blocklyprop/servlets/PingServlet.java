@@ -11,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -18,13 +21,21 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Singleton
 public class PingServlet extends HttpServlet {
+    
+    /**
+     * Handle for any logging activity
+     */
+    private final Logger LOG = LoggerFactory.getLogger(PingServlet.class);
+
 
     /*
      * Respond to a ping request
      */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
+            ServletException, IOException {
+        
+        LOG.info("REST:/ping/ Get request received");
         resp.getWriter().write("<html><body>pong</body></html>");
     }
-
 }

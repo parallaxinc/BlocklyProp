@@ -26,7 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Reset user account password via email
+ * 
  * @author Michel
  */
 @Singleton
@@ -47,14 +48,25 @@ public class PasswordResetRequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+        
+        LOG.info("REST:/resetrequest/ Get request received");
+
+        req.getRequestDispatcher(
+                "WEB-INF/servlet/password-reset/reset-request.jsp"
+            ).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        LOG.info("REST:/resetrequest/ Post request received");
+
         String email = req.getParameter("email");
+        
         if (Strings.isNullOrEmpty(email)) {
-            req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+            req.getRequestDispatcher(
+                    "WEB-INF/servlet/password-reset/reset-request.jsp"
+            ).forward(req, resp);
         } else {
             try {
                 if (cloudSessionLocalUserService.requestPasswordReset(email)) {
