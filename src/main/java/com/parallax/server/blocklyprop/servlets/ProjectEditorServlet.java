@@ -50,23 +50,27 @@ public class ProjectEditorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("REST: GET projecteditor");
         
         String idProjectString = req.getParameter("id");
-
         Long idProject = null;
+
+        LOG.info("REST: GET /projecteditor/{}", idProjectString);
+        
         try {
             idProject = Long.parseLong(idProjectString);
         } catch (NumberFormatException nfe) {
             // Show error screen
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         }
-
+        
+        LOG.info("Getting project {}", idProject);
         ProjectRecord project = projectService.getProject(idProject);
         if (project == null) {
             // Project not found, or invalid share key
+            LOG.info("Project {} was not found.",idProjectString);
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         } else {
+            LOG.info("returning project {} to /editor/blocklyc.jsp", project.getId());
             //if (ProjectType.PROPC == project.getType()) {
                 resp.sendRedirect(req.getContextPath() + "/editor/blocklyc.jsp?project=" + project.getId());
             //} else if (ProjectType.SPIN == project.getType()) {
