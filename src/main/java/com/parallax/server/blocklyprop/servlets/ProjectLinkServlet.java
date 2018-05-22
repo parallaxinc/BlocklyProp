@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Process the REST endpoint /projectlink
+ * Manage project link URI for a project
  * 
  * @author Michel
  */
@@ -67,8 +67,8 @@ public class ProjectLinkServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("REST: /projectlink/");
-        
+        LOG.info("REST:/projectlink/ Get request received");
+
         // Project ID
         String idProjectString = req.getParameter("id");
         

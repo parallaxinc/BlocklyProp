@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Handler for the /project REST endpoint
+ * Clone or delete an existing project
  * 
  * @author Michel
  */
@@ -50,7 +50,7 @@ public class ProjectServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("REST: GET project ");
+        LOG.info("REST:/project/ Get request received");
         
         String clone = req.getParameter("clone");
         if (!Strings.isNullOrEmpty(clone)) {
@@ -66,7 +66,7 @@ public class ProjectServlet extends HttpServlet {
     private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("REST: GET project/clone ");
+        LOG.info("Cloning project {}", idProject);
         
         try {
             ProjectRecord clonedProject = projectService.cloneProject(idProject);
@@ -83,7 +83,7 @@ public class ProjectServlet extends HttpServlet {
     private void delete(Long idProject, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("REST: GET project/delete ");
+       LOG.info("Deleting project {}", idProject);
         
         try {
             try {

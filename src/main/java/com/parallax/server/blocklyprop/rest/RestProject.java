@@ -93,7 +93,7 @@ public class RestProject {
             @QueryParam("limit") @ParameterDetail("Number of rows to return") @M() Integer limit, 
             @QueryParam("offset") @ParameterDetail("Offset to next row returned") @M() Integer offset) {
         
-        LOG.info("REST: GET project/list");
+        LOG.info("REST:/rest/project/list/ Get request received");
         
         try {
             // Get the logged in user id for the current session
@@ -148,8 +148,8 @@ public class RestProject {
     @Name("Get project by id")
     @Produces("application/json")
     public Response get(@PathParam("id") @ParameterDetail("Project identifier") Long idProject) {
-        
-        LOG.info("REST: GET project/get/id - {}", idProject);
+
+        LOG.info("REST:/rest/project/get/ Get request received for project '{}'", idProject);
         
         try {
             ProjectRecord project = projectService.getProject(idProject);
@@ -195,7 +195,7 @@ public class RestProject {
             @FormParam("id") @ParameterDetail("Project identifier") @M() Long idProject, 
             @FormParam("code") @ParameterDetail("Project code") @M() String code) {
         
-        LOG.info("REST: POST project/code - Saving project {} code", idProject);
+        LOG.info("REST:/rest/project/code/ POST request received for project '{}'", idProject);
         
         try {
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
@@ -227,9 +227,11 @@ public class RestProject {
             @FormParam("code") String code, 
             @FormParam("name") String newName) {
         
-        LOG.info("REST: POST project/code-as - Saving project {} code as new {}", idProject, newName);
+        LOG.info("REST:/rest/project/code-as/ POST request received for project '{}'", idProject);
 
         try {
+            LOG.info("Saving project '{}', '{}' as a new project", idProject, newName);
+
             ProjectRecord savedProject = projectService.saveProjectCodeAs(
                     idProject, 
                     code, 
@@ -266,7 +268,7 @@ public class RestProject {
             @FormParam("type") ProjectType type, 
             @FormParam("board") String board) {
         
-        LOG.info("REST: POST project - Saving project {}.", idProject);
+        LOG.info("REST:/rest/project/ POST request received for project '{}'", idProject);
 
         try {
             boolean privateProject = false;
