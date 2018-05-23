@@ -1869,15 +1869,19 @@ Blockly.propc.sd_file_pointer = function () {
 Blockly.Blocks.ab_drive_init = {
     helpUrl: Blockly.MSG_ROBOT_HELPURL,
     init: function () {
+        var botTypeMenu = [
+                    ["ActivityBot 360\u00b0", "abdrive360.h"],
+                    ["ActivityBot", "abdrive.h"],
+                    ["Arlo", "arlodrive.h"],
+                    ["Servo Differential Drive", "servodiffdrive.h"]];
+        if (projectData["board"] !== "activity-board") {
+            botTypeMenu = [["Servo Differential Drive", "servodiffdrive.h"]];
+        }
         this.setTooltip(Blockly.MSG_ROBOT_DRIVE_INIT_TOOLTIP);
         this.setColour(colorPalette.getColor('robot'));
         this.appendDummyInput()
                 .appendField("Robot")
-                .appendField(new Blockly.FieldDropdown([
-                    ["ActivityBot 360\u00b0", "abdrive360.h"],
-                    ["ActivityBot", "abdrive.h"],
-                    ["Arlo", "arlodrive.h"],
-                    ["Servo Differential Drive", "servodiffdrive.h"]], function (bot) {
+                .appendField(new Blockly.FieldDropdown(botTypeMenu, function (bot) {
                     this.sourceBlock_.updateShape_({"BOT": bot});
                 }), "BOT")
                 .appendField("initialize");
@@ -1885,6 +1889,9 @@ Blockly.Blocks.ab_drive_init = {
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+        if (projectData["board"] !== "activity-board") {
+            this.updateShape_({"BOT": "servodiffdrive.h", "LEFT": '12', "RIGHT": '13'});
+        }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -1975,6 +1982,9 @@ Blockly.Blocks.ab_drive_ramping = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.isBot = '';
+        if (projectData["board"] !== "activity-board") {
+            this.newRobot('servodiffdrive.h');
+        }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
