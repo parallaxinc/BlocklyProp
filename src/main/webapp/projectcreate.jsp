@@ -63,7 +63,17 @@
                                         <option value="s3"><fmt:message key="project.board.s3" /></option>
                                         <option value="flip"><fmt:message key="project.board.flip" /></option>
                                         <option value="heb"><fmt:message key="project.board.heb" /></option>
+                                        <c:choose>
+                                            <c:when test="${experimental == true}">
+                                                <option value="heb-wx"><fmt:message key="project.board.heb-wx" /></option>
+                                            </c:when>
+                                        </c:choose>
                                         <option value="other"><fmt:message key="project.board.other" /></option>
+                                        <c:choose>
+                                            <c:when test="${experimental == true}">
+                                                <option value="propcfile"><fmt:message key="project.board.propcfile" /></option>
+                                            </c:when>
+                                        </c:choose>
                                     </c:if>
                                     <c:if test="${param.lang == 'SPIN'}">
                                         <option value="s3"><fmt:message key="project.board.s3" /></option>
@@ -75,7 +85,7 @@
                             <label for="project-description"><fmt:message key="project.create.description" /></label>
                             <textarea class="form-control" id="project-description" rows="7" name="project-description"></textarea>
                         </div>
-                        <input type="hidden" id="project-type" name="project-type"/>
+                        <input type="hidden" id="project-type" name="project-type" value="PROPC"/>
                     </div>
                     <div class="row">
                         <div class="col-sm-5 col-sm-offset-1">

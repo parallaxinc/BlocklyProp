@@ -72,6 +72,9 @@ public class RestCompile {
     @Name("compile")
     @Produces("text/plain")
     public Response get(@QueryParam("test") String testString) {
+        
+        LOG.info("REST:/rest/compile/ Get request received");
+
         return Response.ok("Hello " + testString).build();
     }
 
@@ -81,7 +84,13 @@ public class RestCompile {
     @Name("Spin")
     //  @Consumes("text/plain")
     @Produces("application/json")
-    public Response compileSpin(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, @FormParam("code") String code) {
+    public Response compileSpin(
+            @PathParam("action") CompileActionTypeWrapper actionWrapper, 
+            @QueryParam("id") Long idProject, 
+            @FormParam("code") String code) {
+        
+        LOG.info("REST:/rest/compile/spin/ Post request received");
+
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;
@@ -102,7 +111,13 @@ public class RestCompile {
     @Detail("C compile")
     @Name("C")
     @Produces("text/json")
-    public Response compileC(@PathParam("action") CompileActionTypeWrapper actionWrapper, @QueryParam("id") Long idProject, @FormParam("code") String code) {
+    public Response compileC(
+            @PathParam("action") CompileActionTypeWrapper actionWrapper, 
+            @QueryParam("id") Long idProject, 
+            @FormParam("code") String code) {
+
+        LOG.info("REST:/rest/compile/c/ Post request received");
+
         Response response = checkLimiterBucket();
         if (response != null) {
             return response;

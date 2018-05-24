@@ -12,7 +12,7 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="<url:getCdnUrl url="/detect.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
     </head>
     <body>
 

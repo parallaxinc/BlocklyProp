@@ -16,6 +16,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -26,6 +29,12 @@ public class ProjectEditorServlet extends HttpServlet {
 
     private ProjectService projectService;
     private ProjectConverter projectConverter;
+
+    /**
+     * Application logging facility
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectEditorServlet.class);
+
 
     @Inject
     public void setProjectService(ProjectService projectService) {
@@ -38,27 +47,30 @@ public class ProjectEditorServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
         String idProjectString = req.getParameter("id");
-
         Long idProject = null;
+
+        LOG.info("REST:/projecteditor/{} Get request received", idProjectString); 
+
         try {
             idProject = Long.parseLong(idProjectString);
         } catch (NumberFormatException nfe) {
             // Show error screen
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         }
-
+        
+        LOG.info("Getting project {}", idProject);
         ProjectRecord project = projectService.getProject(idProject);
         if (project == null) {
             // Project not found, or invalid share key
+            LOG.info("Project {} was not found.",idProjectString);
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         } else {
-            //if (ProjectType.PROPC == project.getType()) {
+            LOG.info("returning project {} to /editor/blocklyc.jsp", project.getId());
                 resp.sendRedirect(req.getContextPath() + "/editor/blocklyc.jsp?project=" + project.getId());
-            //} else if (ProjectType.SPIN == project.getType()) {
-            //    resp.sendRedirect(req.getContextPath() + "/editor/blocklyspin.jsp?project=" + project.getId());
-            //}
         }
     }
 

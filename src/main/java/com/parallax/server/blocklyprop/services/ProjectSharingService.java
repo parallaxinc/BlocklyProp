@@ -15,12 +15,16 @@ import java.util.List;
  */
 public interface ProjectSharingService {
 
+    // Create a project_sharing record
     ProjectSharingRecord shareProject(Long idProject);
 
+    // Delete a project_sharing record
     int revokeSharing(Long idProject);
 
+    // Get a list of project_sharing records for a given project id
     List<ProjectSharingRecord> getSharingInfo(Long idProject);
 
+    // Get a project project record only if the project id and shared key are equal
     ProjectRecord getSharedProject(Long idProject, String shareKey);
 
 }

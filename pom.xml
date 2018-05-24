@@ -60,6 +60,8 @@
                     <files>
                         <file>build.properties</file>
                     </files>
+                    <properties combine.self="append" />
+                    <outputFile combine.self="append" />
                 </configuration>
             </plugin>
 
@@ -95,15 +97,22 @@
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq-version}</version>
+                
                 <!--
-                                <executions>
-                                    <execution>
-                                        <goals>
-                                            <goal>generate</goal>
-                                        </goals>
-                                    </execution>
-                                </executions>
+                    Include the <execution> element to generate a new set of 
+                    source files that represent the current state of the 
+                    target database schema.
+                <executions>
+                    <execution>
+                        <id>jooq-codegen</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 -->
+                
                 <dependencies>
                     <dependency>
                         <groupId>mysql</groupId>
@@ -119,7 +128,7 @@
                         <user>${mysql.username}</user>
                         <password>${mysql.password}</password>
                     </jdbc>
-
+                    
                     <generator>
                         <name>org.jooq.util.DefaultGenerator</name>
                         <database>
@@ -309,6 +318,14 @@
             <artifactId>guice-persist-jooq</artifactId>
             <version>0.1.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.9</version>
+        </dependency>
+        
         <!-- END JOOQ Dependencies -->
 
         <!-- Dependencies for Shiro -->

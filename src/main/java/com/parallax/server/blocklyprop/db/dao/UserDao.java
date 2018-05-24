@@ -47,6 +47,7 @@ public interface UserDao {
 
     Long getUserIdForCloudSessionUserId(Long id);
 
+    @Deprecated
     public void updateScreenname(Long idUser, String screenname);
 
 }

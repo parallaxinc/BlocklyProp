@@ -53,46 +53,10 @@ var utils = {
                 }
             }
         });
-    },
-    getUrlParameters: function (parameter, staticURL, decode) {
-        /*
-         Function: getUrlParameters
-         Description: Get the value of URL parameters either from
-         current URL or static URL
-         Author: Tirumal
-         URL: www.code-tricks.com
-         */
-        var currLocation = staticURL ? staticURL : window.location.search;
-
-        var parArr = [];
-        if (currLocation !== undefined && currLocation.split("?")[1] !== undefined) {
-            parArr = currLocation.split("?")[1].split("&");
-        }
-        var returnBool = true;
-
-        for (var i = 0; i < parArr.length; i++) {
-            parr = parArr[i].split("=");
-            if (parr[0] === parameter) {
-                returnBool = true;
-                return (decode) ? decodeURIComponent(parr[1]) : parr[1];
-            } else {
-                returnBool = false;
-            }
-        }
-
-        if (!returnBool)
-            return false;
     }
-
 };
 
-$(document).ready(function () {
-    $(".external_link").click(function (e) {
-        window.open($(this).attr("href"), "_blank");
-        e.preventDefault();
-    });
-});
-
+// POLYFILLS
 if (!String.prototype.endsWith) {
     String.prototype.endsWith = function (searchString, position) {
         var subjectString = this.toString();
@@ -111,3 +75,64 @@ if (!String.prototype.startsWith) {
         return this.substr(position, searchString.length) === searchString;
     };
 }
+
+// http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
+/**
+ * @description determine if an array contains one or more items from another array.
+ * @param {array} haystack the array to search.
+ * @param {array} arr the array providing items to check for in the haystack.
+ * @return {boolean} true|false if haystack contains at least one item from arr.
+ */
+var findOne = function (haystack, arr) {
+    return arr.some(function (v) {
+        // console.log(v + " " + (haystack.indexOf(v) >= 0));
+        return haystack.indexOf(v) >= 0;
+    });
+};
+
+// http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
+
+// Server (demo/production) detection
+var inDemo = $("meta[name=in-demo]").attr("content");
+
+// Operating system detection
+var osName = 'unknown-client';
+
+function nav(x, y, z) {
+    z = z || y;
+    if (navigator[x] && navigator[x].indexOf(y) !== -1) {
+        osName = z;
+    }
+}
+
+/*   navigator     value     download  */
+nav("appVersion", "X11", "UNIX");
+nav("appVersion", "Mac", "MacOS");
+nav("appVersion", "Linux");
+nav("userAgent", "Linux");
+nav("platform", "Linux");
+nav("appVersion", "Win", "Windows");
+nav("userAgent", "Windows");
+nav("platform", "Win", "Windows");
+nav("oscpu", "Windows");
+nav("appVersion", "CrOS", "ChromeOS");
+
+
+$(document).ready(function () {
+    // Use the "external_link" class to make links open in new tabs
+    $(".external_link").click(function (e) {
+        window.open($(this).attr("href"), "_blank");
+        e.preventDefault();
+    });
+    
+    // Set up divs to hide/show OS-specific content
+    $("body").addClass(osName);
+    
+    // Copy the client download and run instructions 
+    // from the client instruction page to the modal that also shows them
+    $("#client-instructions-copy").html($("#client-instructions-original").html());
+});
+

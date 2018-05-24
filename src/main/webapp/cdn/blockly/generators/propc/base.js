@@ -269,9 +269,9 @@ Blockly.Blocks.math_arithmetic = {
                 .setCheck('Number')
                 .appendField(new Blockly.FieldDropdown([
                     ["+", ' + '],
-                    ["-", ' - '],
-                    ["×", ' * '],
-                    ["÷", ' / '],
+                    ["\u2212", ' - '],
+                    ["\u00D7", ' * '],
+                    ["\u00F7", ' / '],
                     ["% (remainder after division)", ' % '],
                     ["^ (raise to the power of)", ' p ']]), 'OP');
         this.setInputsInline(true);
@@ -294,9 +294,9 @@ Blockly.Blocks.math_arithmetic = {
                         .setCheck('Number')
                         .appendField(new Blockly.FieldDropdown([
                             ["+", ' + '],
-                            ["-", ' - '],
-                            ["×", ' * '],
-                            ["÷", ' / '],
+                            ["\u2212", ' - '],
+                            ["\u00D7", ' * '],
+                            ["\u00F7", ' / '],
                             ["% (remainder after division)", ' % '],
                             ["^ (raise to the power of)", ' p ']]), 'OP' + String.fromCharCode(i));
             }
@@ -334,9 +334,9 @@ Blockly.Blocks.math_arithmetic = {
                     .setCheck('Number')
                     .appendField(new Blockly.FieldDropdown([
                         ["+", ' + '],
-                        ["-", ' - '],
-                        ["×", ' * '],
-                        ["÷", ' / '],
+                        ["\u2212", ' - '],
+                        ["\u00D7", ' * '],
+                        ["\u00F7", ' / '],
                         ["% (remainder after division)", ' % '],
                         ["^ (raise to the power of)", ' p ']]), 'OP' + String.fromCharCode(i));
             if (clauseBlock.valueConnection_) {
@@ -699,6 +699,10 @@ Blockly.Blocks.base_delay = {
         this.setColour(colorPalette.getColor('programming'));
         this.appendValueInput("DELAY_TIME", 'Number')
                 .appendField("pause (ms)")
+            //    .appendField(new Blockly.FieldDropdown([
+            //        ["ms", "pause"],
+            //        ["\u00B5s", "usleep"]
+            //    ]), "UNIT")
                 .setCheck('Number');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
@@ -712,7 +716,8 @@ Blockly.Blocks.base_delay = {
 
 Blockly.propc.base_delay = function () {
     var delay_time = Blockly.propc.valueToCode(this, 'DELAY_TIME', Blockly.propc.ORDER_ATOMIC) || '1000';
-    var code = 'pause(' + delay_time + ');\n';
+    var unit = "pause"; //this.getFieldValue("UNIT") || "pause";
+    var code = unit + '(' + delay_time + ');\n';
     return code;
 };
 
@@ -883,7 +888,7 @@ Blockly.Blocks.music_note = {
                 .appendField(new Blockly.FieldDropdown([
                     ['1st', '0.015625'],
                     ['2nd', '0.03125'],
-                    ['3th', '0.0625'],
+                    ['3rd', '0.0625'],
                     ['4th', '0.125'],
                     ['5th', '0.25'],
                     ['6th', '0.5'],
@@ -1360,19 +1365,19 @@ Blockly.propc.logic_operation = function () {
 };
 
 Blockly.Blocks.parens = {
-        init: function () {
+    init: function () {
         if (profile.default.description === "Scribbler Robot") {
             this.setHelpUrl(Blockly.MSG_S3_MATH_HELPURL);
         } else {
             this.setHelpUrl(Blockly.MSG_NUMBERS_HELPURL);
         }
         this.setTooltip(Blockly.MSG_PARENS_TOOLTIP);
-            this.appendValueInput('BOOL')
-                    .appendField('(', 'OP')
-                    .setCheck('Number');
-            this.appendDummyInput('')
-                    .appendField(')');
-            this.setInputsInline(true);
+        this.appendValueInput('BOOL')
+                .appendField('(', 'OP')
+                .setCheck('Number');
+        this.appendDummyInput('')
+                .appendField(')');
+        this.setInputsInline(true);
         this.setColour(colorPalette.getColor('math'));
         this.setOutput(true, 'Number');
         this.setInputsInline(true);
@@ -1460,10 +1465,13 @@ Blockly.Blocks.cog_new = {
 Blockly.propc.cog_new = function () {
     var method = Blockly.propc.statementToCode(this, 'METHOD');
     var method_name = method.replace("  ", "").replace("\n", "").replace("()", "").replace(";", "");
+    var code = '';
 
-    Blockly.propc.cog_methods_[method_name] = method;
+    if (method.length > 2) {
+        Blockly.propc.cog_methods_[method_name] = method;
 
-    var code = 'cog_run(' + method_name + ', 128);\n';
+        code = 'cog_run(' + method_name + ', 128);\n';
+    }
     return code;
 };
 
@@ -2026,7 +2034,7 @@ Blockly.propc.math_inv_trig = function () {
 };
 
 Blockly.Blocks.constant_define = {
-    helpUrl: Blockly.MSG_CONTROL_HELPURL,
+    helpUrl: Blockly.MSG_VALUES_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_CONSTANT_DEF_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
@@ -2039,8 +2047,14 @@ Blockly.Blocks.constant_define = {
                     return a;
                 }), "CONSTANT_NAME")
                 .appendField(" = ")
-                .appendField(new Blockly.FieldTextInput('0',
-                        Blockly.FieldTextInput.numberValidator), 'VALUE');
+                .appendField(new Blockly.FieldTextInput('0', function (a) {
+                    if (a.indexOf('0x') === 0) {
+                        a = a.replace(/[^0-9xA-Fa-f-]/g, "");
+                    } else {
+                        a = a.replace(/[^0-9b-]/g, "");
+                    }
+                    return a;
+                }), 'VALUE');
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.sendUpdate = true;
@@ -2077,7 +2091,7 @@ Blockly.Blocks.constant_define = {
                 this.sendConstantVal(oldName, null);
             }
         }
-        
+
         var warnTxt = null;
         var f_start = theBlocks.indexOf('constant ' + myName + '  =');
         if (theBlocks.indexOf('constant ' + myName + '  =', f_start + 1) > -1) {
@@ -2131,7 +2145,7 @@ Blockly.Blocks.constant_value = {
         }
         var m = this.getFieldValue('VALUE');
 
-        this.removeInput('VALUE_LIST');               
+        this.removeInput('VALUE_LIST');
         this.appendDummyInput('VALUE_LIST')
                 .appendField(new Blockly.FieldDropdown(uniq_fast(v_list)), "VALUE");
         if (m && m === ov && nv) {
@@ -2140,7 +2154,7 @@ Blockly.Blocks.constant_value = {
             this.setFieldValue(m, 'VALUE');
         }
     },
-    onchange: function() {
+    onchange: function () {
         var val = this.getFieldValue('VALUE');
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('constant ' + val) === -1) {

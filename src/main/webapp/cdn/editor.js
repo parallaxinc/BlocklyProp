@@ -20,64 +20,45 @@ var idProject = 0;
 
 var uploadedXML = '';
 
-// http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513#11582513
-function getURLParameter(name) {
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(window.location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-}
-
 $(document).ready(function () {
+    
     if (user_authenticated) {
-        $('.auth-true').css('display', $(this).attr('displayas'));
+        $('.auth-true').css('display', $(this).attr('data-displayas'));
         $('.auth-false').css('display', 'none');
     } else {
-        $('.auth-false').css('display', $(this).attr('displayas'));
+        $('.auth-false').css('display', $(this).attr('data-displayas'));
         $('.auth-true').css('display', 'none');
     }
-    
-    $('.url-prefix').attr('href', function(idx, cur) {return baseUrl + cur;});
-    
+
+    $('.url-prefix').attr('href', function (idx, cur) {
+        return baseUrl + cur;
+    });
+
     // set the URLs for all of the CDN-sourced images
     var imgs = document.getElementsByTagName('img');
     for (var l = 0; l < imgs.length; l++) {
         imgs[l].src = cdnUrl + imgs[l].getAttribute('data-src');
     }
-    
+
     // Set the client download links
     $('.client-win32-link').attr('href', $("meta[name=win32client]").attr("content"));
     $('.client-win64-link').attr('href', $("meta[name=win64client]").attr("content"));
     $('.client-mac-link').attr('href', $("meta[name=macOSclient]").attr("content"));
 
     idProject = getURLParameter('project');
-    if (!idProject) {
+    var projectlink = null;
+    
+    if (window.location.href.indexOf('projectlink') > -1) {
+        //Decode and parse project data coming from a sharelink
+        var projectRaw = atob($("meta[name=projectlink]").attr("content"));
+        projectlink = JSON.parse(projectRaw);
+        console.log(projectlink);
+        loadProjectData(projectlink);
+    } else if (!idProject) {
         window.location = baseUrl;
     } else {
         $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
-            console.log(data);
-            projectData = data;
-            showInfo(data);
-            projectLoaded = true;
-            if (ready) {
-                setProfile(data['board']);
-                initToolbox(data['board'], []);
-            }
-            if (projectData['board'] === 's3') {
-                $('#prop-btn-ram').addClass('hidden');
-                $('#prop-btn-graph').addClass('hidden');
-                document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-            } else {
-                $('#prop-btn-ram').removeClass('hidden');
-                $('#prop-btn-graph').removeClass('hidden');
-                document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
-            }
-
-            if (data && data['yours'] === false) {
-                $('#edit-project-details').html(page_text_label['editor_view-details']);
-            } else {
-                $('#edit-project-details').html(page_text_label['editor_edit-details']);
-            }
-
-            timestampSaveTime(20, true);
-            setInterval(checkLastSavedTime, 60000);
+            loadProjectData(data);
         }).fail(function () {
             // Failed to load project - this probably means that it belongs to another user and is not shared.
             utils.showMessage('Unable to Access Project', 'The BlocklyProp Editor was unable to access the project you requested.  If you are sure the project exists, you may need to contact the project\'s owner and ask them to share their project before you will be able to view it.', function () {
@@ -85,9 +66,38 @@ $(document).ready(function () {
             });
         });
     }
+    
+    function loadProjectData(data) {
+        console.log(data);
+        projectData = data;
+        showInfo(data);
+        projectLoaded = true;
+        if (ready) {
+            setProfile(data['board']);
+            initToolbox(data['board']);
+        }
+        if (projectData['board'] === 's3') {
+            $('#prop-btn-ram').addClass('hidden');
+            $('#prop-btn-graph').addClass('hidden');
+            document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+        } else {
+            $('#prop-btn-ram').removeClass('hidden');
+            $('#prop-btn-graph').removeClass('hidden');
+            document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+        }
+
+        if (data && data['yours'] === false) {
+            $('#edit-project-details').html(page_text_label['editor_view-details']);
+        } else {
+            $('#edit-project-details').html(page_text_label['editor_edit-details']);
+        }
+
+        timestampSaveTime(20, true);
+        setInterval(checkLastSavedTime, 60000);
+    };
 
     $('#save-project').on('click', function () {
-        saveProject();  
+        saveProject();
     });
     $('#save-project-as').on('click', function () {
         saveAsDialog();
@@ -106,7 +116,7 @@ $(document).ready(function () {
 var timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
     var d_save = new Date();
-    
+
     // If the proposed delay is less than the delay that's already in 
     // process, don't update the delay to a new shorter time.
     if (d_save.getTime() + (mins * 60000) > last_saved_timestamp) {
@@ -124,7 +134,7 @@ var checkLastSavedTime = function () {
     $('#save-check-warning-time').html(s_save.toString(10));
 
     //if (s_save > 58) {
-        // TODO: It's been to long - autosave, then close/set URL back to login page.
+    // TODO: It's been to long - autosave, then close/set URL back to login page.
     //}
 
     if (t_now > last_saved_timestamp && checkLeave() && user_authenticated) {
@@ -136,7 +146,7 @@ var checkLastSavedTime = function () {
 var showInfo = function (data) {
     //console.log(data);
     $(".project-name").text(data['name']);
-    
+
     // Does the current user own the project?
     if (!data['yours']) {
         // If not, display owner username [and hide save-as menu option - nevermind :) ]
@@ -147,6 +157,7 @@ var showInfo = function (data) {
         "activity-board": "images/board-icons/IconActivityBoard.png",
         "s3": "images/board-icons/IconS3.png",
         "heb": "images/board-icons/IconBadge.png",
+        "heb-wx": "images/board-icons/IconBadgeWX.png",
         "flip": "images/board-icons/IconFlip.png",
         "other": "images/board-icons/IconOtherBoards.png",
         "propcfile": "images/board-icons/IconC.png"
@@ -161,11 +172,11 @@ function generateBlockId(nonce) {
     if (l < 20) {
         blockId = 'zzzzzzzzzzzzzzzzzzzz'.substr(l - 20) + blockId;
     } else {
-    	blockId = blockId.substr(l - 20);
+        blockId = blockId.substr(l - 20);
     }
-    
+
     return blockId;
-};
+}
 
 var propcAsBlocksXml = function () {
     var code = '<xml xmlns="http://www.w3.org/1999/xhtml">';
@@ -173,7 +184,6 @@ var propcAsBlocksXml = function () {
     code += '<field name="FILENAME">single.c</field>';
     code += '<field name="CODE">';
     code += btoa(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
-    //code += encodeXml(codePropC.getValue().replace('/* EMPTY_PROJECT */\n', ''));
     code += '</field></block></xml>';
     return code;
 };
@@ -239,9 +249,9 @@ var saveProject = function () {
 
         // Mark the time when saved, add 20 minutes to it.
         timestampSaveTime(20, true);
-        
+
     } else {
-        
+
         // If user doesn't own the project - prompt for a new project name and route through
         // an endpoint that will make the project private.
         saveAsDialog();
@@ -249,50 +259,53 @@ var saveProject = function () {
 };
 
 var saveAsDialog = function () {
-    
-    // Old function - still in use because save-as+board type is not approved for use.
-    utils.prompt("Save project as", projectData['name'], function (value) {
-        if (value) {
-            var code = getXml();
-            projectData['code'] = code;
-            projectData['name'] = value;
-            $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
-                var previousOwner = projectData['yours'];
-                projectData = data;
-                projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-                utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
-                // Reloading project with new id
-                window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
-            });
-        }
-    });
-    
-    /*
-    // Prompt user to save current project first if unsaved
-    if (checkLeave() && projectData['yours']) {
-        utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
+
+    // use the plain 'save-as' endpoint for now.
+    if (1 === 1) {   // if (inDemo !== 'demo') {
+
+        // Old function - still in use because save-as+board type is not approved for use.
+        utils.prompt("Save project as", projectData['name'], function (value) {
             if (value) {
-                saveProject();
+                var code = getXml();
+                projectData['code'] = code;
+                projectData['name'] = value;
+                $.post(baseUrl + 'rest/project/code-as', projectData, function (data) {
+                    var previousOwner = projectData['yours'];
+                    projectData = data;
+                    projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+                    utils.showMessage(Blockly.Msg.DIALOG_PROJECT_SAVED, Blockly.Msg.DIALOG_PROJECT_SAVED_TEXT);
+                    // Reloading project with new id
+                    window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+                });
             }
-        }, 'Yes', 'No');
+        });
+
+    } else {
+
+        // Prompt user to save current project first if unsaved
+        if (checkLeave() && projectData['yours']) {
+            utils.confirm(Blockly.Msg.DIALOG_SAVE_TITLE, Blockly.Msg.DIALOG_SAVE_FIRST, function (value) {
+                if (value) {
+                    saveProject();
+                }
+            }, 'Yes', 'No');
+        }
+
+        // Reset the save-as modal's fields
+        $('#save-as-project-name').val(projectData['name']);
+        $("#save-as-board-type").empty();
+        profile.default.saves_to.forEach(function (bt) {
+            $("#save-as-board-type").append($('<option />').val(bt[1]).text(bt[0]));
+        });
+
+        // Until release to production, make sure we are on demo before displaying the propc option
+        if (inDemo === 'demo') {
+            $("#save-as-board-type").append($('<option />').val('propcfile').text('Propeller C (code-only)'));
+        }
+
+        // Open modal
+        $('#save-as-type-dialog').modal('show');
     }
-     
-    // Reset the save-as modal's fields
-    $('#save-as-project-name').val(projectData['name']);
-    $("#save-as-board-type").empty();
-    profile.default.saves_to.forEach(function (bt) {
-        $("#save-as-board-type").append($('<option />').val(bt[1]).text(bt[0]));
-    });
-    
-    // Until release to production, make sure we are on demo before displaying the propc option
-    if (inDemo === 'demo') {
-        $("#save-as-board-type").append($('<option />').val('propcfile').text('Propeller C (code-only)'));
-    }
-    
-    // Open modal
-    $('#save-as-type-dialog').modal('show');   
-    
-    */
 };
 
 var checkBoardType = function () {
@@ -310,7 +323,7 @@ var saveProjectAs = function () {
     // Retrieve the field values
     var p_type = $('#save-as-board-type').val();
     var p_name = $('#save-as-project-name').val();
-    
+
     //get the project's XML code
     var code = '';
     if (projectData['board'] === 'propcfile') {
@@ -334,7 +347,7 @@ var saveProjectAs = function () {
         // Reloading project with new id
         window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
     });
-    timestampSaveTime(20, true);      
+    timestampSaveTime(20, true);
 };
 
 var editProjectDetails = function () {
@@ -348,10 +361,10 @@ var blocklyReady = function () {
     } else {
         document.getElementById('btn-view-xml').style.display = 'none';
     }
-    
+
     if (projectLoaded) {
         setProfile(projectData['board']);
-        initToolbox(projectData['board'], []);
+        initToolbox(projectData['board']);
     } else {
         ready = true;
     }
@@ -517,7 +530,6 @@ function uploadHandler(files) {
                 }
             }
         }
-        ;
 
         if (xmlValid === true) {
             document.getElementById("selectfile-verify-valid").style.display = "block";
@@ -536,7 +548,7 @@ function uploadHandler(files) {
 
     if (uploadedXML !== '') {
         uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
-    };
+    }
 }
 
 function clearUploadInfo() {
@@ -569,141 +581,42 @@ function uploadMergeCode(append) {
     }
 }
 
-function filterToolbox(profileName, peripherals) {
-    var componentlist = peripherals.slice();
-    componentlist.push(profileName);
+function initToolbox(profileName) {
 
-    $("#toolbox").find('category').each(function () {
-        var toolboxEntry = $(this);
-        var include = toolboxEntry.attr('include');
-        if (include) {
-            var includes = include.split(",");
-            if (!findOne(componentlist, includes)) {
-                toolboxEntry.remove();
-            }
-        }
+    var ff = getURLParameter('font');
+    
+    if(ff) {
+        // Replace font family in Blockly's inline CSS
+        for (var f = 0; f < Blockly.Css.CONTENT.length; f++) {
+            Blockly.Css.CONTENT[f] = Blockly.Css.CONTENT[f].replace(/Arial, /g, '').replace(/sans-serif;/g, "'" + ff + "', sans-serif;");
+        }   
 
-        var exclude = toolboxEntry.attr('exclude');
-        if (exclude) {
-            var excludes = exclude.split(",");
-            if (findOne(componentlist, excludes)) {
-                toolboxEntry.remove();
-            }
-        }
+        $('html, body').css('font-family', "'" + ff + "', sans-serif");
+        $('.blocklyWidgetDiv .goog-menuitem-content').css('font', "'normal 14px '" + ff + "', sans-serif !important'"); //    font: normal 14px Arimo, sans-serif !important;
 
-        // Remove toolbox categories that are experimental if not in demo
-        var experimental = toolboxEntry.attr('experimental');
-        if (experimental && inDemo !== 'demo') {
-            toolboxEntry.remove();
-        }
-        
-        // Set the category's label
-        var catKey = toolboxEntry.attr('key');
-        if (catKey) {
-            toolboxEntry.attr('name', toolbox_label[catKey]);
-        }
-
-        if (document.referrer.indexOf('?') !== -1) {
-            if (document.referrer.split('?')[1].indexOf('grayscale=1') > -1) {
-                var colorChanges = {
-                    '140': '#AAAAAA',
-                    '165': '#222222',
-                    '185': '#333333',
-                    '205': '#444444',
-                    '225': '#555555',
-                    '250': '#666666',
-                    '275': '#777777',
-                    '295': '#888888',
-                    '320': '#999999',
-                    '340': '#111111'
-                };
-                var colour = toolboxEntry.attr('colour');
-                if (colour)
-                    toolboxEntry.attr('colour', colorChanges[colour]);
-            }
-        }
-    });
-    $("#toolbox").find('sep').each(function () {
-        var toolboxEntry = $(this);
-        var include = toolboxEntry.attr('include');
-        if (include) {
-            var includes = include.split(",");
-            if (!findOne(componentlist, includes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-        var exclude = toolboxEntry.attr('exclude');
-        if (exclude) {
-            var excludes = exclude.split(",");
-            if (findOne(componentlist, excludes)) {
-                toolboxEntry.remove();
-            }
-        }
-    });
-
-    $("#toolbox").find('block').each(function () {
-        var toolboxEntry = $(this);
-        
-        // Remove toolbox categories that are experimental if not in demo
-        var experimental = toolboxEntry.attr('experimental');
-        if (experimental && inDemo !== 'demo') {
-            toolboxEntry.remove();
-        }
-        
-        var include = toolboxEntry.attr('include');
-        if (include) {
-            var includes = include.split(",");
-            if (!findOne(componentlist, includes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-        var exclude = toolboxEntry.attr('exclude');
-        if (exclude) {
-            var excludes = exclude.split(",");
-            if (findOne(componentlist, excludes)) {
-                toolboxEntry.remove();
-            }
-        }
-
-    });
-
-}
-
-// http://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-elements-in-another-array-in-javascript
-/**
- * @description determine if an array contains one or more items from another array.
- * @param {array} haystack the array to search.
- * @param {array} arr the array providing items to check for in the haystack.
- * @return {boolean} true|false if haystack contains at least one item from arr.
- */
-var findOne = function (haystack, arr) {
-    return arr.some(function (v) {
-        // console.log(v + " " + (haystack.indexOf(v) >= 0));
-        return haystack.indexOf(v) >= 0;
-    });
-};
-
-function initToolbox(profileName, peripherals) {
-    filterToolbox(profileName, peripherals);
+    } else {
+        for (var f = 0; f < Blockly.Css.CONTENT.length; f++) {
+            Blockly.Css.CONTENT[f] = Blockly.Css.CONTENT[f].replace(/Arial, /g, '').replace(/sans-serif;/g, "Arimo, sans-serif;");
+        }   
+    }
+    
     Blockly.inject('content_blocks', {
-        toolbox: document.getElementById('toolbox'),
+        toolbox: filterToolbox(profileName),
         trashcan: true,
         media: cdnUrl + 'blockly/media/',
         readOnly: (profileName === 'propcfile' ? true : false),
         //path: cdnUrl + 'blockly/',
         comments: false,
         zoom: {
-          controls: true,
-          wheel: false,
-          startScale: 1.0,
-          maxScale: 3,
-          minScale: 0.3,
-          scaleSpeed: 1.2
+            controls: true,
+            wheel: false,
+            startScale: 1.0,
+            maxScale: 3,
+            minScale: 0.3,
+            scaleSpeed: 1.2
         }
     });
-    
+
     init(Blockly);
 }
 

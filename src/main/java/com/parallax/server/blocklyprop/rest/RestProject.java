@@ -9,6 +9,8 @@ import com.cuubez.visualizer.annotation.Detail;
 import com.cuubez.visualizer.annotation.Group;
 import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
+import com.cuubez.visualizer.annotation.M;
+import com.cuubez.visualizer.annotation.ParameterDetail;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -46,48 +48,98 @@ public class RestProject {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(RestProject.class);
 
+    // Connector to project services object
     private ProjectService projectService;
+    
+    // Connector to project converter object
     private ProjectConverter projectConverter;
 
+    /**
+     * Connect to the project service object
+     * @param projectService 
+     */
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
     }
 
+    /**
+     * Connect to the project converter object
+     * @param projectConverter 
+     */
     @Inject
     public void setProjectConverter(ProjectConverter projectConverter) {
         this.projectConverter = projectConverter;
     }
 
+    /**
+     * Return a list of projects owned by the currently authenticated user.
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * 
+     * @return JSON formatted list of project details
+     */
     @GET
     @Path("/list")
     @Detail("Get all projects for the authenticated user")
-    @Name("Get all projects for the authenticated user")
+    @Name("ListProjects")
     @Produces("application/json")
     public Response get(
-            @QueryParam("sort") TableSort sort, 
-            @QueryParam("order") TableOrder order, 
-            @QueryParam("limit") Integer limit, 
-            @QueryParam("offset") Integer offset) {
+            @QueryParam("sort") @ParameterDetail("Sort detail") @M() TableSort sort, 
+            @QueryParam("order") @ParameterDetail("Sort order") @M() TableOrder order, 
+            @QueryParam("limit") @ParameterDetail("Number of rows to return") @M() Integer limit, 
+            @QueryParam("offset") @ParameterDetail("Offset to next row returned") @M() Integer offset) {
         
-        LOG.info("Retreiving project list");
-
-        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        List<ProjectRecord> userProjects = 
-                projectService.getUserProjects(idUser, sort, order, limit, offset);
+        LOG.info("REST:/rest/project/list/ Get request received");
         
-        int projectCount = projectService.countUserProjects(idUser);
+        try {
+            // Get the logged in user id for the current session
+            Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+            
+            if (idUser == 0) {
+                // Current session is not logged in.
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
 
-        JsonObject result = new JsonObject();
-        JsonArray jsonProjects = new JsonArray();
-        for (ProjectRecord project : userProjects) {
-            jsonProjects.add(projectConverter.toListJson(project));
+            //Sanity checks - is the request reasonable
+            if (sort == null)
+                sort = TableSort.modified;
+            
+            if (order == null) 
+                order = TableOrder.asc;
+            
+            if (limit == null)
+                limit = 20;
+            
+            if (offset == null)
+                offset = 0;
+
+            List<ProjectRecord> userProjects = 
+                    projectService.getUserProjects(idUser, sort, order, limit, offset);
+        
+            int projectCount = projectService.countUserProjects(idUser);
+
+            JsonObject result = new JsonObject();
+            JsonArray jsonProjects = new JsonArray();
+            for (ProjectRecord project : userProjects) {
+                jsonProjects.add(projectConverter.toListJson(project));
+            }
+
+            result.add("rows", jsonProjects);
+            result.addProperty("total", projectCount);
+
+            return Response.ok(result.toString()).build();
+            }
+        
+        catch(Exception ex) {
+            LOG.warn("Unable to process REST request.");
+            LOG.warn("Error is {}", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        result.add("rows", jsonProjects);
-        result.addProperty("total", projectCount);
-
-        return Response.ok(result.toString()).build();
     }
 
     @GET
@@ -95,43 +147,61 @@ public class RestProject {
     @Detail("Get project by id")
     @Name("Get project by id")
     @Produces("application/json")
-    public Response get(@PathParam("id") Long idProject) {
-        LOG.info("Retreiving project {}", idProject);
+    public Response get(@PathParam("id") @ParameterDetail("Project identifier") Long idProject) {
 
-        ProjectRecord project = projectService.getProject(idProject);
+        LOG.info("REST:/rest/project/get/ Get request received for project '{}'", idProject);
+        
+        try {
+            ProjectRecord project = projectService.getProject(idProject);
 
-        if (project != null) {
-            if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
-                LOG.info("User not authorized to get project {}", idProject);
-                return Response.status(Response.Status.UNAUTHORIZED).build();
+            if (project != null) {
+                // Verify that the current user owns the requested project
+                if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+                    LOG.info("User not authorized to get project {}", idProject);
+                    return Response.status(Response.Status.UNAUTHORIZED).build();
+                }
+            } else {
+                LOG.info("Project {} was not found", idProject);
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
-        } else {
-            LOG.info("Project {} was not found", idProject);
-            return Response.status(Response.Status.NOT_FOUND).build();
+
+            // The currect user owns this project
+            JsonObject result = projectConverter.toJson(project,false);
+            return Response.ok(result.toString()).build();
         }
-
-        JsonObject result = projectConverter.toJson(project);
-        LOG.debug("Returning JSON: {}", result);
-
-        return Response.ok(result.toString()).build();
+        
+        catch(Exception ex) {
+            LOG.warn("Unable to process REST request.");
+            LOG.warn("Error is {}", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
+    /**
+     * Update the code in an existing project.
+     * 
+     * This assumes that the project already exists. 
+     * 
+     * @param idProject
+     * @param code
+     * @return 
+     */
     @POST
     @Path("/code")
     @Detail("Save project code")
-    @Name("Save project code")
+    @Name("UpdateProjectCode")
     @Produces("application/json")
     public Response saveProjectCode(
-            @FormParam("id") Long idProject, 
-            @FormParam("code") String code) {
+            @FormParam("id") @ParameterDetail("Project identifier") @M() Long idProject, 
+            @FormParam("code") @ParameterDetail("Project code") @M() String code) {
         
-        LOG.info("Saving project {} code", idProject);
+        LOG.info("REST:/rest/project/code/ POST request received for project '{}'", idProject);
         
         try {
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
             LOG.debug("Code for project {} has been saved", idProject);
 
-            JsonObject result = projectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject,false);
             LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
@@ -157,16 +227,18 @@ public class RestProject {
             @FormParam("code") String code, 
             @FormParam("name") String newName) {
         
-        LOG.info("Saving project {} code as new {}", idProject, newName);
+        LOG.info("REST:/rest/project/code-as/ POST request received for project '{}'", idProject);
 
         try {
+            LOG.info("Saving project '{}', '{}' as a new project", idProject, newName);
+
             ProjectRecord savedProject = projectService.saveProjectCodeAs(
                     idProject, 
                     code, 
                     newName);
             LOG.debug("Code for project {} has been saved as {}", idProject, newName);
             
-            JsonObject result = projectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject,false);
             LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
@@ -196,7 +268,7 @@ public class RestProject {
             @FormParam("type") ProjectType type, 
             @FormParam("board") String board) {
         
-        LOG.info("Received POST REST call. Saving project {}.", idProject);
+        LOG.info("REST:/rest/project/ POST request received for project '{}'", idProject);
 
         try {
             boolean privateProject = false;
@@ -219,7 +291,7 @@ public class RestProject {
                     board);
             LOG.debug("Project {} has been saved.", idProject);
 
-            JsonObject result = projectConverter.toJson(savedProject);
+            JsonObject result = projectConverter.toJson(savedProject,false);
             LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);

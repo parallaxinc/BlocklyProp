@@ -21,13 +21,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
+import java.util.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
- *
+ * Manage project link URI for a project
+ * 
  * @author Michel
  */
 @Singleton
 public class ProjectLinkServlet extends HttpServlet {
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectLinkServlet.class);
 
     private ProjectService projectService;
     private ProjectSharingService projectSharingService;
@@ -48,43 +54,88 @@ public class ProjectLinkServlet extends HttpServlet {
         this.projectConverter = projectConverter;
     }
 
+    /**
+     * Process a get request to the endpoint /projectlink
+     * 
+     * @param req
+     * @param resp
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("REST:/projectlink/ Get request received");
+
+        // Project ID
         String idProjectString = req.getParameter("id");
+        
+        // Share key token
         String shareKey = req.getParameter("key");
 
         Long idProject = null;
+        
+        // Convert the project id from a string to a long
         try {
             idProject = Long.parseLong(idProjectString);
         } catch (NumberFormatException nfe) {
             // Show error screen
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         }
-
+        
+        LOG.info("Get project link for project {}.",idProject);
+        
+        // Retreive the project. Project meta data will be retruned if the project exists
+        // and the project share key is known and active
         ProjectRecord project = projectSharingService.getSharedProject(idProject, shareKey);
+        
         if (project == null) {
             // Project not found, or invalid share key
+            LOG.info("Unable to retrieve parent project");
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         } else {
-            JsonObject result = projectConverter.toJson(project);
+            // Add project meta data to result object
+            JsonObject result = projectConverter.toJson(project,false);
+            
+            // Add the project code block to the result object
             result.addProperty("code", project.getCode());
-            req.setAttribute("project", result.toString());
+            
+            //Convert result to base64
+            byte[] projectBytes = Base64.getEncoder().encode(result.toString().getBytes());
+            
+            req.setAttribute("project", new String(projectBytes));
             //if (ProjectType.PROPC == project.getType()) {
-                req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-c.jsp").forward(req, resp);
+                req.getRequestDispatcher("/editor/blocklyc.jsp").forward(req, resp);
             //} else if (ProjectType.SPIN == project.getType()) {
             //    req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
             //}
         }
     }
 
+    
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
         resp.setContentType("application/json");
 
         String idProjectString = req.getParameter("id");
         String action = req.getParameter("action");
-
         Long idProject = null;
+        ProjectRecord project = null;
+
+        LOG.info("Posting shared link service request");
+        
+        // Convert project id into a long
         try {
             idProject = Long.parseLong(idProjectString);
         } catch (NumberFormatException nfe) {
@@ -92,7 +143,13 @@ public class ProjectLinkServlet extends HttpServlet {
             return;
         }
 
-        ProjectRecord project = null;
+        // What work needs to be done (share, revoke)?
+        if (Strings.isNullOrEmpty(action)) {
+            resp.getWriter().write(createFailure("no-action").toString());
+            return;
+        }
+
+        // Retieve the requested project
         try {
             project = projectService.getProject(idProject);
             if (project == null) {
@@ -103,19 +160,23 @@ public class ProjectLinkServlet extends HttpServlet {
             resp.getWriter().write(createFailure("not-your-project").toString());
             return;
         }
-
-        if (Strings.isNullOrEmpty(action)) {
-            resp.getWriter().write(createFailure("no-action").toString());
-            return;
-        }
+        
         JsonObject jsonObject = new JsonObject();
+
         switch (action) {
             case "share":
+                // Make the project sharing record active.
                 ProjectSharingRecord projectSharingRecord = projectSharingService.shareProject(idProject);
+                if (projectSharingRecord == null) {
+                    LOG.error("Unable to activate a project sharing record for project {}.", idProject);
+                    resp.getWriter().write(createFailure("no-action").toString());
+                } else {
                 jsonObject.addProperty("success", true);
                 jsonObject.addProperty("share-key", projectSharingRecord.getSharekey());
                 resp.getWriter().write(jsonObject.toString());
+                }
                 break;
+
             case "revoke":
                 projectSharingService.revokeSharing(idProject);
                 jsonObject.addProperty("success", true);
@@ -132,5 +193,4 @@ public class ProjectLinkServlet extends HttpServlet {
         jsonObject.addProperty("code", messageCode);
         return jsonObject;
     }
-
 }

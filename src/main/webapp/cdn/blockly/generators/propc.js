@@ -134,6 +134,7 @@ var profile = {
         description: "Propeller Activity Board",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"], ["12", "12"], ["13", "13"], ["14", "14"], ["15", "15"], ["16", "16"], ["17", "17"], ["26", "26"], ["27", "27"]],
         analog: [["A0", "0"], ["A1", "1"], ["A2", "2"], ["A3", "3"]],
+        sd_card: "22, 23, 24, 25",
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 17,
@@ -155,7 +156,17 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 11,
-        saves_to: [["Hackable Electronic Badge", "heb"]]
+        saves_to: [["Hackable Electronic Badge", "heb"], ["Hackable Electronic Badge WX", "heb-wx"]]
+    },
+    "heb-wx": {
+        description: "Hackable Electronic Badge WX",
+        digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"]],
+        analog: [],
+        sd_card: "8, 7, 6, 5",
+        baudrate: 115200,
+        contiguous_pins_start: 0,
+        contiguous_pins_end: 11,
+        saves_to: [["Hackable Electronic Badge", "heb"], ["Hackable Electronic Badge", "heb-wx"]]
     },
     "flip": {
         description: "Propeller FLiP or Project Board",
@@ -202,13 +213,10 @@ function setProfile(profileName) {
 Blockly.propc.init = function (workspace) {
 // Create a dictionary of definitions to be printed before setups.
     Blockly.propc.definitions_ = {};
-    Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';
-    if (profile.default.description === "Scribbler Robot")
-        Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
+    Blockly.propc.definitions_["include simpletools"] = '#include "simpletools.h"';    
     Blockly.propc.methods_ = {};
-    Blockly.propc.method_declarations_ = {};
-    // Create a dictionary of setups to be printed before the code.
     Blockly.propc.setups_ = {};
+    Blockly.propc.method_declarations_ = {};
     Blockly.propc.global_vars_ = {};
     Blockly.propc.cog_methods_ = {};
     // Create a list of stacks
@@ -217,6 +225,18 @@ Blockly.propc.init = function (workspace) {
     Blockly.propc.varlength_ = {};
     Blockly.propc.serial_graphing_ = false;
     Blockly.propc.serial_terminal_ = false;
+
+    // Set up specific libraries for devices like the Scribbler or Badge
+    if (profile.default.description === "Scribbler Robot") {
+        Blockly.propc.definitions_[ "include_scribbler" ] = '#include "s3.h"';
+    } else if (profile.default.description === "Hackable Electronic Badge") {
+        Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
+        Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+    } else if (profile.default.description === "Hackable Electronic Badge WX") {
+        Blockly.propc.definitions_["badgetools"] = '#include "badgewxtools.h"';
+        Blockly.propc.setups_["badgetools"] = 'badge_setup();';
+    }
+
     if (Blockly.Variables) {
         if (!Blockly.propc.variableDB_) {
             Blockly.propc.variableDB_ =
@@ -247,7 +267,6 @@ Blockly.propc.finish = function (code) {
     var imports = [];
     var methods = [];
     var declarations = [];
-    var objects = [];
     var definitions = [];
     var function_vars = [];
     var cog_function = [];
@@ -356,7 +375,6 @@ Blockly.propc.finish = function (code) {
 
     var allDefs = '// ------ Libraries and Definitions ------\n' + imports.join('\n') +
             spacer_defs + definitions.join('\n') + '\n\n'; //int main() {\n  ' +
-    var varInits = setups.join('\n') + '\n';
 
     if (code.indexOf('// RAW PROPC CODE\n//{{||}}\n') > -1) {
         var pcc = code.split('//{{||}}\n');
@@ -365,13 +383,19 @@ Blockly.propc.finish = function (code) {
     } else {
         // Indent every line.
         code = '  ' + code.replace(/\n/g, '\n  ');
+        
         // Comment out any instance of 'pause(0);' - causes a compiler error
         code = code.replace(/\n\s+$/, '\n').replace(/pause\(0\);\n/g, '// pause(0);\n');
+        
         // Remove redundant casts
         code = code.replace(/\(float\)\s*\(int\)/g, '(float)');
+        
         // Sweep for doubled-up parentheses
-        code = code.replace(/\(\(([^()]*)\)\)/g, '($1)');
-        code = 'int main() {\n' + varInits + code + '\n}';
+        while (code.match(/\(\(([^()]*)\)\)/g)) {
+            code = code.replace(/\(\(([^()]*)\)\)/g, '($1)');
+        }
+        
+        code = 'int main()\n{\n' + setups.join('\n') + '\n' + code + '\n}';
         var setup = '';
         if (Blockly.propc.serial_terminal_) {
             setup += "/* SERIAL_TERMINAL USED */\n";
@@ -583,3 +607,26 @@ function uniq_fast(a) {
         return tmpOut;
     }
 }
+
+
+/*
+// REPLACES CORE FUNCTION!
+Blockly.Field.prototype.render_ = function() {
+  var width = 0;
+  if (this.visible_ && this.textElement_) {
+    try {
+      width = this.textElement_.getComputedTextLength();  // Change multiplier because it doesn't seem to calculate for the Open Sans font correctly.
+    } catch (e) {
+      // MSIE 11 is known to throw "Unexpected call to method or property
+      // access." if Blockly is hidden.
+      
+      width = this.textElement_.textContent.length * 8;
+    }
+    if (this.borderRect_) {
+      this.borderRect_.setAttribute('width',
+          width + Blockly.BlockSvg.SEP_SPACE_X);
+    }
+  }
+  this.size_.width = width;
+};
+*/

@@ -581,12 +581,12 @@ Blockly.propc.console_print_multiple = function () {
         if (digitsPlaces !== '') {
             digitsPlaces = '0' + digitsPlaces;
         }
-        if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
-            code += '%' + digitsPlaces + 'd';
-            orIt = '0';
-        } else if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
+        if (this.getFieldValue('TYPE' + i).includes('hexadecimal number')) {
             code += '%' + digitsPlaces + 'x';
             orIt = '0x0';
+        } else if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            code += '%' + digitsPlaces + 'd';
+            orIt = '0';
         } else if (this.getFieldValue('TYPE' + i).includes('binary number')) {
             code += '%' + digitsPlaces + 'b';
             orIt = '0b0';
@@ -699,7 +699,7 @@ Blockly.propc.console_scan_number = function () {
 
     if (data !== '') {
         if (type === 'NUMBER') {
-            code += 'scan("%d\\n", &' + data + ');\n';
+            code += 'scan("%d", &' + data + ');\n';
         } else {
             code += data + ' = getChar();\n';
         }
@@ -939,13 +939,14 @@ Blockly.Blocks.serial_send_text = {
                     ["hexadecimal number", "HEX"],
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
-                ]), 'TYPE');
+                ]
+                //, function(type) {this.sourceBlock_.stringTypeCheck(type);}
+                ), 'TYPE');
         this.appendValueInput('VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.setWarningText(null);
-        this.stringTypeCheck();
         this.ser_pins = [];
         this.serPins();
     },
@@ -956,6 +957,7 @@ Blockly.Blocks.serial_send_text = {
 
         }
         container.setAttribute('pinmenu', JSON.stringify(this.ser_pins));
+        container.setAttribute('type', this.getFieldValue('TYPE'));
         return container;
     },
     domToMutation: function (xmlElement) {
@@ -971,6 +973,7 @@ Blockly.Blocks.serial_send_text = {
                     .appendField(new Blockly.FieldDropdown(this.ser_pins), 'SER_PIN');
             this.setFieldValue(serpin, 'SER_PIN');
         }
+        // this.stringTypeCheck(xmlElement.getAttribute('type'));
     },
     serPins: function (oldPin, newPin) {
         var currentPin = '-1';
@@ -1017,7 +1020,7 @@ Blockly.Blocks.serial_send_text = {
         }
         this.ser_pins = uniq_fast(this.ser_pins);
     },
-    onchange: function (event) {
+    onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('Serial initialize') === -1)
         {
@@ -1025,17 +1028,18 @@ Blockly.Blocks.serial_send_text = {
         } else {
             this.setWarningText(null);
         }
-        if (this.stringTypeCheck) {
-            this.stringTypeCheck();
-        }
-    },
-    stringTypeCheck: function () {
+    }
+    /*,
+    stringTypeCheck: function (type) {
         var setType = "Number";
-        if (this.getFieldValue('TYPE') === 'TEXT') {
+        if (!type) {
+            setType = null;
+        } else if (type === 'TEXT') {
             setType = "String";
         }
-        this.getInput('VALUE').setCheck(setType);
+        //this.getInput('VALUE').setCheck(setType);               // DISABLED FOR NOW - CREATES BROKEN PROJECTS ON RELOAD.  NEED TO FIND A BETTER WAY TO DO THIS
     }
+    */
 };
 
 Blockly.propc.serial_send_text = function () {
@@ -1126,10 +1130,10 @@ Blockly.Blocks.serial_receive_text = {
 Blockly.propc.serial_receive_text = function () {
     var p = '';
     if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
+        p = this.ser_pins[0][0].replace(',', '_').replace(/None/g, 'N');
     }
     if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
+        p = this.getFieldValue('SER_PIN').replace(',', '_').replace(/None/g, 'N');
     }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') === -1)
@@ -1520,10 +1524,10 @@ Blockly.Blocks.serial_scan_container = {
 Blockly.propc.serial_scan_multiple = function () {
     var p = '';
     if (this.ser_pins.length > 0) {
-        p = this.ser_pins[0][0].replace(',', '_');
+        p = this.ser_pins[0][0].replace(',', '_').replace(/None/g, 'N');
     }
     if (this.getInput('SERPIN')) {
-        p = this.getFieldValue('SER_PIN').replace(',', '_');
+        p = this.getFieldValue('SER_PIN').replace(',', '_').replace(/None/g, 'N');
     }
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Serial initialize') > -1)
@@ -1533,13 +1537,13 @@ Blockly.propc.serial_scan_multiple = function () {
         var code_add = '';
         var i = 0;
         while (this.getFieldValue('CPU' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            if (this.getFieldValue('TYPE' + i).includes('store decimal number')) {
                 code += '%d';
-            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character')) {
                 code += '%c';
-            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number')) {
                 code += '%x';
-            } else if (this.getFieldValue('TYPE' + i).includes('store binary number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store binary number')) {
                 code += '%b';
             } else if (this.getFieldValue('TYPE' + i) === 'in') {
                 code += '%f';
@@ -1718,11 +1722,12 @@ Blockly.propc.debug_lcd_init = function () {
         var dropdown_pin = this.getFieldValue('PIN');
         var baud = this.getFieldValue('BAUD');
 
-        Blockly.propc.setups_['setup_debug_lcd'] = 'serial *debug_lcd = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
+        Blockly.propc.global_vars_['setup_debug_lcd'] = 'serial *debug_lcd;';
+        Blockly.propc.setups_['setup_debug_lcd'] = 'debug_lcd  = serial_open(' + dropdown_pin + ', ' + dropdown_pin + ', 0, ' + baud + ');\n';
     }
 
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('Serial initialize') === -1)
+    if (allBlocks.indexOf('LCD initialize') === -1)
     {
         return '// ERROR: LCD is not initialized!\n';
     } else {
@@ -2056,14 +2061,27 @@ Blockly.Blocks.xbee_transmit = {
                     ["hexadecimal number", "HEX"],
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
-                ]), "TYPE");
+                ]
+                //, function(type) {
+                //    this.sourceBlock_.stringTypeCheck(type);
+                //}
+                        ), 'TYPE');
         this.appendValueInput('VALUE')
                 .setCheck(null);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.stringTypeCheck();
     },
+    /*
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('type', this.getFieldValue('TYPE'));
+        return container;
+    },
+    domToMutation: function (container) {
+        this.stringTypeCheck(container.getAttribute('type'));
+    },
+    */
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('XBee initialize') === -1)
@@ -2072,15 +2090,9 @@ Blockly.Blocks.xbee_transmit = {
         } else {
             this.setWarningText(null);
         }
-        this.stringTypeCheck();
-    },
-    stringTypeCheck: function () {
-        var setType = "Number";
-        if (this.getFieldValue('TYPE') === 'TEXT') {
-            setType = "String";
-        }
-        this.getInput('VALUE').setCheck(setType);
     }
+    //,
+    //stringTypeCheck: Blockly.Blocks['serial_send_text'].stringTypeCheck
 };
 
 Blockly.propc.xbee_transmit = function () {
@@ -2293,13 +2305,13 @@ Blockly.propc.xbee_scan_multiple = function () {
         var code_add = '';
         var i = 0;
         while (this.getFieldValue('CPU' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('decimal number')) {
+            if (this.getFieldValue('TYPE' + i).includes('store decimal number')) {
                 code += '%d';
-            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character')) {
                 code += '%c';
-            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number')) {
                 code += '%x';
-            } else if (this.getFieldValue('TYPE' + i).includes('store binary number in')) {
+            } else if (this.getFieldValue('TYPE' + i).includes('store binary number')) {
                 code += '%b';
             } else if (this.getFieldValue('TYPE' + i) === 'in') {
                 code += '%f';
@@ -3111,21 +3123,27 @@ Blockly.Blocks.ws2812b_init = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_INIT_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField("RGB-LED initialize PIN")
-                .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
-                    this.sourceBlock_.onPinSet(myPin);
-                }), "PIN")
-                .appendField("number of LEDs")
-                .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM")
-                .appendField("type")
-                .appendField(new Blockly.FieldDropdown([["WS2812", "WS2812"]]), "TYPE");
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
-        this.rgbPin = this.getFieldValue('PIN');
-        this.onPinSet();
+        this.setColour(colorPalette.getColor('protocols'));
+        if (projectData && projectData['board'] === 'heb-wx') {
+            this.appendDummyInput()
+                    .appendField("RGB-LED set number of LEDs")
+                    .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM");
+        } else {  
+            this.appendDummyInput()
+                    .appendField("RGB-LED initialize PIN")
+                    .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
+                        this.sourceBlock_.onPinSet(myPin);
+                    }), "PIN")
+                    .appendField("number of LEDs")
+                    .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM")
+                    .appendField("type")
+                    .appendField(new Blockly.FieldDropdown([["WS2812", "WS2812"]]), "TYPE");
+            this.rgbPin = this.getFieldValue('PIN');
+            this.onPinSet();
+        }
     },
     onchange: function (event) {
         this.rgbPin = this.getFieldValue('PIN');
@@ -3154,8 +3172,11 @@ Blockly.Blocks.ws2812b_init = {
 
 Blockly.propc.ws2812b_init = function () {
     if (!this.disabled) {
-        var pin = this.getFieldValue('PIN');
-        var num = window.parseInt(this.getFieldValue('LEDNUM'));
+        var pin = '';
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            pin = this.getFieldValue('PIN');
+        }
+        var num = window.parseInt(this.getFieldValue('LEDNUM')) || '4';
 
         if (num < 1)
             num = 1;
@@ -3163,7 +3184,11 @@ Blockly.propc.ws2812b_init = function () {
             num = 1500;
 
         Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
-        Blockly.propc.definitions_["ws2812b_sets" + pin] = '#define LED_PIN' + pin + '   ' + pin + '\n#define LED_COUNT' + pin + '   ' + num;
+        Blockly.propc.definitions_["ws2812b_sets" + pin] = '';
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            Blockly.propc.definitions_["ws2812b_sets" + pin] += '#define RGB_PIN' + pin + '   ' + pin;
+        }
+        Blockly.propc.definitions_["ws2812b_sets" + pin] += '\n#define RGB_COUNT' + pin + '   ' + num;
         Blockly.propc.global_vars_["ws2812b_array" + pin] = 'ws2812 *ws2812b' + pin + ';\nint RGBleds' + pin + '[' + num + '];\n';
         Blockly.propc.setups_["ws2812b_init" + pin] = 'ws2812b' + pin + ' = ws2812b_open();\n';
     }
@@ -3187,7 +3212,9 @@ Blockly.Blocks.ws2812b_set = {
         this.setWarningText(null);
         this.rgb_pins = [];
         this.warnFlag = 0;
-        this.rgbPins();
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            this.rgbPins();
+        }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -3253,26 +3280,30 @@ Blockly.Blocks.ws2812b_set = {
         this.rgb_pins = uniq_fast(this.rgb_pins);
     },
     onchange: function (event) {
-        // only fire when a block got deleted or created, the RGB_PIN field was changed
-        if (event.oldXml || event.type === Blockly.Events.CREATE || (event.name === 'RGB_PIN' && event.blockId === this.id) || this.warnFlag > 0) {
-            var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-            if (allBlocks.toString().indexOf('RGB-LED initialize') === -1)
-            {
-                this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
-            } else {
-                this.setWarningText(null);
-                this.warnFlag--;
-                if (this.getInput('RGBPIN')) {
-                    var allRGBpins = '';
-                    for (var x = 0; x < allBlocks.length; x++) {
-                        if (allBlocks[x].type === 'ws2812b_init') {
-                            allRGBpins += (allBlocks[x].rgbPin || allBlocks[x].getFieldValue('PIN')) + ',';
+        // Don't fire if BadgeWX
+        if (projectData && projectData['board'] !== 'heb-wx') {
+
+            // only fire when a block got deleted or created, the RGB_PIN field was changed
+            if (event.oldXml || event.type === Blockly.Events.CREATE || (event.name === 'RGB_PIN' && event.blockId === this.id) || this.warnFlag > 0) {
+                var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+                if (allBlocks.toString().indexOf('RGB-LED initialize') === -1)
+                {
+                    this.setWarningText('WARNING: You must use an RGB-LED\ninitialize block at the beginning of your program!');
+                } else {
+                    this.setWarningText(null);
+                    this.warnFlag--;
+                    if (this.getInput('RGBPIN')) {
+                        var allRGBpins = '';
+                        for (var x = 0; x < allBlocks.length; x++) {
+                            if (allBlocks[x].type === 'ws2812b_init') {
+                                allRGBpins += (allBlocks[x].rgbPin || allBlocks[x].getFieldValue('PIN')) + ',';
+                            }
                         }
-                    }
-                    if (allRGBpins.indexOf(this.getFieldValue('RGB_PIN')) === -1) {
-                        this.setWarningText('WARNING: You must use choose a new PIN for this block!');
-                        // let all changes through long enough to ensure this is set properly.
-                        this.warnFlag = allBlocks.length * 3;
+                        if (allRGBpins.indexOf(this.getFieldValue('RGB_PIN')) === -1) {
+                            this.setWarningText('WARNING: You must use choose a new PIN for this block!');
+                            // let all changes through long enough to ensure this is set properly.
+                            this.warnFlag = allBlocks.length * 3;
+                        }
                     }
                 }
             }
@@ -3281,11 +3312,19 @@ Blockly.Blocks.ws2812b_set = {
 };
 
 Blockly.propc.ws2812b_set = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
     this.updateRGBpin();
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('RGB-LED initialize') === -1)
-    {
-        return '// ERROR: RGB-LED is not initialized!\n';
+    
+    
+    if (allBlocks.toString().indexOf('RGB-LED initialize') === -1 && allBlocks.toString().indexOf('RGB-LED set number') === -1) {
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            return '// ERROR: RGB-LED is not initialized!\n';
+        } else if (!this.disabled) {
+            Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
+            Blockly.propc.definitions_["ws2812b_sets"] = '#define RGB_COUNT   4';
+            Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *ws2812b;\nint RGBleds[4];\n';
+            Blockly.propc.setups_["ws2812b_init"] = 'ws2812b = ws2812b_open();\n';
+        }
     } else {
         var led = Blockly.propc.valueToCode(this, 'LED', Blockly.propc.ORDER_NONE);
         var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
@@ -3298,13 +3337,17 @@ Blockly.propc.ws2812b_set = function () {
             Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
         }
         var p = '0';
-        if (this.rgb_pins.length > 0) {
-            p = this.rgb_pins[0][0];
+        if (projectData && projectData['board'] === 'heb-wx') {
+            p = '';
+        } else {
+            if (this.rgb_pins.length > 0) {
+                p = this.rgb_pins[0][0];
+            }
+            if (this.getInput('RGBPIN')) {
+                p = this.getFieldValue('RGB_PIN');
+            } 
         }
-        if (this.getInput('RGBPIN')) {
-            p = this.getFieldValue('RGB_PIN');
-        }
-        var code = 'RGBleds' + p + '[constrain(' + led + ', 1, LED_COUNT' + p + ') - 1] = ' + color + ';\n';
+        var code = 'RGBleds' + p + '[constrain(' + led + ', 1, RGB_COUNT' + p + ') - 1] = ' + color + ';\n';
         return code;
     }
 };
@@ -3328,7 +3371,9 @@ Blockly.Blocks.ws2812b_set_multiple = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.rgb_pins = [];
-        this.rgbPins();
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            this.rgbPins();
+        }
     },
     mutationToDom: Blockly.Blocks['ws2812b_set'].mutationToDom,
     domToMutation: Blockly.Blocks['ws2812b_set'].domToMutation,
@@ -3340,19 +3385,29 @@ Blockly.Blocks.ws2812b_set_multiple = {
 Blockly.propc.ws2812b_set_multiple = function () {
     this.updateRGBpin();
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('RGB-LED initialize') === -1)
-    {
-        return '// ERROR: RGB-LED is not initialized!\n';
+    if (allBlocks.indexOf('RGB-LED initialize') === -1 && allBlocks.toString().indexOf('RGB-LED set number')) {
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            return '// ERROR: RGB-LED is not initialized!\n';
+        } else if (!this.disabled) {
+            Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
+            Blockly.propc.definitions_["ws2812b_sets"] = '#define RGB_COUNT   4';
+            Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *ws2812b;\nint RGBleds[4];\n';
+            Blockly.propc.setups_["ws2812b_init"] = 'ws2812b = ws2812b_open();\n';
+        }
     } else {
         var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE);
         var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE);
         var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
         var p = '0';
-        if (this.rgb_pins.length > 0) {
-            p = this.rgb_pins[0][0];
-        }
-        if (this.getInput('RGBPIN')) {
-            p = this.getFieldValue('RGB_PIN');
+        if (projectData && projectData['board'] === 'heb-wx') {
+            p = '';
+        } else {
+            if (this.rgb_pins.length > 0) {
+                p = this.rgb_pins[0][0];
+            }
+            if (this.getInput('RGBPIN')) {
+                p = this.getFieldValue('RGB_PIN');
+            } 
         }
         var code = '';
         if (!this.disabled) {
@@ -3363,7 +3418,7 @@ Blockly.propc.ws2812b_set_multiple = function () {
             Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
         }
         code += 'for(int __ldx = ' + start + '; __ldx <= ' + end + '; __ldx++) {';
-        code += 'RGBleds' + p + '[constrain(__ldx, 1, LED_COUNT' + p + ') - 1] = ' + color + ';}';
+        code += 'RGBleds' + p + '[constrain(__ldx, 1, RGB_COUNT' + p + ') - 1] = ' + color + ';}';
         return code;
     }
 };
@@ -3372,7 +3427,6 @@ Blockly.Blocks.ws2812b_update = {
     helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_WS2812B_UPDATE_TOOLTIP);
-        this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("RGB-LED update LEDs");
         this.setInputsInline(true);
@@ -3380,7 +3434,10 @@ Blockly.Blocks.ws2812b_update = {
         this.setNextStatement(true, null);
         this.setWarningText(null);
         this.rgb_pins = [];
-        this.rgbPins();
+        this.setColour(colorPalette.getColor('protocols'));
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            this.rgbPins();
+        }
     },
     mutationToDom: Blockly.Blocks['ws2812b_set'].mutationToDom,
     domToMutation: Blockly.Blocks['ws2812b_set'].domToMutation,
@@ -3392,19 +3449,26 @@ Blockly.Blocks.ws2812b_update = {
 Blockly.propc.ws2812b_update = function () {
     this.updateRGBpin();
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-    if (allBlocks.indexOf('RGB-LED initialize') === -1)
-    {
-        return '// ERROR: RGB-LED is not initialized!\n';
-    } else {
-        var p = '0';
+    if (allBlocks.indexOf('RGB-LED initialize') === -1 && allBlocks.toString().indexOf('RGB-LED set number')) {
+        if (projectData && projectData['board'] !== 'heb-wx') {
+            return '// ERROR: RGB-LED is not initialized!\n';
+        } else if (!this.disabled) {
+            Blockly.propc.definitions_["ws2812b_def"] = '#include "ws2812.h"';
+            Blockly.propc.definitions_["ws2812b_sets"] = '#define RGB_COUNT   4';
+            Blockly.propc.global_vars_["ws2812b_array"] = 'ws2812 *ws2812b;\nint RGBleds[4];\n';
+            Blockly.propc.setups_["ws2812b_init"] = 'ws2812b = ws2812b_open();\n';
+        }
+    }
+    var p = '';
+    if (projectData && projectData['board'] !== 'heb-wx') {
         if (this.rgb_pins.length > 0) {
             p = this.rgb_pins[0][0];
         }
         if (this.getInput('RGBPIN')) {
             p = this.getFieldValue('RGB_PIN');
-        }
-        return 'ws2812_set(ws2812b' + p + ', LED_PIN' + p + ', RGBleds' + p + ', LED_COUNT' + p + ');\n';
+        } 
     }
+    return 'ws2812_set(ws2812b' + p + ', RGB_PIN' + p + ', RGBleds' + p + ', RGB_COUNT' + p + ');\n';
 };
 
 // --------------------- Simple WX Module --------------------------------------
@@ -4577,7 +4641,11 @@ Blockly.Blocks.wx_listen = {
         this.appendValueInput("PATH")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("WX connect")
-                .appendField(new Blockly.FieldDropdown([['HTTP', 'HTTP'], ['Websocket', 'WS'], ['TCP', 'TCP']], function (action) {
+                .appendField(new Blockly.FieldDropdown([
+                        ['HTTP', 'HTTP'], 
+                        ['Websocket', 'WS'], 
+                        ['TCP', 'TCP']
+                    ], function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
                 }), 'PROTOCOL')
                 .appendField("store ID in", 'TEXT')
@@ -4630,19 +4698,25 @@ Blockly.Blocks.wx_listen = {
         this.getInput('PORT').setVisible(prefixVisible);
     },
     getVars: function () {
-        return [this.getFieldValue('ID'), this.getFieldValue('ID1'), this.getFieldValue('ID2'), this.getFieldValue('ID3'), this.getFieldValue('ID4')];
+        if (this.getFieldValue('PROTOCOL') !== 'TCP') {
+            return [this.getFieldValue('ID'), this.getFieldValue('ID1'), this.getFieldValue('ID2'), this.getFieldValue('ID3'), this.getFieldValue('ID4')];
+        } else {
+            return [this.getFieldValue('ID')];
+        }
     },
     renameVar: function (oldName, newName) {
         if (Blockly.Names.equals(oldName, this.getFieldValue('ID')))
             this.setFieldValue(newName, 'ID');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID1')))
-            this.setFieldValue(newName, 'ID1');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID2')))
-            this.setFieldValue(newName, 'ID2');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID3')))
-            this.setFieldValue(newName, 'ID3');
-        if (Blockly.Names.equals(oldName, this.getFieldValue('ID4')))
-            this.setFieldValue(newName, 'ID4');
+        if (this.getFieldValue('PROTOCOL') !== 'TCP') {
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID1')))
+                this.setFieldValue(newName, 'ID1');
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID2')))
+                this.setFieldValue(newName, 'ID2');
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID3')))
+                this.setFieldValue(newName, 'ID3');
+            if (Blockly.Names.equals(oldName, this.getFieldValue('ID4')))
+                this.setFieldValue(newName, 'ID4');
+        }
     },
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
