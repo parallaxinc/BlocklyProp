@@ -4086,7 +4086,7 @@ Blockly.Blocks.wx_scan_multiple = {
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('WX scan')
-                .appendField(new Blockly.FieldDropdown([["POST", "POST"], ["Websocket", "WS"], ["Command", "CMD"]], function (action) {
+                .appendField(new Blockly.FieldDropdown([["POST", "POST"], ["TCP", "TCP"], ["Websocket", "WS"], ["Command", "CMD"]], function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
                 }), "CONNECTION")
                 .appendField('from handle')
@@ -4377,7 +4377,7 @@ Blockly.Blocks.wx_scan_string = {
         this.appendDummyInput()
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField('WX scan')
-                .appendField(new Blockly.FieldDropdown([["POST", "POST"], ["Websocket", "WS"], ["Command", "CMD"]], function (action) {
+                .appendField(new Blockly.FieldDropdown([["POST", "POST"], ["Websocket", "WS"], ["TCP", "TCP"], ["Command", "CMD"]], function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
                 }), "CONNECTION")
                 .appendField('from handle')
