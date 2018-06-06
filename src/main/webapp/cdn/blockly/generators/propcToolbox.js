@@ -1483,61 +1483,58 @@ var colorChanges = {
 
 function filterToolbox(profileName) {
 
-	// Set the category's label (internationalization)
-        xmlToolbox = xmlToolbox.replace(/key="([\S]+)"/g, function(m, p) {
-		return 'name="' + toolbox_label[p] + '"';
+    // Set the category's label (internationalization)
+    xmlToolbox = xmlToolbox.replace(/key="([\S]+)"/g, function (m, p) {
+        return 'name="' + toolbox_label[p] + '"';
+    });
+
+    // Set the palette colors
+    if (getURLParameter('grayscale') == '1') {
+        xmlToolbox = xmlToolbox.replace(/colour="([\S]+)"/g, function (m, p) {
+            return 'colour="' + colorChanges[p] + '"';
         });
+    }
 
-	// Set the palette colors
-	if (getURLParameter('grayscale') == '1') {
-	        xmlToolbox = xmlToolbox.replace(/colour="([\S]+)"/g, function(m, p) {
-			return 'colour="' + colorChanges[p] + '"';
-	        });
-	}
+    // Convert the string to an XML object
+    parser = new DOMParser();
+    xmlDoc = parser.parseFromString(xmlToolbox, "text/xml");
 
-	// Convert the string to an XML object
-	parser = new DOMParser();
-	xmlDoc = parser.parseFromString(xmlToolbox,"text/xml");
+    // Loop through the specified tags and filter based on their attributes
+    tagSearch = ['category', 'sep', 'block'];
+    var toRemove = [];
 
-	// Loop through the specified tags and filter based on their attributes
-  	tagSearch = ['category', 'sep', 'block'];
-	var toRemove = [];
+    for (var j = 0; j < tagSearch.length; j++) {
 
-  	for(var j = 0; j < tagSearch.length; j++) {
+        var xmlElem = xmlDoc.getElementsByTagName(tagSearch[j]);
 
-        	var xmlElem = xmlDoc.getElementsByTagName(tagSearch[j]);
+        for (var t = 0; t < xmlElem.length; t++) {
 
-		for(var t = 0; t < xmlElem.length; t++) {
+            var toolboxEntry = xmlElem[t];
 
-			var toolboxEntry = xmlElem[t];
+            var include = toolboxEntry.getAttribute('include');
+            var exclude = toolboxEntry.getAttribute('exclude');
+            var experimental = toolboxEntry.getAttribute('experimental');
+            
+            if (include && include.indexOf(profileName + ',') === -1) {
+                toRemove.push(toolboxEntry);
+            } else if (exclude && exclude.indexOf(profileName + ',') > -1) {
+                toRemove.push(toolboxEntry);
+            } else if (experimental && inDemo !== 'demo') {
+                // Remove toolbox categories that are experimental if not in demo
+                toRemove.push(toolboxEntry);
+            }
+        }
+    }
 
-        		var include = toolboxEntry.getAttribute('include');
-			if (include && include.indexOf(profileName + ',') === -1) {
-				toRemove.push(toolboxEntry);
-        		}
+    // Remove the XML nodes that were set to be deleted
+    for (j = 0; j < toRemove.length; j++) {
+        toRemove[j].parentNode.removeChild(toRemove[j]);
+    }
 
-        		var exclude = toolboxEntry.getAttribute('exclude');
-        		if (exclude && exclude.indexOf(profileName + ',') > -1) {
-				toRemove.push(toolboxEntry);
-        		}
+    // Turn the XML object back into a string
+    out = new XMLSerializer();
+    var outStr = out.serializeToString(xmlDoc);
+    outStr = outStr.replace(/ include="[\S]+"/g, '').replace(/ exclude="[\S]+"/g, '');
 
-        		// Remove toolbox categories that are experimental if not in demo
-        		var experimental = toolboxEntry.getAttribute('experimental');
-        		if (experimental && inDemo !== 'demo') {
-				toRemove.push(toolboxEntry);
-        		}
-		}
-	}
-
-	// Remove the XML nodes that were set to be deleted
-        for (var j = 0; j < toRemove.length; j++) {
-		toRemove[j].parentNode.removeChild(toRemove[j]);
-	}
-        
-	// Turn the XML object back into a string
-        out = new XMLSerializer();
-        var outStr = out.serializeToString(xmlDoc);
-	outStr = outStr.replace(/ include="[\S]+"/g, '').replace(/ exclude="[\S]+"/g, '');
-        
-        return outStr;
+    return outStr;
 }
