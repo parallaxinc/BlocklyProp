@@ -5058,7 +5058,6 @@ Blockly.propc.wx_buffer = function () {
     {
         var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
         var def = this.getFieldValue('DEFAULT');
-        var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
         Blockly.propc.vartype_[buffer] = 'char *';
 
@@ -5066,6 +5065,7 @@ Blockly.propc.wx_buffer = function () {
         if (def === "TRUE") {
             code += 'wifi_bufferSize(' + size + ');\n';
         } else {
+            var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
             code += 'wifi_setBuffer(' + buffer + ',' + size + ');\n';
         }
         return code;
