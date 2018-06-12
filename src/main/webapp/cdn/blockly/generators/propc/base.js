@@ -653,12 +653,10 @@ Blockly.Blocks.math_random = {
 };
 
 Blockly.propc.math_random = function () {
-    Blockly.propc.setups_["random_seed"] = "srand(INA + CNT);\n";
-    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '0';
-    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '99';
+    var arg1 = Blockly.propc.valueToCode(this, 'A', Blockly.propc.ORDER_ATOMIC) || '1';
+    var arg2 = Blockly.propc.valueToCode(this, 'B', Blockly.propc.ORDER_ATOMIC) || '100';
 
-    var code = '(' + arg1 + ' + rand() % (' + arg2 + ' - ' + arg1 + ' + 1))';
-    return [code, Blockly.propc.ORDER_NONE];
+    return ['random(' + arg1 + ', ' + arg2 + ')', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.math_bitwise = {
@@ -1881,13 +1879,7 @@ Blockly.propc.constrain_value = function () {
     var min = window.parseInt(this.getFieldValue('MIN'));
     var max = window.parseInt(this.getFieldValue('MAX'));
 
-    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.methods_["constrain_function"] = setup_code;
-    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-
-    var code = 'constrain(' + num + ', ' + min + ', ' + max + ')';
+    var code = 'constrainInt(' + num + ', ' + min + ', ' + max + ')';
     return [code, Blockly.propc.ORDER_NONE];
 };
 
@@ -1921,14 +1913,7 @@ Blockly.propc.map_value = function () {
     var fMin = window.parseInt(this.getFieldValue('FMIN'));
     var fMax = window.parseInt(this.getFieldValue('FMAX'));
 
-    if (!this.disabled) {
-        var func_code1 = 'int map(int __xVal, int __inMin, int __inMax, int __outMin, int __outMax)';
-        var func_code2 = '{ return (__xVal - __inMin) * (__outMax - __outMin) / (__inMax - __inMin) + __outMin;}';
-        Blockly.propc.method_declarations_["map_function"] = func_code1 + ';\n';
-        Blockly.propc.methods_["map_function"] = func_code1 + func_code2;
-    }
-
-    return ['map(' + num + ',' + iMin + ',' + iMax + ',' + fMin + ',' + fMax + ')', Blockly.propc.ORDER_NONE];
+    return ['mapInt(' + num + ',' + iMin + ',' + iMax + ',' + fMin + ',' + fMax + ')', Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.math_advanced = {

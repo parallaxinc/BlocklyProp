@@ -1960,14 +1960,8 @@ Blockly.propc.debug_lcd_set_cursor = function () {
         if (!this.disabled) {
             var row = Blockly.propc.valueToCode(this, 'ROW', Blockly.propc.ORDER_NONE);
             var column = Blockly.propc.valueToCode(this, 'COLUMN', Blockly.propc.ORDER_NONE);
-
-            var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-            setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-            setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-            Blockly.propc.methods_["constrain_function"] = setup_code;
-            Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
         }
-        return 'writeChar(debug_lcd, (128 + (constrain(' + row + ', 0, 3) * 20) + constrain(' + column + ', 0, 19)));\n';
+        return 'writeChar(debug_lcd, (128 + (constrainInt(' + row + ', 0, 3) * 20) + constrainInt(' + column + ', 0, 19)));\n';
     }
 };
 
@@ -3329,13 +3323,6 @@ Blockly.propc.ws2812b_set = function () {
         var led = Blockly.propc.valueToCode(this, 'LED', Blockly.propc.ORDER_NONE);
         var color = Blockly.propc.valueToCode(this, 'COLOR', Blockly.propc.ORDER_NONE);
 
-        if (!this.disabled) {
-            var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-            setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-            setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-            Blockly.propc.methods_["constrain_function"] = setup_code;
-            Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-        }
         var p = '0';
         if (projectData && projectData['board'] === 'heb-wx') {
             p = '';
@@ -3347,7 +3334,7 @@ Blockly.propc.ws2812b_set = function () {
                 p = this.getFieldValue('RGB_PIN');
             } 
         }
-        var code = 'RGBleds' + p + '[constrain(' + led + ', 1, RGB_COUNT' + p + ') - 1] = ' + color + ';\n';
+        var code = 'RGBleds' + p + '[constrainInt(' + led + ', 1, RGB_COUNT' + p + ') - 1] = ' + color + ';\n';
         return code;
     }
 };
@@ -3410,15 +3397,8 @@ Blockly.propc.ws2812b_set_multiple = function () {
             } 
         }
         var code = '';
-        if (!this.disabled) {
-            var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-            setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-            setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-            Blockly.propc.methods_["constrain_function"] = setup_code;
-            Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-        }
         code += 'for(int __ldx = ' + start + '; __ldx <= ' + end + '; __ldx++) {';
-        code += 'RGBleds' + p + '[constrain(__ldx, 1, RGB_COUNT' + p + ') - 1] = ' + color + ';}';
+        code += 'RGBleds' + p + '[constrainInt(__ldx, 1, RGB_COUNT' + p + ') - 1] = ' + color + ';}';
         return code;
     }
 };
@@ -4987,13 +4967,15 @@ Blockly.Blocks.wx_buffer = {
     init: function () {
         this.setTooltip(Blockly.MSG_AWX_BUFFER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendValueInput("SIZE")
-                .setCheck('Number')
+        this.appendDummyInput()
                 .appendField("WX buffer use default")
                 .appendField(new Blockly.FieldCheckbox("TRUE", function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
                 }), "DEFAULT")
-                .appendField("size");
+                .appendField("set size to")
+                .appendField(new Blockly.FieldTextInput('64',
+                        Blockly.FieldTextInput.numberValidator), "SIZE")
+                .appendField("bytes ");   
         this.appendDummyInput('BUF')
                 .appendField("set")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "BUFFER")
@@ -5056,10 +5038,10 @@ Blockly.propc.wx_buffer = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
     {
-        var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
+        var size = this.getFieldValue('SIZE') || '64';
         var def = this.getFieldValue('DEFAULT');
 
-        Blockly.propc.vartype_[buffer] = 'char *';
+
 
         var code = '';
         if (def === "TRUE") {
@@ -5067,6 +5049,8 @@ Blockly.propc.wx_buffer = function () {
         } else {
             var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
             code += 'wifi_setBuffer(' + buffer + ',' + size + ');\n';
+            Blockly.propc.vartype_[buffer] = 'char';
+            Blockly.propc.varlength_[buffer] = size;
         }
         return code;
     } else {

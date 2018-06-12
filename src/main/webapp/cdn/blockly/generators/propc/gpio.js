@@ -607,24 +607,16 @@ Blockly.propc.eeprom_write = function () {
     var address = Blockly.propc.valueToCode(this, 'ADDRESS', Blockly.propc.ORDER_ATOMIC);
     var data = Blockly.propc.valueToCode(this, 'DATA', Blockly.propc.ORDER_ATOMIC) || '';
 
-    if (!this.disabled) {
-        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-        Blockly.propc.methods_["constrain_function"] = setup_code;
-        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-    }
     var code = '';
     if (data !== '') {
         if (type === 'BYTE') {
-            code += 'ee_putByte((' + data + ' & 255), (32768 + constrain(' + address + ', 0, 7675)) );\n';
+            code += 'ee_putByte((' + data + ' & 255), (32768 + constrainInt(' + address + ', 0, 7675)) );\n';
         } else if (type === 'NUMBER') {
-            code += 'ee_putInt(' + data + ', (32768 + constrain(' + address + ', 0, 7675)) );\n';
+            code += 'ee_putInt(' + data + ', (32768 + constrainInt(' + address + ', 0, 7675)) );\n';
         } else {
-            code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + constrain(' + address + ', 0, 7675)) );\n';
+            code += 'ee_putStr(' + data + ', (strlen(' + data + ') + 1), (32768 + constrainInt(' + address + ', 0, 7675)) );\n';
         }
     }
-
     return code;
 };
 
@@ -670,19 +662,11 @@ Blockly.propc.eeprom_read = function () {
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
     var code = '';
 
-    if (!this.disabled) {
-        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-        Blockly.propc.methods_["constrain_function"] = setup_code;
-        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-    }
-
     if (data !== '') {
         if (type === 'BYTE') {
-            code += data + ' = ee_getByte( 32768 + constrain(' + address + ', 0, 7675)) & 255;\n';
+            code += data + ' = ee_getByte( 32768 + constrainInt(' + address + ', 0, 7675)) & 255;\n';
         } else if (type === 'NUMBER') {
-            code += data + ' = ee_getInt( 32768 + constrain(' + address + ', 0, 7675));\n';
+            code += data + ' = ee_getInt( 32768 + constrainInt(' + address + ', 0, 7675));\n';
         } else {
             if (!this.disabled) {
                 Blockly.propc.global_vars_["i2c_eeBffr"] = 'char __eeBffr[1];';
@@ -690,7 +674,7 @@ Blockly.propc.eeprom_read = function () {
                 Blockly.propc.vartype_[data] = 'char *';
             }
             code += '// Get the string from EEPROM one character at a time until it finds the end of the string.\n__eeIdx = 0;\n';
-            code += 'while(__eeIdx < 128) {\n  ee_getStr(__eeBffr, 1, (32768 + constrain(' + address + ', 0, 7675)) + __eeIdx);\n';
+            code += 'while(__eeIdx < 128) {\n  ee_getStr(__eeBffr, 1, (32768 + constrainInt(' + address + ', 0, 7675)) + __eeIdx);\n';
             code += data + '[__eeIdx] = __eeBffr[0];\nif(' + data + '[__eeIdx] == 0) break;\n  __eeIdx++;\n}\n';
             code += 'if(__eeIdx >= 128) ' + data + '[127] = 0;\n';
         }
@@ -1495,14 +1479,8 @@ Blockly.propc.wav_volume = function () {
 
     if (!this.disabled) {
         Blockly.propc.definitions_["include wavplayer"] = '#include "wavplayer.h"';
-
-        var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-        setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-        setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-        Blockly.propc.methods_["constrain_function"] = setup_code;
-        Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
     }
-    var code = 'wav_volume(constrain(' + volume + ', 0, 10));\n';
+    var code = 'wav_volume(constrainInt(' + volume + ', 0, 10));\n';
     return code;
 };
 

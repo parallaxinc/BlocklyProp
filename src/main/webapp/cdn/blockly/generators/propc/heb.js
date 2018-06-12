@@ -690,13 +690,7 @@ Blockly.propc.heb_badge_eeprom_retrieve = function () {
     var index = Blockly.propc.valueToCode(this, "INDEX", Blockly.propc.ORDER_NONE);
     var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
 
-    var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-    setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-    setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-    Blockly.propc.methods_["constrain_function"] = setup_code;
-    Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-
-    return 'retrieve(' + buffer + ', constrain(' + index + ', 0, contacts_count() - 1));\n';
+    return 'retrieve(' + buffer + ', constrainInt(' + index + ', 0, contacts_count() - 1));\n';
 };
 
 Blockly.Blocks.heb_count_contacts = {

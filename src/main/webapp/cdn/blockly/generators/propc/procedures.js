@@ -44,8 +44,6 @@ Blockly.Blocks['procedures_defnoreturn'] = {
                 .appendField(nameField, 'NAME')
                 .appendField('', 'PARAMS');
         this.setColour(colorPalette.getColor('functions'));
-        //this.setTooltip(Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP);
-        //this.setHelpUrl(Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL);
         this.arguments_ = [];
         this.setStatements_(true);
         this.statementConnection_ = null;

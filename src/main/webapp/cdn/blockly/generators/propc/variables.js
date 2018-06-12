@@ -578,14 +578,7 @@ Blockly.propc.array_set = function () {
                 code = 'WARNING: You are trying to set an element\nin your array that does not exist!\n';
             }
         } else {
-            if (!this.disabled) {
-                var setup_code = 'int constrain(int __cVal, int __cMin, int __cMax) {';
-                setup_code += 'if(__cVal < __cMin) __cVal = __cMin;\n';
-                setup_code += 'if(__cVal > __cMax) __cVal = __cMax;\nreturn __cVal;\n}\n';
-                Blockly.propc.methods_["constrain_function"] = setup_code;
-                Blockly.propc.method_declarations_["constrain_function"] = 'int constrain(int __cVal, int __cMin, int __cMax);\n';
-            }
-            code = varName + '[constrain(' + element + ', 0, ';
+            code = varName + '[constrainInt(' + element + ', 0, ';
             code += (parseInt(initStr, 10) - 1).toString(10);
             code += ')] = ' + value + ';\n';
         }
