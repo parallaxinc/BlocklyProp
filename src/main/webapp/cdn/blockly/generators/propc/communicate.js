@@ -4987,13 +4987,15 @@ Blockly.Blocks.wx_buffer = {
     init: function () {
         this.setTooltip(Blockly.MSG_AWX_BUFFER_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
-        this.appendValueInput("SIZE")
-                .setCheck('Number')
+        this.appendDummyInput()
                 .appendField("WX buffer use default")
                 .appendField(new Blockly.FieldCheckbox("TRUE", function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
                 }), "DEFAULT")
-                .appendField("size");
+                .appendField("set size to")
+                .appendField(new Blockly.FieldTextInput('64',
+                        Blockly.FieldTextInput.numberValidator), "SIZE")
+                .appendField("bytes ");   
         this.appendDummyInput('BUF')
                 .appendField("set")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "BUFFER")
@@ -5056,10 +5058,10 @@ Blockly.propc.wx_buffer = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
     {
-        var size = Blockly.propc.valueToCode(this, 'SIZE', Blockly.propc.NONE) || '64';
+        var size = this.getFieldValue('SIZE') || '64';
         var def = this.getFieldValue('DEFAULT');
 
-        Blockly.propc.vartype_[buffer] = 'char *';
+
 
         var code = '';
         if (def === "TRUE") {
@@ -5067,6 +5069,8 @@ Blockly.propc.wx_buffer = function () {
         } else {
             var buffer = Blockly.propc.variableDB_.getName(this.getFieldValue('BUFFER'), Blockly.Variables.NAME_TYPE);
             code += 'wifi_setBuffer(' + buffer + ',' + size + ');\n';
+            Blockly.propc.vartype_[buffer] = 'char';
+            Blockly.propc.varlength_[buffer] = size;
         }
         return code;
     } else {
