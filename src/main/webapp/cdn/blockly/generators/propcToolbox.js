@@ -249,6 +249,7 @@ xmlToolbox += '                        <field name="TEXT">Hello</field>';
 xmlToolbox += '                    </block>';
 xmlToolbox += '                </value>';
 xmlToolbox += '            </block>';
+xmlToolbox += '            <block type="heb_print_multiple"></block>';
 xmlToolbox += '            <block type="heb_cursor_position_large"></block>';
 xmlToolbox += '            <block type="heb_cursor_position_small">';
 xmlToolbox += '                <value name="ROWS">';

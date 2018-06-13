@@ -746,109 +746,18 @@ Blockly.Blocks.char_type_block = {
     init: function () {
         this.setTooltip(Blockly.MSG_CHAR_TYPE_BLOCK_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
+        var charMenu = [["32 - space", "32"]];
+        for (var k = 33; k < 127; k++) {
+            charMenu.push([k.toString(10) + ' - ' + String.fromCharCode(k), k.toString(10)]);
+        }
+        charMenu.concat(["7 - bell", "7"],
+                ["10 - line feed", "10"],
+                ["11 - tab", "11"],
+                ["13 - carriage return", "13"],
+                ["127 - delete", "127"]);
         this.appendDummyInput()
                 .appendField("character")
-                .appendField(new Blockly.FieldDropdown([
-                    ["32 - space", "32"],
-                    ["33 - !", "33"],
-                    ["34 - \"", "34"],
-                    ["35 - #", "35"],
-                    ["36 - $", "36"],
-                    ["37 - %", "37"],
-                    ["38 - &", "38"],
-                    ["39 - '", "39"],
-                    ["40 - (", "40"],
-                    ["41 - )", "41"],
-                    ["42 - *", "42"],
-                    ["43 - +", "43"],
-                    ["44 - ,", "44"],
-                    ["45 - -", "45"],
-                    ["46 - .", "46"],
-                    ["47 - /", "47"],
-                    ["48 - 0", "48"],
-                    ["49 - 1", "49"],
-                    ["50 - 2", "50"],
-                    ["51 - 3", "51"],
-                    ["52 - 4", "52"],
-                    ["53 - 5", "53"],
-                    ["54 - 6", "54"],
-                    ["55 - 7", "55"],
-                    ["56 - 8", "56"],
-                    ["57 - 9", "57"],
-                    ["58 - :", "58"],
-                    ["59 - ;", "59"],
-                    ["60 - <", "60"],
-                    ["61 - =", "61"],
-                    ["62 - >", "62"],
-                    ["63 - ?", "63"],
-                    ["64 - @", "64"],
-                    ["65 - A", "65"],
-                    ["66 - B", "66"],
-                    ["67 - C", "67"],
-                    ["68 - D", "68"],
-                    ["69 - E", "69"],
-                    ["70 - F", "70"],
-                    ["71 - G", "71"],
-                    ["72 - H", "72"],
-                    ["73 - I", "73"],
-                    ["74 - J", "74"],
-                    ["75 - K", "75"],
-                    ["76 - L", "76"],
-                    ["77 - M", "77"],
-                    ["78 - N", "78"],
-                    ["79 - O", "79"],
-                    ["80 - P", "80"],
-                    ["81 - Q", "81"],
-                    ["82 - R", "82"],
-                    ["83 - S", "83"],
-                    ["84 - T", "84"],
-                    ["85 - U", "85"],
-                    ["86 - V", "86"],
-                    ["87 - W", "87"],
-                    ["88 - X", "88"],
-                    ["89 - Y", "89"],
-                    ["90 - Z", "90"],
-                    ["91 - [", "91"],
-                    ["92 - \\", "92"],
-                    ["93 - ]", "93"],
-                    ["94 - ^", "94"],
-                    ["95 - _", "95"],
-                    ["96 - `", "96"],
-                    ["97 - a", "97"],
-                    ["98 - b", "98"],
-                    ["99 - c", "99"],
-                    ["100 - d", "100"],
-                    ["101 - e", "101"],
-                    ["102 - f", "102"],
-                    ["103 - g", "103"],
-                    ["104 - h", "104"],
-                    ["105 - i", "105"],
-                    ["106 - j", "106"],
-                    ["107 - k", "107"],
-                    ["108 - l", "108"],
-                    ["109 - m", "109"],
-                    ["110 - n", "110"],
-                    ["111 - o", "111"],
-                    ["112 - p", "112"],
-                    ["113 - q", "113"],
-                    ["114 - r", "114"],
-                    ["115 - s", "115"],
-                    ["116 - t", "116"],
-                    ["117 - u", "117"],
-                    ["118 - v", "118"],
-                    ["119 - w", "119"],
-                    ["120 - x", "120"],
-                    ["121 - y", "121"],
-                    ["122 - z", "122"],
-                    ["123 - {", "123"],
-                    ["124 - |", "124"],
-                    ["125 - }", "125"],
-                    ["126 - ~", "126"],
-                    ["7 - bell", "7"],
-                    ["10 - line feed", "10"],
-                    ["11 - tab", "11"],
-                    ["13 - carriage return", "13"],
-                    ["127 - delete", "127"]]), "CHAR");
+                .appendField(new Blockly.FieldDropdown(charMenu), "CHAR");
         this.setPreviousStatement(false, null);
         this.setNextStatement(false, null);
         this.setOutput(true, 'Number');
@@ -1531,7 +1440,12 @@ Blockly.Blocks.find_substring = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_FIND_SUBSTRING_TOOLTIP);
-        this.setColour(colorPalette.getColor('math'));
+        if (this.type === 'find_substring') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: This block has been deprecated.\nReplace with a new block from the Operators > Numbers menu.\nOld blocks were (1) referenced, new blocks are (0) referenced.');
+        } else {
+            this.setColour(colorPalette.getColor('math'));
+        }
         this.appendValueInput("SUBSTR")
                 .setCheck("String")
                 .appendField("find location of text");
@@ -1543,29 +1457,52 @@ Blockly.Blocks.find_substring = {
     }
 };
 
+Blockly.Blocks.find_substring_zero = Blockly.Blocks.find_substring;
+        
 Blockly.propc.find_substring = function () {
     var subs = Blockly.propc.valueToCode(this, 'SUBSTR', Blockly.propc.ORDER_ATOMIC) || '';
     var strs = Blockly.propc.valueToCode(this, 'STR', Blockly.propc.ORDER_ATOMIC) || '';
 
-    Blockly.propc.methods_['find_sub'] = 'int find_sub(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS + 1); }\n';
-    Blockly.propc.method_declarations_["find_sub"] = 'int find_sub(char *__strS, char *__subS);\n';
+    if (this.type === 'find_substring') {
+        if (!this.disabled) {
+            Blockly.propc.methods_['find_sub'] = 'int find_sub(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS + 1); }\n';
+            Blockly.propc.method_declarations_["find_sub"] = 'int find_sub(char *__strS, char *__subS);\n';
+        }
+        var code = '// WARNING! THIS BLOCK IS DEPRECATED! \n\n';
 
-    var code = '';
-
-    if (subs !== '' && strs !== '') {
-        code += 'find_sub(' + strs + ', ' + subs + ')';
+        if (subs !== '' && strs !== '') {
+            code += 'find_sub(' + strs + ', ' + subs + ')';
+        } else {
+            code += '0';
+        }
     } else {
-        code += '0';
+        if (!this.disabled) {
+            Blockly.propc.methods_['find_sub_zero'] = 'int find_sub_(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS); }\n';
+            Blockly.propc.method_declarations_["find_sub_zero"] = 'int find_sub_(char *__strS, char *__subS);\n';
+        }
+        var code = '';
+        if (subs !== '' && strs !== '') {
+            code += 'find_sub_(' + strs + ', ' + subs + ')';
+        } else {
+            code += '0';
+        }        
     }
-
+    
     return [code, Blockly.propc.ORDER_NONE];
 };
+
+Blockly.propc.find_substring_zero = Blockly.propc.find_substring;
 
 Blockly.Blocks.get_char_at_position = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_GET_CHAR_AT_POSITION_TOOLTIP);
-        this.setColour(colorPalette.getColor('math'));
+        if (this.type === 'get_char_at_position') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: This block has been deprecated.\nReplace with a new block from the Operators > Numbers menu.\nOld blocks were (1) referenced, new blocks are (0) referenced.');
+        } else {
+            this.setColour(colorPalette.getColor('math'));
+        }
         this.appendValueInput("POSITION")
                 .setCheck("Number")
                 .appendField("get character at position");
@@ -1585,6 +1522,8 @@ Blockly.Blocks.get_char_at_position = {
     }
 };
 
+Blockly.Blocks.get_char_at_position_zero = Blockly.Blocks.get_char_at_position;
+
 Blockly.propc.get_char_at_position = function () {
     var pos = Blockly.propc.valueToCode(this, 'POSITION', Blockly.propc.ORDER_ATOMIC) || '1';
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
@@ -1593,17 +1532,28 @@ Blockly.propc.get_char_at_position = function () {
 
     if (Blockly.propc.vartype_[data] === 'char *')
     {
-        code = data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1]';
+        if (this.type === 'get_char_at_position') {
+            code = data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1]';
+        } else {
+            code = data + '[' + pos + ']';
+        }
     }
 
     return [code, Blockly.propc.ORDER_NONE];
 };
 
+Blockly.propc.get_char_at_position_zero = propc.Blocks.get_char_at_position;
+
 Blockly.Blocks.set_char_at_position = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_SET_CHAR_AT_POSITION_TOOLTIP);
-        this.setColour(colorPalette.getColor('math'));
+        if (this.type === 'set_char_at_position') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: This block has been deprecated.\nReplace with a new block from the Operators > Numbers menu.\nOld blocks were (1) referenced, new blocks are (0) referenced.');
+        } else {
+            this.setColour(colorPalette.getColor('math'));
+        }
         this.appendValueInput("POSITION")
                 .setCheck("Number")
                 .appendField("set character at position");
@@ -1630,19 +1580,32 @@ Blockly.Blocks.set_char_at_position = {
     }
 };
 
+Blockly.Blocks.set_char_at_position_zero = Blockly.Blocks.set_char_at_position;
+
 Blockly.propc.set_char_at_position = function () {
     var pos = Blockly.propc.valueToCode(this, 'POSITION', Blockly.propc.ORDER_ATOMIC) || '1';
     var chr = Blockly.propc.valueToCode(this, 'CHAR', Blockly.propc.ORDER_ATOMIC) || '32';
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
 
-    return data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1] = (' + chr + ' & 0xFF)\n;';
+    if (this.type === 'set_char_at_position') {
+        return data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1] = (' + chr + ' & 0xFF)\n;';
+    } else {
+        return data + '[' + pos + '] = ' + chr;
+    }
 };
+
+Blockly.propc.set_char_at_position_zero = Blockly.propc.set_char_at_position;
 
 Blockly.Blocks.get_substring = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_GET_SUBSTRING_TOOLTIP);
-        this.setColour(colorPalette.getColor('math'));
+        if (this.type === 'get_substring') {
+            this.setColour('#FF8800');
+            this.setWarningText('WARNING: This block has been deprecated.\nReplace with a new block from the Operators > Numbers menu.\nOld blocks were (1) referenced, new blocks are (0) referenced.');
+        } else {
+            this.setColour(colorPalette.getColor('math'));
+        }
         this.appendDummyInput()
                 .appendField("get part of string")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'FROM_STR');
@@ -1673,6 +1636,8 @@ Blockly.Blocks.get_substring = {
     }
 };
 
+Blockly.Blocks.get_substring_zero = Blockly.Blocks.get_substring;
+
 Blockly.propc.get_substring = function () {
     var sst = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_ATOMIC) || '1';
     var snd = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_ATOMIC) || '2';
@@ -1681,6 +1646,12 @@ Blockly.propc.get_substring = function () {
 
     Blockly.propc.vartype_[toStr] = 'char *';
     Blockly.propc.definitions_['str_Buffer'] = 'char *__scBfr;';
+    
+    if (parseInt(sst) > parseInt(snd)) {
+        var tmp = sst;
+        sst = snd;
+        snd = tmp;
+    }
 
     var code = '';
 
@@ -1688,13 +1659,21 @@ Blockly.propc.get_substring = function () {
     {
         Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
 
-        code += '__stIdx = 0;\nfor(__ssIdx = (' + sst + '-1); __ssIdx <= (' + snd + ' <= strlen(' + frStr + ')?' + snd + ':strlen(' + frStr + '))-1; __ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+        if (this.type === 'get_substring') {
+            code += '__stIdx = 0;\nfor(__ssIdx = (' + sst + '-1); __ssIdx <= (' + snd + ' <= strlen(' + frStr;
+            code += ')?' + snd + ':strlen(' + frStr + '))-1; __ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+        } else {
+            code += '__stIdx = 0;\nfor(__ssIdx = ' + sst + '; __ssIdx < ' + snd + ';';
+            code += '__ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+        }
         code += '__scBfr[__stIdx] = 0;\n';
         code += 'strcpy(' + toStr + ', __scBfr);\n';
     }
 
     return code;
 };
+
+Blockly.propc.get_substring_zero = Blockly.propc.get_substring;
 
 Blockly.Blocks.string_compare = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,

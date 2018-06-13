@@ -199,6 +199,10 @@ Blockly.propc.heb_print_string_var = function () {
     return 'oledprint(' + value + ');\n';
 };
 
+Blockly.Blocks.heb_print_multiple = Blockly.Blocks.oled_print_multiple;
+
+Blockly.propc.heb_print_multiple = Blockly.propc.console_print_multiple;
+
 Blockly.Blocks.heb_cursor_position_large = {
     init: function () {
         this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
@@ -212,6 +216,8 @@ Blockly.Blocks.heb_cursor_position_large = {
         this.setNextStatement(true, null);
     }
 };
+
+
 
 Blockly.propc.heb_cursor_position_large = function () {
     var size = this.getFieldValue("SIZE");
