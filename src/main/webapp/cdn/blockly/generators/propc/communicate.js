@@ -3079,7 +3079,7 @@ Blockly.Blocks.oled_print_multiple = {
         if (this.type === "heb_print_multiple") {
             myTooltip = Blockly.MSG_HEB_PRINT_MULTIPLE_TOOLTIP;
             myHelpUrl = Blockly.MSG_BADGE_DISPLAY_HELPURL;
-            myDevice = 'Display';
+            this.myDevice = 'Display';
         }
         this.setTooltip(myTooltip);
         this.setHelpUrl(myHelpUrl);
