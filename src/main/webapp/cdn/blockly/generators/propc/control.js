@@ -419,12 +419,21 @@ Blockly.propc.control_repeat_for_loop = function () {
                 code = '// ERROR: Your "step" size cannot be 0 (zero)!\n';
         }
     } else {
-        if (Number(start) < Number(end)) {
-            code += ' <' + end + ' += abs(' + repeat_code;
+        if (isNaN(parseFloat(step)) || !isFinite(step)) {
+            if (Number(start) < Number(end)) {
+                code += ' <' + end + ' += abs(' + repeat_code;
+            } else {
+                code += ' >' + end + ' -= abs(' + repeat_code;
+            }
         } else {
-            code += ' >' + end + ' -= abs(' + repeat_code;
+            if (Number(start) < Number(end)) {
+                code += ' <' + end + ' += (' + repeat_code;
+            } else {
+                code += ' >' + end + ' += (' + repeat_code;
+            }
         }
     }
+    code = code.replace(/ \+= \(-1\)/g, '--').replace(/ \+= \(1\)/g, '++');
     return code;
 };
 

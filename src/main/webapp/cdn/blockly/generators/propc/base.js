@@ -1530,19 +1530,16 @@ Blockly.propc.get_char_at_position = function () {
 
     var code = '0';
 
-    if (Blockly.propc.vartype_[data] === 'char *')
-    {
-        if (this.type === 'get_char_at_position') {
-            code = data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1]';
-        } else {
-            code = data + '[' + pos + ']';
-        }
+    if (this.type === 'get_char_at_position') {
+        code = data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1]';
+    } else {
+        code = data + '[' + pos + ']';
     }
 
     return [code, Blockly.propc.ORDER_NONE];
 };
 
-Blockly.propc.get_char_at_position_zero = propc.Blocks.get_char_at_position;
+Blockly.propc.get_char_at_position_zero = Blockly.propc.get_char_at_position;
 
 Blockly.Blocks.set_char_at_position = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
@@ -1586,11 +1583,12 @@ Blockly.propc.set_char_at_position = function () {
     var pos = Blockly.propc.valueToCode(this, 'POSITION', Blockly.propc.ORDER_ATOMIC) || '1';
     var chr = Blockly.propc.valueToCode(this, 'CHAR', Blockly.propc.ORDER_ATOMIC) || '32';
     var data = Blockly.propc.variableDB_.getName(this.getFieldValue('VALUE'), Blockly.Variables.NAME_TYPE);
-
+    Blockly.propc.vartype_[data] = 'char *';
+    
     if (this.type === 'set_char_at_position') {
         return data + '[(' + pos + '>strlen(' + data + ')?strlen(' + data + '):' + pos + ')-1] = (' + chr + ' & 0xFF)\n;';
     } else {
-        return data + '[' + pos + '] = ' + chr;
+        return data + '[' + pos + '] = (' + chr + ' & 0xFF)\n;';
     }
 };
 
@@ -1655,20 +1653,19 @@ Blockly.propc.get_substring = function () {
 
     var code = '';
 
-    if (Blockly.propc.vartype_[frStr] === 'char *')
-    {
+    if (!this.disabled) {
         Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
-
-        if (this.type === 'get_substring') {
-            code += '__stIdx = 0;\nfor(__ssIdx = (' + sst + '-1); __ssIdx <= (' + snd + ' <= strlen(' + frStr;
-            code += ')?' + snd + ':strlen(' + frStr + '))-1; __ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
-        } else {
-            code += '__stIdx = 0;\nfor(__ssIdx = ' + sst + '; __ssIdx < ' + snd + ';';
-            code += '__ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
-        }
-        code += '__scBfr[__stIdx] = 0;\n';
-        code += 'strcpy(' + toStr + ', __scBfr);\n';
     }
+
+    if (this.type === 'get_substring') {
+        code += '__stIdx = 0;\nfor(__ssIdx = (' + sst + '-1); __ssIdx <= (' + snd + ' <= strlen(' + frStr;
+        code += ')?' + snd + ':strlen(' + frStr + '))-1; __ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+    } else {
+        code += '__stIdx = 0;\nfor(__ssIdx = ' + sst + '; __ssIdx < ' + snd + ';';
+        code += '__ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+    }
+    code += '__scBfr[__stIdx] = 0;\n';
+    code += 'strcpy(' + toStr + ', __scBfr);\n';
 
     return code;
 };
