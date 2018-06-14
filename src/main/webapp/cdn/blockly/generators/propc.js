@@ -345,6 +345,9 @@ Blockly.propc.finish = function (code) {
             definitions[def] = definitions[def].replace(/char \*(\s*)(\w+);/g, 'char *$1$2' + bigStr + spaceAdd + endStr);
             spaceAdd += ' ';
         }
+        
+        // TODO: Temporary patch to correct some weirdness with char array pointer declarations:
+        definitions[def] = definitions[def].replace(/char \*\[/g, 'char [');
     }
 
     for (var stack in Blockly.propc.stacks_) {
