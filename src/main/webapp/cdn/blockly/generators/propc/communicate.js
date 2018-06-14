@@ -561,6 +561,9 @@ Blockly.propc.console_print_multiple = function () {
             errorString = '// ERROR: XBEE is not initialized!\n';
             code += 'dprint(xbee, "';
             break;
+        case 'heb_print_multiple':
+            code += 'oledprint("';
+            break;
         case 'wx_print_multiple':
             initBlock = 'WX initialize';
             errorString = '// ERROR: WX is not initialized!\n';
@@ -3069,12 +3072,20 @@ Blockly.propc.oled_print_number = function () {
 };
 
 Blockly.Blocks.oled_print_multiple = {
-    helpUrl: Blockly.MSG_TERMINAL_HELPURL,
     init: function () {
-        this.setTooltip(Blockly.MSG_OLED_PRINT_MULTIPLE_TOOLTIP);
+        var myTooltip = Blockly.MSG_OLED_PRINT_MULTIPLE_TOOLTIP;
+        var myHelpUrl = Blockly.MSG_TERMINAL_HELPURL;
+        this.myDevice = 'OLED';
+        if (this.type === "heb_print_multiple") {
+            myTooltip = Blockly.MSG_HEB_PRINT_MULTIPLE_TOOLTIP;
+            myHelpUrl = Blockly.MSG_BADGE_DISPLAY_HELPURL;
+            this.myDevice = 'Display';
+        }
+        this.setTooltip(myTooltip);
+        this.setHelpUrl(myHelpUrl);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
-                .appendField('OLED print');
+                .appendField(this.myDevice + ' print');
         this.appendValueInput('PRINT0')
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('String')
@@ -3099,10 +3110,10 @@ Blockly.Blocks.oled_print_multiple = {
     onchange: function () {
         var warnTxt = null;
         if (this.workspace && this.optionList_.length < 1) {
-            warnTxt = 'OLED print multiple must have at least one term.';
+            warnTxt = this.myDevice + ' print multiple must have at least one term.';
         }
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-        if (allBlocks.indexOf('OLED initialize') === -1)
+        if (allBlocks.indexOf('OLED initialize') === -1 && this.type !== 'heb_print_multiple')
         {
             warnTxt = 'WARNING: You must use an OLED\ninitialize block at the beginning of your program!';
         }

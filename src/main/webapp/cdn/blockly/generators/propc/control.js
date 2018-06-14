@@ -375,7 +375,7 @@ Blockly.Blocks.control_repeat_for_loop = {
                 .appendField("from");
         this.appendValueInput('END')
                 .setCheck('Number')
-                .appendField("to");
+                .appendField(new Blockly.FieldDropdown([["thru", "= "], ["to", " "]]), "EQ");
         this.appendValueInput('STEP')
                 .setCheck('Number')
                 .appendField("by");
@@ -398,30 +398,42 @@ Blockly.Blocks.control_repeat_for_loop = {
 
 Blockly.propc.control_repeat_for_loop = function () {
     var start = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_NONE) || '1';
-    var end = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE) || '10';
+    var end = this.getFieldValue('EQ') + Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_NONE) || '10';
     var step = Blockly.propc.valueToCode(this, 'STEP', Blockly.propc.ORDER_NONE) || '1';
     var repeat_code = Blockly.propc.statementToCode(this, 'DO');
     var loop_counter = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-    var code = '';
+
+    repeat_code = step + ')) {\n' + repeat_code + '\n}';
+    end += '; ' + loop_counter;
+    var code = 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter;
 
     if (isNaN(parseFloat(start)) || !isFinite(start) || isNaN(parseFloat(end)) || !isFinite(end)) {
         if (isNaN(parseFloat(step)) || !isFinite(step)) {
-            code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
+            code += ' <' + end + ' += abs(' + repeat_code;
         } else {
             if (Number(step) < 0)
-                code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' += (' + step + ')) {\n' + repeat_code + '\n}';
+                code += ' >' + end + ' += (' + repeat_code;
             else if (Number(step) > 0)
-                code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += (' + step + ')) {\n' + repeat_code + '\n}';
+                code += ' <' + end + ' += (' + repeat_code;
             else if (Number(step) === 0)
-                code += '// ERROR: Your "step" size cannot be 0 (zero)!\n' + repeat_code;
+                code = '// ERROR: Your "step" size cannot be 0 (zero)!\n';
         }
     } else {
-        if (Number(start) < Number(end)) {
-            code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' <= ' + end + '; ' + loop_counter + ' += abs(' + step + ')) {\n' + repeat_code + '\n}';
+        if (isNaN(parseFloat(step)) || !isFinite(step)) {
+            if (Number(start) < Number(end)) {
+                code += ' <' + end + ' += abs(' + repeat_code;
+            } else {
+                code += ' >' + end + ' -= abs(' + repeat_code;
+            }
         } else {
-            code += 'for (' + loop_counter + ' = ' + start + '; ' + loop_counter + ' >= ' + end + '; ' + loop_counter + ' -= abs(' + step + ')) {\n' + repeat_code + '\n}';
+            if (Number(start) < Number(end)) {
+                code += ' <' + end + ' += (' + repeat_code;
+            } else {
+                code += ' >' + end + ' += (' + repeat_code;
+            }
         }
     }
+    code = code.replace(/ \+= \(-1\)/g, '--').replace(/ \+= \(1\)/g, '++');
     return code;
 };
 
