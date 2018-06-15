@@ -30,7 +30,7 @@ if (!Blockly.Blocks)
 
 Blockly.Blocks.heb_toggle_led = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_LEDS_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_TOGGLE_LED);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
@@ -54,7 +54,7 @@ Blockly.propc.heb_toggle_led = function () {
 
 Blockly.Blocks.heb_pwm_led = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_LEDS_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_PWM_LED);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("BRIGHTNESS")
@@ -80,7 +80,7 @@ Blockly.propc.heb_pwm_led = function () {
 
 Blockly.Blocks.heb_toggle_led_open = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_LEDS_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_TOGGLE_LED_OPEN);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
@@ -106,7 +106,7 @@ Blockly.propc.heb_toggle_led_open = function () {
 
 Blockly.Blocks.heb_color_val = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_VALUES_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_COLOR_VAL);
         this.setColour(colorPalette.getColor('programming'));
         var rgb_led_colors = new Blockly.FieldColour("#FFFFFF");
@@ -129,7 +129,7 @@ Blockly.propc.heb_color_val = function () {
 
 Blockly.Blocks.heb_set_led_rgb = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_LEDS_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_SET_LED_RGB);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('RGB')
@@ -158,7 +158,7 @@ Blockly.propc.heb_set_led_rgb = function () {
 
 Blockly.Blocks.heb_print_numeric_var = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_PRINT_NUMERIC_VAR);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
@@ -182,7 +182,7 @@ Blockly.propc.heb_print_numeric_var = function () {
 
 Blockly.Blocks.heb_print_string_var = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_PRINT_STRING_VAR);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('VALUE')
@@ -228,7 +228,7 @@ Blockly.propc.heb_cursor_position_large = function () {
 
 Blockly.Blocks.heb_cursor_position_small = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_CURSOR_POSITION_SMALL);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('COLS')
@@ -253,7 +253,7 @@ Blockly.propc.heb_cursor_position_small = function () {
 
 Blockly.Blocks.heb_oled_point = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_OLED_POINT);
         var oled_colors = new Blockly.FieldColour("#FFFFFF");
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
@@ -289,7 +289,7 @@ Blockly.propc.heb_oled_point = function () {
 
 Blockly.Blocks.heb_oled_line = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_OLED_LINE);
         var oled_colors = new Blockly.FieldColour("#FFFFFF");
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
@@ -337,7 +337,7 @@ Blockly.propc.heb_oled_line = function () {
 
 Blockly.Blocks.heb_oled_circle = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_OLED_CIRCLE);
         var oled_colors = new Blockly.FieldColour("#FFFFFF");
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
@@ -389,7 +389,7 @@ Blockly.propc.heb_oled_circle = function () {
 
 Blockly.Blocks.heb_oled_box = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_OLED_BOX);
         var oled_colors = new Blockly.FieldColour("#FFFFFF");
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
@@ -447,7 +447,7 @@ Blockly.propc.heb_oled_box = function () {
 
 Blockly.Blocks.heb_oled_triangle = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_OLED_TRIANGLE);
         var oled_colors = new Blockly.FieldColour("#FFFFFF");
         oled_colors.setColours(['#FFFFFF', '#000000']).setColumns(2);
@@ -515,7 +515,7 @@ Blockly.propc.heb_oled_triangle = function () {
 
 Blockly.Blocks.heb_clear_screen = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_CLEAR_SCREEN);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
@@ -532,7 +532,7 @@ Blockly.propc.heb_clear_screen = function () {
 
 Blockly.Blocks.heb_rotate = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_ROTATE);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
@@ -550,7 +550,7 @@ Blockly.propc.heb_rotate = function () {
 
 Blockly.Blocks.heb_ir_send_signal = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_IR_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_IR_SEND_SIGNAL);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('MESSAGE')
@@ -571,7 +571,7 @@ Blockly.propc.heb_ir_send_signal = function () {
 
 Blockly.Blocks.heb_ir_read_signal = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_IR_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_IR_READ_SIGNAL);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
@@ -607,7 +607,7 @@ Blockly.propc.heb_ir_read_signal = function () {
 
 Blockly.Blocks.heb_ir_clear_buffer = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_IR_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_IR_CLEAR_BUFFER);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
@@ -625,7 +625,7 @@ Blockly.propc.heb_ir_clear_buffer = function () {
 
 Blockly.Blocks.heb_badge_eeprom_store = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_EEPROM_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_BADGE_EEPROM_STORE);
         this.setColour(colorPalette.getColor('output'));
         this.appendValueInput('CONTACT')
@@ -644,7 +644,7 @@ Blockly.propc.heb_badge_eeprom_store = function () {
 
 Blockly.Blocks.heb_badge_eeprom_is_stored = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_EEPROM_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_BADGE_EEPROM_IS_STORED);
         this.setColour(colorPalette.getColor('output'));
         this.appendValueInput('CONTACT')
@@ -667,7 +667,7 @@ Blockly.propc.heb_badge_eeprom_is_stored = function () {
 
 Blockly.Blocks.heb_badge_eeprom_retrieve = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_EEPROM_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_BADGE_EEPROM_RETRIEVE);
         this.setColour(colorPalette.getColor('output'));
         this.appendValueInput('INDEX')
@@ -701,7 +701,7 @@ Blockly.propc.heb_badge_eeprom_retrieve = function () {
 
 Blockly.Blocks.heb_count_contacts = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_EEPROM_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_COUNT_CONTACTS);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
@@ -718,7 +718,7 @@ Blockly.propc.heb_count_contacts = function () {
 
 Blockly.Blocks.heb_erase_all_contacts = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_EEPROM_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_ERASE_ALL_CONTACTS);
         this.setColour(colorPalette.getColor('output'));
         this.appendDummyInput()
@@ -734,7 +734,7 @@ Blockly.propc.heb_erase_all_contacts = function () {
 
 Blockly.Blocks.heb_badge_axis_acceleration = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_ACCEL_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_BADGE_AXIS_ACCELERATION);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -752,7 +752,7 @@ Blockly.propc.heb_badge_axis_acceleration = function () {
 
 Blockly.Blocks.heb_badge_was_shaken = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_ACCEL_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_BADGE_WAS_SHAKEN);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -769,7 +769,7 @@ Blockly.propc.heb_badge_was_shaken = function () {
 
 Blockly.Blocks.heb_touchpad_status = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_BUTTONS_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_TOUCHPAD_STATUS);
         this.setColour(colorPalette.getColor('input'));
         if (projectData && projectData['board'] !== 'heb-wx') {
@@ -813,7 +813,7 @@ Blockly.propc.heb_touchpad_status = function () {
 
 Blockly.Blocks.heb_touchpad_sensitivity = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_BADGE_BUTTONS_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_TOUCHPAD_SENSITIVITY);
         this.setColour(colorPalette.getColor('input'));
         this.appendDummyInput()
@@ -847,7 +847,7 @@ Blockly.propc.heb_touchpad_sensitivity = function () {
 
 Blockly.Blocks.heb_text_to_speech_say = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_AUDIO_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_TEXT_TO_SPEECH_SAY);
         this.setColour(colorPalette.getColor('io'));
         this.appendValueInput('STRING')
@@ -871,7 +871,7 @@ Blockly.propc.heb_text_to_speech_say = function () {
 
 Blockly.Blocks.heb_text_to_speech_spell = {
     init: function () {
-        this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
+        this.setHelpUrl(Blockly.MSG_AUDIO_HELPURL);
         this.setTooltip(Blockly.MSG_HEB_TEXT_TO_SPEECH_SPELL);
         this.setColour(colorPalette.getColor('io'));
         this.appendValueInput('STRING')

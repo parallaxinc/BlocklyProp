@@ -156,10 +156,10 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 11,
-        saves_to: [["Hackable Electronic Badge", "heb"], ["Hackable Electronic Badge WX", "heb-wx"]]
+        saves_to: [["Hackable Electronic Badge", "heb"], ["Badge WX", "heb-wx"]]
     },
     "heb-wx": {
-        description: "Hackable Electronic Badge WX",
+        description: "Badge WX",
         digital: [["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["10", "10"], ["11", "11"]],
         analog: [],
         sd_card: "8, 7, 6, 5",
@@ -232,7 +232,7 @@ Blockly.propc.init = function (workspace) {
     } else if (profile.default.description === "Hackable Electronic Badge") {
         Blockly.propc.definitions_["badgetools"] = '#include "badgetools.h"';
         Blockly.propc.setups_["badgetools"] = 'badge_setup();';
-    } else if (profile.default.description === "Hackable Electronic Badge WX") {
+    } else if (profile.default.description === "Badge WX") {
         Blockly.propc.definitions_["badgetools"] = '#include "badgewxtools.h"';
         Blockly.propc.setups_["badgetools"] = 'badge_setup();';
     }
@@ -347,7 +347,15 @@ Blockly.propc.finish = function (code) {
         }
         
         // TODO: Temporary patch to correct some weirdness with char array pointer declarations:
-        definitions[def] = definitions[def].replace(/char \*\[/g, 'char [');
+        definitions[def] = definitions[def].replace(/char \*(\w+)\[/g, 'char $1[');
+        
+        // TODO: 
+        var vl = Blockly.propc.string_var_lengths.length;
+        for (var vt = 0; vt < vl; vt++) {
+            if (definitions[def].indexOf(Blockly.propc.string_var_lengths[vt][0]) > 0) {
+                'char ' + Blockly.propc.string_var_lengths[vt][0] + '[' + Blockly.propc.string_var_lengths[vt][1] + ']';
+            }
+        }
     }
 
     for (var stack in Blockly.propc.stacks_) {

@@ -460,7 +460,11 @@ Blockly.Blocks.serial_print_container = {
 
 Blockly.Blocks.console_print_dec = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        var myColor = 'protocols';
+        if (this.type === 'string_scan_dec') {
+            myColor = 'math';
+        }
+        this.setColour(colorPalette.getColor(myColor));
         this.appendDummyInput()
                 .appendField('decimal number');
         this.setPreviousStatement(true, "Block");
@@ -471,7 +475,11 @@ Blockly.Blocks.console_print_dec = {
 
 Blockly.Blocks.console_print_hex = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        var myColor = 'protocols';
+        if (this.type === 'string_scan_hex') {
+            myColor = 'math';
+        }
+        this.setColour(colorPalette.getColor(myColor));
         this.appendDummyInput()
                 .appendField('hexadecimal number');
         this.setPreviousStatement(true, "Block");
@@ -482,7 +490,11 @@ Blockly.Blocks.console_print_hex = {
 
 Blockly.Blocks.console_print_bin = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        var myColor = 'protocols';
+        if (this.type === 'string_scan_bin') {
+            myColor = 'math';
+        }
+        this.setColour(colorPalette.getColor(myColor));
         this.appendDummyInput()
                 .appendField('binary number');
         this.setPreviousStatement(true, "Block");
@@ -493,7 +505,11 @@ Blockly.Blocks.console_print_bin = {
 
 Blockly.Blocks.console_print_str = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        var myColor = 'protocols';
+        if (this.type === 'string_scan_str') {
+            myColor = 'math';
+        }
+        this.setColour(colorPalette.getColor(myColor));
         this.appendDummyInput()
                 .appendField('text');
         this.setPreviousStatement(true, "Block");
@@ -504,7 +520,11 @@ Blockly.Blocks.console_print_str = {
 
 Blockly.Blocks.console_print_char = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        var myColor = 'protocols';
+        if (this.type === 'string_scan_char') {
+            myColor = 'math';
+        }
+        this.setColour(colorPalette.getColor(myColor));
         this.appendDummyInput()
                 .appendField('ASCII character');
         this.setPreviousStatement(true, "Block");
@@ -515,7 +535,11 @@ Blockly.Blocks.console_print_char = {
 
 Blockly.Blocks.console_print_float = {
     init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
+        var myColor = 'protocols';
+        if (this.type === 'string_scan_float') {
+            myColor = 'math';
+        }
+        this.setColour(colorPalette.getColor(myColor));
         this.appendDummyInput()
                 .appendField('floating point number');
         this.setPreviousStatement(true, "Block");
@@ -1399,12 +1423,18 @@ Blockly.Blocks.serial_scan_multiple = {
     },
     decompose: function (workspace) {
         // Populate the mutator's dialog with this block's components.
-        var containerBlock = workspace.newBlock('serial_scan_container');
+        var cBlock = 'serial_scan_container';
+        var subBlock = 'console_print_';
+        if (this.type === 'string_scan_multiple') {
+            cBlock = 'string_scan_container';
+            subBlock = 'string_scan_';
+        }
+        var containerBlock = workspace.newBlock(cBlock);
         containerBlock.initSvg();
         var connection = containerBlock.getInput('STACK').connection;
         for (var i = 0; i < this.optionList_.length; i++) {
             var optionBlock = workspace.newBlock(
-                    'console_print_' + this.optionList_[i]);
+                    subBlock + this.optionList_[i]);
             optionBlock.initSvg();
             connection.connect(optionBlock.previousConnection);
             connection = optionBlock.nextConnection;
@@ -1418,7 +1448,9 @@ Blockly.Blocks.serial_scan_multiple = {
         this.optionList_.length = 0;
         var data = [];
         while (optionBlock) {
-            this.optionList_.push(optionBlock.type.replace('console_print_', ''));
+            var obt = optionBlock.type.split('_');
+            var obl = obt.length - 1;
+            this.optionList_.push(obt[obl]);
             data.push([optionBlock.userData_, optionBlock.cpuData_]);
             optionBlock = optionBlock.nextConnection &&
                     optionBlock.nextConnection.targetBlock();
@@ -2297,7 +2329,7 @@ Blockly.propc.xbee_scan_multiple = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('XBee initialize') > -1)
     {
-        var code = 'dprint(fdser, "';
+        var code = 'dscan(fdser, "';
         var varList = '';
         var code_add = '';
         var i = 0;
@@ -3201,8 +3233,12 @@ Blockly.propc.ws2812b_init = function () {
 };
 
 Blockly.Blocks.ws2812b_set = {
-    helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
+        var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
+        if (projectData && projectData['board'] === 'heb-wx') {
+            myHelpUrl = MSG_BADGE_LEDS_HELPURL;
+        }
+        this.setHelpUrl(myHelpUrl);
         this.setTooltip(Blockly.MSG_WS2812B_SET_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("LED")
@@ -3351,8 +3387,11 @@ Blockly.propc.ws2812b_set = function () {
 };
 
 Blockly.Blocks.ws2812b_set_multiple = {
-    helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
+        var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
+        if (projectData && projectData['board'] === 'heb-wx') {
+            myHelpUrl = MSG_BADGE_LEDS_HELPURL;
+        }
         this.setTooltip(Blockly.MSG_WS2812B_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("START")
@@ -3415,8 +3454,11 @@ Blockly.propc.ws2812b_set_multiple = function () {
 };
 
 Blockly.Blocks.ws2812b_update = {
-    helpUrl: Blockly.MSG_WS2812B_HELPURL,
     init: function () {
+        var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
+        if (projectData && projectData['board'] === 'heb-wx') {
+            myHelpUrl = MSG_BADGE_LEDS_HELPURL;
+        }
         this.setTooltip(Blockly.MSG_WS2812B_UPDATE_TOOLTIP);
         this.appendDummyInput()
                 .appendField("RGB-LED update LEDs");
@@ -4085,119 +4127,23 @@ Blockly.Blocks.wx_scan_multiple = {
         this.appendDummyInput('PREFIX')
                 .appendField('string starts with')
                 .appendField(new Blockly.FieldTextInput('txt'), 'START');
-        this.optionList_ = ['dec', 'dec'];
+        this.optionList_ = ['dec', 'char'];
         this.updateShape_();
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
-        this.setMutator(new Blockly.Mutator(['wx_scan_dec', 'wx_scan_char']));
+        this.setMutator(new Blockly.Mutator(['console_print_dec', 'console_print_hex', 'console_print_bin', 'console_print_float', 'console_print_char']));
         this.setWarningText(null);
+        // not used, but allows this block to share functions from serial_scan_multiple block
+        this.ser_pins = [];
+        //this.serPins();
     },
-    mutationToDom: function (workspace) {
-        // Create XML to represent menu options.
-        var container = document.createElement('mutation');
-        container.setAttribute('options', JSON.stringify(this.optionList_));
-        return container;
-    },
-    domToMutation: function (container) {
-        // Parse XML to restore the menu options.
-        var value = JSON.parse(container.getAttribute('options'));
-        this.optionList_ = value;
-        this.updateShape_();
-    },
-    decompose: function (workspace) {
-        // Populate the mutator's dialog with this block's components.
-        var containerBlock = workspace.newBlock('wx_scan_container');
-        containerBlock.initSvg();
-        var connection = containerBlock.getInput('STACK').connection;
-        for (var i = 0; i < this.optionList_.length; i++) {
-            var optionBlock = workspace.newBlock(
-                    'wx_scan_' + this.optionList_[i]);
-            optionBlock.initSvg();
-            connection.connect(optionBlock.previousConnection);
-            connection = optionBlock.nextConnection;
-        }
-        return containerBlock;
-    },
-    compose: function (containerBlock) {
-        // Reconfigure this block based on the mutator dialog's components.
-        var optionBlock = containerBlock.getInputTargetBlock('STACK');
-        // Count number of inputs.
-        this.optionList_.length = 0;
-        var data = [];
-        while (optionBlock) {
-            if (optionBlock.type === 'wx_scan_dec') {
-                this.optionList_.push('dec');
-            } else if (optionBlock.type === 'wx_scan_char') {
-                this.optionList_.push('char');
-            }
-            data.push([optionBlock.userData_, optionBlock.cpuData_]);
-            optionBlock = optionBlock.nextConnection &&
-                    optionBlock.nextConnection.targetBlock();
-        }
-        this.updateShape_();
-        // Restore any data.
-        for (var i = 0; i < this.optionList_.length; i++) {
-            var userData = data[i][0];
-            if (userData !== undefined) {
-                this.setFieldValue(data[i][1], 'CPU' + i);
-            }
-        }
-    },
-    saveConnections: function (containerBlock) {
-        // Store all data for each option.
-        var optionBlock = containerBlock.getInputTargetBlock('STACK');
-        var i = 0;
-        while (optionBlock) {
-            optionBlock.cpuData_ = this.getFieldValue('CPU' + i) || Blockly.LANG_VARIABLES_GET_ITEM;
-            i++;
-            optionBlock.userData_ = this.getFieldValue('CPU' + i);
-            optionBlock = optionBlock.nextConnection &&
-                    optionBlock.nextConnection.targetBlock();
-        }
-    },
-    updateShape_: function () {
-        // Delete everything.
-        var i = 0;
-        while (this.getInput('OPTION' + i)) {
-            this.removeInput('OPTION' + i);
-            i++;
-        }
-        // Rebuild block.
-
-
-        for (var i = 0; i < this.optionList_.length; i++) {
-            var type = this.optionList_[i];
-            var label = 'store character in';
-            if (type === 'dec')
-                label = 'store integer in';
-            this.appendDummyInput('OPTION' + i)
-                    .appendField(label, 'TYPE' + i)
-                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'CPU' + i);
-        }
-    },
-    setPrefix_: function (details) {
-        var prefixVisible = false;
-        if (details['ACTION'] === 'POST')
-            prefixVisible = true;
-        this.getInput('PREFIX').setVisible(prefixVisible);
-        var data = [];
-        var x = 0;
-        while (this.getInput('OPTION' + x)) {
-            data[x] = this.getFieldValue('CPU' + x);
-            this.removeInput('OPTION' + x);
-            x++;
-        }
-
-        for (var i = 0; i < x; i++) {
-            var type = this.optionList_[i];
-            var label = 'store character in';
-            if (type === 'dec')
-                label = 'store integer in';
-            this.appendDummyInput('OPTION' + i)
-                    .appendField(label, 'TYPE' + i)
-                    .appendField(new Blockly.FieldVariable(data[i]), 'CPU' + i);
-        }
-    },
+    mutationToDom: Blockly.Blocks['serial_scan_multiple'].mutationToDom,
+    domToMutation: Blockly.Blocks['serial_scan_multiple'].domToMutation,
+    decompose: Blockly.Blocks['serial_scan_multiple'].decompose,
+    compose: Blockly.Blocks['serial_scan_multiple'].compose,
+    saveConnections: Blockly.Blocks['serial_scan_multiple'].saveConnections,
+    updateShape_: Blockly.Blocks['serial_scan_multiple'].updateShape_,
+    updateSerPin: function () {},
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
         if (allBlocks.toString().indexOf('WX initialize') === -1)
@@ -4234,41 +4180,6 @@ Blockly.Blocks.wx_scan_multiple = {
     }
 };
 
-Blockly.Blocks.wx_scan_container = {
-    // Container.
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField('scan');
-        this.appendStatementInput('STACK');
-        this.contextMenu = false;
-    }
-};
-
-Blockly.Blocks.wx_scan_dec = {
-    // Add text option.
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField('integer');
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true);
-        this.contextMenu = false;
-    }
-};
-
-Blockly.Blocks.wx_scan_char = {
-    // Add image option.
-    init: function () {
-        this.setColour(colorPalette.getColor('protocols'));
-        this.appendDummyInput()
-                .appendField('character');
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true);
-        this.contextMenu = false;
-    }
-};
-
 Blockly.propc.wx_scan_multiple = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
     if (allBlocks.indexOf('Simple WX initialize') === -1 && allBlocks.indexOf('WX initialize') > -1)
@@ -4281,23 +4192,40 @@ Blockly.propc.wx_scan_multiple = function () {
             start = '';
 
         var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start;
-        var varList = '';
+        var varList = ''; 
+        var code_add = '';
         var i = 0;
         while (this.getFieldValue('CPU' + i)) {
-            if (this.getFieldValue('TYPE' + i).includes('integer')) {
+            if (this.getFieldValue('TYPE' + i).includes('store decimal number')) {
                 code += '%d';
-            } else {
+            } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character')) {
                 code += '%c';
+            } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number')) {
+                code += '%x';
+            } else if (this.getFieldValue('TYPE' + i).includes('store binary number')) {
+                code += '%b';
+            } else if (this.getFieldValue('TYPE' + i) === 'in') {
+                code += '%f';
             }
-            varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+            if (this.getFieldValue('TYPE' + i) === 'in') {
+                varList += ', &__fpBuf' + i;
+                code_add += Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+                code_add += ' = (int) (__fpBuf' + i + ' * ' + this.getFieldValue('MULT' + i) + ');\n';
+                if (!this.disabled) {
+                    Blockly.propc.global_vars_["floatPointScanBuffer" + i] = 'float __fpBuf' + i + ';';
+                }
+            } else {
+                varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+            }
             i++;
         }
-        code += '"' + varList + ');\n';
+        code += '"' + varList + ');\n' + code_add;
         return code;
     } else {
         return '// ERROR: WX is not initialized!\n';
     }
 };
+
 
 
 Blockly.Blocks.wx_print_multiple = {
@@ -5599,6 +5527,8 @@ Blockly.propc.xbee_configure = function () {
     return '// XBee configure is not yet ready and working';
 };
 
+
+// ---------------- I2C Protocol Blocks ----------------------------------------
 Blockly.Blocks.i2c_send = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
@@ -5967,3 +5897,87 @@ Blockly.propc.i2c_busy = function () {
         return ['i2c_busy(i2c' + sda + ', ' + devc + ')', Blockly.propc.ORDER_ATOMIC];
     }
 };
+
+
+// ---------------- String Handling Blocks -------------------------------------
+Blockly.Blocks.string_scan_multiple = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_STRING_SCAN_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+                .appendField('Scan string')
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HANDLE');
+        this.setMutator(new Blockly.Mutator(['string_scan_dec', 'string_scan_hex', 'string_scan_bin', 'string_scan_float', 'string_scan_char']));
+        this.optionList_ = ['dec', 'char'];
+        this.updateShape_();
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true);
+        this.setWarningText(null);
+        // not used, but allows this block to share functions from serial_scan_multiple block
+        this.ser_pins = [];
+        //this.serPins();
+    },
+    mutationToDom: Blockly.Blocks['serial_scan_multiple'].mutationToDom,
+    domToMutation: Blockly.Blocks['serial_scan_multiple'].domToMutation,
+    decompose: Blockly.Blocks['serial_scan_multiple'].decompose,
+    compose: Blockly.Blocks['serial_scan_multiple'].compose,
+    saveConnections: Blockly.Blocks['serial_scan_multiple'].saveConnections,
+    updateShape_: Blockly.Blocks['serial_scan_multiple'].updateShape_,
+    updateSerPin: function () {},
+    getVars: Blockly.Blocks['wx_scan_multiple'].getVars,
+    renameVar: Blockly.Blocks['wx_scan_multiple'].renameVar
+};
+
+Blockly.Blocks.string_scan_container = {
+    // Container.
+    init: function () {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+                .appendField('string');
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.string_scan_dec = Blockly.Blocks.console_print_dec;
+Blockly.Blocks.string_scan_hex = Blockly.Blocks.console_print_hex;
+Blockly.Blocks.string_scan_bin = Blockly.Blocks.console_print_bin;
+Blockly.Blocks.string_scan_float = Blockly.Blocks.console_print_float;
+Blockly.Blocks.string_scan_char = Blockly.Blocks.console_print_char;
+
+Blockly.propc.string_scan_multiple = function () {
+    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+
+    var code = 'sscan(' + this.getFieldValue('HANDLE') + ', "';
+    var varList = '';
+    var code_add = '';
+    var i = 0;
+    while (this.getFieldValue('CPU' + i)) {
+        if (this.getFieldValue('TYPE' + i).includes('store decimal number')) {
+            code += '%d';
+        } else if (this.getFieldValue('TYPE' + i).includes('store ASCII character')) {
+            code += '%c';
+        } else if (this.getFieldValue('TYPE' + i).includes('store hexadecimal number')) {
+            code += '%x';
+        } else if (this.getFieldValue('TYPE' + i).includes('store binary number')) {
+            code += '%b';
+        } else if (this.getFieldValue('TYPE' + i) === 'in') {
+            code += '%f';
+        }
+        if (this.getFieldValue('TYPE' + i) === 'in') {
+            varList += ', &__fpBuf' + i;
+            code_add += Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+            code_add += ' = (int) (__fpBuf' + i + ' * ' + this.getFieldValue('MULT' + i) + ');\n';
+            if (!this.disabled) {
+                Blockly.propc.global_vars_["floatPointScanBuffer" + i] = 'float __fpBuf' + i + ';';
+            }
+        } else {
+            varList += ', &' + Blockly.propc.variableDB_.getName(this.getFieldValue('CPU' + i), Blockly.Variables.NAME_TYPE);
+        }
+        i++;
+    }
+    code += '"' + varList + ');\n' + code_add;
+    return code;
+};
+
