@@ -244,7 +244,11 @@ Blockly.MSG_ROBOT_HELPURL = "http://learn.parallax.com/ab-blocks/robot";
 Blockly.MSG_IMU_HELPURL = "http://learn.parallax.com/ab-blocks/lsm9ds1";
 Blockly.MSG_WS2812B_HELPURL = "http://learn.parallax.com/ab-blocks/ws2812b";
 Blockly.MSG_SYSTEM_HELPURL = "http://learn.parallax.com/ab-blocks/system";
-
+Blockly.MSG_BADGE_LEDS_HELPURL = "http://learn.parallax.com/ab-blocks/badge-leds";
+Blockly.MSG_BADGE_IR_HELPURL = "http://learn.parallax.com/ab-blocks/badgeir";
+Blockly.MSG_BADGE_DISPLAY_HELPURL = "http://learn.parallax.com/ab-blocks/badgedisplay";
+Blockly.MSG_BADGE_BUTTONS_HELPURL = "http://learn.parallax.com/ab-blocks/badge-buttons";
+Blockly.MSG_BADGE_ACCEL_HELPURL = "http://learn.parallax.com/ab-blocks/badge-accel";
 
 //----------Activity Board (Propeller C) block tooltips ----------------------------
 Blockly.MSG_COMMENT_TOOLTIP = "add comment: Leave a note for people that will not affect the program.";
@@ -471,7 +475,8 @@ Blockly.MSG_CONSTRAIN_VALUE_TOOLTIP = "constrain value: prevent a value from bei
 Blockly.MSG_MAP_VALUE_TOOLTIP = "map value: scale a value from one range to a different range.";
 Blockly.MSG_MATH_ADVANCED_TOOLTIP = "advanced math: perform a trigonometric, exponential, or logrithmic function.\nAngles are in degrees.";
 Blockly.MSG_MATH_INV_TRIG_TOOLTIP = "inverse trig: perform an inverse trigonometric function.\nAngles are in degrees.";
-
+Blockly.MSG_STRING_SCAN_MULTIPLE_TOOLTIP = "";
+Blockly.MSG_STRING_VAR_LENGTH_TOOLTIP = "";
 
 //-------Scribbler 3 help URLs ---------------------------------------------
 Blockly.MSG_S3_COMMUNICATE_HELPURL = "http://learn.parallax.com/s3-blocks/communicate";
@@ -890,7 +895,7 @@ page_text_label['project_board'] = "Board Type";
 page_text_label['project_board_activity-board'] = "Propeller Activity Board WX";
 page_text_label['project_board_flip'] = "Propeller FLiP or Project Board";
 page_text_label['project_board_heb'] = "Hackable Electronic Badge";
-page_text_label['project_board_heb-wx'] = "Hackable Electronic Badge WX";
+page_text_label['project_board_heb-wx'] = "Badge WX";
 page_text_label['project_board_other'] = "Other Propeller Board";
 page_text_label['project_board_propcfile'] = "Propeller C (code-only)";
 page_text_label['project_board_s3'] = "Scribbler Robot";
