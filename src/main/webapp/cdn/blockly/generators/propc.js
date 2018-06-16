@@ -225,6 +225,7 @@ Blockly.propc.init = function (workspace) {
     Blockly.propc.varlength_ = {};
     Blockly.propc.serial_graphing_ = false;
     Blockly.propc.serial_terminal_ = false;
+    Blockly.propc.string_var_lengths = [];
 
     // Set up specific libraries for devices like the Scribbler or Badge
     if (profile.default.description === "Scribbler Robot") {
