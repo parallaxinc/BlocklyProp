@@ -342,7 +342,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     /**
-     * 
+     * Authenticate a user login using the local user authentication database
+     *
      * @param email
      * @param password
      * @return
@@ -361,12 +362,32 @@ public class SecurityServiceImpl implements SecurityService {
             WrongAuthenticationSourceException {
         
         try {
-            LOG.info("Attempting to authenticate {}",email);
-            
+            LOG.info("Attempting to authenticate {}", email);
+
             // Query Cloud Session interface
             User user = authenticateService.authenticateLocalUser(email, password);
             LOG.info("User authenticated");
             return user;
+
+        } catch (UnknownUserException uue) {
+            LOG.error("User account is unknown.");
+            throw uue;
+
+        } catch (UserBlockedException ube) {
+            LOG.error("User account is blocked.");
+            throw ube;
+
+        } catch (EmailNotConfirmedException enc) {
+            LOG.error("Attempt to log into an unconfirmed account.");
+            throw enc;
+
+        } catch (InsufficientBucketTokensException ibte) {
+            LOG.error("Number of consecutive login attempts has been exceeded.");
+            throw ibte;
+
+        } catch (WrongAuthenticationSourceException wase) {
+            LOG.error("Attempting to authenticate to the wrong authentication source.");
+            throw wase;
 
         } catch (NullPointerException npe) {
             LOG.error("Authetication threw Null Pointer Exception");
