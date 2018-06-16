@@ -22,6 +22,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -32,6 +35,9 @@ import javax.ws.rs.core.Response;
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestUser {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RestUser.class);
+
+    
     private UserService userService;
 
     @Inject
@@ -45,6 +51,9 @@ public class RestUser {
     @Name("Get all users")
     @Produces("application/json")
     public Response get() {
+        
+        LOG.info("REST:/rest/user/ Get request received");
+
         List<UserRecord> users = userService.getAllUsers();
 
         JsonArray result = new JsonArray();
@@ -61,8 +70,10 @@ public class RestUser {
     @Name("Get user by id")
     @Produces("application/json")
     public Response get(@PathParam("id") Long idUser) {
-        User user = userService.getUser(idUser);
 
+        LOG.info("REST:/rest/user/{} Get request received", idUser);
+
+        User user = userService.getUser(idUser);
         JsonObject result = UserConverter.toJson(user);
 
         return Response.ok(result.toString()).build();

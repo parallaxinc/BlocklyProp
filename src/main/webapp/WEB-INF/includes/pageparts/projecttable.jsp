@@ -7,7 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="${param.url}"/>"  data-toolbar="#toolbar" data-search="false" data-side-pagination="server" data-pagination="true">
+<table id="project-table" class="table" data-toggle="table" data-url="<url:getUrl url="${param.url}"/>"  
+       data-toolbar="#toolbar" data-search="false" data-side-pagination="server" data-pagination="true">
     <thead>
         <tr>
             <th data-field="board" data-sortable="false" data-formatter="formatType" data-width="30px" data-align="center">&nbsp;</th>
@@ -31,7 +32,9 @@
         "activity-board": "<url:getCdnUrl url="/images/board-icons/IconActivityBoard.png" />",
         "s3": "<url:getCdnUrl url="/images/board-icons/IconS3.png" />",
         "heb": "<url:getCdnUrl url="/images/board-icons/IconBadge.png" />",
+        "heb-wx": "<url:getCdnUrl url="/images/board-icons/IconBadgeWX.png" />",
         "flip": "<url:getCdnUrl url="/images/board-icons/IconFlip.png" />",
+        "propcfile": "<url:getCdnUrl url="/images/board-icons/IconC.png" />",
         "other": "<url:getCdnUrl url="/images/board-icons/IconOtherBoards.png" />"
     };
 
@@ -63,7 +66,9 @@
         "activity-board": "<fmt:message key="project.board.activity-board" />",
         "s3": "<fmt:message key="project.board.s3" />",
         "heb": "<fmt:message key="project.board.heb" />",
+        "heb-wx": "<fmt:message key="project.board.heb-wx" />",
         "flip": "<fmt:message key="project.board.flip" />",
+        "propcfile": "<fmt:message key="project.board.propcfile" />",
         "other": "<fmt:message key="project.board.other" />"
     };
 

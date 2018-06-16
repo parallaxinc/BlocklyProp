@@ -21,7 +21,10 @@ Valid logging levels: TRACE, DEBUG, INFO, WARN and ERROR
     <appender name="file" class="ch.qos.logback.core.FileAppender">
         <file>${APP_LOG_PATH}/${APP_LOG_FILE_BASE}.log</file>
         <encoder>
+            <!--
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+            -->
+            <pattern>%date %level [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
 

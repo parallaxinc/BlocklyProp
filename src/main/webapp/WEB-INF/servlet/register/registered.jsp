@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
@@ -24,6 +24,7 @@
                     </div>
                 </div>
             </div>
+            <p><a href="<url:getUrl url="/index"/>">Go to home</a></p>
         </div>
 
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>

@@ -1,3 +1,5 @@
-h2. Email confirmed
+h3. Congratulations!
 
-"Go to home":/blockly/index
+Your account has been activated. You are ready to build your own projects. 
+
+Click "here":/blockly/index to return to home page

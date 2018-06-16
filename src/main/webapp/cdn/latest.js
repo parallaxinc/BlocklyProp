@@ -4,8 +4,8 @@ var projectTypes = {
         "class": "editor-c-link"
     },
     "SPIN": {
-        "editor": "blocklyspin.jsp",
-        "class": "editor-spin-link"
+        "editor": "blocklyc.jsp",
+        "class": "editor-c-link"
     }
 };
 
@@ -13,12 +13,15 @@ var projectBoard = {
     "activity-board": "icon-board-ab",
     "s3": "icon-board-s3",
     "heb": "icon-board-heb",
+    "heb-wx": "icon-board-heb-wx",
     "flip": "icon-board-flip",
-    "other": "icon-board-other"
+    "other": "icon-board-other",
+    "propcfile": "icon-board-propc"
 };
 
 $.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", function (data) {
     $.each(data['rows'], function (index, project) {
+        console.log(project);
         var user = '';
         if (project['user']) {
             user = ' (' + project['user'] + ')';
@@ -34,4 +37,3 @@ $.get("rest/shared/project/list?sort=modified&order=desc&limit=5&offset=0", func
         $(".latest-projects").append(projectItem);
     });
 });
-

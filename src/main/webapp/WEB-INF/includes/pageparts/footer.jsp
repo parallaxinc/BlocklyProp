@@ -15,7 +15,7 @@
             <div>
                 <ul class="nav navbar-nav">
                     <li><a href="<url:getUrl url="/public/license"/>"><fmt:message key="footer.licenselink" /></a></li>
-                    <li><a href="<url:getUrl url="/public/changelog"/>"><fmt:message key="footer.changelog" /></a></li>
+                    <li><a href="https://github.com/parallaxinc/BlocklyProp/releases" target="_blank"><fmt:message key="footer.changelog" /></a></li>
                     <li><a href="<url:getUrl url="/public/libraries"/>"><fmt:message key="footer.librarieslink" /></a></li>
                     <li><a href="<url:getUrl url="/public/clientdownload"/>"><fmt:message key="footer.clientdownloadlink" /></a></li>
                 </ul>

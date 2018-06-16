@@ -25,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +65,7 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
         
-        LOG.info("Sort: {}", sort);
+        LOG.info("REST:/shared/project/list/ Get request received");
 
         List<ProjectRecord> projects 
                 = projectService.getSharedProjects(sort, order, limit, offset);
@@ -89,14 +90,21 @@ public class RestSharedProject {
     @Detail("Get shared projects by user")
     @Name("Get shared projects by user")
     @Produces("application/json")
-    public Response get(@QueryParam("sort") TableSort sort, @QueryParam("order") TableOrder order, @QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset, @PathParam("id") Long idUser) {
-        LOG.info("Sort: {}", sort);
+    public Response get(
+            @QueryParam("sort") TableSort sort, 
+            @QueryParam("order") TableOrder order, 
+            @QueryParam("limit") Integer limit, 
+            @QueryParam("offset") Integer offset, 
+            @PathParam("id") Long idUser) {
+
+        LOG.info("REST:/shared/project/list/user/ Get request received for user '{}'", idUser);
 
         List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
         int projectCount = projectService.countSharedProjectsByUser(idUser);
 
         JsonObject result = new JsonObject();
         JsonArray jsonProjects = new JsonArray();
+        
         for (ProjectRecord project : projects) {
             jsonProjects.add(projectConverter.toListJson(project));
         }
@@ -113,16 +121,26 @@ public class RestSharedProject {
     @Detail("Get project by id")
     @Name("Get project by id")
     @Produces("application/json")
-    public Response get(@HeaderParam("X-Authorization") String authorization, @HeaderParam("X-Timestamp") Long timestamp, @PathParam("id") Long idProject) {
+    public Response get(
+            @HeaderParam("X-Authorization") String authorization, 
+            @HeaderParam("X-Timestamp") Long timestamp, 
+            @PathParam("id") Long idProject) {
+
+        LOG.info("REST:/rest/shared/project/get/ Get request received for projecet '{}'", idProject);
         
         try {
+            LOG.info("Getting project record.");
             ProjectRecord project = projectService.getProject(idProject);
             
             if (project == null) {
+                LOG.info("project record was not found");
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-            
-            JsonObject result = projectConverter.toJson(project);
+
+            LOG.info("Converting project to JSON string");
+            JsonObject result = projectConverter.toJson(project, false);
+            LOG.info("REST: /get/" + idProject.toString() + "/ returning project {}.", project.getId());
+
             return Response.ok(result.toString()).build();
         }
         catch (Exception e) {
@@ -136,19 +154,25 @@ public class RestSharedProject {
     @Detail("Get project by id for editor")
     @Name("Get project by id for editor")
     @Produces("application/json")
-    public Response getEditor(@HeaderParam("X-Authorization") String authorization, @HeaderParam("X-Timestamp") Long timestamp, @PathParam("id") Long idProject) {
-        LOG.info("Authorization: {}", authorization);
+    public Response getEditor(
+            @HeaderParam("X-Authorization") String authorization, 
+            @HeaderParam("X-Timestamp") Long timestamp, 
+            @PathParam("id") Long idProject) {
+        
+        LOG.info("REST:/rest/shared/project/editor/ Get request received for project '{}'", idProject);
 
         try {
             ProjectRecord project = projectService.getProject(idProject);
 
             if (project == null) {
+                LOG.info("Project {} was not found.", idProject);
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-
-            JsonObject result = projectConverter.toJson(project);
+            
+            JsonObject result = projectConverter.toJson(project, false);
             result.addProperty("code", project.getCode());
 
+            LOG.info("Returning meta data on project {}", idProject);
             return Response.ok(result.toString()).build();
         }
         catch (Exception e) {

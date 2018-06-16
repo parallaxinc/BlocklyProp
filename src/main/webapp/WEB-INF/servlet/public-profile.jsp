@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
@@ -63,8 +63,8 @@
                                             "class": "editor-c-link"
                                         },
                                         "SPIN": {
-                                            "editor": "blocklyspin.jsp",
-                                            "class": "editor-spin-link"
+                                            "editor": "blocklyc.jsp",
+                                            "class": "editor-c-link"
                                         }
                                     };
 
@@ -72,8 +72,10 @@
                                         "activity-board": "icon-board-ab",
                                         "s3": "icon-board-s3",
                                         "heb": "icon-board-heb",
+                                        "heb-wx": "icon-board-heb-wx",
                                         "flip": "icon-board-flip",
-                                        "other": "icon-board-other"
+                                        "other": "icon-board-other",
+                                        "propcfile": "icon-board-propc"
                                     };
 
                                     var page = 0;

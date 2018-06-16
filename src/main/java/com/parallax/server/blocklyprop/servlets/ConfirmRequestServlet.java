@@ -27,66 +27,126 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Process a user account confirmation email URL
+ * 
  * @author Michel
  */
 @Singleton
 public class ConfirmRequestServlet extends HttpServlet {
 
-    private static Logger log = LoggerFactory.getLogger(ConfirmRequestServlet.class);
+    private static Logger LOG = LoggerFactory.getLogger(ConfirmRequestServlet.class);
 
     private final TextileReader textileFileReader = new TextileReader();
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private Configuration configuration;
 
+    /**
+     * Get the connection details for the Cloud Session server
+     * 
+     * @param configuration 
+     */
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
-        cloudSessionLocalUserService = new CloudSessionLocalUserService(configuration.getString("cloudsession.server"), configuration.getString("cloudsession.baseurl"));
+        
+        cloudSessionLocalUserService = new CloudSessionLocalUserService(
+                configuration.getString("cloudsession.server"),
+                configuration.getString("cloudsession.baseurl"));
     }
 
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("REST:/confirmrequest/ Get request received");
+
+        req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
+                .forward(req, resp);
     }
 
+    /**
+     * Handle a POST request
+     * 
+     * @param req
+     * @param resp
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(
+            HttpServletRequest req, 
+            HttpServletResponse resp) throws ServletException, IOException {
+
+        LOG.info("REST:/confirmrequest/ Post request received");
+        
         String email = req.getParameter("email");
+        
         if (Strings.isNullOrEmpty(email)) {
-            req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+            LOG.warn("Received an empty email address");
+            req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
+                    .forward(req, resp);
         } else {
             try {
+                LOG.info("Processing account confirmation for {}",email);
                 if (cloudSessionLocalUserService.requestNewConfirmEmail(email)) {
                     showTextilePage(req, resp, ConfirmPage.CONFIRM_REQUESTED);
-                    //req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-requested.jsp").forward(req, resp);
                 } else {
+                    LOG.warn("Unable to process account confirmation for {}",email);
                     req.setAttribute("error", true);
-                    req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+                    req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
+                            .forward(req, resp);
                 }
             } catch (UnknownUserException ex) {
+                LOG.warn("Account confirmation failed: Unknown email address");
                 req.setAttribute("unknownEmail", true);
-                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
+                        .forward(req, resp);
+
             } catch (InsufficientBucketTokensException ex) {
+                LOG.warn("Account confirmation failed: Insufficient tokens");
                 req.setAttribute("insufficientTokens", true);
-                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
+                        .forward(req, resp);
+
             } catch (EmailAlreadyConfirmedException ex) {
+                LOG.warn("Account confirmation failed: Account already confimed");
                 showTextilePage(req, resp, ConfirmPage.ALREADY_CONFIRMED);
-                //req.getRequestDispatcher("WEB-INF/servlet/confirm/already-confirmed.jsp").forward(req, resp);
+
             } catch (ServerException se) {
+                LOG.error("Account confirmation failed with a server exception");
+                LOG.error("Server error message: {}", se.getMessage());
                 req.setAttribute("server-exception", "Server exception");
-                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
+                        .forward(req, resp);
+
             } catch (WrongAuthenticationSourceException ex) {
-                log.info("Trying to request email confirm of non local user!");
+                LOG.info("Trying to request email confirm of non local user!");
                 req.setAttribute("wrongAuthenticationSource", true);
-                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp").forward(req, resp);
+                req.getRequestDispatcher("WEB-INF/servlet/confirm/confirm-request.jsp")
+                        .forward(req, resp);
             }
         }
     }
 
-    public void showTextilePage(HttpServletRequest req, HttpServletResponse resp, ConfirmPage confirmPage) throws ServletException, IOException {
-        String html = textileFileReader.readFile("confirm/" + confirmPage.getPage(), ServletUtils.getLocale(req), req.isSecure());
+    public void showTextilePage(
+            HttpServletRequest req, 
+            HttpServletResponse resp, 
+            ConfirmPage confirmPage) throws ServletException, IOException {
+        
+        String html = textileFileReader.readFile(
+                "confirm/" + confirmPage.getPage(), 
+                ServletUtils.getLocale(req), 
+                req.isSecure());
+
         req.setAttribute("html", html);
         req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
     }

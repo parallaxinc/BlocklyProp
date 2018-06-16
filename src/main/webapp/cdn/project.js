@@ -11,15 +11,15 @@ var projectTypes = {
         "class": "editor-c-link"
     },
     "SPIN": {
-        "editor": "blocklyspin.jsp",
-        "class": "editor-spin-link"
+        "editor": "blocklyc.jsp",
+        "class": "editor-c-link"
     }
 };
 
 var simplemde = null;
 
 $(document).ready(function () {
-    simplemde = new SimpleMDE({element: document.getElementById("project-form-description")});
+    simplemde = new SimpleMDE({element: document.getElementById("project-form-description"), hideIcons: ["link"], spellChecker: false});
 
     cloneUrl = $('.clone-project').data('href');
     deleteUrl = $('.delete-project').data('href');

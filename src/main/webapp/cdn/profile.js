@@ -1,4 +1,11 @@
 $(document).ready(function () {
+    $.get('http://localhost:8080/blockly/rest/profile/get', function(res) {
+        console.log(res);
+    }).fail(function(res) {
+        console.log('user info failure:');
+        console.log(res);
+    });
+    
     $('#loginform').ajaxForm({
 //        beforeSubmit: function (arr, $form, options) {
 //            $(".form-message").addClass("hidden");

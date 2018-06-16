@@ -23,31 +23,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Session persistence manager
+ * 
  * @author Michel
  */
 public class BlocklyPropSessionDao implements SessionDAO {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(SessionServiceImpl.class);
 
+    /**
+     * 
+     * @param session
+     * @return 
+     */
     @Override
     public Serializable create(Session session) {
-        LOG.info("Create BlocklyProp session");
+        LOG.debug("Create BlocklyProp session");
         
-        // Set session timeout for 1 hours
-        session.setTimeout(3600000);
+        // Set session timeout for 8 hours
+        session.setTimeout(28800000);
         
         SimpleSession simpleSession = (SimpleSession) session;
         String uuid = UUID.randomUUID().toString();
         
         simpleSession.setId(uuid);
         SessionServiceImpl.getSessionService().create(convert(simpleSession));
-        LOG.info("Session timeout is: {}", simpleSession.getTimeout());
+        LOG.debug("Session timeout is: {}", simpleSession.getTimeout());
         LOG.info("Creating session: {}", simpleSession.getId());
 
         return uuid;
     }
 
+    /**
+     * 
+     * @param sessionId
+     * @return
+     * @throws UnknownSessionException 
+     */
     @Override
     public Session readSession(Serializable sessionId) throws UnknownSessionException {
         LOG.debug("Reading session: {}", sessionId);
@@ -62,7 +74,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
             if (sessionRecord != null) {
                 return convert(sessionRecord);
             } else {
-                LOG.warn("Unable to fin session: {}", sessionId);
+                LOG.warn("Unable to find session: {}", sessionId);
                 throw new UnknownSessionException();
             }
         } catch (NullPointerException npe) {
@@ -71,24 +83,44 @@ public class BlocklyPropSessionDao implements SessionDAO {
         }
     }
 
+    /**
+     * 
+     * @param session
+     * @throws UnknownSessionException 
+     */
     @Override
     public void update(Session session) throws UnknownSessionException {
         LOG.debug("Update session: {}", session.getId());
-        SessionServiceImpl.getSessionService().updateSession(convert(session));
+        try {
+            // updateSession() can throw a NullPointerException if something goes wrong
+            SessionServiceImpl.getSessionService().updateSession(convert(session));
+        }
+        catch (NullPointerException npe) {
+            LOG.error("Unable to update the session. Error message: {}", npe.getMessage());
+            throw new UnknownSessionException("Unable to update the session");
+        }
     }
 
+    /**
+     * 
+     * @param session 
+     */
     @Override
     public void delete(Session session) {
         LOG.debug("Removing session {}", session.getId());
         SessionServiceImpl.getSessionService().deleteSession(session.getId().toString());
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public Collection<Session> getActiveSessions() {
         LOG.debug("Getting all active sessions");
         
         Collection<SessionRecord> sessionRecords = SessionServiceImpl.getSessionService().getActiveSessions();
-        List<Session> sessions = new ArrayList<>();
+        List<Session> sessions = new ArrayList<Session>();
         for (SessionRecord sessionRecord : sessionRecords) {
             sessions.add(convert(sessionRecord));
         }
@@ -112,6 +144,11 @@ public class BlocklyPropSessionDao implements SessionDAO {
         return sessionRecord;
     }
 
+    /**
+     * 
+     * @param sessionRecord
+     * @return 
+     */
     protected Session convert(SessionRecord sessionRecord) {
         LOG.debug("Converting SessionRecord {} into a SimpleSession object", sessionRecord.getIdsession());
         

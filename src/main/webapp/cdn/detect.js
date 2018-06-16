@@ -1,4 +1,6 @@
-osName = 'unknown-client';
+var osName = 'unknown-client';
+
+var inDemo = $("meta[name=in-demo]").attr("content");
 
 function nav(x, y, z) {
     z = z || y;
@@ -17,6 +19,7 @@ nav("appVersion", "Win", "Windows");
 nav("userAgent", "Windows");
 nav("platform", "Win", "Windows");
 nav("oscpu", "Windows");
+nav("appVersion", "CrOS", "ChromeOS");
 
 $(document).ready(function () {
     $("body").addClass(osName);

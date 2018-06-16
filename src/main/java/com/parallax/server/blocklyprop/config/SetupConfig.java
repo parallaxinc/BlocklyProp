@@ -9,6 +9,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
+
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.monitoring.Monitor;
@@ -32,7 +33,14 @@ import ch.qos.logback.classic.LoggerContext;
  */
 public class SetupConfig extends GuiceServletContextListener {
 
+    /**
+     * Application-specific configuration options
+     */
     private Configuration configuration;
+    
+    /**
+     * Application logging connector
+     */
     private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
     @Override
@@ -51,7 +59,10 @@ public class SetupConfig extends GuiceServletContextListener {
                 bind(HelpFileInitializer.class).asEagerSingleton();
                 bind(Monitor.class).asEagerSingleton();
 
+                // Configure the backend data store
                 install(new PersistenceModule(configuration));
+
+                // Bind data classes with their implementations. 
                 install(new DaoModule());
                 install(new ServiceModule());
                 install(new ServletsModule());
@@ -73,8 +84,14 @@ public class SetupConfig extends GuiceServletContextListener {
     */
     private void readConfiguration() {
         try {
-            LOG.info("Looking for blocklyprop.properties in: {}", System.getProperty("user.home"));
-            DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(getClass().getResource("/config.xml"));
+            LOG.info(
+                    "Looking for blocklyprop.properties in: {}", 
+                    System.getProperty("user.home"));
+            
+            DefaultConfigurationBuilder configurationBuilder 
+                    = new DefaultConfigurationBuilder(getClass()
+                            .getResource("/config.xml"));
+            
             configuration = configurationBuilder.getConfiguration();
         } catch (ConfigurationException ce) {
             LOG.error("{}", ce.getMessage());
@@ -86,8 +103,11 @@ public class SetupConfig extends GuiceServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
-        // This manually deregisters JDBC driver, which prevents Tomcat 7 from complaining about memory leaks wrto this class
+        
         Enumeration<Driver> drivers = DriverManager.getDrivers();
+
+        // This manually deregisters JDBC driver, which prevents Tomcat 7 from
+        // complaining about memory leaks into this class
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();
             try {

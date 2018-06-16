@@ -18,6 +18,7 @@ import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.UserService;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private static UserService USER_SERVICE;
 
@@ -54,12 +55,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Long idUser) {
-        return userDao.getUser(idUser).into(User.class);
+        if (userDao != null) {
+            return userDao.getUser(idUser).into(User.class);
+        }
+        else {
+            LOG.error("UserDAO is not initialized before first use!");
+            return null;
+        }
+        
+    }
+    
+    @Override
+    public User getUser(Long idCloudSessionUser, String screenName) {
+        if (userDao != null) {
+            return userDao.getUser(idCloudSessionUser, screenName).into(User.class);
+        }
+        else {
+            LOG.error("UserDAO is not initialized before first use!");
+            return null;
+        }
     }
 
     @Override
     public List<UserRecord> getAllUsers() {
-        return userDao.getAll();
+        if (userDao != null) {
+            return userDao.getAll();
+        }
+        else {
+            LOG.error("UserDAO is not initialized before first use!");
+            return null;
+        }
     }
 
     @Override
@@ -68,7 +93,12 @@ public class UserServiceImpl implements UserService {
         String name = "";
         
         try {
-            name = userDao.getUser(idUser).getScreenname();
+            if (userDao != null) {
+                name = userDao.getUser(idUser).getScreenname();
+            }
+            else {
+                LOG.error("UserDAO is not initialized before first use!");
+            }
         }
         catch (NullPointerException ex) {
             LOG.error("Error retreiving name for userID: {}", idUser);

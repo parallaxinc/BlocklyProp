@@ -16,23 +16,42 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
- *
+ * Clone or delete an existing project
+ * 
  * @author Michel
  */
 @Singleton
 public class ProjectServlet extends HttpServlet {
 
+    // Get a logger instance
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectServlet.class);
+
     private ProjectService projectService;
+    
 
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
     }
 
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("REST:/project/ Get request received");
+        
         String clone = req.getParameter("clone");
         if (!Strings.isNullOrEmpty(clone)) {
             clone(Long.parseLong(clone), req, resp);
@@ -44,7 +63,11 @@ public class ProjectServlet extends HttpServlet {
         }
     }
 
-    private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("Cloning project {}", idProject);
+        
         try {
             ProjectRecord clonedProject = projectService.cloneProject(idProject);
             if (clonedProject == null) {
@@ -57,7 +80,11 @@ public class ProjectServlet extends HttpServlet {
         }
     }
 
-    private void delete(Long idProject, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void delete(Long idProject, HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+       LOG.info("Deleting project {}", idProject);
+        
         try {
             try {
                 ProjectRecord project = projectService.getProjectOwnedByThisUser(idProject);
