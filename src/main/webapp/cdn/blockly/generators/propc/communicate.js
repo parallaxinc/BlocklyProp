@@ -3160,9 +3160,16 @@ Blockly.propc.oled_print_multiple = Blockly.propc.console_print_multiple;
 
 // -------------- RGB LEDs (WS2812B module) blocks -----------------------------
 Blockly.Blocks.ws2812b_init = {
-    helpUrl: Blockly.MSG_WS2812B_HELPURL,
+    
     init: function () {
-        this.setTooltip(Blockly.MSG_WS2812B_INIT_TOOLTIP);
+        var myTooltip = Blockly.MSG_WS2812B_INIT_TOOLTIP;
+        var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
+        if (projectData && projectData['board'] === 'heb-wx') {
+            myTooltip = Blockly.MSG_BADGE_RGB_INIT_TOOLTIP;
+            myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
+        }
+        this.setTooltip(myTooltip);
+        this.setHelpUrl(myHelpUrl);
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
@@ -3239,7 +3246,7 @@ Blockly.Blocks.ws2812b_set = {
     init: function () {
         var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
         if (projectData && projectData['board'] === 'heb-wx') {
-            myHelpUrl = MSG_BADGE_LEDS_HELPURL;
+            myHelpUrl = Blockly.MSG_BADGE_LEDS_HELPURL;
         }
         this.setHelpUrl(myHelpUrl);
         this.setTooltip(Blockly.MSG_WS2812B_SET_TOOLTIP);
@@ -3393,8 +3400,9 @@ Blockly.Blocks.ws2812b_set_multiple = {
     init: function () {
         var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
         if (projectData && projectData['board'] === 'heb-wx') {
-            myHelpUrl = MSG_BADGE_LEDS_HELPURL;
+            myHelpUrl = Blockly.MSG_BADGE_LEDS_HELPURL;
         }
+        this.setHelpUrl(myHelpUrl);
         this.setTooltip(Blockly.MSG_WS2812B_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput("START")
@@ -3460,8 +3468,9 @@ Blockly.Blocks.ws2812b_update = {
     init: function () {
         var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
         if (projectData && projectData['board'] === 'heb-wx') {
-            myHelpUrl = MSG_BADGE_LEDS_HELPURL;
+            myHelpUrl = Blockly.MSG_BADGE_LEDS_HELPURL;
         }
+        this.setHelpUrl(myHelpUrl);
         this.setTooltip(Blockly.MSG_WS2812B_UPDATE_TOOLTIP);
         this.appendDummyInput()
                 .appendField("RGB-LED update LEDs");
