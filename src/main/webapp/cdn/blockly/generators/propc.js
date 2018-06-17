@@ -342,19 +342,19 @@ Blockly.propc.finish = function (code) {
         // Excludes variables with "__" in the name for now because those are buffers for private functions
         // TODO: This is a temporary patch until I can figure something better out -MM
         if (definitions[def].indexOf("char *") > -1 && definitions[def].indexOf("__") === -1 && definitions[def].indexOf("rfidBfr") === -1 ) {
-        //    definitions[def] = definitions[def].replace("char *", "char ").replace(";", "[128];");
-            definitions[def] = definitions[def].replace(/char \*(\s*)(\w+);/g, 'char *$1$2' + bigStr + spaceAdd + endStr);
-            spaceAdd += ' ';
+            definitions[def] = definitions[def].replace("char *", "char ").replace(";", "[64];");
+            //definitions[def] = definitions[def].replace(/char \*(\s*)(\w+);/g, 'char *$1$2' + bigStr + spaceAdd + endStr);
+            //spaceAdd += ' ';
         }
         
         // TODO: Temporary patch to correct some weirdness with char array pointer declarations:
         definitions[def] = definitions[def].replace(/char \*(\w+)\[/g, 'char $1[');
         
-        // TODO: 
+        // Sets the length of string arrays based on the lengths specified in the string set length block.
         var vl = Blockly.propc.string_var_lengths.length;
         for (var vt = 0; vt < vl; vt++) {
             if (definitions[def].indexOf(Blockly.propc.string_var_lengths[vt][0]) > 0) {
-                'char ' + Blockly.propc.string_var_lengths[vt][0] + '[' + Blockly.propc.string_var_lengths[vt][1] + ']';
+                definitions[def] = 'char ' + Blockly.propc.string_var_lengths[vt][0] + '[' + Blockly.propc.string_var_lengths[vt][1] + ']';
             }
         }
     }
@@ -406,6 +406,9 @@ Blockly.propc.finish = function (code) {
         while (code.match(/\(\(([^()]*)\)\)/g)) {
             code = code.replace(/\(\(([^()]*)\)\)/g, '($1)');
         }
+        
+        // Change strings assigned to variables to strcpy functions
+        code = code.replace(/(\w+)\s*=\s*\({0,1}"(.*)"\){0,1};/g, 'strcpy($1, "$2");\t\t\t// Save string into variable $1.');
         
         code = 'int main()\n{\n' + setups.join('\n') + '\n' + code + '\n}';
         var setup = '';
@@ -640,5 +643,52 @@ Blockly.Field.prototype.render_ = function() {
     }
   }
   this.size_.width = width;
+};
+*/
+
+
+// REPLACES CORE FUNCTION:
+/**
+ * Return a sorted list of variable names for variable dropdown menus.
+ * Include a special option at the end for creating a new variable name.
+ * @return {!Array.<string>} Array of variable names.
+ * @this {!Blockly.FieldVariable}
+ */
+
+//vTODO: use this replacement to allow dropdowns of specific types (number, string, etc.)
+/*
+Blockly.FieldVariable.dropdownCreate = function() {
+  var blockType = null; 
+  if (this.sourceBlock_ && this.sourceBlock_.workspace) {
+    var variableList =
+        Blockly.Variables.allVariables(this.sourceBlock_.workspace);
+    blockType = this.sourceBlock_.type;
+  } else {
+    var variableList = [];
+  }
+  // Ensure that the currently selected variable is an option.
+  var name = this.getText();
+  if (name && variableList.indexOf(name) == -1) {
+    variableList.push(name);
+  }
+  variableList.sort(goog.string.caseInsensitiveCompare);
+  variableList.push(Blockly.Msg.RENAME_VARIABLE);
+  variableList.push(Blockly.Msg.NEW_VARIABLE);
+  // Variables are not language-specific, use the name as both the user-facing
+  // text and the internal representation.
+  var options = [];
+  var z = 0;
+  for (var x = 0; x < variableList.length; x++) {
+    if (blockType !== 'string_var_length') {
+      options[z] = [variableList[x], variableList[x]];
+      z++;
+    } else {
+      if (Blockly.propc.definitions_[name].indexOf('char') === 0) {
+          options[z] = [variableList[x], variableList[x]];
+          z++;
+      }
+    }
+  }
+  return options;
 };
 */

@@ -211,7 +211,7 @@ Blockly.propc.variables_set = function () {
     } else if (argument0.indexOf("char\[\]") > -1) {
         Blockly.propc.vartype_[varName] = 'char *';
     }
-
+ 
     return varName + ' = ' + argument0 + ';\n';
 };
 
