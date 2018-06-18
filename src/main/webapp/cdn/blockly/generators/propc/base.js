@@ -1602,7 +1602,7 @@ Blockly.propc.find_substring = function () {
     if (this.type === 'find_substring') {
         if (!this.disabled) {
             Blockly.propc.methods_['find_sub'] = 'int find_sub(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS + 1); }\n';
-            Blockly.propc.method_declarations_["find_sub"] = 'int find_sub(char *__strS, char *__subS);\n';
+            Blockly.propc.method_declarations_["find_sub"] = 'int find_sub(char *, char *);\n';
         }
         var code = '// WARNING! THIS BLOCK IS DEPRECATED! \n\n';
 
@@ -1613,12 +1613,12 @@ Blockly.propc.find_substring = function () {
         }
     } else {
         if (!this.disabled) {
-            Blockly.propc.methods_['find_sub_zero'] = 'int find_sub_(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS); }\n';
-            Blockly.propc.method_declarations_["find_sub_zero"] = 'int find_sub_(char *__strS, char *__subS);\n';
+            Blockly.propc.methods_['find_sub_zero'] = 'int str_loc(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS); }\n';
+            Blockly.propc.method_declarations_["find_sub_zero"] = 'int str_loc(char *__strS, char *__subS);\n';
         }
         var code = '';
         if (subs !== '' && strs !== '') {
-            code += 'find_sub_(' + strs + ', ' + subs + ')';
+            code += 'str_loc(' + strs + ', ' + subs + ')';
         } else {
             code += '0';
         }
@@ -1779,7 +1779,6 @@ Blockly.propc.get_substring = function () {
     var toStr = Blockly.propc.variableDB_.getName(this.getFieldValue('TO_STR'), Blockly.Variables.NAME_TYPE);
 
     Blockly.propc.vartype_[toStr] = 'char *';
-    Blockly.propc.definitions_['str_Buffer'] = 'char *__scBfr;';
 
     if (parseInt(sst) > parseInt(snd)) {
         var tmp = sst;
@@ -1789,19 +1788,32 @@ Blockly.propc.get_substring = function () {
 
     var code = '';
 
-    if (!this.disabled) {
-        Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
-    }
-
     if (this.type === 'get_substring') {
+        Blockly.propc.definitions_['str_Buffer'] = 'char *__scBfr;';
+        
         code += '__stIdx = 0;\nfor(__ssIdx = (' + sst + '-1); __ssIdx <= (' + snd + ' <= strlen(' + frStr;
         code += ')?' + snd + ':strlen(' + frStr + '))-1; __ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
-    } else {
-        code += '__stIdx = 0;\nfor(__ssIdx = ' + sst + '; __ssIdx < ' + snd + ';';
-        code += '__ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+        code += '__scBfr[__stIdx] = 0;\n';
+        code += 'strcpy(' + toStr + ', __scBfr);\n';
+        } else {
+        //code += '__stIdx = 0;\nfor(__ssIdx = ' + sst + '; __ssIdx < ' + snd + ';';
+        //code += '__ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
+        
+        code += "substr (" + toStr + ", " + frStr + ", " + sst + ", " + snd + ");\n";
+        
+        var fn_code = "void substr (char *__outStr, char *__inStr, int __startPos, int __toPos) {\n";
+        fn_code += "unsigned int __len = strlen(__inStr);\nunsigned int __strLen = __startPos - __toPos;\n";
+        fn_code += "if (__startPos < 0) {\n__startPos = __len + __startPos;\n}\nif (__startPos < 0) {\n";
+        fn_code += "__startPos = 0;\n}\nif ((unsigned int)__startPos > __len) {\n__startPos = __len;\n}\n";
+        fn_code += "__len = strlen (&__inStr[__startPos]);\nif (__strLen > __len) {\n__strLen = __len;\n";
+        fn_code += "}\nmemcpy(__outStr, __inStr + __startPos, __strLen);\n__outStr[__strLen] = 0;\n}";
+
+        if (!this.disabled) {
+            //Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
+            Blockly.propc.methods_['substr'] = fn_code;
+            Blockly.propc.method_declarations_['substr'] = 'void substr (char *, char *, int, int);\n';
+        }
     }
-    code += '__scBfr[__stIdx] = 0;\n';
-    code += 'strcpy(' + toStr + ', __scBfr);\n';
 
     return code;
 };
@@ -1829,17 +1841,11 @@ Blockly.propc.string_compare = function () {
     var strB = Blockly.propc.valueToCode(this, 'STRB', Blockly.propc.ORDER_ATOMIC) || '';
     var comp = this.getFieldValue('COMP');
 
-    Blockly.propc.definitions_['str_comp'] = 'int str_comp(char *__strA, char *__strB) { return strcmp(__strA, __strB); }';
-
-    var code = '';
-
     if (strA !== '' && strB !== '') {
-        code += 'str_comp(' + strA + ', ' + strB + ') ' + comp + ' 0';
+        return ['(strcmp(' + strA + ', ' + strB + ') ' + comp + ' 0)', Blockly.propc.ORDER_NONE];
     } else {
-        code += '0';
+        return ['(1' + comp + '0)', Blockly.propc.ORDER_NONE];
     }
-
-    return [code, Blockly.propc.ORDER_NONE];
 };
 
 Blockly.Blocks.string_to_number = {
@@ -1873,11 +1879,11 @@ Blockly.propc.string_to_number = function () {
     var type = this.getFieldValue('TYPE');
     var store = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
 
-    Blockly.propc.definitions_['s2i_Buffer'] = 'char __s2iBfr[64];';
+    //Blockly.propc.definitions_['s2i_Buffer'] = 'char __s2iBfr[64];';
 
     var code = '';
-    code += 'strcpy(__s2iBfr, ' + str + ');\n';
-    code += 'sscan(__s2iBfr, "' + type + '", &' + store + ');\n';
+    //code += 'strcpy(__s2iBfr, ' + str + ');\n';
+    code += 'sscan(' + str + ', "' + type + '", &' + store + ');\n';
 
     return code;
 };
