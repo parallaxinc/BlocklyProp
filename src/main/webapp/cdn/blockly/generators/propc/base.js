@@ -970,9 +970,6 @@ Blockly.Blocks.string_var_length = {
         this.setNextStatement(true, null);
         this.appendDummyInput()
                 .appendField('String variable set length (bytes) of');
-        this.appendDummyInput('VAR0')
-                .appendField('operation buffer to')
-                .appendField(new Blockly.FieldTextInput("64", Blockly.FieldTextInput.numberValidator), "VAR_LEN0");
         this.myChildren_ = 0;
         this.myConnection_ = null;
         this.setMutator(new Blockly.Mutator(['string_var_length_var']));
@@ -1054,7 +1051,7 @@ Blockly.Blocks.string_var_length = {
     },
     renameVar: function (oldName, newName) {
         for (var i = 1; i <= this.myChildren_; i++) {
-            if (Blockly.Names.equals(oldName, this.getFieldValue('VAR' + i.toString(10)))) {
+            if (Blockly.Names.equals(oldName, this.getFieldValue('VAR_NAME' + i.toString(10)))) {
                 this.setFieldValue(newName, 'VAR_NAME' + i.toString(10));
             }
         }
@@ -1085,7 +1082,7 @@ Blockly.Blocks.string_var_length_var = {
 
 Blockly.propc.string_var_length = function () {
     var i = 1;
-    Blockly.propc.string_var_lengths = [['__scBfr', this.getFieldValue('VAR_LEN0')]];
+    Blockly.propc.string_var_lengths = [];
     while (this.getInput('VAR' + i.toString(10))) {
         Blockly.propc.string_var_lengths.push([this.getFieldValue('VAR_NAME' + i.toString(10)),
             this.getFieldValue('VAR_LEN' + i.toString(10))]);
@@ -1748,7 +1745,8 @@ Blockly.Blocks.get_substring = {
                 .appendField("from position");
         this.appendValueInput("END")
                 .setCheck("Number")
-                .appendField("to position");
+                .appendField(new Blockly.FieldDropdown([["thru", " + 1"], ["to", ""]]), "PART")
+                .appendField("position");
         this.appendDummyInput()
                 .appendField("store in")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'TO_STR');
@@ -1775,6 +1773,7 @@ Blockly.Blocks.get_substring_zero = Blockly.Blocks.get_substring;
 Blockly.propc.get_substring = function () {
     var sst = Blockly.propc.valueToCode(this, 'START', Blockly.propc.ORDER_ATOMIC) || '1';
     var snd = Blockly.propc.valueToCode(this, 'END', Blockly.propc.ORDER_ATOMIC) || '2';
+    var pt = this.getFieldValue('PART');
     var frStr = Blockly.propc.variableDB_.getName(this.getFieldValue('FROM_STR'), Blockly.Variables.NAME_TYPE);
     var toStr = Blockly.propc.variableDB_.getName(this.getFieldValue('TO_STR'), Blockly.Variables.NAME_TYPE);
 
@@ -1799,7 +1798,7 @@ Blockly.propc.get_substring = function () {
         //code += '__stIdx = 0;\nfor(__ssIdx = ' + sst + '; __ssIdx < ' + snd + ';';
         //code += '__ssIdx++) {\n__scBfr[__stIdx] = ' + frStr + '[__ssIdx]; __stIdx++; }\n';
         
-        code += "substr (" + toStr + ", " + frStr + ", " + sst + ", " + snd + ");\n";
+        code += "substr (" + toStr + ", " + frStr + ", " + sst + ", " + snd + pt + ");\n";
         
         var fn_code = "void substr (char *__outStr, char *__inStr, int __startPos, int __toPos) {\n";
         fn_code += "unsigned int __len = strlen(__inStr);\nunsigned int __strLen = __startPos - __toPos;\n";

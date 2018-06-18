@@ -354,7 +354,7 @@ Blockly.propc.finish = function (code) {
         var vl = Blockly.propc.string_var_lengths.length;
         for (var vt = 0; vt < vl; vt++) {
             if (definitions[def].indexOf(Blockly.propc.string_var_lengths[vt][0]) > 0) {
-                definitions[def] = 'char ' + Blockly.propc.string_var_lengths[vt][0] + '[' + Blockly.propc.string_var_lengths[vt][1] + ']';
+                definitions[def] = 'char ' + Blockly.propc.string_var_lengths[vt][0] + '[' + Blockly.propc.string_var_lengths[vt][1] + '];';
             }
         }
     }
