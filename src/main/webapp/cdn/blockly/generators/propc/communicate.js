@@ -5822,8 +5822,6 @@ Blockly.Blocks.string_scan_float = Blockly.Blocks.console_print_float;
 Blockly.Blocks.string_scan_char = Blockly.Blocks.console_print_char;
 
 Blockly.propc.string_scan_multiple = function () {
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
-
     var code = 'sscan(' + this.getFieldValue('HANDLE') + ', "';
     var varList = '';
     var code_add = '';

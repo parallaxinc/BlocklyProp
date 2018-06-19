@@ -970,7 +970,12 @@ Blockly.Blocks.string_var_length = {
         this.setNextStatement(true, null);
         this.appendDummyInput()
                 .appendField('String variable set length (bytes) of');
-        this.myChildren_ = 0;
+        this.appendDummyInput('VARZ')
+                .appendField('variable')
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR_NAMEZ')
+                .appendField('to')
+                .appendField(new Blockly.FieldTextInput("64", Blockly.FieldTextInput.numberValidator), "VAR_LENZ");
+        this.myChildren_ = 1;
         this.myConnection_ = null;
         this.setMutator(new Blockly.Mutator(['string_var_length_var']));
     },
@@ -983,6 +988,9 @@ Blockly.Blocks.string_var_length = {
     domToMutation: function (container) {
         // Parse XML to restore the menu options.
         this.myChildren_ = parseInt(container.getAttribute('vars'));
+        if (this.getInput('VARZ')) {
+            this.removeInput('VARZ');
+        }
         if (this.myChildren_ > 0) {
             for (var i = 1; i <= this.myChildren_; i++) {
                 this.appendDummyInput('VAR' + i.toString(10))
@@ -1011,6 +1019,9 @@ Blockly.Blocks.string_var_length = {
     compose: function (containerBlock) {
         // Delete everything.
         var i = 1;
+        if (this.getInput('VARZ')) {
+            this.removeInput('VARZ');
+        }
         while (this.getInput('VAR' + i.toString(10))) {
             this.removeInput('VAR' + i.toString(10));
             i++;
@@ -1585,6 +1596,10 @@ Blockly.Blocks.find_substring = {
         this.appendValueInput("STR")
                 .setCheck("String")
                 .appendField("in string");
+        if (this.type !== 'find_substring') {
+            this.appendValueInput("LOC")
+                    .appendField("starting at position");
+        }
         this.setInputsInline(true);
         this.setOutput(true, "Number");
     }
@@ -1595,7 +1610,8 @@ Blockly.Blocks.find_substring_zero = Blockly.Blocks.find_substring;
 Blockly.propc.find_substring = function () {
     var subs = Blockly.propc.valueToCode(this, 'SUBSTR', Blockly.propc.ORDER_ATOMIC) || '';
     var strs = Blockly.propc.valueToCode(this, 'STR', Blockly.propc.ORDER_ATOMIC) || '';
-
+    var stlc = Blockly.propc.valueToCode(this, 'LOC', Blockly.propc.ORDER_ATOMIC) || '0';
+    
     if (this.type === 'find_substring') {
         if (!this.disabled) {
             Blockly.propc.methods_['find_sub'] = 'int find_sub(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS + 1); }\n';
@@ -1610,12 +1626,14 @@ Blockly.propc.find_substring = function () {
         }
     } else {
         if (!this.disabled) {
-            Blockly.propc.methods_['find_sub_zero'] = 'int str_loc(char *__strS, char *__subS) { char* __pos = strstr(__strS, __subS); return (__pos - __strS); }\n';
-            Blockly.propc.method_declarations_["find_sub_zero"] = 'int str_loc(char *__strS, char *__subS);\n';
+            Blockly.propc.methods_['find_sub_zero'] = 'int str_loc(char *__strS, char *__subS, int __sLoc) { ';
+            Blockly.propc.methods_['find_sub_zero'] += '__sLoc = (sLoc < 0 ? 0 : sLoc);\nsLoc = (__sLoc >= strlen(__strS) ? strlen(__strS) - 1 : sLoc);\n';
+            Blockly.propc.methods_['find_sub_zero'] += 'char* __pos = strstr(__strS + __sLoc, __subS); return (__pos - __strS); }\n';
+            Blockly.propc.method_declarations_["find_sub_zero"] = 'int str_loc(char *, char *, int);\n';
         }
         var code = '';
         if (subs !== '' && strs !== '') {
-            code += 'str_loc(' + strs + ', ' + subs + ')';
+            code += 'str_loc(' + strs + ', ' + subs + ', ' + stlc + ')';
         } else {
             code += '0';
         }
@@ -1800,14 +1818,14 @@ Blockly.propc.get_substring = function () {
         
         code += "substr (" + toStr + ", " + frStr + ", " + sst + ", " + snd + pt + ");\n";
         
-        var fn_code = "void substr (char *__outStr, char *__inStr, int __startPos, int __toPos) {\n";
-        fn_code += "unsigned int __len = strlen(__inStr);\nunsigned int __strLen = __startPos - __toPos;\n";
-        fn_code += "if (__startPos < 0) {\n__startPos = __len + __startPos;\n}\nif (__startPos < 0) {\n";
-        fn_code += "__startPos = 0;\n}\nif ((unsigned int)__startPos > __len) {\n__startPos = __len;\n}\n";
-        fn_code += "__len = strlen (&__inStr[__startPos]);\nif (__strLen > __len) {\n__strLen = __len;\n";
-        fn_code += "}\nmemcpy(__outStr, __inStr + __startPos, __strLen);\n__outStr[__strLen] = 0;\n}";
-
         if (!this.disabled) {
+            var fn_code = "void substr (char *__outStr, char *__inStr, int __startPos, int __toPos) {\n";
+            fn_code += "unsigned int __len = strlen(__inStr);\nunsigned int __strLen = __startPos - __toPos;\n";
+            fn_code += "if (__startPos < 0) {\n__startPos = __len + __startPos;\n}\nif (__startPos < 0) {\n";
+            fn_code += "__startPos = 0;\n}\nif ((unsigned int)__startPos > __len) {\n__startPos = __len;\n}\n";
+            fn_code += "__len = strlen (&__inStr[__startPos]);\nif (__strLen > __len) {\n__strLen = __len;\n";
+            fn_code += "}\nmemcpy(__outStr, __inStr + __startPos, __strLen);\n__outStr[__strLen] = 0;\n}";
+
             //Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
             Blockly.propc.methods_['substr'] = fn_code;
             Blockly.propc.method_declarations_['substr'] = 'void substr (char *, char *, int, int);\n';
@@ -1926,6 +1944,145 @@ Blockly.propc.number_to_string = function () {
 
     return 'sprint(' + store + ', "' + type + '", ' + str + ');\n';
 };
+
+Blockly.Blocks.string_split = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_STRING_SPLIT_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+                .appendField("split string");
+        this.appendValueInput("FROM_STR")
+                .setCheck("String");
+        this.appendValueInput("CHAR")
+                .setCheck("Number")
+                .appendField("on");
+        this.appendDummyInput()
+                .appendField("store the")
+                .appendField(new Blockly.FieldDropdown([
+                        ["first part in", "STR"], 
+                        ["next part in", "NULL"]
+                    ], function (p) {
+                        var charInputVisible = true;
+                        if (p === 'NULL') {
+                            charInputVisible = false;
+                        }
+                        this.sourceBlock_.getInput('FROM_STR').setVisible(charInputVisible);
+                    }), "PART")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'TO_STR');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        return "String";
+    },
+    getVars: function () {
+        return [this.getFieldValue('TO_STR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('TO_STR')))
+            this.setFieldValue(newName, 'TO_STR');
+    }
+};
+
+Blockly.propc.string_split = function () {
+    var delim = Blockly.propc.valueToCode(this, 'CHAR', Blockly.propc.ORDER_ATOMIC) || "32";
+    var fromStr = Blockly.propc.valueToCode(this, 'FROM_STR', Blockly.propc.ORDER_ATOMIC) || '"Hello World!"';
+    var part = this.getFieldValue('PART');
+    var toStr = Blockly.propc.variableDB_.getName(this.getFieldValue('TO_STR'), Blockly.Variables.NAME_TYPE);
+
+    Blockly.propc.vartype_[toStr] = 'char *';
+    
+    if (part === 'NULL') {
+        fromStr = part;
+    }
+    
+    if (!this.disabled) {
+        var fn_code = '';
+        fn_code += 'void str_split(char *__fromStr, char *__toStr, char __delim) {\nchar __d[2] = {__delim, 0};\n';
+        fn_code += 'char *__token;\n\n__token = strtok(__fromStr, __d);\nstrcpy(__toStr, __token);\n}';
+
+        Blockly.propc.methods_['str_split'] = fn_code;
+        Blockly.propc.method_declarations_['str_split'] = 'void str_split(char *, char *, char);\n';
+    }
+
+    return 'str_split(' + fromStr + ', ' + toStr + ', ' + delim + ');\n';
+};
+
+Blockly.Blocks.string_null = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_STRING_NULL_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput("STR")
+                .appendField("string")
+                .setCheck("String");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown([
+                        ["is empty", '[0] == 0'],
+                        ["is not empty", '[0] != 0']
+                    ]), "OP");
+        this.setOutput(true, "Number");
+    }
+};
+
+Blockly.propc.string_null = function () {
+    var str = Blockly.propc.valueToCode(this, 'STR', Blockly.propc.ORDER_ATOMIC) || '"Hello World!"';
+    var op = this.getFieldValue("OP") || "";
+    return [str + op, Blockly.propc.ORDER_NONE];
+};
+
+Blockly.Blocks.string_trim = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function () {
+        //this.setTooltip(Blockly.MSG_STRING_TRIM_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendValueInput('FROM_STR')
+                .appendField("trim string");
+        this.appendDummyInput()
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'TO_STR');
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    getVarType: function () {
+        return "String";
+    },
+    getVars: function () {
+        return [this.getFieldValue('FROM_STR'), this.getFieldValue('TO_STR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('FROM_STR')))
+            this.setFieldValue(newName, 'FROM_STR');
+        if (Blockly.Names.equals(oldName, this.getFieldValue('TO_STR')))
+            this.setFieldValue(newName, 'TO_STR');
+    }
+};
+
+Blockly.propc.string_trim = function () {
+    var frStr = Blockly.propc.valueToCode(this, 'FROM_STR', Blockly.propc.ORDER_ATOMIC) || '" Hello World! "';
+    var toStr = Blockly.propc.variableDB_.getName(this.getFieldValue('TO_STR'), Blockly.Variables.NAME_TYPE);
+
+    Blockly.propc.vartype_[toStr] = 'char *';
+    Blockly.propc.vartype_[frStr] = 'char *';
+
+        if (!this.disabled) {
+            var fn_code = '';
+            fn_code += 'void str_trim(char *out, char *str)\n{\nconst char *end;\n\n';
+            fn_code += 'while(isspace((unsigned char)*str)) str++;\nif(*str == 0)\n{\n*out = 0;\nreturn;\n';
+            fn_code += '}\nend = str + strlen(str) - 1;\nwhile(end > str && isspace((unsigned char)*end)) end--;\n';
+            fn_code += 'end++;\n\nmemcpy(out, str, end - str);\nout[end - str] = 0;\n}';
+
+            //Blockly.propc.definitions_['__ssIdx'] = 'int __ssIdx, __stIdx;';
+            Blockly.propc.methods_['str_trim'] = fn_code;
+            Blockly.propc.method_declarations_['str_trim'] = 'void str_trim(char *, char *);\n';
+        }
+
+    return 'str_trim(' + toStr + ', ' + frStr + ');\n';
+};
+
 
 Blockly.Blocks.number_binary = {
     helpUrl: Blockly.MSG_VALUES_HELPURL,
