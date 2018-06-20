@@ -1948,7 +1948,7 @@ Blockly.propc.number_to_string = function () {
 Blockly.Blocks.string_split = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_STRING_SPLIT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_STRING_SPLIT_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendDummyInput()
                 .appendField("split string");
@@ -2013,7 +2013,7 @@ Blockly.propc.string_split = function () {
 Blockly.Blocks.string_null = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_STRING_NULL_TOOLTIP);
+        this.setTooltip(Blockly.MSG_STRING_NULL_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput("STR")
                 .appendField("string")
@@ -2036,7 +2036,7 @@ Blockly.propc.string_null = function () {
 Blockly.Blocks.string_trim = {
     helpUrl: Blockly.MSG_STRINGS_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_STRING_TRIM_TOOLTIP);
+        this.setTooltip(Blockly.MSG_STRING_TRIM_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendValueInput('FROM_STR')
                 .appendField("trim string");

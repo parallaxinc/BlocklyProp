@@ -149,6 +149,13 @@ Blockly.Blocks.console_print_multiple = {
         this.optionList_ = ['str', 'dec'];
         this.specDigits_ = false;
         this.setWarningText(null);
+        this.multDropdown = [['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']];
     },
     mutationToDom: function () {
         // Create XML to represent menu options.
@@ -205,30 +212,14 @@ Blockly.Blocks.console_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown([
-                            ['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']
-                        ]), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i);
                 this.setFieldValue(divs[i], 'DIV' + i);
             } else if (this.optionList_[i] === 'float' && this.specDigits_) {
                 this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown([
-                            ['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']
-                        ]), 'DIV' + i)
+                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i)
                         .appendField('digits')
                         .appendField(new Blockly.FieldTextInput('', function (text) {
                             text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
@@ -266,13 +257,23 @@ Blockly.Blocks.console_print_multiple = {
             this.appendDummyInput('NEWLINE')
                     .appendField("then a new line")
                     .appendField(new Blockly.FieldCheckbox("FALSE"), "ck_nl");
+        } else if (this.type === "string_sprint_multiple") {
+            this.appendDummyInput('NEWLINE')
+                    .appendField("store in")
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         }
     },
     decompose: function (workspace) {
         var containerBlock = Blockly.Block.obtain(workspace, 'console_print_container');
+        var subBlock = 'console_print_';
         if (this.type === 'console_print_multiple' || this.type === 'oled_print_multiple' || this.type === 'debug_lcd_print_multiple') {
             containerBlock.initSvg();
             containerBlock.setFieldValue((this.specDigits_ ? 'TRUE' : 'FALSE'), 'PLACES');
+        } else if (this.type === 'string_sprint_multiple') {
+            containerBlock = Blockly.Block.obtain(workspace, 'string_sprint_container');
+            containerBlock.initSvg();
+            containerBlock.setFieldValue((this.specDigits_ ? 'TRUE' : 'FALSE'), 'PLACES');
+            subBlock = 'string_scan_';
         } else {
             containerBlock = Blockly.Block.obtain(workspace, 'serial_print_container');
             containerBlock.initSvg();
@@ -281,7 +282,7 @@ Blockly.Blocks.console_print_multiple = {
         var connection = containerBlock.getInput('STACK').connection;
         for (var i = 0; i < this.optionList_.length; i++) {
             var optionBlock = workspace.newBlock(
-                    'console_print_' + this.optionList_[i]);
+                    subBlock + this.optionList_[i]);
             optionBlock.initSvg();
             connection.connect(optionBlock.previousConnection);
             connection = optionBlock.nextConnection;
@@ -317,56 +318,41 @@ Blockly.Blocks.console_print_multiple = {
         var chk = '';
         while (clauseBlock) {
             chk = 'Number';
-            if (clauseBlock.type === 'console_print_dec') {
+            var tCheck = clauseBlock.type.split('_');
+            if (tCheck[2] === 'dec') {
                 this.optionList_.push('dec');
                 label = 'decimal number';
-            } else if (clauseBlock.type === 'console_print_hex') {
+            } else if (tCheck[2] === 'hex') {
                 this.optionList_.push('hex');
                 label = 'hexadecimal number';
-            } else if (clauseBlock.type === 'console_print_bin') {
+            } else if (tCheck[2] === 'bin') {
                 this.optionList_.push('bin');
                 label = 'binary number';
-            } else if (clauseBlock.type === 'console_print_char') {
+            } else if (tCheck[2] === 'char') {
                 this.optionList_.push('char');
                 label = 'ASCII character';
-            } else if (clauseBlock.type === 'console_print_str') {
+            } else if (tCheck[2] === 'str') {
                 this.optionList_.push('str');
                 chk = 'String';
                 label = 'text';
             }
             // Reconnect any child blocks.
             var printInput;
-            if (clauseBlock.type === 'console_print_float' && !this.specDigits_) {
+            if (tCheck[2] === 'float' && !this.specDigits_) {
                 this.optionList_.push('float');
                 printInput = this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown([
-                            ['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']
-                        ]), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i);
                 this.setFieldValue(divs[i] || '100', 'DIV' + i);
-            } else if (clauseBlock.type === 'console_print_float' && this.specDigits_) {
+            } else if (tCheck[2] === 'float' && this.specDigits_) {
                 this.optionList_.push('float');
                 printInput = this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown([
-                            ['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']
-                        ]), 'DIV' + i)
+                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i)
                         .appendField('digits')
                         .appendField(new Blockly.FieldTextInput('', function (text) {
                             text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
@@ -411,6 +397,10 @@ Blockly.Blocks.console_print_multiple = {
             this.appendDummyInput('NEWLINE')
                     .appendField("then a new line")
                     .appendField(new Blockly.FieldCheckbox(ck_nl || "FALSE"), "ck_nl");
+        } else if (this.type === "string_sprint_multiple") {
+            this.appendDummyInput('NEWLINE')
+                    .appendField("store in")
+                    .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
         }
     },
     saveConnections: function (containerBlock) {
@@ -454,6 +444,19 @@ Blockly.Blocks.serial_print_container = {
         this.appendDummyInput()
                 .appendField('send');
         this.appendStatementInput('STACK');
+        this.contextMenu = false;
+    }
+};
+
+Blockly.Blocks.string_sprint_container = {
+    init: function () {
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+                .appendField('string');
+        this.appendStatementInput('STACK');
+        this.appendDummyInput()
+                .appendField('specify digits')
+                .appendField(new Blockly.FieldCheckbox("FALSE"), "PLACES");
         this.contextMenu = false;
     }
 };
@@ -587,6 +590,11 @@ Blockly.propc.console_print_multiple = function () {
             break;
         case 'heb_print_multiple':
             code += 'oledprint("';
+            break;
+        case 'string_sprint_multiple':
+            var p = Blockly.propc.variableDB_.getName(this.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+            Blockly.propc.vartype_[p] = 'char *';
+            code += 'sprint(' + p + ', "';
             break;
         case 'wx_print_multiple':
             initBlock = 'WX initialize';
@@ -1183,19 +1191,9 @@ Blockly.propc.serial_receive_text = function () {
         } else if (type === "HEX") {
             return 'dscan(fdser' + p + ', "%x", &' + data + ');\n';
         } else {
-            if (!this.disabled) {
-                Blockly.propc.global_vars_["ser_rx" + p] = "int __iS" + p + ";";
-                Blockly.propc.vartype_[data] = 'char *';
-            }
-            var code = '__iS' + p + ' = 0;\n';
-            code += 'while(1) {';
-            code += '  ' + data + '[__i' + p + '] = fdserial_rxChar(fdser' + p + ');\n';
-            code += '  __i' + p + '++;\n';
-            code += '  if(' + data + '[__i' + p + '] == 10 || ' + data + '[__i';
-            code += p + '] == 13 || ' + data + '[__i' + p + '] == 0) break;}';
-            code += data + '[__i' + p + '] = 0;\nfdserial_rxFlush(fdser' + p + ');\n';
-
-            return code;
+            Blockly.propc.vartype_[data] = 'char *';
+            
+            return 'dscan(fdser' + p + ', "%s", ' + data + ');\n';
         }
     }
 };
@@ -1428,7 +1426,7 @@ Blockly.Blocks.serial_scan_multiple = {
         // Populate the mutator's dialog with this block's components.
         var cBlock = 'serial_scan_container';
         var subBlock = 'console_print_';
-        if (this.type === 'string_scan_multiple') {
+        if (this.type === 'string_scan_multiple' || this.type === 'string_sprint_multiple') {
             cBlock = 'string_scan_container';
             subBlock = 'string_scan_';
         }
@@ -2217,19 +2215,9 @@ Blockly.propc.xbee_receive = function () {
         } else if (type === "HEX") {
             return 'dscan(xbee, "%x", &' + data + ');\n';
         } else {
-            if (!this.disabled) {
-                Blockly.propc.global_vars_["xbee_rx"] = "int __XBidx;";
-                Blockly.propc.vartype_[data] = 'char *';
-            }
+            Blockly.propc.vartype_[data] = 'char *';
 
-            var code = '__XBidx = 0;\n';
-            code += 'while(1) {\n';
-            code += '  ' + data + '[__XBidx] = fdserial_rxChar(xbee);\n';
-            code += '  if(' + data + '[__XBidx] == 13 || ' + data + '[__XBidx] == 10) break;\n';
-            code += '  __XBidx++;\n';
-            code += '}\n';
-            code += data + '[__XBidx] = 0;\nfdserial_rxFlush(xbee);\n';
-            return code;
+            return 'dscan(xbee, "%s", ' + data + ');\n';
         }
     }
 };
@@ -5736,7 +5724,7 @@ Blockly.propc.i2c_mode = function () {
 Blockly.Blocks.i2c_busy = {
     helpUrl: Blockly.MSG_PROTOCOLS_HELPURL,
     init: function () {
-        //this.setTooltip(Blockly.MSG_I2C_BUSY_TOOLTIP);
+        this.setTooltip(Blockly.MSG_I2C_BUSY_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("i2c SCL")
@@ -5781,7 +5769,7 @@ Blockly.Blocks.string_scan_multiple = {
         this.setTooltip(Blockly.MSG_STRING_SCAN_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('math'));
         this.appendDummyInput()
-                .appendField('Scan string')
+                .appendField('scan string')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'HANDLE');
         this.setMutator(new Blockly.Mutator(['string_scan_dec', 'string_scan_hex', 'string_scan_bin', 'string_scan_float', 'string_scan_char']));
         this.optionList_ = ['dec', 'char'];
@@ -5815,6 +5803,7 @@ Blockly.Blocks.string_scan_container = {
     }
 };
 
+Blockly.Blocks.string_scan_str = Blockly.Blocks.console_print_str;
 Blockly.Blocks.string_scan_dec = Blockly.Blocks.console_print_dec;
 Blockly.Blocks.string_scan_hex = Blockly.Blocks.console_print_hex;
 Blockly.Blocks.string_scan_bin = Blockly.Blocks.console_print_bin;
@@ -5854,3 +5843,52 @@ Blockly.propc.string_scan_multiple = function () {
     return code;
 };
 
+Blockly.Blocks.string_sprint_multiple = {
+    helpUrl: Blockly.MSG_STRINGS_HELPURL,
+    init: function () {
+        this.setTooltip(Blockly.MSG_STRING_SPRINT_MULTIPLE_TOOLTIP);
+        this.setColour(colorPalette.getColor('math'));
+        this.appendDummyInput()
+                .appendField('create string from');
+        this.appendValueInput('PRINT0')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('String')
+                .appendField('text');
+        this.appendValueInput('PRINT1')
+                .setAlign(Blockly.ALIGN_RIGHT)
+                .setCheck('Number')
+                .appendField('decimal number');
+        this.appendDummyInput("NEWLINE")
+                .appendField("store in")
+                .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR');
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true);
+        this.setInputsInline(false);
+        this.setMutator(new Blockly.Mutator(['string_scan_str', 'string_scan_dec', 'string_scan_hex', 'string_scan_bin', 'string_scan_float', 'string_scan_char']));
+        this.optionList_ = ['str', 'dec'];
+        this.specDigits_ = false;
+        this.setWarningText(null);
+        this.multDropdown = [['1', '1'],
+                            ['10', '10'],
+                            ['100', '100'],
+                            ['1000', '1000'],
+                            ['10,000', '10000'],
+                            ['100,000', '100000'],
+                            ['1,000,000', '1000000']];
+    },
+    mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
+    domToMutation: Blockly.Blocks['console_print_multiple'].domToMutation,
+    decompose: Blockly.Blocks['console_print_multiple'].decompose,
+    compose: Blockly.Blocks['console_print_multiple'].compose,
+    saveConnections: Blockly.Blocks['console_print_multiple'].saveConnections,
+    getVars: function () {
+        return [this.getFieldValue('VAR')];
+    },
+    renameVar: function (oldName, newName) {
+        if (Blockly.Names.equals(oldName, this.getFieldValue('VAR'))) {
+            this.setFieldValue(newName, 'VAR');
+        }
+    }
+};
+
+Blockly.propc.string_sprint_multiple = Blockly.propc.console_print_multiple;
