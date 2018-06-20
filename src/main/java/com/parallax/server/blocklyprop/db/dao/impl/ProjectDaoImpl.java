@@ -405,7 +405,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     /**
-     * TODO: add details.
+     * Return a list of community projects constrained by the parameters
      *
      * @param sort
      * @param order
@@ -419,8 +419,7 @@ public class ProjectDaoImpl implements ProjectDao {
             TableSort sort, 
             TableOrder order, 
             Integer limit, 
-            Integer offset, 
-            Long idUser) {
+            Integer offset) {
         
         LOG.info("Retreive shared projects.");
 
@@ -428,10 +427,10 @@ public class ProjectDaoImpl implements ProjectDao {
         if (TableOrder.desc == order) {
             orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
         }
+
+        // Search for community projects
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
-        if (idUser != null) {
-            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
-        }
+        
         return create.selectFrom(Tables.PROJECT)
                 .where(conditions)
                 .orderBy(orderField).limit(limit).offset(offset)
@@ -497,9 +496,15 @@ public class ProjectDaoImpl implements ProjectDao {
         LOG.info("Count shared projects for user {}.", idUser);
 
         Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
+        
+        // Shared projects are really community projects. We should not include
+        // the logged in user's projects in the community listing. There is a
+        // separate listing available for the logged in user's private projects.
+        /*
         if (idUser != null) {
             conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
         }
+        */
         return create.fetchCount(Tables.PROJECT, conditions);
     }
 

@@ -54,6 +54,15 @@ public class RestSharedProject {
         this.projectConverter = projectConverter;
     }
 
+    /**
+     * Return a list of community projects.
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return 
+     */
     @GET
     @Path("/list")
     @Detail("Get all shared projects")
@@ -70,6 +79,7 @@ public class RestSharedProject {
         List<ProjectRecord> projects 
                 = projectService.getSharedProjects(sort, order, limit, offset);
         
+        // Obtain a count of the total number of community projects available
         int projectCount = projectService.countSharedProjects();
 
         JsonObject result = new JsonObject();
