@@ -166,7 +166,7 @@ var profile = {
         baudrate: 115200,
         contiguous_pins_start: 0,
         contiguous_pins_end: 11,
-        saves_to: [["Hackable Electronic Badge", "heb"], ["Hackable Electronic Badge", "heb-wx"]]
+        saves_to: [["Hackable Electronic Badge", "heb"], ["Badge WX", "heb-wx"]]
     },
     "flip": {
         description: "Propeller FLiP or Project Board",

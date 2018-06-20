@@ -206,7 +206,7 @@ Blockly.propc.heb_print_multiple = Blockly.propc.console_print_multiple;
 Blockly.Blocks.heb_cursor_position_large = {
     init: function () {
         this.setHelpUrl(Blockly.MSG_BADGE_HELPURL);
-        this.setTooltip(Blockly.MSG_HEB_CURSOR_POSITION_LARGE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_HEB_SET_FONT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('Display set font size')
@@ -229,7 +229,7 @@ Blockly.propc.heb_cursor_position_large = function () {
 Blockly.Blocks.heb_cursor_position_small = {
     init: function () {
         this.setHelpUrl(Blockly.MSG_BADGE_DISPLAY_HELPURL);
-        this.setTooltip(Blockly.MSG_HEB_CURSOR_POSITION_SMALL_TOOLTIP);
+        this.setTooltip(Blockly.MSG_HEB_CURSOR_POSITION_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendValueInput('COLS')
                 .setCheck('Number')

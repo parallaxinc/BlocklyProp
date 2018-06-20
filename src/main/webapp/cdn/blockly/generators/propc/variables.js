@@ -190,7 +190,7 @@ Blockly.propc.variables_set = function () {
             Blockly.propc.varlength_[varName] = '{{$var_length_' + varName + '}};';
         } else if (argument0.indexOf("char\[\]") > -1) {
             Blockly.propc.vartype_[varName] = 'char *';
-        } else if (argument0.indexOf("\"") > -1 && argument0.indexOf("get8bitColor(") === -1) {  // Some functions tht return numbers take strings as arguments, so we need to account for that.
+        } else if (argument0.indexOf("\"") > -1 && argument0.indexOf("get8bitColor(") === -1) {  // Some functions that return numbers take strings as arguments, so we need to account for that.
             Blockly.propc.vartype_[varName] = 'char *';
         } else if (argument0.indexOf(".") > -1) {
             Blockly.propc.vartype_[varName] = 'float';
@@ -303,12 +303,7 @@ Blockly.propc.array_get = function () {
     var element = Blockly.propc.valueToCode(this, 'NUM', Blockly.propc.ORDER_NONE) || '0';
     var code = varName + '[' + element + ']';
 
-    var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-    if (allBlocks.toString().indexOf('array initialize ' + this.getFieldValue('VAR')) === -1) {
-        return '// ERROR: The array "' + varName + '" has not been initialized!\n';
-    } else {
-        return [code, Blockly.propc.ORDER_ATOMIC];
-    }
+    return [code, Blockly.propc.ORDER_ATOMIC];
 };
 
 Blockly.Blocks.array_init = {
@@ -493,7 +488,7 @@ Blockly.propc.array_fill = function () {
         code += 'memcpy(' + varName + ', __tmpArr' + tempArrayNumber.toString() + ', ' + elements + ' * sizeof(int));\n';
         tempArrayNumber++;
     } else {
-        code += '// ERROR: The array "' + this.getFieldValue('VAR') + '" has not been initialized!\n';
+        code = '// ERROR: The array "' + this.getFieldValue('VAR') + '" has not been initialized!\n';
     }
 
     return code;
