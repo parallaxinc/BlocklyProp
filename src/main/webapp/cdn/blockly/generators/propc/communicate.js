@@ -4983,9 +4983,9 @@ Blockly.propc.wx_ip = function () {
 
 // ---------------- Graphing Output Blocks -------------------------------------
 Blockly.Blocks.graph_output = {
-//    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
+    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
     init: function () {
-//        this.setTooltip(Blockly.MSG_GRAPH_OUTPUT_TOOLTIP);
+        this.setTooltip(Blockly.MSG_GRAPH_OUTPUT_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField('Graph');
@@ -5172,66 +5172,64 @@ Blockly.propc.graph_output = function () {
 };
 
 Blockly.Blocks.graph_settings = {
-//    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
+    helpUrl: Blockly.MSG_GRAPHING_HELPURL,
     init: function () {
-//        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
+        this.setTooltip(Blockly.MSG_GRAPH_SETTINGS_TOOLTIP);
         this.setColour(colorPalette.getColor('protocols'));
         this.appendDummyInput()
                 .appendField("Graph initialize  keep")
                 .appendField(new Blockly.FieldTextInput('40',
                         Blockly.FieldTextInput.numberValidator), "XAXIS")
-                .appendField('seconds of data  y-axis ')
+                .appendField('seconds of data')
                 .appendField(new Blockly.FieldDropdown([
                     ["autoscale", "AUTO"],
-                    ["range", "FIXED"]]), "YSETTING")
-                .appendField("minimum", 'LABELMIN')
+                    ["ranged", "FIXED"]
+                //    ["x/y series - autoscale", "AUTOXY"],
+                //    ["x/y series - ranged", "FIXEDXY"],
+                //    ["oscilloscope - autoscale", "AUTOSC"],
+                //    ["oscilloscope - ranged", "FIXEDSC"],
+                ], function (s) {
+                            if (s === 'FIXED') {
+                                if (!this.sourceBlock_.getInput('RANGES')) {
+                                    this.sourceBlock_.addRanges(s);
+                                }
+                            } else {
+                                if (this.sourceBlock_.getInput('RANGES')) {
+                                    this.sourceBlock_.removeInput('RANGES');
+                                }
+                            }
+                    }), "YSETTING");
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, "Block");
+        this.setNextStatement(true, null);
+    },
+    addRanges: function (s) {
+        this.appendDummyInput('RANGES')
+                .appendField("y-axis minimum", 'LABELMIN')
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), "YMIN")
                 .appendField(" maximum", 'LABELMAX')
                 .appendField(new Blockly.FieldTextInput('0',
                         Blockly.FieldTextInput.numberValidator), "YMAX");
-        if (this.getFieldValue('YSETTING') === 'AUTO') {
-            this.getField('YMIN').setVisible(false);
-            this.setFieldValue('0', 'YMIN');
-            this.getField('YMAX').setVisible(false);
-            this.setFieldValue('0', 'YMAX');
-            this.getField('LABELMIN').setVisible(false);
-            this.getField('LABELMAX').setVisible(false);
-        } else {
-            this.getField('YMIN').setVisible(true);
-            this.getField('YMAX').setVisible(true);
-            this.getField('LABELMIN').setVisible(true);
-            this.getField('LABELMAX').setVisible(true);
-        }
-        this.setInputsInline(false);
-        this.setPreviousStatement(true, "Block");
-        this.setNextStatement(true, null);
-        this.render();
     },
-    onchange: function () {
-        if (this.getFieldValue('YSETTING') === 'AUTO') {
-            this.getField('YMIN').setVisible(false);
-            this.setFieldValue('0', 'YMIN');
-            this.getField('YMAX').setVisible(false);
-            this.setFieldValue('0', 'YMAX');
-            this.getField('LABELMIN').setVisible(false);
-            this.getField('LABELMAX').setVisible(false);
-        } else {
-            this.getField('YMIN').setVisible(true);
-            this.getField('YMAX').setVisible(true);
-            this.getField('LABELMIN').setVisible(true);
-            this.getField('LABELMAX').setVisible(true);
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('scaling', this.getFieldValue('YSETTING'));
+        return container;
+    },
+    domToMutation: function (container) {
+        if (container.getAttribute('scaling') === 'FIXED') {
+            this.addRanges();
         }
-        this.render();
-    }
+    }  
 };
 
 Blockly.propc.graph_settings = function () {
     if (!this.disabled) {
-        var rate = this.getFieldValue('RATE');
         var x_axis = this.getFieldValue('XAXIS') || '10';
+        // if these don't exist, setting both to zero will cause the graph to autorange.
         var y_min = this.getFieldValue('YMIN') || '0';
-        var y_max = this.getFieldValue('YMAX') || '100';
+        var y_max = this.getFieldValue('YMAX') || '0';
 
         if (parseInt(x_axis) < 10) {
             x_axis = '10';

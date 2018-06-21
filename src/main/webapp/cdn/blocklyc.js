@@ -585,7 +585,6 @@ function serial_console() {
 }
 
 function graphing_console() {
-    var newGraph = false;
     var propcCode = Blockly.propc.workspaceToCode(Blockly.mainWorkspace);
 
     // If there are graph settings, extract them
