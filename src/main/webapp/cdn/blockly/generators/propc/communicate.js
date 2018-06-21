@@ -150,12 +150,12 @@ Blockly.Blocks.console_print_multiple = {
         this.specDigits_ = false;
         this.setWarningText(null);
         this.multDropdown = [['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']];
+            ['10', '10'],
+            ['100', '100'],
+            ['1000', '1000'],
+            ['10,000', '10000'],
+            ['100,000', '100000'],
+            ['1,000,000', '1000000']];
     },
     mutationToDom: function () {
         // Create XML to represent menu options.
@@ -978,8 +978,8 @@ Blockly.Blocks.serial_send_text = {
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
                 ]
-                //, function(type) {this.sourceBlock_.stringTypeCheck(type);}
-                ), 'TYPE');
+                        //, function(type) {this.sourceBlock_.stringTypeCheck(type);}
+                        ), 'TYPE');
         this.appendValueInput('VALUE');
         this.setInputsInline(true);
         this.setPreviousStatement(true, "Block");
@@ -1068,16 +1068,16 @@ Blockly.Blocks.serial_send_text = {
         }
     }
     /*,
-    stringTypeCheck: function (type) {
-        var setType = "Number";
-        if (!type) {
-            setType = null;
-        } else if (type === 'TEXT') {
-            setType = "String";
-        }
-        //this.getInput('VALUE').setCheck(setType);               // DISABLED FOR NOW - CREATES BROKEN PROJECTS ON RELOAD.  NEED TO FIND A BETTER WAY TO DO THIS
-    }
-    */
+     stringTypeCheck: function (type) {
+     var setType = "Number";
+     if (!type) {
+     setType = null;
+     } else if (type === 'TEXT') {
+     setType = "String";
+     }
+     //this.getInput('VALUE').setCheck(setType);               // DISABLED FOR NOW - CREATES BROKEN PROJECTS ON RELOAD.  NEED TO FIND A BETTER WAY TO DO THIS
+     }
+     */
 };
 
 Blockly.propc.serial_send_text = function () {
@@ -1192,7 +1192,7 @@ Blockly.propc.serial_receive_text = function () {
             return 'dscan(fdser' + p + ', "%x", &' + data + ');\n';
         } else {
             Blockly.propc.vartype_[data] = 'char *';
-            
+
             return 'dscan(fdser' + p + ', "%s", ' + data + ');\n';
         }
     }
@@ -2092,9 +2092,9 @@ Blockly.Blocks.xbee_transmit = {
                     ["binary number", "BIN"],
                     ["ASCII character", "BYTE"]
                 ]
-                //, function(type) {
-                //    this.sourceBlock_.stringTypeCheck(type);
-                //}
+                        //, function(type) {
+                        //    this.sourceBlock_.stringTypeCheck(type);
+                        //}
                         ), 'TYPE');
         this.appendValueInput('VALUE')
                 .setCheck(null);
@@ -2103,15 +2103,15 @@ Blockly.Blocks.xbee_transmit = {
         this.setNextStatement(true, null);
     },
     /*
-    mutationToDom: function () {
-        var container = document.createElement('mutation');
-        container.setAttribute('type', this.getFieldValue('TYPE'));
-        return container;
-    },
-    domToMutation: function (container) {
-        this.stringTypeCheck(container.getAttribute('type'));
-    },
-    */
+     mutationToDom: function () {
+     var container = document.createElement('mutation');
+     container.setAttribute('type', this.getFieldValue('TYPE'));
+     return container;
+     },
+     domToMutation: function (container) {
+     this.stringTypeCheck(container.getAttribute('type'));
+     },
+     */
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
         if (allBlocks.indexOf('XBee initialize') === -1)
@@ -3148,7 +3148,6 @@ Blockly.propc.oled_print_multiple = Blockly.propc.console_print_multiple;
 
 // -------------- RGB LEDs (WS2812B module) blocks -----------------------------
 Blockly.Blocks.ws2812b_init = {
-    
     init: function () {
         var myTooltip = Blockly.MSG_WS2812B_INIT_TOOLTIP;
         var myHelpUrl = Blockly.MSG_WS2812B_HELPURL;
@@ -3166,7 +3165,7 @@ Blockly.Blocks.ws2812b_init = {
             this.appendDummyInput()
                     .appendField("RGB-LED set number of LEDs")
                     .appendField(new Blockly.FieldTextInput('4', Blockly.FieldTextInput.numberValidator), "LEDNUM");
-        } else {  
+        } else {
             this.appendDummyInput()
                     .appendField("RGB-LED initialize PIN")
                     .appendField(new Blockly.FieldDropdown(profile.default.digital, function (myPin) {
@@ -3353,8 +3352,8 @@ Blockly.Blocks.ws2812b_set = {
 Blockly.propc.ws2812b_set = function () {
     var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
     this.updateRGBpin();
-    
-    
+
+
     if (allBlocks.toString().indexOf('RGB-LED initialize') === -1 && allBlocks.toString().indexOf('RGB-LED set number') === -1) {
         if (projectData && projectData['board'] !== 'heb-wx') {
             return '// ERROR: RGB-LED is not initialized!\n';
@@ -3377,7 +3376,7 @@ Blockly.propc.ws2812b_set = function () {
             }
             if (this.getInput('RGBPIN')) {
                 p = this.getFieldValue('RGB_PIN');
-            } 
+            }
         }
         var code = 'RGBleds' + p + '[constrainInt(' + led + ', 1, RGB_COUNT' + p + ') - 1] = ' + color + ';\n';
         return code;
@@ -3443,7 +3442,7 @@ Blockly.propc.ws2812b_set_multiple = function () {
             }
             if (this.getInput('RGBPIN')) {
                 p = this.getFieldValue('RGB_PIN');
-            } 
+            }
         }
         var code = '';
         code += 'for(int __ldx = ' + start + '; __ldx <= ' + end + '; __ldx++) {';
@@ -3499,7 +3498,7 @@ Blockly.propc.ws2812b_update = function () {
         }
         if (this.getInput('RGBPIN')) {
             p = this.getFieldValue('RGB_PIN');
-        } 
+        }
     }
     return 'ws2812_set(ws2812b' + p + ', RGB_PIN' + p + ', RGBleds' + p + ', RGB_COUNT' + p + ');\n';
 };
@@ -3548,10 +3547,10 @@ Blockly.Blocks.wx_init = {
 
 Blockly.propc.wx_init = function () {
     if (!this.diabled) {
-        var pin_do = '31';  
-        var pin_di = '30';  
+        var pin_do = '31';
+        var pin_di = '30';
         var mode = 'WX_ALL_COM';
-        
+
         if (this.type === 'wx_init') {
             pin_di = this.getFieldValue('DI');
             pin_do = this.getFieldValue('DO');
@@ -4055,10 +4054,10 @@ Blockly.Blocks.wx_init_adv = {
 
 Blockly.propc.wx_init_adv = function () {
     if (!this.disabled) {
-        var pin_do = '31';  
-        var pin_di = '30';  
+        var pin_do = '31';
+        var pin_di = '30';
         var mode = 'WX_ALL_COM';
-        
+
         if (this.type === 'wx_init') {
             pin_di = this.getFieldValue('DI');
             pin_do = this.getFieldValue('DO');
@@ -4160,7 +4159,7 @@ Blockly.propc.wx_scan_multiple = function () {
             start = '';
 
         var code = 'wifi_scan(' + conn + ', ' + handle + ', "' + start;
-        var varList = ''; 
+        var varList = '';
         var code_add = '';
         var i = 0;
         while (this.getFieldValue('CPU' + i)) {
@@ -4237,7 +4236,7 @@ Blockly.Blocks.wx_print_multiple = {
     }
 };
 
-Blockly.propc.wx_print_multiple = function() {
+Blockly.propc.wx_print_multiple = function () {
     if (boardType === 'heb-wx') {
         var runInit = Blockly.propc.wx_init_adv();  // Runs the propc generator from the init block, since it's not included in the badge WX board type.
     }
@@ -4477,10 +4476,10 @@ Blockly.Blocks.wx_listen = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("WX connect")
                 .appendField(new Blockly.FieldDropdown([
-                        ['HTTP', 'HTTP'], 
-                        ['Websocket', 'WS'], 
-                        ['TCP', 'TCP']
-                    ], function (action) {
+                    ['HTTP', 'HTTP'],
+                    ['Websocket', 'WS'],
+                    ['TCP', 'TCP']
+                ], function (action) {
                     this.sourceBlock_.setPrefix_({"ACTION": action});
                 }), 'PROTOCOL')
                 .appendField("store ID in", 'TEXT')
@@ -4800,7 +4799,7 @@ Blockly.Blocks.wx_buffer = {
                 .appendField("set size to")
                 .appendField(new Blockly.FieldTextInput('64',
                         Blockly.FieldTextInput.numberValidator), "SIZE")
-                .appendField("bytes ");   
+                .appendField("bytes ");
         this.appendDummyInput('BUF')
                 .appendField("set")
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), "BUFFER")
@@ -5182,35 +5181,48 @@ Blockly.Blocks.graph_settings = {
                         Blockly.FieldTextInput.numberValidator), "XAXIS")
                 .appendField('seconds of data')
                 .appendField(new Blockly.FieldDropdown([
-                    ["autoscale", "AUTO"],
-                    ["ranged", "FIXED"]
-                //    ["x/y series - autoscale", "AUTOXY"],
-                //    ["x/y series - ranged", "FIXEDXY"],
-                //    ["oscilloscope - autoscale", "AUTOSC"],
-                //    ["oscilloscope - ranged", "FIXEDSC"],
+                    ["time series- autoscale", "AUTO"],
+                    ["time series- ranged", "FIXED"],
+                    ["x/y series- autoscale", "AUTOXY"],
+                    ["x/y series- ranged", "FIXEDXY"] //,
+                            //["oscilloscope - autoscale", "AUTO OS"],
+                            //["oscilloscope - ranged", "FIXEDOS"]
                 ], function (s) {
-                            if (s === 'FIXED') {
-                                if (!this.sourceBlock_.getInput('RANGES')) {
-                                    this.sourceBlock_.addRanges(s);
-                                }
-                            } else {
-                                if (this.sourceBlock_.getInput('RANGES')) {
-                                    this.sourceBlock_.removeInput('RANGES');
-                                }
-                            }
-                    }), "YSETTING");
+                    if (this.sourceBlock_.getInput('RANGES')) {
+                        this.sourceBlock_.removeInput('RANGES');
+                    }
+                    if (s.indexOf('FIXED') > -1) {
+                        this.sourceBlock_.addRanges(s);
+                    }
+                }), "YSETTING");
         this.setInputsInline(false);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
     },
     addRanges: function (s) {
-        this.appendDummyInput('RANGES')
-                .appendField("y-axis minimum", 'LABELMIN')
-                .appendField(new Blockly.FieldTextInput('0',
-                        Blockly.FieldTextInput.numberValidator), "YMIN")
-                .appendField(" maximum", 'LABELMAX')
-                .appendField(new Blockly.FieldTextInput('0',
-                        Blockly.FieldTextInput.numberValidator), "YMAX");
+        if (s === 'FIXED') {
+            this.appendDummyInput('RANGES')
+                    .appendField("y-axis minimum", 'LABELMIN')
+                    .appendField(new Blockly.FieldTextInput('0',
+                            Blockly.FieldTextInput.numberValidator), "YMIN")
+                    .appendField(" maximum", 'LABELMAX')
+                    .appendField(new Blockly.FieldTextInput('0',
+                            Blockly.FieldTextInput.numberValidator), "YMAX");
+        } else {
+            this.appendDummyInput('RANGES')
+                    .appendField("x-axis min")
+                    .appendField(new Blockly.FieldTextInput('0',
+                            Blockly.FieldTextInput.numberValidator), "XMIN")
+                    .appendField(" max")
+                    .appendField(new Blockly.FieldTextInput('0',
+                            Blockly.FieldTextInput.numberValidator), "XMAX")
+                    .appendField(" y-axis min")
+                    .appendField(new Blockly.FieldTextInput('0',
+                            Blockly.FieldTextInput.numberValidator), "YMIN")
+                    .appendField(" max")
+                    .appendField(new Blockly.FieldTextInput('0',
+                            Blockly.FieldTextInput.numberValidator), "YMAX");
+        }
     },
     mutationToDom: function () {
         var container = document.createElement('mutation');
@@ -5221,7 +5233,7 @@ Blockly.Blocks.graph_settings = {
         if (container.getAttribute('scaling') === 'FIXED') {
             this.addRanges();
         }
-    }  
+    }
 };
 
 Blockly.propc.graph_settings = function () {
@@ -5230,13 +5242,18 @@ Blockly.propc.graph_settings = function () {
         // if these don't exist, setting both to zero will cause the graph to autorange.
         var y_min = this.getFieldValue('YMIN') || '0';
         var y_max = this.getFieldValue('YMAX') || '0';
-
-        if (parseInt(x_axis) < 10) {
-            x_axis = '10';
-        }
+        var mode = this.getFieldValue('YSETTING') || 'AUTO';
+        var modes = {'AUTO': 'S', 'FIXED': 'S', 'AUTOXY': 'X', 'FIXEDXY': 'X', 'AUTOSC': 'O', 'FIXEDSC': 'O'};
 
         Blockly.propc.definitions_['graphing_settings'] = '// GRAPH_SETTINGS_START:100,' +
-                x_axis + ',S,' + y_min + ',' + y_max + ':GRAPH_SETTINGS_END //';
+                x_axis + ',' + modes[mode] + ',' + y_min + ',' + y_max;
+        
+        if (modes[mode] === 'X') {
+            var x_min = this.getFieldValue('XMIN') || '0';
+            var x_max = this.getFieldValue('XMAX') || '0';
+            Blockly.propc.definitions_['graphing_settings'] += ',' + x_min + ',' + x_max;
+        }
+        Blockly.propc.definitions_['graphing_settings'] += ':GRAPH_SETTINGS_END //';
     }
     return '';
 };
@@ -5684,8 +5701,8 @@ Blockly.Blocks.i2c_mode = {
     },
     onchange: function (event) {
         // only fire when a block got deleted or created, the SCL field was changed
-        if (event.oldXml || event.type === Blockly.Events.CREATE || 
-                event.name === 'SCL' || event.name === 'SDA'|| 
+        if (event.oldXml || event.type === Blockly.Events.CREATE ||
+                event.name === 'SCL' || event.name === 'SDA' ||
                 event.blockId === this.id || this.warnFlag > 0) {
             var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
             this.warnFlag--;
@@ -5708,7 +5725,7 @@ Blockly.Blocks.i2c_mode = {
                         x = allBlocks.length + 1;
                     }
                 }
-            this.setWarningText(this.pinWarn);
+                this.setWarningText(this.pinWarn);
             }
         }
     }
@@ -5867,12 +5884,12 @@ Blockly.Blocks.string_sprint_multiple = {
         this.specDigits_ = false;
         this.setWarningText(null);
         this.multDropdown = [['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']];
+            ['10', '10'],
+            ['100', '100'],
+            ['1000', '1000'],
+            ['10,000', '10000'],
+            ['100,000', '100000'],
+            ['1,000,000', '1000000']];
     },
     mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
     domToMutation: Blockly.Blocks['console_print_multiple'].domToMutation,

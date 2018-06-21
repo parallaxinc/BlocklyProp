@@ -70,9 +70,9 @@ var minVer = version_as_number(client_min_version);
  * @param {string} id ID of tab clicked.
  */
 function tabClick(id) {
-    
+
     var TABS_ = ['blocks', 'propc', 'xml'];
-    
+
     // If the XML tab was open, save and render the content.
     /* if (document.getElementById('tab_xml').className == 'active') {
      var xmlTextarea = document.getElementById('textarea_xml');
@@ -117,7 +117,7 @@ function tabClick(id) {
             Blockly.bindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
             Blockly.codeOnlyKeybind = false;
         }
-        
+
         if (id === 'tab_blocks') {
             for (var i = 0; i < btns.length; i++) {
                 btns[i].style.display = 'inline-block';
@@ -134,7 +134,7 @@ function tabClick(id) {
                 document.getElementById('menu-save-as-propc').style.display = 'block';
         }
     } else {
-        
+
         // Remove keybindings from block workspace if this is a code-only project.
         Blockly.unbindEvent_(document, 'keydown', null, Blockly.onKeyDown_);
         Blockly.codeOnlyKeybind = true;
@@ -196,7 +196,7 @@ var prettyCode = function (raw_code) {
         'indent_size': 2
     });
     raw_code = raw_code.replace(/,\n[\s\xA0]+/g, ", ")
-    
+
             // improve the way reference and dereference operands are rendered
             .replace(/, & /g, ", &")
             .replace(/, \* /g, ", *")
@@ -209,14 +209,14 @@ var prettyCode = function (raw_code) {
             .replace(/i2c \* /g, "i2c *")
             .replace(/sound \* /g, "sound *")
             .replace(/FILE \* /g, "FILE* ")
-    
+
             // improve the way functions and arrays are rendered
-            .replace(/\)\s*[\n\r]\s*{/g,") {")
+            .replace(/\)\s*[\n\r]\s*{/g, ") {")
             .replace(/\[([0-9]*)\]\s*=\s*{\s*([0-9xXbBA-F,\s]*)\s*};/g, function (str, m1, m2) {
-                    m2 = m2.replace(/\s/g, '').replace(/,/g, ', ');
-                    return "[" + m1 + "] = {" + m2 + "};";
-                });
-    
+                m2 = m2.replace(/\s/g, '').replace(/,/g, ', ');
+                return "[" + m1 + "] = {" + m2 + "};";
+            });
+
     codePropC.setValue(raw_code);
     codePropC.gotoLine(0);
 };
@@ -341,14 +341,14 @@ function cloudCompile(text, action, successHandler) {
                 // Get message as a string, or blank if undefined
                 var message = (typeof data['message'] === "string") ? data['message'] : (typeof data.error !== "undefined") ? data['message'].toString() : "";
                 alert("BlocklyProp was unable to compile your project:\n" + message
-                    + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
             } else {
                 var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
                 $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
                 if (data.success) {
                     successHandler(data, terminalNeeded);
                 }
-                
+
                 // Scoll automatically to the bottom after new data is added
                 document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
             }
@@ -356,7 +356,7 @@ function cloudCompile(text, action, successHandler) {
             // console.log(data);
             var message = (typeof data === "string") ? data : data.toString();
             alert("BlocklyProp was unable to compile your project:\n----------\n" + message
-                + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+                    + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
         });
     }
 }
@@ -412,7 +412,9 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
                         var success = true;
                         var coded = (load_option === "CODE" || load_option === "CODE_VERBOSE");
                         if (coded) {
-                            message.forEach(function(x){success = success && x.substr(0,3) < 100;});
+                            message.forEach(function (x) {
+                                success = success && x.substr(0, 3) < 100;
+                            });
                         }
                         //Display results
                         var result = '';
@@ -422,7 +424,9 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
                         } else {
                             //Failed (or not coded); Show the details
                             var error = [];
-                            message.forEach(function(x){error.push(x.substr((coded) ? 4 : 0));});
+                            message.forEach(function (x) {
+                                error.push(x.substr((coded) ? 4 : 0));
+                            });
                             result = ((coded) ? ' Failed!' : "") + '\n\n-------- loader messages --------\n' + error.join('\n');
                         }
 
@@ -461,7 +465,7 @@ function loadInto(modal_message, compile_command, load_option, load_action) {
         alert("No device detected - ensure it is connected, powered, and selected in the ports list.\n\nMake sure your BlocklyPropClient is up-to-date.");
     } else {
         alert("BlocklyPropClient not available to communicate with a microcontroller."
-            + "\n\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac).");
+                + "\n\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac).");
     }
 }
 
@@ -502,7 +506,7 @@ function serial_console() {
                     connString += c_buf;
                     if (connString.indexOf(baudrate.toString(10)) > -1) {
                         connStrYet = true;
-                        if(document.getElementById('serial-conn-info')) {
+                        if (document.getElementById('serial-conn-info')) {
                             document.getElementById('serial-conn-info').innerHTML = connString.trim();
                             // send remainder of string to terminal???  Haven't seen any leak through yet...
                         }
@@ -522,7 +526,7 @@ function serial_console() {
                 connString = '';
                 connStrYet = false;
                 connection.close();
-                if(document.getElementById('serial-conn-info')) {
+                if (document.getElementById('serial-conn-info')) {
                     document.getElementById('serial-conn-info').innerHTML = '';
                 }
                 updateTermBox(0);
@@ -561,7 +565,7 @@ function serial_console() {
         };
 
         active_connection = 'websocket';
-        if(document.getElementById('serial-conn-info')) {
+        if (document.getElementById('serial-conn-info')) {
             document.getElementById('serial-conn-info').innerHTML = 'Connection established with ' +
                     msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
         }
@@ -570,7 +574,7 @@ function serial_console() {
         $('#console-dialog').on('hidden.bs.modal', function () {
             if (msg_to_send.action !== 'close') { // because this is getting called multiple times...?
                 msg_to_send.action = 'close';
-                if(document.getElementById('serial-conn-info')) {
+                if (document.getElementById('serial-conn-info')) {
                     document.getElementById('serial-conn-info').innerHTML = '';
                 }
                 active_connection = null;
@@ -604,18 +608,42 @@ function graphing_console() {
 
         graph_options.refreshRate = Number(graph_settings_str[0]);
 
-        if (graph_settings_str[3] === '0' && graph_settings_str[4] === '0')
-            graph_options.axisY = {
-                type: Chartist.AutoScaleAxis,
-            };
-        else
+        for (var j = 3; j < 7; j++) {
+            if (graph_settings_str[j] === '0') {
+                graph_settings_str[j] = null;
+            }
+        }
+        if (graph_settings_str[2] === 'S') {
             graph_options.axisY = {
                 type: Chartist.AutoScaleAxis,
                 low: Number(graph_settings_str[3]),
                 high: Number(graph_settings_str[4])
             };
+        } else if (graph_settings_str[2] === 'X') {
+            graph_options = {
+                axisX: {
+                    type: Chartist.AutoScaleAxis,
+                    onlyInteger: false,
+                    low: Number(graph_settings_str[5]),
+                    high: Number(graph_settings_str[6]),
+                    labelInterpolationFnc: function (value, index) {
+                        return value === Math.round(value) ? value : null;
+                    }
+                },
+                axisY: {
+                    type: Chartist.AutoScaleAxis,
+                    onlyInteger: false,
+                    low: Number(graph_settings_str[3]),
+                    high: Number(graph_settings_str[4]),
+                    labelInterpolationFnc: function (value, index) {
+                        return value === Math.round(value) ? value : null;
+                    }
+                },
+                showLine: false
+            };
+        }
 
-        if (graph_settings_str[2] === 'S')
+        if (graph_settings_str[2] === 'S' || graph_settings_str[2] === 'X')
             graph_options.sampleTotal = Number(graph_settings_str[1]);
 
         if (graph === null) {
@@ -638,9 +666,9 @@ function graphing_console() {
                 } else {
                     connection.send('+++ open port ' + getComPort());
                 }
-                
-            graphStartStop('start');
-            
+
+                graphStartStop('start');
+
             };
             // Log errors
             connection.onerror = function (error) {
@@ -658,7 +686,7 @@ function graphing_console() {
                     connString += c_buf;
                     if (connString.indexOf(baudrate.toString(10)) > -1) {
                         connStrYet = true;
-                        if(document.getElementById('graph-conn-info')) {
+                        if (document.getElementById('graph-conn-info')) {
                             document.getElementById('graph-conn-info').innerHTML = connString.trim();
                             // send remainder of string to terminal???  Haven't seen any leak through yet...
                         }
@@ -686,13 +714,13 @@ function graphing_console() {
                 action: 'open'
             };
 
-            if(document.getElementById('graph-conn-info')) {
+            if (document.getElementById('graph-conn-info')) {
                 document.getElementById('graph-conn-info').innerHTML = 'Connection established with ' +
                         msg_to_send.portPath + ' at baudrate ' + msg_to_send.baudrate;
             }
-            
+
             client_ws_connection.send(JSON.stringify(msg_to_send));
-            
+
             if (!graph_interval_id) {
                 graphStartStop('start');
             }
@@ -701,11 +729,11 @@ function graphing_console() {
                 graphStartStop('stop');
                 if (msg_to_send.action !== 'close') { // because this is getting called multiple times.... ?
                     msg_to_send.action = 'close';
-                    if(document.getElementById('graph-conn-info')) {
+                    if (document.getElementById('graph-conn-info')) {
                         document.getElementById('graph-conn-info').innerHTML = '';
                     }
                     client_ws_connection.send(JSON.stringify(msg_to_send));
-                }  
+                }
             });
 
         } else {
@@ -713,7 +741,7 @@ function graphing_console() {
         }
 
         $('#graphing-dialog').modal('show');
-        if(document.getElementById('btn-graph-play')) {
+        if (document.getElementById('btn-graph-play')) {
             document.getElementById('btn-graph-play').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M5.5,2 L4,2 4,11 5.5,11 Z M8.5,2 L10,2 10,11 8.5,11 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
         }
     } else {
@@ -721,27 +749,27 @@ function graphing_console() {
     }
 }
 
-var graphStartStop = function(action) {
+var graphStartStop = function (action) {
     if (action === 'start' || action === 'play') {
         graph_new_labels();
         if (graph_interval_id) {
-            clearInterval(graph_interval_id);            
+            clearInterval(graph_interval_id);
         }
         graph_interval_id = setInterval(function () {
             graph.update(graph_data);
             graph_update_labels();
-        }, graph_options.refreshRate);        
+        }, graph_options.refreshRate);
     } else if (action === 'stop' || action === 'pause') {
         clearInterval(graph_interval_id);
         graph_interval_id = null;
-    } 
+    }
     if (action === 'stop') {
         graph_paused = false;
-        graph_reset();        
-        graph_play('play');        
+        graph_reset();
+        graph_play('play');
     }
     if (action === 'clear') {
-        graph_reset();                
+        graph_reset();
     }
     if (action === 'play') {
         console.log(graph_data.series[0].length);
@@ -750,7 +778,7 @@ var graphStartStop = function(action) {
         }
         graph_paused = false;
         graph_start_playing = true;
-    } 
+    }
     if (action === 'pause' && graph_temp_data.slice(-1)[0]) {
         graph_paused = true;
         graph_temp_string = '';
@@ -773,7 +801,7 @@ var check_com_ports = function () {
             } else {
                 // else keep port list clear (searching...)
                 set_port_list();
-            }      
+            }
         }
     }
 };
@@ -784,7 +812,7 @@ var set_port_list = function (data) {
     data = (data ? data : 'searching');
     var selected_port = $("#comPort").val();
     $("#comPort").empty();
-    if (typeof(data) === 'object' && data.length) {
+    if (typeof (data) === 'object' && data.length) {
         data.forEach(function (port) {
             $("#comPort").append($('<option>', {
                 text: port
@@ -796,11 +824,12 @@ var set_port_list = function (data) {
             text: (data === 'searching') ? 'Searching...' : 'No devices found'
         }));
         ports_available = false;
-    };
+    }
+    ;
     select_com_port(selected_port);
 };
 
- var select_com_port = function (com_port) {
+var select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);
     }
@@ -880,7 +909,7 @@ function graph_new_data(stream) {
                     // convert to seconds:
                     // Uses Propeller system clock (CNT) left shifted by 16.
                     // Assumes 80MHz clock frequency.
-                    ts = ts / 1220.703125; 
+                    ts = ts / 1220.703125;
                 }
                 if (!graph_timestamp_start || graph_timestamp_start === 0) {
                     graph_timestamp_start = ts;
@@ -899,15 +928,34 @@ function graph_new_data(stream) {
                     graph_temp_data[row].unshift(ts + graph_time_multiplier -
                             graph_timestamp_start);
                     var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
-                    for (var j = 2; j < graph_temp_data[row].length; j++) {
-                        graph_csv_temp += graph_temp_data[row][j] + ',';
-                        graph_data.series[j - 2].push({
-                            x: graph_temp_data[row][0],
-                            y: graph_temp_data[row][j] || null
-                        });
-                        if (graph_temp_data[row][0] > graph_options.sampleTotal)                         
-                            graph_data.series[j - 2].shift();
+
+                    if (graph_settings_str[2] === 'S') {   // Time series graph
+                        for (var j = 2; j < graph_temp_data[row].length; j++) {
+                            graph_csv_temp += graph_temp_data[row][j] + ',';
+                            graph_data.series[j - 2].push({
+                                x: graph_temp_data[row][0],
+                                y: graph_temp_data[row][j] || null
+                            });
+                            if (graph_temp_data[row][0] > graph_options.sampleTotal)
+                                graph_data.series[j - 2].shift();
+                        }
+                    } else if (graph_settings_str[2] === 'X') {   // xy scatter plot
+                        var j = 2;
+                        var k = 0;
+                        while (j < graph_temp_data[row].length) {
+                            graph_csv_temp += graph_temp_data[row][j] + ',' + graph_temp_data[row][j + 1] + ',';
+                            graph_data.series[k].push({
+                                x: graph_temp_data[row][j] || null,
+                                y: graph_temp_data[row][j + 1] || null
+                            });
+                            if (graph_temp_data[row][0] > graph_options.sampleTotal)
+                                graph_data.series[k].shift();
+                            k++;
+                            j += 2;
+                        }
                     }
+
+
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
 
                     // limits total number of data points collected to prevent memory issues
@@ -919,10 +967,10 @@ function graph_new_data(stream) {
                 graph_temp_string = '';
             } else {
                 if (!graph_data_ready) {            // wait for a full set of data to
-                    if (stream[k] === '\r')  {      // come in before graphing, ends up
+                    if (stream[k] === '\r') {      // come in before graphing, ends up
                         graph_data_ready = true;    // tossing the first point but prevents
                     }                               // garbage from mucking up the graph.
-                } else { 
+                } else {
                     // make sure it's a number, comma, CR, or LF
                     if ('0123456789.,\r\n'.indexOf(stream[k]) > -1) {
                         graph_temp_string += stream[k];
@@ -950,7 +998,7 @@ function graph_reset() {
 }
 
 function graph_play(setTo) {
-    if(document.getElementById('btn-graph-play')) {
+    if (document.getElementById('btn-graph-play')) {
         var play_state = document.getElementById('btn-graph-play').innerHTML;
         if (setTo !== 'play' && (play_state.indexOf('pause') > -1 || play_state.indexOf('<!--p') === -1)) {
             document.getElementById('btn-graph-play').innerHTML = '<!--play--><svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"><path d="M4,3 L4,11 10,7 Z" style="stroke:#fff;stroke-width:1;fill:#fff;"/></svg>';
