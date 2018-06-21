@@ -1343,7 +1343,7 @@ Blockly.Blocks.sound_play = {
         this.setSoundAction(act);
     },
     onchange: function (event) {
-        if (!(projectData['board'] && projectData['board'] === "heb")) {
+        if (!(projectData['board'] && (projectData['board'] === "heb" || projectData['board'] === "heb-wx"))) {
         //if (event.oldXml || event.type === Blockly.Events.CREATE) {
             var allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
             if (allBlocks.indexOf('sound initialize') === -1) {
