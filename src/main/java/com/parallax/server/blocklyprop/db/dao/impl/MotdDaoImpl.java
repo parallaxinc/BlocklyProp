@@ -8,6 +8,7 @@ package com.parallax.server.blocklyprop.db.dao.impl;
 import com.google.inject.Singleton;
 import com.google.inject.Inject;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.jooq.DSLContext;
 import com.parallax.server.blocklyprop.db.dao.MotdDao;
 import com.parallax.server.blocklyprop.db.generated.Tables;
@@ -65,7 +66,13 @@ public class MotdDaoImpl implements MotdDao {
         return record;
     }
             
-            
+    // Return a list of Motd records
+    @Override
+    public List <MotdRecord> get() {
+        return null;
+    }
+
+
     /**
      * Retrieve a single message of the day
      * 
@@ -74,7 +81,7 @@ public class MotdDaoImpl implements MotdDao {
      * @return a single MotdRecord or null if record is not found
      */
     @Override
-    public MotdRecord getMotd(Long idMotd) {
+    public MotdRecord get(Long idMotd) {
         
         MotdRecord record = create
                 .selectFrom(Tables.MOTD)
@@ -107,8 +114,21 @@ public class MotdDaoImpl implements MotdDao {
      */
     @Override
     public Boolean delete(Long idMotd) {
-        
         return true;
     }
-    
+
+    @Override
+    public Boolean disable(Long idMotdRecoord) {
+        return true;
+    }
+
+    @Override
+    public Boolean enable(Long idMotdRecord) {
+        return true;
+    }
+
+    @Override
+    public Boolean update(MotdRecord record) {
+        return true;
+    }
 }
