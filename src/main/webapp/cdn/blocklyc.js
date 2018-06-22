@@ -943,6 +943,9 @@ function graph_new_data(stream) {
                             k++;
                             j += 2;
                         }
+                        // TEMPORARY
+                        if (graph_data.series[0].length % 25 === 0)
+                            console.log(graph_data.series);
                     }
 
 
