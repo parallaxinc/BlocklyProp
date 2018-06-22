@@ -40,7 +40,8 @@ var graph_options = {
         onlyInteger: true
     },
     refreshRate: 250,
-    sampleTotal: 40
+    sampleTotal: 40,
+    graph_type: 'S'
 };
 
 var graph_data = {
@@ -614,22 +615,18 @@ function graphing_console() {
             }
         }
         graph_options.graph_type = graph_settings_str[2];
-        if (graph_settings_str[2] === 'S') {
-            graph_options.axisY = {
-                type: Chartist.AutoScaleAxis,
-                low: Number(graph_settings_str[3]),
-                high: Number(graph_settings_str[4])
-            };
-        } else if (graph_settings_str[2] === 'X') {
+        graph_options.axisY = {
+            type: Chartist.AutoScaleAxis,
+            low: Number(graph_settings_str[3]),
+            high: Number(graph_settings_str[4]),
+            onlyInteger: true
+        };
+        if (graph_settings_str[2] === 'X') {
             graph_options.axisX = {
                 type: Chartist.AutoScaleAxis,
                 low: Number(graph_settings_str[5]),
-                high: Number(graph_settings_str[6])
-            };
-            graph_options.axisY = {
-                type: Chartist.AutoScaleAxis,
-                low: Number(graph_settings_str[3]),
-                high: Number(graph_settings_str[4])
+                high: Number(graph_settings_str[6]),
+                onlyInteger: true
             };
             graph_options.showLine = false;
         }
@@ -919,17 +916,7 @@ function graph_new_data(stream) {
                             graph_timestamp_start);
                     var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
 
-                    if (graph_options.graph_type === 'S') {   // Time series graph
-                        for (var j = 2; j < graph_temp_data[row].length; j++) {
-                            graph_csv_temp += graph_temp_data[row][j] + ',';
-                            graph_data.series[j - 2].push({
-                                x: graph_temp_data[row][0],
-                                y: graph_temp_data[row][j] || null
-                            });
-                            if (graph_temp_data[row][0] > graph_options.sampleTotal)
-                                graph_data.series[j - 2].shift();
-                        }
-                    } else if (graph_options.graph_type === 'X') {   // xy scatter plot
+                    if (graph_options.graph_type === 'X') {   // xy scatter plot
                         var j = 2;
                         var k = 0;
                         while (j < graph_temp_data[row].length) {
@@ -943,11 +930,17 @@ function graph_new_data(stream) {
                             k++;
                             j += 2;
                         }
-                        // TEMPORARY
-                        if (graph_data.series[0].length % 25 === 0)
-                            console.log(graph_data.series);
+                    } else {    // Time series graph
+                        for (var j = 2; j < graph_temp_data[row].length; j++) {
+                            graph_csv_temp += graph_temp_data[row][j] + ',';
+                            graph_data.series[j - 2].push({
+                                x: graph_temp_data[row][0],
+                                y: graph_temp_data[row][j] || null
+                            });
+                            if (graph_temp_data[row][0] > graph_options.sampleTotal)
+                                graph_data.series[j - 2].shift();
+                        }                        
                     }
-
 
                     graph_csv_data.push(graph_csv_temp.slice(0, -1).split(','));
 
