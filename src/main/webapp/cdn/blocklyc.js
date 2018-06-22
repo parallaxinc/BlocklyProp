@@ -637,6 +637,7 @@ function graphing_console() {
                     onlyInteger: true
                 };
             }
+            graph_options.showPoint = true;
             graph_options.showLine = false;
         }
 
@@ -916,7 +917,6 @@ function graph_new_data(stream) {
                     }
                 }
                 if (row > 0 && !graph_start_playing) {
-                    console.log(graph_temp_data);
                     if (parseFloat(graph_temp_data[row][0]) < parseFloat(graph_temp_data[row - 1][1])) {
                         graph_time_multiplier += fullCycleTime;
                     }
