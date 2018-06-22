@@ -928,16 +928,16 @@ function graph_new_data(stream) {
                     var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
 
                     if (graph_options.graph_type === 'X') {   // xy scatter plot
-                        var k = 0;
+                        var jk = 0;
                         for (var j = 2; j < graph_temp_data[row].length; j = j + 2) {
                             graph_csv_temp += graph_temp_data[row][j] + ',' + graph_temp_data[row][j + 1] + ',';
-                            graph_data.series[k].push({
+                            graph_data.series[jk].push({
                                 x: graph_temp_data[row][j] || null,
                                 y: graph_temp_data[row][j + 1] || null
                             });
                             if (graph_temp_data[row][0] > graph_options.sampleTotal)
-                                graph_data.series[k].shift();
-                            k++;
+                                graph_data.series[jk].shift();
+                            jk++;
                         }
                     } else {    // Time series graph
                         for (var j = 2; j < graph_temp_data[row].length; j++) {
