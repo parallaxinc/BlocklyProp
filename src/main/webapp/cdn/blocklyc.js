@@ -609,11 +609,6 @@ function graphing_console() {
 
         graph_options.refreshRate = Number(graph_settings_str[0]);
 
-        for (var j = 3; j < 7; j++) {
-            if (graph_settings_str[j] === '0') {
-                graph_settings_str[j] = null;
-            }
-        }
         graph_options.graph_type = graph_settings_str[2];
         if (Number(graph_settings_str[3]) !== 0 && Number(graph_settings_str[4]) !== 0) {
             graph_options.axisY = {
@@ -629,7 +624,7 @@ function graphing_console() {
             };
         }
         if (graph_settings_str[2] === 'X') {
-            if (Number(graph_settings_str[5]) !== 0 && Number(graph_settings_str[6]) !== 0) {
+            if (Number(graph_settings_str[5]) !== 0 || Number(graph_settings_str[6]) !== 0) {
                 graph_options.axisX = {
                     type: Chartist.AutoScaleAxis,
                     low: Number(graph_settings_str[5]),
@@ -974,7 +969,7 @@ function graph_new_data(stream) {
                     }                               // garbage from mucking up the graph.
                 } else {
                     // make sure it's a number, comma, CR, or LF
-                    if ('0123456789.,\r\n'.indexOf(stream[k]) > -1) {
+                    if ('-0123456789.,\r\n'.indexOf(stream[k]) > -1) {
                         graph_temp_string += stream[k];
                     }
                 }
