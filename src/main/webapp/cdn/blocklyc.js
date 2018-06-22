@@ -702,7 +702,7 @@ function graphing_console() {
                 graphStartStop('stop');
                 connString = '';
                 connStrYet = false;
-                document.getElementById('graph-conn-info').innerHTML = '';localhost
+                document.getElementById('graph-conn-info').innerHTML = '';
             });
 
         } else if (client_use_type === 'ws' && ports_available) {
