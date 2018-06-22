@@ -5112,6 +5112,15 @@ Blockly.Blocks.graph_output = {
                 else
                     this.setWarningText(null);
             }
+            var j = 0;
+            var graphLabels = [' (X1)', ' (Y1)', ' (X2)', ' (Y2)', ' (X3)', ' (Y3)', ' (X4)', ' (Y4)', ' (X5)', ' (Y5)'];
+            while (this.getFieldValue('VALUE_LABEL' + i)) {
+                if (graphInitBlock.getFeildValue('YSETTING').indexOf('XY') > -1) {
+                    this.setFieldValue('value' + graphLabels[i], 'VALUE_LABEL' + i);
+                } else {
+                    this.setFieldValue('value', 'VALUE_LABEL' + i);
+                }
+            }
         }
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
             this.removeInput('PRINTa');

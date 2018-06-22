@@ -615,19 +615,33 @@ function graphing_console() {
             }
         }
         graph_options.graph_type = graph_settings_str[2];
-        graph_options.axisY = {
-            type: Chartist.AutoScaleAxis,
-            low: Number(graph_settings_str[3]),
-            high: Number(graph_settings_str[4]),
-            onlyInteger: true
-        };
-        if (graph_settings_str[2] === 'X') {
-            graph_options.axisX = {
+        if (Number(graph_settings_str[3]) !== 0 && Number(graph_settings_str[4]) !== 0) {
+            graph_options.axisY = {
                 type: Chartist.AutoScaleAxis,
-                low: Number(graph_settings_str[5]),
-                high: Number(graph_settings_str[6]),
+                low: Number(graph_settings_str[3]),
+                high: Number(graph_settings_str[4]),
                 onlyInteger: true
             };
+        } else {
+            graph_options.axisY = {
+                type: Chartist.AutoScaleAxis,
+                onlyInteger: true
+            };
+        }
+        if (graph_settings_str[2] === 'X') {
+            if (Number(graph_settings_str[5]) !== 0 && Number(graph_settings_str[6]) !== 0) {
+                graph_options.axisX = {
+                    type: Chartist.AutoScaleAxis,
+                    low: Number(graph_settings_str[5]),
+                    high: Number(graph_settings_str[6]),
+                    onlyInteger: true
+                };
+            } else {
+                graph_options.axisX = {
+                    type: Chartist.AutoScaleAxis,
+                    onlyInteger: true
+                };
+            }
             graph_options.showLine = false;
         }
 
@@ -638,6 +652,7 @@ function graphing_console() {
             graph_reset();
             graph_temp_string = '';
             graph = new Chartist.Line('#serial_graphing', graph_data, graph_options);
+            console.log(graph_options);
         } else {
             graph.update(graph_data, graph_options);
         }
