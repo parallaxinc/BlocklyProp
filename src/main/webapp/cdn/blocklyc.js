@@ -928,9 +928,8 @@ function graph_new_data(stream) {
                     var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
 
                     if (graph_options.graph_type === 'X') {   // xy scatter plot
-                        var j = 2;
                         var k = 0;
-                        while (j < graph_temp_data[row].length) {
+                        for (var j = 2; j < graph_temp_data[row].length; j = j + 2) {
                             graph_csv_temp += graph_temp_data[row][j] + ',' + graph_temp_data[row][j + 1] + ',';
                             graph_data.series[k].push({
                                 x: graph_temp_data[row][j] || null,
@@ -939,7 +938,6 @@ function graph_new_data(stream) {
                             if (graph_temp_data[row][0] > graph_options.sampleTotal)
                                 graph_data.series[k].shift();
                             k++;
-                            j += 2;
                         }
                     } else {    // Time series graph
                         for (var j = 2; j < graph_temp_data[row].length; j++) {
