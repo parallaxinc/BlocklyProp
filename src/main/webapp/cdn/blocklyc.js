@@ -613,13 +613,14 @@ function graphing_console() {
                 graph_settings_str[j] = null;
             }
         }
-        if (graph_settings_str[2] === 'S') {
+        graph_options.graph_type = graph_settings_str[2];
+        if (graph_options.graph_type === 'S') {
             graph_options.axisY = {
                 type: Chartist.AutoScaleAxis,
                 low: Number(graph_settings_str[3]),
                 high: Number(graph_settings_str[4])
             };
-        } else if (graph_settings_str[2] === 'X') {
+        } else if (graph_options.graph_type === 'X') {
             graph_options = {
                 axisX: {
                     type: Chartist.AutoScaleAxis,
@@ -643,7 +644,7 @@ function graphing_console() {
             };
         }
 
-        if (graph_settings_str[2] === 'S' || graph_settings_str[2] === 'X')
+        if (graph_options.graph_type === 'S' || graph_options.graph_type === 'X')
             graph_options.sampleTotal = Number(graph_settings_str[1]);
 
         if (graph === null) {
@@ -701,7 +702,7 @@ function graphing_console() {
                 graphStartStop('stop');
                 connString = '';
                 connStrYet = false;
-                document.getElementById('graph-conn-info').innerHTML = '';
+                document.getElementById('graph-conn-info').innerHTML = '';localhost
             });
 
         } else if (client_use_type === 'ws' && ports_available) {
@@ -929,7 +930,7 @@ function graph_new_data(stream) {
                             graph_timestamp_start);
                     var graph_csv_temp = (Math.round(graph_temp_data[row][0] * 10000) / 10000) + ',';
 
-                    if (graph_settings_str[2] === 'S') {   // Time series graph
+                    if (graph_options.graph_type === 'S') {   // Time series graph
                         for (var j = 2; j < graph_temp_data[row].length; j++) {
                             graph_csv_temp += graph_temp_data[row][j] + ',';
                             graph_data.series[j - 2].push({
@@ -939,7 +940,7 @@ function graph_new_data(stream) {
                             if (graph_temp_data[row][0] > graph_options.sampleTotal)
                                 graph_data.series[j - 2].shift();
                         }
-                    } else if (graph_settings_str[2] === 'X') {   // xy scatter plot
+                    } else if (graph_options.graph_type === 'X') {   // xy scatter plot
                         var j = 2;
                         var k = 0;
                         while (j < graph_temp_data[row].length) {
