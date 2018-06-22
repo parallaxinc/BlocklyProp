@@ -614,34 +614,24 @@ function graphing_console() {
             }
         }
         graph_options.graph_type = graph_settings_str[2];
-        if (graph_options.graph_type === 'S') {
+        if (graph_settings_str[2] === 'S') {
             graph_options.axisY = {
                 type: Chartist.AutoScaleAxis,
                 low: Number(graph_settings_str[3]),
                 high: Number(graph_settings_str[4])
             };
-        } else if (graph_options.graph_type === 'X') {
-            graph_options = {
-                axisX: {
-                    type: Chartist.AutoScaleAxis,
-                    onlyInteger: false,
-                    low: Number(graph_settings_str[5]),
-                    high: Number(graph_settings_str[6]),
-                    labelInterpolationFnc: function (value, index) {
-                        return value === Math.round(value) ? value : null;
-                    }
-                },
-                axisY: {
-                    type: Chartist.AutoScaleAxis,
-                    onlyInteger: false,
-                    low: Number(graph_settings_str[3]),
-                    high: Number(graph_settings_str[4]),
-                    labelInterpolationFnc: function (value, index) {
-                        return value === Math.round(value) ? value : null;
-                    }
-                },
-                showLine: false
+        } else if (graph_settings_str[2] === 'X') {
+            graph_options.axisX = {
+                type: Chartist.AutoScaleAxis,
+                low: Number(graph_settings_str[5]),
+                high: Number(graph_settings_str[6])
             };
+            graph_options.axisY = {
+                type: Chartist.AutoScaleAxis,
+                low: Number(graph_settings_str[3]),
+                high: Number(graph_settings_str[4])
+            };
+            graph_options.showLine = false;
         }
 
         if (graph_options.graph_type === 'S' || graph_options.graph_type === 'X')
@@ -773,7 +763,6 @@ var graphStartStop = function (action) {
         graph_reset();
     }
     if (action === 'play') {
-        console.log(graph_data.series[0].length);
         if (graph_data.series[0].length === 0) {
             graph_reset();
         }
