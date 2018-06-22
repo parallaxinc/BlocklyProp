@@ -5054,7 +5054,7 @@ Blockly.Blocks.graph_output = {
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .setCheck('Number')
                     .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
-                    .appendField('value');
+                    .appendField('value', 'VALUE_LABEL' + i);
 
             if (clauseBlock.valueConnection_) {
                 printInput.connection.connect(clauseBlock.valueConnection_);
@@ -5095,8 +5095,13 @@ Blockly.Blocks.graph_output = {
     },
     onchange: function () {
         var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
-        if (allBlocks.toString().indexOf('Graph initialize') === -1)
-        {
+        var graphInitBlock = null;
+        for (var j = 0; j < allBlocks.length; j++) {
+            if (allBlocks[j].type === 'graph_settings') {
+                graphInitBlock = allBlocks[j];
+            }
+        }
+        if (!graphInitBlock) {
             this.setWarningText('WARNING: You must use a Graph\ninitialize block at the beginning of your program!');
         } else {
             if (this.workspace && this.optionList_.length < 1) {
