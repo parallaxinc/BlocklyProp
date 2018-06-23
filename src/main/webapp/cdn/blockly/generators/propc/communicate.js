@@ -5103,24 +5103,32 @@ Blockly.Blocks.graph_output = {
         }
         if (!graphInitBlock) {
             this.setWarningText('WARNING: You must use a Graph\ninitialize block at the beginning of your program!');
+            return;
         } else {
             if (this.workspace && this.optionList_.length < 1) {
                 this.setWarningText('Graphing output must have at least one value.');
+                return;
             } else {
-                if (this.optionList_.length > 10)
+                if (this.optionList_.length > 10) {
                     this.setWarningText('Graphing output only supports up to 10 values.');
-                else
+                    return;
+                } else {
                     this.setWarningText(null);
+                }
             }
             var j = 0;
             var graphLabels = [' (X1)', ' (Y1)', ' (X2)', ' (Y2)', ' (X3)', ' (Y3)', ' (X4)', ' (Y4)', ' (X5)', ' (Y5)'];
             while (this.getFieldValue('VALUE_LABEL' + j)) {
-                if (graphInitBlock.getFeildValue('YSETTING').indexOf('XY') > -1) {
+                if (graphInitBlock.getFieldValue('YSETTING').indexOf('XY') > -1) {
                     this.setFieldValue('value' + graphLabels[j], 'VALUE_LABEL' + j);
+                    
                 } else {
                     this.setFieldValue('value', 'VALUE_LABEL' + j);
                 }
                 j++;
+            }
+            if (j % 2 === 1 && graphInitBlock.getFieldValue('YSETTING').indexOf('XY') > -1) {
+                this.setWarningText('Number of values must be EVEN when graphing an x/y series!');
             }
         }
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
