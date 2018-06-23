@@ -4992,7 +4992,7 @@ Blockly.Blocks.graph_output = {
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .setCheck('Number')
                 .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABELa')
-                .appendField('value');
+                .appendField('value', 'VALUE_LABELa');
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true);
         this.setMutator(new Blockly.Mutator(['graph_dec']));
@@ -5013,7 +5013,7 @@ Blockly.Blocks.graph_output = {
             this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
-                    .appendField('value');
+                    .appendField('value', 'VALUE_LABEL' + i);
         }
     },
     decompose: function (workspace) {
