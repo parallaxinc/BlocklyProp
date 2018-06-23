@@ -508,6 +508,46 @@ nav .nav > li > a:first-child {
     stroke: #90d;
 }
 
+.ct-series-a .ct-point {
+    stroke-width: 2px;
+    stroke: #00f;
+}
+
+.ct-series-b .ct-point {
+    stroke-width: 2px;
+    stroke: #0bb;
+}
+
+.ct-series-c .ct-point {
+    stroke-width: 2px;
+    stroke: #0d0;
+}
+
+.ct-series-d .ct-point {
+    stroke-width: 2px;
+    stroke: #dd0;
+}
+
+.ct-series-e .ct-point {
+    stroke-width: 2px;
+    stroke: #f90;
+}
+
+.ct-series-f .ct-point {
+    stroke-width: 2px;
+    stroke: #f00;
+}
+
+.ct-series-g .ct-point {
+    stroke-width: 2px;
+    stroke: #d09;
+}
+
+.ct-series-h .ct-point {
+    stroke-width: 2px;
+    stroke: #90d;
+}
+
 .ct-series-i .ct-line {
     stroke-width: 1px;
     stroke: #777;
