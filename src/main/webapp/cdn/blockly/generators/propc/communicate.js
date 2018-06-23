@@ -5103,15 +5103,12 @@ Blockly.Blocks.graph_output = {
         }
         if (!graphInitBlock) {
             this.setWarningText('WARNING: You must use a Graph\ninitialize block at the beginning of your program!');
-            return;
         } else {
             if (this.workspace && this.optionList_.length < 1) {
                 this.setWarningText('Graphing output must have at least one value.');
-                return;
             } else {
                 if (this.optionList_.length > 10) {
                     this.setWarningText('Graphing output only supports up to 10 values.');
-                    return;
                 } else {
                     this.setWarningText(null);
                 }
@@ -5133,7 +5130,6 @@ Blockly.Blocks.graph_output = {
         }
         if (this.getInput('PRINT0') && this.getInput('PRINTa')) {
             this.removeInput('PRINTa');
-            //this.removeInput('PRINTb');
         }
     }
 };
