@@ -5222,7 +5222,7 @@ Blockly.Blocks.graph_settings = {
                     ["x/y series- ranged", "FIXEDXY"] //,
                             //["oscilloscope - autoscale", "AUTO OS"],
                             //["oscilloscope - ranged", "FIXEDOS"]
-                ], this.sourceBlock_.setMode(s)), "YSETTING");
+                ], function (action) {this.sourceBlock_.setMode(action);}), "YSETTING");
         this.setInputsInline(false);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
