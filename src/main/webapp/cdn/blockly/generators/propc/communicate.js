@@ -5062,6 +5062,10 @@ Blockly.Blocks.graph_output = {
     compose: function (containerBlock) {
         // Delete everything.
         var i = 0;
+        var graphLabels = ['', '', '', '', '', '', '', '', '', ''];
+        if (this.getFieldValue('VALUE_LABEL0') === 'value (X1)') {
+            graphLabels = [' (X1)', ' (Y1)', ' (X2)', ' (Y2)', ' (X3)', ' (Y3)', ' (X4)', ' (Y4)', ' (X5)', ' (Y5)'];
+        }
         while (this.getInput('PRINT' + i)) {
             this.removeInput('PRINT' + i);
             i++;
@@ -5077,7 +5081,7 @@ Blockly.Blocks.graph_output = {
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .setCheck('Number')
                     .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
-                    .appendField('value', 'VALUE_LABEL' + i);
+                    .appendField('value' + graphLabels[i], 'VALUE_LABEL' + i);
 
             if (clauseBlock.valueConnection_) {
                 printInput.connection.connect(clauseBlock.valueConnection_);
