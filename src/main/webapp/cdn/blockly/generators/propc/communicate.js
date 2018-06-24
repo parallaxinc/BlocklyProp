@@ -5003,17 +5003,40 @@ Blockly.Blocks.graph_output = {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
         container.setAttribute('options', JSON.stringify(this.optionList_));
+        var m = 'S';
+        if (this.getFieldValue('VALUE_LABEL0') === 'value (X1)') {
+            m = 'X';
+        }
+        container.setAttribute('mode', m);
         return container;
     },
     domToMutation: function (container) {
         // Parse XML to restore the menu options.
         var value = JSON.parse(container.getAttribute('options'));
+        var mode = container.getAttribute('mode');
+        var graphLabels = [' (X1)', ' (Y1)', ' (X2)', ' (Y2)', ' (X3)', ' (Y3)', ' (X4)', ' (Y4)', ' (X5)', ' (Y5)'];
+        var vl = '';
         this.optionList_ = value;
         for (var i = 0; i < this.optionList_.length; i++) {
+            if (mode === 'X') {
+                vl = graphLabels[i];
+            }
             this.appendValueInput('PRINT' + i)
                     .setAlign(Blockly.ALIGN_RIGHT)
                     .appendField(new Blockly.FieldTextInput('label'), 'GRAPH_LABEL' + i)
-                    .appendField('value', 'VALUE_LABEL' + i);
+                    .appendField('value' + vl, 'VALUE_LABEL' + i);
+        }
+    },
+    setFieldLabels: function (mode) {
+        var j = 0;
+        var graphLabels = [' (X1)', ' (Y1)', ' (X2)', ' (Y2)', ' (X3)', ' (Y3)', ' (X4)', ' (Y4)', ' (X5)', ' (Y5)'];
+        while (this.getFieldValue('VALUE_LABEL' + j)) {
+            if (mode === 'X') {
+                this.setFieldValue('value' + graphLabels[j], 'VALUE_LABEL' + j);
+            } else {
+                this.setFieldValue('value', 'VALUE_LABEL' + j);
+            }
+            j++;
         }
     },
     decompose: function (workspace) {
@@ -5114,14 +5137,7 @@ Blockly.Blocks.graph_output = {
                 }
             }
             var j = 0;
-            var graphLabels = [' (X1)', ' (Y1)', ' (X2)', ' (Y2)', ' (X3)', ' (Y3)', ' (X4)', ' (Y4)', ' (X5)', ' (Y5)'];
             while (this.getFieldValue('VALUE_LABEL' + j)) {
-                if (graphInitBlock.getFieldValue('YSETTING').indexOf('XY') > -1) {
-                    this.setFieldValue('value' + graphLabels[j], 'VALUE_LABEL' + j);
-                    
-                } else {
-                    this.setFieldValue('value', 'VALUE_LABEL' + j);
-                }
                 j++;
             }
             if (j % 2 === 1 && graphInitBlock.getFieldValue('YSETTING').indexOf('XY') > -1) {

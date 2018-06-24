@@ -623,7 +623,9 @@ function graphing_console() {
                 onlyInteger: true
             };
         }
+        $('#graph_x-axis_label').css('display', 'block');
         if (graph_settings_str[2] === 'X') {
+            $('#graph_x-axis_label').css('display', 'none');
             if (Number(graph_settings_str[5]) !== 0 || Number(graph_settings_str[6]) !== 0) {
                 graph_options.axisX = {
                     type: Chartist.AutoScaleAxis,
@@ -1081,14 +1083,20 @@ function graph_new_labels() {
     var graph_csv_temp = '';
     var labelsvg = '<svg width="60" height="300">';
     graph_csv_temp += '"time",';
+    var labelClass = [1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+    var labelPre = ["","","","","","","","","","","","","",""];
+    if (graph_options.graph_type === 'X') {
+        labelClass = [1,1,2,2,3,3,4,4,5,5,6,6,7,7];
+        labelPre = ["x: ","y: ","x: ","y: ","x: ","y: ","x: ","y: ","x: ","y: ","x: ","y: ","x: ","y: "];
+    }
     for (var t = 0; t < graph_labels.length; t++) {
         labelsvg += '<g id="labelgroup' + (t + 1) + '" transform="translate(0,' + (t * 30 + 25) + ')">';
         labelsvg += '<rect x="0" y = "0" width="60" height="26" rx="3" ry="3" id="label' + (t + 1) + '" ';
-        labelsvg += 'style="stroke:1px;stroke-color:blue;" class="ct-marker-' + (t + 1) + '"/><rect x="3" y = "12"';
+        labelsvg += 'style="stroke:1px;stroke-color:blue;" class="ct-marker-' + labelClass[t] + '"/><rect x="3" y="12"';
         labelsvg += 'width="54" height="11" rx="3" ry="3" id="value' + (t + 1) + 'bkg" style="fill:rgba';
         labelsvg += '(255,255,255,.7);stroke:none;"/><text id="label' + (t + 1) + 'text" x="3" ';
-        labelsvg += 'y="9" style="font-family:Arial;font-size: 9px;fill:#fff;font-weight:bold;">' + graph_labels[t];
-        labelsvg += '</text><text id="gValue' + (t + 1) + '" x="5" y="21" style="align:right;';
+        labelsvg += 'y="9" style="font-family:Arial;font-size: 9px;fill:#fff;font-weight:bold;">' + labelPre[t];
+        labelsvg += graph_labels[t] + '</text><text id="gValue' + (t + 1) + '" x="5" y="21" style="align:right;';
         labelsvg += 'font-family:Arial;font-size: 10px;fill:#000;"></text></g>';
         graph_csv_temp += '"' + graph_labels[t].replace(/"/g, '_') + '",';
     }
