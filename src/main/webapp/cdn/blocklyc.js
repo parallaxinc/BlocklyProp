@@ -624,6 +624,8 @@ function graphing_console() {
             };
         }
         $('#graph_x-axis_label').css('display', 'block');
+        graph_options.showPoint = false;
+        graph_options.showLine = true;
         if (graph_settings_str[2] === 'X') {
             $('#graph_x-axis_label').css('display', 'none');
             if (Number(graph_settings_str[5]) !== 0 || Number(graph_settings_str[6]) !== 0) {
