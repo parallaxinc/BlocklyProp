@@ -5222,17 +5222,31 @@ Blockly.Blocks.graph_settings = {
                     ["x/y series- ranged", "FIXEDXY"] //,
                             //["oscilloscope - autoscale", "AUTO OS"],
                             //["oscilloscope - ranged", "FIXEDOS"]
-                ], function (s) {
-                    if (this.sourceBlock_.getInput('RANGES')) {
-                        this.sourceBlock_.removeInput('RANGES');
-                    }
-                    if (s.indexOf('FIXED') > -1) {
-                        this.sourceBlock_.addRanges(s);
-                    }
-                }), "YSETTING");
+                ], this.sourceBlock_.setMode(s)), "YSETTING");
         this.setInputsInline(false);
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
+    },
+    setGraphMode: function (s) {
+        var mode = 'S';
+        if (s.indexOf('XY') > -1) {
+            mode = 'X';
+        }
+        if (this.getInput('RANGES')) {
+            this.removeInput('RANGES');
+        }
+        if (s.indexOf('FIXED') > -1) {
+            this.addRanges(s);
+        }
+        
+        var allBlocks = Blockly.getMainWorkspace().getAllBlocks();
+        for (var j = 0; j < allBlocks.length; j++) {
+            if (allBlocks[j].type === 'graph_output') {
+                var func = allBlocks[j].setFieldLabels;
+                func.call(allBlocks[j], mode);
+            }
+        }
+
     },
     addRanges: function (s) {
         if (s === 'FIXED') {
