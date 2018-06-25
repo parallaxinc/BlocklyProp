@@ -103,12 +103,12 @@ public interface ProjectDao {
             Integer limit, 
             Integer offset);
 
+    // Return a list of community projects
     List<ProjectRecord> getSharedProjects(
             TableSort sort, 
             TableOrder order, 
             Integer limit, 
-            Integer offset, 
-            Long idUser);
+            Integer offset);
 
     List<ProjectRecord> getSharedProjectsByUser(
             TableSort sort, 

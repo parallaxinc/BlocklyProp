@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Process the REST endpoint /projectlink
+ * Manage project link URI for a project
  * 
  * @author Michel
  */
@@ -67,8 +67,8 @@ public class ProjectLinkServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("ProjectLinkServlet - Get()");
-        
+        LOG.info("REST:/projectlink/ Get request received");
+
         // Project ID
         String idProjectString = req.getParameter("id");
         
@@ -85,7 +85,7 @@ public class ProjectLinkServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         }
         
-        LOG.info("ProjectLinkServlet - Get(" + idProject.toString() + ")");
+        LOG.info("Get project link for project {}.",idProject);
         
         // Retreive the project. Project meta data will be retruned if the project exists
         // and the project share key is known and active
@@ -93,7 +93,7 @@ public class ProjectLinkServlet extends HttpServlet {
         
         if (project == null) {
             // Project not found, or invalid share key
-            LOG.info("Unable to retrieve project");
+            LOG.info("Unable to retrieve parent project");
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         } else {
             // Add project meta data to result object
@@ -167,10 +167,16 @@ public class ProjectLinkServlet extends HttpServlet {
             case "share":
                 // Make the project sharing record active.
                 ProjectSharingRecord projectSharingRecord = projectSharingService.shareProject(idProject);
+                if (projectSharingRecord == null) {
+                    LOG.error("Unable to activate a project sharing record for project {}.", idProject);
+                    resp.getWriter().write(createFailure("no-action").toString());
+                } else {
                 jsonObject.addProperty("success", true);
                 jsonObject.addProperty("share-key", projectSharingRecord.getSharekey());
                 resp.getWriter().write(jsonObject.toString());
+                }
                 break;
+
             case "revoke":
                 projectSharingService.revokeSharing(idProject);
                 jsonObject.addProperty("success", true);

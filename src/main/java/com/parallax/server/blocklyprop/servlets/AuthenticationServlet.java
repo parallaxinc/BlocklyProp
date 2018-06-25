@@ -23,7 +23,10 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- *
+ * Authenticate a user.
+ * 
+ * NOTE: This does not appear to be used to authenticate from the UI. 
+ * 
  * @author Michel
  */
 @Singleton
@@ -67,19 +70,20 @@ public class AuthenticationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
+        LOG.info("REST:/authenticate/ Post request received");
+
         resp.setContentType("application/json");
 
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        LOG.debug("Reveived user name: {}", username);
-        
-        LOG.debug("Authenticating user");
+        LOG.info("Authenticating user '{}'", username);
         User user = authenticationService.authenticate(username, password);
 
         if (user != null) {
             SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
             if (savedRequest != null) {
+                LOG.info("Redirecting to third-part authenticator");
                 resp.sendRedirect(savedRequest.getRequestUrl());
             } else {
 
@@ -97,9 +101,12 @@ public class AuthenticationServlet extends HttpServlet {
                 userJson.addProperty("sponsoremail", user.getCoachEmailSource());
  
                 response.add("user", userJson);
+                
+                LOG.info("Authentication successful for user '{}'", username);
                 resp.getWriter().write(response.toString());
             }
         } else {
+            LOG.info("Authentication failed for user '{}'", username);
             JsonObject response = new JsonObject();
             response.addProperty("success", false);
             response.addProperty("message", "Invalid authentication");

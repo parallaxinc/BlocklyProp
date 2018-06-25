@@ -21,12 +21,13 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * REST endpoint handler for 'createproject' URI
+ * Create a new project
  * 
  * @author Michel
  */
 @Singleton
 public class ProjectCreationServlet extends HttpServlet {
+    
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(ProjectCreationServlet.class);
 
@@ -45,7 +46,8 @@ public class ProjectCreationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         
-        LOG.info("REST:POST createproject ({})",req.getParameter("project-name") );
+        LOG.info("REST:/createproject/ Post request received");
+        LOG.info("Creating project '{}'",req.getParameter("project-name") );
 
         resp.setContentType("text/json");
         JsonObject result = new JsonObject();

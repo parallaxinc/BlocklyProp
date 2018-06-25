@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.parallax.server.blocklyprop.db.dao.MotdDao;
 import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 /**
  *
  * @author developer
@@ -23,9 +27,15 @@ import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
 @Singleton
 
 public class MessageOfTheDayServlet  extends HttpServlet {
+
+    /**
+     * Handle for any logging activity
+     */
+    private final Logger LOG = LoggerFactory.getLogger(MessageOfTheDayServlet.class);
+
     
     private MotdDao motdDao;
-    
+   
     
      @Inject
     public void setMotdDao(MotdDao motdDao) {
@@ -36,15 +46,17 @@ public class MessageOfTheDayServlet  extends HttpServlet {
      * Respond to a ping request
      */
     @Override
-    protected void doGet(
-            HttpServletRequest req, 
-            HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
+            ServletException, IOException {
         
+        LOG.info("REST:/motd/ Get request received");
         
         MotdRecord record = motdDao.getMotd(1L);
-                
-        resp.getWriter().write("<html><body>" + record.getMessageHtml() + "</body></html>");
+        if (record == null) {
+            resp.getWriter().write("<html><body>No messages are available</body></html>");
+        }
+        else {
+            resp.getWriter().write("<html><body>" + record.getMessageHtml() + "</body></html>");
+        }
     }
-
-    
 }

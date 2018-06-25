@@ -38,7 +38,6 @@ public class ProjectServiceImpl implements ProjectService {
      */
     private static final Logger LOG = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
-
     @Inject
     public void setProjectDao(ProjectDao projectDao) {
         this.projectDao = projectDao;
@@ -156,6 +155,17 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    
+    /**
+     * Return a list of projects.
+     * 
+     * @param idUser
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return 
+     */
     @Override
     public List<ProjectRecord> getUserProjects(
             Long idUser, 
@@ -177,9 +187,24 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    
+    /**
+     * Obtain a list of community projects
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return 
+     */
     @Override
-    public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset) {
-        return projectDao.getSharedProjects(sort, order, limit, offset, BlocklyPropSecurityUtils.getCurrentUserId());
+    public List<ProjectRecord> getSharedProjects(
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset) {
+
+        return projectDao.getSharedProjects(sort, order, limit, offset);
     }
 
     @Override

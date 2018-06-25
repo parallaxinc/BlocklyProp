@@ -25,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,15 @@ public class RestSharedProject {
         this.projectConverter = projectConverter;
     }
 
+    /**
+     * Return a list of community projects.
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return 
+     */
     @GET
     @Path("/list")
     @Detail("Get all shared projects")
@@ -64,11 +74,12 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
         
-        LOG.info("REST: GET Sort: sort type:{}", sort);
+        LOG.info("REST:/shared/project/list/ Get request received");
 
         List<ProjectRecord> projects 
                 = projectService.getSharedProjects(sort, order, limit, offset);
         
+        // Obtain a count of the total number of community projects available
         int projectCount = projectService.countSharedProjects();
 
         JsonObject result = new JsonObject();
@@ -95,8 +106,8 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset, 
             @PathParam("id") Long idUser) {
-        
-        LOG.info("REST: /get/user/" + idUser + "/");
+
+        LOG.info("REST:/shared/project/list/user/ Get request received for user '{}'", idUser);
 
         List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
         int projectCount = projectService.countSharedProjectsByUser(idUser);
@@ -124,8 +135,8 @@ public class RestSharedProject {
             @HeaderParam("X-Authorization") String authorization, 
             @HeaderParam("X-Timestamp") Long timestamp, 
             @PathParam("id") Long idProject) {
-        
-        LOG.info("REST: /get/" + idProject.toString() + "/");
+
+        LOG.info("REST:/rest/shared/project/get/ Get request received for projecet '{}'", idProject);
         
         try {
             LOG.info("Getting project record.");
@@ -158,7 +169,7 @@ public class RestSharedProject {
             @HeaderParam("X-Timestamp") Long timestamp, 
             @PathParam("id") Long idProject) {
         
-        LOG.info("REST get project id {} for the editor", idProject);
+        LOG.info("REST:/rest/shared/project/editor/ Get request received for project '{}'", idProject);
 
         try {
             ProjectRecord project = projectService.getProject(idProject);

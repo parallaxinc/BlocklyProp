@@ -26,10 +26,10 @@ import java.util.Random;
 
 
 /**
- *
+ * DAO interface to the blocklyprop.project table.
+ * 
  * @author Michel
  *
- * TODO: add details.
  */
 @Singleton
 public class ProjectDaoImpl implements ProjectDao {
@@ -61,6 +61,9 @@ public class ProjectDaoImpl implements ProjectDao {
     // Constants to clarify the edit flag in method calls
     static final boolean EDIT_MODE_OFF = false;
     static final boolean EDIT_MODE_ON = true;
+    
+    // Constant to identify the current version of the blockly block library;
+    public static final short BLOCKLY_LIBRARY_VERSION = 1;
     
     
     @Inject
@@ -112,7 +115,6 @@ public class ProjectDaoImpl implements ProjectDao {
         }
 
         // Return the project after checking if for depricated blocks
-        LOG.info("Code block: {}.", record.getCode());
         return alterReadRecord(record);
     }
 
@@ -173,6 +175,7 @@ public class ProjectDaoImpl implements ProjectDao {
                         Tables.PROJECT.DESCRIPTION,
                         Tables.PROJECT.DESCRIPTION_HTML,
                         Tables.PROJECT.CODE,
+                        Tables.PROJECT.CODE_BLOCK_VERSION,
                         Tables.PROJECT.TYPE,
                         Tables.PROJECT.BOARD,
                         Tables.PROJECT.PRIVATE,
@@ -184,6 +187,7 @@ public class ProjectDaoImpl implements ProjectDao {
                         description,
                         descriptionHtml,
                         code,
+                        BLOCKLY_LIBRARY_VERSION,
                         type,
                         board,
                         privateProject,
@@ -284,6 +288,7 @@ public class ProjectDaoImpl implements ProjectDao {
         record.setPrivate(privateProject);
         record.setShared(sharedProject);
         record.setModified(getCurrentTimestamp());
+        record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
         record.update();
 
         return record;
@@ -325,6 +330,7 @@ public class ProjectDaoImpl implements ProjectDao {
             record.setPrivate(privateProject);
             record.setShared(sharedProject);
             record.setModified(getCurrentTimestamp());
+            record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
             record.update();
 
             return record;
@@ -349,6 +355,7 @@ public class ProjectDaoImpl implements ProjectDao {
         if (record != null) {
             // Update project record details
             record.setCode(code);
+            record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
             record.setModified(getCurrentTimestamp());
             
             // Update the record
@@ -398,7 +405,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     /**
-     * TODO: add details.
+     * Return a list of community projects constrained by the parameters
      *
      * @param sort
      * @param order
@@ -412,8 +419,7 @@ public class ProjectDaoImpl implements ProjectDao {
             TableSort sort, 
             TableOrder order, 
             Integer limit, 
-            Integer offset, 
-            Long idUser) {
+            Integer offset) {
         
         LOG.info("Retreive shared projects.");
 
@@ -421,10 +427,10 @@ public class ProjectDaoImpl implements ProjectDao {
         if (TableOrder.desc == order) {
             orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
         }
+
+        // Search for community projects
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
-        if (idUser != null) {
-            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
-        }
+        
         return create.selectFrom(Tables.PROJECT)
                 .where(conditions)
                 .orderBy(orderField).limit(limit).offset(offset)
@@ -490,9 +496,15 @@ public class ProjectDaoImpl implements ProjectDao {
         LOG.info("Count shared projects for user {}.", idUser);
 
         Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
+        
+        // Shared projects are really community projects. We should not include
+        // the logged in user's projects in the community listing. There is a
+        // separate listing available for the logged in user's private projects.
+        /*
         if (idUser != null) {
             conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
         }
+        */
         return create.fetchCount(Tables.PROJECT, conditions);
     }
 
@@ -571,6 +583,7 @@ public class ProjectDaoImpl implements ProjectDao {
             if (record.getIdUser().equals(idUser)) {
                 record.setCode(code);
                 record.setModified(cal);
+                record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
                 record.update();
                 return record;
             } else {
@@ -578,6 +591,7 @@ public class ProjectDaoImpl implements ProjectDao {
                     ProjectRecord cloned = doProjectClone(record);
                     cloned.setCode(code);
                     cloned.setModified(cal);
+                    cloned.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
                     cloned.update();
                     return cloned;
                 }
@@ -718,6 +732,8 @@ public class ProjectDaoImpl implements ProjectDao {
     // horribly wrong with the string conversions.
     //
     private ProjectRecord alterReadRecord(ProjectRecord record) {
+        
+
         String currentCode, newCode;
 
         if (record == null) {
@@ -726,7 +742,15 @@ public class ProjectDaoImpl implements ProjectDao {
         }
 
         try {
-            LOG.info("Verify project {} block characteristics", record.getId());
+            if (record.getCodeBlockVersion() == BLOCKLY_LIBRARY_VERSION) {
+                LOG.info("Bypassing project block evaluation");
+                return record;
+            }
+   
+            LOG.info("Verify project {} block version {} characteristics",
+                    record.getId(),
+                    record.getCodeBlockVersion());
+            
             currentCode = record.getCode();
 
             // Return immediately if there is no code to adjust
@@ -749,7 +773,6 @@ public class ProjectDaoImpl implements ProjectDao {
 
             // Check for any difference from the original code
             if (!currentCode.equals(newCode)) {
-                LOG.info("Updated depricated project code blocks in project {}.", record.getId());
                 record.setCode(newCode);
             }
         } catch (Exception ex) {

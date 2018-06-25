@@ -73,11 +73,13 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
                 .insertInto(Tables.PROJECT_SHARING)
                 .columns(
                         Tables.PROJECT_SHARING.ID_PROJECT, 
-                        Tables.PROJECT_SHARING.SHAREKEY
+                        Tables.PROJECT_SHARING.SHAREKEY,
+                        Tables.PROJECT_SHARING.ACTIVE
                 )
                 .values(
                         idProject, 
-                        shareKey
+                        shareKey,
+                        true
                 )
                 .returning()
                 .fetchOne();

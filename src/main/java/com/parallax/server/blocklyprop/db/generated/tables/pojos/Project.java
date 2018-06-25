@@ -25,7 +25,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = -482300325;
+	private static final long serialVersionUID = -1074694014;
 
 	private Long              id;
 	private Long              idUser;
@@ -34,6 +34,7 @@ public class Project implements Serializable {
 	private String            description;
 	private String            descriptionHtml;
 	private String            code;
+	private Short             codeBlockVersion;
 	private ProjectType       type;
 	private String            board;
 	private Boolean           private_;
@@ -52,6 +53,7 @@ public class Project implements Serializable {
 		this.description = value.description;
 		this.descriptionHtml = value.descriptionHtml;
 		this.code = value.code;
+		this.codeBlockVersion = value.codeBlockVersion;
 		this.type = value.type;
 		this.board = value.board;
 		this.private_ = value.private_;
@@ -69,6 +71,7 @@ public class Project implements Serializable {
 		String            description,
 		String            descriptionHtml,
 		String            code,
+		Short             codeBlockVersion,
 		ProjectType       type,
 		String            board,
 		Boolean           private_,
@@ -84,6 +87,7 @@ public class Project implements Serializable {
 		this.description = description;
 		this.descriptionHtml = descriptionHtml;
 		this.code = code;
+		this.codeBlockVersion = codeBlockVersion;
 		this.type = type;
 		this.board = board;
 		this.private_ = private_;
@@ -147,6 +151,14 @@ public class Project implements Serializable {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Short getCodeBlockVersion() {
+		return this.codeBlockVersion;
+	}
+
+	public void setCodeBlockVersion(Short codeBlockVersion) {
+		this.codeBlockVersion = codeBlockVersion;
 	}
 
 	public ProjectType getType() {
@@ -216,6 +228,7 @@ public class Project implements Serializable {
 		sb.append(", ").append(description);
 		sb.append(", ").append(descriptionHtml);
 		sb.append(", ").append(code);
+		sb.append(", ").append(codeBlockVersion);
 		sb.append(", ").append(type);
 		sb.append(", ").append(board);
 		sb.append(", ").append(private_);

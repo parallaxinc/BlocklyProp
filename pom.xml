@@ -98,7 +98,7 @@
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq-version}</version>
                 
-                <!-- 
+                <!--
                     Include the <execution> element to generate a new set of 
                     source files that represent the current state of the 
                     target database schema.
