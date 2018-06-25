@@ -18,3 +18,16 @@ CREATE TABLE IF NOT EXISTS blocklyprop.motd
   ENGINE=InnoDB
   AUTO_INCREMENT=0
   DEFAULT CHARSET=utf8;
+
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    9,
+    '0009-motd.sql',
+    'Implement support for database-driven banner messages'
+    );
