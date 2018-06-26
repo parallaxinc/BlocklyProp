@@ -232,9 +232,23 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.cloneProject(idProject);
     }
 
+    
+    /**
+     * Delete a project
+     * 
+     * Remove the shared project link if one exists before removing the project.
+     * 
+     * @param idProject
+     * @return 
+     */
     @Override
     public boolean deleteProject(Long idProject) {
-        projectSharingService.revokeSharing(idProject);
+        
+        LOG.info("Deleting project {}", idProject);
+        
+        // Remove the project shared key if it exists.
+        projectSharingService.deleteSharedProject(idProject);
+
         return projectDao.deleteProject(idProject);
     }
 
