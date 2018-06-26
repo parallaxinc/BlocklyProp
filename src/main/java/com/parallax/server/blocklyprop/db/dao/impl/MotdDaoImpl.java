@@ -8,11 +8,11 @@ package com.parallax.server.blocklyprop.db.dao.impl;
 import com.google.inject.Singleton;
 import com.google.inject.Inject;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.jooq.DSLContext;
 import com.parallax.server.blocklyprop.db.dao.MotdDao;
 import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
+import java.sql.Timestamp;
 
 import java.util.List;
 import org.joda.time.DateTime;
@@ -63,16 +63,42 @@ public class MotdDaoImpl implements MotdDao {
         
         MotdRecord record = null;
         
+        
+        try {
+            Timestamp enableTimestamp = new Timestamp(enableDate.getMillis());
+            Timestamp disableTimestamp = new Timestamp(disableDate.getMillis());
+        
+            LOG.info("Motd Details: Message: {}..., Start: {}, End:{}",
+                    message.substring(0,20),
+                    enableTimestamp.toString(),
+                    disableTimestamp.toString());
+
+            // Insert a record
+            record = create                    
+                    .insertInto(Tables.MOTD,
+                            Tables.MOTD.MESSAGE_TEXT,
+                            Tables.MOTD.MESSAGE_DISABLE_TIME,
+                            Tables.MOTD.MESSAGE_ENABLE_TIME)
+                    .values(message,
+                            enableTimestamp,
+                            disableTimestamp                        
+                    )
+                    .returning()
+                    .fetchOne();
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database error encountered {}", sqex.getMessage());
+            return null;
+        }
+        catch (Exception ex) {
+            LOG.error("Unexpected exception creating a project record");
+            LOG.error("Error Message: {}", ex.getMessage());
+            return null;
+        }
+        
         return record;
     }
             
-    // Return a list of Motd records
-    @Override
-    public List <MotdRecord> get() {
-        return null;
-    }
-
-
     /**
      * Retrieve a single message of the day
      * 
@@ -97,7 +123,7 @@ public class MotdDaoImpl implements MotdDao {
      * @return a list of MotdRecords or null if there are no records
      */
     @Override
-    public List <MotdRecord> getAll() {
+    public List <MotdRecord> get() {
         
         List <MotdRecord> records = create
                 .selectFrom(Tables.MOTD)

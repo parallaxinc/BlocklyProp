@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author developer
+ * @author Jim Ewald
  */
 @Singleton
 
@@ -37,7 +37,7 @@ public class MessageOfTheDayServlet  extends HttpServlet {
     private MotdDao motdDao;
    
     
-     @Inject
+    @Inject
     public void setMotdDao(MotdDao motdDao) {
         this.motdDao = motdDao;
     }
@@ -51,12 +51,12 @@ public class MessageOfTheDayServlet  extends HttpServlet {
         
         LOG.info("REST:/motd/ Get request received");
         
-        MotdRecord record = motdDao.getMotd(1L);
+        MotdRecord record = motdDao.get(1L);
         if (record == null) {
             resp.getWriter().write("<html><body>No messages are available</body></html>");
         }
         else {
-            resp.getWriter().write("<html><body>" + record.getMessageHtml() + "</body></html>");
+            resp.getWriter().write( record.getMessageHtml() );
         }
     }
 }
