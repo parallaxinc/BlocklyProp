@@ -75,7 +75,12 @@ public class ProjectSharingServiceImpl implements ProjectSharingService {
         return projectSharingDao.activateProject(projectList.get(0).getIdProject());
     }
 
-    
+    /**
+     * Revoke the shared project ID
+     * 
+     * @param idProject
+     * @return 
+     */
     @Override
     public int revokeSharing(Long idProject) {
         LOG.info("Disabling shared link for project: {}", idProject);
@@ -120,6 +125,19 @@ public class ProjectSharingServiceImpl implements ProjectSharingService {
         
         // Unable to return the shared project
         return null;
+    }
+    
+    /**
+     * Delete the shared project link record
+     * 
+     * @param idProject
+     * @return 
+     */
+    @Override
+    public boolean deleteSharedProject(Long idProject) {
+        LOG.info("Deleting project share link for project {}", idProject);
+        
+        return projectSharingDao.deleteProjectSharingRecord(idProject);
     }
 
 }
