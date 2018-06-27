@@ -624,16 +624,10 @@ function graphing_console() {
             };
         }
         $('#graph_x-axis_label').css('display', 'block');
-        $('#serial_graphing').addClass('ct-perfect-fourth');
-        $('#serial_graphing').removeClass('ct-square');
-        $('#serial_graphing').css('width', '500px');
         graph_options.showPoint = false;
         graph_options.showLine = true;
         if (graph_settings_str[2] === 'X') {
             $('#graph_x-axis_label').css('display', 'none');
-            $('#serial_graphing').removeClass('ct-perfect-fourth');
-            $('#serial_graphing').addClass('ct-square');
-            $('#serial_graphing').css('width', '430px');
             if (Number(graph_settings_str[5]) !== 0 || Number(graph_settings_str[6]) !== 0) {
                 graph_options.axisX = {
                     type: Chartist.AutoScaleAxis,
