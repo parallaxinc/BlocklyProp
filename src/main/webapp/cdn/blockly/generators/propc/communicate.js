@@ -149,13 +149,6 @@ Blockly.Blocks.console_print_multiple = {
         this.optionList_ = ['str', 'dec'];
         this.specDigits_ = false;
         this.setWarningText(null);
-        this.multDropdown = [['1', '1'],
-            ['10', '10'],
-            ['100', '100'],
-            ['1000', '1000'],
-            ['10,000', '10000'],
-            ['100,000', '100000'],
-            ['1,000,000', '1000000']];
     },
     mutationToDom: function () {
         // Create XML to represent menu options.
@@ -212,14 +205,14 @@ Blockly.Blocks.console_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown(Blockly.DROPDOWN_MULTIPLIER), 'DIV' + i);
                 this.setFieldValue(divs[i], 'DIV' + i);
             } else if (this.optionList_[i] === 'float' && this.specDigits_) {
                 this.appendValueInput('PRINT' + i)
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i)
+                        .appendField(new Blockly.FieldDropdown(Blockly.DROPDOWN_MULTIPLIER), 'DIV' + i)
                         .appendField('digits')
                         .appendField(new Blockly.FieldTextInput('', function (text) {
                             text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
@@ -344,7 +337,7 @@ Blockly.Blocks.console_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown(Blockly.DROPDOWN_MULTIPLIER), 'DIV' + i);
                 this.setFieldValue(divs[i] || '100', 'DIV' + i);
             } else if (tCheck[2] === 'float' && this.specDigits_) {
                 this.optionList_.push('float');
@@ -352,7 +345,7 @@ Blockly.Blocks.console_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown(this.multDropdown), 'DIV' + i)
+                        .appendField(new Blockly.FieldDropdown(Blockly.DROPDOWN_MULTIPLIER), 'DIV' + i)
                         .appendField('digits')
                         .appendField(new Blockly.FieldTextInput('', function (text) {
                             text = text.replace(/O/ig, '0').replace(/[^0-9]*/g, '');
@@ -1264,15 +1257,7 @@ Blockly.Blocks.serial_print_multiple = {
                         .setAlign(Blockly.ALIGN_RIGHT)
                         .setCheck(chk)
                         .appendField('float point  divide by', 'TYPE' + i)
-                        .appendField(new Blockly.FieldDropdown([
-                            ['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']
-                        ]), 'DIV' + i);
+                        .appendField(new Blockly.FieldDropdown(Blockly.DROPDOWN_MULTIPLIER), 'DIV' + i);
                 this.setFieldValue(divs[i], 'DIV' + i);
             } else {
                 this.appendValueInput('PRINT' + i)
@@ -1500,15 +1485,7 @@ Blockly.Blocks.serial_scan_multiple = {
             if (type === 'float') {
                 this.appendDummyInput('OPTION' + i)
                         .appendField('store float point \u2715')
-                        .appendField(new Blockly.FieldDropdown([
-                            ['1', '1'],
-                            ['10', '10'],
-                            ['100', '100'],
-                            ['1000', '1000'],
-                            ['10,000', '10000'],
-                            ['100,000', '100000'],
-                            ['1,000,000', '1000000']
-                        ]), 'MULT' + i)
+                        .appendField(new Blockly.FieldDropdown(Blockly.DROPDOWN_MULTIPLIER), 'MULT' + i)
                         //.appendField(new Blockly.FieldTextInput('100'), 'MULT' + i)
                         .appendField('in', 'TYPE' + i)
                         .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'CPU' + i);
@@ -5936,13 +5913,6 @@ Blockly.Blocks.string_sprint_multiple = {
         this.optionList_ = ['str', 'dec'];
         this.specDigits_ = false;
         this.setWarningText(null);
-        this.multDropdown = [['1', '1'],
-            ['10', '10'],
-            ['100', '100'],
-            ['1000', '1000'],
-            ['10,000', '10000'],
-            ['100,000', '100000'],
-            ['1,000,000', '1000000']];
     },
     mutationToDom: Blockly.Blocks['console_print_multiple'].mutationToDom,
     domToMutation: Blockly.Blocks['console_print_multiple'].domToMutation,
