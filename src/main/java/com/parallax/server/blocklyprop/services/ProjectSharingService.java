@@ -27,4 +27,7 @@ public interface ProjectSharingService {
     // Get a project project record only if the project id and shared key are equal
     ProjectRecord getSharedProject(Long idProject, String shareKey);
 
+    // Delete a project sharing record
+    public boolean deleteSharedProject(Long idProject);
+    
 }

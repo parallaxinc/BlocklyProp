@@ -162,4 +162,20 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
         return project;
     }
 
+    /**
+     * Remove any project sharing records related to the specified project
+     * 
+     * @param idProject
+     * @return 
+     */
+    @Override
+    public boolean deleteProjectSharingRecord(Long idProject) {
+        LOG.info("Delete sharing record for project {}.", idProject);
+        
+        return create.deleteFrom(Tables.PROJECT_SHARING)
+                .where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject))
+                .execute() > 0;
+
+    }
+
 }
