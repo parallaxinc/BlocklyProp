@@ -199,6 +199,14 @@ Blockly.Msg.TEXT_APPEND_VARIABLE = Blockly.Msg.VARIABLES_DEFAULT_NAME;
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TITLE_ITEM = Blockly.Msg.VARIABLES_DEFAULT_NAME;
 Blockly.Msg.PROCEDURES_DEFRETURN_COMMENT = Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT;
 
+Blockly.DROPDOWN_MULTIPLIER = [['1', '1'],
+        ['10', '10'],
+        ['100', '100'],
+        ['1000', '1000'],
+        ['10,000', '10000'],
+        ['100,000', '100000'],
+        ['1,000,000', '1000000']];
+
 
 //--------------ActivityBoard Help URLs -----------------------
 Blockly.MSG_CONTROL_HELPURL = "http://learn.parallax.com/ab-blocks/control";
