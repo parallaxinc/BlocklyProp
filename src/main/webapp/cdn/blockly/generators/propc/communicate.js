@@ -4126,7 +4126,7 @@ Blockly.propc.wx_scan_multiple = function () {
     if (boardType === 'heb-wx') {
         var runInit = Blockly.propc.wx_init_adv();  // Runs the propc generator from the init block, since it's not included in the badge WX board type.
     }
-    if (allBlocks.toString().indexOf('WX initialize') === -1 && boardType !== 'heb-wx')
+    if (allBlocks.toString().indexOf('WX initialize') > -1 || boardType === 'heb-wx')
     {
         var handle = Blockly.propc.variableDB_.getName(this.getFieldValue('HANDLE'), Blockly.Variables.NAME_TYPE);
         var conn = this.getFieldValue('CONNECTION');
