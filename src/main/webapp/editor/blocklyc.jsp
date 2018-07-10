@@ -355,7 +355,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><span class="keyed-lang-string" data-key="editor_client_title"></span></h4>
+                        <h4 class="modal-title"><span class="keyed-lang-string" key="editor_client_title"></span></h4></td><td>
                     </div>
 
                     <div class="modal-body">
@@ -363,89 +363,93 @@
                             
                             <!-- MacOS instructions -->
                             <div class="client-instructions MacOS">
-                                <h4><span class="keyed-lang-string" data-key="client_macOS_run_title"></span></h4>
+                                <h4><span class="keyed-lang-string" key="client_macOS_run_title"></span></h4>
                                 <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                     <div id="mac1">
-                                        <p><span class="keyed-lang-string" data-key="client_macOS_run_instructions1"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/mac_os1.png" alt="Instructions to launch the client"/></div>
+                                        <p><span class="keyed-lang-string" key="client_macOS_run_instructions1"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/mac_os1.png"/></div>
                                     </div>
                                     <div id="mac2" class="hidden">
-                                        <p><span class="keyed-lang-string" data-key="client_macOS_run_instructions2"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/mac_os2.png" alt="Instructions to launch the client"/></div>
+                                        <p><span class="keyed-lang-string" key="client_macOS_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/mac_os2.png"/></div>
                                     </div>
                                     <div id="mac3" class="hidden">
-                                        <p><span class="keyed-lang-string" data-key="client_macOS_run_instructions3"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/mac_os3.png" alt="Instructions to launch the client"/></div>
+                                        <p><span class="keyed-lang-string" key="client_macOS_run_instructions3"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/mac_os3.png"/></div>
                                     </div>
                                     <div id="mac4" class="hidden">
-                                        <p><span class="keyed-lang-string" data-key="client_run_instructions2"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/usbok.png" alt="Safe to plug in USB and Propeller hardware"/></div>
+                                        <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
                                     </div>
                                 </div>
                                 <div style="padding-top:10px;">
-                                    <button id="mac1-btn" class="btn btn-sm btn-primary" onclick="showStep('mac', 1, 4);"><span class="keyed-lang-string" data-key="client_run_step1"></span></button>
-                                    <button id="mac2-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 2, 4);"><span class="keyed-lang-string" data-key="client_run_step2"></span></button>
-                                    <button id="mac3-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 3, 4);"><span class="keyed-lang-string" data-key="client_run_step3"></span></button>
-                                    <button id="mac4-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 4, 4);"><span class="keyed-lang-string" data-key="client_run_step4"></span></button>
+                                    <button id="mac1-btn" class="btn btn-sm btn-primary" onclick="showStep('mac', 1, 4);"><span class="keyed-lang-string" key="client_run_step1"></span></button>
+                                    <button id="mac2-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 2, 4);"><span class="keyed-lang-string" key="client_run_step2"></span></button>
+                                    <button id="mac3-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 3, 4);"><span class="keyed-lang-string" key="client_run_step3"></span></button>
+                                    <button id="mac4-btn" class="btn btn-sm btn-default" onclick="showStep('mac', 4, 4);"><span class="keyed-lang-string" key="client_run_step4"></span></button>
                                 </div>
                             </div>
 
                             <!-- Windows instructions -->
                             <div class="client-instructions Windows">
-                                <h4><span class="keyed-lang-string" data-key="client_windows_run_title"></span></h4>
+                                <h4><span class="keyed-lang-string" key="client_windows_run_title"></span></h4>
                                 <div style="background:#f5f5f5; border-radius:6px; height:250px; padding:6px;">
                                     <div id="win1">
-                                        <p><span class="keyed-lang-string" data-key="client_windows_run_instructions1"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/windows1.png" alt="Instructions to launch the client"/></div>
+                                        <p><span class="keyed-lang-string" key="client_windows_run_instructions1"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/windows1.png"/></div>
                                     </div>
                                     <div id="win2" class="hidden">
-                                        <p><span class="keyed-lang-string" data-key="client_windows_run_instructions2"></span></p>
-                                        <p><span class="keyed-lang-string" data-key="client_windows_run_instructions3"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/windows2.png" alt="Instructions to launch the client"/></div>
+                                        <p><span class="keyed-lang-string" key="client_windows_run_instructions2"></span></p>
+                                        <p><span class="keyed-lang-string" key="client_windows_run_instructions3"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/windows2.png"/></div>
                                     </div>
                                     <div id="win3" class="hidden">
-                                        <p><span class="keyed-lang-string" data-key="client_run_instructions2"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/usbok.png" alt="Safe to plug in USB and Propeller hardware"/></div>
+                                        <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
                                     </div>
                                 </div>
                                 <div style="padding-top:10px;">
-                                    <button id="win1-btn" class="btn btn-sm btn-primary" onclick="showStep('win', 1, 3);"><span class="keyed-lang-string" data-key="client_run_step1"></span></button>
-                                    <button id="win2-btn" class="btn btn-sm btn-default" onclick="showStep('win', 2, 3);"><span class="keyed-lang-string" data-key="client_run_step2"></span></button>
-                                    <button id="win3-btn" class="btn btn-sm btn-default" onclick="showStep('win', 3, 3);"><span class="keyed-lang-string" data-key="client_run_step3"></span></button>
+                                    <button id="win1-btn" class="btn btn-sm btn-primary" onclick="showStep('win', 1, 3);"><span class="keyed-lang-string" key="client_run_step1"></span></button>
+                                    <button id="win2-btn" class="btn btn-sm btn-default" onclick="showStep('win', 2, 3);"><span class="keyed-lang-string" key="client_run_step2"></span></button>
+                                    <button id="win3-btn" class="btn btn-sm btn-default" onclick="showStep('win', 3, 3);"><span class="keyed-lang-string" key="client_run_step3"></span></button>
                                 </div>
                             </div>
 
                             <!-- Chrome OS instructions -->
                             <div class="client-instructions ChromeOS">
-                                <h4><span class="keyed-lang-string" data-key="client_windows_run_title"></span></h4>
+                                <h4><span class="keyed-lang-string" key="client_windows_run_title"></span></h4>
                                 <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                     <div id="chr1">
-                                        <p><span class="keyed-lang-string" data-key="client_chrome_run_instructions1"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/chrome1.png" alt="Instructions to launch the client"/></div>
+                                        <p><span class="keyed-lang-string" key="client_chrome_run_instructions1"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/chrome1.png"/></div>
                                     </div>
                                     <div id="chr2" class="hidden">
-                                        <p><span class="keyed-lang-string" data-key="client_chrome_run_instructions2"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/chrome2.png" alt="Instructions to launch the client"/></div>
+                                        <p><span class="keyed-lang-string" key="client_chrome_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/chrome2.png"/></div>
                                     </div>
                                     <div id="chr3" class="hidden">
-                                        <p><span class="keyed-lang-string" data-key="client_run_instructions2"></span></p>
-                                        <div align="center"><img src="//:0" data-src="images/client-run/usbok.png" alt="Safe to plug in USB and Propeller hardware"/></div>
+                                        <p><span class="keyed-lang-string" key="client_run_instructions2"></span></p>
+                                        <div align="center"><img src="" data-src="images/client-run/usbok.png"/></div>
                                     </div>
                                 </div>
                                 <div style="padding-top:10px;">
-                                    <button id="chr1-btn" class="btn btn-sm btn-primary" onclick="showStep('chr', 1, 3);"><span class="keyed-lang-string" data-key="client_run_step1"></span></button>
-                                    <button id="chr2-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 2, 3);"><span class="keyed-lang-string" data-key="client_run_step2"></span></button>
-                                    <button id="chr3-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 3, 3);"><span class="keyed-lang-string" data-key="client_run_step3"></span></button>
+                                    <button id="chr1-btn" class="btn btn-sm btn-primary" onclick="showStep('chr', 1, 3);"><span class="keyed-lang-string" key="client_run_step1"></span></button>
+                                    <button id="chr2-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 2, 3);"><span class="keyed-lang-string" key="client_run_step2"></span></button>
+                                    <button id="chr3-btn" class="btn btn-sm btn-default" onclick="showStep('chr', 3, 3);"><span class="keyed-lang-string" key="client_run_step3"></span></button>
                                 </div>
                             </div>
                             <hr />
                             
-                            <div id="client-instructions-copy"></div>
+                            <script>
+                            var client_downloads_html = '<!-- MacOS client -->\n<div class="client-instructions MacOS">\n<h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>\n</div>\n<div class="client MacOS">\n<img src="//:0" data-src="images/os-icons/mac_os.png"/>\n<a href="#" class="client-mac-link">\n<span class="keyed-lang-string" key="clientdownload_client_macos_installer"></span></a>\n</div>\n\n<!-- Windows clients -->\n<div class="client-instructions Windows">\n<h4><span class="keyed-lang-string" key="clientdownload_download_installer"></span></h4>\n</div>\n<div class="client Windows">\n<img src="//:0" data-src="images/os-icons/windows.png"/>\n<a href="#" class="client-win32-link">\n<span class="keyed-lang-string" key="clientdownload_client_windows32_installer"></span></a>\n</div>\n<div class="client Windows">\n<img src="//:0" data-src="images/os-icons/windows.png"/>\n<a href="#" class="client-win64-link">\n</div>\n\n<!-- ChromeOS client -->\n<div class="client-instructions ChromeOS">\n<h4><span class="keyed-lang-string" key="clientdownload_download_launcher"></span></h4>\n</div>\n<div class="client ChromeOS">\n<img src="//:0" data-src="images/os-icons/chrome_os.png"/>\n<a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">\n<span class="keyed-lang-string" key="clientdownload_client_chromeos_installer"></span></a>\n</div>';
+
+			    document.write(client_downloads_html);
+			    </script>
                         </div>
                         <hr />
                         <div class="dropup">
                             <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                <span class="keyed-lang-string" data-key="clientdownload_os_menu"></span>
+                                <span class="keyed-lang-string" key="clientdownload_os_menu"></span>
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li><a href="#" onmouseup="showOS('Windows');">Windows</a></li>
@@ -466,66 +470,34 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><span class="keyed-lang-string" data-key="editor_client_title"></span></h4></td><td>
+                        <h4 class="modal-title"><span class="keyed-lang-string" key="editor_client_title"></span></h4></td><td>
                     </div>
 
                     <div class="modal-body">
                         <!-- BPC/BPL version warning -->
                         <div id="client-warning-span" class="alert alert-warning bpc-version hidden">
                             <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7,8 L8,8 8,11 8,11 7,11 Z" style="stroke-width:1px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="7.5" r="6" style="stroke-width:1.3px;stroke:#8a6d3b;fill:none;"/><circle cx="7.5" cy="5" r="1.25" style="stroke-width:0;fill:#8a6d3b;"/></svg>
-                            <span class="keyed-lang-string" data-key="client_update_warning"></span>
+                            <span class="keyed-lang-string" key="client_update_warning"></span>
                         </div>
                         <div id="client-unknown-span" class="alert alert-danger bpc-version hidden">
                             <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg>
-                            <span class="keyed-lang-string" data-key="client_unknown"></span>
+                            <span class="keyed-lang-string" key="client_unknown"></span>
                         </div>
                         <div id="client-danger-span" class="alert alert-danger bpc-version hidden">
                             <svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg>
-                            <span class="keyed-lang-string" data-key="client_update_danger"></span>
+                            <span class="keyed-lang-string" key="client_update_danger"></span>
                         </div>
                         <hr />
-                        
-                        <div class="clients" id="client-instructions-original">
-                            <!-- MacOS client -->
-                            <div class="client-instructions MacOS">
-                                <h4><span class="keyed-lang-string" data-key="clientdownload_download_installer"></span></h4>
-                            </div>
-                            <div class="client MacOS">
-                                <img src="//:0" data-src="images/os-icons/mac_os.png" alt="Mac OS icon"/>
-                                <a href="#" class="client-mac-link">
-                                    <span class="keyed-lang-string" data-key="clientdownload_client_macos_installer"></span></a>
-                            </div>
-
-                            <!-- Windows clients -->
-                            <div class="client-instructions Windows">
-                                <h4><span class="keyed-lang-string" data-key="clientdownload_download_installer"></span></h4>
-                            </div>
-                            <div class="client Windows">
-                                <img src="//:0" data-src="images/os-icons/windows.png" alt="Windows OS icon"/>
-                                <a href="#" class="client-win32-link">
-                                    <span class="keyed-lang-string" data-key="clientdownload_client_windows32_installer"></span></a>
-                            </div>
-                            <div class="client Windows">
-                                <img src="//:0" data-src="images/os-icons/windows.png" alt="Windows OS icon"/>
-                                <a href="#" class="client-win64-link">
-                                    <span class="keyed-lang-string" data-key="clientdownload_client_windows64_installer"></span></a>
-                            </div>
-
-                            <!-- ChromeOS client -->
-                            <div class="client-instructions ChromeOS">
-                                <h4><span class="keyed-lang-string" data-key="clientdownload_download_launcher"></span></h4>
-                            </div>
-                            <div class="client ChromeOS">
-                                <img src="//:0" data-src="images/os-icons/chrome_os.png" alt="Chrome OS icon"/>
-                                <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb" target="_blank">
-                                    <span class="keyed-lang-string" data-key="clientdownload_client_chromeos_installer"></span></a>
-                            </div>
+                        <div class="clients">
+			    <script>
+				document.write(client_downloads_html);
+			    </script>
                         </div>
 
                         <hr />
                         <div class="dropup">
                             <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                <span class="keyed-lang-string" data-key="clientdownload_os_menu"></span>
+                                <span class="keyed-lang-string" key="clientdownload_os_menu"></span>
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li><a href="#" onmouseup="showOS('Windows');">Windows</a></li>
@@ -537,7 +509,7 @@
                     </div> 
                     
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_button_close"></span></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" key="editor_button_close"></span></button>
                     </div>
 
                 </div><!-- /.modal-content -->
