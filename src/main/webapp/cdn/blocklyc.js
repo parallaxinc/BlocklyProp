@@ -332,53 +332,54 @@ function cloudCompile(text, action, successHandler) {
         else if (propcCode.indexOf("SERIAL_GRAPHING USED") > -1)
             terminalNeeded = 'graph';
 
-	if (isOffline) {
-		localCompile(action, {'single.c': propcCode}, 'single.c', function(data) {
-		    if (data.error) {
-		        // console.log(data);
-		        // Get message as a string, or blank if undefined
-		        alert("BlocklyProp was unable to compile your project:\n" + data['message'] 
-		            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-		    } else {
-		        var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
-		        $("#compile-console").val($("#compile-console").val() + data['message'] + loadWaitMsg);
-		        if (data.success && data.binary) {
-		            successHandler(data, terminalNeeded);
-		        }
-		        
-		        // Scoll automatically to the bottom after new data is added
-		        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
-		    }
-		});
-	} else {
-        $.ajax({
-            'method': 'POST',
-            'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
-            'data': {"code": propcCode}
-        }).done(function (data) {
-            if (data.error || typeof data.error === "undefined") {
-                // console.log(data);
-                // Get message as a string, or blank if undefined
-                var message = (typeof data['message'] === "string") ? data['message'] : (typeof data.error !== "undefined") ? data['message'].toString() : "";
-                alert("BlocklyProp was unable to compile your project:\n" + message
+        if (isOffline) {
+            localCompile(action, {'single.c': propcCode}, 'single.c', function(data) {
+                if (data.error) {
+                    // console.log(data);
+                    // Get message as a string, or blank if undefined
+                    alert("BlocklyProp was unable to compile your project:\n" + data['message'] 
                         + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-            } else {
-                var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
-                $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
-                if (data.success) {
-                    successHandler(data, terminalNeeded);
+                } else {
+                    var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
+                    $("#compile-console").val($("#compile-console").val() + data['message'] + loadWaitMsg);
+                    if (data.success && data.binary) {
+                        successHandler(data, terminalNeeded);
+                    }
+                    
+                    // Scoll automatically to the bottom after new data is added
+                    document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
                 }
+            });
+        } else {
+            $.ajax({
+                'method': 'POST',
+                'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
+                'data': {"code": propcCode}
+            }).done(function (data) {
+                if (data.error || typeof data.error === "undefined") {
+                    // console.log(data);
+                    // Get message as a string, or blank if undefined
+                    var message = (typeof data['message'] === "string") ? data['message'] : (typeof data.error !== "undefined") ? data['message'].toString() : "";
+                    alert("BlocklyProp was unable to compile your project:\n" + message
+                            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+                } else {
+                    var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
+                    $("#compile-console").val($("#compile-console").val() + data['compiler-output'] + data['compiler-error'] + loadWaitMsg);
+                    if (data.success) {
+                        successHandler(data, terminalNeeded);
+                    }
 
-                // Scoll automatically to the bottom after new data is added
-                document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
-            }
-        }).fail(function (data) {
-            // console.log(data);
-            var message = (typeof data === "string") ? data : data.toString();
-            alert("BlocklyProp was unable to compile your project:\n----------\n" + message
-                    + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
-        });
-	}
+                    // Scoll automatically to the bottom after new data is added
+                    document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+                }
+            }).fail(function (data) {
+                // console.log(data);
+                var message = (typeof data === "string") ? data : data.toString();
+                alert("BlocklyProp was unable to compile your project:\n----------\n" + message
+                        + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+            });
+        }
+    }
 }
 
 function compile() {
