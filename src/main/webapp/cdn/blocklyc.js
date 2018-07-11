@@ -824,29 +824,6 @@ var check_com_ports = function () {
     }
 };
 
-// set communication port list
-//   leave data unspecified when searching
-var set_port_list = function (data) {
-    data = (data ? data : 'searching');
-    var selected_port = $("#comPort").val();
-    $("#comPort").empty();
-    if (typeof (data) === 'object' && data.length) {
-        data.forEach(function (port) {
-            $("#comPort").append($('<option>', {
-                text: port
-            }));
-        });
-        ports_available = true;
-    } else {
-        $("#comPort").append($('<option>', {
-            text: (data === 'searching') ? 'Searching...' : 'No devices found'
-        }));
-        ports_available = false;
-    }
-    ;
-    select_com_port(selected_port);
-};
-
 var select_com_port = function (com_port) {
     if (com_port !== null) {
         $("#comPort").val(com_port);

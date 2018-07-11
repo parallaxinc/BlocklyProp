@@ -441,3 +441,26 @@ function lostWSConnection() {
     //Create new ws socket timeout (find_client)
     check_ws_socket_timeout = setTimeout(find_client, 3000);
 };
+
+// set communication port list
+//   leave data unspecified when searching
+var set_port_list = function (data) {
+    data = (data ? data : 'searching');
+    var selected_port = $("#comPort").val();
+    $("#comPort").empty();
+    if (typeof (data) === 'object' && data.length) {
+        data.forEach(function (port) {
+            $("#comPort").append($('<option>', {
+                text: port
+            }));
+        });
+        ports_available = true;
+    } else {
+        $("#comPort").append($('<option>', {
+            text: (data === 'searching') ? 'Searching...' : 'No devices found'
+        }));
+        ports_available = false;
+    }
+    ;
+    select_com_port(selected_port);
+};
