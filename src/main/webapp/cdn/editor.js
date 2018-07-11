@@ -466,7 +466,7 @@ var checkLeave = function () {
     }
 };
 
-setInterval(function () {
+var pingInterval = setInterval(function () {
     $.get(baseUrl + 'ping');
 }, 60000);
 
