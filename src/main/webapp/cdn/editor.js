@@ -89,7 +89,7 @@ $(document).ready(function () {
         }
 
     } else {
-        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, setupWorkspace(data) )
+        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function(data) { setupWorkspace(data) })
             .fail(function () {
             // Failed to load project - this probably means that it belongs to another user and is not shared.
             utils.showMessage('Unable to Access Project', 'The BlocklyProp Editor was unable to access the project you requested.  If you are sure the project exists, you may need to contact the project\'s owner and ask them to share their project before you will be able to view it.', function () {
