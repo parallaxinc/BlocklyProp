@@ -1071,3 +1071,24 @@ $(document).ready(function () {
         }
     }
 });
+
+
+// If online, return the full help URL, if offline, open a modal
+
+/**
+ * Load the block's help page in a new window.
+ * @private
+ */
+Blockly.BlockSvg.prototype.showHelp_ = function () {
+    var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
+    if (!isOffline && url) {
+        window.open(url);
+    } else if (url) {
+        // TODO: open modal/iframe with help content
+	var u = url.replace(/https:\/\/learn.parallax.com\//g, '');
+	u = 'cdn/help/' + u.replace(/\//g, '-') + '.html';
+	$('#help-content').html('<iframe src="' + u + '" style="height:600px; border:none;" />');
+	$('#help-dialog').modal('show');
+    }
+};
+
