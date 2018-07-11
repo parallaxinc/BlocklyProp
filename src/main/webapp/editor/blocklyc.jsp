@@ -164,21 +164,22 @@
                                             <span class="dropdown"><button class="btn btn-sm btn-default dropdown-toggle" id="options-menu" type="button" data-toggle="dropdown">&#9776; <span class="caret"></span></button>
                                                 <ul class="dropdown-menu pull-right btn-sm">
                                                     <li class="auth-true" data-displayas="list-item"><a id="edit-project-details" href="#" onclick="editProjectDetails()"><span class="keyed-lang-string" data-key="editor_edit-details"></span></a></li>
-                                                    <li class="auth-true" data-displayas="list-item" id="save-as-menu-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" data-key="editor_save-as"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;"  class="auth-true" data-displayas="list-item"/>
-                                                    <li class="auth-true" data-displayas="list-item"><a href="projectcreate.jsp?lang=PROPC" class="url-prefix"><span class="keyed-lang-string" data-key="menu_newproject_title"></span></a></li>
-                                                    <li class="auth-true" data-displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_my_projects"></span></a></li>
-                                                    <li><a href="projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_community_projects"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;" />
+                                                    <li class="auth-true online-only" data-displayas="list-item" id="save-as-menu-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" data-key="editor_save-as"></span></a></li>
+                                                    <hr style="line-height:5px; margin:5px;"  class="auth-true online-only" data-displayas="list-item"/>
+                                                    <li class="auth-true online-only" data-displayas="list-item"><a href="projectcreate.jsp?lang=PROPC" class="url-prefix"><span class="keyed-lang-string" data-key="menu_newproject_title"></span></a></li>
+                                                    <li class="auth-true offline-only hidden" data-displayas="list-item"><a href="projectcreate.html" class="url-prefix"><span class="keyed-lang-string" data-key="menu_newproject_title"></span></a></li>
+                                                    <li class="auth-true online-only" data-displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_my_projects"></span></a></li>
+                                                    <li class="online-only"><a href="projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_community_projects"></span></a></li>
+                                                    <hr class="online-only" style="line-height:5px; margin:5px;"/>
                                                     <li><a href="public/help" target="_blank" class="url-prefix"><span class="keyed-lang-string" data-key="menu_help_reference"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;" />
+                                                    <hr style="line-height:5px; margin:5px;"/>
                                                     <li><a id="download-side" href="#" onclick="downloadPropC()"><span class="keyed-lang-string" data-key="menu_download_simpleide"></span></a></li>
                                                     <li><a id="download-project" href="#"><span class="keyed-lang-string" data-key="editor_download"></span></a></li>
                                                     <li class="auth-true" data-displayas="list-item"><a id="upload-project" href="#"><span class="keyed-lang-string" data-key="editor_upload"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;" class="auth-true" data-displayas="list-item"/>
                                                     <li class="auth-true" data-displayas="list-item"><a href="#" onclick="configure_client()"><span class="keyed-lang-string" data-key="editor_run_configure"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;" class="auth-true" data-displayas="list-item"/>
-                                                    <li class="auth-true" data-displayas="list-item"><a href="logout" class="url-prefix"><span class="keyed-lang-string" data-key="logout"></span></a></li>
+                                                    <hr style="line-height:5px; margin:5px;" class="auth-true online-only" data-displayas="list-item"/>
+                                                    <li class="auth-true online-only" data-displayas="list-item"><a href="logout" class="url-prefix"><span class="keyed-lang-string" data-key="logout"></span></a></li>
                                                 </ul>
                                             </span>
                                         </div>
