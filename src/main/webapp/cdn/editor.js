@@ -65,6 +65,7 @@ $(document).ready(function () {
 
         // hide save interaction elements
         $('.online-only').addClass('hidden');
+	$('.offline-only').removeClass('hidden');
 
         $("#save_as_dialog_title_text").html('Choose a project name and board type');
         $("#save_as_dialog_button").html('Continue');
@@ -98,7 +99,11 @@ $(document).ready(function () {
     }
     
     $('#save-project').on('click', function () {
-        saveProject();
+	if (isOffline) {
+            downloadCode();
+        } else {
+            saveProject();  
+        }
     });
     $('#save-project-as').on('click', function () {
         saveAsDialog();
