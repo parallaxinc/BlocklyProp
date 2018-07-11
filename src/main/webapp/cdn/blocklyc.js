@@ -332,6 +332,25 @@ function cloudCompile(text, action, successHandler) {
         else if (propcCode.indexOf("SERIAL_GRAPHING USED") > -1)
             terminalNeeded = 'graph';
 
+	if (isOffline) {
+		localCompile(action, {'single.c': propcCode}, 'single.c', function(data) {
+		    if (data.error) {
+		        // console.log(data);
+		        // Get message as a string, or blank if undefined
+		        alert("BlocklyProp was unable to compile your project:\n" + data['message'] 
+		            + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
+		    } else {
+		        var loadWaitMsg = (action !== 'compile') ? '\nDownload...' : '';
+		        $("#compile-console").val($("#compile-console").val() + data['message'] + loadWaitMsg);
+		        if (data.success && data.binary) {
+		            successHandler(data, terminalNeeded);
+		        }
+		        
+		        // Scoll automatically to the bottom after new data is added
+		        document.getElementById("compile-console").scrollTop = document.getElementById("compile-console").scrollHeight;
+		    }
+		});
+	} else {
         $.ajax({
             'method': 'POST',
             'url': baseUrl + 'rest/compile/c/' + action + '?id=' + idProject,
@@ -359,12 +378,9 @@ function cloudCompile(text, action, successHandler) {
             alert("BlocklyProp was unable to compile your project:\n----------\n" + message
                     + "\nIt may help to \"Force Refresh\" by pressing Control-Shift-R (Windows/Linux) or Shift-Command-R (Mac)");
         });
-    }
+	}
 }
 
-/**
- *
- */
 function compile() {
     cloudCompile('Compile', 'compile', function (data, terminalNeeded) {});
 }
