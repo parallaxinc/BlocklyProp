@@ -785,6 +785,7 @@ page_text_label['editor_replace'] = "Replace";
 page_text_label['editor_newproject_c'] = "Propeller C";
 page_text_label['editor_newproject_spin'] = "Scribbler Robot";
 page_text_label['editor_newproject_title'] = "New project";
+page_text_label['editor_offline_title'] = "Offline Expermiental Version";
 page_text_label['editor_project'] = "Project";
 page_text_label['editor_projects_title'] = "Projects";
 page_text_label['editor_run_compile'] = "Compile";
@@ -1071,3 +1072,24 @@ $(document).ready(function () {
         }
     }
 });
+
+
+// If online, return the full help URL, if offline, open a modal
+
+/**
+ * Load the block's help page in a new window.
+ * @private
+ */
+Blockly.BlockSvg.prototype.showHelp_ = function () {
+    var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
+    if (!isOffline && url) {
+        window.open(url);
+    } else if (url) {
+        // TODO: open modal/iframe with help content
+	var u = url.replace(/https:\/\/learn.parallax.com\//g, '');
+	u = 'cdn/help/' + u.replace(/\//g, '-') + '.html';
+	$('#help-content').html('<iframe src="' + u + '" style="height:600px; border:none;" />');
+	$('#help-dialog').modal('show');
+    }
+};
+
