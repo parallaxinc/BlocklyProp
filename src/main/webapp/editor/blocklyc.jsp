@@ -350,15 +350,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="save-as-board-type"><span class="keyed-lang-string" data-key="project_create_board_type"></span></label>
-                            <select class="form-control" id="save-as-board-type" name="save-as-board-type" onchange="checkBoardType();">
+                            <select class="form-control" id="save-as-board-type" name="save-as-board-type" onchange="checkBoardType($('#saveAsDialogSender').html());">
                                 <option disabled="" selected=""><span class="keyed-lang-string" data-key="project_create_board_type_select"></span></option>
                             </select>
+                        <span id="saveAsDialogSender" style="display:none;"></span>
                         </div>
                         <div id="save-as-verify-boardtype" class="alert alert-warning" style="display: none;"><svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg> <span class="keyed-lang-string" data-key="editor_saveas_boardtype_warning"></span></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_button_close"></span></button>
-                        <button type="button" class="btn btn-primary" onclick="saveProjectAs();" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_save-as"></span></button>
+                        <button type="button" class="btn btn-primary" onclick="saveProjectAs($('#saveAsDialogSender').html());" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_save-as"></span></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
