@@ -7,6 +7,7 @@
 var baseUrl = $("meta[name=base]").attr("content");
 var cdnUrl = $("meta[name=cdn]").attr("content");   // TODO: this is used in the  blocklypropclient.js file, but that file is loaded first, so when JS is condensed, make sure this global is decalred at the top of the file
 var user_authenticated = ($("meta[name=user-auth]").attr("content") === 'true') ? true : false;
+var isOffline = ($("meta[name=isOffline]").attr("content") === 'true') ? true : false;
 
 var projectData = null;
 var ready = false;
@@ -54,12 +55,41 @@ $(document).ready(function () {
         projectlink = JSON.parse(projectRaw);
         console.log(projectlink);
         loadProjectData(projectlink);
-    } else if (!idProject) {
+    } else if (!idProject && !isOffline) {
         window.location = baseUrl;
+
+    } else if (!idProject && isOffline) {
+        // TODO: Use the ping endpoint to see if we are offline.
+        isOffline = true;
+        clearInterval(pingInterval);
+
+        // hide save interaction elements
+        $('.online-only').addClass('hidden');
+
+        $("#save_as_dialog_title_text").html('Choose a project name and board type');
+        $("#save_as_dialog_button").html('Continue');
+        $(".save-as-close").addClass('hidden');
+
+        $('#save-as-project-name').val('MyProject');
+        $("#saveAsDialogSender").html('offline');
+        $("#save-as-board-type").empty();
+        for (key in profile) {
+            $("#save-as-board-type").append($('<option />').val(key).text(profile[key].description));
+        }
+
+        if (getURLParameter('openFile') === "true" && isOffline) {
+            $('#upload-dialog').modal('show');
+        } else if (window.localStorage.getItem('localProject')) {
+            setupWorkspace(JSON.parse(window.localStorage.getItem('localProject')));
+            //window.localStorage.removeItem('localProject');
+        } else {
+                // Open modal
+                $('#save-as-type-dialog').modal('show');
+        }
+
     } else {
-        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, function (data) {
-            loadProjectData(data);
-        }).fail(function () {
+        $.get(baseUrl + 'rest/shared/project/editor/' + idProject, setupWorkspace(data) )
+            .fail(function () {
             // Failed to load project - this probably means that it belongs to another user and is not shared.
             utils.showMessage('Unable to Access Project', 'The BlocklyProp Editor was unable to access the project you requested.  If you are sure the project exists, you may need to contact the project\'s owner and ask them to share their project before you will be able to view it.', function () {
                 window.location = baseUrl;
@@ -67,35 +97,6 @@ $(document).ready(function () {
         });
     }
     
-    function loadProjectData(data) {
-        console.log(data);
-        projectData = data;
-        showInfo(data);
-        projectLoaded = true;
-        if (ready) {
-            setProfile(data['board']);
-            initToolbox(data['board']);
-        }
-        if (projectData['board'] === 's3') {
-            $('#prop-btn-ram').addClass('hidden');
-            $('#prop-btn-graph').addClass('hidden');
-            document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
-        } else {
-            $('#prop-btn-ram').removeClass('hidden');
-            $('#prop-btn-graph').removeClass('hidden');
-            document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
-        }
-
-        if (data && data['yours'] === false) {
-            $('#edit-project-details').html(page_text_label['editor_view-details']);
-        } else {
-            $('#edit-project-details').html(page_text_label['editor_edit-details']);
-        }
-
-        timestampSaveTime(20, true);
-        setInterval(checkLastSavedTime, 60000);
-    };
-
     $('#save-project').on('click', function () {
         saveProject();
     });
@@ -112,6 +113,35 @@ $(document).ready(function () {
         timestampSaveTime(5, false);
     });
 });
+
+var setupWorkspace = function (data) {
+    console.log(data);
+    projectData = data;
+    showInfo(data);
+    projectLoaded = true;
+    if (ready) {
+        setProfile(data['board']);
+        initToolbox(data['board'], []);
+    }
+    if (projectData['board'] === 's3') {
+        $('#prop-btn-ram').addClass('hidden');
+        $('#prop-btn-graph').addClass('hidden');
+        document.getElementById('client-available').innerHTML = document.getElementById('client-available-short').innerHTML;
+    } else {
+        $('#prop-btn-ram').removeClass('hidden');
+        $('#prop-btn-graph').removeClass('hidden');
+        document.getElementById('client-available').innerHTML = document.getElementById('client-available-long').innerHTML;
+    }
+
+    if (data && data['yours'] === false) {
+        $('#edit-project-details').html(page_text_label['editor_view-details'])
+    } else {
+        $('#edit-project-details').html(page_text_label['editor_edit-details']);
+    }
+
+    timestampSaveTime(20, true);
+    setInterval(checkLastSavedTime, 60000);
+}
 
 var timestampSaveTime = function (mins, resetTimer) {
     // Mark the time when the project was opened, add 20 minutes to it.
@@ -308,50 +338,84 @@ var saveAsDialog = function () {
     }
 };
 
-var checkBoardType = function () {
-    var current_type = projectData['board'];
-    var save_as_type = $('#save-as-board-type').val();
-    // save-as-verify-boardtype
-    if (current_type === save_as_type || save_as_type === 'propcfile') {
-        document.getElementById('save-as-verify-boardtype').style.display = 'none';
-    } else {
-        document.getElementById('save-as-verify-boardtype').style.display = 'block';
+var checkBoardType = function (requestor) {
+    if (requestor !== 'offline') {
+        var current_type = projectData['board'];
+        var save_as_type = $('#save-as-board-type').val();
+        // save-as-verify-boardtype
+        if (current_type === save_as_type || save_as_type === 'propcfile') {
+            document.getElementById('save-as-verify-boardtype').style.display = 'none';
+        } else {
+            document.getElementById('save-as-verify-boardtype').style.display = 'block';
+        }
     }
 };
 
-var saveProjectAs = function () {
+var saveProjectAs = function (requestor) {
     // Retrieve the field values
     var p_type = $('#save-as-board-type').val();
     var p_name = $('#save-as-project-name').val();
-
+    
     //get the project's XML code
     var code = '';
-    if (projectData['board'] === 'propcfile') {
-        code = propcAsBlocksXml();
 
-        Blockly.mainWorkspace.clear();
-        loadToolbox(code);
+    if (requestor !== 'offline') {
+        if (projectData && projectData['board'] === 'propcfile') {
+            code = propcAsBlocksXml();
+
+            Blockly.mainWorkspace.clear();
+            loadToolbox(code);
+        } else {
+            code = getXml();
+        }
+
+        // Save the new project using the board-as endpoint
+        projectData['board'] = p_type;
+        projectData['code'] = code;
+        projectData['name'] = p_name;
+
+        $.post(baseUrl + 'rest/project/board-as', projectData, function (data) {
+            var previousOwner = projectData['yours'];
+            projectData = data;
+            projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
+
+            // Reloading project with new id
+            window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
+        });
+        timestampSaveTime(20, true);
     } else {
-        code = getXml();
-    }
-
-    // Save the new project using the board-as endpoint
-    projectData['board'] = p_type;
-    projectData['code'] = code;
-    projectData['name'] = p_name;
-    $.post(baseUrl + 'rest/project/board-as', projectData, function (data) {
-        var previousOwner = projectData['yours'];
-        projectData = data;
-        projectData['code'] = code; // Save code in projectdata to be able to verify if code has changed upon leave
-
-        // Reloading project with new id
-        window.location.href = baseUrl + 'projecteditor?id=' + data['id'];
-    });
-    timestampSaveTime(20, true);
+        var tt = new Date();
+	var pd = {
+        'board': p_type,
+        'code': "<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>",
+        'created': tt,
+        'description': "",
+        'description-html': "",
+        'id': 0,
+        'modified': tt,
+        'name': p_name,
+        'private': true,
+        'shared': false,
+        'type': "PROPC",
+        'user': "offline",
+        'yours': true,
+	}
+	setupWorkspace(pd);
+        // TODO: reload the toolbox
+    }  
 };
 
 var editProjectDetails = function () {
-    window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
+    if(isOffline) {
+        // Save the current code
+        projectData['modified'] = new Date();
+        projectData['code'] = getXml();
+
+        window.localStorage.setItem('localProject', JSON.stringify(projectData));
+        window.location = 'projectcreate.html?edit=true';
+    } else {
+        window.location.href = baseUrl + 'my/projects.jsp#' + idProject;
+    }
 };
 
 var blocklyReady = function () {
@@ -529,6 +593,37 @@ function uploadHandler(files) {
                     document.getElementById("selectfile-verify-boardtype").style.display = "none";
                 }
             }
+            if (uploadedXML !== '') {
+                uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
+            };
+
+    	    if (getURLParameter('openFile') === "true" && isOffline) {
+                var titleIndex = xmlString.indexOf('transform="translate(-225,-53)">Title: ');
+                var projectTitle = xmlString.substring((titleIndex + 39), xmlString.indexOf('</text>', (titleIndex + 40)));
+		        // TODO: set up board type, get other info...
+		        // name, html-description, description, boardtype
+                // set into local storage and reload window.
+
+	            var tt = new Date();
+		        pd = {
+            	    'board': uploadBoardType,
+            	    'code': uploadedXML,
+            	    'created': tt,
+            	    'description': '',
+            	    'description-html': '',
+            	    'id': 0,
+            	    'modified': tt,
+            	    'name': projectTitle,
+                    'private': true,
+            	    'shared': false,
+            	    'type': "PROPC",
+            	    'user': "offline",
+            	    'yours': true,
+		        }
+
+                window.localStorage.setItem('localProject', JSON.stringify(pd));
+		        window.location = 'blocklyc.html';
+	        }
         }
 
         if (xmlValid === true) {
@@ -543,12 +638,7 @@ function uploadHandler(files) {
             uploadedXML = '';
         }
     };
-
     UploadReader.readAsText(files[0]);
-
-    if (uploadedXML !== '') {
-        uploadedXML = '<xml xmlns="http://www.w3.org/1999/xhtml">' + uploadedXML + '</xml>';
-    }
 }
 
 function clearUploadInfo() {
