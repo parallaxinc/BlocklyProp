@@ -9,7 +9,7 @@ var projectTypes = {
 var simplemde = null;
 var pd = {};
 
-var isOffline = getURLParameter('offline');
+var isOffline = ($("meta[name=isOffline]").attr("content") === 'true') ? true : false;
 
 $(document).ready(function () {
     /*  Activate the tooltips      */
@@ -43,13 +43,13 @@ $(document).ready(function () {
 
     var isEdit = getURLParameter('edit');
 
-    if (isEdit === 'true' && isOffline === 'true') {
+    if (isEdit === 'true' && isOffline) {
         pd = JSON.parse(window.localStorage.getItem('localProject'));
         $('#project-name').val(pd['name']);
         simplemde.value(pd['description']);
         $("#project-description-html").html(pd['description-html']);
         $('#board-type').val(pd.board);
-    } else if (isOffline === 'true') {
+    } else if (isOffline) {
         pd = {
                 'board': '',
                 'code': '<xml xmlns=\"http://www.w3.org/1999/xhtml\"></xml>',
