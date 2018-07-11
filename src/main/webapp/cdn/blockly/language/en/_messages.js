@@ -785,6 +785,7 @@ page_text_label['editor_replace'] = "Replace";
 page_text_label['editor_newproject_c'] = "Propeller C";
 page_text_label['editor_newproject_spin'] = "Scribbler Robot";
 page_text_label['editor_newproject_title'] = "New project";
+page_text_label['editor_offline_title'] = "Offline Expermiental Version";
 page_text_label['editor_project'] = "Project";
 page_text_label['editor_projects_title'] = "Projects";
 page_text_label['editor_run_compile'] = "Compile";
