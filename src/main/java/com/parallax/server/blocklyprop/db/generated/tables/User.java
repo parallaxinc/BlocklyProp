@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-	private static final long serialVersionUID = -239731896;
+	private static final long serialVersionUID = -690325203;
 
 	/**
 	 * The reference instance of <code>blocklyprop.user</code>
@@ -62,7 +62,7 @@ public class User extends TableImpl<UserRecord> {
 	/**
 	 * The column <code>blocklyprop.user.screenname</code>.
 	 */
-	public final TableField<UserRecord, String> SCREENNAME = createField("screenname", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
+	public final TableField<UserRecord, String> SCREENNAME = createField("screenname", org.jooq.impl.SQLDataType.VARCHAR.length(250), this, "");
 
 	/**
 	 * Create a <code>blocklyprop.user</code> table reference
