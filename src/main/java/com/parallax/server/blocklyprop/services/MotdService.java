@@ -5,10 +5,19 @@
  */
 package com.parallax.server.blocklyprop.services;
 
+import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
+import java.util.List;
+
+
 /**
- *
- * @author developer
+ * Define Message of the Day interfaces
+ * 
+ * @author Jim E
+ * 
  */
 public interface MotdService {
+
+    // Return the most recent active message
+    MotdRecord getFirstActiveMessage();
     
 }

@@ -13,13 +13,11 @@ import com.cuubez.visualizer.annotation.M;
 import com.cuubez.visualizer.annotation.ParameterDetail;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import com.google.inject.Inject;
-// import com.parallax.server.blocklyprop.TableOrder;
-// import com.parallax.server.blocklyprop.TableSort;
-// import com.parallax.server.blocklyprop.converter.ProjectConverter;
-// import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
+import com.parallax.server.blocklyprop.converter.MotdConverter;
 import com.parallax.server.blocklyprop.services.MotdService;
 import java.util.List;
 import javax.ws.rs.FormParam;
@@ -53,9 +51,6 @@ public class RestMotd {
     
     // Connector to project services object
     private MotdService motdService;
-    
-    // Connector to project converter object
-    // private ProjectConverter projectConverter;
 
     /**
      * Connect to the project service object
@@ -66,16 +61,40 @@ public class RestMotd {
         this.motdService = motdService;
     }
 
-    /**
-     * Connect to the project converter object
-     * @param projectConverter 
-     */
-//    @Inject
-//    public void setProjectConverter(ProjectConverter projectConverter) {
-//        this.projectConverter = projectConverter;
-//    }
 
+    // Get the latest active message of the day
+    @GET
+    @Path("/first")
+    @Detail("Get the latest active message of the day")
+    @Name("FirstMotd")
+    @Produces("appllication/json")
+    public Response get() {
+        
+        LOG.info("REST:/rest/motd/first/ Get request received");
 
+        JsonObject result = new JsonObject();
+        
+        try {
+            MotdConverter motdConverter = new MotdConverter();
+
+            LOG.info("Requesting first motd message");
+            MotdRecord record = motdService.getFirstActiveMessage();
+            if (record == null) {
+                LOG.info("Unable to retreive first motd message");
+            }else {
+                result = motdConverter.toJson(record);
+            }
+        }
+   
+        catch(Exception ex) {
+            LOG.warn("Unable to process REST request.");
+            LOG.warn("Error is {}", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+
+        return Response.ok(result.toString()).build();
+    }
+/*    
     // Get a list of messages
     @GET
     @Path("/list")
@@ -132,5 +151,5 @@ public class RestMotd {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     
-    
+ */   
 }

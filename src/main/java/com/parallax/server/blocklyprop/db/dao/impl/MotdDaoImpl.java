@@ -9,13 +9,13 @@ import com.google.inject.Singleton;
 import com.google.inject.Inject;
 
 import org.jooq.DSLContext;
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.joda.time.DateTime;
 import com.parallax.server.blocklyprop.db.dao.MotdDao;
 import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.MotdRecord;
-import java.sql.Timestamp;
-
-import java.util.List;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,19 +32,19 @@ public class MotdDaoImpl implements MotdDao {
     /**
      * Logging facility
      */
-    private static final Logger LOG = LoggerFactory.getLogger(MotdDao.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MotdDaoImpl.class);
 
-        /**
+    /**
      * Database connection context
      */
     private DSLContext create;
-
     
     @Inject
     public void setDSLContext(DSLContext dsl) {
         this.create = dsl;
     }
 
+    
     /**
      * Create a new message of the day
      * 
@@ -98,7 +98,29 @@ public class MotdDaoImpl implements MotdDao {
         
         return record;
     }
-            
+
+    @Override
+    public MotdRecord getFirst() {
+
+        MotdRecord record = null;
+
+        try {
+            LOG.info("Getting first active");
+        
+            record = create
+                .selectFrom(Tables.MOTD)
+                .where(Tables.MOTD.ENABLED.isTrue().and(Tables.MOTD.IS_DELETED.isFalse()))
+                .orderBy(Tables.MOTD.MESSAGE_ENABLE_TIME.desc())
+                .fetchOne();
+        }
+        catch (NullPointerException ex) {
+            LOG.info("Null pointer exception on GetFirstMotd");
+            LOG.info("Message: {}", ex.getMessage());
+        }
+        return record;
+    }
+    
+    
     /**
      * Retrieve a single message of the day
      * 
@@ -109,11 +131,26 @@ public class MotdDaoImpl implements MotdDao {
     @Override
     public MotdRecord get(Long idMotd) {
         
-        MotdRecord record = create
+        LOG.info("Getting Motd record {}", idMotd);
+        
+        MotdRecord record = null;
+        
+        if (idMotd == 0L) {
+            // Get the most recent, active message
+            record = create
+                .selectFrom(Tables.MOTD)
+                .where(Tables.MOTD.ENABLED.isTrue().and(Tables.MOTD.IS_DELETED.isFalse()))
+                .orderBy(Tables.MOTD.MESSAGE_ENABLE_TIME.desc())
+                .fetchOne();
+        } else
+        {
+            record = create
                 .selectFrom(Tables.MOTD)
                 .where(Tables.MOTD.ID.equal(idMotd))
                 .fetchOne();
-
+        }
+        
+        LOG.info("Returning a motd record.");
         return record;
     }
     

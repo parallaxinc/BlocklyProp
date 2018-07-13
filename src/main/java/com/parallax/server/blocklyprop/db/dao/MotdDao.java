@@ -42,7 +42,8 @@ public interface  MotdDao {
      * @return a single MotdRecord or null if record is not found
      */
     MotdRecord get(Long idMotd);
-
+    
+    MotdRecord getFirst();
 
     
     /**

@@ -12,7 +12,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.pojos.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
-import com.parallax.server.blocklyprop.services.ProjectService;
+// import com.parallax.server.blocklyprop.services.ProjectService;
 import com.parallax.server.blocklyprop.services.ProjectSharingService;
 import com.parallax.server.blocklyprop.services.UserService;
 import com.parallax.server.blocklyprop.utils.DateConversion;
@@ -36,7 +36,7 @@ public class ProjectConverter {
 
     private ProjectDao projectDao;
     private UserService userService;
-    private ProjectService projectService;
+//    private ProjectService projectService;
     private ProjectSharingService projectSharingService;
     
     // Internal flag to enable/disable parent project details
@@ -53,11 +53,12 @@ public class ProjectConverter {
         this.userService = userService;
     }
 
+    /*
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
     }
-
+*/
     @Inject
     public void setProjectSharingService(ProjectSharingService projectSharingService) {
         this.projectSharingService = projectSharingService;
