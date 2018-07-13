@@ -15,3 +15,15 @@
  */
 
 ALTER TABLE blocklyprop.project ADD code_block_version SMALLINT DEFAULT 0 NOT NULL AFTER code;
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    11,
+    '0011-project-code-block-version',
+    'Add field to support project code block versioning'
+    );

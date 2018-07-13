@@ -13,3 +13,15 @@ CREATE TABLE IF NOT EXISTS blocklyprop.project_sharing (
   INDEX project_sharing_sharekey_index (sharekey)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8;
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    2,
+    '0002-add-share-key.sql',
+    'Add project sharing support'
+    );

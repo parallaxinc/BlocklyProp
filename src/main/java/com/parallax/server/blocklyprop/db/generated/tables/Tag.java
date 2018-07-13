@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tag extends TableImpl<TagRecord> {
 
-	private static final long serialVersionUID = -845065072;
+	private static final long serialVersionUID = -605465137;
 
 	/**
 	 * The reference instance of <code>blocklyprop.tag</code>
@@ -57,7 +57,7 @@ public class Tag extends TableImpl<TagRecord> {
 	/**
 	 * The column <code>blocklyprop.tag.name</code>.
 	 */
-	public final TableField<TagRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
+	public final TableField<TagRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
 
 	/**
 	 * Create a <code>blocklyprop.tag</code> table reference
