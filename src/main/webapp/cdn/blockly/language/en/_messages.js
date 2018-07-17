@@ -308,6 +308,7 @@ Blockly.MSG_WAITCNT_TOOLTIP = "pause until: waits until the system clounter reac
 Blockly.MSG_REGISTER_SET_TOOLTIP = "cog set register: sets the value of the specified cog register.";
 Blockly.MSG_REGISTER_GET_TOOLTIP = "cog get register: retrievs the value of the specified cog register.";
 Blockly.MSG_CUSTOM_CODE_TOOLTIP = "user code: must be properly written Propeller C code.  Places code input into specificed location.";
+Blockly.MSG_CUSTOM_CODE_MULTIPLE_TOOLTIP = "User defined code: Set label, color, code, block type, and inputs.\nAdd correctly formatted Propeller C code to the includes,\nglobals, setups, main, and functions sections.\n Use \"@1, @2, @3, @4, or @5\" to insert values from inputs 1, 2, 3, 4, or 5 into your custom C code.";
 Blockly.MSG_VARIABLES_SET_TOOLTIP = "set variable: name and attach initial value block.";
 Blockly.MSG_VARIABLES_GET_TOOLTIP = "use variable: choose set variables from dropdown.";
 Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP = "define function: group blocks to re-use ending with return; name group.";
@@ -785,7 +786,6 @@ page_text_label['editor_replace'] = "Replace";
 page_text_label['editor_newproject_c'] = "Propeller C";
 page_text_label['editor_newproject_spin'] = "Scribbler Robot";
 page_text_label['editor_newproject_title'] = "New project";
-page_text_label['editor_offline_title'] = "Offline Expermiental Version";
 page_text_label['editor_project'] = "Project";
 page_text_label['editor_projects_title'] = "Projects";
 page_text_label['editor_run_compile'] = "Compile";
@@ -1072,24 +1072,3 @@ $(document).ready(function () {
         }
     }
 });
-
-
-// If online, return the full help URL, if offline, open a modal
-
-/**
- * Load the block's help page in a new window.
- * @private
- */
-Blockly.BlockSvg.prototype.showHelp_ = function () {
-    var url = goog.isFunction(this.helpUrl) ? this.helpUrl() : this.helpUrl;
-    if (!isOffline && url) {
-        window.open(url);
-    } else if (url) {
-        // TODO: open modal/iframe with help content
-	var u = url.replace(/https:\/\/learn.parallax.com\//g, '');
-	u = 'cdn/help/' + u.replace(/\//g, '-') + '.html';
-	$('#help-content').html('<iframe src="' + u + '" style="height:600px; border:none;" />');
-	$('#help-dialog').modal('show');
-    }
-};
-
