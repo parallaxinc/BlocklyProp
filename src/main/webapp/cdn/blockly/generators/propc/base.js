@@ -866,7 +866,8 @@ Blockly.Blocks.custom_code = {
     helpUrl: Blockly.MSG_SYSTEM_HELPURL,
     init: function () {
         this.setTooltip(Blockly.MSG_CUSTOM_CODE_TOOLTIP);
-        this.setColour(colorPalette.getColor('system'));
+        this.setColour('#FF8800');
+        this.setWarningText('WARNING: This block has been deprecated.\nReplace with a "User defined code" block from the Control menu.');
         this.appendDummyInput()
                 .appendField("user code")
                 .appendField(new Blockly.FieldTextInput(''), 'CODE')
