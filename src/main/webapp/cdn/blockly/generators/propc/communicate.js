@@ -1375,12 +1375,14 @@ Blockly.Blocks.serial_scan_multiple = {
         this.setWarningText(null);
         this.ser_pins = [];
         this.serPins();
+        this.scanAfter = '';
     },
     mutationToDom: function () {
         // Create XML to represent menu options.
         var container = document.createElement('mutation');
         container.setAttribute('pinmenu', JSON.stringify(this.ser_pins));
         container.setAttribute('options', JSON.stringify(this.optionList_));
+        container.setAttribute('scanafter', this.scanAfter);
         if (this.getInput('SERPIN')) {
             container.setAttribute('serpin', this.getFieldValue('SER_PIN'));
         }
@@ -1389,6 +1391,12 @@ Blockly.Blocks.serial_scan_multiple = {
     domToMutation: function (container) {
         // Parse XML to restore the menu options.
         var value = JSON.parse(container.getAttribute('options'));
+        var sa = container.getAttribute('scanafter');
+        if (sa && sa.indexOf('After')) {
+            this.scanAfter = sa;
+        } else {
+            this.scanAfter = '';
+        }
         this.optionList_ = value;
         this.updateShape_();
         this.ser_pins = JSON.parse(container.getAttribute('pinmenu')) || [['0,0', '0,0']];
@@ -1425,10 +1433,14 @@ Blockly.Blocks.serial_scan_multiple = {
             connection.connect(optionBlock.previousConnection);
             connection = optionBlock.nextConnection;
         }
+        if (this.type === 'string_scan_multiple' && this.scanAfter && this.scanAfter.indexOf('After') > -1) {
+            containerBlock.setFieldValue(this.scanAfter, 'SCAN_START');
+        }
         return containerBlock;
     },
     compose: function (containerBlock) {
         // Reconfigure this block based on the mutator dialog's components.
+        this.scanAfter = containerBlock.getFieldValue('SCAN_START');
         var optionBlock = containerBlock.getInputTargetBlock('STACK');
         // Count number of inputs.
         this.optionList_.length = 0;
@@ -1471,6 +1483,9 @@ Blockly.Blocks.serial_scan_multiple = {
             this.removeInput('OPTION' + i);
             i++;
         }
+        //if (this.getInput('SCAN_AFTER')) {
+            this.removeInput('SCAN_AFTER');
+        //}
         // Rebuild block.
         for (var i = 0; i < this.optionList_.length; i++) {
             var type = this.optionList_[i];
@@ -1495,6 +1510,15 @@ Blockly.Blocks.serial_scan_multiple = {
                         .appendField(label, 'TYPE' + i)
                         .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'CPU' + i);
             }
+        }
+        if (this.scanAfter === 'AfterStr') {
+            this.appendValueInput('SCAN_AFTER')
+                    .appendField('start after text');
+                    //.setCheck('String');
+        } else if (this.scanAfter === 'AfterPos') {
+            this.appendValueInput('SCAN_AFTER')
+                    .appendField('start from position');
+                    //.setCheck('Number');
         }
     },
     onchange: function () {
@@ -5761,7 +5785,6 @@ Blockly.Blocks.i2c_mode = {
     }
 };
 
-
 Blockly.propc.i2c_mode = function () {
     return '';
 };
@@ -5842,8 +5865,14 @@ Blockly.Blocks.string_scan_container = {
     init: function () {
         this.setColour(colorPalette.getColor('math'));
         this.appendDummyInput()
-                .appendField('string');
+                .appendField('scan string for');
         this.appendStatementInput('STACK');
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldDropdown([
+                    ["from beginning", ""],
+                    ["after text", "AfterStr"]
+                    // ["starting at position", "AfterPos"]
+                ]), "SCAN_START");
         this.contextMenu = false;
     }
 };
@@ -5856,7 +5885,12 @@ Blockly.Blocks.string_scan_float = Blockly.Blocks.console_print_float;
 Blockly.Blocks.string_scan_char = Blockly.Blocks.console_print_char;
 
 Blockly.propc.string_scan_multiple = function () {
-    var code = 'sscan(' + this.getFieldValue('HANDLE') + ', "';
+    var str_from = Blockly.propc.valueToCode(this, 'SCAN_AFTER', Blockly.propc.ORDER_NONE) || '';
+    if (this.scanAfter && this.scanAfter.length > 3 && str_from) {
+        str_from = str_from + ', ';
+    }
+    var code = 'sscan' + (str_from !== '' ? this.scanAfter : '');
+    code += '(' + this.getFieldValue('HANDLE') + ', ' + str_from + '"';
     var varList = '';
     var code_add = '';
     var i = 0;

@@ -910,7 +910,7 @@ Blockly.Blocks.string_var_length = {
         this.setPreviousStatement(true, "Block");
         this.setNextStatement(true, null);
         this.appendDummyInput()
-                .appendField('String variable set length (bytes) of');
+                .appendField('String variable set size of');
         this.appendDummyInput('VARZ')
                 .appendField('variable')
                 .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR_NAMEZ')
@@ -938,7 +938,8 @@ Blockly.Blocks.string_var_length = {
                         .appendField('variable')
                         .appendField(new Blockly.FieldVariable(Blockly.LANG_VARIABLES_GET_ITEM), 'VAR_NAME' + i.toString(10))
                         .appendField('to')
-                        .appendField(new Blockly.FieldTextInput("64", Blockly.FieldTextInput.numberValidator), "VAR_LEN" + i.toString(10));
+                        .appendField(new Blockly.FieldTextInput("64", Blockly.FieldTextInput.numberValidator), "VAR_LEN" + i.toString(10))
+                        .appendField('bytes');
             }
         }
     },
@@ -2374,14 +2375,9 @@ Blockly.propc.constant_value = function () {
 
 
 Blockly.Blocks.custom_code_multiple = {
-    helpUrl: Blockly.MSG_AWX_HELPURL,
+    helpUrl: Blockly.MSG_CONTROL_HELPURL,
     init: function () {
-        this.setTooltip('User defined code: Set label, color, code, block type, and inputs.\n' +
-                'Add correctly formatted Propeller C code to the includes,\n' +
-                'globals, setups, main, and functions sections.\n' +
-                'Use "@1, @2, @3, @4, or @5" to insert values from inputs 1, 2, 3, 4, or 5 into your custom C code.\n' +
-                'Use "\\n" to insert line breaks in the code');
-        this.setTooltip(Blockly.MSG_AWX_SCAN_MULTIPLE_TOOLTIP);
+        this.setTooltip(Blockly.MSG_CUSTOM_CODE_MULTIPLE_TOOLTIP);
         this.setColour(colorPalette.getColor('programming'));
         this.appendDummyInput()
                 .appendField(new Blockly.FieldCheckbox('FALSE', function (blockEdit) {
@@ -2402,16 +2398,16 @@ Blockly.Blocks.custom_code_multiple = {
                 ]).setColumns(3), 'COLOR');
         this.appendDummyInput('INCL')
                 .appendField('includes code')
-                .appendField(new Blockly.FieldTextInput(''), 'INCLUDES');
+                .appendField(new Blockly.FieldCode(''), 'INCLUDES');
         this.appendDummyInput('GLOB')
                 .appendField('globals code')
-                .appendField(new Blockly.FieldTextInput(''), 'GLOBALS');
+                .appendField(new Blockly.FieldCode(''), 'GLOBALS');
         this.appendDummyInput('SETS')
                 .appendField('setups code')
-                .appendField(new Blockly.FieldTextInput(''), 'SETUPS');
+                .appendField(new Blockly.FieldCode(''), 'SETUPS');
         this.appendDummyInput('MAIN')
                 .appendField('main code')
-                .appendField(new Blockly.FieldTextInput(''), 'MAIN');
+                .appendField(new Blockly.FieldCode(''), 'MAIN');
         this.appendDummyInput('OUTS')
                 .appendField('main code is')
                 .appendField(new Blockly.FieldDropdown([
@@ -2435,7 +2431,7 @@ Blockly.Blocks.custom_code_multiple = {
                 }), 'TYPE');
         this.appendDummyInput('FUNC')
                 .appendField('functions code')
-                .appendField(new Blockly.FieldTextInput(''), 'FUNCTIONS');
+                .appendField(new Blockly.FieldCode(''), 'FUNCTIONS');
         this.appendDummyInput('ARGS')
                 .appendField(new Blockly.FieldDropdown([
                     ['no inputs', '0'],
@@ -2466,11 +2462,9 @@ Blockly.Blocks.custom_code_multiple = {
         //this.hideInputs('FALSE');
         var args = this.getFieldValue('ARG_COUNT') || '0';
         container.setAttribute('args', args);
-        container.setAttribute('a1', this.getFieldValue('EDIT_ARG1'));
-        container.setAttribute('a2', this.getFieldValue('EDIT_ARG2'));
-        container.setAttribute('a3', this.getFieldValue('EDIT_ARG3'));
-        container.setAttribute('a4', this.getFieldValue('EDIT_ARG4'));
-        container.setAttribute('a5', this.getFieldValue('EDIT_ARG5'));
+        for (var tk = 1; tk < 6; tk++) {
+            container.setAttribute('a' + tk.toString(10), this.getFieldValue('EDIT_ARG' + tk.toString(10)));
+        }
         container.setAttribute('color', this.getFieldValue('COLOR'));
         container.setAttribute('type', this.getFieldValue('TYPE'));
         return container;
@@ -2479,16 +2473,10 @@ Blockly.Blocks.custom_code_multiple = {
         var args = xmlElement.getAttribute('args');
         this.setupInputs(args);
         this.getField('EDIT').setValue('FALSE');
-        if (this.getField('EDIT_ARG1'))
-            this.setFieldValue(xmlElement.getAttribute('a1'), 'EDIT_ARG1');
-        if (this.getField('EDIT_ARG2'))
-            this.setFieldValue(xmlElement.getAttribute('a2'), 'EDIT_ARG2');
-        if (this.getField('EDIT_ARG3'))
-            this.setFieldValue(xmlElement.getAttribute('a3'), 'EDIT_ARG3');
-        if (this.getField('EDIT_ARG4'))
-            this.setFieldValue(xmlElement.getAttribute('a4'), 'EDIT_ARG4');
-        if (this.getField('EDIT_ARG5'))
-            this.setFieldValue(xmlElement.getAttribute('a5'), 'EDIT_ARG5');
+        for (var tk = 1; tk < 6; tk++) {
+            if (this.getField('EDIT_ARG' + tk.toString(10)))
+                this.setFieldValue(xmlElement.getAttribute('a' + tk.toString(10)), 'EDIT_ARG' + tk.toString(10));
+        }
         this.setFieldValue(xmlElement.getAttribute('color'), 'COLOR');
         var outType = xmlElement.getAttribute('type');
         if (outType === 'INL') {
@@ -2524,17 +2512,12 @@ Blockly.Blocks.custom_code_multiple = {
         //this.render();
     },
     hideInputs: function (hideState) {
+        var fieldNameList_ = ['SET_LABEL', 'SET_COLOR', 'INCL', 'GLOB', 'SETS', 'MAIN', 'OUTS', 'FUNC', 'ARGS'];
         if (hideState === true || hideState === 'true' || hideState === 'TRUE') {
             this.setColour('#909090');
-            this.getInput('SET_LABEL').setVisible(true);
-            this.getInput('SET_COLOR').setVisible(true);
-            this.getInput('INCL').setVisible(true);
-            this.getInput('GLOB').setVisible(true);
-            this.getInput('SETS').setVisible(true);
-            this.getInput('MAIN').setVisible(true);
-            this.getInput('OUTS').setVisible(true);
-            this.getInput('FUNC').setVisible(true);
-            this.getInput('ARGS').setVisible(true);
+            for (var tk = 0; tk < fieldNameList_.length; tk++) {
+                this.getInput(fieldNameList_[tk]).setVisible(true);
+            }
             for (var i = 1; i <= 5; i++) {
                 if (this.getInput('ARG' + i.toString(10))) {
                     this.getField('LABEL_ARG' + i.toString(10)).setVisible(true);
@@ -2547,15 +2530,9 @@ Blockly.Blocks.custom_code_multiple = {
         } else {
             //this.removeSelect();
             this.setColour(this.getFieldValue('COLOR'));
-            this.getInput('SET_LABEL').setVisible(false);
-            this.getInput('SET_COLOR').setVisible(false);
-            this.getInput('INCL').setVisible(false);
-            this.getInput('GLOB').setVisible(false);
-            this.getInput('SETS').setVisible(false);
-            this.getInput('MAIN').setVisible(false);
-            this.getInput('OUTS').setVisible(false);
-            this.getInput('FUNC').setVisible(false);
-            this.getInput('ARGS').setVisible(false);
+            for (var tk = 0; tk < fieldNameList_.length; tk++) {
+                this.getInput(fieldNameList_[tk]).setVisible(false);
+            }
             for (var i = 1; i <= 5; i++) {
                 if (this.getInput('ARG' + i.toString(10))) {
                     var currentLabel = this.getFieldValue('LABEL_ARG' + i.toString(10));
@@ -2570,41 +2547,14 @@ Blockly.Blocks.custom_code_multiple = {
 
 Blockly.propc.custom_code_multiple = function () {
     var in_arg = [];
-    in_arg.push(Blockly.propc.valueToCode(this, 'ARG1', Blockly.propc.ORDER_ATOMIC) || '');
-    in_arg.push(Blockly.propc.valueToCode(this, 'ARG2', Blockly.propc.ORDER_ATOMIC) || '');
-    in_arg.push(Blockly.propc.valueToCode(this, 'ARG3', Blockly.propc.ORDER_ATOMIC) || '');
-    in_arg.push(Blockly.propc.valueToCode(this, 'ARG4', Blockly.propc.ORDER_ATOMIC) || '');
-    in_arg.push(Blockly.propc.valueToCode(this, 'ARG5', Blockly.propc.ORDER_ATOMIC) || '');
-    var incl = (this.getFieldValue("INCLUDES") || '')
-            .replace(/\@1/g, in_arg[0])
-            .replace(/\@2/g, in_arg[1])
-            .replace(/\@3/g, in_arg[2])
-            .replace(/\@4/g, in_arg[3])
-            .replace(/\@5/g, in_arg[4]);
-    var glob = (this.getFieldValue("GLOBALS") || '')
-            .replace(/\@1/g, in_arg[0])
-            .replace(/\@2/g, in_arg[1])
-            .replace(/\@3/g, in_arg[2])
-            .replace(/\@4/g, in_arg[3])
-            .replace(/\@5/g, in_arg[4]);
-    var sets = (this.getFieldValue("SETUPS") || '')
-            .replace(/\@1/g, in_arg[0])
-            .replace(/\@2/g, in_arg[1])
-            .replace(/\@3/g, in_arg[2])
-            .replace(/\@4/g, in_arg[3])
-            .replace(/\@5/g, in_arg[4]);
-    var main = (this.getFieldValue("MAIN") || '')
-            .replace(/\@1/g, in_arg[0])
-            .replace(/\@2/g, in_arg[1])
-            .replace(/\@3/g, in_arg[2])
-            .replace(/\@4/g, in_arg[3])
-            .replace(/\@5/g, in_arg[4]);
-    var func = (this.getFieldValue("FUNCTIONS") || '')
-            .replace(/\@1/g, in_arg[0])
-            .replace(/\@2/g, in_arg[1])
-            .replace(/\@3/g, in_arg[2])
-            .replace(/\@4/g, in_arg[3])
-            .replace(/\@5/g, in_arg[4]);
+    for (var tk = 1; tk < 6; tk++) {
+        in_arg.push(Blockly.propc.valueToCode(this, 'ARG' + tk.toString(10), Blockly.propc.ORDER_ATOMIC) || '');
+    }
+    var incl = (this.getFieldValue("INCLUDES") || '').replace(/\@([1-5])/g, in_arg[Number('$1')-1]);
+    var glob = (this.getFieldValue("GLOBALS") || '').replace(/\@([1-5])/g, in_arg[Number('$1')-1]);
+    var sets = (this.getFieldValue("SETUPS") || '').replace(/\@([1-5])/g, in_arg[Number('$1')-1]);
+    var main = (this.getFieldValue("MAIN") || '').replace(/\@([1-5])/g, in_arg[Number('$1')-1]);
+    var func = (this.getFieldValue("FUNCTIONS") || '').replace(/\@([1-5])/g, in_arg[Number('$1')-1]);
 
     var code = '';
 
