@@ -764,6 +764,7 @@ page_text_label['editor_button_cancel'] = "Cancel";
 page_text_label['editor_button_close'] = "Close";
 page_text_label['editor_button_replace'] = "Replace";
 page_text_label['editor_clear-workspace'] = "Clear workspace";
+page_text_label['editor_offline_title'] = "Offline Expermiental Version";
 page_text_label['editor_client_available'] = "<strong>Select the correct port,</strong> then click <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"15\" style=\"vertical-align: middle;\"><path d=\"M4.4,0 L6.8,0 6.8,7.2 10,7.2 5.6,11.6 1.2,7.2 4.4,7.2 Z\" style=\"stroke:#000;stroke-width:1;fill:#000;\"/></svg> or <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"15\" style=\"vertical-align: middle;\"><path d=\"M4.4,0 L6.8,0 6.8,4.8 10,4.8 5.6,9.2 1.2,4.8 4.4,4.8 Z M0.4,9.6 L10.8,9.6 10.8,11.6 0.4,11.6 Z\" style=\"stroke:#000;stroke-width:1;fill:#000;\"/></svg>.";
 page_text_label['editor_client_available_short'] = "<strong>Select the correct port,</strong> then click <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"15\" style=\"vertical-align: middle;\"><path d=\"M4.4,0 L6.8,0 6.8,4.8 10,4.8 5.6,9.2 1.2,4.8 4.4,4.8 Z M0.4,9.6 L10.8,9.6 10.8,11.6 0.4,11.6 Z\" style=\"stroke:#000;stroke-width:1;fill:#000;\"/></svg>.";
 page_text_label['editor_client_checking'] = "Looking for BlocklyProp-Client...";
