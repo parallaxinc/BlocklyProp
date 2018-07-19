@@ -152,3 +152,15 @@ ALTER TABLE blocklyprop.user MODIFY screenname VARCHAR(250) CHARACTER SET utf8;
 
 SET foreign_key_checks = 1;
 
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    8,
+    '0008-update-bp-default-char-col.sql',
+    'updates the character set and collation settings on the blocklyprop database'
+    );

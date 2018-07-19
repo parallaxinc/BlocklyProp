@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SecRole extends TableImpl<SecRoleRecord> {
 
-	private static final long serialVersionUID = 1675331090;
+	private static final long serialVersionUID = 1469713459;
 
 	/**
 	 * The reference instance of <code>blocklyprop.sec_role</code>
@@ -59,7 +59,7 @@ public class SecRole extends TableImpl<SecRoleRecord> {
 	/**
 	 * The column <code>blocklyprop.sec_role.name</code>.
 	 */
-	public final TableField<SecRoleRecord, Role> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "", new RoleConverter());
+	public final TableField<SecRoleRecord, Role> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "", new RoleConverter());
 
 	/**
 	 * Create a <code>blocklyprop.sec_role</code> table reference

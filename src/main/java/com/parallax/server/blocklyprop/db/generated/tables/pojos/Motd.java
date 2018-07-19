@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Motd implements Serializable {
 
-	private static final long serialVersionUID = 721941299;
+	private static final long serialVersionUID = -1332986573;
 
 	private Long      id;
 	private String    messageText;
@@ -31,10 +31,10 @@ public class Motd implements Serializable {
 	private String    notes;
 	private Byte      enabled;
 	private Byte      isDeleted;
-	private Timestamp enableDatetime;
-	private Timestamp disableDatetime;
 	private Timestamp createDate;
 	private Timestamp lastChangeDate;
+	private Timestamp messageEnableTime;
+	private Timestamp messageDisableTime;
 
 	public Motd() {}
 
@@ -45,10 +45,10 @@ public class Motd implements Serializable {
 		this.notes = value.notes;
 		this.enabled = value.enabled;
 		this.isDeleted = value.isDeleted;
-		this.enableDatetime = value.enableDatetime;
-		this.disableDatetime = value.disableDatetime;
 		this.createDate = value.createDate;
 		this.lastChangeDate = value.lastChangeDate;
+		this.messageEnableTime = value.messageEnableTime;
+		this.messageDisableTime = value.messageDisableTime;
 	}
 
 	public Motd(
@@ -58,10 +58,10 @@ public class Motd implements Serializable {
 		String    notes,
 		Byte      enabled,
 		Byte      isDeleted,
-		Timestamp enableDatetime,
-		Timestamp disableDatetime,
 		Timestamp createDate,
-		Timestamp lastChangeDate
+		Timestamp lastChangeDate,
+		Timestamp messageEnableTime,
+		Timestamp messageDisableTime
 	) {
 		this.id = id;
 		this.messageText = messageText;
@@ -69,10 +69,10 @@ public class Motd implements Serializable {
 		this.notes = notes;
 		this.enabled = enabled;
 		this.isDeleted = isDeleted;
-		this.enableDatetime = enableDatetime;
-		this.disableDatetime = disableDatetime;
 		this.createDate = createDate;
 		this.lastChangeDate = lastChangeDate;
+		this.messageEnableTime = messageEnableTime;
+		this.messageDisableTime = messageDisableTime;
 	}
 
 	public Long getId() {
@@ -123,22 +123,6 @@ public class Motd implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 
-	public Timestamp getEnableDatetime() {
-		return this.enableDatetime;
-	}
-
-	public void setEnableDatetime(Timestamp enableDatetime) {
-		this.enableDatetime = enableDatetime;
-	}
-
-	public Timestamp getDisableDatetime() {
-		return this.disableDatetime;
-	}
-
-	public void setDisableDatetime(Timestamp disableDatetime) {
-		this.disableDatetime = disableDatetime;
-	}
-
 	public Timestamp getCreateDate() {
 		return this.createDate;
 	}
@@ -155,6 +139,22 @@ public class Motd implements Serializable {
 		this.lastChangeDate = lastChangeDate;
 	}
 
+	public Timestamp getMessageEnableTime() {
+		return this.messageEnableTime;
+	}
+
+	public void setMessageEnableTime(Timestamp messageEnableTime) {
+		this.messageEnableTime = messageEnableTime;
+	}
+
+	public Timestamp getMessageDisableTime() {
+		return this.messageDisableTime;
+	}
+
+	public void setMessageDisableTime(Timestamp messageDisableTime) {
+		this.messageDisableTime = messageDisableTime;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("Motd (");
@@ -165,10 +165,10 @@ public class Motd implements Serializable {
 		sb.append(", ").append(notes);
 		sb.append(", ").append(enabled);
 		sb.append(", ").append(isDeleted);
-		sb.append(", ").append(enableDatetime);
-		sb.append(", ").append(disableDatetime);
 		sb.append(", ").append(createDate);
 		sb.append(", ").append(lastChangeDate);
+		sb.append(", ").append(messageEnableTime);
+		sb.append(", ").append(messageDisableTime);
 
 		sb.append(")");
 		return sb.toString();

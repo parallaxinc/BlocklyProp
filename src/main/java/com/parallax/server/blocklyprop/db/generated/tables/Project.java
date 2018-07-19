@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = 1191407437;
+	private static final long serialVersionUID = -1048994704;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
@@ -71,7 +71,7 @@ public class Project extends TableImpl<ProjectRecord> {
 	/**
 	 * The column <code>blocklyprop.project.name</code>.
 	 */
-	public final TableField<ProjectRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
+	public final TableField<ProjectRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
 
 	/**
 	 * The column <code>blocklyprop.project.description</code>.
@@ -96,12 +96,12 @@ public class Project extends TableImpl<ProjectRecord> {
 	/**
 	 * The column <code>blocklyprop.project.type</code>.
 	 */
-	public final TableField<ProjectRecord, ProjectType> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR.length(45).nullable(false), this, "", new ProjectTypeConverter());
+	public final TableField<ProjectRecord, ProjectType> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR.length(45), this, "", new ProjectTypeConverter());
 
 	/**
 	 * The column <code>blocklyprop.project.board</code>.
 	 */
-	public final TableField<ProjectRecord, String> BOARD = createField("board", org.jooq.impl.SQLDataType.VARCHAR.length(45).nullable(false), this, "");
+	public final TableField<ProjectRecord, String> BOARD = createField("board", org.jooq.impl.SQLDataType.VARCHAR.length(45), this, "");
 
 	/**
 	 * The column <code>blocklyprop.project.private</code>.

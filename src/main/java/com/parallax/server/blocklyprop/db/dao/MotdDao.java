@@ -41,15 +41,19 @@ public interface  MotdDao {
      * 
      * @return a single MotdRecord or null if record is not found
      */
-    MotdRecord getMotd(Long idMotd);
+    MotdRecord get(Long idMotd);
+    
+    MotdRecord getFirst();
+
     
     /**
      * List all MOTD records
      * 
      * @return a list of MotdRecords or null if there are no records
      */
-    List <MotdRecord> getAll();
-    
+    List <MotdRecord> get();
+
+
     /**
      * Mark a record as deleted
      * 
@@ -57,5 +61,22 @@ public interface  MotdDao {
      * @return True if the action was successful, otherwise false
      */
     Boolean delete(Long idMotd);
-    
+
+
+    /**
+     * Update an existing motd record
+     *
+     * @param record
+     * @return True if update completes successfully, otherwise false
+     */
+    Boolean update(MotdRecord record);
+
+    // Enable a message of the day
+    Boolean enable(Long idMotdRecord);
+
+    // Disable a message of the day
+    Boolean disable(Long idMotdRecord);
+
+
+
 }

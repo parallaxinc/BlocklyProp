@@ -54,3 +54,15 @@ CREATE TABLE IF NOT EXISTS blocklyprop.friend (
 
 CREATE UNIQUE INDEX friend_idRequestUser_idRequestedUser_uindex
   ON blocklyprop.friend (idRequestUser, idRequestedUser);
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    4,
+    '0004-friends.sql',
+    'Implement friends feature for social media'
+    );

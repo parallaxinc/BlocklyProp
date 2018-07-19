@@ -20,3 +20,15 @@ ALTER TABLE blocklyprop.project_sharing ADD active BIT DEFAULT 0 NULL AFTER shar
  */
 UPDATE blocklyprop.project_sharing
     SET active = true;
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    10,
+    '0010-project-link-active',
+    'Add field to support project link state'
+    );
