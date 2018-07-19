@@ -308,6 +308,7 @@ Blockly.MSG_WAITCNT_TOOLTIP = "pause until: waits until the system clounter reac
 Blockly.MSG_REGISTER_SET_TOOLTIP = "cog set register: sets the value of the specified cog register.";
 Blockly.MSG_REGISTER_GET_TOOLTIP = "cog get register: retrievs the value of the specified cog register.";
 Blockly.MSG_CUSTOM_CODE_TOOLTIP = "user code: must be properly written Propeller C code.  Places code input into specificed location.";
+Blockly.MSG_CUSTOM_CODE_MULTIPLE_TOOLTIP = "User defined code: Set label, color, code, block type, and inputs.\nAdd correctly formatted Propeller C code to the includes,\nglobals, setups, main, and functions sections.\n Use \"@1, @2, @3, @4, or @5\" to insert values from inputs 1, 2, 3, 4, or 5 into your custom C code.";
 Blockly.MSG_VARIABLES_SET_TOOLTIP = "set variable: name and attach initial value block.";
 Blockly.MSG_VARIABLES_GET_TOOLTIP = "use variable: choose set variables from dropdown.";
 Blockly.MSG_PROCEDURES_DEFNORETURN_TOOLTIP = "define function: group blocks to re-use ending with return; name group.";
@@ -763,6 +764,7 @@ page_text_label['editor_button_cancel'] = "Cancel";
 page_text_label['editor_button_close'] = "Close";
 page_text_label['editor_button_replace'] = "Replace";
 page_text_label['editor_clear-workspace'] = "Clear workspace";
+page_text_label['editor_offline_title'] = "Offline Expermiental Version";
 page_text_label['editor_client_available'] = "<strong>Select the correct port,</strong> then click <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"15\" style=\"vertical-align: middle;\"><path d=\"M4.4,0 L6.8,0 6.8,7.2 10,7.2 5.6,11.6 1.2,7.2 4.4,7.2 Z\" style=\"stroke:#000;stroke-width:1;fill:#000;\"/></svg> or <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"15\" style=\"vertical-align: middle;\"><path d=\"M4.4,0 L6.8,0 6.8,4.8 10,4.8 5.6,9.2 1.2,4.8 4.4,4.8 Z M0.4,9.6 L10.8,9.6 10.8,11.6 0.4,11.6 Z\" style=\"stroke:#000;stroke-width:1;fill:#000;\"/></svg>.";
 page_text_label['editor_client_available_short'] = "<strong>Select the correct port,</strong> then click <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"15\" style=\"vertical-align: middle;\"><path d=\"M4.4,0 L6.8,0 6.8,4.8 10,4.8 5.6,9.2 1.2,4.8 4.4,4.8 Z M0.4,9.6 L10.8,9.6 10.8,11.6 0.4,11.6 Z\" style=\"stroke:#000;stroke-width:1;fill:#000;\"/></svg>.";
 page_text_label['editor_client_checking'] = "Looking for BlocklyProp-Client...";
@@ -785,7 +787,6 @@ page_text_label['editor_replace'] = "Replace";
 page_text_label['editor_newproject_c'] = "Propeller C";
 page_text_label['editor_newproject_spin'] = "Scribbler Robot";
 page_text_label['editor_newproject_title'] = "New project";
-page_text_label['editor_offline_title'] = "Offline Expermiental Version";
 page_text_label['editor_project'] = "Project";
 page_text_label['editor_projects_title'] = "Projects";
 page_text_label['editor_run_compile'] = "Compile";
@@ -1092,4 +1093,3 @@ Blockly.BlockSvg.prototype.showHelp_ = function () {
 	$('#help-dialog').modal('show');
     }
 };
-

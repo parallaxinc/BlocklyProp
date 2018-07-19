@@ -31,6 +31,16 @@ html, body {
     font: normal 14px Arimo, sans-serif !important;
 }
 
+.field_code {
+    background-color: #fff;
+    height: 200px;
+    width: 350px;
+    border-top: 2px solid rgba(128, 134, 140, 0.7);
+    border-left: 2px solid rgba(128, 134, 140, 0.7);
+    border-right: 2px solid rgba(104, 110, 116, 0.7);
+    border-bottom: 2px solid rgba(104, 110, 116, 0.7);
+}
+
 #content_blocks {
     background-color: #fff;
     margin: 0;

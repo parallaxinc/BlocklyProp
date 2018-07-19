@@ -440,7 +440,7 @@ var blocklyReady = function () {
 };
 
 window.onbeforeunload = function () {
-    if (checkLeave()) {
+    if (checkLeave() && !isOffline) {
         return Blockly.Msg.DIALOG_CHANGED_SINCE;
     }
 };
@@ -488,7 +488,12 @@ function downloadCode() {
     projXMLcode = projXMLcode.substring(42, projXMLcode.length);
     projXMLcode = projXMLcode.substring(0, (projXMLcode.length - 6));
 
-    utils.prompt(Blockly.Msg.DIALOG_DOWNLOAD, 'Project' + idProject, function (value) {
+    var project_filename = 'Project' + idProject;
+    if (isOffline) {
+        project_filename = projectData['name'].replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    }
+
+    utils.prompt(Blockly.Msg.DIALOG_DOWNLOAD, project_filename, function (value) {
         if (value) {
             // get the paths of the blocks themselves and the size/position of the blocks
             var projSVG = document.getElementsByClassName('blocklyBlockCanvas');
@@ -560,7 +565,7 @@ function downloadCode() {
 }
 
 function uploadCode() {
-    if (checkLeave()) {
+    if (checkLeave() && !isOffline) {
         utils.showMessage(Blockly.Msg.DIALOG_UNSAVED_PROJECT, Blockly.Msg.DIALOG_SAVE_BEFORE_ADD_BLOCKS);
     } else {
         $('#upload-dialog').modal('show');
