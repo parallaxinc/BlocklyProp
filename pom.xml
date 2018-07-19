@@ -101,7 +101,7 @@
                 <!-- Include the <execution> element to generate a new set of -->
                 <!-- source files that represent the current state of the     --> 
                 <!-- target database schema.                                  -->
-                <executions>
+<!--                <executions>
                     <execution>
                         <id>jooq-codegen</id>
                         <phase>generate-sources</phase>
@@ -110,6 +110,10 @@
                         </goals>
                     </execution>
                 </executions>
+-->
+                <!-- Comment out the <executions> block to disable jooq  -->
+                <!-- from generating database code                       -->
+                
                 
                 <dependencies>
                     <dependency>
