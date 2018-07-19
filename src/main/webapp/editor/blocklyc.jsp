@@ -57,6 +57,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/field_range.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/field_code.js"/>"></script>
 
         <!-- Internationalization text strings -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
