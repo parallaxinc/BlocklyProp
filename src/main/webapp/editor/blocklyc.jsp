@@ -106,7 +106,7 @@
                     <td>
                         <nav class="navbar navbar-default clearfix" role="navigation">
                             <div style="width:100%;">
-                                <div style="display:inline;"><span><a id="nav-logo" href="" class="url-prefix">BlocklyProp<br><strong>BETA</strong></a></span>
+                                <div style="display:inline;"><span><a id="nav-logo" href="" class="url-prefix">BlocklyProp<br></a></span>
                                 </div>
                                 <div style="display:inline;">
                                     <div style="width:100%; ">
