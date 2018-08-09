@@ -226,7 +226,7 @@ public class RestProject {
             @FormParam("id") Long idProject, 
             @FormParam("code") String code, 
             @FormParam("name") String newName,
-            @FormParam("board") String newBoard,) {
+            @FormParam("board") String newBoard) {
         
         LOG.info("REST:/rest/project/code-as/ POST request received for project '{}'", idProject);
 
