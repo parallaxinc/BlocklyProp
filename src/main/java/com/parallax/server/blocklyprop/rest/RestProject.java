@@ -225,7 +225,8 @@ public class RestProject {
     public Response saveProjectCodeAs(
             @FormParam("id") Long idProject, 
             @FormParam("code") String code, 
-            @FormParam("name") String newName) {
+            @FormParam("name") String newName,
+            @FormParam("name") String newBoard,) {
         
         LOG.info("REST:/rest/project/code-as/ POST request received for project '{}'", idProject);
 
@@ -235,7 +236,8 @@ public class RestProject {
             ProjectRecord savedProject = projectService.saveProjectCodeAs(
                     idProject, 
                     code, 
-                    newName);
+                    newName,
+                    newBoard);
             LOG.debug("Code for project {} has been saved as {}", idProject, newName);
             
             JsonObject result = projectConverter.toJson(savedProject,false);
