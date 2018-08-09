@@ -610,10 +610,11 @@ public class ProjectDaoImpl implements ProjectDao {
      * @param idProject
      * @param code
      * @param newName
+     * @param newBoard
      * @return
      */
     @Override
-    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName, String newBoard) {
         
         LOG.info("Saving project code as '{}'", newName);
 
@@ -622,6 +623,8 @@ public class ProjectDaoImpl implements ProjectDao {
         if (original == null) {
             LOG.error("Original project {} is missing. Unable to save code as...", idProject);
             throw new NullPointerException("Project doesn't exist");
+        } else if (newBoard == null) {
+            newBoard = original.getBoard();
         }
         
         // Obtain the current bp user record. 
@@ -639,7 +642,7 @@ public class ProjectDaoImpl implements ProjectDao {
                         original.getDescriptionHtml(),
                         code,
                         original.getType(),
-                        original.getBoard(),
+                        newBoard,
                         true,                   // Set project private
                         false,                  // Set project unshared
                         original.getId());
