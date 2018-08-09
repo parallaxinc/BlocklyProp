@@ -134,6 +134,7 @@ public interface ProjectDao {
     ProjectRecord saveProjectCodeAs(
             Long idProject, 
             String code, 
-            String newName);
+            String newName,
+            String newBoard);
 
 }
