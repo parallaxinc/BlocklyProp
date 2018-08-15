@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -26,6 +29,11 @@ import org.apache.commons.configuration.Configuration;
  */
 @Singleton
 public class HelpServlet extends HttpServlet {
+    
+    /**
+     * Application logging facility
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(HelpServlet.class);
 
     private static final String DEFAULT_DESTINATION_DIRECTORY = "help-xml";
 
@@ -39,7 +47,12 @@ public class HelpServlet extends HttpServlet {
         this.configuration = configuration;
 
         String destinationDirectory = configuration.getString("help.destination", DEFAULT_DESTINATION_DIRECTORY);
+        LOG.info("Help destination directory is: '{}'", destinationDirectory);
+        LOG.info("Help file located in: '{}'",System.getProperty("user.home"));
+        
         destinationDirectoryFile = new File(new File(System.getProperty("user.home")), destinationDirectory);
+        LOG.info("Help file path is: '{}'", destinationDirectoryFile.getAbsolutePath());
+        
     }
 
     @Override
@@ -67,6 +80,7 @@ public class HelpServlet extends HttpServlet {
                     req.setAttribute("html", Files.toString(file, Charset.forName("UTF-8")));
                     req.getRequestDispatcher("/WEB-INF/servlet/help/help.jsp").forward(req, resp);
                 } else {
+                    LOG.info("Cannot find help file: '{}'",file.getAbsoluteFile() );
                     req.setAttribute("help-not-found", true);
                     req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);;
                 }
@@ -87,10 +101,12 @@ public class HelpServlet extends HttpServlet {
                     resp.setContentType(java.nio.file.Files.probeContentType(file.toPath()));
                     Files.copy(file, resp.getOutputStream());
                 } else {
+                    LOG.info("Cannot find help file: '{}'",file.getAbsoluteFile() );
                     req.setAttribute("help-not-found", true);
                     req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);;
                 }
             } else {
+                    LOG.info("Invalid help file path: '{}'",file.getAbsoluteFile() );
                 req.setAttribute("help-invalid-path", true);
                 req.getRequestDispatcher("/WEB-INF/servlet/help/help-error.jsp").forward(req, resp);
             }
