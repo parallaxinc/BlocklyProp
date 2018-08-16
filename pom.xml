@@ -16,10 +16,11 @@
 
         <!-- jOOQ version 3.7 and above requires Java 1.8.x JDK -->
         <jooq-version>3.7.4</jooq-version>
-
         <shiro-version>1.3.2</shiro-version>
         <metrics-version>3.1.0</metrics-version>
         <jersey.version>1.19</jersey.version>
+        
+        <!-- Additional settings can be found in the build.properties file -->
     </properties>
     
     <repositories>
@@ -58,7 +59,7 @@
                 </executions>
                 <configuration>
                     <files>
-                        <file>build.properties</file>
+                        <file>src/main/config/${environment}/build.properties</file>
                     </files>
                     <properties combine.self="append" />
                     <outputFile combine.self="append" />
@@ -79,7 +80,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
@@ -92,7 +93,7 @@
                     <update>true</update>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
@@ -212,6 +213,14 @@
                 <environment>default</environment>
             </properties>
         </profile>
+        
+        <profile>
+            <id>development</id>
+            <properties>
+                <environment>development</environment>
+            </properties>
+        </profile>
+        
         <profile>
             <id>production</id>
             <properties>
@@ -268,14 +277,6 @@
             <artifactId>logback-core</artifactId>
             <version>1.1.8</version>
         </dependency>
-            
-        <!--        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        -->
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -290,7 +291,6 @@
             <artifactId>guice-servlet</artifactId>
             <version>4.0</version>
         </dependency>
-
 
         <dependency>
             <groupId>com.google.inject.extensions</groupId>

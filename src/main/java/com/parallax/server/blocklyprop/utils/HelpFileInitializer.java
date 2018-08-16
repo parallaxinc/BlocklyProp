@@ -98,7 +98,10 @@ public class HelpFileInitializer {
                 if (luceneIndexLocation.exists() && luceneIndexLocation.isDirectory()) {
                     FileUtils.cleanDirectory(luceneIndexLocation);
                 }
+                
+                // Store an index to this file
                 directory = FSDirectory.open(luceneIndexLocation.toPath());
+                
                 IndexWriterConfig config = new IndexWriterConfig(analyzer);
                 indexWriter = new IndexWriter(directory, config);
 
