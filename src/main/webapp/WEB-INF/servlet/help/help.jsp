@@ -28,7 +28,7 @@
                     <div class="col-sm-4 col-xs-12">
                         <div class="panel panel-default text-center">
                             <div class="panel-heading">
-                                <img alt="(Activity Bot and Flip Module)" title="(Activity Bot and Flip Module)" border="0" src="<url:getUrl url="/"/>images/products/ABandFLIP.png" style="max-width:100%;height:auto;"/>
+                                <img alt="(Activity Bot and Flip Module)" title="(Activity Bot and Flip Module)" border="0" src="<url:getCdnUrl url="/"/>images/products/ABandFLIP.png" style="max-width:100%;height:auto;"/>
                             </div>
                             <div class="panel-body text-center">
                                 <a href="http://learn.parallax.com/ab-blockly-intro">Getting Started with the ActivityBot, FLiP, and most other Propeller boards with BlocklyProp</a><br /><br />
@@ -40,7 +40,7 @@
                     <div class="col-sm-4 col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading text-center">
-                                <img alt="(Scribbler 3)" title="(Scribbler 3)" border="0" src="<url:getUrl url="/"/>images/products/S3.png" style="max-width:100%;height:auto;"/>
+                                <img alt="(Scribbler 3)" title="(Scribbler 3)" border="0" src="<url:getCdnUrl url="/"/>images/products/S3.png" style="max-width:100%;height:auto;"/>
                             </div>
                             <div class="panel-body text-center">
                                 <a href="http://learn.parallax.com/s3-blockly-intro">Getting Started with the Scribbler robot and BlocklyProp</a><br /><br />
@@ -52,7 +52,7 @@
                     <div class="col-sm-4 col-xs-12">
                         <div class="panel panel-default text-center">
                             <div class="panel-heading">
-                                <img alt="(Badge WX)" title="(Badge WX)" border="0" src="<url:getUrl url="/"/>images/products/BadgeWX.png" style="max-width:100%;height:auto;"/>
+                                <img alt="(Badge WX)" title="(Badge WX)" border="0" src="<url:getCdnUrl url="/"/>images/products/BadgeWX.png" style="max-width:100%;height:auto;"/>
                             </div>
                             <div class="panel-body text-center">
                                 <a href="http://learn.parallax.com/node/1850">Getting Started with the Badge WX and BlocklyProp</a><br /><br />
