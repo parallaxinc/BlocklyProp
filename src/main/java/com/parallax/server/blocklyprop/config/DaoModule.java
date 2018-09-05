@@ -44,7 +44,7 @@ public class DaoModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(ProjectDao.class).to(ProjectDaoImpl.class);//.asEagerSingleton();
+        bind(ProjectDao.class).to(ProjectDaoImpl.class);
         bind(UserDao.class).to(UserDaoImpl.class);
         bind(SessionDao.class).to(SessionDaoImpl.class);
         bind(ProjectSharingDao.class).to(ProjectSharingDaoImpl.class);

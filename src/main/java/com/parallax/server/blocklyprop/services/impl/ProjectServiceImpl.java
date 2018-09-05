@@ -155,6 +155,17 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
+    
+    /**
+     * Return a list of projects.
+     * 
+     * @param idUser
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return 
+     */
     @Override
     public List<ProjectRecord> getUserProjects(
             Long idUser, 
@@ -176,9 +187,24 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    
+    /**
+     * Obtain a list of community projects
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return 
+     */
     @Override
-    public List<ProjectRecord> getSharedProjects(TableSort sort, TableOrder order, Integer limit, Integer offset) {
-        return projectDao.getSharedProjects(sort, order, limit, offset, BlocklyPropSecurityUtils.getCurrentUserId());
+    public List<ProjectRecord> getSharedProjects(
+            TableSort sort, 
+            TableOrder order, 
+            Integer limit, 
+            Integer offset) {
+
+        return projectDao.getSharedProjects(sort, order, limit, offset);
     }
 
     @Override
@@ -206,9 +232,23 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.cloneProject(idProject);
     }
 
+    
+    /**
+     * Delete a project
+     * 
+     * Remove the shared project link if one exists before removing the project.
+     * 
+     * @param idProject
+     * @return 
+     */
     @Override
     public boolean deleteProject(Long idProject) {
-        projectSharingService.revokeSharing(idProject);
+        
+        LOG.info("Deleting project {}", idProject);
+        
+        // Remove the project shared key if it exists.
+        projectSharingService.deleteSharedProject(idProject);
+
         return projectDao.deleteProject(idProject);
     }
 
@@ -218,8 +258,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
-        return projectDao.saveProjectCodeAs(idProject, code, newName);
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName, String newBoard) {
+        return projectDao.saveProjectCodeAs(idProject, code, newName, newBoard);
     }
 
 }

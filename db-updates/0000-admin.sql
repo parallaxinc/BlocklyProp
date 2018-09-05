@@ -25,3 +25,15 @@ CREATE TABLE if not exists blocklyprop.admin (
 ) ENGINE=InnoDB
   AUTO_INCREMENT=0
   DEFAULT CHARSET=utf8;
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    0,
+    '0000-admin.sql',
+    'Create administrative table to track updates'
+    );

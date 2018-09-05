@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Motd extends TableImpl<MotdRecord> {
 
-	private static final long serialVersionUID = 1851811348;
+	private static final long serialVersionUID = 771867904;
 
 	/**
 	 * The reference instance of <code>blocklyprop.motd</code>
@@ -81,16 +81,6 @@ public class Motd extends TableImpl<MotdRecord> {
 	public final TableField<MotdRecord, Byte> IS_DELETED = createField("is_deleted", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaulted(true), this, "");
 
 	/**
-	 * The column <code>blocklyprop.motd.enable_datetime</code>.
-	 */
-	public final TableField<MotdRecord, Timestamp> ENABLE_DATETIME = createField("enable_datetime", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
-
-	/**
-	 * The column <code>blocklyprop.motd.disable_datetime</code>.
-	 */
-	public final TableField<MotdRecord, Timestamp> DISABLE_DATETIME = createField("disable_datetime", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
-
-	/**
 	 * The column <code>blocklyprop.motd.create_date</code>.
 	 */
 	public final TableField<MotdRecord, Timestamp> CREATE_DATE = createField("create_date", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "");
@@ -99,6 +89,16 @@ public class Motd extends TableImpl<MotdRecord> {
 	 * The column <code>blocklyprop.motd.last_change_date</code>.
 	 */
 	public final TableField<MotdRecord, Timestamp> LAST_CHANGE_DATE = createField("last_change_date", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaulted(true), this, "");
+
+	/**
+	 * The column <code>blocklyprop.motd.message_enable_time</code>.
+	 */
+	public final TableField<MotdRecord, Timestamp> MESSAGE_ENABLE_TIME = createField("message_enable_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+	/**
+	 * The column <code>blocklyprop.motd.message_disable_time</code>.
+	 */
+	public final TableField<MotdRecord, Timestamp> MESSAGE_DISABLE_TIME = createField("message_disable_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
 	/**
 	 * Create a <code>blocklyprop.motd</code> table reference

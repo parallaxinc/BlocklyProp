@@ -98,3 +98,16 @@ CREATE TABLE IF NOT EXISTS blocklyprop.user (
 ) ENGINE=InnoDB
   AUTO_INCREMENT=0
   DEFAULT CHARSET=utf8;
+
+
+-- Record schema change
+INSERT INTO blocklyprop.admin (
+    db_version, 
+    db_script,
+    notes
+    )
+VALUES (
+    1,
+    '0001-initial.sql',
+    'Create initial blocklyprop tables'
+    );

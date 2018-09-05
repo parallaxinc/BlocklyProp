@@ -17,6 +17,7 @@ import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
+import com.sun.org.apache.xerces.internal.util.Status;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -54,6 +55,15 @@ public class RestSharedProject {
         this.projectConverter = projectConverter;
     }
 
+    /**
+     * Return a list of community projects.
+     * 
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return 
+     */
     @GET
     @Path("/list")
     @Detail("Get all shared projects")
@@ -64,12 +74,66 @@ public class RestSharedProject {
             @QueryParam("order") TableOrder order, 
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
+
+        LOG.info("REST:/shared/project/list/ endpoint activated");
+        LOG.info("REST:/shared/project/list/ Sort parameter is '{}'", sort);
+        LOG.info("REST:/shared/project/list/ Sort parameter is '{}'", sort);
+
+        Boolean parametersValid = false;
+        
+        // Check the incoming data
+        if (sort != null){
+            for (TableSort t : TableSort.values()) {
+                LOG.info("REST:/shared/project/list/ Sort test for '{}'", t);
+            
+                if (sort == t) {
+                    parametersValid = true;
+                    break;
+                }
+            }
+        
+            if (parametersValid == false) {
+                LOG.info("REST:/shared/project/list/ Sort parameter failed");
+                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            }
+        }
+
+        if (order != null) {
+            parametersValid = false;
+
+            LOG.info("REST:/shared/project/list/ Checking order");
+        
+            for (TableOrder t : TableOrder.values()) {
+                if (order == t) {
+                    parametersValid = true;
+                    break;
+                }
+            }
+        
+            if (parametersValid == false) {
+                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            }
+        }
+        
+        LOG.info("REST:/shared/project/list/ Checking limit");
+
+        if ( (limit == null) || (limit > 50)) {
+            LOG.info("REST:/shared/project/list/ Limit throttle to 50 entries");
+            limit = 50;
+        }
+        
+        LOG.info("REST:/shared/project/list/ Checking offset");
+
+        if ((offset == null) || (offset < 0)) {
+            offset = 0;
+        }
         
         LOG.info("REST:/shared/project/list/ Get request received");
 
         List<ProjectRecord> projects 
                 = projectService.getSharedProjects(sort, order, limit, offset);
         
+        // Obtain a count of the total number of community projects available
         int projectCount = projectService.countSharedProjects();
 
         JsonObject result = new JsonObject();

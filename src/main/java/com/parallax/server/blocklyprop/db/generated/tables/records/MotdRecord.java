@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Record10<Long, String, String, String, Byte, Byte, Timestamp, Timestamp, Timestamp, Timestamp> {
 
-	private static final long serialVersionUID = 1382906632;
+	private static final long serialVersionUID = -1264919800;
 
 	/**
 	 * Setter for <code>blocklyprop.motd.id</code>.
@@ -117,58 +117,58 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	}
 
 	/**
-	 * Setter for <code>blocklyprop.motd.enable_datetime</code>.
-	 */
-	public void setEnableDatetime(Timestamp value) {
-		setValue(6, value);
-	}
-
-	/**
-	 * Getter for <code>blocklyprop.motd.enable_datetime</code>.
-	 */
-	public Timestamp getEnableDatetime() {
-		return (Timestamp) getValue(6);
-	}
-
-	/**
-	 * Setter for <code>blocklyprop.motd.disable_datetime</code>.
-	 */
-	public void setDisableDatetime(Timestamp value) {
-		setValue(7, value);
-	}
-
-	/**
-	 * Getter for <code>blocklyprop.motd.disable_datetime</code>.
-	 */
-	public Timestamp getDisableDatetime() {
-		return (Timestamp) getValue(7);
-	}
-
-	/**
 	 * Setter for <code>blocklyprop.motd.create_date</code>.
 	 */
 	public void setCreateDate(Timestamp value) {
-		setValue(8, value);
+		setValue(6, value);
 	}
 
 	/**
 	 * Getter for <code>blocklyprop.motd.create_date</code>.
 	 */
 	public Timestamp getCreateDate() {
-		return (Timestamp) getValue(8);
+		return (Timestamp) getValue(6);
 	}
 
 	/**
 	 * Setter for <code>blocklyprop.motd.last_change_date</code>.
 	 */
 	public void setLastChangeDate(Timestamp value) {
-		setValue(9, value);
+		setValue(7, value);
 	}
 
 	/**
 	 * Getter for <code>blocklyprop.motd.last_change_date</code>.
 	 */
 	public Timestamp getLastChangeDate() {
+		return (Timestamp) getValue(7);
+	}
+
+	/**
+	 * Setter for <code>blocklyprop.motd.message_enable_time</code>.
+	 */
+	public void setMessageEnableTime(Timestamp value) {
+		setValue(8, value);
+	}
+
+	/**
+	 * Getter for <code>blocklyprop.motd.message_enable_time</code>.
+	 */
+	public Timestamp getMessageEnableTime() {
+		return (Timestamp) getValue(8);
+	}
+
+	/**
+	 * Setter for <code>blocklyprop.motd.message_disable_time</code>.
+	 */
+	public void setMessageDisableTime(Timestamp value) {
+		setValue(9, value);
+	}
+
+	/**
+	 * Getter for <code>blocklyprop.motd.message_disable_time</code>.
+	 */
+	public Timestamp getMessageDisableTime() {
 		return (Timestamp) getValue(9);
 	}
 
@@ -257,22 +257,6 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	 */
 	@Override
 	public Field<Timestamp> field7() {
-		return Motd.MOTD.ENABLE_DATETIME;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<Timestamp> field8() {
-		return Motd.MOTD.DISABLE_DATETIME;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<Timestamp> field9() {
 		return Motd.MOTD.CREATE_DATE;
 	}
 
@@ -280,8 +264,24 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Timestamp> field10() {
+	public Field<Timestamp> field8() {
 		return Motd.MOTD.LAST_CHANGE_DATE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<Timestamp> field9() {
+		return Motd.MOTD.MESSAGE_ENABLE_TIME;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Field<Timestamp> field10() {
+		return Motd.MOTD.MESSAGE_DISABLE_TIME;
 	}
 
 	/**
@@ -337,22 +337,6 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	 */
 	@Override
 	public Timestamp value7() {
-		return getEnableDatetime();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Timestamp value8() {
-		return getDisableDatetime();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Timestamp value9() {
 		return getCreateDate();
 	}
 
@@ -360,8 +344,24 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Timestamp value10() {
+	public Timestamp value8() {
 		return getLastChangeDate();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Timestamp value9() {
+		return getMessageEnableTime();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Timestamp value10() {
+		return getMessageDisableTime();
 	}
 
 	/**
@@ -423,24 +423,6 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	 */
 	@Override
 	public MotdRecord value7(Timestamp value) {
-		setEnableDatetime(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public MotdRecord value8(Timestamp value) {
-		setDisableDatetime(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public MotdRecord value9(Timestamp value) {
 		setCreateDate(value);
 		return this;
 	}
@@ -449,8 +431,26 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MotdRecord value10(Timestamp value) {
+	public MotdRecord value8(Timestamp value) {
 		setLastChangeDate(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public MotdRecord value9(Timestamp value) {
+		setMessageEnableTime(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public MotdRecord value10(Timestamp value) {
+		setMessageDisableTime(value);
 		return this;
 	}
 
@@ -486,7 +486,7 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 	/**
 	 * Create a detached, initialised MotdRecord
 	 */
-	public MotdRecord(Long id, String messageText, String messageHtml, String notes, Byte enabled, Byte isDeleted, Timestamp enableDatetime, Timestamp disableDatetime, Timestamp createDate, Timestamp lastChangeDate) {
+	public MotdRecord(Long id, String messageText, String messageHtml, String notes, Byte enabled, Byte isDeleted, Timestamp createDate, Timestamp lastChangeDate, Timestamp messageEnableTime, Timestamp messageDisableTime) {
 		super(Motd.MOTD);
 
 		setValue(0, id);
@@ -495,9 +495,9 @@ public class MotdRecord extends UpdatableRecordImpl<MotdRecord> implements Recor
 		setValue(3, notes);
 		setValue(4, enabled);
 		setValue(5, isDeleted);
-		setValue(6, enableDatetime);
-		setValue(7, disableDatetime);
-		setValue(8, createDate);
-		setValue(9, lastChangeDate);
+		setValue(6, createDate);
+		setValue(7, lastChangeDate);
+		setValue(8, messageEnableTime);
+		setValue(9, messageDisableTime);
 	}
 }
