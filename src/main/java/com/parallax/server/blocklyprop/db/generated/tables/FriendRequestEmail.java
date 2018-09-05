@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FriendRequestEmail extends TableImpl<FriendRequestEmailRecord> {
 
-	private static final long serialVersionUID = 1950261629;
+	private static final long serialVersionUID = -1291101538;
 
 	/**
 	 * The reference instance of <code>blocklyprop.friend_request_email</code>
@@ -69,7 +69,7 @@ public class FriendRequestEmail extends TableImpl<FriendRequestEmailRecord> {
 	/**
 	 * The column <code>blocklyprop.friend_request_email.accept_Key</code>.
 	 */
-	public final TableField<FriendRequestEmailRecord, String> ACCEPT_KEY = createField("accept_Key", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
+	public final TableField<FriendRequestEmailRecord, String> ACCEPT_KEY = createField("accept_Key", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
 
 	/**
 	 * The column <code>blocklyprop.friend_request_email.requested</code>.

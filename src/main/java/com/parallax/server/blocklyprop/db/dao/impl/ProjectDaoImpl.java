@@ -405,7 +405,7 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     /**
-     * TODO: add details.
+     * Return a list of community projects constrained by the parameters
      *
      * @param sort
      * @param order
@@ -419,8 +419,7 @@ public class ProjectDaoImpl implements ProjectDao {
             TableSort sort, 
             TableOrder order, 
             Integer limit, 
-            Integer offset, 
-            Long idUser) {
+            Integer offset) {
         
         LOG.info("Retreive shared projects.");
 
@@ -428,10 +427,10 @@ public class ProjectDaoImpl implements ProjectDao {
         if (TableOrder.desc == order) {
             orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
         }
+
+        // Search for community projects
         Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
-        if (idUser != null) {
-            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
-        }
+        
         return create.selectFrom(Tables.PROJECT)
                 .where(conditions)
                 .orderBy(orderField).limit(limit).offset(offset)
@@ -497,9 +496,15 @@ public class ProjectDaoImpl implements ProjectDao {
         LOG.info("Count shared projects for user {}.", idUser);
 
         Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
+        
+        // Shared projects are really community projects. We should not include
+        // the logged in user's projects in the community listing. There is a
+        // separate listing available for the logged in user's private projects.
+        /*
         if (idUser != null) {
             conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
         }
+        */
         return create.fetchCount(Tables.PROJECT, conditions);
     }
 
@@ -605,10 +610,11 @@ public class ProjectDaoImpl implements ProjectDao {
      * @param idProject
      * @param code
      * @param newName
+     * @param newBoard
      * @return
      */
     @Override
-    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName) {
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName, String newBoard) {
         
         LOG.info("Saving project code as '{}'", newName);
 
@@ -617,6 +623,8 @@ public class ProjectDaoImpl implements ProjectDao {
         if (original == null) {
             LOG.error("Original project {} is missing. Unable to save code as...", idProject);
             throw new NullPointerException("Project doesn't exist");
+        } else if (newBoard == null) {
+            newBoard = original.getBoard();
         }
         
         // Obtain the current bp user record. 
@@ -634,7 +642,7 @@ public class ProjectDaoImpl implements ProjectDao {
                         original.getDescriptionHtml(),
                         code,
                         original.getType(),
-                        original.getBoard(),
+                        newBoard,
                         true,                   // Set project private
                         false,                  // Set project unshared
                         original.getId());

@@ -17,6 +17,7 @@
         <meta name="base" content="<url:getUrl url="/"/>">
         <meta name="cdn" content="<url:getCdnUrl url="/"/>">
         <meta name="projectlink" content="<%= request.getAttribute("project")%>">
+        <meta name="isOffline" content="false">
         <meta name="user-auth" content="<shiro:authenticated>true</shiro:authenticated><shiro:notAuthenticated>false</shiro:notAuthenticated>">
         <meta name="in-demo" content="<c:choose><c:when test="${experimental == true}">demo</c:when></c:choose>">
         <meta name="win32client" content="${properties:downloadfiles('/BlocklyPropClient-setup-32.exe')}">
@@ -56,6 +57,7 @@
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/apps/blockly_compressed.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/propc.js"/>"></script>
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/field_range.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/blockly/generators/field_code.js"/>"></script>
 
         <!-- Internationalization text strings -->
         <script type="text/javascript" src="<url:getCdnUrl url="/blockly/language/en/_messages.js"/>"></script>
@@ -163,21 +165,22 @@
                                             <span class="dropdown"><button class="btn btn-sm btn-default dropdown-toggle" id="options-menu" type="button" data-toggle="dropdown">&#9776; <span class="caret"></span></button>
                                                 <ul class="dropdown-menu pull-right btn-sm">
                                                     <li class="auth-true" data-displayas="list-item"><a id="edit-project-details" href="#" onclick="editProjectDetails()"><span class="keyed-lang-string" data-key="editor_edit-details"></span></a></li>
-                                                    <li class="auth-true" data-displayas="list-item" id="save-as-menu-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" data-key="editor_save-as"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;"  class="auth-true" data-displayas="list-item"/>
-                                                    <li class="auth-true" data-displayas="list-item"><a href="projectcreate.jsp?lang=PROPC" class="url-prefix"><span class="keyed-lang-string" data-key="menu_newproject_title"></span></a></li>
-                                                    <li class="auth-true" data-displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_my_projects"></span></a></li>
-                                                    <li><a href="projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_community_projects"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;" />
+                                                    <li class="auth-true online-only" data-displayas="list-item" id="save-as-menu-item"><a id="save-project-as" href="#"><span class="keyed-lang-string" data-key="editor_save-as"></span></a></li>
+                                                    <hr style="line-height:5px; margin:5px;"  class="auth-true online-only" data-displayas="list-item"/>
+                                                    <li class="auth-true online-only" data-displayas="list-item"><a href="projectcreate.jsp?lang=PROPC" class="url-prefix"><span class="keyed-lang-string" data-key="menu_newproject_title"></span></a></li>
+                                                    <li class="auth-true offline-only hidden" data-displayas="list-item"><a href="projectcreate.html" class="url-prefix"><span class="keyed-lang-string" data-key="menu_newproject_title"></span></a></li>
+                                                    <li class="auth-true online-only" data-displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_my_projects"></span></a></li>
+                                                    <li class="online-only"><a href="projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_community_projects"></span></a></li>
+                                                    <hr class="online-only" style="line-height:5px; margin:5px;"/>
                                                     <li><a href="public/help" target="_blank" class="url-prefix"><span class="keyed-lang-string" data-key="menu_help_reference"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;" />
+                                                    <hr style="line-height:5px; margin:5px;"/>
                                                     <li><a id="download-side" href="#" onclick="downloadPropC()"><span class="keyed-lang-string" data-key="menu_download_simpleide"></span></a></li>
                                                     <li><a id="download-project" href="#"><span class="keyed-lang-string" data-key="editor_download"></span></a></li>
                                                     <li class="auth-true" data-displayas="list-item"><a id="upload-project" href="#"><span class="keyed-lang-string" data-key="editor_upload"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;" class="auth-true" data-displayas="list-item"/>
                                                     <li class="auth-true" data-displayas="list-item"><a href="#" onclick="configure_client()"><span class="keyed-lang-string" data-key="editor_run_configure"></span></a></li>
-                                                    <hr style="line-height:5px; margin:5px;" class="auth-true" data-displayas="list-item"/>
-                                                    <li class="auth-true" data-displayas="list-item"><a href="logout" class="url-prefix"><span class="keyed-lang-string" data-key="logout"></span></a></li>
+                                                    <hr style="line-height:5px; margin:5px;" class="auth-true online-only" data-displayas="list-item"/>
+                                                    <li class="auth-true online-only" data-displayas="list-item"><a href="logout" class="url-prefix"><span class="keyed-lang-string" data-key="logout"></span></a></li>
                                                 </ul>
                                             </span>
                                         </div>
@@ -248,6 +251,21 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_button_close"></span></button>
                         <button type="button" class="btn btn-default" onclick="saveAsDialog();"><span class="keyed-lang-string" data-key="project_saveaslink"></span></button>
                         <button type="button" class="btn btn-primary" onclick="saveProject();" data-dismiss="modal"><span class="keyed-lang-string" data-key="project_savelink"></span></button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade" id="help-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="help-dialog-title">Help &amp; Reference</h4>
+                    </div>
+                    <div class="modal-body" id="help-content"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_button_close"></span></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -335,15 +353,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="save-as-board-type"><span class="keyed-lang-string" data-key="project_create_board_type"></span></label>
-                            <select class="form-control" id="save-as-board-type" name="save-as-board-type" onchange="checkBoardType();">
+                            <select class="form-control" id="save-as-board-type" name="save-as-board-type" onchange="checkBoardType($('#saveAsDialogSender').html());">
                                 <option disabled="" selected=""><span class="keyed-lang-string" data-key="project_create_board_type_select"></span></option>
                             </select>
+                        <span id="saveAsDialogSender" style="display:none;"></span>
                         </div>
                         <div id="save-as-verify-boardtype" class="alert alert-warning" style="display: none;"><svg preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1,12 L2,13 13,13 14,12 8,2 7,2 1,12 Z M7.25,6 L7.75,6 7.5,9 Z" style="stroke-width:1.5px;stroke:#a94442;fill:none;"/><circle cx="7.5" cy="10.75" r="1" style="stroke-width:0;fill:#a94442;"/><circle cx="7.5" cy="5.5" r="1" style="stroke-width:0;fill:#a94442;"/></svg> <span class="keyed-lang-string" data-key="editor_saveas_boardtype_warning"></span></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_button_close"></span></button>
-                        <button type="button" class="btn btn-primary" onclick="saveProjectAs();" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_save-as"></span></button>
+                        <button type="button" class="btn btn-primary" onclick="saveProjectAs($('#saveAsDialogSender').html());" data-dismiss="modal"><span class="keyed-lang-string" data-key="editor_save-as"></span></button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -417,7 +436,7 @@
 
                             <!-- Chrome OS instructions -->
                             <div class="client-instructions ChromeOS">
-                                <h4><span class="keyed-lang-string" data-key="client_windows_run_title"></span></h4>
+                                <h4><span class="keyed-lang-string" data-key="client_chrome_run_title"></span></h4>
                                 <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                     <div id="chr1">
                                         <p><span class="keyed-lang-string" data-key="client_chrome_run_instructions1"></span></p>

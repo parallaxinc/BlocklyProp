@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Admin extends TableImpl<AdminRecord> {
 
-	private static final long serialVersionUID = 2131182308;
+	private static final long serialVersionUID = 101994659;
 
 	/**
 	 * The reference instance of <code>blocklyprop.admin</code>
@@ -63,7 +63,7 @@ public class Admin extends TableImpl<AdminRecord> {
 	/**
 	 * The column <code>blocklyprop.admin.db_script</code>.
 	 */
-	public final TableField<AdminRecord, String> DB_SCRIPT = createField("db_script", org.jooq.impl.SQLDataType.VARCHAR.length(255).nullable(false), this, "");
+	public final TableField<AdminRecord, String> DB_SCRIPT = createField("db_script", org.jooq.impl.SQLDataType.VARCHAR.length(255), this, "");
 
 	/**
 	 * The column <code>blocklyprop.admin.notes</code>.
