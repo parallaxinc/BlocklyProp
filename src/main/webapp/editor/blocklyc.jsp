@@ -436,7 +436,7 @@
 
                             <!-- Chrome OS instructions -->
                             <div class="client-instructions ChromeOS">
-                                <h4><span class="keyed-lang-string" data-key="client_windows_run_title"></span></h4>
+                                <h4><span class="keyed-lang-string" data-key="client_chrome_run_title"></span></h4>
                                 <div style="background:#f5f5f5; border-radius:6px; height:220px; padding:6px;">
                                     <div id="chr1">
                                         <p><span class="keyed-lang-string" data-key="client_chrome_run_instructions1"></span></p>
