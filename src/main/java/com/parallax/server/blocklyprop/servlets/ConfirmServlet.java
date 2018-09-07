@@ -90,6 +90,7 @@ public class ConfirmServlet extends HttpServlet {
                     .forward(req, resp);
         } else {
             try {
+                LOG.info("Trying to confirm: {}, {}", email, token);
                 // Validate the email and token with the Cloud Session server
                 if (cloudSessionLocalUserService.doConfirm(email, token)) {
 
