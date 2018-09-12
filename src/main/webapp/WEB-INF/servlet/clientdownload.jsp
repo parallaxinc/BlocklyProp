@@ -6,13 +6,13 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="base" content="<url:getUrl url="/"/>">
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
         <link href="<url:getCdnUrl url="/style-clientdownload.css"/>" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="<url:getCdnUrl url="/detect.js"/>"></script>
+        <script type="text/javascript" src="<url:getCdnUrl url="/utils.js"/>"></script>
     </head>
     <body>
 
@@ -42,7 +42,7 @@
                     <div class="clients">
                         <div class="client MacOS">
                             <img src="<url:getCdnUrl url="/images/os-icons/mac_os.png"/>"/>
-                            <a href="${properties:downloadfiles('/BlocklyPropClient-installer.dmg')}">
+                            <a href="${properties:downloadfiles('/BlocklyPropClient-setup-MacOS.pkg')}">
                                 <fmt:message key="clientdownload.client.macos.installer" /></a>
                         </div>
                         <div class="client Windows">
@@ -55,6 +55,12 @@
                             <img src="<url:getCdnUrl url="/images/os-icons/windows.png"/>"/>
                             <a href="${properties:downloadfiles('/BlocklyPropClient-setup-64.exe')}">
                                 <fmt:message key="clientdownload.client.windows64.installer" /></a>
+                        </div>
+
+                        <div class="client ChromeOS">
+                            <img src="<url:getCdnUrl url="/images/os-icons/chrome_os.png"/>"/>
+                            <a href="https://chrome.google.com/webstore/detail/iddpgcclgepllhnhlkkinbmmafpbnddb">
+                                <fmt:message key="clientdownload.client.chromeos.installer" /></a>
                         </div>
                     </div>
                     <button class="btn btn-default show-all" onclick="$('body').addClass('all-clients');">

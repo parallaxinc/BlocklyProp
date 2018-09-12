@@ -10,7 +10,11 @@ import com.parallax.client.cloudsession.objects.User;
 import java.io.Serializable;
 
 /**
- *
+ * User session details.
+ * 
+ * This class contains the fields used to manage the client's session with
+ * the application.
+ * 
  * @author Michel
  */
 @SessionScoped
@@ -20,6 +24,12 @@ public class SessionData implements Serializable {
     private Long idUser;
     private String locale;
 
+    /**
+     * Obtain the user account/profile details for the user account associated
+     * with this session.
+     * 
+     * @return CS user account object 
+     */
     public User getUser() {
         return user;
     }

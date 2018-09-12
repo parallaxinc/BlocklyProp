@@ -27,13 +27,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Reset user account password from the UI
+ * 
  * @author Michel
  */
 @Singleton
 public class PasswordResetServlet extends HttpServlet {
 
-    private static Logger log = LoggerFactory.getLogger(PasswordResetServlet.class);
+    private static Logger LOG = LoggerFactory.getLogger(PasswordResetServlet.class);
 
     private final TextileReader textileFileReader = new TextileReader();
 
@@ -48,6 +49,9 @@ public class PasswordResetServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        LOG.info("REST:/reset/ Get request received");
+
         String token = req.getParameter("token");
         String email = req.getParameter("email");
         req.setAttribute("token", token == null ? "" : token);
@@ -57,12 +61,16 @@ public class PasswordResetServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        LOG.info("REST:/reset/ Post request received");
+       
         String token = req.getParameter("token");
         String email = req.getParameter("email");
         req.setAttribute("token", token == null ? "" : token);
         req.setAttribute("email", email == null ? "" : email);
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("confirmpassword");
+        
         if (Strings.isNullOrEmpty(token) || Strings.isNullOrEmpty(email) || Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(confirmPassword)) {
             req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
         } else {
@@ -87,7 +95,7 @@ public class PasswordResetServlet extends HttpServlet {
                 req.setAttribute("passwordComplexity", "Password is not complex enough");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             } catch (WrongAuthenticationSourceException ex) {
-                log.warn("Trying to change password of non local user!");
+                LOG.warn("Trying to change password of non local user!");
                 req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             }

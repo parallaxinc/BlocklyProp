@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class ProfileServlet extends HttpServlet {
 
-    private Logger log = LoggerFactory.getLogger(ProfileServlet.class);
+    private Logger LOG = LoggerFactory.getLogger(ProfileServlet.class);
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private CloudSessionUserService cloudSessionUserService;
@@ -71,10 +71,14 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        LOG.info("REST:/profile/ Get request received");
+
         User user = BlocklyPropSecurityUtils.getUserInfo();
         req.setAttribute("id", user.getId());
         req.setAttribute("email", user.getEmail());
         req.setAttribute("screenname", user.getScreenname());
+        
         if ("local".equals(user.getAuthenticationSource())) {
             req.getRequestDispatcher("/WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
         } else {
@@ -83,24 +87,11 @@ public class ProfileServlet extends HttpServlet {
         }
     }
 
-    //@Override
-    protected void oldDoPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            log.info("Updating user info");
-            User user = cloudSessionUserService.getUser(BlocklyPropSecurityUtils.getUserInfo().getId());
-            if (user != null) {
-                SecurityServiceImpl.getSessionData().setUser(user);
-                userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
-            }
-        } catch (UnknownUserIdException uuie) {
-            log.error("Unknown user", uuie);
-        } catch (ServerException se) {
-            log.error("Server exception", se);
-        }
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        LOG.info("REST:/profile/ Post request received");
+
         resp.setContentType("application/json");
 
         String unlock = req.getParameter("unlock");
@@ -108,11 +99,13 @@ public class ProfileServlet extends HttpServlet {
             unlock(req, resp);
             return;
         }
+        
         String saveBase = req.getParameter("save-base");
         if (!Strings.isNullOrEmpty(saveBase)) {
             saveBase(req, resp);
             return;
         }
+        
         String savePassword = req.getParameter("save-password");
         if (!Strings.isNullOrEmpty(savePassword)) {
             savePassword(req, resp);
@@ -168,6 +161,7 @@ public class ProfileServlet extends HttpServlet {
         req.setAttribute("email", user.getEmail());
         req.setAttribute("screenname", user.getScreenname());
         String screenname = req.getParameter("screenname");
+
         if (Strings.isNullOrEmpty(screenname)) {
             req.setAttribute("base-error", "Missing fields");
             req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
@@ -176,7 +170,13 @@ public class ProfileServlet extends HttpServlet {
                 user = cloudSessionUserService.changeUserInfo(BlocklyPropSecurityUtils.getCurrentSessionUserId(), screenname);
                 if (user != null) {
                     SecurityServiceImpl.getSessionData().setUser(user);
-                    userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+                    
+                    /*
+                     * Not allowing changed to the screen name until the user profile
+                     * page is capble of supporting this feature
+                    */
+//                    userDao.updateScreenname(BlocklyPropSecurityUtils.getCurrentUserId(), user.getScreenname());
+
                     req.setAttribute("base-success", "Info changed");
                     req.setAttribute("screenname", user.getScreenname());
                     req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
@@ -232,7 +232,7 @@ public class ProfileServlet extends HttpServlet {
                 req.setAttribute("passwordComplexity", "Password is not complex enough");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             } catch (WrongAuthenticationSourceException ex) {
-                log.warn("Trying to change password of non local user!");
+                LOG.warn("Trying to change password of non local user!");
                 req.setAttribute("base-error", "Server error");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             }

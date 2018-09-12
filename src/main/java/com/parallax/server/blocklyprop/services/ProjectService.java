@@ -19,15 +19,20 @@ public interface ProjectService {
 
     ProjectRecord getProjectOwnedByThisUser(Long idProject);
 
+    // Return a project
     ProjectRecord getProject(Long idProject);
 
     List<ProjectRecord> getUserProjects(Long idUser, TableSort tablesSort, TableOrder order, Integer limit, Integer offset);
 
     List<ProjectRecord> getSharedProjects(TableSort tablesSort, TableOrder order, Integer limit, Integer offset);
 
+    List<ProjectRecord> getSharedProjectsByUser(TableSort tablesSort, TableOrder order, Integer limit, Integer offset, Long idUser);
+
     int countUserProjects(Long idUser);
 
     int countSharedProjects();
+    
+    int countSharedProjectsByUser(Long idUser);
 
     ProjectRecord saveProject(Long idProject, String name, String description, String descriptionHtml, boolean privateProject, boolean sharedProject, ProjectType type, String board);
 
@@ -39,6 +44,6 @@ public interface ProjectService {
 
     ProjectRecord saveProjectCode(Long idProject, String code);
 
-    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName);
+    public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName, String newBoard);
 
 }

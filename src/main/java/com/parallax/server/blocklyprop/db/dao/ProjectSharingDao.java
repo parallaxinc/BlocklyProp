@@ -21,5 +21,10 @@ public interface ProjectSharingDao {
     int revokeSharing(Long idProject);
 
     public List<ProjectSharingRecord> getSharingInfo(Long idProject);
+    
+    // Set the active flag in an existing shared project record
+    public ProjectSharingRecord activateProject(Long idProject);
 
+    // Remove a project sharing link record
+    public boolean deleteProjectSharingRecord(Long idProject);
 }

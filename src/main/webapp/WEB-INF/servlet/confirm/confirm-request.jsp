@@ -60,7 +60,7 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="confirm.request.submit" />">
                     </form>
-                    <p><a href="<url:getUrl url="/index"/>" >Go to home</a></p>
+                    <p><a href="<url:getUrl url="/index"/>" >Go to home page</a></p>
                 </div>
             </div>
         </div>

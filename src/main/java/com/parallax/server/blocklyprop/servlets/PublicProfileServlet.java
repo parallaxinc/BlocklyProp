@@ -25,13 +25,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Get the public attributes of a user's profile
+ * 
  * @author Michel
  */
 @Singleton
 public class PublicProfileServlet extends HttpServlet {
 
-    private static final Logger log = LoggerFactory.getLogger(PublicProfileServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PublicProfileServlet.class);
 
     private UserService userService;
     private CloudSessionUserService cloudSessionUserService;
@@ -50,40 +51,43 @@ public class PublicProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idUserString = req.getParameter("id-user");
         Long idUser = null;
+        
+        LOG.info("REST:/public/profile/ Get request received for user '{}'", idUserString);
+
         try {
             if (Strings.isNullOrEmpty(idUserString)) {
                 if (SecurityUtils.getSubject().isAuthenticated()) {
                     idUser = SecurityServiceImpl.getSessionData().getIdUser();
                 } else {
-                    log.info("Getting current user while not authenticated");
+                    LOG.info("Getting current user while not authenticated");
                     resp.sendError(404);
                 }
             } else {
                 idUser = Long.parseLong(idUserString);
             }
         } catch (NumberFormatException nfe) {
-            log.info("id-user is not a valid number: {}", idUserString);
+            LOG.info("id-user is not a valid number: {}", idUserString);
             resp.sendError(500);
         }
         try {
 
             User user = userService.getUser(idUser);
             if (user == null) {
-                log.info("Get public profile for user {} (Does not exist!)", idUser);
+                LOG.info("Get public profile for user {} (Does not exist!)", idUser);
                 resp.sendError(404);
                 return;
             }
 
-            log.info("Get public profile for user {}: Cloud-session user: {}", idUser, user.getIdcloudsession());
+            LOG.info("Get public profile for user {}: Cloud-session user: {}", idUser, user.getIdcloudsession());
             com.parallax.client.cloudsession.objects.User cloudSessionUser = cloudSessionUserService.getUser(user.getIdcloudsession());
 
             req.setAttribute("screenname", cloudSessionUser.getScreenname());
             req.getRequestDispatcher("/WEB-INF/servlet/public-profile.jsp").forward(req, resp);
         } catch (UnknownUserIdException ex) {
-            log.info("User not known in cloud-session");
+            LOG.info("User not known in cloud-session");
             resp.sendError(404);
         } catch (ServerException ex) {
-            log.error("Communication problem with Cloud-session", ex);
+            LOG.error("Communication problem with Cloud-session", ex);
             resp.sendError(500);
         }
 

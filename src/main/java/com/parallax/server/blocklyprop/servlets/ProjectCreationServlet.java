@@ -16,16 +16,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
- *
+ * Create a new project
+ * 
  * @author Michel
  */
 @Singleton
 public class ProjectCreationServlet extends HttpServlet {
+    
+    // Get a logger instance
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectCreationServlet.class);
 
     private ProjectService projectService;
-
+    
+    
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
@@ -35,7 +43,12 @@ public class ProjectCreationServlet extends HttpServlet {
      * Update user
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        
+        LOG.info("REST:/createproject/ Post request received");
+        LOG.info("Creating project '{}'",req.getParameter("project-name") );
+
         resp.setContentType("text/json");
         JsonObject result = new JsonObject();
 
@@ -49,25 +62,46 @@ public class ProjectCreationServlet extends HttpServlet {
         boolean privateProject = "private".equalsIgnoreCase(sharing);
         boolean sharedProject = "shared".equalsIgnoreCase(sharing);
 
+        // ProjectType can be on of two values; 'SPIN' or 'PROPC'
         ProjectType projectType = null;
+        
         try {
             projectType = ProjectType.valueOf(projectTypeString);
             if (projectType == null) {
+                // The project type we received is unknown.
                 result.addProperty("success", false);
-                result.addProperty("message", "Invalid projecttype");
+                result.addProperty("message", "Unknown Project Type " + projectTypeString );
                 resp.getWriter().write(result.toString());
                 return;
             }
         } catch (IllegalArgumentException iae) {
+            // The project type was not supplied.
             result.addProperty("success", false);
-            result.addProperty("message", "Invalid projecttype");
+            result.addProperty("message", "Invalid Project Type");
             resp.getWriter().write(result.toString());
             return;
         }
 
-        ProjectRecord project = projectService.createProject(projectName, projectDescription, projectDescriptionHtml, privateProject, sharedProject, projectType, boardType);
-        result.addProperty("success", true);
-        result.addProperty("id", project.getId());
+        try {
+            // Create a new project for the logged in user
+            ProjectRecord project = projectService.createProject(
+                projectName, projectDescription, 
+                projectDescriptionHtml, 
+                privateProject, 
+                sharedProject, 
+                projectType, 
+                boardType);
+        
+            result.addProperty("success", true);
+            result.addProperty("id", project.getId());
+        } catch (Exception ex) {
+            result.addProperty("success", false);
+            result.addProperty("message", "Unexpected error");
+            resp.getWriter().write(result.toString());
+            return;
+        }
+
+        // Return the result to the client
         resp.getWriter().write(result.toString());
     }
 

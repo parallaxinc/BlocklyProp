@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestProfile {
 
-    private static final Logger log = LoggerFactory.getLogger(RestProfile.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RestProfile.class);
 
     private CloudSessionLocalUserService cloudSessionLocalUserService;
     private CloudSessionUserService cloudSessionUserService;
@@ -57,7 +57,14 @@ public class RestProfile {
     @Detail("Save base profile data")
     @Name("Save base profile data")
     @Produces("application/json")
-    public Response saveBase(@FormParam("id") Long id, @FormParam("username") String username, @FormParam("password") String password, @FormParam("screenname") String screenname) {
+    public Response saveBase(
+            @FormParam("id") Long id, 
+            @FormParam("username") String username, 
+            @FormParam("password") String password, 
+            @FormParam("screenname") String screenname) {
+        
+        LOG.info("REST:/rest/profile/base/ Post request received");
+
         JsonObject result = new JsonObject();
         if (Strings.isNullOrEmpty(screenname)) {
             result.addProperty("success", false);
@@ -96,7 +103,15 @@ public class RestProfile {
     @Detail("Save password data")
     @Name("Save password data")
     @Produces("application/json")
-    public Response savePassword(@FormParam("id") Long id, @FormParam("username") String username, @FormParam("oldpassword") String oldPassword, @FormParam("password") String password, @FormParam("confirmpassword") String confirmPassword) {
+    public Response savePassword(
+            @FormParam("id") Long id, 
+            @FormParam("username") String username, 
+            @FormParam("oldpassword") String oldPassword, 
+            @FormParam("password") String password, 
+            @FormParam("confirmpassword") String confirmPassword) {
+
+        LOG.info("REST:/rest/profile/password/ Post request received");
+
         JsonObject result = new JsonObject();
 
         if (Strings.isNullOrEmpty(oldPassword) || Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(confirmPassword)) {
@@ -134,7 +149,7 @@ public class RestProfile {
                 result.addProperty("message", "password-complexity");
                 return Response.ok(result.toString()).build();
             } catch (WrongAuthenticationSourceException ex) {
-                log.warn("Trying to change password of non local user!");
+                LOG.warn("Trying to change password of non local user!");
                 result.addProperty("success", false);
                 result.addProperty("message", "server-error");
                 return Response.ok(result.toString()).build();

@@ -26,13 +26,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Reset user account password via email
+ * 
  * @author Michel
  */
 @Singleton
 public class PasswordResetRequestServlet extends HttpServlet {
 
-    private static Logger log = LoggerFactory.getLogger(PasswordResetRequestServlet.class);
+    private final static Logger LOG = LoggerFactory.getLogger(PasswordResetRequestServlet.class);
 
     private final TextileReader textileFileReader = new TextileReader();
 
@@ -47,14 +48,25 @@ public class PasswordResetRequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+        
+        LOG.info("REST:/resetrequest/ Get request received");
+
+        req.getRequestDispatcher(
+                "WEB-INF/servlet/password-reset/reset-request.jsp"
+            ).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        LOG.info("REST:/resetrequest/ Post request received");
+
         String email = req.getParameter("email");
+        
         if (Strings.isNullOrEmpty(email)) {
-            req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+            req.getRequestDispatcher(
+                    "WEB-INF/servlet/password-reset/reset-request.jsp"
+            ).forward(req, resp);
         } else {
             try {
                 if (cloudSessionLocalUserService.requestPasswordReset(email)) {
@@ -74,9 +86,12 @@ public class PasswordResetRequestServlet extends HttpServlet {
                 req.setAttribute("server-error", "Server exception");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
             } catch (WrongAuthenticationSourceException ex) {
-                log.info("Trying to request password reset of non local user!");
+                LOG.info("Trying to request password reset of non local user!");
                 req.setAttribute("wrongAuthenticationSource", true);
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+            } catch (Exception ex) {
+                LOG.error("Unhandled exception while resetting user password. Message: {}"
+                        ,ex.getMessage());
             }
         }
     }
