@@ -112,12 +112,12 @@
                 // show warning, disable submit button, give field red border
                 $("#submit-btn").prop("disabled",true);
                 $("#passWarning").removeClass('hidden');
-                $("#passwordField).css("border-color","#d43f3a");
+                $("#passwordField").css("border-color","#d43f3a");
             } else {
                 // hide warning, enable submit button, remove red border
                 $("#submit-btn").prop("disabled",false);
                 $("#passWarning").addClass('hidden');
-                $("#passwordField).css("border-color","");
+                $("#passwordField").css("border-color","");
             }
         }
     });
