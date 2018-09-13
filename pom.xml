@@ -560,20 +560,5 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-    
-        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-nbjunit -->
-    <!--    <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-nbjunit</artifactId>
-            <version>RELEASE801</version>
-        </dependency>
-    -->
-        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-jellytools-platform -->
-    <!--    <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-jellytools-platform</artifactId>
-            <version>RELEASE801</version>
-        </dependency>
-    -->
-    </dependencies>
+        </dependencies>
 </project>
