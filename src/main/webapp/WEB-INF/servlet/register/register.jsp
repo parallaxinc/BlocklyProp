@@ -119,7 +119,7 @@
                 $("#passWarning").addClass('hidden');
                 $("#passwordField").css("border-color","");
             }
-        }
+        });
     });
         </script>
     </head>
