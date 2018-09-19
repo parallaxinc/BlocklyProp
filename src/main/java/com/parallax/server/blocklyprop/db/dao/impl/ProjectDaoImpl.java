@@ -5,8 +5,6 @@
  */
 package com.parallax.server.blocklyprop.db.dao.impl;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.dao.ProjectDao;
@@ -14,6 +12,9 @@ import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.GregorianCalendar;
 import java.util.List;
 import org.apache.shiro.authz.UnauthorizedException;

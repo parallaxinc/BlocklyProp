@@ -270,14 +270,6 @@
             <artifactId>logback-core</artifactId>
             <version>1.1.8</version>
         </dependency>
-            
-        <!--        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        -->
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -309,12 +301,6 @@
             <version>${jooq-version}</version>
         </dependency>
 
-        <!--<dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-meta</artifactId>
-            <version>${jooq-version}</version>
-        </dependency>-->
-
         <dependency>
             <groupId>com.adamlewis</groupId>
             <artifactId>guice-persist-jooq</artifactId>
@@ -327,7 +313,6 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
-        
         <!-- END JOOQ Dependencies -->
 
         <!-- Dependencies for Shiro -->
@@ -497,13 +482,6 @@
             <version>3.1.2</version>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-log4j</artifactId>
-            <version>${metrics-version}</version>
-        </dependency>
--->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>
