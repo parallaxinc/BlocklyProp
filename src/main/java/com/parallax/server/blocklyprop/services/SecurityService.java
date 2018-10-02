@@ -39,7 +39,8 @@ public interface SecurityService {
                 UserBlockedException, 
                 EmailNotConfirmedException, 
                 InsufficientBucketTokensException, 
-                WrongAuthenticationSourceException;
+                WrongAuthenticationSourceException,
+                NullPointerException;
 
     Long register(
             String screenname, 

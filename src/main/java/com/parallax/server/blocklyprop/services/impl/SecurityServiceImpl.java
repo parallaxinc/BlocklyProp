@@ -351,7 +351,9 @@ public class SecurityServiceImpl implements SecurityService {
      * @throws UserBlockedException
      * @throws EmailNotConfirmedException
      * @throws InsufficientBucketTokensException
-     * @throws WrongAuthenticationSourceException 
+     * @throws WrongAuthenticationSourceException
+     * @throws NullPointerException
+     *
      */
     @Override
     public User authenticateLocalUser(String email, String password) throws 
@@ -359,7 +361,8 @@ public class SecurityServiceImpl implements SecurityService {
             UserBlockedException, 
             EmailNotConfirmedException, 
             InsufficientBucketTokensException, 
-            WrongAuthenticationSourceException {
+            WrongAuthenticationSourceException,
+            NullPointerException {
         
         try {
             LOG.info("Attempting to authenticate {}", email);

@@ -159,14 +159,20 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
             return null;
         } catch (UnknownUserException ex) {
             LOG.info("Unknown user", ex);
+
         } catch (UserBlockedException ex) {
             LOG.info("Blocked user", ex);
+
         } catch (EmailNotConfirmedException ex) {
             LOG.info("Email not confirmed", ex);
+            throw new AuthenticationException("Email is unconfirmed");
+
         } catch (InsufficientBucketTokensException ibte) {
             LOG.info("Insufficient bucken tokens", ibte);
+
         } catch (NullPointerException npe) {
             LOG.warn("NullPointer", npe);
+
         } catch (Throwable t) {
             // This is a catchall exception handler that kicks the can back
             // to the caller

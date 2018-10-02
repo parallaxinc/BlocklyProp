@@ -9,7 +9,11 @@ Valid logging levels: TRACE, DEBUG, INFO, WARN and ERROR
 -->
 <configuration>
     <!-- Log file destinations are defined here -->
+    <!--
     <property name="APP_LOG_PATH" value="/var/log/tomcat7"/>
+    -->
+    <property name="APP_LOG_PATH" value="${catalina.home}/logs"/>
+
     <property name="APP_LOG_FILE_BASE" value="blockly-app"/>
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
