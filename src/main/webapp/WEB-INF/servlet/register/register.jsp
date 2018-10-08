@@ -114,12 +114,35 @@
                 $("#passWarning").removeClass('hidden');
                 $("#passwordField").css("border-color","#d43f3a");
             } else {
-                // hide warning, enable submit button, remove red border
-                $("#submit-btn").prop("disabled",false);
+                // hide warning, remove red border
                 $("#passWarning").addClass('hidden');
-                $("#passwordField").css("border-color","");
+                if (passValue.length < 8) {
+                    // password is long enough, enable submit button and turn green
+                    $("#submit-btn").prop("disabled",false);
+                    $("#passWarningLength").addClass('hidden');
+                    $("#passwordField").css("border-color","#d6e9c6");
+                } else {
+                    // password is too short, keep field neutral colored, keep submit button disabled
+                    $("#submit-btn").prop("disabled",true);
+                    $("#passwordField").css("border-color","");
+                }
             }
         });
+        
+        $("#passwordField").keypress(function(e) {
+            var passValue = document.getElementById('passwordField').value;
+            if(e.which == 13 && passValue.length < 8) {
+                $("#passWarningLength").removeClass('hidden');
+            }
+        });
+        
+        $("#passwordField").blur(function() {
+            var passValue = document.getElementById('passwordField').value;
+            if(passValue.length < 8) {
+                $("#passWarningLength").removeClass('hidden');
+            }
+        });
+        
     });
         </script>
     </head>
@@ -322,6 +345,7 @@
                                    maxlength="100"
                                    placeholder="<fmt:message key="password.complexity" />">
                             <div class="alert alert-danger hidden" id="passWarning"><fmt:message key="register.do.password.char.alert" /></div>
+                            <div class="alert alert-warning hidden" id="passWarningLength"><fmt:message key="register.do.password.char.length" /></div>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" >
@@ -429,7 +453,7 @@
                                 </select>
                             </p>
                         </div>
-                        <input class="btn btn-default" type="submit" id="submit-btn" name="submit" value="<fmt:message key="register.do.submit" />">
+                        <input class="btn btn-default" type="submit" id="submit-btn" name="submit" value="<fmt:message key="register.do.submit" />" disabled="true">
                     </form>
                 </div>
             </div>
