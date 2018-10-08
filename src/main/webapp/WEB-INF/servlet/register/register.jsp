@@ -116,11 +116,11 @@
             } else {
                 // hide warning, remove red border
                 $("#passWarning").addClass('hidden');
-                if (passValue.length < 8) {
+                if (passValue.length > 7) {
                     // password is long enough, enable submit button and turn green
                     $("#submit-btn").prop("disabled",false);
                     $("#passWarningLength").addClass('hidden');
-                    $("#passwordField").css("border-color","#d6e9c6");
+                    $("#passwordField").css("border-color","#25c435");
                 } else {
                     // password is too short, keep field neutral colored, keep submit button disabled
                     $("#submit-btn").prop("disabled",true);
