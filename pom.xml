@@ -254,12 +254,13 @@
 
         <!-- Dependencies for logging -->
         <!-- sl4fj is a facade for various logging frameworks -->
+<!--
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.21</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

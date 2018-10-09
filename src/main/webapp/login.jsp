@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
@@ -35,6 +34,7 @@
                     <p><a href="register" ><fmt:message key="login.registerlink" /></a></p>
                     <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
                     <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
+                    
                     <form id="loginform" name="loginform" action="<url:getUrl url="/login.jsp" />" method="post">
                         <div class="form-group">
                             <label for="username" ><fmt:message key="login.email" /></label>
