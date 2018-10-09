@@ -139,6 +139,7 @@ public class SecurityServiceImpl implements SecurityService {
      * 
      * @param configuration 
      */
+
     @Inject
     public void setConfiguration(Configuration configuration) {
         LOG.debug("Setting cloud session configuration");
@@ -315,7 +316,8 @@ public class SecurityServiceImpl implements SecurityService {
                 UserBlockedException, 
                 EmailNotConfirmedException, 
                 InsufficientBucketTokensException, 
-                WrongAuthenticationSourceException {
+                WrongAuthenticationSourceException,
+                ServerException {
 
         LOG.info("Authenticating user from email address");
         return instance.authenticateLocalUser(email, password);
@@ -356,13 +358,14 @@ public class SecurityServiceImpl implements SecurityService {
      *
      */
     @Override
-    public User authenticateLocalUser(String email, String password) throws 
-            UnknownUserException, 
+    public User authenticateLocalUser(String email, String password) throws
+            UnknownUserException,
             UserBlockedException, 
             EmailNotConfirmedException, 
             InsufficientBucketTokensException, 
             WrongAuthenticationSourceException,
-            NullPointerException {
+            NullPointerException,
+            ServerException {
         
         try {
             LOG.info("Attempting to authenticate {}", email);
@@ -371,10 +374,6 @@ public class SecurityServiceImpl implements SecurityService {
             User user = authenticateService.authenticateLocalUser(email, password);
             LOG.info("User authenticated");
             return user;
-
-        } catch (UnknownUserException uue) {
-            LOG.error("User account is unknown.");
-            throw uue;
 
         } catch (UserBlockedException ube) {
             LOG.error("User account is blocked.");
@@ -398,17 +397,26 @@ public class SecurityServiceImpl implements SecurityService {
 
         } catch (ServerException se) {
             LOG.error("Server error encountered: {}", se.getMessage());
-            return null;
+            throw se;
         }
     }
 
     /**
      * 
      * @param idUser
+     * This is the primary key from the cloudsession.user table.
+     *
      * @return
+     * Returns a User object if successful. Otherwise it throws an appropriate exception.
+     *
      * @throws UnknownUserIdException
+     * User account does not exist
+     *
      * @throws UserBlockedException
-     * @throws EmailNotConfirmedException 
+     * User account is locked and unavailable
+     *
+     * @throws EmailNotConfirmedException
+     * User account registration is incomplete. The account is unavailable.
      */
     public User authenticateLocalUser(Long idUser) throws 
             UnknownUserIdException, 

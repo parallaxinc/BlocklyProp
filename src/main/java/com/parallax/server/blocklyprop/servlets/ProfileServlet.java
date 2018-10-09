@@ -113,7 +113,8 @@ public class ProfileServlet extends HttpServlet {
         }
     }
 
-    private void unlock(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void unlock(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(password)) {
@@ -150,6 +151,9 @@ public class ProfileServlet extends HttpServlet {
                 return;
             } catch (WrongAuthenticationSourceException ex) {
                 resp.getWriter().write(createFailure("Invalid authentication").toString());
+                return;
+            } catch (ServerException ex) {
+                LOG.warn("Server error reported. Message: {}", ex.getMessage());
                 return;
             }
 
