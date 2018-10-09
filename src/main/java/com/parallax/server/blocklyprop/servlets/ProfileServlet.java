@@ -223,6 +223,9 @@ public class ProfileServlet extends HttpServlet {
                     req.setAttribute("password-error", "Password could not be changed");
                     req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
                 }
+            } catch (EmailNotConfirmedException enc) {
+                req.setAttribute("account-error", "Email is unconfirmed");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             } catch (UnknownUserIdException uuie) {
                 req.setAttribute("password-error", "Unknown user");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
