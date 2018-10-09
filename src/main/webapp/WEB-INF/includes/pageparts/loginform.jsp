@@ -3,10 +3,7 @@
     Created on : 24-mei-2015, 18:41:02
     Author     : Michel
 --%>
-
-
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
 <div>
     <div id="login-failure" class="hidden">
         <div class="alert alert-danger" id="unlock-error">

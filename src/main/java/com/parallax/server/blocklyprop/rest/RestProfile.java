@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
@@ -132,6 +133,10 @@ public class RestProfile {
                     result.addProperty("message", "could-not-change");
                     return Response.ok(result.toString()).build();
                 }
+            } catch (EmailNotConfirmedException enc) {
+                result.addProperty("success", false);
+                result.addProperty("message", "email is not confirmed");
+                return Response.ok(result.toString()).build();
             } catch (UnknownUserIdException uuie) {
                 result.addProperty("success", false);
                 result.addProperty("message", "unknown-user");

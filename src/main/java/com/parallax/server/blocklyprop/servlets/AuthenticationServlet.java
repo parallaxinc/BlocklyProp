@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
@@ -78,7 +79,21 @@ public class AuthenticationServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         LOG.info("Authenticating user '{}'", username);
-        User user = authenticationService.authenticate(username, password);
+
+        User user = null;
+
+        try {
+            //FIXME: Validate the username and password fields before using them.
+            user = authenticationService.authenticate(username, password);
+        }
+        catch (AuthenticationException ex) {
+            LOG.warn("Authentication error. Message is: {}", ex.getMessage());
+
+            JsonObject response = new JsonObject();
+            response.addProperty("success", false);
+            response.addProperty("message", ex.getMessage());
+            resp.getWriter().write(response.toString());
+        }
 
         if (user != null) {
             SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
@@ -107,6 +122,7 @@ public class AuthenticationServlet extends HttpServlet {
             }
         } else {
             LOG.info("Authentication failed for user '{}'", username);
+
             JsonObject response = new JsonObject();
             response.addProperty("success", false);
             response.addProperty("message", "Invalid authentication");

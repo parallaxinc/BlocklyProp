@@ -108,6 +108,8 @@ public class SetupConfig extends GuiceServletContextListener {
 
         // This manually deregisters JDBC driver, which prevents Tomcat 7 from
         // complaining about memory leaks into this class
+        
+/*        
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();
             try {
@@ -126,6 +128,7 @@ public class SetupConfig extends GuiceServletContextListener {
         if (loggerContext != null) {
             loggerContext.stop();
         }
+*/
     }
 
 }

@@ -84,11 +84,12 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
      * @return the AuthorizationInfo associated with this principals.
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals){
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         
         LOG.debug("Authorization info");
         AuthorizationInfo authorizationInfo = new SimpleAccount();
 
+        LOG.info("AuthInfo() details: {}", authorizationInfo.getRoles().size());
         return authorizationInfo;
     }
 
@@ -105,16 +106,21 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
      * A null return value means that no account could be associated with the
      * specified token.
 
-     * @param token  the authentication token containing the user's principal and credentials.
-     * @return an AuthenticationInfo object containing account data resulting
+     * @param token
+     * The authentication token containing the user's principal and credentials.
+     *
+     * @return
+     * Returns an AuthenticationInfo object containing account data resulting
      * from the authentication ONLY if the lookup is successful (i.e. account
      * exists and is valid, etc.)
-     * @throws AuthenticationException  if there is an error acquiring data or
-     * performing realm-specific authentication logic for the specified token
+     *
+     * @throws AuthenticationException
+     * if there is an error acquiring data or  performing realm-specific
+     * authentication logic for the specified token
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(
-            AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
+            throws AuthenticationException {
 
         LOG.info("Obtaining authentication info");
         
@@ -129,7 +135,7 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                         "CloudSession");
             } else {
 
-                LOG.info("Authentication is using local login and password");
+                LOG.info("Authentication is using local login authority");
 
                 // Principal = login
                 String principal = (String) token.getPrincipal();
@@ -158,20 +164,24 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
             }
             return null;
         } catch (UnknownUserException ex) {
-            LOG.info("Unknown user", ex);
+            LOG.warn("Authentication failed. Message: {}", ex.getMessage());
+            throw new AuthenticationException(ex.getMessage());
 
         } catch (UserBlockedException ex) {
-            LOG.info("Blocked user", ex);
+            LOG.warn("Blocked user {}", ex);
+            throw new AuthenticationException(ex.getMessage());
 
         } catch (EmailNotConfirmedException ex) {
-            LOG.info("Email not confirmed", ex);
-            throw new AuthenticationException("Email is unconfirmed");
+            LOG.warn("Authentication failed. Message: {}", ex.getMessage());
+            throw new AuthenticationException("EmailNotConfirmed");
 
-        } catch (InsufficientBucketTokensException ibte) {
-            LOG.info("Insufficient bucken tokens", ibte);
+        } catch (InsufficientBucketTokensException ex) {
+            LOG.info("Insufficient bucket tokens: {}", ex.getMessage());
+            throw new AuthenticationException(ex.getMessage());
 
         } catch (NullPointerException npe) {
             LOG.warn("NullPointer", npe);
+            throw new AuthenticationException(npe.getMessage());
 
         } catch (Throwable t) {
             // This is a catchall exception handler that kicks the can back

@@ -76,15 +76,15 @@ public class RestSharedProject {
             @QueryParam("offset") Integer offset) {
 
         LOG.info("REST:/shared/project/list/ endpoint activated");
-        LOG.info("REST:/shared/project/list/ Sort parameter is '{}'", sort);
-        LOG.info("REST:/shared/project/list/ Sort parameter is '{}'", sort);
+        LOG.debug("REST:/shared/project/list/ Sort parameter is '{}'", sort);
+        LOG.debug("REST:/shared/project/list/ Sort parameter is '{}'", sort);
 
         Boolean parametersValid = false;
         
         // Check the incoming data
         if (sort != null){
             for (TableSort t : TableSort.values()) {
-                LOG.info("REST:/shared/project/list/ Sort test for '{}'", t);
+                LOG.debug("REST:/shared/project/list/ Sort test for '{}'", t);
             
                 if (sort == t) {
                     parametersValid = true;
@@ -93,7 +93,7 @@ public class RestSharedProject {
             }
         
             if (parametersValid == false) {
-                LOG.info("REST:/shared/project/list/ Sort parameter failed");
+                LOG.warn("REST:/shared/project/list/ Sort parameter failed");
                 return Response.status(Response.Status.NOT_ACCEPTABLE).build();
             }
         }
@@ -101,7 +101,7 @@ public class RestSharedProject {
         if (order != null) {
             parametersValid = false;
 
-            LOG.info("REST:/shared/project/list/ Checking order");
+            LOG.debug("REST:/shared/project/list/ Checking order");
         
             for (TableOrder t : TableOrder.values()) {
                 if (order == t) {
@@ -115,22 +115,20 @@ public class RestSharedProject {
             }
         }
         
-        LOG.info("REST:/shared/project/list/ Checking limit");
+        LOG.debug("REST:/shared/project/list/ Checking limit");
 
         if ( (limit == null) || (limit > 50)) {
-            LOG.info("REST:/shared/project/list/ Limit throttle to 50 entries");
+            LOG.warn("REST:/shared/project/list/ Limit throttle to 50 entries");
             limit = 50;
         }
         
-        LOG.info("REST:/shared/project/list/ Checking offset");
+        LOG.debug("REST:/shared/project/list/ Checking offset");
 
         if ((offset == null) || (offset < 0)) {
             offset = 0;
         }
         
-        LOG.info("REST:/shared/project/list/ Get request received");
-
-        List<ProjectRecord> projects 
+        List<ProjectRecord> projects
                 = projectService.getSharedProjects(sort, order, limit, offset);
         
         // Obtain a count of the total number of community projects available
