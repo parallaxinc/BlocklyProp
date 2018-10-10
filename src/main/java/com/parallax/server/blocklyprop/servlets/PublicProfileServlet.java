@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionUserService;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.server.blocklyprop.db.generated.tables.pojos.User;
@@ -79,10 +80,15 @@ public class PublicProfileServlet extends HttpServlet {
             }
 
             LOG.info("Get public profile for user {}: Cloud-session user: {}", idUser, user.getIdcloudsession());
-            com.parallax.client.cloudsession.objects.User cloudSessionUser = cloudSessionUserService.getUser(user.getIdcloudsession());
+            
+            com.parallax.client.cloudsession.objects.User cloudSessionUser =
+                    cloudSessionUserService.getUser(user.getIdcloudsession());
 
             req.setAttribute("screenname", cloudSessionUser.getScreenname());
             req.getRequestDispatcher("/WEB-INF/servlet/public-profile.jsp").forward(req, resp);
+        } catch (EmailNotConfirmedException ex) {
+            LOG.info("User not known in cloud-session");
+            resp.sendError(404);
         } catch (UnknownUserIdException ex) {
             LOG.info("User not known in cloud-session");
             resp.sendError(404);
