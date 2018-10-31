@@ -253,11 +253,10 @@
         </dependency>
 
         <!-- Dependencies for logging -->
-        <!-- sl4fj is a facade for various logging frameworks -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
+            <version>1.7.25</version>
         </dependency>
 
         <dependency>
@@ -265,19 +264,12 @@
             <artifactId>logback-classic</artifactId>
             <version>1.1.8</version>
         </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>1.1.8</version>
         </dependency>
-            
-        <!--        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        -->
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -309,12 +301,6 @@
             <version>${jooq-version}</version>
         </dependency>
 
-        <!--<dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-meta</artifactId>
-            <version>${jooq-version}</version>
-        </dependency>-->
-
         <dependency>
             <groupId>com.adamlewis</groupId>
             <artifactId>guice-persist-jooq</artifactId>
@@ -327,7 +313,6 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
-        
         <!-- END JOOQ Dependencies -->
 
         <!-- Dependencies for Shiro -->
@@ -497,13 +482,6 @@
             <version>3.1.2</version>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-log4j</artifactId>
-            <version>${metrics-version}</version>
-        </dependency>
--->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>
@@ -557,23 +535,8 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
-    
-        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-nbjunit -->
-    <!--    <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-nbjunit</artifactId>
-            <version>RELEASE801</version>
-        </dependency>
-    -->
-        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-jellytools-platform -->
-    <!--    <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-jellytools-platform</artifactId>
-            <version>RELEASE801</version>
-        </dependency>
-    -->
     </dependencies>
 </project>

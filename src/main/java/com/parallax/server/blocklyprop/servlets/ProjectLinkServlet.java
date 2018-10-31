@@ -5,23 +5,23 @@
  */
 package com.parallax.server.blocklyprop.servlets;
 
-import com.google.common.base.Strings;
-import com.google.gson.JsonObject;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
-import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
 import com.parallax.server.blocklyprop.services.ProjectSharingService;
+
+import com.google.common.base.Strings;
+import com.google.gson.JsonObject;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.io.IOException;
+import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
-import java.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +85,7 @@ public class ProjectLinkServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         }
         
-        LOG.info("Get project link for project {}.",idProject);
+        LOG.debug("Get project link for project {}.",idProject);
         
         // Retreive the project. Project meta data will be retruned if the project exists
         // and the project share key is known and active
@@ -93,24 +93,24 @@ public class ProjectLinkServlet extends HttpServlet {
         
         if (project == null) {
             // Project not found, or invalid share key
-            LOG.info("Unable to retrieve parent project");
+            LOG.debug("Unable to retrieve parent project");
             req.getRequestDispatcher("/WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
         } else {
+            LOG.debug("Found the project {}", project.getId());
+            
             // Add project meta data to result object
             JsonObject result = projectConverter.toJson(project,false);
             
+            LOG.debug("Converted project {} to Json: {}",project.getId(), result );
+
             // Add the project code block to the result object
             result.addProperty("code", project.getCode());
-            
+
             //Convert result to base64
             byte[] projectBytes = Base64.getEncoder().encode(result.toString().getBytes());
             
             req.setAttribute("project", new String(projectBytes));
-            //if (ProjectType.PROPC == project.getType()) {
-                req.getRequestDispatcher("/editor/blocklyc.jsp").forward(req, resp);
-            //} else if (ProjectType.SPIN == project.getType()) {
-            //    req.getRequestDispatcher("/WEB-INF/servlet/project/project-link-spin.jsp").forward(req, resp);
-            //}
+            req.getRequestDispatcher("/editor/blocklyc.jsp").forward(req, resp);
         }
     }
 
@@ -125,15 +125,16 @@ public class ProjectLinkServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+        LOG.info("REST:/projectlink/ POST request received");
         
         resp.setContentType("application/json");
-
         String idProjectString = req.getParameter("id");
         String action = req.getParameter("action");
         Long idProject = null;
         ProjectRecord project = null;
 
-        LOG.info("Posting shared link service request");
+        LOG.debug("Posting shared link service request");
         
         // Convert project id into a long
         try {

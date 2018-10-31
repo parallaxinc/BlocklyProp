@@ -90,6 +90,59 @@
         
         // Run it incase values are passed in url parameters
         checkCoppaForm();
+        
+        $("#screenname").bind("keyup", function(e) {
+            this.value = this.value
+                .replace(/[^A-Za-z0-9\._\- ]/g, '')  // removes any non-word characters except ".", " ", "-" and "_"
+                .replace(/ {2,}/g, ' ');             // removes excessive spaces                       
+        });
+        $("#screenname").bind("blur", function() {
+            this.value = this.value.trim();          // trims whitespace from before and after
+        });
+        
+        $("#passwordField").bind("keyup", function () {
+            var passValue = document.getElementById('passwordField').value;
+            var passWarn = false;
+            for(var t = 0; t < passValue.length; t++) {
+                if(passValue.charCodeAt(t) < 32 || passValue.charCodeAt(t) > 126) {
+                    passWarn = true;
+                }  
+            }
+            if(passWarn) {
+                // show warning, disable submit button, give field red border
+                $("#submit-btn").prop("disabled",true);
+                $("#passWarning").removeClass('hidden');
+                $("#passwordField").css("border-color","#d43f3a");
+            } else {
+                // hide warning, remove red border
+                $("#passWarning").addClass('hidden');
+                if (passValue.length > 7) {
+                    // password is long enough, enable submit button and turn green
+                    $("#submit-btn").prop("disabled",false);
+                    $("#passWarningLength").addClass('hidden');
+                    $("#passwordField").css("border-color","#25c435");
+                } else {
+                    // password is too short, keep field neutral colored, keep submit button disabled
+                    $("#submit-btn").prop("disabled",true);
+                    $("#passwordField").css("border-color","");
+                }
+            }
+        });
+        
+        $("#passwordField").keypress(function(e) {
+            var passValue = document.getElementById('passwordField').value;
+            if(e.which == 13 && passValue.length < 8) {
+                $("#passWarningLength").removeClass('hidden');
+            }
+        });
+        
+        $("#passwordField").blur(function() {
+            var passValue = document.getElementById('passwordField').value;
+            if(passValue.length < 8) {
+                $("#passWarningLength").removeClass('hidden');
+            }
+        });
+        
     });
         </script>
     </head>
@@ -269,16 +322,6 @@
                                    maxlength="250"
                                    value="<%= request.getAttribute("screenname")%>">
                         </div>
-                        <script>
-                            $("#screenname").bind("keyup", function(e) {
-                                this.value = this.value
-                                    .replace(/[^A-Za-z0-9\._\- ]/g, '')  // removes any non-word characters except ".", " ", "-" and "_"
-                                    .replace(/ {2,}/g, ' ');             // removes excessive spaces                       
-                            });
-                            $("#screenname").bind("blur", function() {
-                                this.value = this.value.trim();          // trims whitespace from before and after
-                            });
-                        </script>
                         <div class="form-group">
                             <label for="email" >
                                 <fmt:message key="register.do.email" />
@@ -297,9 +340,12 @@
                             <input class="form-control" 
                                    type="password" 
                                    name="password"
+                                   id="passwordField"
                                    size="30"
                                    maxlength="100"
                                    placeholder="<fmt:message key="password.complexity" />">
+                            <div class="alert alert-danger hidden" id="passWarning"><fmt:message key="register.do.password.char.alert" /></div>
+                            <div class="alert alert-warning hidden" id="passWarningLength"><fmt:message key="register.do.password.char.length" /></div>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" >
@@ -407,7 +453,7 @@
                                 </select>
                             </p>
                         </div>
-                        <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="register.do.submit" />">
+                        <input class="btn btn-default" type="submit" id="submit-btn" name="submit" value="<fmt:message key="register.do.submit" />" disabled="true">
                     </form>
                 </div>
             </div>

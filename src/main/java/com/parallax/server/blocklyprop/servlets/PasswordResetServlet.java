@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
 import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
@@ -97,6 +98,10 @@ public class PasswordResetServlet extends HttpServlet {
             } catch (WrongAuthenticationSourceException ex) {
                 LOG.warn("Trying to change password of non local user!");
                 req.setAttribute("server-error", "Server exception");
+                req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
+            } catch (EmailNotConfirmedException ex) {
+                LOG.warn("Cannot change password when email has not been verified.");
+                req.setAttribute("EmailUnconfirmed", "Cannot change password for unconfirmed email");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             }
         }

@@ -99,7 +99,7 @@
         --%>
     </head>
     
-    <body onload="blocklyReady();">
+    <body>
         <div id="editor">
             <table id="content_table">
                 <tr>
