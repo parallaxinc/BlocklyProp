@@ -14,6 +14,7 @@ import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.server.blocklyprop.enums.PasswordResetPage;
 import com.parallax.server.blocklyprop.utils.ServletUtils;
 import com.parallax.server.blocklyprop.utils.TextileReader;
@@ -97,6 +98,9 @@ public class PasswordResetServlet extends HttpServlet {
             } catch (WrongAuthenticationSourceException ex) {
                 LOG.warn("Trying to change password of non local user!");
                 req.setAttribute("server-error", "Server exception");
+                req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
+            } catch (EmailNotConfirmedException pce) {
+                req.setAttribute("passwordComplexity", "Password is not complex enough");
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             }
         }

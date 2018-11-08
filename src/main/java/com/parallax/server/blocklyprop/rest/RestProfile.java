@@ -20,6 +20,7 @@ import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.objects.User;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -152,6 +153,10 @@ public class RestProfile {
                 LOG.warn("Trying to change password of non local user!");
                 result.addProperty("success", false);
                 result.addProperty("message", "server-error");
+                return Response.ok(result.toString()).build();
+            } catch (EmailNotConfirmedException pce) {
+                result.addProperty("success", false);
+                result.addProperty("message", "password-complexity");
                 return Response.ok(result.toString()).build();
             }
         }

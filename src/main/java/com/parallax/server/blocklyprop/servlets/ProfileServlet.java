@@ -235,6 +235,10 @@ public class ProfileServlet extends HttpServlet {
                 LOG.warn("Trying to change password of non local user!");
                 req.setAttribute("base-error", "Server error");
                 req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
+            } catch (EmailNotConfirmedException ex) {
+                LOG.warn("Trying to change password of non local user!");
+                req.setAttribute("base-error", "Server error");
+                req.getRequestDispatcher("WEB-INF/servlet/profile/profile.jsp").forward(req, resp);
             }
         }
     }
