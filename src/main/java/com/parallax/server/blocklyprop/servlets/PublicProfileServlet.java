@@ -12,6 +12,7 @@ import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.server.blocklyprop.db.generated.tables.pojos.User;
 import com.parallax.server.blocklyprop.services.UserService;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
