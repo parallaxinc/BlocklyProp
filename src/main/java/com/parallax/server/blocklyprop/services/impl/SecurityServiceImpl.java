@@ -375,6 +375,9 @@ public class SecurityServiceImpl implements SecurityService {
             LOG.info("User authenticated");
             return user;
 
+        } catch (UnknownUserException uue) {
+            LOG.error("User account is unknown.");
+            throw uue;
         } catch (UserBlockedException ube) {
             LOG.error("User account is blocked.");
             throw ube;

@@ -81,8 +81,8 @@ public class RestSharedProject {
 
         Boolean parametersValid = false;
         
-        // Check the incoming data
-        if (sort != null){
+        // Sort flag evaluation
+        if (sort != null) {
             for (TableSort t : TableSort.values()) {
                 LOG.debug("REST:/shared/project/list/ Sort test for '{}'", t);
             
@@ -98,9 +98,9 @@ public class RestSharedProject {
             }
         }
 
+        // Sort order evaluation
         if (order != null) {
             parametersValid = false;
-
             LOG.debug("REST:/shared/project/list/ Checking order");
         
             for (TableOrder t : TableOrder.values()) {
@@ -115,8 +115,35 @@ public class RestSharedProject {
             }
         }
         
+        LOG.info("REST:/shared/project/list/ Checking limit");
+
+        // Limit result set value
+        if ( (limit == null) || (limit > 50)) {
+            LOG.info("REST:/shared/project/list/ Limit throttle to 50 entries");
+            limit = 50;
+        }
+        
+        LOG.info("REST:/shared/project/list/ Checking offset");
+
+        // Check ofset from the beginning of the record set
+        if ((offset == null) || (offset < 0)) {
+            offset = 0;
+        }
+        
+        for (TableOrder t : TableOrder.values()) {
+            if (order == t) {
+                parametersValid = true;
+                break;
+            }
+        }
+        
+        if (parametersValid == false) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        
         LOG.debug("REST:/shared/project/list/ Checking limit");
 
+        // Set sane limits
         if ( (limit == null) || (limit > 50)) {
             LOG.warn("REST:/shared/project/list/ Limit throttle to 50 entries");
             limit = 50;
