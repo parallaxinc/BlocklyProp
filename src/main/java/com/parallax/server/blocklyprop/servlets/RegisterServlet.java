@@ -1,11 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2018 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.servlets;
 
-import org.apache.commons.validator.routines.EmailValidator;
+//import org.apache.commons.validator.routines.EmailValidator;
+
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -30,25 +47,30 @@ import org.slf4j.LoggerFactory;
 public class RegisterServlet extends HttpServlet {
 
     /**
-     * 
+     * Application logging object
      */
     private static final Logger LOG = LoggerFactory.getLogger(RegisterServlet.class);
-    
-    private EmailValidator emailValid = EmailValidator.getInstance();
+
+
+//    private EmailValidator emailValid = EmailValidator.getInstance();
+
 
     /**
-     * 
+     * Application-wide security object
      */
     private SecurityService securityService;
-    
+
+
     /**
-     * 
+     * Init the local SecurityServices object
+     *
      * @param securityService 
      */
     @Inject
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
     }
+
 
     /**
      * Clear the user registration form data and present the form
@@ -244,7 +266,8 @@ public class RegisterServlet extends HttpServlet {
             req.getRequestDispatcher("WEB-INF/servlet/register/register.jsp").forward(req, resp);
         }
     }
-    
+
+    @Deprecated
     private String getMonthFromDate(String date) {
         String[] dates = date.split("/");
         int month = 0;
@@ -261,6 +284,7 @@ public class RegisterServlet extends HttpServlet {
         return Integer.toString(month);
     }
 
+    @Deprecated
     private String getYearFromDate(String date) {
         String[] dates = date.split("/");
         int year = 0;
