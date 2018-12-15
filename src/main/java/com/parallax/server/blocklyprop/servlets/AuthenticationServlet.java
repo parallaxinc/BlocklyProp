@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2018 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.servlets;
 
 import com.google.gson.JsonObject;
@@ -19,6 +35,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,20 +49,24 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 public class AuthenticationServlet extends HttpServlet {
-        /**
+
+    /**
      * Handle for any logging activity
      */
     private final Logger LOG = LoggerFactory.getLogger(AuthenticationServlet.class);
+
 
     /**
      * Application configuration settings
      */
     private Configuration configuration;
-    
+
+
     /**
      * An instance of this class
      */
     private AuthenticationService authenticationService;
+
 
     /**
      * Initialize the application configuration
@@ -57,6 +78,7 @@ public class AuthenticationServlet extends HttpServlet {
         this.configuration = configuration;
     }
 
+
     /**
      * Initialize an instance of the Authentication service
      * 
@@ -65,7 +87,10 @@ public class AuthenticationServlet extends HttpServlet {
     @Inject
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
+        LOG.info("Authentication Service");
     }
+
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -83,7 +108,6 @@ public class AuthenticationServlet extends HttpServlet {
         User user = null;
 
         try {
-            //FIXME: Validate the username and password fields before using them.
             user = authenticationService.authenticate(username, password);
         }
         catch (AuthenticationException ex) {
