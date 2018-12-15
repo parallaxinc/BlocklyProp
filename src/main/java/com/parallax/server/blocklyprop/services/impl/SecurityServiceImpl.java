@@ -337,7 +337,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         LOG.info("Authenticating user from email address");
 
-q        return instance.authenticateLocalUser(email, password);
+        return instance.authenticateLocalUser(email, password);
     }
 
     /**
