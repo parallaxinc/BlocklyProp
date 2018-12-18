@@ -83,12 +83,14 @@
         $('#sponsor-info').show();
     }
     
+    var passWarn = false;
+
     $(document).ready(function () {
         document.getElementById("birthdayMonth").onchange = checkCoppaForm;
         document.getElementById("birthdayYear").onchange = checkCoppaForm;
         document.getElementById("add-secondary-email").onchange = checkCoppaForm;
         
-        // Run it incase values are passed in url parameters
+        // Run it in case values are passed in url parameters
         checkCoppaForm();
         
         $("#screenname").bind("keyup", function(e) {
@@ -102,13 +104,13 @@
         
         $("#passwordField").bind("keyup", function () {
             var passValue = document.getElementById('passwordField').value;
-            var passWarn = false;
-            for(var t = 0; t < passValue.length; t++) {
+            passWarn = false;
+            for (var t = 0; t < passValue.length; t++) {
                 if(passValue.charCodeAt(t) < 32 || passValue.charCodeAt(t) > 126) {
                     passWarn = true;
                 }  
             }
-            if(passWarn) {
+            if (passWarn) {
                 // show warning, disable submit button, give field red border
                 $("#submit-btn").prop("disabled",true);
                 $("#passWarning").removeClass('hidden');
@@ -116,9 +118,11 @@
             } else {
                 // hide warning, remove red border
                 $("#passWarning").addClass('hidden');
-                if (passValue.length > 7) {
-                    // password is long enough, enable submit button and turn green
-                    $("#submit-btn").prop("disabled",false);
+                if (passValue.length > 7 && passValue === passValue.trim()) {
+                    // password is long enough and does not begin or end in spaces, enable submit button and turn green
+                    if (document.getElementById('confirmPasswordField').value === passValue) {
+                        $("#submit-btn").prop("disabled",false);
+                    }
                     $("#passWarningLength").addClass('hidden');
                     $("#passwordField").css("border-color","#25c435");
                 } else {
@@ -128,6 +132,33 @@
                 }
             }
         });
+
+        $("#confirmPasswordField").bind("blur", function () {
+            var passValue2 = document.getElementById('confirmPasswordField').value;
+            var passValue = document.getElementById('passwordField').value;
+            if (document.getElementById('passwordField').value === passValue2) {
+                if (!passWarn && passValue.length > 7 && passValue === passValue.trim()) {
+                    $("#submit-btn").prop("disabled",false);
+                }
+                $("#passWarningMatch").addClass('hidden');
+            } else {
+                $("#submit-btn").prop("disabled",true);
+                $("#passWarningMatch").removeClass('hidden');
+            }
+        });
+
+        $("#confirmPasswordField").bind("keyup", function () {
+            var passValue2 = document.getElementById('confirmPasswordField').value;
+            var passValue = document.getElementById('passwordField').value;
+            if (document.getElementById('passwordField').value === passValue2) {
+                if (!passWarn && passValue.length > 7 && passValue === passValue.trim()) {
+                    $("#submit-btn").prop("disabled",false);
+                }
+                $("#passWarningMatch").addClass('hidden');
+            }
+        });
+
+        
         
         $("#passwordField").keypress(function(e) {
             var passValue = document.getElementById('passwordField').value;
@@ -138,7 +169,7 @@
         
         $("#passwordField").blur(function() {
             var passValue = document.getElementById('passwordField').value;
-            if(passValue.length < 8) {
+            if(passValue.length < 8 || passValue !== passValue.trim()) {
                 $("#passWarningLength").removeClass('hidden');
             }
         });
@@ -354,8 +385,10 @@
                             <input class="form-control" 
                                    type="password" 
                                    name="confirmpassword"
+                                   id="confirmPasswordField"
                                    size="30"
                                    maxlength="100">
+                            <div class="alert alert-warning hidden" id="passWarningMatch"><fmt:message key="register.error.passwords_dont_match" /></div>
                         </div>
                         <div class="form-group">
                             <label for="bdmonth">
