@@ -52,7 +52,7 @@
                 <configuration>
                     <files>
                         <!-- Location of the property file(s) -->
-                        <file>build-vars.properties</file>
+                        <file>build.properties</file>
                     </files>
                     <properties combine.self="append" />
                     <outputFile combine.self="append" />
