@@ -5,6 +5,7 @@
     <artifactId>BlocklyProp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -21,13 +22,6 @@
         <metrics-version>3.1.0</metrics-version>
         <jersey.version>1.19</jersey.version>
     </properties>
-    
-    <repositories>
-        <repository>
-            <id>netbeans.maven2.repository</id>
-            <url>http://bits.netbeans.org/maven2/</url>
-        </repository>
-    </repositories>
 
     <build>
         <resources>
@@ -40,25 +34,25 @@
         </resources>
         
         <plugins>
-            <!--
-                codehaus.org shut down on 6/2015.
-                This is now the MojoHaus Project  http://www.mojohaus.org/
-            -->
+            <!-- Read external property resource files -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
+                <version>1.0.0</version>
                 <executions>
                     <execution>
                         <phase>initialize</phase>
                         <goals>
+                            <!-- Reads property files or properties from URLs as Project properties -->
                             <goal>read-project-properties</goal>
                         </goals>
                     </execution>
                 </executions>
+
                 <configuration>
                     <files>
-                        <file>build.properties</file>
+                        <!-- Location of the property file(s) -->
+                        <file>build-vars.properties</file>
                     </files>
                     <properties combine.self="append" />
                     <outputFile combine.self="append" />
@@ -231,6 +225,12 @@
     </profiles>
 
     <dependencies>
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- Servlet and jsp libs provided by tomcat -->
         <dependency>
             <groupId>javax.servlet</groupId>
