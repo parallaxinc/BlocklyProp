@@ -20,95 +20,17 @@
         <link type="image/png" rel="apple-touch-icon-precomposed" sizes="152x152" href="<url:getCdnUrl url="/images/apple-touch-icon-152x152.png"/>" />
         <link type="image/png" rel="icon" sizes="32x32" href="<url:getCdnUrl url="/images/favicon-32x32.png"/>" />
         <link type="image/png" rel="icon" sizes="16x16" href="<url:getCdnUrl url="/images/favicon-16x16.png"/>" />
-        <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
-        <link type="text/css" rel="stylesheet" href="<url:getCdnUrl url="/style.css"/>" />
-        <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
-        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getCdnUrl url="/lib/jquery.form.min.js"/>"></script>
-        <script src="<url:getCdnUrl url="/profile.js"/>"></script>
+        <link rel="stylesheet" href="<url:getUrl url="/cdn/lib/bootstrap/core/css/bootstrap.min.css"/>" />
+        <link type="text/css" rel="stylesheet" href="<url:getUrl url="/cdn/style.css"/>" />
+        <script src="<url:getUrl url="/cdn/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script src="<url:getUrl url="/cdn/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/lib/jquery.form.min.js"/>"></script>
+        <script src="<url:getUrl url="/cdn/profile.js"/>"></script>
     </head>
     <body>
 
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
-        <script>
-        var passWarn = false;
 
-        $(document).ready(function () {
-            
-            $("#passwordField").bind("keyup", function () {
-                var passValue = document.getElementById('passwordField').value;
-                passWarn = false;
-                for (var t = 0; t < passValue.length; t++) {
-                    if(passValue.charCodeAt(t) < 32 || passValue.charCodeAt(t) > 126) {
-                        passWarn = true;
-                    }  
-                }
-                if (passWarn) {
-                    // show warning, disable submit button, give field red border
-                    $("#submit-btn").prop("disabled",true);
-                    $("#passWarning").removeClass('hidden');
-                    $("#passwordField").css("border-color","#d43f3a");
-                } else {
-                    // hide warning, remove red border
-                    $("#passWarning").addClass('hidden');
-                    if (passValue.length > 7 && passValue === passValue.trim()) {
-                        // password is long enough and does not begin or end in spaces, enable submit button and turn green
-                        if (document.getElementById('confirmPasswordField').value === passValue) {
-                            $("#submit-btn").prop("disabled",false);
-                        }
-                        $("#passWarningLength").addClass('hidden');
-                        $("#passwordField").css("border-color","#25c435");
-                    } else {
-                        // password is too short, keep field neutral colored, keep submit button disabled
-                        $("#submit-btn").prop("disabled",true);
-                        $("#passwordField").css("border-color","");
-                    }
-                }
-            });
-    
-            $("#confirmPasswordField").bind("blur", function () {
-                var passValue2 = document.getElementById('confirmPasswordField').value;
-                var passValue = document.getElementById('passwordField').value;
-                if (document.getElementById('passwordField').value === passValue2) {
-                    if (!passWarn && passValue.length > 7 && passValue === passValue.trim()) {
-                        $("#submit-btn").prop("disabled",false);
-                    }
-                    $("#passWarningMatch").addClass('hidden');
-                } else {
-                    $("#submit-btn").prop("disabled",true);
-                    $("#passWarningMatch").removeClass('hidden');
-                }
-            });
-    
-            $("#confirmPasswordField").bind("keyup", function () {
-                var passValue2 = document.getElementById('confirmPasswordField').value;
-                var passValue = document.getElementById('passwordField').value;
-                if (document.getElementById('passwordField').value === passValue2) {
-                    if (!passWarn && passValue.length > 7 && passValue === passValue.trim()) {
-                        $("#submit-btn").prop("disabled",false);
-                    }
-                    $("#passWarningMatch").addClass('hidden');
-                }
-            });
-    
-            
-            
-            $("#passwordField").keypress(function(e) {
-                var passValue = document.getElementById('passwordField').value;
-                if(e.which == 13 && passValue.length < 8) {
-                    $("#passWarningLength").removeClass('hidden');
-                }
-            });
-            
-            $("#passwordField").blur(function() {
-                var passValue = document.getElementById('passwordField').value;
-                if(passValue.length < 8 || passValue !== passValue.trim()) {
-                    $("#passWarningLength").removeClass('hidden');
-                }
-            });
-            
-        });
-        </script>
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
@@ -175,28 +97,14 @@
                         <input class="password" type="hidden" name="oldpassword" />
                         <div class="form-group">
                             <label for="password" ><fmt:message key="profile.password" /></label>
-                            <input class="form-control" 
-                                    type="password" 
-                                    name="password" 
-                                    id="passwordField" 
-                                    maxlength="255" 
-                                    required="required"
-                                    placeholder="<fmt:message key="password.complexity" />" />
-                            <!--<span id="helpBlock" class="help-block"><fmt:message key="password.complexity" /></span>-->
-                            <div class="alert alert-danger hidden" id="passWarning"><fmt:message key="register.do.password.char.alert" /></div>
-                            <div class="alert alert-warning hidden" id="passWarningLength"><fmt:message key="register.do.password.char.length" /></div>
+                            <input class="form-control password-match" type="password" name="password" maxlength="255" required="required"/>
+                            <span id="helpBlock" class="help-block"><fmt:message key="password.complexity" /></span>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword" ><fmt:message key="profile.confirm_password" /></label>
-                            <input class="form-control" 
-                                    type="password" 
-                                    name="confirmpassword" 
-                                    id="confirmPasswordField" 
-                                    maxlength="255" 
-                                    required="required"/>
-                            <div class="alert alert-warning hidden" id="passWarningMatch"><fmt:message key="register.error.passwords_dont_match" /></div>
+                            <input class="form-control password-match" type="password" name="confirmpassword" maxlength="255" required="required"/>
                         </div>
-                        <input class="btn btn-default" type="submit" name="save-password" value="<fmt:message key="profile.submit_password" />">
+                        <input class="btn btn-default" type="submit" name="save-password" id="submit-btn" value="<fmt:message key="profile.submit_password" />">
                     </form>
                 </div>
             </div>
