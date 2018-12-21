@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2018 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.config;
 
 import com.google.inject.AbstractModule;
@@ -16,7 +32,6 @@ import com.parallax.server.blocklyprop.monitoring.Monitor;
 import com.parallax.server.blocklyprop.utils.HelpFileInitializer;
 import java.sql.Driver;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Enumeration;
 import javax.servlet.ServletContextEvent;
 import org.apache.commons.configuration.Configuration;
@@ -24,7 +39,9 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ch.qos.logback.classic.LoggerContext;
+
+// import java.sql.SQLException;
+// import ch.qos.logback.classic.LoggerContext;
 
 
 /**
@@ -69,11 +86,7 @@ public class SetupConfig extends GuiceServletContextListener {
                 install(new RestModule());
             }
 
-        }
-        //        new PersistenceModule(configuration)
-        //new DaoModule()
-        //new ServletsModule()
-        );
+        });
     }
 
     /*
@@ -93,6 +106,7 @@ public class SetupConfig extends GuiceServletContextListener {
                             .getResource("/config.xml"));
             
             configuration = configurationBuilder.getConfiguration();
+
         } catch (ConfigurationException ce) {
             LOG.error("{}", ce.getMessage());
         } catch (Throwable t) {
@@ -108,6 +122,8 @@ public class SetupConfig extends GuiceServletContextListener {
 
         // This manually deregisters JDBC driver, which prevents Tomcat 7 from
         // complaining about memory leaks into this class
+        
+/*        
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();
             try {
@@ -126,6 +142,7 @@ public class SetupConfig extends GuiceServletContextListener {
         if (loggerContext != null) {
             loggerContext.stop();
         }
+*/
     }
 
 }

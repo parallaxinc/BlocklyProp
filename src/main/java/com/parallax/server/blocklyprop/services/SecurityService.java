@@ -5,16 +5,7 @@
  */
 package com.parallax.server.blocklyprop.services;
 
-import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
-import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
-import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
-import com.parallax.client.cloudsession.exceptions.PasswordComplexityException;
-import com.parallax.client.cloudsession.exceptions.PasswordVerifyException;
-import com.parallax.client.cloudsession.exceptions.ScreennameUsedException;
-import com.parallax.client.cloudsession.exceptions.UnknownUserException;
-import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
-import com.parallax.client.cloudsession.exceptions.UserBlockedException;
-import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
+import com.parallax.client.cloudsession.exceptions.*;
 import com.parallax.client.cloudsession.objects.User;
 
 /**
@@ -39,7 +30,9 @@ public interface SecurityService {
                 UserBlockedException, 
                 EmailNotConfirmedException, 
                 InsufficientBucketTokensException, 
-                WrongAuthenticationSourceException;
+                WrongAuthenticationSourceException,
+                NullPointerException,
+                ServerException;
 
     Long register(
             String screenname, 

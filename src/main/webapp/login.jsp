@@ -1,19 +1,37 @@
 <%--
+  ~ Copyright (c) 2018 Parallax Inc.
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+  ~ and associated documentation files (the “Software”), to deal in the Software without
+  ~ restriction, including without limitation the rights to use, copy, modify, merge, publish,
+  ~ distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+  ~ Software is furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or
+  ~ substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  --%>
+<%--
     Document   : login
     Created on : 24-mei-2015, 18:41:02
     Author     : Michel
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-
+<!DOCTYPE html>
 <html>
     <head>
         <%@ include file="/WEB-INF/includes/pageparts/head/basic.jsp"%>
     </head>
     <body>
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
-
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
@@ -35,6 +53,8 @@
                     <p><a href="register" ><fmt:message key="login.registerlink" /></a></p>
                     <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
                     <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
+
+                    <%-- This form has additional processing in the /WEB-INF/includes/pageparts/loginform.jsp --%>
                     <form id="loginform" name="loginform" action="<url:getUrl url="/login.jsp" />" method="post">
                         <div class="form-group">
                             <label for="username" ><fmt:message key="login.email" /></label>

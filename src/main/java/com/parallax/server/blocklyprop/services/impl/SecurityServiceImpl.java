@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2018 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.services.impl;
 
 import com.google.common.base.Preconditions;
@@ -139,6 +155,7 @@ public class SecurityServiceImpl implements SecurityService {
      * 
      * @param configuration 
      */
+
     @Inject
     public void setConfiguration(Configuration configuration) {
         LOG.debug("Setting cloud session configuration");
@@ -315,9 +332,11 @@ public class SecurityServiceImpl implements SecurityService {
                 UserBlockedException, 
                 EmailNotConfirmedException, 
                 InsufficientBucketTokensException, 
-                WrongAuthenticationSourceException {
+                WrongAuthenticationSourceException,
+                ServerException {
 
         LOG.info("Authenticating user from email address");
+
         return instance.authenticateLocalUser(email, password);
     }
 
@@ -351,15 +370,19 @@ public class SecurityServiceImpl implements SecurityService {
      * @throws UserBlockedException
      * @throws EmailNotConfirmedException
      * @throws InsufficientBucketTokensException
-     * @throws WrongAuthenticationSourceException 
+     * @throws WrongAuthenticationSourceException
+     * @throws NullPointerException
+     *
      */
     @Override
-    public User authenticateLocalUser(String email, String password) throws 
-            UnknownUserException, 
+    public User authenticateLocalUser(String email, String password) throws
+            UnknownUserException,
             UserBlockedException, 
             EmailNotConfirmedException, 
             InsufficientBucketTokensException, 
-            WrongAuthenticationSourceException {
+            WrongAuthenticationSourceException,
+            NullPointerException,
+            ServerException {
         
         try {
             LOG.info("Attempting to authenticate {}", email);
@@ -372,7 +395,6 @@ public class SecurityServiceImpl implements SecurityService {
         } catch (UnknownUserException uue) {
             LOG.error("User account is unknown.");
             throw uue;
-
         } catch (UserBlockedException ube) {
             LOG.error("User account is blocked.");
             throw ube;
@@ -395,17 +417,26 @@ public class SecurityServiceImpl implements SecurityService {
 
         } catch (ServerException se) {
             LOG.error("Server error encountered: {}", se.getMessage());
-            return null;
+            throw se;
         }
     }
 
     /**
      * 
      * @param idUser
+     * This is the primary key from the cloudsession.user table.
+     *
      * @return
+     * Returns a User object if successful. Otherwise it throws an appropriate exception.
+     *
      * @throws UnknownUserIdException
+     * User account does not exist
+     *
      * @throws UserBlockedException
-     * @throws EmailNotConfirmedException 
+     * User account is locked and unavailable
+     *
+     * @throws EmailNotConfirmedException
+     * User account registration is incomplete. The account is unavailable.
      */
     public User authenticateLocalUser(Long idUser) throws 
             UnknownUserIdException, 

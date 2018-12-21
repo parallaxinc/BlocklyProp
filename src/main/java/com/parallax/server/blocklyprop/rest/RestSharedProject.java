@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2018 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.rest;
 
 import com.cuubez.visualizer.annotation.Detail;
@@ -17,7 +33,6 @@ import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
-import com.sun.org.apache.xerces.internal.util.Status;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -39,6 +54,7 @@ import org.slf4j.LoggerFactory;
 @Group(name = "/shared/project", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestSharedProject {
+
     private static final Logger LOG = LoggerFactory.getLogger(RestSharedProject.class);
 
     private ProjectService projectService;
@@ -59,10 +75,20 @@ public class RestSharedProject {
      * Return a list of community projects.
      * 
      * @param sort
+     * The project field used to evaluate the sort
+     *
      * @param order
+     * Specify the sort order - ascending or descending
+     *
      * @param limit
+     * Specify the maximum number of rows to return
+     *
      * @param offset
-     * @return 
+     * Specify the beginning row to return
+     *
+     * @return
+     * Return a response object that contains either the data requested
+     * or a JSON string containing the error details
      */
     @GET
     @Path("/list")
@@ -76,15 +102,15 @@ public class RestSharedProject {
             @QueryParam("offset") Integer offset) {
 
         LOG.info("REST:/shared/project/list/ endpoint activated");
-        LOG.info("REST:/shared/project/list/ Sort parameter is '{}'", sort);
-        LOG.info("REST:/shared/project/list/ Sort parameter is '{}'", sort);
+        LOG.debug("REST:/shared/project/list/ Sort parameter is '{}'", sort);
+        LOG.debug("REST:/shared/project/list/ Sort parameter is '{}'", sort);
 
-        Boolean parametersValid = false;
+        boolean parametersValid = false;
         
-        // Check the incoming data
-        if (sort != null){
+        // Sort flag evaluation
+        if (sort != null) {
             for (TableSort t : TableSort.values()) {
-                LOG.info("REST:/shared/project/list/ Sort test for '{}'", t);
+                LOG.debug("REST:/shared/project/list/ Sort test for '{}'", t);
             
                 if (sort == t) {
                     parametersValid = true;
@@ -93,15 +119,15 @@ public class RestSharedProject {
             }
         
             if (parametersValid == false) {
-                LOG.info("REST:/shared/project/list/ Sort parameter failed");
+                LOG.warn("REST:/shared/project/list/ Sort parameter failed");
                 return Response.status(Response.Status.NOT_ACCEPTABLE).build();
             }
         }
 
+        // Sort order evaluation
         if (order != null) {
             parametersValid = false;
-
-            LOG.info("REST:/shared/project/list/ Checking order");
+            LOG.debug("REST:/shared/project/list/ Checking order");
         
             for (TableOrder t : TableOrder.values()) {
                 if (order == t) {
@@ -115,22 +141,18 @@ public class RestSharedProject {
             }
         }
         
-        LOG.info("REST:/shared/project/list/ Checking limit");
-
+        // Limit result set value
         if ( (limit == null) || (limit > 50)) {
             LOG.info("REST:/shared/project/list/ Limit throttle to 50 entries");
             limit = 50;
         }
         
-        LOG.info("REST:/shared/project/list/ Checking offset");
-
+        // Check ofset from the beginning of the record set
         if ((offset == null) || (offset < 0)) {
             offset = 0;
         }
         
-        LOG.info("REST:/shared/project/list/ Get request received");
-
-        List<ProjectRecord> projects 
+        List<ProjectRecord> projects
                 = projectService.getSharedProjects(sort, order, limit, offset);
         
         // Obtain a count of the total number of community projects available

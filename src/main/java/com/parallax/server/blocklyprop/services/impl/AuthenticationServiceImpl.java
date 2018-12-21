@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2018 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.services.impl;
 
 import com.google.inject.Inject;
@@ -32,7 +48,10 @@ import org.slf4j.LoggerFactory;
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private static Logger log = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
+    /**
+     * Application logging object
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     private static AuthenticationService _instance;
 
@@ -62,21 +81,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return _instance;
     }
 
+
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         userService = new CloudSessionUserService(configuration.getString("cloudsession.baseurl"));
     }
 
+
+
     @Inject
     public void setSessionProvider(Provider<HttpSession> sessionProvider) {
         this.sessionProvider = sessionProvider;
     }
 
+
+
     @Inject
     public void setTokenGeneratorService(TokenGeneratorService tokenGeneratorService) {
         this.tokenGeneratorService = tokenGeneratorService;
     }
+
+
 
     /**
      * Authenticate a local user
@@ -87,30 +113,42 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public User authenticate(String username, String password) {
-        log.info("Authenticating user");
+
+        LOG.info("Authenticating user");
+        LOG.info("User: '{}', Pwd: '{}'", username, password);
+
+        /* -----------------------------------------------------------------------------
+         * A Subject represents state and security operations for a single application
+         * user. These operations include authentication (login/logout), authorization
+         * (access control), and session access. It is Shiro's primary mechanism for
+         * single-user security functionality.
+         * ------------------------------------------------------------------------------
+         */
 
         Subject currentUser = SecurityUtils.getSubject();
-        
-        UsernamePasswordToken authenticationToken 
-                = new UsernamePasswordToken(username, password);
+        UsernamePasswordToken authenticationToken = new UsernamePasswordToken(username, password);
 
         try {
             currentUser.login(authenticationToken);
-        } catch (UnknownAccountException e) {
-            log.info("Unknown account (wrong password?): {}", e.getMessage());
+        }
+        catch (UnknownAccountException e) {
+            LOG.info("Unknown account (wrong password?): {}", e.getMessage());
             return null;
-        } catch (Throwable t) {
-            log.error("Error while authenticating: {}", t.getMessage());
+        }
+        catch (Throwable t) {
+            LOG.error("Error while authenticating: {}", t.getMessage());
             return null;
         }
 
         try {
             return userService.getUser(username);
-        } catch (UnknownUserException uue) {
-            log.error("Unknown user exception just after login", uue);
+        }
+        catch (UnknownUserException uue) {
+            LOG.error("Unknown user exception just after login", uue);
             return null;
-        } catch (ServerException se) {
-            log.error("Server exception after login", se);
+        }
+        catch (ServerException se) {
+            LOG.error("Server exception after login", se);
             return null;
         }
     }
