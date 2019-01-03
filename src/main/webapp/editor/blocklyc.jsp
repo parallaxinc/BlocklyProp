@@ -3,14 +3,13 @@
     Created on : 24-mei-2015, 18:41:02
     Author     : Michel
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<!-- Support for experimental blocks in Demo builds  -->
-<!-- See developer notes to use this feature         -->
+<%-- Support for experimental blocks in Demo builds  --%>
+<%-- See developer notes to use this feature         --%>
 <c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
-
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
