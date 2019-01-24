@@ -95,7 +95,9 @@
                 <!-- Include the <execution> element to generate a new set of -->
                 <!-- source files that represent the current state of the     --> 
                 <!-- target database schema.                                  -->
-<!--                <executions>
+
+                <!--
+                <executions>
                     <execution>
                         <id>jooq-codegen</id>
                         <phase>generate-sources</phase>
@@ -104,11 +106,11 @@
                         </goals>
                     </execution>
                 </executions>
--->
+                -->
+
                 <!-- Comment out the <executions> block to disable jooq  -->
                 <!-- from generating database code                       -->
-                
-                
+
                 <dependencies>
                     <dependency>
                         <groupId>mysql</groupId>
@@ -270,32 +272,14 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.3</version>
         </dependency>
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.3</version>
         </dependency>
-
-        <!-- Fix for rouge LogManager call -->
-
-        <!-- Defined above - newer version -->
-        <!--
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        -->
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -311,13 +295,11 @@
             <version>4.0</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-persist</artifactId>
             <version>4.0</version>
         </dependency>
-
         <!-- END Guice Dependencies -->
 
         <!-- Dependencies for JOOQ -->
@@ -388,8 +370,6 @@
             <version>1.2</version>
         </dependency>
 
-
-        <!-- -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
@@ -414,7 +394,6 @@
             <artifactId>commons-validator</artifactId>
             <version>1.6</version>
         </dependency>
-
         <!-- END Apache commons Dependencies -->
 
         <!-- Rest API -->
@@ -423,21 +402,25 @@
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-jaxrs</artifactId>
@@ -455,21 +438,7 @@
             <artifactId>cuubez-api-visualizer</artifactId>
             <version>1.0.1</version>
         </dependency>
-
         <!-- END Rest API -->
-
-        <!-- Raven / Sentry API -->
-        <dependency>
-            <groupId>com.getsentry.raven</groupId>
-            <artifactId>raven</artifactId>
-            <version>7.8.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.getsentry.raven</groupId>
-            <artifactId>raven-logback</artifactId>
-            <version>7.8.1</version>
-        </dependency>
 
         <!-- Lucene search engine -->
         <dependency>
