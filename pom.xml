@@ -34,8 +34,8 @@
         </resources>
         
         <plugins>
-            <!-- Read external property resource files -->
             <plugin>
+                <!-- Read external property resource files -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
                 <version>1.0.0</version>
@@ -46,17 +46,18 @@
                             <!-- Reads property files or properties from URLs as Project properties -->
                             <goal>read-project-properties</goal>
                         </goals>
+                        <configuration>
+                            <files>
+                                <!-- Location of the property file(s) -->
+                                <file>build.properties</file>
+                            </files>
+                            <!--
+                            <properties combine.self="append" />
+                            <outputFile combine.self="append" />
+                            -->
+                        </configuration>
                     </execution>
                 </executions>
-
-                <configuration>
-                    <files>
-                        <!-- Location of the property file(s) -->
-                        <file>build.properties</file>
-                    </files>
-                    <properties combine.self="append" />
-                    <outputFile combine.self="append" />
-                </configuration>
             </plugin>
 
             <plugin>
