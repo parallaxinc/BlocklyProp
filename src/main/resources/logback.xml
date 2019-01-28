@@ -11,30 +11,33 @@ Valid logging levels: TRACE, DEBUG, INFO, WARN and ERROR
     <!-- Log file destinations are defined here -->
     <property name="APP_LOG_PATH" value="${catalina.home}/logs"/>
     <property name="APP_LOG_FILE_BASE" value="blockly-app"/>
-    
-    <appender name="file" class="ch.qos.logback.core.FileAppender">
+
+    <appender name="RotateLogFiles" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${APP_LOG_PATH}/${APP_LOG_FILE_BASE}.log</file>
-        <encoder>
-            <!--
-            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
-            -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+    	    <fileNamePattern>${APP_LOG_PATH}/${APP_LOG_FILE_BASE}%i.log</fileNamePattern>
+	        <minIndex>1</minIndex>
+	        <maxIndex>20</maxIndex>
+	    </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>10MB</maxFileSize>
+	    </triggeringPolicy>
+     
+	    <encoder>
             <pattern>%date %level [%file:%line] %msg%n</pattern>
-        </encoder>
-    </appender>
+	    </encoder>
+    </appender>   
+
+    <logger name="fixWindowBased" level="INFO">
+        <appender-ref ref="RotateLogFiles" />
+    </logger>
 
     <logger name="com.parallax.server.blocklyprop.monitoring" level="info">
-        <appender-ref ref="file"/>
-    </logger>
-
-    <logger name="com.parallax.server.blocklyprop" level="info">
-        <appender-ref ref="file"/>
-    </logger>
-
-    <logger name="com.parallax.server.blocklyprop.servelets" level="debug">
-        <appender-ref ref="file"/>
+        <appender-ref ref="RotateLogFiles"/>
     </logger>
 
     <root level="info">
-        <appender-ref ref="file" />
+        <appender-ref ref="RotateLogFiles" />
     </root>
 </configuration>

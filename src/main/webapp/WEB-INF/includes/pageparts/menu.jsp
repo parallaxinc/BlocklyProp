@@ -58,7 +58,10 @@
                     </li>
                 </shiro:authenticated>
 
-                <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li>
+                <%-- Help link to the Learn reference section --%>
+                <%--  <li><a href="<url:getUrl url="/public/help"/>" target="_blank"><fmt:message key="menu.help" /></a></li> --%>
+                <li><a href="https://learn.parallax.com/ab-blocks" target="_blank"><fmt:message key="menu.help" /></a></li>
+
                 <%--
                 <li class="navbar-text">
                     <form style="margin-bottom: 0;">
@@ -73,7 +76,7 @@
         </div>
     </div>
     
-    <!-- Message of the Day goes here. -->
+    <%-- Message of the Day goes here. --%>
     <div class="container-fluid" style="background:#FAE6A4; color:#8a6d3b; padding:10px; display: none;" id="message-of-the-day">
         <div class="row">
             <div class="col-sm-12" align="center">

@@ -21,7 +21,7 @@ import java.net.InetSocketAddress;
 // import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.configuration.Configuration;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.LoggerFactory;
 
 
 
@@ -102,13 +102,13 @@ public class Monitor {
     }
 
     private void initFileLogger() {
-                final Slf4jReporter reporter = Slf4jReporter
-                .forRegistry(metrics)
-                .outputTo(LoggerFactory.getLogger(Monitor.class))
-                .convertRatesTo(TimeUnit.SECONDS)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .build();
-        reporter.start(graphiteReportingInterval, TimeUnit.SECONDS);
+//                final Slf4jReporter reporter = Slf4jReporter
+//                .forRegistry(metrics)
+//                .outputTo(LoggerFactory.getLogger(Monitor.class))
+//                .convertRatesTo(TimeUnit.SECONDS)
+//                .convertDurationsTo(TimeUnit.MILLISECONDS)
+//                .build();
+//        reporter.start(graphiteReportingInterval, TimeUnit.SECONDS);
 
     }
     
