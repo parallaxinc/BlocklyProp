@@ -23,7 +23,10 @@ import org.apache.commons.configuration.Configuration;
 /**
  *
  * @author Michel
+ *
+ * @deprecated  Help system is now hosted on learn.parallax.com
  */
+@Deprecated
 @Singleton
 public class HelpServlet extends HttpServlet {
 

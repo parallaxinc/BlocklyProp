@@ -33,7 +33,11 @@ import org.apache.lucene.store.FSDirectory;
 /**
  *
  * @author Michel
+ *
+ * @deprecated The help system has been moved to learn.parallax.com
+ *
  */
+@Deprecated
 @Singleton
 public class HelpSearchServlet extends HttpServlet {
 
