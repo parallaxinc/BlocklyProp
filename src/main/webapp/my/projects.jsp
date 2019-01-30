@@ -5,8 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
-<!DOCTYPE html!>
-<html>
+<!DOCTYPE html>
     <head>
         <meta name="application-name" content="BlocklyProp"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
