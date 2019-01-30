@@ -27,8 +27,6 @@ import com.parallax.server.blocklyprop.servlets.AuthenticationServlet;
 import com.parallax.server.blocklyprop.servlets.PrivacyPolicyServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmRequestServlet;
 import com.parallax.server.blocklyprop.servlets.ConfirmServlet;
-import com.parallax.server.blocklyprop.servlets.HelpSearchServlet;
-import com.parallax.server.blocklyprop.servlets.HelpServlet;
 import com.parallax.server.blocklyprop.servlets.NewOAuthUserServlet;
 import com.parallax.server.blocklyprop.servlets.OAuthGoogleServlet;
 import com.parallax.server.blocklyprop.servlets.PasswordResetRequestServlet;
@@ -130,9 +128,6 @@ public class ServletsModule extends ServletModule {
         serve("/public/clientinstructions").with(TextileClientInstructionsServlet.class);
         serve("/public/changelog").with(TextileChangeLogServlet.class);
 
-        // Help
-        serve("/public/help").with(HelpServlet.class);
-        serve("/public/helpsearch").with(HelpSearchServlet.class);
 
         // OAuth
         serve("/oauth/newuser").with(NewOAuthUserServlet.class);
