@@ -29,7 +29,6 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.monitoring.Monitor;
-import com.parallax.server.blocklyprop.utils.HelpFileInitializer;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.Enumeration;
@@ -39,9 +38,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-// import java.sql.SQLException;
-// import ch.qos.logback.classic.LoggerContext;
 
 
 /**
@@ -73,7 +69,6 @@ public class SetupConfig extends GuiceServletContextListener {
                 bind(SessionData.class);
                 bind(Properties.class).asEagerSingleton();
 
-                bind(HelpFileInitializer.class).asEagerSingleton();
                 bind(Monitor.class).asEagerSingleton();
 
                 // Configure the backend data store
