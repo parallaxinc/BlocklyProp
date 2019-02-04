@@ -54,6 +54,7 @@ public class RestProject {
     // Connector to project converter object
     private ProjectConverter projectConverter;
 
+
     /**
      * Connect to the project service object
      * @param projectService 
@@ -63,6 +64,7 @@ public class RestProject {
         this.projectService = projectService;
     }
 
+
     /**
      * Connect to the project converter object
      * @param projectConverter 
@@ -71,6 +73,7 @@ public class RestProject {
     public void setProjectConverter(ProjectConverter projectConverter) {
         this.projectConverter = projectConverter;
     }
+
 
     /**
      * Return a list of projects owned by the currently authenticated user.
@@ -124,10 +127,13 @@ public class RestProject {
 
             JsonObject result = new JsonObject();
             JsonArray jsonProjects = new JsonArray();
+
+            // Loop through user projects and build a Json array
             for (ProjectRecord project : userProjects) {
                 jsonProjects.add(projectConverter.toListJson(project));
             }
 
+            // Add payload details
             result.add("rows", jsonProjects);
             result.addProperty("total", projectCount);
 
@@ -139,9 +145,15 @@ public class RestProject {
             LOG.warn("Error is {}", ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
+
+    /**
+     * Retreive a project based on the supplied project ID
+     *
+     * @param idProject
+     * @return
+     */
     @GET
     @Path("/get/{id}")
     @Detail("Get project by id")
@@ -177,6 +189,7 @@ public class RestProject {
         }
     }
 
+
     /**
      * Update the code in an existing project.
      * 
@@ -202,11 +215,13 @@ public class RestProject {
             LOG.debug("Code for project {} has been saved", idProject);
 
             JsonObject result = projectConverter.toJson(savedProject,false);
+
             LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
 
             return Response.ok(result.toString()).build();
+
         } catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -217,6 +232,15 @@ public class RestProject {
         }
     }
 
+
+    /**
+     *
+     * @param idProject
+     * @param code
+     * @param newName
+     * @param newBoard
+     * @return
+     */
     @POST
     @Path("/code-as")
     @Detail("Save project code")

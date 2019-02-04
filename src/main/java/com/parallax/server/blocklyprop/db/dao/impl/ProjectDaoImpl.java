@@ -412,8 +412,10 @@ public class ProjectDaoImpl implements ProjectDao {
      * @param order
      * @param limit
      * @param offset
-     * @param idUser
+
      * @return
+     * Returns a list of ProjectRecord objects corresponding to the projects
+     * matching the selection creiteria
      */
     @Override
     public List<ProjectRecord> getSharedProjects(
@@ -563,24 +565,42 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     /**
-     * TODO: add details.
+     * Update the code block in the specified project
      *
      * @param idProject
      * @param code
+     *
      * @return
      */
     @Override
     public ProjectRecord updateProjectCode(Long idProject, String code) {
         LOG.info("Update code for project {}.", idProject);
+
+        // Retrieve the specified project
         ProjectRecord record = create.selectFrom(Tables.PROJECT)
                 .where(Tables.PROJECT.ID.equal(idProject))
                 .fetchOne();
 
+        // Get a timestamp used to update the modified field of the project record
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new java.util.Date());
 
         if (record != null) {
+            // Found the project. Verify that the current user owns it
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+
+            // TODO: Detecting a zero user id
+            if (idUser == 0) {
+                LOG.error("Detected current user ID is zero for project {}", idProject);
+                return null;
+            }
+
+            if (record.getIdUser() == 0) {
+                LOG.error("Detected project user ID is zero for project {}", idProject);
+                return null;
+            }
+
+            // Update the project if the current user owns it
             if (record.getIdUser().equals(idUser)) {
                 record.setCode(code);
                 record.setModified(cal);
@@ -588,14 +608,18 @@ public class ProjectDaoImpl implements ProjectDao {
                 record.update();
                 return record;
             } else {
+                // If the project is a shared project, allow the current user
+                // to clone the project into their library
                 if (record.getShared()) {
                     ProjectRecord cloned = doProjectClone(record);
                     cloned.setCode(code);
                     cloned.setModified(cal);
                     cloned.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
+                    cloned.setIdUser(idUser);   // The logged in user owns this copy of the project
                     cloned.update();
                     return cloned;
                 }
+
                 LOG.error("User {} tried and failed to update project {}.", idUser, idProject);
                 throw new UnauthorizedException();
             }
@@ -604,6 +628,8 @@ public class ProjectDaoImpl implements ProjectDao {
             return null;
         }
     }
+
+
 
     /**
      * Save the current project as a new project
@@ -700,7 +726,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 original.getBoard(),
                 original.getPrivate(),
                 original.getShared(),
-                original.getId()
+                original.getId()        // set the parent project id
         );
 
 //        cloned.setBasedOn(original.getId());
