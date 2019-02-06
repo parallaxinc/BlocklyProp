@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.servlets;
 
 import com.google.common.base.Strings;
@@ -57,6 +73,8 @@ public class PasswordResetServlet extends HttpServlet {
         String email = req.getParameter("email");
         req.setAttribute("token", token == null ? "" : token);
         req.setAttribute("email", email == null ? "" : email);
+
+        LOG.info("Redirecting to the reset password page");
         req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
     }
 
@@ -69,8 +87,12 @@ public class PasswordResetServlet extends HttpServlet {
         String email = req.getParameter("email");
         req.setAttribute("token", token == null ? "" : token);
         req.setAttribute("email", email == null ? "" : email);
+
+
         String password = req.getParameter("password");
         String confirmPassword = req.getParameter("confirmpassword");
+
+        LOG.info("Processing the results from the reset pasword page");
         
         if (Strings.isNullOrEmpty(token) || Strings.isNullOrEmpty(email) || Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(confirmPassword)) {
             req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
@@ -107,8 +129,16 @@ public class PasswordResetServlet extends HttpServlet {
         }
     }
 
-    public void showTextilePage(HttpServletRequest req, HttpServletResponse resp, PasswordResetPage passwordResetPage) throws ServletException, IOException {
-        String html = textileFileReader.readFile("password-reset/" + passwordResetPage.getPage(), ServletUtils.getLocale(req), req.isSecure());
+    public void showTextilePage(
+            HttpServletRequest req,
+            HttpServletResponse resp,
+            PasswordResetPage passwordResetPage) throws ServletException, IOException {
+
+        String html = textileFileReader.readFile(
+                "password-reset/" + passwordResetPage.getPage(),
+                ServletUtils.getLocale(req),
+                req.isSecure());
+
         req.setAttribute("html", html);
         req.getRequestDispatcher("/WEB-INF/servlet/html.jsp").forward(req, resp);
     }

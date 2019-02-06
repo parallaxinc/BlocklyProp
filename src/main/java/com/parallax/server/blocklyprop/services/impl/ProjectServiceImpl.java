@@ -252,11 +252,28 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.deleteProject(idProject);
     }
 
+
+    /**
+     * Update the code block in the specified project
+     *
+     * @param idProject
+     * @param code
+     * @return
+     */
     @Override
     public ProjectRecord saveProjectCode(Long idProject, String code) {
         return projectDao.updateProjectCode(idProject, code);
     }
 
+
+    /**
+     *
+     * @param idProject
+     * @param code
+     * @param newName
+     * @param newBoard
+     * @return
+     */
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName, String newBoard) {
         return projectDao.saveProjectCodeAs(idProject, code, newName, newBoard);
