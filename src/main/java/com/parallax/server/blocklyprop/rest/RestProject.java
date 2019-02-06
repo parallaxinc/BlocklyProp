@@ -163,14 +163,14 @@ public class RestProject {
 
             // Sort flag evaluation
             if (!restProjectUtils.ValidateSortType(sort)) {
-                LOG.warn("{} Sort parameter failed", endPoint);
-                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+                LOG.warn("{} Sort parameter failed. Defaulting to sort by project name", endPoint);
+                sort = TableSort.name;
             }
 
             // Sort order evaluation
             if (!restProjectUtils.ValidateSortOrder(order)) {
-                LOG.warn("{} Sort order parameter failed", endPoint);
-                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+                LOG.warn("{} Sort order parameter failed. Defaulting to ascending order", endPoint);
+                order = TableOrder.asc;
             }
 
             // Limit result set value

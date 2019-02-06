@@ -549,5 +549,12 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        </dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>17.0.0</version>
+        </dependency>
+    </dependencies>
 </project>
