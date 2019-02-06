@@ -571,6 +571,13 @@ public class ProjectDaoImpl implements ProjectDao {
      * @param code
      *
      * @return
+     * Returns the specified project record, otherwise it returns a null if
+     * the current user does not own the project and the project is not shared
+     * or public, or the requested project record was not found.
+     *
+     * @implNote This method will actually create a new project record based on the
+     * existing project under specific conditions. Since this is an update record method,
+     * the creation of a new project my be unexpected at higher layers of the application.
      */
     @Override
     public ProjectRecord updateProjectCode(Long idProject, String code) {

@@ -30,6 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
+import com.parallax.server.blocklyprop.utils.RestProjectUtils;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
@@ -81,6 +82,12 @@ public class RestSharedProject {
 
 
     /**
+     * Limit the number of records that can be returned in list functions
+     */
+    final int REQUEST_LIMIT = 100;
+
+
+    /**
      * Inject project services
      *
      * @param projectService
@@ -95,6 +102,7 @@ public class RestSharedProject {
     /**
      * Inject project conversion services
      * @param projectConverter
+     *
      * An instance of the ProjectConverter object
      */
     @Inject
@@ -133,50 +141,27 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
 
-        String endPoint = "REST:/shared/project/list/";
+        RestProjectUtils restProjectUtils = new RestProjectUtils();
 
+        String endPoint = "REST:/shared/project/list/";
         LOG.info("{} endpoint activated", endPoint);
 
-        boolean parametersValid = false;
-        
         // Sort flag evaluation
-        if (sort != null) {
-            for (TableSort t : TableSort.values()) {
-                LOG.debug("{} Sort test for '{}'",endPoint, t);
-            
-                if (sort == t) {
-                    parametersValid = true;
-                    break;
-                }
-            }
-        
-            if (!parametersValid) {
-                LOG.warn("{} Sort parameter failed", endPoint);
-                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-            }
+        if (!restProjectUtils.ValidateSortType(sort)) {
+            LOG.warn("{} Sort parameter failed", endPoint);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
 
         // Sort order evaluation
-        if (order != null) {
-            parametersValid = false;
-            LOG.debug("{} Checking order", endPoint);
-        
-            for (TableOrder t : TableOrder.values()) {
-                if (order == t) {
-                    parametersValid = true;
-                    break;
-                }
-            }
-        
-            if (!parametersValid) {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-            }
+        if (!restProjectUtils.ValidateSortOrder(order)) {
+            LOG.warn("{} Sort order parameter failed", endPoint);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
-        
+
         // Limit result set value
-        if ( (limit == null) || (limit > 50)) {
-            LOG.info("{} Limit throttle to 50 entries", endPoint);
-            limit = 50;
+        if ( (limit == null) || (limit > REQUEST_LIMIT)) {
+            LOG.info("{} Limit throttle to {} entries", endPoint, REQUEST_LIMIT);
+            limit = REQUEST_LIMIT;
         }
         
         // Check ofset from the beginning of the record set
@@ -185,13 +170,18 @@ public class RestSharedProject {
         }
 
         // Get a block of projects
-        List<ProjectRecord> projects
-                = projectService.getSharedProjects(sort, order, limit, offset);
-        
-        // Obtain a count of the total number of community projects available
-        int projectCount = projectService.countSharedProjects();
+        List<ProjectRecord> projects = projectService.getSharedProjects(sort, order, limit, offset);
 
-        return Response.ok(returnProjectsJson(projects, projectCount)).build();
+        // Tell the caller that there is nothing to see here
+        if (projects == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(
+                returnProjectsJson(
+                        projects,
+                        projectService.countSharedProjects()))
+                .build();
     }
 
 
@@ -226,14 +216,27 @@ public class RestSharedProject {
             @QueryParam("offset") Integer offset, 
             @PathParam("id") Long idUser) {
 
-        String endPoint = "REST:/shared/project/list/user/";
+        RestProjectUtils restProjectUtils = new RestProjectUtils();
 
+        String endPoint = "REST:/shared/project/list/user/";
         LOG.info("{} Get request received for user '{}'", endPoint, idUser);
 
+        // Sort flag evaluation
+        if (!restProjectUtils.ValidateSortType(sort)) {
+            LOG.warn("{} Sort parameter failed", endPoint);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+
+        // Sort order evaluation
+        if (!restProjectUtils.ValidateSortOrder(order)) {
+            LOG.warn("{} Sort order parameter failed", endPoint);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+
         // Limit result set value
-        if ( (limit == null) || (limit > 50)) {
-            LOG.info("{} Limit throttle to 50 entries", endPoint);
-            limit = 50;
+        if ( (limit == null) || (limit > REQUEST_LIMIT)) {
+            LOG.info("{} Limit throttle to {} entries", endPoint, REQUEST_LIMIT);
+            limit = REQUEST_LIMIT;
         }
 
         // Check ofset from the beginning of the record set
@@ -241,12 +244,18 @@ public class RestSharedProject {
             offset = 0;
         }
 
-
         List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
-        int projectCount = projectService.countSharedProjectsByUser(idUser);
 
-        return Response.ok(returnProjectsJson(projects, projectCount)).build();
+        // Tell the caller that there is nothing to see here
+        if (projects == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
+        return Response.ok(
+                returnProjectsJson(
+                        projects,
+                        projectService.countSharedProjectsByUser(idUser)))
+                .build();
     }
 
 
@@ -275,7 +284,6 @@ public class RestSharedProject {
             @PathParam("id") Long idProject) {
 
         String endPoint = "REST:/rest/shared/project/get/";
-
         LOG.info("{} Get request received for project '{}'", endPoint, idProject);
         
         try {
@@ -287,7 +295,9 @@ public class RestSharedProject {
             }
 
             LOG.info("Converting project {} to JSON string", idProject);
+
             JsonObject result = projectConverter.toJson(project, false);
+
             LOG.info("{}" + idProject.toString() + "/ returning project {}.", endPoint, project.getId());
 
             return Response.ok(result.toString()).build();

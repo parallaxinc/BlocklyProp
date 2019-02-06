@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.rest;
 
 import com.cuubez.visualizer.annotation.Detail;
@@ -16,6 +32,7 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
+import com.parallax.server.blocklyprop.utils.RestProjectUtils;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
@@ -31,6 +48,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import org.apache.shiro.authz.AuthorizationException;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,19 +63,36 @@ import org.slf4j.LoggerFactory;
 @Group(name = "/project", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestProject {
-    // Get a logger instance
+
+    /**
+     * Get a logger instance
+     */
     private static final Logger LOG = LoggerFactory.getLogger(RestProject.class);
 
-    // Connector to project services object
+
+    /**
+     * Connector to project services object
+     */
     private ProjectService projectService;
     
-    // Connector to project converter object
+
+    /**
+     * Connector to project converter object
+     */
     private ProjectConverter projectConverter;
 
 
     /**
+     * Limit the number of records that can be returned in list functions
+     */
+    final int REQUEST_LIMIT = 100;
+
+
+    /**
      * Connect to the project service object
-     * @param projectService 
+     *
+     * @param projectService
+     * An instance of the ProjectService object
      */
     @Inject
     public void setProjectService(ProjectService projectService) {
@@ -67,7 +102,9 @@ public class RestProject {
 
     /**
      * Connect to the project converter object
-     * @param projectConverter 
+     *
+     * @param projectConverter
+     * An instance of the ProjectConverter object
      */
     @Inject
     public void setProjectConverter(ProjectConverter projectConverter) {
@@ -77,13 +114,22 @@ public class RestProject {
 
     /**
      * Return a list of projects owned by the currently authenticated user.
-     * 
+     *
      * @param sort
+     * The project field used to evaluate the sort
+     *
      * @param order
+     * Specify the sort order - ascending or descending
+     *
      * @param limit
+     * Specify the maximum number of rows to return
+     *
      * @param offset
-     * 
-     * @return JSON formatted list of project details
+     * Specify the beginning row to return
+     *
+     * @return
+     * Return a response object that contains either the data requested
+     * or a JSON string containing the error details
      */
     @GET
     @Path("/list")
@@ -95,49 +141,62 @@ public class RestProject {
             @QueryParam("order") @ParameterDetail("Sort order") @M() TableOrder order, 
             @QueryParam("limit") @ParameterDetail("Number of rows to return") @M() Integer limit, 
             @QueryParam("offset") @ParameterDetail("Offset to next row returned") @M() Integer offset) {
-        
-        LOG.info("REST:/rest/project/list/ Get request received");
-        
+
+        String endPoint = "REST:/rest/project/list/";
+
+        LOG.info("{} Get request received", endPoint);
+        RestProjectUtils restProjectUtils = new RestProjectUtils();
+
         try {
             // Get the logged in user id for the current session
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-            
+
+            // Return FORBIDDEN if we cannot identify the current user. This could
+            // mean that the user is not logged in or that some underlying issue
+            // is causing the authentication system to fail.
             if (idUser == 0) {
                 // Current session is not logged in.
-                return Response.status(Response.Status.NOT_FOUND).build();
+                return Response.status(Response.Status.FORBIDDEN).build();
             }
 
             //Sanity checks - is the request reasonable
-            if (sort == null)
-                sort = TableSort.modified;
-            
-            if (order == null) 
-                order = TableOrder.asc;
-            
-            if (limit == null)
-                limit = 20;
-            
-            if (offset == null)
-                offset = 0;
 
-            List<ProjectRecord> userProjects = 
-                    projectService.getUserProjects(idUser, sort, order, limit, offset);
-        
-            int projectCount = projectService.countUserProjects(idUser);
-
-            JsonObject result = new JsonObject();
-            JsonArray jsonProjects = new JsonArray();
-
-            // Loop through user projects and build a Json array
-            for (ProjectRecord project : userProjects) {
-                jsonProjects.add(projectConverter.toListJson(project));
+            // Sort flag evaluation
+            if (!restProjectUtils.ValidateSortType(sort)) {
+                LOG.warn("{} Sort parameter failed", endPoint);
+                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
             }
 
-            // Add payload details
-            result.add("rows", jsonProjects);
-            result.addProperty("total", projectCount);
+            // Sort order evaluation
+            if (!restProjectUtils.ValidateSortOrder(order)) {
+                LOG.warn("{} Sort order parameter failed", endPoint);
+                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            }
 
-            return Response.ok(result.toString()).build();
+            // Limit result set value
+            if ( (limit == null) || (limit > REQUEST_LIMIT)) {
+                LOG.info("{} Limit throttle to {} entries", endPoint, REQUEST_LIMIT);
+                limit = REQUEST_LIMIT;
+            }
+
+            // Check ofset from the beginning of the record set
+            if ((offset == null) || (offset < 0)) {
+                offset = 0;
+            }
+
+            // Obtain a list of the user's projects
+            List<ProjectRecord> userProjects = projectService.getUserProjects(idUser, sort, order, limit, offset);
+
+            // Tell the caller that there is nothing to see here
+            if (userProjects == null) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+
+            return Response.ok(
+                    returnProjectsJson(
+                            userProjects,
+                            projectService.countUserProjects(idUser)))
+                    .build();
             }
         
         catch(Exception ex) {
@@ -152,7 +211,11 @@ public class RestProject {
      * Retreive a project based on the supplied project ID
      *
      * @param idProject
+     * The project key ID
+     *
      * @return
+     * Return a string representation of the project in Json format if successful, otherwise
+     * return a Json string containing an error status message
      */
     @GET
     @Path("/get/{id}")
@@ -197,7 +260,10 @@ public class RestProject {
      * 
      * @param idProject
      * @param code
-     * @return 
+     * @return
+     * Returns a Json string containing the project details if the update was successful
+     * or an error message upon failure
+     *
      */
     @POST
     @Path("/code")
@@ -211,12 +277,19 @@ public class RestProject {
         LOG.info("REST:/rest/project/code/ POST request received for project '{}'", idProject);
         
         try {
+
+            /* WARNING:
+             * =================================================================================
+             * This call can create a new project record under specific circumstances and does
+             * not appear to provide any notification that this has occurred.
+             * =================================================================================
+             */
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
+
             LOG.debug("Code for project {} has been saved", idProject);
 
             JsonObject result = projectConverter.toJson(savedProject,false);
 
-            LOG.debug("Returning JSON: {}", result);
 
             result.addProperty("success", true);
 
@@ -332,4 +405,32 @@ public class RestProject {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    /**
+     * Iterate a list of projects into an array of Json objects
+     *
+     * @param projects
+     * A List of ProjectRecord objects
+     *
+     * @param projectCount
+     * The number of projects available. This may not be the same value as
+     * the number of records contained in the passed list of ProjectRecords.
+     *
+     * @return
+     * A String containing the array of the converted Json objects
+     */
+    private String returnProjectsJson(@NotNull List<ProjectRecord> projects, int projectCount) {
+        JsonObject result = new JsonObject();
+        JsonArray jsonProjects = new JsonArray();
+
+        for (ProjectRecord project : projects) {
+            jsonProjects.add(projectConverter.toListJson(project));
+        }
+
+        result.add("rows", jsonProjects);
+        result.addProperty("total", projectCount);
+
+        return result.toString();
+    }
+
 }
