@@ -643,16 +643,21 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName, String newBoard) {
         
-        LOG.info("Saving project code as '{}'", newName);
+        LOG.info("Saving project code from project {} as '{}'", idProject,  newName);
 
         // Retreive the source project
         ProjectRecord original = getProject(idProject);
+
         if (original == null) {
             LOG.error("Original project {} is missing. Unable to save code as...", idProject);
             throw new NullPointerException("Project doesn't exist");
-        } else if (newBoard == null) {
+        }
+
+        // Use the board type from the parent project if it was not provided
+        if (newBoard == null) {
             newBoard = original.getBoard();
         }
+
         
         // Obtain the current bp user record. 
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
@@ -663,6 +668,7 @@ public class ProjectDaoImpl implements ProjectDao {
             // shared or community project
             // --------------------------------------------------------------------
             if (original.getIdUser().equals(idUser) || original.getShared()) {
+
                 ProjectRecord cloned = createProject(
                         newName, 
                         original.getDescription(),
@@ -674,7 +680,13 @@ public class ProjectDaoImpl implements ProjectDao {
                         false,                  // Set project unshared
                         original.getId());
 
+                if (cloned == null) {
+                    LOG.warn("Unable to create a copy og the project.");
+                }
                 return cloned;
+            } else {
+                LOG.warn("Unable to copy the project. UID: {}, PUID: {}, Shared: {}",
+                        idUser, original.getIdUser(), original.getShared());
             }
         } else {
             LOG.info("Unable to retreive BP user id");
