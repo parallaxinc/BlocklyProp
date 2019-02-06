@@ -27,21 +27,23 @@ import com.parallax.server.blocklyprop.TableSort;
 public class RestProjectUtils {
 
 
+    /**
+     *
+     * @param sort
+     * @return
+     * Return true if the provided sort is a valid item, otherwise return false
+     */
     public boolean ValidateSortType(TableSort sort) {
-
-        boolean parametersValid = false;
 
         if (sort != null) {
             for (TableSort t : TableSort.values()) {
-
                 if (sort == t) {
-                    parametersValid = true;
-                    break;
+                    return true;
                 }
             }
         }
 
-        return parametersValid;
+        return false;
     }
 
     public boolean ValidateSortOrder(TableOrder order) {
