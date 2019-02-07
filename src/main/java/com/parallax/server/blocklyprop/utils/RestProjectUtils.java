@@ -33,7 +33,7 @@ public class RestProjectUtils {
      * @return
      * Return true if the provided sort is a valid item, otherwise return false
      */
-    public boolean ValidateSortType(TableSort sort) {
+    public static boolean ValidateSortType(TableSort sort) {
 
         if (sort != null) {
             for (TableSort t : TableSort.values()) {
@@ -46,7 +46,7 @@ public class RestProjectUtils {
         return false;
     }
 
-    public boolean ValidateSortOrder(TableOrder order) {
+    public static boolean ValidateSortOrder(TableOrder order) {
 
         boolean parametersValid = false;
 

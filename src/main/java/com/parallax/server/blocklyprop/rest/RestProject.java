@@ -145,7 +145,7 @@ public class RestProject {
         String endPoint = "REST:/rest/project/list/";
 
         LOG.info("{} Get request received", endPoint);
-        RestProjectUtils restProjectUtils = new RestProjectUtils();
+//        RestProjectUtils restProjectUtils = new RestProjectUtils();
 
         try {
             // Get the logged in user id for the current session
@@ -162,13 +162,13 @@ public class RestProject {
             //Sanity checks - is the request reasonable
 
             // Sort flag evaluation
-            if (!restProjectUtils.ValidateSortType(sort)) {
+            if (!RestProjectUtils.ValidateSortType(sort)) {
                 LOG.warn("{} Sort parameter failed. Defaulting to sort by project name", endPoint);
                 sort = TableSort.name;
             }
 
             // Sort order evaluation
-            if (!restProjectUtils.ValidateSortOrder(order)) {
+            if (!RestProjectUtils.ValidateSortOrder(order)) {
                 LOG.warn("{} Sort order parameter failed. Defaulting to ascending order", endPoint);
                 order = TableOrder.asc;
             }
@@ -343,12 +343,14 @@ public class RestProject {
             result.addProperty("success", true);
 
             return Response.ok(result.toString()).build();
-        } catch (AuthorizationException ae) {
+        }
+        catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         catch (Exception ex) {
             LOG.error("General exception encountered. Message is: ", ex.getMessage());
+            LOG.error("Error: {}", ex.getStackTrace().toString());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }

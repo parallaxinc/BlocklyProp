@@ -28,12 +28,14 @@ import com.cuubez.visualizer.annotation.Name;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.utils.RestProjectUtils;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
+
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -141,19 +143,18 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
 
-        RestProjectUtils restProjectUtils = new RestProjectUtils();
 
         String endPoint = "REST:/shared/project/list/";
         LOG.info("{} endpoint activated", endPoint);
 
         // Sort flag evaluation
-        if (!restProjectUtils.ValidateSortType(sort)) {
+        if (!RestProjectUtils.ValidateSortType(sort)) {
             LOG.warn("{} Sort parameter failed. Defaulting to sort by project name", endPoint);
             sort = TableSort.name;
         }
 
         // Sort order evaluation
-        if (!restProjectUtils.ValidateSortOrder(order)) {
+        if (!RestProjectUtils.ValidateSortOrder(order)) {
             LOG.warn("{} Sort order parameter failed. Defaulting to ascending order", endPoint);
             order = TableOrder.asc;
         }

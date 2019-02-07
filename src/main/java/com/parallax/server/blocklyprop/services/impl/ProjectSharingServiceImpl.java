@@ -32,16 +32,34 @@ public class ProjectSharingServiceImpl implements ProjectSharingService {
      */
     private static final Logger LOG = LoggerFactory.getLogger(ProjectSharingService.class);
 
-    private ProjectDao projectDao;
-    private ProjectSharingDao projectSharingDao;
 
-    // Inject dao connection to the project table
+    /**
+     *
+     */
+    private ProjectDao projectDao;
+
+
+    /**
+     * Inject dao connection to the project table
+     * @param projectDao
+     */
     @Inject
     public void setProjectDao(ProjectDao projectDao) {
         this.projectDao = projectDao;
     }
 
-    // Inject connection to the project_sharing table
+
+    /**
+     *
+     */
+    private ProjectSharingDao projectSharingDao;
+
+
+    /**
+     * Inject connection to the project_sharing table
+     *
+     * @param projectSharingDao
+     */
     @Inject
     public void setProjectSharingDao(ProjectSharingDao projectSharingDao) {
         this.projectSharingDao = projectSharingDao;
@@ -153,5 +171,17 @@ public class ProjectSharingServiceImpl implements ProjectSharingService {
     public boolean deleteSharedProject(Long idProject) {
         LOG.info("Deleting project share link for project {}", idProject);
         return projectSharingDao.deleteProjectSharingRecord(idProject);
+    }
+
+
+    /**
+     *
+     * @param idProject
+     * @return
+     */
+    @Override
+    public boolean isProjectShared(Long idProject) {
+        LOG.info("Evaluating project {} sharing status.", idProject);
+        return projectSharingDao.isProjectSharingActive(idProject);
     }
 }
