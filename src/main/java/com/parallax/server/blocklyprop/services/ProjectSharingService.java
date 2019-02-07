@@ -28,6 +28,9 @@ public interface ProjectSharingService {
     ProjectRecord getSharedProject(Long idProject, String shareKey);
 
     // Delete a project sharing record
-    public boolean deleteSharedProject(Long idProject);
+    boolean deleteSharedProject(Long idProject);
+
+    // Get current active state of a project share link
+    boolean isProjectShared(Long idProject);
     
 }

@@ -13,10 +13,14 @@ import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 
+//import com.parallax.server.blocklyprop.services.impl.ProjectSharingServiceImpl;
+import com.parallax.server.blocklyprop.services.ProjectSharingService;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.GregorianCalendar;
 import java.util.List;
+
 import org.apache.shiro.authz.UnauthorizedException;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -72,7 +76,15 @@ public class ProjectDaoImpl implements ProjectDao {
         this.create = dsl;
     }
 
-    
+
+    private ProjectSharingService projectSharingService;
+
+    @Inject
+    public void setProjectSharingContext(ProjectSharingService projectSharingService) {
+        this.projectSharingService = projectSharingService;
+    }
+
+
     /**
      *
      * Retrieve a new project record based from an existing project.
@@ -674,7 +686,12 @@ public class ProjectDaoImpl implements ProjectDao {
             // by the current user OR if the source project is designated as a
             // shared or community project
             // --------------------------------------------------------------------
-            if (original.getIdUser().equals(idUser) || original.getShared()) {
+            boolean sharedStatus = projectSharingService.isProjectShared(idProject);
+            LOG.info("Project shared status: {}", sharedStatus);
+
+           if (original.getIdUser().equals(idUser) ||       // Project is owned by currently logged in user
+                   sharedStatus ||                          // Project is shared
+                   (!original.getPrivate())) {              // Project is public
 
                 ProjectRecord cloned = createProject(
                         newName, 
@@ -688,7 +705,7 @@ public class ProjectDaoImpl implements ProjectDao {
                         original.getId());
 
                 if (cloned == null) {
-                    LOG.warn("Unable to create a copy og the project.");
+                    LOG.warn("Unable to create a copy of the project.");
                 }
                 return cloned;
             } else {
