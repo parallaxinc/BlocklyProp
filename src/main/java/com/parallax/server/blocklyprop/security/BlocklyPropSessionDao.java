@@ -10,11 +10,7 @@ import com.parallax.server.blocklyprop.services.impl.SessionServiceImpl;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.shiro.session.Session;
@@ -76,7 +72,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
      */
     @Override
     public Serializable create(Session session) {
-        LOG.debug("Create BlocklyProp session");
+        LOG.trace("Create BlocklyProp session");
         
         // Set session timeout for 8 hours
         session.setTimeout(28800000);
@@ -112,7 +108,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
     @Override
     public Session readSession(Serializable sessionId) throws UnknownSessionException {
 
-        LOG.debug("Reading session: {}", sessionId);
+        LOG.trace("Reading session: {}", sessionId);
 
         // Check parameter for sanity
         if (sessionId == null) {
@@ -156,7 +152,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
     @Override
     public void update(Session session) throws UnknownSessionException {
 
-        LOG.debug("Update session: {}", session.getId());
+        LOG.trace("Update session: {}", session.getId());
 
         try {
             // updateSession() can throw a NullPointerException if something goes wrong
@@ -178,7 +174,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
     @Override
     public void delete(Session session) {
 
-        LOG.debug("Removing session {}", session.getId());
+        LOG.trace("Removing session {}", session.getId());
 
         SessionServiceImpl.getSessionService().deleteSession(session.getId().toString());
     }
@@ -216,7 +212,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
     @Override
     public Collection<Session> getActiveSessions() {
 
-        LOG.debug("Getting all active sessions");
+        LOG.trace("Getting all active sessions");
         
         Collection<SessionRecord> sessionRecords = SessionServiceImpl.getSessionService().getActiveSessions();
         List<Session> sessions = new ArrayList<>();
@@ -240,7 +236,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
      * into an EIS.
      */
     private SessionRecord convert(Session session) {
-        LOG.debug("Converting session {} to a SessionRecord object", session.getId());
+        LOG.trace("Converting session {} to a SessionRecord object", session.getId());
 
         // Cast the Session parameter into a SimpleSession reference
         SimpleSession ssession = (SimpleSession) session;
@@ -256,6 +252,11 @@ public class BlocklyPropSessionDao implements SessionDAO {
         // SessionRecord object
         if (ssession.getAttributes() != null) {
             HashMap<Object, Object> attributes = (HashMap<Object, Object>) ssession.getAttributes();
+
+            // Logging attributes
+            // LOG.debug("Session attributes:");
+            // attributes.forEach( (k,v) -> LOG.debug("Key: {}, Value: {}", k, v));
+
             sessionRecord.setAttributes(SerializationUtils.serialize(attributes));
         }
 
@@ -273,7 +274,7 @@ public class BlocklyPropSessionDao implements SessionDAO {
      * SessionRecord object contained non-string data.
      */
     private Session convert(SessionRecord sessionRecord) {
-        LOG.debug("Converting SessionRecord {} into a SimpleSession object", sessionRecord.getIdsession());
+        LOG.trace("Converting SessionRecord {} into a SimpleSession object", sessionRecord.getIdsession());
         
         SimpleSession ssession = new SimpleSession();
         ssession.setId(sessionRecord.getIdsession());

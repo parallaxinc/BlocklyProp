@@ -20,8 +20,13 @@ import java.io.Serializable;
 @SessionScoped
 public class SessionData implements Serializable {
 
+    // A cloud session user profile object
     private User user;
+
+    // A cloud session user profile primary key ID
     private Long idUser;
+
+    // A locale string for this user
     private String locale;
 
     /**
