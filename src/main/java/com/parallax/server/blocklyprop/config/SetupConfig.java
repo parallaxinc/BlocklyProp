@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Parallax Inc.
+ * Copyright (c) 2019 Parallax Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the “Software”), to deal in the Software without
@@ -64,6 +64,7 @@ public class SetupConfig extends GuiceServletContextListener {
 
             @Override
             protected void configure() {
+
                 bind(Configuration.class).toInstance(configuration);
 
                 bind(SessionData.class);
