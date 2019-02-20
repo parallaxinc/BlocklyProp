@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018 Parallax Inc.
+  ~ Copyright (c) 2019 Parallax Inc.
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
   ~ and associated documentation files (the “Software”), to deal in the Software without
@@ -20,9 +20,11 @@
   --%>
 
 <%--
-    Document   : projects
+    Document   : projects.jsp
     Created on : 24-mei-2015, 18:41:02
     Author     : Michel
+    Notes      : Display the community projects in a table format
+    TODO: UI-Convert to client side content with project data sourced from server endpoint.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
