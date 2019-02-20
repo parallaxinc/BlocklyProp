@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Parallax Inc.
+ * Copyright (c) 2019 Parallax Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the “Software”), to deal in the Software without
@@ -21,16 +21,10 @@
 
 package com.parallax.server.blocklyprop.services.impl;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
-
 import com.parallax.client.cloudsession.CloudSessionAuthenticateService;
 import com.parallax.client.cloudsession.CloudSessionRegisterService;
 import com.parallax.client.cloudsession.CloudSessionUserService;
+import com.parallax.client.cloudsession.objects.User;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.NonUniqueEmailException;
@@ -42,19 +36,25 @@ import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.exceptions.WrongAuthenticationSourceException;
-import com.parallax.client.cloudsession.objects.User;
-
 import com.parallax.server.blocklyprop.SessionData;
-import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.services.SecurityService;
-
+import com.parallax.server.blocklyprop.services.SessionService;
+import com.parallax.server.blocklyprop.db.dao.UserDao;
 import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
 import java.util.Calendar;
-import java.util.Set;
+
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.shiro.SecurityUtils;
+// import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,56 +67,51 @@ import org.slf4j.LoggerFactory;
 @Transactional
 public class SecurityServiceImpl implements SecurityService {
 
-    /**
-     * Handle to logging facility
-     */
+    // Handle to logging facility for the SecurityServiceImpl class
     private static final Logger LOG = LoggerFactory.getLogger(SecurityServiceImpl.class);
-    
-    /**
-     * 
-     */
+
+    // A static instance of this object
     private static SecurityServiceImpl instance;
 
-    /**
-     * Web client session details
-     */
+    // Application configuration settings
+    private Configuration configuration;
+
+    // Interface to the Cloud Session user account registration service
+    private CloudSessionRegisterService registerService;
+
+    // Interface to the Cloud Session user authentication service
+    private CloudSessionAuthenticateService authenticateService;
+
+    // Interface to the Cloud Session user account/profile services
+    private CloudSessionUserService userService;
+
+    // Injects an instance of SessionData here
     private Provider<SessionData> sessionData;
 
+    // Access to the BlocklyProp user details
+    private UserDao userDao;
+
+    private SessionService sessionService;
+
+    @Inject
+    public void setSessionService(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
+
     /**
-     * Application configuration settings
-     */
-    private Configuration configuration;
-    
-    /**
-     * 
+     * Get a static instance of the EmailValidator object.
+     *
+     * @implNote
+     * The default configuration for the validator is to not allow local and TLDs
      */
     private EmailValidator emailValidator = EmailValidator.getInstance();
 
-    /**
-     * Interface to the Cloud Session user account registration service
-     */
-    private CloudSessionRegisterService registerService;
-    
-    /**
-     * Interface to the Cloud Session user authentication service
-     */
-    private CloudSessionAuthenticateService authenticateService;
-    
-    /**
-     * Interface to the Cloud Session user account/profile services
-     */
-    private CloudSessionUserService userService;
 
     /**
-     *  Access to the BlocklyProp user details
-     */
-    private UserDao userDao;
-    
-    /**
      * Constructor
-     * 
      */
     public SecurityServiceImpl() {
+        //
         // TODO: Correct the 'this' construct in the constructor
         //
         // Notes from: https://www.securecoding.cert.org/confluence/display/java/TSM01-J.+Do+not+let+the+this+reference+escape+during+object+construction 
@@ -127,38 +122,46 @@ public class SecurityServiceImpl implements SecurityService {
         instance = this;
     }
 
+
     /**
-     * Set the session's data provider
+     * Implements the Providers setSessionDataProvider interface
      * 
      * This is a callback used by the Shiro package to provide a connection
      * between the application and the Shiro session management services.
      * 
-     * @param sessionDataProvider 
+     * @param sessionDataProvider
+     * is a class that models the session data
+     *
      */
     @Inject
     public void setSessionDataProvider(Provider<SessionData> sessionDataProvider) {
         this.sessionData = sessionDataProvider;
     }
 
+
     /**
      * Set the session's user database object in the blocklyprop system.
      * 
-     * @param userDao 
+     * @param userDao
+     * is the DAO interface to User data instance store
      */
     @Inject
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
+
     /**
      * Configure cloud session service endpoints
      * 
-     * @param configuration 
+     * @param configuration
+     * A application configuration object
      */
-
     @Inject
     public void setConfiguration(Configuration configuration) {
+
         LOG.debug("Setting cloud session configuration");
+
         this.configuration = configuration;
 
         // Set the source for the cloud session registration services
@@ -177,6 +180,7 @@ public class SecurityServiceImpl implements SecurityService {
                 configuration.getString("cloudsession.baseurl"));
     }
 
+
     /**
      * Validate new user data and create a new user account
      * 
@@ -194,12 +198,23 @@ public class SecurityServiceImpl implements SecurityService {
      * @param birthYear int Year component of the user's birthday. COPPA field
      * @param parentEmail String sponsor email address. COPPA field
      * @param parentEmailSource int Sponsor classification. COPPA
-     * @return
+     *
+     * @return The cloud session user ID if successful or zero upon failure
+     *
      * @throws NonUniqueEmailException
+     * A user account with the provided email address already exists
+     *
      * @throws PasswordVerifyException
+     * The two password values provided do not match
+     *
      * @throws PasswordComplexityException
+     * The provided password does not meet the requirements for a secure password
+     *
      * @throws ScreennameUsedException
-     * @throws IllegalStateException 
+     * A user account with the provided screen name already exists
+     *
+     * @throws IllegalStateException
+     *
      */
     @Override
     public Long register(
@@ -217,71 +232,60 @@ public class SecurityServiceImpl implements SecurityService {
                 ScreennameUsedException,
                 IllegalStateException{
 
+        LOG.info("Registering a new user: {}({})", email,  screenname);
+
+        // Instantiate a new cloud session user profile object
         User user = new User();
 
-        // Log a few things
-        LOG.debug("In register: parameter screen name: {}", screenname);
-        LOG.debug("In register: parameter email: {}", email);
-        LOG.debug("In register: parameter month: {}", birthMonth);
-        LOG.debug("In register: parameter year: {}", birthYear);
-        LOG.debug("In register: parameter sponsor email: {}", parentEmail);
-        LOG.debug("In register: parameter sponsor type selection: {}", parentEmailSource);
-        
         // Perform basic sanity checks on inputs
         // Throws NullPointerException if screenname is null
-        LOG.debug("Resgistering new user: {}", screenname);
         Preconditions.checkNotNull(screenname, "ScreenNameNull");
 
         // User email address is required and must be reasonably valid
-        LOG.debug("Verifying email address has been supplied");
         Preconditions.checkNotNull(email, "UserEmailNull");
-
-        LOG.debug("Verifying email address is reasonable");
         Preconditions.checkState(
                 emailValidator.isValid(email),
                 "Email address format is incorrect");
 
-        LOG.debug("Verifying that a password was provided");
+        // The password fields must contain something
         Preconditions.checkNotNull(password, "PasswordIsNull");
-        
-        LOG.debug("Verify that second copy of password was provided");
         Preconditions.checkNotNull(passwordConfirm, "PasswordConfirmIsNull");
- 
+
         // Verify that we have valid COPPA data before continuing
         // Birth month
         Preconditions.checkNotNull(birthMonth, "BirthMonthNull");
-        LOG.debug("Verify that month is provided: {}", birthMonth);
         Preconditions.checkState((birthMonth != 0), "BirthMonthNotSet");
 
         // Birth year
         Preconditions.checkNotNull(birthYear, "BirthYearNull");
-        LOG.debug("Verify that year is provided: {}", birthYear);
         Preconditions.checkState(
                 (Calendar.getInstance().get(Calendar.YEAR) != birthYear),
                 "BirthYearNotSet");
 
         // Get additional information if the registrant is under 13 years old
         if (user.isCoppaEligible(birthMonth, birthYear)) {
-            LOG.debug("User is subject to COPPA regulations");
-
             // We must have a sponsor email address for COPPA eligible users
             Preconditions.checkNotNull(
                     parentEmail,
                     "SponsorEmailNull");
-            
+
             // Verify that the sponsor email address is reasonable
             if (parentEmail != null && parentEmail.length() > 0) {
-                LOG.debug("Verify that optional user email address is reasonable");
                 Preconditions.checkState(
-                    emailValidator.isValid(parentEmail),
-                    "SponsorEmail");
+                        emailValidator.isValid(parentEmail),
+                        "SponsorEmail");
             }
+
+            LOG.info("User is COPPA restricted");
+            LOG.info("Sponsor email address is: {}", parentEmail);
         }
 
+        /* ------------------------------------------------------------------
+         * Attempt to register the user account data with the cloud session
+         * service. If successful, the method call will return a cloud
+         * session user id for the newly created account
+         * -----------------------------------------------------------------*/
         try {
-            // Attempt to register the user account data with the cloud session
-            // service. If successful, the method call will return a cloud
-            // session user id for the newly created account
             LOG.info("Registering user account with cloud-service");
             Long idCloudSessionUser = registerService.registerUser(
                     email, 
@@ -296,6 +300,7 @@ public class SecurityServiceImpl implements SecurityService {
             
             // Create a BlocklyProp user account record
             if (idCloudSessionUser > 0) {
+                LOG.info("Creating matching blocklyprop user record for {}", screenname);
                 userDao.create(idCloudSessionUser, screenname);
             }
             
@@ -341,7 +346,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     /**
-     * Authenticate a user from the provided userID
+     * Get an instance of an authenticated user object
      * 
      * @param idUser
      * 
@@ -389,7 +394,6 @@ public class SecurityServiceImpl implements SecurityService {
 
             // Query Cloud Session interface
             User user = authenticateService.authenticateLocalUser(email, password);
-            LOG.info("User authenticated");
             return user;
 
         } catch (UnknownUserException uue) {
@@ -412,7 +416,7 @@ public class SecurityServiceImpl implements SecurityService {
             throw wase;
 
         } catch (NullPointerException npe) {
-            LOG.error("Authetication threw Null Pointer Exception");
+            LOG.error("Authentication threw Null Pointer Exception");
             throw npe;
 
         } catch (ServerException se) {
@@ -442,7 +446,9 @@ public class SecurityServiceImpl implements SecurityService {
             UnknownUserIdException, 
             UserBlockedException, 
             EmailNotConfirmedException {
-        
+
+        // FixMe: UserBlockledException is never thrown in client.cloudsession.
+
         try {
             User user = userService.getUser(idUser);
             LOG.info("User authenticated");
@@ -461,20 +467,26 @@ public class SecurityServiceImpl implements SecurityService {
      * Return user session data
      * 
      * @return SessionData object containing user session details or null
+     *
+     * @implNote
+     * The SessionData object stores three attributes:
+     *     user - A cloud session user profile object
+     *     idUser - the blocklprop user primary key ID
+     *     locale - the locale string used for this session
      */
     public static SessionData getSessionData() {
         LOG.debug("Getting user session data");
-        
+
         SessionData sessionData = instance.sessionData.get();
-        
+
         if (sessionData == null) {
             LOG.warn("Error obtaining session data");
+            return null;
         }
-        
-        LOG.debug("Session data - {}", sessionData.toString());
-        
+
         // Check for a BP user id
         if (sessionData.getIdUser() == null) {
+            LOG.debug("No user ID is associated with the current session");
             
             // No BP user id found, is the user in this session authenticated?
             if (SecurityUtils.getSubject().isAuthenticated()) {
@@ -482,59 +494,87 @@ public class SecurityServiceImpl implements SecurityService {
                 // The user identified by this session is authenticated. Perform
                 // a fun exercise to locate the BP user id for this authenticated
                 // user.
-                LOG.debug("Session data missing a valid BP id for an authenticated user");
+                LOG.debug("Obtaining session data for authenticated user");
                 
                 try {
                     // Getting a user record using the account email address
                     String principal = (String) SecurityUtils.getSubject().getPrincipal();
                     // Display the user's email address
-                    LOG.debug("Getting pricipal: {}", principal );
+                    LOG.debug("Principal is: {}", principal );
                     
                     // Get the user account/profile record
+                    String emailAddress = (String) SecurityUtils.getSubject().getPrincipal();
+                    LOG.debug("Getting user profile for {}", emailAddress);
+
+                    // Retrieve a blocky user record using an email address
                     User user = instance.userService.getUser(
                             (String) SecurityUtils.getSubject().getPrincipal());
-                    
+
                     // Did we get a user account object
                     if (user != null) {
-                        LOG.debug("Session User: {}", user.getScreenname());
-                        LOG.debug("Session UserId: {}", user.getId());
-                        LOG.debug("Session locale: {}", user.getLocale());
-                        
+                        LOG.debug("User Profile: {}({}), ID: {}",
+                                user.getEmail(),
+                                user.getScreenname(),
+                                user.getId());
+                        LOG.debug("Session Locale is: {}",sessionData.getLocale());
+
                         // Yes, User account local may have changed
                         if (!Strings.isNullOrEmpty(sessionData.getLocale())) {
                             if (!sessionData.getLocale().equals(user.getLocale())) {
                                 try {
                                     // User locale changed. Let's update the user 
                                     // account with new locale
-                                    LOG.info("Changing user {} locale", user.getScreenname());
+                                    LOG.debug("Changing user {} locale", user.getScreenname());
                                     user = instance.userService.changeUserLocale(
                                             user.getId(), sessionData.getLocale());
+
                                 } catch (UnknownUserIdException ex) {
                                     LOG.error("UnknownUserId exception detected. {}", ex.getMessage());
                                 }
                             }
                         }
-                        
-                        LOG.debug("Setting session user data for {}", user.getScreenname());
-                        sessionData.setUser(user);       
-                        
-                        LOG.debug("Getting BP user id");
-                        UserRecord bpUser = instance.userDao.getUser(user.getId(), user.getScreenname());
+
+                        // Store the user profile into the session
+                        sessionData.setUser(user);
+
+                        LOG.debug("Checking {}", sessionData.getUser().getScreenname());
+
+                        // Getting the blocklyprop user record
+                        Long idBlocklyUser = instance.userDao.getUserIdForCloudSessionUserId(user.getId());
+
+                        LOG.debug("Obtained BlocklyProp user id {} from cloud session id {} ",
+                                idBlocklyUser,
+                                user.getId() );
+
+                        UserRecord bpUser = instance.userDao.getUser(idBlocklyUser);
+
                         if (bpUser != null) {
-                            LOG.debug("Setting BP user id to: {}", bpUser.getId());
-                            sessionData.setIdUser(bpUser.getId());                            
+                            LOG.debug("Retrieved blockly user record: bpID: {}, csID: {}, Name: {}",
+                                    bpUser.getId(),
+                                    bpUser.getIdcloudsession(),
+                                    bpUser.getScreenname() );
+
+
+                            // Verify that the screen name matches in both databases
+                            if (! bpUser.getScreenname().equals(user.getScreenname())) {
+                                LOG.info("Updating bp screen name from {} to {}",
+                                        bpUser.getScreenname(),
+                                        user.getScreenname());
+
+//                                instance.userDao.updateScreenName(
+//                                        bpUser.getId(),
+//                                        user.getScreenname());
+                            }
                         }else{
                             LOG.warn("Warning! Setting BP user id to zero");
                             sessionData.setIdUser(0L);
                         }
 
-                        /*
-                         * This should never be necessary until the user profile page
-                         * offers the capability to change the user's screen name
-                         */
-//                        instance.userDao.updateScreenname(
-//                                sessionData.getIdUser(), 
-//                                user.getScreenname());
+                        sessionData.setIdUser(idBlocklyUser);
+                        sessionData.setLocale(user.getLocale());
+
+
+                        //TODO: Persist the updated sessionData
                     }
                 } catch (UnknownUserException ex) {
                     LOG.error("Unknown user ID. {}", ex);
@@ -543,6 +583,8 @@ public class SecurityServiceImpl implements SecurityService {
                 }
             }
         }
+
+        LOG.debug("Returning session data");
         return sessionData;
     }
 }
