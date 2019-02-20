@@ -81,6 +81,56 @@ public interface ProjectDao {
     ProjectRecord getProject(Long idProject);
 
 
+    /**
+     * Create a new project record from the supplied details
+     *
+     * @param name
+     * Project name
+     *
+     * @param description
+     * Project description formatted in plain text
+     *
+     * @param descriptionHtml
+     * Project description formatted in HTML
+     *
+     * @param code
+     * XML content that holds the project block structure
+     *
+     * @param type
+     * Project source language (SPIN or PROPC)
+     *
+     * @param board
+     * Descriptor for the target device the project will use
+     *
+     * @param privateProject
+     * Flag to indicate if the project is visible to anyone but the project owner
+     *
+     * @param sharedProject
+     * Flag to indicate if the project is available for viewing by anyone
+     *
+     * @param idProjectBasedOn
+     * The id from the project that is the parent of the current project record
+     *
+     * @param projectSettings
+     * A JSON formatted string containing project settings.
+     *
+     * @return
+     * a ProjectRecord object if the project is available, otherwise return a null
+     */
+
+    ProjectRecord createProject(
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            ProjectType type,
+            String board,
+            boolean privateProject,
+            boolean sharedProject,
+            Long idProjectBasedOn,
+            String projectSettings);
+
+
 
     /**
      * Create a new project record from the supplied details

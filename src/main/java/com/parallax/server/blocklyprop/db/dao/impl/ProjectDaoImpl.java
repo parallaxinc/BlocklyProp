@@ -43,7 +43,7 @@ public class ProjectDaoImpl implements ProjectDao {
      * The absolute lowest number of bytes that can exist in an
      * un-populated project.
      */
-    private static final int Min_BlocklyCodeSize = 48;
+    private static final int MIN_BLOCKLY_CODE_SIZE = 48;
 
     
     /**
@@ -79,6 +79,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
     private ProjectSharingService projectSharingService;
 
+
+
     @Inject
     public void setProjectSharingContext(ProjectSharingService projectSharingService) {
         this.projectSharingService = projectSharingService;
@@ -86,7 +88,6 @@ public class ProjectDaoImpl implements ProjectDao {
 
 
     /**
-     *
      * Retrieve a new project record based from an existing project.
      *
      * Note: There are private getProject methods that retrieve a project record
@@ -131,7 +132,117 @@ public class ProjectDaoImpl implements ProjectDao {
         return alterReadRecord(record);
     }
 
-    
+
+    /**
+     *  Create a complete project record. All parameters are supplied by the caller.
+     *
+     * @param name
+     * Project name
+     *
+     * @param description
+     * Project description formatted in plain text
+     *
+     * @param descriptionHtml
+     * Project description formatted in HTML
+     *
+     * @param code
+     * XML content that holds the project block structure
+     *
+     * @param type
+     * Project source language (SPIN or PROPC)
+     *
+     * @param board
+     * Descriptor for the target device the project will use
+     *
+     * @param privateProject
+     * Flag to indicate if the project is visible to anyone but the project owner
+     *
+     * @param sharedProject
+     * Flag to indicate if the project is available for viewing by anyone
+     *
+     * @param idProjectBasedOn
+     * The id from the project that is the parent of the current project record
+     *
+     * @param projectSettings
+     * A JSON formatted string containing project settings.
+     *
+     * @return
+     */
+    public ProjectRecord createProject(
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            ProjectType type,
+            String board,
+            boolean privateProject,
+            boolean sharedProject,
+            Long idProjectBasedOn,
+            String projectSettings) {
+
+        ProjectRecord record = null;
+
+        // Get the logged in user's userID
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (idUser == null) {
+            LOG.error("Null BP UserID");
+            return null;
+        }
+
+        // Get the cloud session user id from the current authenticated session
+        Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
+        if (idCloudUser == null) {
+            LOG.error("Null cloud user ID");
+            return null;
+        }
+
+        try {
+            record = create
+                    .insertInto(Tables.PROJECT,
+                            Tables.PROJECT.ID_USER,
+                            Tables.PROJECT.ID_CLOUDUSER,
+                            Tables.PROJECT.NAME,
+                            Tables.PROJECT.DESCRIPTION,
+                            Tables.PROJECT.DESCRIPTION_HTML,
+                            Tables.PROJECT.CODE,
+                            Tables.PROJECT.CODE_BLOCK_VERSION,
+                            Tables.PROJECT.TYPE,
+                            Tables.PROJECT.BOARD,
+                            Tables.PROJECT.PRIVATE,
+                            Tables.PROJECT.SHARED,
+                            Tables.PROJECT.BASED_ON,
+                            Tables.PROJECT.SETTINGS)
+                    .values(idUser,
+                            idCloudUser,
+                            name,
+                            description,
+                            descriptionHtml,
+                            code,
+                            BLOCKLY_LIBRARY_VERSION,
+                            type,
+                            board,
+                            privateProject,
+                            sharedProject,
+                            idProjectBasedOn,
+                            projectSettings)
+                    .returning()
+                    .fetchOne();
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database error encountered {}", sqex.getMessage());
+            return null;
+        } catch (Exception ex) {
+            LOG.error("Unexpected exception creating a project record");
+            LOG.error("Error Message: {}", ex.getMessage());
+            return null;
+        }
+
+        return record;
+
+    }
+
+
+
     /**
      *
      * Create a new project with supplied code.
@@ -161,6 +272,11 @@ public class ProjectDaoImpl implements ProjectDao {
             boolean sharedProject,
             Long idProjectBasedOn) {
 
+        return createProject(
+                name, description, descriptionHtml, code, type, board,
+                privateProject, sharedProject, idProjectBasedOn, null);
+
+/*
         LOG.info("Creating a new project with existing code.");
         
         ProjectRecord record = null;
@@ -219,7 +335,10 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         
         return record;
+        */
     }
+
+
 
     /**
      *
@@ -436,7 +555,7 @@ public class ProjectDaoImpl implements ProjectDao {
             Integer limit, 
             Integer offset) {
         
-        LOG.info("Retreive shared projects.");
+        LOG.info("Retrieve shared projects.");
 
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
         if (TableOrder.desc == order) {
@@ -718,6 +837,8 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
+
+
     // Private over-ride of the public getProject()
     //
     // 
@@ -750,9 +871,17 @@ public class ProjectDaoImpl implements ProjectDao {
         return alterReadRecord(record);
     }
 
+
+
+    /**
+     *
+     * @param original
+     * @return
+     */
     private ProjectRecord doProjectClone(ProjectRecord original) {
         
         // TODO: Add based_on parameter as last argument
+        // TODO: Add parameter to support project settings
         ProjectRecord cloned = createProject(
                 original.getName(),
                 original.getDescription(),
@@ -768,7 +897,7 @@ public class ProjectDaoImpl implements ProjectDao {
 //        cloned.setBasedOn(original.getId());
 //        cloned.update();
 
-        // WHAT IS THIS DOING?
+        // TODO WHAT IS THIS DOING?
         create.update(Tables.PROJECT)
                 .set(Tables.PROJECT.BASED_ON, original.getId())
                 .where(Tables.PROJECT.ID.equal(cloned.getId()));
@@ -777,7 +906,13 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     
-    // Produce a current timestamp
+
+
+    /**
+     * Produce a current timestamp
+     *
+     * @return a GregorianCalendar time stamp
+     */
     private GregorianCalendar getCurrentTimestamp() {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new java.util.Date());
@@ -787,9 +922,7 @@ public class ProjectDaoImpl implements ProjectDao {
     
 
 
-    
-    
-    
+
     // Evaluate project code and replace any deprecated or updated blocks
     //
     // Return a ProjectRecord object. The code field may be altered to correct
@@ -798,7 +931,6 @@ public class ProjectDaoImpl implements ProjectDao {
     // horribly wrong with the string conversions.
     //
     private ProjectRecord alterReadRecord(ProjectRecord record) {
-        
 
         String currentCode, newCode;
 
@@ -825,7 +957,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 return record;
             }
             
-            if (currentCode.length() < Min_BlocklyCodeSize ) {
+            if (currentCode.length() < MIN_BLOCKLY_CODE_SIZE) {
                 LOG.warn("Project code appears to be empty. Code size:{}",currentCode.length());
                 return record;
             }
@@ -849,7 +981,9 @@ public class ProjectDaoImpl implements ProjectDao {
         return record;
     }
 
-        /**
+
+
+    /**
      *
      * Create a random string to use as a blockID.
      *
@@ -866,6 +1000,8 @@ public class ProjectDaoImpl implements ProjectDao {
         }
         return sb.toString();
     }
+
+
 
     // Correct depricated block details related to Spin blocks
     @Deprecated
