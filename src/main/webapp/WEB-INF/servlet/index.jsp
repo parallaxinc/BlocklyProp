@@ -20,7 +20,7 @@
   --%>
 
 <%--
-    Document   : login
+    Document   : index.jsp
     Created on : 24-mei-2015, 18:41:02
     Author     : Michel
 
