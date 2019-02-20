@@ -27,11 +27,9 @@ import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.configuration.Configuration;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
@@ -50,39 +48,16 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class AuthenticationServlet extends HttpServlet {
 
-    /**
-     * Handle for any logging activity
-     */
+    // Handle for any logging activity
     private final Logger LOG = LoggerFactory.getLogger(AuthenticationServlet.class);
 
-
-    /**
-     * Application configuration settings
-     */
-    private Configuration configuration;
-
-
-    /**
-     * An instance of this class
-     */
+    //An instance of this class
     private AuthenticationService authenticationService;
-
-
-    /**
-     * Initialize the application configuration
-     * 
-     * @param configuration 
-     */
-    @Inject
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
-    }
-
 
     /**
      * Initialize an instance of the Authentication service
      * 
-     * @param authenticationService 
+     * @param authenticationService - inject an authentication service object
      */
     @Inject
     public void setAuthenticationService(AuthenticationService authenticationService) {
@@ -91,17 +66,25 @@ public class AuthenticationServlet extends HttpServlet {
     }
 
 
-
+    /**
+     * Process the authentication post request
+     *
+     * @param request - Http request object
+     * @param resp - Http response returned to the caller
+     *
+     * @throws IOException - an I/O error was detected
+     */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse resp)
+            throws IOException {
         
         LOG.info("REST:/authenticate/ Post request received");
 
+        // Set the content type of the Http response
         resp.setContentType("application/json");
 
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
         LOG.info("Authenticating user '{}'", username);
 
@@ -120,14 +103,21 @@ public class AuthenticationServlet extends HttpServlet {
         }
 
         if (user != null) {
-            SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(req);
+            // Authentication succeeded
+
+            /* A SavedRequest object maintains request data for a request that was
+             * redirected, so that after authentication the user can be redirected
+             * to the originally requested page.
+             */
+            SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(request);
+
             if (savedRequest != null) {
                 LOG.info("Redirecting to third-part authenticator");
                 resp.sendRedirect(savedRequest.getRequestUrl());
             } else {
-
                 JsonObject response = new JsonObject();
                 response.addProperty("success", true);
+
                 JsonObject userJson = new JsonObject();
                 userJson.addProperty("id-user", user.getId());
                 userJson.addProperty("screenname", user.getScreenname());
@@ -153,5 +143,4 @@ public class AuthenticationServlet extends HttpServlet {
             resp.getWriter().write(response.toString());
         }
     }
-
 }
