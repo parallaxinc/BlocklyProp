@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 <!DOCTYPE html>
+<html lang="en">
     <head>
         <meta name="application-name" content="BlocklyProp"/>
         <meta name="msapplication-TileColor" content="#FFFFFF" />
@@ -29,32 +30,25 @@
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/project.js"/>" ></script>
+        <title>My Projects</title>
     </head>
     <body>
-
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
-
         <div id="project-table-container" class="container collapse">
             <div class="row">
                 <div class="col-md-12">
-
                     <h2><fmt:message key="my_project.list.title"/></h2>
-
                     <jsp:include page="/WEB-INF/includes/pageparts/projecttable.jsp">
                         <jsp:param name="url" value="/rest/project/list" />
                         <jsp:param name="showuser" value="false" />
                     </jsp:include>
-
                 </div>
             </div>
         </div>
-
         <jsp:include page="/WEB-INF/includes/pageparts/projectform.jsp">
             <jsp:param name="mine" value="true" />
             <jsp:param name="shared" value="false" />
         </jsp:include>
-
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
-
     </body>
 </html>

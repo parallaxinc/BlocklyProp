@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018 Parallax Inc.
+  ~ Copyright (c) 2019 Parallax Inc.
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
   ~ and associated documentation files (the “Software”), to deal in the Software without
@@ -17,7 +17,7 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
-  --%>
+--%>
 <%--
     Document   : login
     Created on : 24-mei-2015, 18:41:02
@@ -66,17 +66,12 @@
                         </div>
                         <input class="btn btn-default" type="submit" name="submit" value="<fmt:message key="login.submit" />">
                     </form>
-
                     <c:if test="${properties:oauth('google')}">
                         <a href="<url:getUrl url="/oauth/google" />" target="oauth">Log in using Google</a>
                     </c:if>
-
                 </div>
-
             </div>
         </div>
-
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
-
     </body>
 </html>

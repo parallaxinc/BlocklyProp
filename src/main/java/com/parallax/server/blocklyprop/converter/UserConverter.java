@@ -10,6 +10,7 @@ import com.parallax.server.blocklyprop.db.generated.tables.pojos.User;
 import com.parallax.server.blocklyprop.db.generated.tables.records.UserRecord;
 
 /**
+ * Convert user object to a Json string
  *
  * @author Michel
  */

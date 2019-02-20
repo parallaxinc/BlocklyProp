@@ -47,6 +47,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -149,11 +151,16 @@ public class RestProject {
 
         try {
             // Get the logged in user id for the current session
+            LOG.info("Requesting blockly user id from BlocklyPropSecurityUtils.getCurrentUserId()");
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+
+//            LOG.info("Getting subject: {} ", SecurityUtils.getSubject());
+
 
             // Return FORBIDDEN if we cannot identify the current user. This could
             // mean that the user is not logged in or that some underlying issue
             // is causing the authentication system to fail.
+            LOG.info("Received blockly user id: {}", idUser);
             if (idUser == 0) {
                 // Current session is not logged in.
                 return Response.status(Response.Status.FORBIDDEN).build();
