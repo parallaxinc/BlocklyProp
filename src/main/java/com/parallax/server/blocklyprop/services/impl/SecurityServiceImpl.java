@@ -561,9 +561,9 @@ public class SecurityServiceImpl implements SecurityService {
                                         bpUser.getScreenname(),
                                         user.getScreenname());
 
-//                                instance.userDao.updateScreenName(
-//                                        bpUser.getId(),
-//                                        user.getScreenname());
+                                instance.userDao.updateScreenName(
+                                        bpUser.getId(),
+                                        user.getScreenname());
                             }
                         }else{
                             LOG.warn("Warning! Setting BP user id to zero");
