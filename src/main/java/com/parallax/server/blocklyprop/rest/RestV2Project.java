@@ -147,10 +147,68 @@ public class RestV2Project {
     /**
      * Create a new project
      *
+     * @param projectName
+     * is a required string parameter containing the project name
+     *
+     * @param description
+     * is a required string parameter containing the project description
+     *
+     * @param descriptionHtml
+     * is an optional parameter containing the HTML representation of the
+     * project description
+     *
+     * @param code
+     * is a required parameter containing the XML representation of the
+     * project's code blocks
+     *
+     * @param projectSharing
+     * is an optional parameter containing one of two possible strings;
+     * 'private' or 'shared.
+     *
+     * The project will be marked as a public or community project only
+     * if the 'shared' keyword value is supplied. Otherwise, if the
+     * 'private' keyword is supplied or no keyword is supplied, the
+     * project will be configured as a private project.
+     *
+     * @param type
+     * is a required parameter indicating the project's source language, either
+     * SPIN or PROPC.
+     *
+     * @param board
+     * is a required parameter indicating the type of board used for the project.
+     *
+     * @param settings
+     * is an optional parameter containing a Json encoded string of various
+     * custom project settings.
      *
      * @return
-     * Returns a Json string containing the project details, including the new project ID if successful
-     * or an error message upon failure
+     * Returns a Json string containing the project details, including the new
+     * project ID if successful or an error message upon failure
+     *
+     * @implNote
+     *
+     *    VERB     URI                     Notes:
+     *    -------  ----------------------  ----------------------------------------------
+     *    [POST]   /v2/project/            Create a new project from the data provided.
+     *                                     The service returns a Json string containing
+     *                                     the new project details.
+     *
+     *      Return value in response body:
+     *      {
+     *          "id": 66,
+     *          "name": "Chocolate Factory IV",
+     *          "description": "Willie Wonka and the factory",
+     *          "type": "PROPC",
+     *          "board": "heb",
+     *          "private": true,
+     *          "shared": false,
+     *          "created": "2019/02/28 06:36",
+     *          "modified": "2019/02/28 06:36",
+     *          "settings": null,
+     *          "yours": true,
+     *          "user": "demo-998",
+     *          "success": true
+     *      }
      */
     @POST
     @Detail("Create a new project")
