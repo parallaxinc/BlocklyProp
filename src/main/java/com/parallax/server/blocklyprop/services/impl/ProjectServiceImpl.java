@@ -455,11 +455,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public boolean deleteProject(Long idProject) {
         
-        LOG.info("Deleting project {}", idProject);
-        
         // Remove the project shared key if it exists.
+        LOG.info("Deleting project {} shared link", idProject);
         projectSharingService.deleteSharedProject(idProject);
 
+        LOG.info("Deleting project {}", idProject);
         return projectDao.deleteProject(idProject);
     }
 
@@ -467,9 +467,10 @@ public class ProjectServiceImpl implements ProjectService {
     /**
      * Update the code block in the specified project
      *
-     * @param idProject
-     * @param code
-     * @return
+     * @param idProject is the primary key ID of the source project
+     * @param code is the code blocks to add to the new project
+     *
+     * @return a ProjectRecord representing the updated project
      */
     @Override
     public ProjectRecord saveProjectCode(Long idProject, String code) {

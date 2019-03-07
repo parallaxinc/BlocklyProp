@@ -711,7 +711,7 @@ public class ProjectDaoImpl implements ProjectDao {
      * TODO: add details.
      *
      * @param idProject
-     * @return
+     * @return boolean true if record was deleted, otherwise false.
      */
     @Override
     public boolean deleteProject(Long idProject) {
