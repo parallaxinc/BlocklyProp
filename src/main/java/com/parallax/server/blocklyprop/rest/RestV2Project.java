@@ -44,7 +44,6 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,13 +68,13 @@ import org.jetbrains.annotations.NotNull;
  * Version 2 supported endpoints
  * -----------------------------------------------------------------------------------------------------
  * CREATE
- * [POST]   /v2/project/      [X]   Creates a new project and returns it in the response body
- * [POST]   /v2/project/{id}  [X]   Creates a new project using the contents of the provided
+ * [POST]   /v2/project/            Creates a new project and returns it in the response body
+ * [POST]   /v2/project/{id}        Creates a new project using the contents of the provided
  *                                  project id
  *
  * RETRIEVE
- * [GET]    /v2/project/      [X]   Returns a list of projects; parameters in request body
- * [GET]    /v2/project/{id}  [X]   Returns the specific project if authorized
+ * [GET]    /v2/project/            Returns a list of projects; parameters in request body
+ * [GET]    /v2/project/{id}        Returns the specific project if authorized
  *
  * UPDATE
  * [PUT]    /v2/project/{id}        Updates s specific project. Project details are in the request body
@@ -106,6 +105,7 @@ public class RestV2Project {
     private static final int REQUEST_LIMIT = 100;
 
 
+
     /**
      * Connect to the project service object
      *
@@ -116,6 +116,7 @@ public class RestV2Project {
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
     }
+
 
 
     /**
@@ -131,6 +132,7 @@ public class RestV2Project {
 
 
 
+    // GET /v2/project/ping
     /**
      * Test endpoint to verify that the class is reachable
      *
@@ -147,6 +149,7 @@ public class RestV2Project {
 
 
 
+    // POST  /v2/project/
     /**
      * Create a new project. Access is limited to authenticated users.
      *
@@ -302,6 +305,7 @@ public class RestV2Project {
 
 
 
+    // POST  /v2/project/{id}
     /**
      * Create a new project based on an existing project. The resulting new
      * project will be placed in the logged in user's library as a private
@@ -342,7 +346,7 @@ public class RestV2Project {
      *
      *    VERB     URI                     Notes:
      *    -------  ----------------------  ----------------------------------------------
-     *    [POST]   /v2/project/            Create a new project from the data provided.
+     *    [POST]   /v2/project/{id}        Create a new project from the data provided.
      *                                     The service returns a Json string containing
      *                                     the new project details.
      *
@@ -454,7 +458,7 @@ public class RestV2Project {
 
 
 
-
+    // GET  /v2/project/
     /**
      * Return a list of projects owned by the currently authenticated user.
      *
@@ -598,6 +602,7 @@ public class RestV2Project {
     }
 
 
+    // GET  /v2/project/{id}
     /**
      * Retreive a project based on the supplied project ID
      *
@@ -676,6 +681,41 @@ public class RestV2Project {
 
 
 
+    // PUT  /v2/project/{id}
+    /**
+     * Update an existing project
+     *
+     * @param idProject is the identifier of the project to use as a
+     *                  source for the new project
+     * @param projectName
+     * is a required string parameter containing the project name
+     *
+     * @param description
+     * is a required string parameter containing the project description
+     *
+     * @param descriptionHtml
+     * is an optional parameter containing the HTML representation of the
+     * project description
+     *
+     * @param code
+     * is a required parameter containing the XML representation of the
+     * project's code blocks
+     *
+     * @param type
+     * is a required parameter indicating the project's source language, either
+     * SPIN or PROPC.
+     *
+     * @param board
+     * is a required parameter indicating the type of board used for the project.
+     *
+     * @param settings
+     * is an optional parameter containing a Json encoded string of various
+     * custom project settings.
+     *
+     * @return
+     * Returns a Json string containing the project details, including the new
+     * project ID if successful or an error message upon failure
+     */
     @PUT
     @Path("/{id}")
     @Detail("Update voluble elements of an existing project")
@@ -691,7 +731,7 @@ public class RestV2Project {
             @FormParam("board") String board,
             @FormParam("settings") String settings) {
 
-        LOG.info("REST:/rest/v2/project/{} PUT request received for project", idProject, idProject);
+        LOG.info("REST:/rest/v2/project/{} PUT request received for project", idProject);
 
         ProjectRecord project;
 
@@ -715,6 +755,7 @@ public class RestV2Project {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
+        // -----------------------------------------------------------------------
         // Update fields with passed in parameters. Parameters that are null will
         // not update the record. However, parameters that are empty strings will
         // update the corresponding field in the project record
@@ -731,230 +772,72 @@ public class RestV2Project {
         }
 
         // Return the saved record
-
-
        JsonObject result = projectConverter.toJson(project,false);
 
         result.addProperty("result", "success");
-        result.addProperty("message", "Update project");
         return Response.ok(result.toString()).build();
-
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // DELETE /v2/project/{id}
     /**
-     * Update the code in an existing project.
+     * Delete a project only if the project is owned by the currently logged in user.
      *
-     * This assumes that the project already exists.
-     *
-     * @param idProject The project key ID
-     * @param code the project blocks code string
-     *
-     * @return
-     * Returns a Json string containing the project details if the update was successful
-     * or an error message upon failure
+     * @param idProject is the identifier of the project to use as a
+     *                  source for the new project
+
+     * @return a Json formatted string containing "success" otherwise returns an
+     * error code indicating the type of failure encountered.
      */
-    @POST
-    @Path("/code")
-    @Detail("Save project code")
-    @Name("UpdateProjectCode")
+    @DELETE
+    @Path("/{id}")
+    @Detail("Delete a project by the project id")
+    @Name("Delete Project by id")
     @Produces("application/json")
-    public Response saveProjectCode(
-            @FormParam("id") @ParameterDetail("Project identifier") @M() Long idProject,
-            @FormParam("code") @ParameterDetail("Project code") @M() String code) {
+    public Response delete(
+            @PathParam("id") @ParameterDetail("Project identifier") Long idProject) {
 
-        LOG.info("REST:/rest/project/code/ POST request received for project '{}'", idProject);
+        LOG.info("REST:/rest/v2/project/{} DELETE request received for project", idProject);
 
+        ProjectRecord project;
+
+        // Get the specified project
         try {
+            project = projectService.getProject(idProject);
 
-            /* WARNING:
-             * =================================================================================
-             * This call can create a new project record under specific circumstances and does
-             * not appear to provide any notification that this has occurred.
-             * =================================================================================
-             */
-            ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
-
-            LOG.debug("Code for project {} has been saved", idProject);
-/*
-            JsonObject result = projectConverter.toJson(savedProject,false);
-            result.addProperty("success", true);
-            return Response.ok(result.toString()).build();
-*/
-            return Response.ok(buildConvertedResponse(savedProject)).build();
-        } catch (AuthorizationException ae) {
-            LOG.warn("Project code not saved. Not Authorized");
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        catch (Exception ex) {
-            LOG.error("General exception encountered. Message is: ", ex.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-
-
-
-    /**
-     * Create a new project from an existing project
-     *
-     * @param idProject The project key ID
-     * @param code the project blocks code string
-     * @param newName the name to assign to the newly created project
-     * @param newBoard the board type assigned to the new project
-     *
-     * @return
-     * Returns a Json string containing the project details if the update was successful
-     * or an error message upon failure
-     */
-    @POST
-    @Path("/code-as")
-    @Detail("Save project code")
-    @Name("Save project code")
-    @Produces("application/json")
-    public Response saveProjectCodeAs(
-            @FormParam("id") Long idProject,
-            @FormParam("code") String code,
-            @FormParam("name") String newName,
-            @FormParam("board") String newBoard) {
-
-        LOG.info("REST:/rest/project/code-as/ POST request received for project '{}'", idProject);
-
-        try {
-            LOG.info("Saving project '{}', '{}' as a new project", idProject, newName);
-
-            ProjectRecord savedProject = projectService.saveProjectCodeAs(
-                    idProject,
-                    code,
-                    newName,
-                    newBoard);
-
-            LOG.debug("Code for project {} has been saved as {}", idProject, newName);
-/*
-            JsonObject result = projectConverter.toJson(savedProject,false);
-            LOG.debug("Returning JSON: {}", result);
-            result.addProperty("success", true);
-            return Response.ok(result.toString()).build();
-*/
-            return Response.ok(buildConvertedResponse(savedProject)).build();
-        }
-        catch (AuthorizationException ae) {
-            LOG.warn("Project code not saved. Not Authorized");
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        catch (Exception ex) {
-            LOG.error("General exception encountered. Message is: ", ex.getMessage());
-            LOG.error("Error: {}", Arrays.toString(ex.getStackTrace()));
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-
-
-
-
-    /*-------------------------------------------------------------------------+
-     * VERB     URI                     Notes:                                 |
-     * -------  ----------------------  -------------------------------------- |
-     * [POST]   /v2/project/            Creates a new project. The project     |
-     *                                  details, including the new project ID, |
-     *                                  are returned to the caller.            |
-     *-------------------------------------------------------------------------*/
-
-
-
-
-
-
-
-    /*
-     * Update the details of an existing project  V1 implementation
-     *
-     * @param idProject the project key ID
-     * @param name the name assigned to the project
-     * @param description a text description of the project
-     * @param descriptionHtml the same project description expressed in HTML
-     * @param projectSharing a boolean flag indicating the public accessibility of the project
-     * @param type is the classification of the project's language (c or spin)
-     * @param board is the type of hardware associated with the project
-     *
-     * @return
-     * Returns a Json string containing the project details if the update was successful
-     * or an error message upon failure
-     */
-
-/*
-    @POST
-//    @Path("/")
-    @Detail("Save project")
-    @Name("Save project")
-    @Produces("application/json")
-    public Response saveProject(
-            @FormParam("id") Long idProject,
-            @FormParam("name") String name,
-            @FormParam("description") String description,
-            @FormParam("description-html") String descriptionHtml,
-            @FormParam("sharing") String projectSharing,
-            @FormParam("type") ProjectType type,
-            @FormParam("board") String board) {
-
-        LOG.info("REST:/rest/project/ POST request received for project '{}'", idProject);
-
-        try {
-            boolean privateProject = false;
-            boolean sharedProject = false;
-
-            if ("private".equalsIgnoreCase(projectSharing)) {
-                privateProject = true;
-            } else if ("shared".equalsIgnoreCase(projectSharing)) {
-                sharedProject = true;
+            if (project == null) {
+                LOG.info("Project {} was not found", idProject);
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
 
-            ProjectRecord savedProject = projectService.saveProject(
-                    idProject,
-                    name,
-                    description,
-                    descriptionHtml,
-                    privateProject,
-                    sharedProject,
-                    type,
-                    board);
-            LOG.debug("Project {} has been saved.", idProject);
+            // Verify that the current user owns the requested project
+            if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+                LOG.info("User not authorized to get project {}", idProject);
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
 
-            JsonObject result = projectConverter.toJson(savedProject,false);
-            LOG.debug("Returning JSON: {}", result);
+            LOG.info("Project {} is ready to be deleted.");
 
-            result.addProperty("success", true);
+            // Delete the record
+            if (!projectService.deleteProject(idProject)) {
+                LOG.warn("Unable to delete project {}", idProject);
+                return Response.status(Response.Status.NOT_MODIFIED).build();
+            }
 
+            JsonObject result = new JsonObject();
+            result.addProperty("result", "success");
             return Response.ok(result.toString()).build();
-        } catch (AuthorizationException ae) {
-            LOG.warn("Project not saved. Not Authorized");
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+
         }
         catch (Exception ex) {
-            LOG.error("General exception encountered. Message is: ", ex.getMessage());
+            LOG.warn("An unexpected exception has occurred. Message: {}", ex.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-*/
+
+
+
 
     /**
      * Iterate a list of projects into an array of Json objects
@@ -992,7 +875,7 @@ public class RestV2Project {
      *
      * @return a Json string representing the project contents and the operation results message
      */
-    private String buildConvertedResponse(ProjectRecord project) {
+    private String buildConvertedResponse(@NotNull ProjectRecord project) {
 
         /* Convert the project record to a Json object */
         JsonObject result = projectConverter.toJson(project,false);
@@ -1004,8 +887,27 @@ public class RestV2Project {
     }
 
 
+    /**
+     * Update the fields in a ProjectRecord object
+     *
+     * @param project is a ProjectRecord object that will be updated with the date
+     *                passed in the other parameters of this call.
+     * @param projectName is a string parameter containing the new project name
+     * @param description is a string parameter containing the project description
+     * @param descriptionHtml is a string containing the HTML representation of the
+     *                        project description
+     * @param code is a string containing the XML representation of the project's code blocks
+     * @param type is a ProjectType enumberation indicating the project's source language,
+     *            currently either SPIN or PROPC
+     * @param board is a string indicating the type of board used for the project.
+     * @param settings is an optional parameter containing a Json encoded string of various
+     *                 custom project settings.
+     *
+     * @return an updated ProjectRecord object.
+     */
     private ProjectRecord updateProjectRecordFields(
-            ProjectRecord project, String projectName, String description, String descriptionHtml,
+            @NotNull ProjectRecord project,
+            String projectName, String description, String descriptionHtml,
             String code, ProjectType type, String board, String settings) {
 
         if (projectName != null) {
@@ -1037,7 +939,6 @@ public class RestV2Project {
         }
 
         return project;
-
     }
 }
 
