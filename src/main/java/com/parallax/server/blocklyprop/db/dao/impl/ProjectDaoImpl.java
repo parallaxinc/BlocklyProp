@@ -65,7 +65,7 @@ public class ProjectDaoImpl implements ProjectDao {
     
     // Constants to clarify the edit flag in method calls
     static final boolean EDIT_MODE_OFF = false;
-    static final boolean EDIT_MODE_ON = true;
+    private static final boolean EDIT_MODE_ON = true;
     
     // Constant to identify the current version of the blockly block library;
     public static final short BLOCKLY_LIBRARY_VERSION = 1;
@@ -103,7 +103,7 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord getProject(Long idProject) {
-        LOG.info("Retreiving data for project #{}", idProject);
+        LOG.info("Retrieving data for project #{}", idProject);
 
         ProjectRecord record = null;
 
@@ -122,14 +122,107 @@ public class ProjectDaoImpl implements ProjectDao {
             LOG.error("Database error encountered {}", sqex.getMessage());
             return null;
         } catch (Exception ex) {
-            LOG.error("Unexpected exception retreiving a project record");
+            LOG.error("Unexpected exception retrieving a project record");
             LOG.error("Error Message: {}", ex.getMessage());
             return null;
         }
 
-        // Return the project after checking if for depricated blocks
-        return alterReadRecord(record);
+        // Return the project after checking if for deprecated blocks
+        LOG.info("Cleaning project {} blocks", record.getId());
+
+        ProjectRecord prjRecord =  alterReadRecord(record);
+
+        if (prjRecord == null) {
+            LOG.info("Hmm, Something broke the project record");
+            return null;
+        }
+
+        LOG.info("Returning project {}.", prjRecord.getId());
+
+        return prjRecord;
     }
+
+
+
+    // V2 implementations
+    @Override
+    public ProjectRecord createProject(
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            ProjectType type,
+            String board,
+            boolean privateProject,
+            boolean sharedProject,
+            Long idProjectBasedOn,
+            String settings) {
+
+        LOG.info("Creating a new project with existing code.");
+
+        ProjectRecord record = null;
+
+        // Get the logged in user's userID
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (idUser == null) {
+            LOG.error("Null BP UserID");
+            return null;
+        }
+
+        // Get the cloud session user id from the current authenticated session
+        Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
+        if (idCloudUser == null) {
+            LOG.error("Null cloud user ID");
+            return null;
+        }
+
+        try {
+            record = create
+                    .insertInto(Tables.PROJECT,
+                            Tables.PROJECT.ID_USER,
+                            Tables.PROJECT.ID_CLOUDUSER,
+                            Tables.PROJECT.NAME,
+                            Tables.PROJECT.DESCRIPTION,
+                            Tables.PROJECT.DESCRIPTION_HTML,
+                            Tables.PROJECT.CODE,
+                            Tables.PROJECT.CODE_BLOCK_VERSION,
+                            Tables.PROJECT.TYPE,
+                            Tables.PROJECT.BOARD,
+                            Tables.PROJECT.PRIVATE,
+                            Tables.PROJECT.SHARED,
+                            Tables.PROJECT.BASED_ON,
+                            Tables.PROJECT.SETTINGS)
+                    .values(idUser,
+                            idCloudUser,
+                            name,
+                            description,
+                            descriptionHtml,
+                            code,
+                            BLOCKLY_LIBRARY_VERSION,
+                            type,
+                            board,
+                            privateProject,
+                            sharedProject,
+                            idProjectBasedOn,
+                            settings)
+                    .returning()
+                    .fetchOne();
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database error encountered {}", sqex.getMessage());
+            return null;
+        } catch (Exception ex) {
+            LOG.error("Unexpected exception creating a project record");
+            LOG.error("Error Message: {}", ex.getMessage());
+            return null;
+        }
+
+        return record;
+
+    }
+
+
+
 
     
     /**
@@ -149,6 +242,7 @@ public class ProjectDaoImpl implements ProjectDao {
      * 
      * @return a fully formed ProjectRecord or a null if an error is detected.
      */
+    @Deprecated
     @Override
     public ProjectRecord createProject( 
             String name,
@@ -404,16 +498,23 @@ public class ProjectDaoImpl implements ProjectDao {
             Integer limit, 
             Integer offset) {
         
-        LOG.info("Retreive projects for user {}.", idUser);
+        LOG.info("Retrieve projects for user {}.", idUser);
 
-        SortField<String> orderField = Tables.PROJECT.NAME.asc();
+        SortField<String> orderField;
+
+        // Set sort order of the result
         if (TableOrder.desc == order) {
             orderField = Tables.PROJECT.NAME.desc();
+        } else {
+            orderField = Tables.PROJECT.NAME.asc();
         }
 
-        return create.selectFrom(Tables.PROJECT)
+        return create
+                .selectFrom(Tables.PROJECT)
                 .where(Tables.PROJECT.ID_USER.equal(idUser))
-                .orderBy(orderField).limit(limit).offset(offset)
+                .orderBy(orderField)
+                .limit(limit)
+                .offset(offset)
                 .fetch();
     }
 
@@ -436,7 +537,7 @@ public class ProjectDaoImpl implements ProjectDao {
             Integer limit, 
             Integer offset) {
         
-        LOG.info("Retreive shared projects.");
+        LOG.info("List shared projects.");
 
         SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
         if (TableOrder.desc == order) {
@@ -494,9 +595,11 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public int countUserProjects(Long idUser) {
-        LOG.info("Count project for user {}.", idUser);
 
-        return create.fetchCount(Tables.PROJECT, Tables.PROJECT.ID_USER.equal(idUser));
+        int rows = create.fetchCount(Tables.PROJECT, Tables.PROJECT.ID_USER.equal(idUser));
+        LOG.info("Found a total of {} projects for user: {}.",rows, idUser);
+
+        return rows;
     }
 
     /**
@@ -552,10 +655,13 @@ public class ProjectDaoImpl implements ProjectDao {
         LOG.info("Clone existing project {} to a new project.", idProject);
 
         ProjectRecord original = getProject(idProject);
+
         if (original == null) {
             throw new NullPointerException("Project doesn't exist");
         }
+
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+
         if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
             return doProjectClone(original);
         }
@@ -762,13 +868,14 @@ public class ProjectDaoImpl implements ProjectDao {
                 original.getBoard(),
                 original.getPrivate(),
                 original.getShared(),
-                original.getId()        // set the parent project id
+                original.getId(),        // set the parent project id
+                original.getSettings()
         );
 
 //        cloned.setBasedOn(original.getId());
 //        cloned.update();
 
-        // WHAT IS THIS DOING?
+        // TODO: URGENT - Evaluate query to verify that it is updating only one record
         create.update(Tables.PROJECT)
                 .set(Tables.PROJECT.BASED_ON, original.getId())
                 .where(Tables.PROJECT.ID.equal(cloned.getId()));

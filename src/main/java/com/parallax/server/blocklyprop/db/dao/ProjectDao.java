@@ -55,6 +55,20 @@ public interface ProjectDao {
 
     ProjectRecord getProject(Long idProject);
 
+    // V2 implementation
+    ProjectRecord createProject(
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            ProjectType type,
+            String board,
+            boolean privateProject,
+            boolean sharedProject,
+            Long idProjectBasedOn,
+            String settings);
+
+    @Deprecated
     ProjectRecord createProject(
             String name, 
             String description, 

@@ -72,7 +72,7 @@ public class RestUser {
      * Returns a list of all user objects.
      */
     @GET
-    @Path("/")
+//    @Path("/")
     @Detail("Get all users")
     @Name("Get all users")
     @Produces("application/json")

@@ -38,7 +38,6 @@ import com.parallax.server.blocklyprop.utils.RestProjectUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,16 +47,19 @@ import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 
 /**
- * REST endpoints for project persistence
- * Version 2
+ * Version 2 REST endpoints for private project persistence. Access is limited to
+ * authenticated users. Refer to the /shared/project/* endpoints for
+ * public access to projects.
  *
  * @author Michel, J. Ewald
  *
  * @implNote
  *
- * Supported endpoints:
+ * Version 1 Supported endpoints:
  * [POST]  /project/            Save current project
  * [GET]   /project/list        List projects
  * [GET]   /project/get/{id}    Retrieve a project
@@ -65,11 +67,11 @@ import java.util.List;
  * [POST]  /project/code-as     Create new project from existing project
  *
  * Version 2 supported endpoints
- * CRUD..
- *
+ * -----------------------------------------------------------------------------------------------------
  * CREATE
  * [POST]   /v2/project/            Creates a new project and returns it in the response body
- * [POST]   /v2/project/code        Create a new project based on details on the request body
+ * [POST]   /v2/project/{id}        Creates a new project using the contents of the provided
+ *                                  project id
  *
  * RETRIEVE
  * [GET]    /v2/project/            Returns a list of projects; parameters in request body
@@ -77,10 +79,10 @@ import java.util.List;
  *
  * UPDATE
  * [PUT]    /v2/project/{id}        Updates s specific project. Project details are in the request body
- * [PUT]    /v2/project/code/{id}   Updates the code block of a specific project
  *
  * DELETE
  * [DELETE] /v2/project/{id}        Destroys the project specified by {id}
+ * -----------------------------------------------------------------------------------------------------
  */
 
 @Path("/v2/project")
@@ -144,8 +146,9 @@ public class RestV2Project {
     }
 
 
+
     /**
-     * Create a new project
+     * Create a new project. Access is limited to authenticated users.
      *
      * @param projectName
      * is a required string parameter containing the project name
@@ -209,6 +212,22 @@ public class RestV2Project {
      *          "user": "demo-998",
      *          "success": true
      *      }
+     *
+     * @apiNote
+     *
+     * This endpoint could also handle the use case where the client wishes to
+     * create a new copy of an existing project. There are two possible branches
+     * in this expanded specification;
+     *
+     * 1) The existing project belongs to the current user.
+     *
+     * 2) The existing project is a) a community project or b) a shared project.
+     *
+     *  In both cases, a new project is created from the contents of the existing
+     *  project. The new project is designated as 'private' and it's parent field
+     *  is set to the project id of the source project.
+     *
+     *  TODO: Monitor hits/second from a single user to prevent malicious spamming
      */
     @POST
     @Detail("Create a new project")
@@ -244,7 +263,12 @@ public class RestV2Project {
                 sharedProject = true;
             }
 
-            LOG.info("Saving the project");
+            // Validate the project type
+            if (! RestProjectUtils.ValidateProjectType(type)) {
+                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+            }
+
+            LOG.info("Parameters are valid. Saving the project");
             ProjectRecord savedProject = projectService.saveProject(
                     null, projectName, description, descriptionHtml, code,
                     privateProject, sharedProject, type, board, settings);
@@ -254,8 +278,6 @@ public class RestV2Project {
             }
 
             JsonObject result = projectConverter.toJson(savedProject,false);
-            LOG.info("Returning JSON: {}", result);
-
             result.addProperty("success", true);
 
             return Response.ok(result.toString()).build();
@@ -266,7 +288,6 @@ public class RestV2Project {
         }
         catch (IllegalArgumentException aex) {
             LOG.warn("Illegal argument exception detected. {}", aex.getMessage());
-
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
         catch (AuthorizationException ae) {
@@ -283,7 +304,155 @@ public class RestV2Project {
 
 
 
+    /**
+     * Create a new project based on an existing project. The resulting new
+     * project will be placed in the logged in user's library as a private
+     * project.
+     *
+     * @param idProject is the identifier of the project to use as a
+     *                  source for the new project
+     * @param projectName
+     * is a required string parameter containing the project name
+     *
+     * @param description
+     * is a required string parameter containing the project description
+     *
+     * @param descriptionHtml
+     * is an optional parameter containing the HTML representation of the
+     * project description
+     *
+     * @param code
+     * is a required parameter containing the XML representation of the
+     * project's code blocks
+     *
+     * @param type
+     * is a required parameter indicating the project's source language, either
+     * SPIN or PROPC.
+     *
+     * @param board
+     * is a required parameter indicating the type of board used for the project.
+     *
+     * @param settings
+     * is an optional parameter containing a Json encoded string of various
+     * custom project settings.
+     *
+     * @return
+     * Returns a Json string containing the project details, including the new
+     * project ID if successful or an error message upon failure
+     *
+     * @implNote
+     *
+     *    VERB     URI                     Notes:
+     *    -------  ----------------------  ----------------------------------------------
+     *    [POST]   /v2/project/            Create a new project from the data provided.
+     *                                     The service returns a Json string containing
+     *                                     the new project details.
+     *
+     *      Return value in response body:
+     *      {
+     *          "id": 66,
+     *          "name": "Chocolate Factory IV",
+     *          "description": "Willie Wonka and the factory",
+     *          "type": "PROPC",
+     *          "board": "heb",
+     *          "private": true,
+     *          "shared": false,
+     *          "created": "2019/02/28 06:36",
+     *          "modified": "2019/02/28 06:36",
+     *          "settings": null,
+     *          "yours": true,
+     *          "user": "demo-998",
+     *          "success": true
+     *      }
+     *
+     * @apiNote
+     *
+     * This endpoint could also handle the use case where the client wishes to
+     * create a new copy of an existing project. There are two possible branches
+     * in this expanded specification;
+     *
+     * 1) The existing project belongs to the current user.
+     *
+     * 2) The existing project is a) a community project or b) a shared project.
+     *
+     *  In both cases, a new project is created from the contents of the existing
+     *  project. The new project is designated as 'private' and it's parent field
+     *  is set to the project id of the source project.
+     *
+     *  TODO: Monitor hits/second from a single user to prevent malicious spamming
+     */
+    @POST
+    @Path("/{id}")
+    @Detail("Create a new copy of an existing project")
+    @Name("Create project copy")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createProjectCopy(
+            @PathParam("id") @ParameterDetail("Project identifier") Long idProject,
+            @FormParam("name") String projectName,
+            @FormParam("description") String description,
+            @FormParam("description-html") String descriptionHtml,
+            @FormParam("code") String code,
+            @FormParam("type") ProjectType type,
+            @FormParam("board") String board,
+            @FormParam("settings") String settings) {
 
+        LOG.info("REST:/rest/v2/project/id POST request received to create a new project '{}'", projectName);
+
+        /**
+         * This method will retrieve the specified project, verify that it is either a
+         * public (community) project or if it is a private project, is the project available
+         * as a shared project.
+         *
+         * TODO: If we are cloning a shared project, should we require the shared project key?
+         *  It look like we're creating a separate endpoint to accept a shared project token as
+         *  the source project identifier.
+         *
+         */
+        try {
+            // Required fields
+            Validate.notNull(idProject, "A parent project id is required.");
+
+            /*
+             * All of these parameters are optional. IF they are not provided,
+             * the copy operation will take the settings from the original project
+             *
+             */
+
+            LOG.info("Parameters are valid. Saving the project");
+
+            ProjectRecord project = projectService.createProjectCopy(
+                    idProject, projectName, description, descriptionHtml,
+                    code, type, board, settings);
+
+            LOG.info("Project created?");
+
+            if (project == null) {
+                LOG.warn("Unable to create a new project record");
+            }
+
+            JsonObject result = projectConverter.toJson(project,false);
+            result.addProperty("success", true);
+
+            return Response.ok(result.toString()).build();
+        }
+        catch (NullPointerException ex) {
+            LOG.warn("Null pointer exception detected. {}", ex.getMessage());
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        catch (IllegalArgumentException aex) {
+            LOG.warn("Illegal argument exception detected. {}", aex.getMessage());
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        catch (AuthorizationException ae) {
+            LOG.warn("Project not saved. Not Authorized");
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        catch (Exception ex) {
+            LOG.error("General exception encountered. Message is: ", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
 
@@ -772,5 +941,6 @@ public class RestV2Project {
 
         return result.toString();
     }
-
 }
+
+
