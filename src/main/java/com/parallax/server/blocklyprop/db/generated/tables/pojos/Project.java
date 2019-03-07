@@ -25,7 +25,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = -1074694014;
+	private static final long serialVersionUID = 1473532278;
 
 	private Long              id;
 	private Long              idUser;
@@ -42,6 +42,7 @@ public class Project implements Serializable {
 	private GregorianCalendar created;
 	private GregorianCalendar modified;
 	private Long              basedOn;
+	private String            settings;
 
 	public Project() {}
 
@@ -61,6 +62,7 @@ public class Project implements Serializable {
 		this.created = value.created;
 		this.modified = value.modified;
 		this.basedOn = value.basedOn;
+		this.settings = value.settings;
 	}
 
 	public Project(
@@ -78,7 +80,8 @@ public class Project implements Serializable {
 		Boolean           shared,
 		GregorianCalendar created,
 		GregorianCalendar modified,
-		Long              basedOn
+		Long              basedOn,
+		String            settings
 	) {
 		this.id = id;
 		this.idUser = idUser;
@@ -95,6 +98,7 @@ public class Project implements Serializable {
 		this.created = created;
 		this.modified = modified;
 		this.basedOn = basedOn;
+		this.settings = settings;
 	}
 
 	public Long getId() {
@@ -217,6 +221,14 @@ public class Project implements Serializable {
 		this.basedOn = basedOn;
 	}
 
+	public String getSettings() {
+		return this.settings;
+	}
+
+	public void setSettings(String settings) {
+		this.settings = settings;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("Project (");
@@ -236,6 +248,7 @@ public class Project implements Serializable {
 		sb.append(", ").append(created);
 		sb.append(", ").append(modified);
 		sb.append(", ").append(basedOn);
+		sb.append(", ").append(settings);
 
 		sb.append(")");
 		return sb.toString();
