@@ -447,6 +447,45 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
+
+
+
+    @Override
+    public ProjectRecord updateProject(
+            Long idProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            boolean privateProject,
+            boolean sharedProject,
+            String settings) {
+
+        LOG.info("Update project {}.", idProject);
+
+        ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
+        if (record != null) {
+            record.setName(name);
+            record.setDescription(description);
+            record.setDescriptionHtml(descriptionHtml);
+            record.setCode(code);
+            record.setPrivate(privateProject);
+            record.setShared(sharedProject);
+            record.setSettings(settings);
+            record.setModified(getCurrentTimestamp());
+            record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
+            record.update();
+
+            return record;
+        }
+
+        LOG.warn("Unable to update project {}", idProject);
+        return null;
+    }
+
+
+
+
     /**
      * Update the code blocks for a project
      *

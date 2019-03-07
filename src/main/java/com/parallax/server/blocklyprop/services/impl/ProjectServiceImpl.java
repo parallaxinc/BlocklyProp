@@ -20,7 +20,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.apache.commons.lang.StringUtils;
+// import org.apache.commons.lang.StringUtils;
 
 /**
  * Implementation of project services layer
@@ -38,6 +38,12 @@ import org.apache.commons.lang.StringUtils;
  *
  * Similarly, the set of exceptions that will trigger a rollback can be defined in the rollbackOn()
  * clause. By default, only unchecked exceptions trigger a rollback.
+ *
+ * Public Methods:
+ * createProject()
+ * createProjectCopy()
+ * saveProject()
+ *
  */
 @Singleton
 @Transactional
@@ -295,6 +301,20 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+
+    // Update a project, using the existing project record.
+    @Override
+    public ProjectRecord saveProject( ProjectRecord project) {
+        return projectDao.updateProject(
+                project.getId(),
+                project.getName(),
+                project.getDescription(),
+                project.getDescriptionHtml(),
+                project.getCode(),
+                project.getPrivate(),
+                project.getShared(),
+                project.getSettings());
+    }
 
     @Override
     public ProjectRecord getProjectOwnedByThisUser(Long idProject) {

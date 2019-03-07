@@ -69,13 +69,13 @@ import org.jetbrains.annotations.NotNull;
  * Version 2 supported endpoints
  * -----------------------------------------------------------------------------------------------------
  * CREATE
- * [POST]   /v2/project/            Creates a new project and returns it in the response body
- * [POST]   /v2/project/{id}        Creates a new project using the contents of the provided
+ * [POST]   /v2/project/      [X]   Creates a new project and returns it in the response body
+ * [POST]   /v2/project/{id}  [X]   Creates a new project using the contents of the provided
  *                                  project id
  *
  * RETRIEVE
- * [GET]    /v2/project/            Returns a list of projects; parameters in request body
- * [GET]    /v2/project/{id}        Returns the specific project if authorized
+ * [GET]    /v2/project/      [X]   Returns a list of projects; parameters in request body
+ * [GET]    /v2/project/{id}  [X]   Returns the specific project if authorized
  *
  * UPDATE
  * [PUT]    /v2/project/{id}        Updates s specific project. Project details are in the request body
@@ -299,8 +299,6 @@ public class RestV2Project {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
 
 
 
@@ -645,7 +643,7 @@ public class RestV2Project {
     @Produces("application/json")
     public Response get(@PathParam("id") @ParameterDetail("Project identifier") Long idProject) {
 
-        LOG.info("REST:/rest/project/get/ Get request received for project '{}'", idProject);
+        LOG.info("REST:/rest/v2/project/get/ Get request received for project '{}'", idProject);
 
         try {
             ProjectRecord project = projectService.getProject(idProject);
@@ -678,7 +676,70 @@ public class RestV2Project {
 
 
 
+    @PUT
+    @Path("/{id}")
+    @Detail("Update voluble elements of an existing project")
+    @Name("Update Project by id")
+    @Produces("application/json")
+    public Response update(
+            @PathParam("id") @ParameterDetail("Project identifier") Long idProject,
+            @FormParam("name") String projectName,
+            @FormParam("description") String description,
+            @FormParam("description-html") String descriptionHtml,
+            @FormParam("code") String code,
+            @FormParam("type") ProjectType type,
+            @FormParam("board") String board,
+            @FormParam("settings") String settings) {
 
+        LOG.info("REST:/rest/v2/project/{} PUT request received for project", idProject, idProject);
+
+        ProjectRecord project;
+
+        // Get the specified project
+        try {
+            project = projectService.getProject(idProject);
+
+            if (project != null) {
+                // Verify that the current user owns the requested project
+                if (!project.getIdUser().equals(BlocklyPropSecurityUtils.getCurrentUserId())) {
+                    LOG.info("User not authorized to get project {}", idProject);
+                    return Response.status(Response.Status.UNAUTHORIZED).build();
+                }
+            } else {
+                LOG.info("Project {} was not found", idProject);
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+        }
+        catch (Exception ex) {
+            LOG.warn("An unexpected exception has occurred. Message: {}", ex.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        // Update fields with passed in parameters. Parameters that are null will
+        // not update the record. However, parameters that are empty strings will
+        // update the corresponding field in the project record
+        // -----------------------------------------------------------------------
+        project = updateProjectRecordFields(
+                project, projectName, description, descriptionHtml,
+                code, type, board, settings);
+
+        // Save the record
+        ProjectRecord revisedProject = projectService.saveProject(project);
+        if (revisedProject == null) {
+            LOG.warn("Unable to update project {}", idProject);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        // Return the saved record
+
+
+       JsonObject result = projectConverter.toJson(project,false);
+
+        result.addProperty("result", "success");
+        result.addProperty("message", "Update project");
+        return Response.ok(result.toString()).build();
+
+    }
 
 
 
@@ -940,6 +1001,43 @@ public class RestV2Project {
         result.addProperty("success", true);
 
         return result.toString();
+    }
+
+
+    private ProjectRecord updateProjectRecordFields(
+            ProjectRecord project, String projectName, String description, String descriptionHtml,
+            String code, ProjectType type, String board, String settings) {
+
+        if (projectName != null) {
+            project.setName(projectName);
+        }
+
+        if (description != null) {
+            project.setDescription(description);
+        }
+
+        if (descriptionHtml != null) {
+            project.setDescriptionHtml(descriptionHtml);
+        }
+
+        if (code != null) {
+            project.setCode(code);
+        }
+
+        if (type != null) {
+            project.setType(type);
+        }
+
+        if (board != null) {
+            project.setBoard(board);
+        }
+
+        if (settings != null) {
+            project.setSettings(settings);
+        }
+
+        return project;
+
     }
 }
 

@@ -8,6 +8,7 @@ package com.parallax.server.blocklyprop.db.dao;
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.db.enums.ProjectType;
+import com.parallax.server.blocklyprop.db.generated.tables.Project;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import java.util.List;
 
@@ -105,6 +106,17 @@ public interface ProjectDao {
             String code, 
             boolean privateProject, 
             boolean sharedProject);
+
+    ProjectRecord updateProject(
+            Long idProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            boolean privateProject,
+            boolean sharedProject,
+            String settings);
+
 
     ProjectRecord saveCode(
             Long idProject, 

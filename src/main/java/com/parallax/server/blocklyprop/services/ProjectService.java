@@ -242,6 +242,9 @@ public interface ProjectService {
             String settings);
 
 
+    // Update an existing project
+    ProjectRecord saveProject(ProjectRecord project);
+
     /**
      * Save the code blocks for a specified project
      *
