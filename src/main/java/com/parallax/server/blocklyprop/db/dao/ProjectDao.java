@@ -13,108 +13,133 @@ import java.util.List;
 
 /**
  * Interface for the blocklyprop.project table
- * 
+ *
  * @author Michel
- * 
+ *
  * Fields:
  *  id:             Unique record number within the table.
- * 
+ *
  * id_user:         Link to primary key in the blocklyprop.user table.
- * 
+ *
  * id_clouduser:    Link to the primary key in the cloudsession.user table.
- * 
+ *
  * name:            Project name
- * 
+ *
  * description:     Project description formatted in plain text
- * 
+ *
  * description_html:Project description formatted in HTML
- * 
+ *
  * code:            XML content that hold the project block structure.
- * 
- * type:            Project source language (SPIN or PROPC) 
- * 
+ *
+ * type:            Project source language (SPIN or PROPC)
+ *
  * board:           Descriptor for the target device the project will use.
- * 
+ *
  * private:         Flag to indicate if the project is visible to anyone but
  *                  the project owner.This flag is mutually exclusive with the
  *                  'shared' flag.
- * 
+ *
  * shared:          Flag to indicate if the project is available for viewing by
  *                  anyone.This flag is mutually exclusive with the 'private'
  *                  flag.
- * 
+ *
  * created:         Timestamp indicating when the project record was created.
- * 
+ *
  * modified:        Timestamp indicating when the project record was last changed.
- * 
+ *
  * based_on:        The id from the project that is the parent of the current
  *                  project record.
- * 
+ *
  */
 public interface ProjectDao {
 
     ProjectRecord getProject(Long idProject);
 
+    // V2 implementation
     ProjectRecord createProject(
-            String name, 
-            String description, 
-            String descriptionHtml, 
-            String code, 
-            ProjectType type, 
-            String board, 
-            boolean privateProject, 
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            ProjectType type,
+            String board,
+            boolean privateProject,
+            boolean sharedProject,
+            Long idProjectBasedOn,
+            String settings);
+
+    @Deprecated
+    ProjectRecord createProject(
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            ProjectType type,
+            String board,
+            boolean privateProject,
             boolean sharedProject,
             Long idProjectBasedOn);
 
     ProjectRecord createProject(
-            String name, 
-            String description, 
-            String descriptionHtml, 
-            ProjectType type, 
-            String board, 
-            boolean privateProject, 
+            String name,
+            String description,
+            String descriptionHtml,
+            ProjectType type,
+            String board,
+            boolean privateProject,
             boolean sharedProject);
 
     ProjectRecord updateProject(
-            Long idProject, 
-            String name, 
-            String description, 
-            String descriptionHtml, 
-            boolean privateProject, 
+            Long idProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            boolean privateProject,
             boolean sharedProject);
 
     ProjectRecord updateProject(
-            Long idProject, 
-            String name, 
-            String description, 
-            String descriptionHtml, 
-            String code, 
-            boolean privateProject, 
+            Long idProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            boolean privateProject,
             boolean sharedProject);
+
+    ProjectRecord updateProject(
+            Long idProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            boolean privateProject,
+            boolean sharedProject,
+            String settings);
+
 
     ProjectRecord saveCode(
-            Long idProject, 
+            Long idProject,
             String code);
 
     List<ProjectRecord> getUserProjects(
-            Long idUser, 
-            TableSort sort, 
-            TableOrder order, 
-            Integer limit, 
+            Long idUser,
+            TableSort sort,
+            TableOrder order,
+            Integer limit,
             Integer offset);
 
     // Return a list of community projects
     List<ProjectRecord> getSharedProjects(
-            TableSort sort, 
-            TableOrder order, 
-            Integer limit, 
+            TableSort sort,
+            TableOrder order,
+            Integer limit,
             Integer offset);
 
     List<ProjectRecord> getSharedProjectsByUser(
-            TableSort sort, 
-            TableOrder order, 
-            Integer limit, 
-            Integer offset, 
+            TableSort sort,
+            TableOrder order,
+            Integer limit,
+            Integer offset,
             Long idUser);
 
     int countUserProjects(Long idUser);
@@ -128,12 +153,12 @@ public interface ProjectDao {
     boolean deleteProject(Long idProject);
 
     ProjectRecord updateProjectCode(
-            Long idProject, 
+            Long idProject,
             String code);
 
     ProjectRecord saveProjectCodeAs(
-            Long idProject, 
-            String code, 
+            Long idProject,
+            String code,
             String newName,
             String newBoard);
 

@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-	private static final long serialVersionUID = -1048994704;
+	private static final long serialVersionUID = -1976592299;
 
 	/**
 	 * The reference instance of <code>blocklyprop.project</code>
@@ -127,6 +127,11 @@ public class Project extends TableImpl<ProjectRecord> {
 	 * The column <code>blocklyprop.project.based_on</code>.
 	 */
 	public final TableField<ProjectRecord, Long> BASED_ON = createField("based_on", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+	/**
+	 * The column <code>blocklyprop.project.settings</code>.
+	 */
+	public final TableField<ProjectRecord, String> SETTINGS = createField("settings", org.jooq.impl.SQLDataType.CLOB, this, "");
 
 	/**
 	 * Create a <code>blocklyprop.project</code> table reference

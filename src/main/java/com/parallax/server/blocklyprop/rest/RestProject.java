@@ -27,9 +27,11 @@ import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
 import com.cuubez.visualizer.annotation.M;
 import com.cuubez.visualizer.annotation.ParameterDetail;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.utils.RestProjectUtils;
@@ -51,6 +53,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +63,20 @@ import org.slf4j.LoggerFactory;
  * REST endpoints for project persistence
  * 
  * @author Michel
+ *
+ * @implNote
+ *
+ * Supported endpoints:
+ * [POST]  /project/            Save current project
+ * [GET]   /project/list        List projects
+ * [GET]   /project/get/{id}    Retrieve a project
+ * [POST]  /project/code        Update project code
+ * [POST]  /project/code-as     Create new project from existing project
+ *
+ * The code block is not returned with most of these calls because it is only used when
+ * the user is viewing or editing a project. This eliminates the unnecessary overhead of
+ * moving a code block that could easily dwarf the size of the other elements in the project
+ * record.
  */
 
 @Path("/project")
@@ -153,7 +170,7 @@ public class RestProject {
 
             if (idUser == null || idUser == 0) {
                 // Current session is not logged in.
-                return Response.status(Response.Status.FORBIDDEN).build();
+                return Response.status(Response.Status.UNAUTHORIZED).build();
             }
 
             //Sanity checks - is the request reasonable
@@ -176,7 +193,7 @@ public class RestProject {
                 limit = REQUEST_LIMIT;
             }
 
-            // Check ofset from the beginning of the record set
+            // Check offset from the beginning of the record set
             if ((offset == null) || (offset < 0)) {
                 offset = 0;
             }
@@ -189,13 +206,19 @@ public class RestProject {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
 
+            LOG.info("Returning {} projects for user {}", userProjects.size(), idUser);
+
             return Response.ok(
                     returnProjectsJson(
                             userProjects,
                             projectService.countUserProjects(idUser)))
                     .build();
             }
-        
+        catch(UnauthorizedException ex) {
+            // User is logged in but attempting to access a secured resource
+            LOG.warn("Unauthorized access attempted");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         catch(Exception ex) {
             LOG.warn("Unable to process REST request.");
             LOG.warn("Error is {}", ex.getMessage());
@@ -276,18 +299,14 @@ public class RestProject {
 
             /* WARNING:
              * =================================================================================
-             * This call can create a new project record under specific circumstances and does
-             * not appear to provide any notification that this has occurred.
+             * The call to the saveProjectCode() method can create a new project record under
+             * specific circumstances and does not appear to provide any notification that this
+             * has occurred.
              * =================================================================================
              */
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
 
             LOG.debug("Code for project {} has been saved", idProject);
-/*
-            JsonObject result = projectConverter.toJson(savedProject,false);
-            result.addProperty("success", true);
-            return Response.ok(result.toString()).build();
-*/
             return Response.ok(buildConvertedResponse(savedProject)).build();
         } catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
@@ -371,7 +390,6 @@ public class RestProject {
      * or an error message upon failure
      */
     @POST
-    @Path("/")
     @Detail("Save project")
     @Name("Save project")
     @Produces("application/json")
@@ -439,15 +457,19 @@ public class RestProject {
      * A String containing the array of the converted Json objects
      */
     private String returnProjectsJson(@NotNull List<ProjectRecord> projects, int projectCount) {
+
         JsonObject result = new JsonObject();
-        JsonArray jsonProjects = new JsonArray();
 
-        for (ProjectRecord project : projects) {
-            jsonProjects.add(projectConverter.toListJson(project));
+        if (projects.size() > 0) {
+            JsonArray jsonProjects = new JsonArray();
+
+            for (ProjectRecord project : projects) {
+                jsonProjects.add(projectConverter.toListJson(project));
+            }
+
+            result.add("rows", jsonProjects);
+            result.addProperty("total", projectCount);
         }
-
-        result.add("rows", jsonProjects);
-        result.addProperty("total", projectCount);
 
         return result.toString();
     }

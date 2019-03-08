@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ *  This is the session database layer.
  *
  * @author Michel
  */
@@ -48,37 +49,42 @@ public class SessionDaoImpl implements SessionDao {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(SessionDaoImpl.class);
 
-    /**
-     * 
-     */
+    // Database connection
     private DSLContext create;
 
-    /**
-     * An instance of the application configuration settings
-     */
+    //An instance of the application configuration settings
     private Configuration configuration;
 
+
+    /**
+     * Get a copy of the database context
+     *
+     * @param dsl is the context provided by JooQ
+     */
     @Inject
     public void setDSLContext(DSLContext dsl) {
         this.create = dsl;
     }
 
+
     /**
-     * 
-     * @param configuration 
+     * Get a copy of the application configuration
+     *
+     * @param configuration is the context provided by the configuration manager
      */
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+
     /**
-     * 
-     * @param session 
+     * Create a new session
+     *
+     * @param session is a initialized SessrionRecord object
      */
     @Override
     public void create(SessionRecord session) {
-
         LOG.debug("Create a session. Timeout set to: {}", session.getTimeout());
         
         // Log session details if the configuration file permits it
@@ -108,49 +114,53 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     /**
-     * 
-     * @param idSession
-     * @return
-     * @throws NullPointerException 
+     * Retrieve a session
+     *
+     * @param idSession is the unique identifier for the requested session
+     *
+     * @return a SessionRecord, otherwise throws a NullPointerException
+     *
+     * @throws NullPointerException raise an NPE if the session is not found,
+     * otherwise the caller expects to receive a valid session record
      */
     @Override
     public SessionRecord readSession(String idSession) throws NullPointerException {
-
         LOG.debug("Getting session {} details", idSession);
 
-        SessionRecord sessionRecord = null;
-        
         try {
-            sessionRecord = create.selectFrom(Tables.SESSION)
+            SessionRecord sessionRecord = create
+                    .selectFrom(Tables.SESSION)
                     .where(Tables.SESSION.IDSESSION.eq(idSession))
                     .fetchOne();
 
             // Log session details if the configuration file permits it
             printSessionInfo("read", sessionRecord);
+            return sessionRecord;
         }
         catch (org.jooq.exception.DataAccessException sqex) {
             LOG.error("Database exception {}", sqex.getMessage());
+            throw new NullPointerException("Session not found");
         }
-
-        return sessionRecord;
    }
 
     /**
-     * 
-     * @param session
-     * @throws NullPointerException 
+     * Update an existing session
+     *
+     * @param session is the unique identifier for the requested session
+     *
+     * @throws NullPointerException raise an NPE if the session yo be updated
+     * is not found
      */
     @Override
     public void updateSession(SessionRecord session) throws NullPointerException {
-
-        LOG.debug("Update a session");
+        LOG.debug("Update session {}", session.getIdsession());
 
         try {
             // Get the current session record
             SessionRecord dbRecord = readSession(session.getIdsession());
             
             if (dbRecord == null) {
-                throw new NullPointerException("Session not found");
+                throw new NullPointerException("Invalid session");
             }
       
             dbRecord.setStarttimestamp(session.getStarttimestamp());
@@ -167,17 +177,18 @@ public class SessionDaoImpl implements SessionDao {
         }
         catch (org.jooq.exception.DataAccessException sqex) {
             LOG.error("Database exception {}", sqex.getMessage());
-            throw new NullPointerException("Database error");
+            throw new NullPointerException("Session not found");
         }
     }
 
+
     /**
-     * 
-     * @param idSession 
+     * Remove a session record from the backing store
+     *
+     * @param idSession is the unique identifier for the requested session
      */
     @Override
     public void deleteSession(String idSession) {
-
         LOG.info("Deleting session {}", idSession);
 
         create.deleteFrom(Tables.SESSION)
@@ -185,16 +196,25 @@ public class SessionDaoImpl implements SessionDao {
                 .execute();
     }
 
+
     /**
-     * 
-     * @return 
+     *  Get a list of all active (unexpired) sessions
+     *
+     * @return a collection of session records
      */
     @Override
     public Collection<SessionRecord> getActiveSessions() {
         return Arrays.asList(create.selectFrom(Tables.SESSION).fetchArray());
     }
 
-    
+
+    /**
+     * Provide detailed logging for the specified session
+     *
+     * @param action is a message that is embedded in the log record
+     *
+     * @param session is the session record to to log.
+     */
     private void printSessionInfo(String action, SessionRecord session) {
         if (configuration.getBoolean("debug.session", false)) {
             try {
@@ -206,9 +226,11 @@ public class SessionDaoImpl implements SessionDao {
                     HashMap attributes = (HashMap) in.readObject();
                     LOG.info("Session info: {}:{}", action, attributes);
                 }
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 LOG.error("I/O error. {}",ex.getMessage());
-            } catch (ClassNotFoundException cnfe) {
+            }
+            catch (ClassNotFoundException cnfe) {
                 LOG.error("Class not found. {}", cnfe.getMessage());
             }
         }
