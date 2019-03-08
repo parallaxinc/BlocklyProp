@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.servlets;
 
 import com.google.common.base.Strings;
@@ -12,7 +28,6 @@ import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
-import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.server.blocklyprop.db.generated.tables.pojos.User;
 import com.parallax.server.blocklyprop.services.UserService;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
@@ -50,7 +65,9 @@ public class PublicProfileServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
+            ServletException, IOException {
+
         String idUserString = req.getParameter("id-user");
         Long idUser = null;
         
@@ -61,14 +78,14 @@ public class PublicProfileServlet extends HttpServlet {
                 if (SecurityUtils.getSubject().isAuthenticated()) {
                     idUser = SecurityServiceImpl.getSessionData().getIdUser();
                 } else {
-                    LOG.info("Getting current user while not authenticated");
+                    LOG.warn("Getting current user while not authenticated");
                     resp.sendError(404);
                 }
             } else {
                 idUser = Long.parseLong(idUserString);
             }
         } catch (NumberFormatException nfe) {
-            LOG.info("id-user is not a valid number: {}", idUserString);
+            LOG.warn("id-user is not a valid number: {}", idUserString);
             resp.sendError(500);
         }
         try {
@@ -77,27 +94,39 @@ public class PublicProfileServlet extends HttpServlet {
             if (user == null) {
                 LOG.info("Get public profile for user {} (Does not exist!)", idUser);
                 resp.sendError(404);
-                return;
             }
 
-            LOG.info("Get public profile for user {}: Cloud-session user: {}", idUser, user.getIdcloudsession());
-            
             com.parallax.client.cloudsession.objects.User cloudSessionUser =
                     cloudSessionUserService.getUser(user.getIdcloudsession());
 
+            // It is possible to receive an empty, non-null object
+            if (cloudSessionUser == null) {
+                LOG.warn("User object is null");
+                resp.sendError(404, "User profile is unavailable");
+            }
+            if (cloudSessionUser.getScreenname() == null ) {
+                LOG.warn("Unable to decode result from Cloud Session call");
+                resp.sendError(404, "User object is empty");
+            }
+
             req.setAttribute("screenname", cloudSessionUser.getScreenname());
             req.getRequestDispatcher("/WEB-INF/servlet/public-profile.jsp").forward(req, resp);
-        } catch (EmailNotConfirmedException ex) {
+        }
+        catch (EmailNotConfirmedException ex) {
+            LOG.info("User email is unconfirmed cloud-session");
+            resp.sendError(404);
+        }
+        catch (UnknownUserIdException ex) {
             LOG.info("User not known in cloud-session");
             resp.sendError(404);
-        } catch (UnknownUserIdException ex) {
-            LOG.info("User not known in cloud-session");
-            resp.sendError(404);
-        } catch (ServerException ex) {
+        }
+        catch (NullPointerException ex) {
+            LOG.warn("Unexpected Null Pointer Exception encountered. Message is: {}", ex.getMessage());
+            resp.sendError(404, "NPE error. User not found");
+        }
+        catch (ServerException ex) {
             LOG.error("Communication problem with Cloud-session", ex);
             resp.sendError(500);
         }
-
     }
-
 }
