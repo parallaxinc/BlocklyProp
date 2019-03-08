@@ -1,7 +1,22 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 package com.parallax.server.blocklyprop.db.dao.impl;
 
@@ -32,44 +47,51 @@ import java.util.Random;
 
 /**
  * DAO interface to the blocklyprop.project table.
- * 
+ *
  * @author Michel
  *
  */
 @Singleton
 public class ProjectDaoImpl implements ProjectDao {
 
-    // The absolute lowest number of bytes that can exist in an un-populated project.
-    private static final int MIN_BLOCKLY_CODE_SIZE = 48;
+    /**
+     * The absolute lowest number of bytes that can exist in an
+     * un-populated project.
+     */
+    private static final int Min_BlocklyCodeSize = 48;
 
-    
-    // Application logging facility
+
+    /**
+     * Application logging facility
+     */
     private static final Logger LOG = LoggerFactory.getLogger(ProjectDao.class);
 
-    
-    // Database connection
+
+    /**
+     * Database connection
+     */
     private DSLContext create;
 
-    
+
+    // Used by the randomString function
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#()*-+./:;=@[]^_`{|}~";
+    static Random rnd = new Random();
+
+
     // Constants to clarify the edit flag in method calls
     static final boolean EDIT_MODE_OFF = false;
-    static final boolean EDIT_MODE_ON = true;
+    private static final boolean EDIT_MODE_ON = true;
 
-    
     // Constant to identify the current version of the blockly block library;
     public static final short BLOCKLY_LIBRARY_VERSION = 1;
-    
 
-    // Inject a database connection
+
     @Inject
     public void setDSLContext(DSLContext dsl) {
         this.create = dsl;
     }
 
 
-    // Injecting the project sharing service
-    // TODO: Figure out why the projected sharing service is being injected into
-    //       the DAO layer. That is just weird
     private ProjectSharingService projectSharingService;
 
     @Inject
@@ -78,13 +100,8 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
 
-    /**************************************************************************
-     *
-     *    GET methods
-     *
-     **************************************************************************/
-
     /**
+     *
      * Retrieve a new project record based from an existing project.
      *
      * Note: There are private getProject methods that retrieve a project record
@@ -96,12 +113,12 @@ public class ProjectDaoImpl implements ProjectDao {
      *
      * @param idProject The id for the project that will be the source for the
      * new project record
-     * 
+     *
      * @return ProjectRecord object containing a copy of the original project
      */
     @Override
     public ProjectRecord getProject(Long idProject) {
-        LOG.info("Retreiving data for project #{}", idProject);
+        LOG.info("Retrieving data for project #{}", idProject);
 
         ProjectRecord record = null;
 
@@ -115,176 +132,34 @@ public class ProjectDaoImpl implements ProjectDao {
                 LOG.warn("Unable to retreive project {}", idProject);
                 return null;
             }
-            
+
         } catch (org.jooq.exception.DataAccessException sqex) {
             LOG.error("Database error encountered {}", sqex.getMessage());
             return null;
-
         } catch (Exception ex) {
-            LOG.error("Unexpected exception retreiving a project record");
+            LOG.error("Unexpected exception retrieving a project record");
             LOG.error("Error Message: {}", ex.getMessage());
             return null;
         }
 
-        // Return the project after checking if for depricated blocks
-        return alterReadRecord(record);
-    }
+        // Return the project after checking if for deprecated blocks
+        LOG.info("Cleaning project {} blocks", record.getId());
 
+        ProjectRecord prjRecord =  alterReadRecord(record);
 
-    /**
-     * TODO: add details.
-     *
-     * @param idUser
-     * @param sort
-     * @param order
-     * @param limit
-     * @param offset
-     * @return
-     */
-    @Override
-    public List<ProjectRecord> getUserProjects(
-            Long idUser,
-            TableSort sort,
-            TableOrder order,
-            Integer limit,
-            Integer offset) {
-
-        LOG.info("Retreive projects for user {}.", idUser);
-
-        SortField<String> orderField = Tables.PROJECT.NAME.asc();
-        if (TableOrder.desc == order) {
-            orderField = Tables.PROJECT.NAME.desc();
+        if (prjRecord == null) {
+            LOG.info("Hmm, Something broke the project record");
+            return null;
         }
 
-        return create
-                .selectFrom(Tables.PROJECT)
-                .where(Tables.PROJECT.ID_USER.equal(idUser))
-                .orderBy(orderField).limit(limit).offset(offset)
-                .fetch();
-    }
+        LOG.info("Returning project {}.", prjRecord.getId());
 
-    /**
-     * Return a list of community projects constrained by the parameters
-     *
-     * @param sort
-     * @param order
-     * @param limit
-     * @param offset
-
-     * @return
-     * Returns a list of ProjectRecord objects corresponding to the projects
-     * matching the selection creiteria
-     */
-    @Override
-    public List<ProjectRecord> getSharedProjects(
-            TableSort sort,
-            TableOrder order,
-            Integer limit,
-            Integer offset) {
-
-        LOG.info("Retrieve shared projects.");
-
-        SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
-
-        if (TableOrder.desc == order) {
-            orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
-        }
-
-        // Search for community projects
-        Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
-
-        return create
-                .selectFrom(Tables.PROJECT)
-                .where(conditions)
-                .orderBy(orderField).limit(limit).offset(offset)
-                .fetch();
+        return prjRecord;
     }
 
 
 
-    /**
-     * TODO: add details.
-     *
-     * @param sort
-     * @param order
-     * @param limit
-     * @param offset
-     * @param idUser
-     * @return
-     */
-    @Override
-    public List<ProjectRecord> getSharedProjectsByUser(
-            TableSort sort,
-            TableOrder order,
-            Integer limit,
-            Integer offset,
-            Long idUser) {
-
-        LOG.info("Retreive shared projects.");
-
-        SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
-
-        if (TableOrder.desc == order) {
-            orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
-        }
-
-        Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
-
-        if (idUser != null) {
-            conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
-        }
-
-        return create
-                .selectFrom(Tables.PROJECT)
-                .where(conditions)
-                .orderBy(orderField).limit(limit).offset(offset)
-                .fetch();
-    }
-
-
-
-    /**************************************************************************
-     *
-     *    POST methods
-     *
-     **************************************************************************/
-
-    /**
-     *  Create a complete project record. All parameters are supplied by the caller.
-     *
-     * @param name
-     * Project name
-     *
-     * @param description
-     * Project description formatted in plain text
-     *
-     * @param descriptionHtml
-     * Project description formatted in HTML
-     *
-     * @param code
-     * XML content that holds the project block structure
-     *
-     * @param type
-     * Project source language (SPIN or PROPC)
-     *
-     * @param board
-     * Descriptor for the target device the project will use
-     *
-     * @param privateProject
-     * Flag to indicate if the project is visible to anyone but the project owner
-     *
-     * @param sharedProject
-     * Flag to indicate if the project is available for viewing by anyone
-     *
-     * @param idProjectBasedOn
-     * The id from the project that is the parent of the current project record
-     *
-     * @param projectSettings
-     * A JSON formatted string containing project settings.
-     *
-     * @return
-     * Returns a ProjectRecord object, including the new project settings string
-     */
+    // V2 implementations
     @Override
     public ProjectRecord createProject(
             String name,
@@ -296,7 +171,9 @@ public class ProjectDaoImpl implements ProjectDao {
             boolean privateProject,
             boolean sharedProject,
             Long idProjectBasedOn,
-            String projectSettings) {
+            String settings) {
+
+        LOG.info("Creating a new project with existing code.");
 
         ProjectRecord record = null;
 
@@ -342,7 +219,7 @@ public class ProjectDaoImpl implements ProjectDao {
                             privateProject,
                             sharedProject,
                             idProjectBasedOn,
-                            projectSettings)
+                            settings)
                     .returning()
                     .fetchOne();
         }
@@ -361,7 +238,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
 
 
+
+
     /**
+     *
      * Create a new project with supplied code.
      *
      * @param name Project name
@@ -374,34 +254,88 @@ public class ProjectDaoImpl implements ProjectDao {
      * @param sharedProject Flag to indicate if the project is a community project
      * @param idProjectBasedOn Parent project id if the new project is cloned
      * from another project
-     * 
-     * @return a fully formed ProjectRecord or a null if an error is detected.
      *
-     * @implNote This is an override of the base createProject class.
+     * @return a fully formed ProjectRecord or a null if an error is detected.
      */
+    @Deprecated
     @Override
-    public ProjectRecord createProject( 
+    public ProjectRecord createProject(
             String name,
             String description,
             String descriptionHtml,
             String code,
-            ProjectType type, 
-            String board, 
+            ProjectType type,
+            String board,
             boolean privateProject,
             boolean sharedProject,
             Long idProjectBasedOn) {
 
-        return createProject(
-                name, description, descriptionHtml, code, type, board,
-                privateProject, sharedProject, idProjectBasedOn, null);
+        LOG.info("Creating a new project with existing code.");
 
+        ProjectRecord record = null;
+
+        // Get the logged in user's userID
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+        if (idUser == null) {
+            LOG.error("Null BP UserID");
+            return null;
+        }
+
+        // Get the cloud session user id from the current authenticated session
+        Long idCloudUser = BlocklyPropSecurityUtils.getCurrentSessionUserId();
+        if (idCloudUser == null) {
+            LOG.error("Null cloud user ID");
+            return null;
+        }
+
+        try {
+            record = create
+                    .insertInto(Tables.PROJECT,
+                            Tables.PROJECT.ID_USER,
+                            Tables.PROJECT.ID_CLOUDUSER,
+                            Tables.PROJECT.NAME,
+                            Tables.PROJECT.DESCRIPTION,
+                            Tables.PROJECT.DESCRIPTION_HTML,
+                            Tables.PROJECT.CODE,
+                            Tables.PROJECT.CODE_BLOCK_VERSION,
+                            Tables.PROJECT.TYPE,
+                            Tables.PROJECT.BOARD,
+                            Tables.PROJECT.PRIVATE,
+                            Tables.PROJECT.SHARED,
+                            Tables.PROJECT.BASED_ON)
+                    .values(idUser,
+                            idCloudUser,
+                            name,
+                            description,
+                            descriptionHtml,
+                            code,
+                            BLOCKLY_LIBRARY_VERSION,
+                            type,
+                            board,
+                            privateProject,
+                            sharedProject,
+                            idProjectBasedOn)
+                    .returning()
+                    .fetchOne();
+        }
+        catch (org.jooq.exception.DataAccessException sqex) {
+            LOG.error("Database error encountered {}", sqex.getMessage());
+            return null;
+        } catch (Exception ex) {
+            LOG.error("Unexpected exception creating a project record");
+            LOG.error("Error Message: {}", ex.getMessage());
+            return null;
+        }
+
+        return record;
     }
-
-
 
     /**
      *
      * Create a new project with a blank canvas (no blocks).
+     *
+     * This is an overload of the base createProject method that omits
+     * the code block.
      *
      * @param name
      * @param description
@@ -411,9 +345,6 @@ public class ProjectDaoImpl implements ProjectDao {
      * @param privateProject
      * @param sharedProject
      * @return
-     *
-     * @implNote
-     * This is an overload of the base createProject method that omits the code block.
      */
     @Override
     public ProjectRecord createProject(
@@ -425,49 +356,20 @@ public class ProjectDaoImpl implements ProjectDao {
             boolean privateProject,
             boolean sharedProject) {
 
-        LOG.info("Creating a new, empty project.");
-        
+        LOG.info("Creating a new, empty project from existing project.");
+
         // TODO: Add based_on field to end of argument list
-        return createProject( 
-                name, description, descriptionHtml, "", type, board,
-                privateProject, sharedProject, null);
+        return createProject(
+                name,
+                description,
+                descriptionHtml,
+                "",
+                type,
+                board,
+                privateProject,
+                sharedProject,
+                null);
     }
-
-    /**
-     * TODO: add details.
-     *
-     * @param idProject
-     * @return
-     */
-    @Override
-    public ProjectRecord cloneProject(Long idProject) {
-
-        LOG.info("Clone existing project {} to a new project.", idProject);
-
-        // Retrieve the project to be copied
-        ProjectRecord projectRecord = getProject(idProject);
-
-        if (projectRecord == null) {
-            throw new NullPointerException("Project doesn't exist");
-        }
-
-        // Allow a copy only if the project is shared (public) or if the
-        // currently logged in user owns the project
-        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-
-        if (projectRecord.getIdUser().equals(idUser) || projectRecord.getShared()) {
-            return doProjectClone(projectRecord);
-        }
-
-        return null;
-    }
-
-
-    /**************************************************************************
-     *
-     *    UPDATE methods
-     *
-     **************************************************************************/
 
 
     /**
@@ -497,26 +399,19 @@ public class ProjectDaoImpl implements ProjectDao {
         LOG.info("Update project {}.", idProject);
 
         ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
-
         if (record == null) {
             LOG.warn("Unable to locate project {} to update it.", idProject);
             return null;
         }
 
-        // Update the fields with data from the caller
         record.setName(name);
         record.setDescription(description);
         record.setDescriptionHtml(descriptionHtml);
         record.setPrivate(privateProject);
         record.setShared(sharedProject);
-
-        // Add some housekeeping meta data
         record.setModified(getCurrentTimestamp());
         record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
-
-        // Persist the updated record
         record.update();
-
 
         return record;
     }
@@ -549,62 +444,296 @@ public class ProjectDaoImpl implements ProjectDao {
         LOG.info("Update project {}.", idProject);
 
         ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
+        if (record != null) {
+            record.setName(name);
+            record.setDescription(description);
+            record.setDescriptionHtml(descriptionHtml);
+            record.setCode(code);
+            record.setPrivate(privateProject);
+            record.setShared(sharedProject);
+            record.setModified(getCurrentTimestamp());
+            record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
+            record.update();
 
-        if (record == null) {
-            LOG.warn("Unable to update project {}", idProject);
-            return null;
+            return record;
         }
 
-        record.setCode(code);
+        LOG.warn("Unable to update project {}", idProject);
+        return null;
+    }
 
-        record.setName(name);
-        record.setDescription(description);
-        record.setDescriptionHtml(descriptionHtml);
-        record.setPrivate(privateProject);
-        record.setShared(sharedProject);
 
-        record.setModified(getCurrentTimestamp());
-        record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
 
-        record.update();
 
-         return record;
+    @Override
+    public ProjectRecord updateProject(
+            Long idProject,
+            String name,
+            String description,
+            String descriptionHtml,
+            String code,
+            boolean privateProject,
+            boolean sharedProject,
+            String settings) {
+
+        LOG.info("Update project {}.", idProject);
+
+        ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
+        if (record != null) {
+            record.setName(name);
+            record.setDescription(description);
+            record.setDescriptionHtml(descriptionHtml);
+            record.setCode(code);
+            record.setPrivate(privateProject);
+            record.setShared(sharedProject);
+            record.setSettings(settings);
+            record.setModified(getCurrentTimestamp());
+            record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
+            record.update();
+
+            return record;
         }
+
+        LOG.warn("Unable to update project {}", idProject);
+        return null;
+    }
+
+
+
 
     /**
      * Update the code blocks for a project
      *
-     * @param idProject the project primary key ID for the project that will receive the update
-     *
-     * @param code the code blocks to update within the project
-     *
-     * @return an updated ProjectRecord that contains the new code blocks
+     * @param idProject
+     * @param code
+     * @return
      */
     @Override
     public ProjectRecord saveCode(Long idProject, String code) {
         LOG.info("Saving code for project {}.", idProject);
 
         ProjectRecord record = getProject(idProject, EDIT_MODE_ON);
+        if (record != null) {
+            // Update project record details
+            record.setCode(code);
+            record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
+            record.setModified(getCurrentTimestamp());
 
-        if (record == null) {
-            LOG.error("Unable to save code for project {}", idProject);
-            return null;
+            // Update the record
+            ProjectRecord returningRecord = create
+                    .update(Tables.PROJECT)
+                    .set(record)
+                    .returning()
+                    .fetchOne();
+
+            // Return a copy of the updated project record
+            return returningRecord;
         }
 
-        // Update project record details
-        record.setCode(code);
-        record.setCodeBlockVersion(BLOCKLY_LIBRARY_VERSION);
-        record.setModified(getCurrentTimestamp());
-            
-        // Update the record and then return the updated record
+        LOG.error("Unable to save code for project {}", idProject);
+        return null;
+    }
+
+    /**
+     * TODO: add details.
+     *
+     * @param idUser
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return
+     */
+    @Override
+    public List<ProjectRecord> getUserProjects(
+            Long idUser,
+            TableSort sort,
+            TableOrder order,
+            Integer limit,
+            Integer offset) {
+
+        LOG.info("Retrieve projects for user {}.", idUser);
+
+        SortField<String> orderField;
+
+        // Set sort order of the result
+        if (TableOrder.desc == order) {
+            orderField = Tables.PROJECT.NAME.desc();
+        } else {
+            orderField = Tables.PROJECT.NAME.asc();
+        }
+
         return create
-                .update(Tables.PROJECT)
-                .set(record)
-                .returning()
-                .fetchOne();
+                .selectFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID_USER.equal(idUser))
+                .orderBy(orderField)
+                .limit(limit)
+                .offset(offset)
+                .fetch();
+    }
+
+    /**
+     * Return a list of community projects constrained by the parameters
+     *
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @return
+     * Returns a list of ProjectRecord objects corresponding to the projects
+     * matching the selection creiteria
+     */
+    @Override
+    public List<ProjectRecord> getSharedProjects(
+            TableSort sort,
+            TableOrder order,
+            Integer limit,
+            Integer offset) {
+
+        LOG.info("List shared projects.");
+
+        SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
+        if (TableOrder.desc == order) {
+            orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
         }
 
+        // Search for community projects
+        Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
 
+        return create.selectFrom(Tables.PROJECT)
+                .where(conditions)
+                .orderBy(orderField).limit(limit).offset(offset)
+                .fetch();
+    }
+
+    /**
+     * TODO: add details.
+     *
+     * @param sort
+     * @param order
+     * @param limit
+     * @param offset
+     * @param idUser
+     * @return
+     */
+    @Override
+    public List<ProjectRecord> getSharedProjectsByUser(
+            TableSort sort,
+            TableOrder order,
+            Integer limit,
+            Integer offset,
+            Long idUser) {
+
+        LOG.info("Retreive shared projects.");
+
+        SortField<?> orderField = sort == null ? Tables.PROJECT.NAME.asc() : sort.getField().asc();
+        if (TableOrder.desc == order) {
+            orderField = sort == null ? Tables.PROJECT.NAME.desc() : sort.getField().desc();
+        }
+        Condition conditions = Tables.PROJECT.SHARED.eq(Boolean.TRUE);
+        if (idUser != null) {
+            conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
+        }
+        return create.selectFrom(Tables.PROJECT)
+                .where(conditions)
+                .orderBy(orderField).limit(limit).offset(offset)
+                .fetch();
+    }
+
+    /**
+     * TODO: add details.
+     *
+     * @param idUser
+     * @return
+     */
+    @Override
+    public int countUserProjects(Long idUser) {
+
+        int rows = create.fetchCount(Tables.PROJECT, Tables.PROJECT.ID_USER.equal(idUser));
+        LOG.info("Found a total of {} projects for user: {}.",rows, idUser);
+
+        return rows;
+    }
+
+    /**
+     *
+     * TODO: add details.
+     *
+     * @param idUser
+     * @return
+     */
+    @Override
+    public int countSharedProjects(Long idUser) {
+        LOG.info("Count shared projects for user {}.", idUser);
+
+        Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
+
+        // Shared projects are really community projects. We should not include
+        // the logged in user's projects in the community listing. There is a
+        // separate listing available for the logged in user's private projects.
+        /*
+        if (idUser != null) {
+            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
+        }
+        */
+        return create.fetchCount(Tables.PROJECT, conditions);
+    }
+
+    /**
+     *
+     * TODO: add details.
+     *
+     * @param idUser
+     * @return
+     */
+    @Override
+    public int countSharedProjectsByUser(Long idUser) {
+        LOG.info("Count shared projects for user {}.", idUser);
+
+        Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
+        if (idUser != null) {
+            conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
+        }
+        return create.fetchCount(Tables.PROJECT, conditions);
+    }
+
+    /**
+     * TODO: add details.
+     *
+     * @param idProject
+     * @return
+     */
+    @Override
+    public ProjectRecord cloneProject(Long idProject) {
+        LOG.info("Clone existing project {} to a new project.", idProject);
+
+        ProjectRecord original = getProject(idProject);
+
+        if (original == null) {
+            throw new NullPointerException("Project doesn't exist");
+        }
+
+        Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
+
+        if (original.getIdUser().equals(idUser) || original.getShared()) { // TODO check if friends
+            return doProjectClone(original);
+        }
+        return null;
+    }
+
+    /**
+     * TODO: add details.
+     *
+     * @param idProject
+     * @return boolean true if record was deleted, otherwise false.
+     */
+    @Override
+    public boolean deleteProject(Long idProject) {
+        LOG.info("Delete project {}.", idProject);
+        return create.deleteFrom(Tables.PROJECT)
+                .where(Tables.PROJECT.ID.equal(idProject))
+                .execute() > 0;
+    }
 
     /**
      * Update the code block in the specified project
@@ -623,7 +752,6 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord updateProjectCode(Long idProject, String code) {
-
         LOG.info("Update code for project {}.", idProject);
 
         // Retrieve the specified project
@@ -631,29 +759,24 @@ public class ProjectDaoImpl implements ProjectDao {
                 .where(Tables.PROJECT.ID.equal(idProject))
                 .fetchOne();
 
+        // Get a timestamp used to update the modified field of the project record
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new java.util.Date());
+
         if (record != null) {
             // Found the project. Verify that the current user owns it
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
 
+            // TODO: Detecting a zero user id
             if (idUser == 0) {
-                LOG.error("User is not logged in. Current user ID is zero for project {}", idProject);
+                LOG.error("Detected current user ID is zero for project {}", idProject);
                 return null;
             }
 
-            /* ------------------------------------------------------------------------
-            // Is the user ID in the current project zero. This should never happen
-            // but if it does, the project is orphaned. This can happen if the project
-            // owner's user profile has been removed incorrectly. The orphaned project
-            // should be either removed or converted to a community project.
-            // -----------------------------------------------------------------------*/
             if (record.getIdUser() == 0) {
                 LOG.error("Detected project user ID is zero for project {}", idProject);
                 return null;
             }
-
-            // Get a timestamp used to update the modified field of the project record
-            GregorianCalendar cal = new GregorianCalendar();
-            cal.setTime(new java.util.Date());
 
             // Update the project if the current user owns it
             if (record.getIdUser().equals(idUser)) {
@@ -687,97 +810,6 @@ public class ProjectDaoImpl implements ProjectDao {
 
 
     /**
-     * Get the number of projects owned by a specified userId
-     *
-     * @param idUser the primary key ID of the user who onws the projects to be counted
-     *
-     * @return the number of rows found to be owned by the specified user
-     */
-    @Override
-    public int countUserProjects(Long idUser) {
-        LOG.debug("Count project for user {}.", idUser);
-
-        return create.fetchCount(Tables.PROJECT, Tables.PROJECT.ID_USER.equal(idUser));
-    }
-
-    /**
-     *
-     * TODO: add details.
-     *
-     * @param idUser
-     * @return
-     */
-    @Override
-    public int countSharedProjects(Long idUser) {
-        LOG.info("Count shared projects for user {}.", idUser);
-
-        Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
-        
-        // Shared projects are really community projects. We should not include
-        // the logged in user's projects in the community listing. There is a
-        // separate listing available for the logged in user's private projects.
-        /*
-        if (idUser != null) {
-            conditions = conditions.or(Tables.PROJECT.ID_USER.eq(idUser));
-        }
-        */
-        return create.fetchCount(Tables.PROJECT, conditions);
-    }
-
-    /**
-     *
-     * TODO: add details.
-     *
-     * @param idUser
-     * @return
-     */
-    @Override
-    public int countSharedProjectsByUser(Long idUser) {
-        LOG.info("Count shared projects for user {}.", idUser);
-
-        Condition conditions = Tables.PROJECT.SHARED.equal(Boolean.TRUE);
-
-        if (idUser != null) {
-            conditions = conditions.and(Tables.PROJECT.ID_USER.eq(idUser));
-        }
-
-        return create.fetchCount(Tables.PROJECT, conditions);
-    }
-
-
-
-
-
-    /**************************************************************************
-     *
-     *    DELETE methods
-     *
-     **************************************************************************/
-
-    /**
-     * Delete a project
-     *
-     * @param idProject
-     * The project primary key if
-     *
-     * @return
-     * True if the project was successfully removed, otherwise false.
-     */
-    @Override
-    public boolean deleteProject(Long idProject) {
-
-        LOG.info("Delete project {}.", idProject);
-
-        return create.deleteFrom(Tables.PROJECT)
-                .where(Tables.PROJECT.ID.equal(idProject))
-                .execute() > 0;
-    }
-
-
-
-
-
-    /**
      * Save the current project as a new project
      *
      * @param idProject
@@ -788,7 +820,7 @@ public class ProjectDaoImpl implements ProjectDao {
      */
     @Override
     public ProjectRecord saveProjectCodeAs(Long idProject, String code, String newName, String newBoard) {
-        
+
         LOG.info("Saving project code from project {} as '{}'", idProject,  newName);
 
         // Retreive the source project
@@ -804,10 +836,10 @@ public class ProjectDaoImpl implements ProjectDao {
             newBoard = original.getBoard();
         }
 
-        
-        // Obtain the current bp user record. 
+
+        // Obtain the current bp user record.
         Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-        
+
         if (idUser != null) {
             // Create a copy of the source project is the source project is owned
             // by the current user OR if the source project is designated as a
@@ -816,12 +848,12 @@ public class ProjectDaoImpl implements ProjectDao {
             boolean sharedStatus = projectSharingService.isProjectShared(idProject);
             LOG.info("Project shared status: {}", sharedStatus);
 
-           if (original.getIdUser().equals(idUser) ||       // Project is owned by currently logged in user
-                   sharedStatus ||                          // Project is shared
-                   (!original.getPrivate())) {              // Project is public
+            if (original.getIdUser().equals(idUser) ||       // Project is owned by currently logged in user
+                    sharedStatus ||                          // Project is shared
+                    (!original.getPrivate())) {              // Project is public
 
                 ProjectRecord cloned = createProject(
-                        newName, 
+                        newName,
                         original.getDescription(),
                         original.getDescriptionHtml(),
                         code,
@@ -845,16 +877,9 @@ public class ProjectDaoImpl implements ProjectDao {
         return null;
     }
 
-    /**************************************************************************
-     *
-     *    PRIVATE methods
-     *
-     **************************************************************************/
-
-
     // Private over-ride of the public getProject()
     //
-    // 
+    //
     private ProjectRecord getProject(Long idProject, boolean toEdit) {
         LOG.info("Retreiving project {}.", idProject);
         ProjectRecord record = create
@@ -884,21 +909,10 @@ public class ProjectDaoImpl implements ProjectDao {
         return alterReadRecord(record);
     }
 
-
-
-    /**
-     * Create a copy of an existing project and add it to the current user's library
-     *
-     * @param original The source project to copy into a new project
-     *
-     * @return
-     * A copy of the original project with ownership updated to the current user
-     */
     private ProjectRecord doProjectClone(ProjectRecord original) {
 
-        // Create a new project using the details from the project record
-        // that was passed in.
-        return createProject(
+        // TODO: Add based_on parameter as last argument
+        ProjectRecord cloned = createProject(
                 original.getName(),
                 original.getDescription(),
                 original.getDescriptionHtml(),
@@ -907,25 +921,33 @@ public class ProjectDaoImpl implements ProjectDao {
                 original.getBoard(),
                 original.getPrivate(),
                 original.getShared(),
-                original.getId(),        // set the parent project id (idProjectBasedOn)
+                original.getId(),        // set the parent project id
                 original.getSettings()
         );
+
+//        cloned.setBasedOn(original.getId());
+//        cloned.update();
+
+        // TODO: URGENT - Evaluate query to verify that it is updating only one record
+        create.update(Tables.PROJECT)
+                .set(Tables.PROJECT.BASED_ON, original.getId())
+                .where(Tables.PROJECT.ID.equal(cloned.getId()));
+
+        return cloned;
     }
 
-    
 
-    /**
-     * Produce a current timestamp
-     *
-     * @return a GregorianCalendar time stamp
-     */
+    // Produce a current timestamp
     private GregorianCalendar getCurrentTimestamp() {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new java.util.Date());
-        
+
         return cal;
     }
-    
+
+
+
+
 
 
     // Evaluate project code and replace any deprecated or updated blocks
@@ -936,6 +958,7 @@ public class ProjectDaoImpl implements ProjectDao {
     // horribly wrong with the string conversions.
     //
     private ProjectRecord alterReadRecord(ProjectRecord record) {
+
 
         String currentCode, newCode;
 
@@ -949,11 +972,11 @@ public class ProjectDaoImpl implements ProjectDao {
                 LOG.info("Bypassing project block evaluation");
                 return record;
             }
-   
+
             LOG.info("Verify project {} block version {} characteristics",
                     record.getId(),
                     record.getCodeBlockVersion());
-            
+
             currentCode = record.getCode();
 
             // Return immediately if there is no code to adjust
@@ -961,8 +984,8 @@ public class ProjectDaoImpl implements ProjectDao {
                 LOG.warn("Project () code block is empty.", record.getId());
                 return record;
             }
-            
-            if (currentCode.length() < MIN_BLOCKLY_CODE_SIZE) {
+
+            if (currentCode.length() < Min_BlocklyCodeSize ) {
                 LOG.warn("Project code appears to be empty. Code size:{}",currentCode.length());
                 return record;
             }
@@ -986,8 +1009,6 @@ public class ProjectDaoImpl implements ProjectDao {
         return record;
     }
 
-
-
     /**
      *
      * Create a random string to use as a blockID.
@@ -999,21 +1020,12 @@ public class ProjectDaoImpl implements ProjectDao {
      * @return
      */
     private String randomString(int len) {
-
-        // Used by the randomString function
-        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#()*-+./:;" +
-                "=@[]^_`{|}~";
-
-        Random rnd = new Random();
         StringBuilder sb = new StringBuilder(len);
-
         for (int i = 0; i < len; i++) {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         }
         return sb.toString();
     }
-
-
 
     // Correct depricated block details related to Spin blocks
     @Deprecated
@@ -1039,20 +1051,20 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll(
                 "block type=\"math_number\"",
                 "block type=\"spin_integer\"");
-        
+
         return newCode;
     }
 
     /**
      * Find and replace deprecated project code blocks
-     * 
+     *
      * @param originalCode is the project code that will be evaluated.
      * @param projType
-     * @return 
+     * @return
      */
     private String fixPropcProjectBlocks(String originalCode, ProjectType projType) {
         LOG.info("Looking for depricated PropC blocks.");
-        
+
         // Copy the original project code into a working variable
         String newCode = originalCode;
 
@@ -1139,32 +1151,32 @@ public class ProjectDaoImpl implements ProjectDao {
         newCode = newCode.replaceAll(
                 "block type=\"logic_boolean_negate\"",
                 "block type=\"logic_negate\"");
-        
+
         newCode = newCode.replaceAll( "_000 / ", "000 / ");
 
         // Fix a small issue with calling the wrong project type.
         newCode = newCode.replaceAll(
                 "block type=\"spin_integer\"",
                 "block type=\"math_number\"");
-        
+
         if (!newCode.contains("block type=\"math_number\"") && projType == ProjectType.SPIN) {
             // Change all math number blocks to the same kind
             newCode = newCode.replaceAll(
                     "block type=\"math_int_angle\"",
                     "block type=\"math_number\"");
-            
+
             newCode = newCode.replaceAll(
                     "block type=\"math_integer\"",
                     "block type=\"math_number\"");
-            
+
             newCode = newCode.replaceAll(
                     "block type=\"scribbler_random_number\"",
                     "block type=\"math_random\"");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"INT_VALUE\"",
                     "field name=\"NUM\"");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"ANGLE_VALUE\"",
                     "field name=\"NUM\"");
@@ -1172,70 +1184,70 @@ public class ProjectDaoImpl implements ProjectDao {
             newCode = newCode.replaceAll(
                     "block type=\"digital_input\"",
                     "block type=\"check_pin\"");
-            
+
             newCode = newCode.replaceAll(
                     "block type=\"digital_output\"",
                     "block type=\"make_pin\"");
-            
+
             newCode = newCode.replaceAll(
                     "block type=\"scribbler_servo\"",
                     "block type=\"servo_move\"");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"SERVO_PIN\"",
                     "field name=\"PIN\"");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"SERVO_ANGLE\"",
                     "field name=\"ANGLE\"");
-            
+
             newCode = newCode.replaceAll(
                     "<block type=\"serial_",
                     "<block type=\"scribbler_serial_");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"TIMESCALE\">1000<",
                     "field name=\"TIMESCALE\">Z1<");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"TIMESCALE\">1<",
                     "field name=\"TIMESCALE\">Z1000<");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"TIMESCALE\">10<",
                     "field name=\"TIMESCALE\">100<");
-            
+
             newCode = newCode.replaceAll(
                     "field name=\"TIMESCALE\">Z",
                     "field name=\"TIMESCALE\">");
-            
+
             newCode = newCode.replaceAll("Scribbler#CS","256");
             newCode = newCode.replaceAll("Scribbler#NL","10");
             newCode = newCode.replaceAll("Scribbler#LF","13");
             newCode = newCode.replaceAll("Scribbler#BS","127");
-            
+
             newCode = newCode.replaceAll(
                     "block type=\"scribbler_loop\"",
                     "block type=\"controls_repeat\"");
-            
+
             newCode = newCode.replaceAll(
                     "statement name=\"LOOP\"",
                     "statement name=\"DO\"");
-            
+
             newCode = newCode.replaceAll(
                     "<block type=\"scribbler_limited_loop\" id=(.*)><field name=\"LOOP_COUNT\">(.*)</field><statement name=\"LOOP\">",
-                    "<block type=\"controls_repeat\" id=$1><mutation type=\"TIMES\"></mutation><field name=\"TYPE\">TIMES</field><value name=\"TIMES\"><block type=\"math_number\" id=\"" + randomString(20) + "\"><field name=\"NUM\">$2</field></block></value><statement name=\"DO\">");      
+                    "<block type=\"controls_repeat\" id=$1><mutation type=\"TIMES\"></mutation><field name=\"TYPE\">TIMES</field><value name=\"TIMES\"><block type=\"math_number\" id=\"" + randomString(20) + "\"><field name=\"NUM\">$2</field></block></value><statement name=\"DO\">");
         }
-        
+
         // Replace the Robot init block with two blocks, need to generate unique 20-digit blockID:
         if (!newCode.contains("block type=\"ab_drive_ramping\"")) {
             newCode = newCode.replaceAll(
-                    "</field><field name=\"RAMPING\">", 
+                    "</field><field name=\"RAMPING\">",
                     "</field></block><block type=\"ab_drive_ramping\" id=\""
-                            + randomString(20) 
+                            + randomString(20)
                             + "\"><field name=\"RAMPING\">");
         }
-        
+
         return newCode;
     }
 }

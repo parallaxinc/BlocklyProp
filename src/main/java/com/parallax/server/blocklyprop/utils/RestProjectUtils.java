@@ -23,15 +23,23 @@ package com.parallax.server.blocklyprop.utils;
 
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
+import com.parallax.server.blocklyprop.db.enums.ProjectType;
 
+
+/**
+ *  Project REST endpoint static utility methods
+ */
 public class RestProjectUtils {
 
-
     /**
+     * Validate that the provided value represents a valid column name on which to sort
+     * a list of projects
      *
-     * @param sort
-     * @return
-     * Return true if the provided sort is a valid item, otherwise return false
+     * @param sort is the column name to sort on. Note that not all project columns are
+     *             sortable.
+     *
+     * @return a boolean true if the supplied value matches a sortable column, otherwise
+     * return a boolean false value
      */
     public static boolean ValidateSortType(TableSort sort) {
 
@@ -46,21 +54,45 @@ public class RestProjectUtils {
         return false;
     }
 
+    /**
+     * Validate the provided sort order.
+     *
+     * @param order Project sort order
+     *
+     * @return true if the sort order is valid, otherwise false
+     *
+     */
     public static boolean ValidateSortOrder(TableOrder order) {
-
-        boolean parametersValid = false;
 
         if (order != null) {
             for (TableOrder t : TableOrder.values()) {
                 if (order == t) {
-                    parametersValid = true;
-                    break;
+                    return true;
                 }
             }
         }
 
-        return parametersValid;
+        return false;
+    }
+
+
+    /**
+     * Validate the project language
+     *
+     * @param type is a ProjectType that indicates the underlying language used for the project
+     *
+     * @return true if the project type is a known type, otherwise return false
+     */
+    public static boolean ValidateProjectType(ProjectType type) {
+
+        if (type != null) {
+            for (ProjectType p : ProjectType.values()) {
+                if (type == p) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
-
-

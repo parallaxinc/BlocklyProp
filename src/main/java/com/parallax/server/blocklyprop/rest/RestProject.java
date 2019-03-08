@@ -27,9 +27,11 @@ import com.cuubez.visualizer.annotation.HttpCode;
 import com.cuubez.visualizer.annotation.Name;
 import com.cuubez.visualizer.annotation.M;
 import com.cuubez.visualizer.annotation.ParameterDetail;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
 import com.parallax.server.blocklyprop.utils.RestProjectUtils;
@@ -38,6 +40,8 @@ import com.parallax.server.blocklyprop.db.enums.ProjectType;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.security.BlocklyPropSecurityUtils;
 import com.parallax.server.blocklyprop.services.ProjectService;
+
+import java.util.Arrays;
 import java.util.List;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -48,8 +52,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +63,20 @@ import org.slf4j.LoggerFactory;
  * REST endpoints for project persistence
  * 
  * @author Michel
+ *
+ * @implNote
+ *
+ * Supported endpoints:
+ * [POST]  /project/            Save current project
+ * [GET]   /project/list        List projects
+ * [GET]   /project/get/{id}    Retrieve a project
+ * [POST]  /project/code        Update project code
+ * [POST]  /project/code-as     Create new project from existing project
+ *
+ * The code block is not returned with most of these calls because it is only used when
+ * the user is viewing or editing a project. This eliminates the unnecessary overhead of
+ * moving a code block that could easily dwarf the size of the other elements in the project
+ * record.
  */
 
 @Path("/project")
@@ -66,28 +84,20 @@ import org.slf4j.LoggerFactory;
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestProject {
 
-    /**
-     * Get a logger instance
-     */
+    // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(RestProject.class);
 
 
-    /**
-     * Connector to project services object
-     */
+    // Connector to project services object
     private ProjectService projectService;
     
 
-    /**
-     * Connector to project converter object
-     */
+    //Connector to project converter object
     private ProjectConverter projectConverter;
 
 
-    /**
-     * Limit the number of records that can be returned in list functions
-     */
-    final int REQUEST_LIMIT = 100;
+    //Limit the number of records that can be returned in list functions
+    private static final int REQUEST_LIMIT = 100;
 
 
     /**
@@ -135,7 +145,7 @@ public class RestProject {
      */
     @GET
     @Path("/list")
-    @Detail("Get all projects for the authenticated user")
+    @Detail("Retrieve a list of projects for the authenticated user")
     @Name("ListProjects")
     @Produces("application/json")
     public Response get(
@@ -145,25 +155,22 @@ public class RestProject {
             @QueryParam("offset") @ParameterDetail("Offset to next row returned") @M() Integer offset) {
 
         String endPoint = "REST:/rest/project/list/";
-
         LOG.info("{} Get request received", endPoint);
-//        RestProjectUtils restProjectUtils = new RestProjectUtils();
 
         try {
+            LOG.debug("Requesting blockly user id");
+
             // Get the logged in user id for the current session
-            LOG.info("Requesting blockly user id from BlocklyPropSecurityUtils.getCurrentUserId()");
             Long idUser = BlocklyPropSecurityUtils.getCurrentUserId();
-
-//            LOG.info("Getting subject: {} ", SecurityUtils.getSubject());
-
 
             // Return FORBIDDEN if we cannot identify the current user. This could
             // mean that the user is not logged in or that some underlying issue
             // is causing the authentication system to fail.
             LOG.info("Received blockly user id: {}", idUser);
-            if (idUser == 0) {
+
+            if (idUser == null || idUser == 0) {
                 // Current session is not logged in.
-                return Response.status(Response.Status.FORBIDDEN).build();
+                return Response.status(Response.Status.UNAUTHORIZED).build();
             }
 
             //Sanity checks - is the request reasonable
@@ -186,7 +193,7 @@ public class RestProject {
                 limit = REQUEST_LIMIT;
             }
 
-            // Check ofset from the beginning of the record set
+            // Check offset from the beginning of the record set
             if ((offset == null) || (offset < 0)) {
                 offset = 0;
             }
@@ -199,13 +206,19 @@ public class RestProject {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
 
+            LOG.info("Returning {} projects for user {}", userProjects.size(), idUser);
+
             return Response.ok(
                     returnProjectsJson(
                             userProjects,
                             projectService.countUserProjects(idUser)))
                     .build();
             }
-        
+        catch(UnauthorizedException ex) {
+            // User is logged in but attempting to access a secured resource
+            LOG.warn("Unauthorized access attempted");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         catch(Exception ex) {
             LOG.warn("Unable to process REST request.");
             LOG.warn("Error is {}", ex.getMessage());
@@ -217,8 +230,7 @@ public class RestProject {
     /**
      * Retreive a project based on the supplied project ID
      *
-     * @param idProject
-     * The project key ID
+     * @param idProject the project key ID
      *
      * @return
      * Return a string representation of the project in Json format if successful, otherwise
@@ -265,12 +277,12 @@ public class RestProject {
      * 
      * This assumes that the project already exists. 
      * 
-     * @param idProject
-     * @param code
+     * @param idProject The project key ID
+     * @param code the project blocks code string
+     *
      * @return
      * Returns a Json string containing the project details if the update was successful
      * or an error message upon failure
-     *
      */
     @POST
     @Path("/code")
@@ -287,21 +299,15 @@ public class RestProject {
 
             /* WARNING:
              * =================================================================================
-             * This call can create a new project record under specific circumstances and does
-             * not appear to provide any notification that this has occurred.
+             * The call to the saveProjectCode() method can create a new project record under
+             * specific circumstances and does not appear to provide any notification that this
+             * has occurred.
              * =================================================================================
              */
             ProjectRecord savedProject = projectService.saveProjectCode(idProject, code);
 
             LOG.debug("Code for project {} has been saved", idProject);
-
-            JsonObject result = projectConverter.toJson(savedProject,false);
-
-
-            result.addProperty("success", true);
-
-            return Response.ok(result.toString()).build();
-
+            return Response.ok(buildConvertedResponse(savedProject)).build();
         } catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -314,12 +320,16 @@ public class RestProject {
 
 
     /**
+     * Create a new project from an existing project
      *
-     * @param idProject
-     * @param code
-     * @param newName
-     * @param newBoard
+     * @param idProject The project key ID
+     * @param code the project blocks code string
+     * @param newName the name to assign to the newly created project
+     * @param newBoard the board type assigned to the new project
+     *
      * @return
+     * Returns a Json string containing the project details if the update was successful
+     * or an error message upon failure
      */
     @POST
     @Path("/code-as")
@@ -342,14 +352,15 @@ public class RestProject {
                     code, 
                     newName,
                     newBoard);
+
             LOG.debug("Code for project {} has been saved as {}", idProject, newName);
-            
+/*
             JsonObject result = projectConverter.toJson(savedProject,false);
             LOG.debug("Returning JSON: {}", result);
-
             result.addProperty("success", true);
-
             return Response.ok(result.toString()).build();
+*/
+            return Response.ok(buildConvertedResponse(savedProject)).build();
         }
         catch (AuthorizationException ae) {
             LOG.warn("Project code not saved. Not Authorized");
@@ -357,13 +368,28 @@ public class RestProject {
         }
         catch (Exception ex) {
             LOG.error("General exception encountered. Message is: ", ex.getMessage());
-            LOG.error("Error: {}", ex.getStackTrace().toString());
+            LOG.error("Error: {}", Arrays.toString(ex.getStackTrace()));
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+
+    /**
+     * Update the details of an existing project
+     *
+     * @param idProject the project key ID
+     * @param name the name assigned to the project
+     * @param description a text description of the project
+     * @param descriptionHtml the same project description expressed in HTML
+     * @param projectSharing a boolean flag indicating the public accessibility of the project
+     * @param type is the classification of the project's language (c or spin)
+     * @param board is the type of hardware associated with the project
+     *
+     * @return
+     * Returns a Json string containing the project details if the update was successful
+     * or an error message upon failure
+     */
     @POST
-    @Path("/")
     @Detail("Save project")
     @Name("Save project")
     @Produces("application/json")
@@ -415,6 +441,8 @@ public class RestProject {
         }
     }
 
+
+
     /**
      * Iterate a list of projects into an array of Json objects
      *
@@ -429,15 +457,39 @@ public class RestProject {
      * A String containing the array of the converted Json objects
      */
     private String returnProjectsJson(@NotNull List<ProjectRecord> projects, int projectCount) {
-        JsonObject result = new JsonObject();
-        JsonArray jsonProjects = new JsonArray();
 
-        for (ProjectRecord project : projects) {
-            jsonProjects.add(projectConverter.toListJson(project));
+        JsonObject result = new JsonObject();
+
+        if (projects.size() > 0) {
+            JsonArray jsonProjects = new JsonArray();
+
+            for (ProjectRecord project : projects) {
+                jsonProjects.add(projectConverter.toListJson(project));
+            }
+
+            result.add("rows", jsonProjects);
+            result.addProperty("total", projectCount);
         }
 
-        result.add("rows", jsonProjects);
-        result.addProperty("total", projectCount);
+        return result.toString();
+    }
+
+
+
+    /**
+     * Convert a ProjectRecord to a Json string
+     *
+     * @param project is the project record to convert
+     *
+     * @return a Json string representing the project contents and the operation results message
+     */
+    private String buildConvertedResponse(ProjectRecord project) {
+
+        /* Convert the project record to a Json object */
+        JsonObject result = projectConverter.toJson(project,false);
+
+        /* Add in a results message */
+        result.addProperty("success", true);
 
         return result.toString();
     }

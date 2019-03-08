@@ -26,11 +26,12 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
 
-import com.parallax.server.blocklyprop.SessionData;
 import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.monitoring.Monitor;
+
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import javax.servlet.ServletContextEvent;
 import org.apache.commons.configuration.Configuration;
@@ -40,22 +41,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+
 /**
  *
  * @author Michel
  */
 public class SetupConfig extends GuiceServletContextListener {
 
-    /**
-     * Application-specific configuration options
-     */
-    private Configuration configuration;
-    
-    /**
-     * Application logging connector
-     */
+    // Application logging connector
     private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
 
+    // Application-specific configuration options
+    private Configuration configuration;
+
+
+    /**
+     *  Create a Guice injector object
+     *
+     * @return a Guice injector object
+     */
     @Override
     protected Injector getInjector() {
         readConfiguration();
@@ -65,9 +69,9 @@ public class SetupConfig extends GuiceServletContextListener {
             @Override
             protected void configure() {
 
+                LOG.info("Binding Configuration class");
                 bind(Configuration.class).toInstance(configuration);
 
-                bind(SessionData.class);
                 bind(Properties.class).asEagerSingleton();
 
                 bind(Monitor.class).asEagerSingleton();
@@ -81,7 +85,6 @@ public class SetupConfig extends GuiceServletContextListener {
                 install(new ServletsModule());
                 install(new RestModule());
             }
-
         });
     }
 
@@ -119,26 +122,16 @@ public class SetupConfig extends GuiceServletContextListener {
         // This manually deregisters JDBC driver, which prevents Tomcat 7 from
         // complaining about memory leaks into this class
         
-/*        
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-                LOG.info("deregistering jdbc driver: {}",driver);
+                LOG.info("Deregister the jdbc driver: {}",driver);
             } catch (SQLException sqlE) {
-                LOG.error("Error deregistering driver %s", driver);
+                LOG.error("Unable to deregister the jdbc driver {}", driver.toString());
                 LOG.error("{}", sqlE.getSQLState());
             }
-
         }
-        
-        // Shut down the loggers. Assume SLF4J is bound to logback-classic
-        // in the current environment
-        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        if (loggerContext != null) {
-            loggerContext.stop();
-        }
-*/
     }
 
 }
