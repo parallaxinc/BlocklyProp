@@ -46,9 +46,9 @@
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/core/css/bootstrap.min.css"/>" />
         <link rel="stylesheet" href="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.css"/>" />
         <title>BlocklyProp</title>
-        <script src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
-        <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
-        <script src="<url:getCdnUrl url="/authenticate.js"/>" ></script>
+        <script type="application/javascript" src="<url:getCdnUrl url="/lib/jquery-1.11.3.min.js"/>" ></script>
+        <script type="application/javascript" src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>"></script>
+        <script type="application/javascript" src="<url:getCdnUrl url="/authenticate.js"/>"></script>
     </head>
     <body>
         <%@ include file="/WEB-INF/includes/pageparts/menu.jsp"%>
@@ -78,7 +78,7 @@
         </script>
 
         <%@ include file="/WEB-INF/includes/pageparts/project-login-dialog.jsp"%>
-        <script src="<url:getCdnUrl url="/latest.js"/>" ></script>
+        <script type="application/javascript" src="<url:getCdnUrl url="/latest.js"/>" ></script>
 
         <%@ include file="/WEB-INF/includes/pageparts/footer.jsp"%>
     </body>
