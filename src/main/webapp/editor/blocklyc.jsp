@@ -123,15 +123,8 @@
                                                     <span class="keyed-lang-string" data-key="editor_client_not-available"></span>
                                                 </a>
                                             </span>
-                                            <span id="client-available" class="bp-client-available hidden">
-                                                <span class="keyed-lang-string" data-key="editor_client_available"></span>
-                                            </span> 
-                                            <span id="client-available-short" class="hidden">
-                                                <span class="keyed-lang-string" data-key="editor_client_available_short"></span>
-                                            </span>
-                                            <span id="client-available-long" class="hidden">
-                                                <span class="keyed-lang-string" data-key="editor_client_available"></span>
-                                            </span>
+                                            <span id="client-available" class="bp-client-available keyed-lang-string hidden" data-key="editor_client_available"></span>
+                                            <span id="client-available-short" class="bp-client-available keyed-lang-string hidden" data-key="editor_client_available_short"></span>
                                         </div>
                                         <div style="display:inline; padding-left: 10px; line-height: 30px;" class="auth-false" data-displayas="inline">
                                             <span style="font-size:13px;"><span class="keyed-lang-string" data-key="editor_demonstration_mode_info"></span></span>
