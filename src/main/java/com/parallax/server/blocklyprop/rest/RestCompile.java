@@ -26,19 +26,14 @@ import com.parallax.client.cloudsession.exceptions.UnknownUserIdException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.server.blocklyprop.rest.typewrappers.CompileActionTypeWrapper;
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 /**
  *
@@ -72,11 +67,21 @@ public class RestCompile {
     @Name("compile")
     @Produces("text/plain")
     public Response get(@QueryParam("test") String testString) {
-        
         LOG.info("REST:/rest/compile/ Get request received");
-
         return Response.ok("Hello " + testString).build();
     }
+
+/*
+    @GET
+    @Detail("Get Simple Libraries version")
+    @Name("version")
+    @Produces("text/plain")
+    public Response version() {
+        LOG.info("REST:/rest/compile/ Get request received");
+        return Response.ok("v0.0.0").build();
+    }
+*/
+
 
     @POST
     @Path("/spin/{action}")
