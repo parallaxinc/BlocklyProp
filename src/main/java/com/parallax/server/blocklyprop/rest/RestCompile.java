@@ -66,6 +66,7 @@ public class RestCompile {
         return Response.ok("Hello " + testString).build();
     }
 
+/*
     @GET
     @Detail("Get Simple Libraries version")
     @Name("version")
@@ -74,7 +75,7 @@ public class RestCompile {
         LOG.info("REST:/rest/compile/ Get request received");
         return Response.ok("v0.0.0").build();
     }
-
+*/
 
 
     @POST
