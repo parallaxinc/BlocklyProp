@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Parallax Inc.
+ * Copyright (c) 2019 Parallax Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the “Software”), to deal in the Software without
@@ -25,18 +25,22 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+
 import com.parallax.client.cloudsession.CloudSessionUserService;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.objects.User;
 import com.parallax.server.blocklyprop.services.AuthenticationService;
 import com.parallax.server.blocklyprop.services.TokenGeneratorService;
+
 import javax.servlet.http.HttpSession;
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

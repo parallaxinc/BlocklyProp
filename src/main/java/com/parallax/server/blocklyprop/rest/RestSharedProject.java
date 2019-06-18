@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Parallax Inc.
+ * Copyright (c) 2019 Parallax Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the “Software”), to deal in the Software without
@@ -16,7 +16,7 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ * SOFTWARE.
  */
 
 package com.parallax.server.blocklyprop.rest;
@@ -28,11 +28,14 @@ import com.cuubez.visualizer.annotation.Name;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
+
 import com.parallax.server.blocklyprop.TableOrder;
 import com.parallax.server.blocklyprop.TableSort;
+import com.parallax.server.blocklyprop.utils.RestProjectUtils;
 import com.parallax.server.blocklyprop.converter.ProjectConverter;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectRecord;
 import com.parallax.server.blocklyprop.services.ProjectService;
+
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -42,34 +45,73 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
+ * Manage requests for public projects
  *
  * @author Michel
+ *
+ * NOTE:
+ * The concept of 'shared' projects has changed over time. A project
+ * can be private or public. A project can also be associated with a
+ * specific project sharing URL, regardless of its public/private status.
  */
 @Path("/shared/project")
 @Group(name = "/shared/project", title = "Project management")
 @HttpCode("500>Internal Server Error,200>Success Response")
 public class RestSharedProject {
 
+    /**
+     * Get a connection to the logging system
+     */
     private static final Logger LOG = LoggerFactory.getLogger(RestSharedProject.class);
 
+
+    /**
+     * Get a handle to project services
+     */
     private ProjectService projectService;
 
+
+    /**
+     * Get a handle to a project converter
+     */
     private ProjectConverter projectConverter;
 
+
+    /**
+     * Limit the number of records that can be returned in list functions
+     */
+    final int REQUEST_LIMIT = 100;
+
+
+    /**
+     * Inject project services
+     *
+     * @param projectService
+     * An instance of the ProjectService object
+     */
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
     }
 
+
+    /**
+     * Inject project conversion services
+     * @param projectConverter
+     *
+     * An instance of the ProjectConverter object
+     */
     @Inject
     public void setProjectConverter(ProjectConverter projectConverter) {
         this.projectConverter = projectConverter;
     }
+
 
     /**
      * Return a list of community projects.
@@ -101,76 +143,68 @@ public class RestSharedProject {
             @QueryParam("limit") Integer limit, 
             @QueryParam("offset") Integer offset) {
 
-        LOG.info("REST:/shared/project/list/ endpoint activated");
-        LOG.debug("REST:/shared/project/list/ Sort parameter is '{}'", sort);
-        LOG.debug("REST:/shared/project/list/ Sort parameter is '{}'", sort);
 
-        boolean parametersValid = false;
-        
+        String endPoint = "REST:/shared/project/list/";
+        LOG.info("{} endpoint activated", endPoint);
+
         // Sort flag evaluation
-        if (sort != null) {
-            for (TableSort t : TableSort.values()) {
-                LOG.debug("REST:/shared/project/list/ Sort test for '{}'", t);
-            
-                if (sort == t) {
-                    parametersValid = true;
-                    break;
-                }
-            }
-        
-            if (parametersValid == false) {
-                LOG.warn("REST:/shared/project/list/ Sort parameter failed");
-                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-            }
+        if (!RestProjectUtils.ValidateSortType(sort)) {
+            LOG.warn("{} Sort parameter failed. Defaulting to sort by project name", endPoint);
+            sort = TableSort.name;
         }
 
         // Sort order evaluation
-        if (order != null) {
-            parametersValid = false;
-            LOG.debug("REST:/shared/project/list/ Checking order");
-        
-            for (TableOrder t : TableOrder.values()) {
-                if (order == t) {
-                    parametersValid = true;
-                    break;
-                }
-            }
-        
-            if (parametersValid == false) {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-            }
+        if (!RestProjectUtils.ValidateSortOrder(order)) {
+            LOG.warn("{} Sort order parameter failed. Defaulting to ascending order", endPoint);
+            order = TableOrder.asc;
         }
-        
+
         // Limit result set value
-        if ( (limit == null) || (limit > 50)) {
-            LOG.info("REST:/shared/project/list/ Limit throttle to 50 entries");
-            limit = 50;
+        if ( (limit == null) || (limit > REQUEST_LIMIT)) {
+            LOG.info("{} Limit throttle to {} entries", endPoint, REQUEST_LIMIT);
+            limit = REQUEST_LIMIT;
         }
         
         // Check ofset from the beginning of the record set
         if ((offset == null) || (offset < 0)) {
             offset = 0;
         }
-        
-        List<ProjectRecord> projects
-                = projectService.getSharedProjects(sort, order, limit, offset);
-        
-        // Obtain a count of the total number of community projects available
-        int projectCount = projectService.countSharedProjects();
 
-        JsonObject result = new JsonObject();
-        JsonArray jsonProjects = new JsonArray();
-        
-        for (ProjectRecord project : projects) {
-            jsonProjects.add(projectConverter.toListJson(project));
+        // Get a block of projects
+        List<ProjectRecord> projects = projectService.getSharedProjects(sort, order, limit, offset);
+
+        // Tell the caller that there is nothing to see here
+        if (projects == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        result.add("rows", jsonProjects);
-        result.addProperty("total", projectCount);
-
-        return Response.ok(result.toString()).build();
+        return Response.ok(
+                returnProjectsJson(
+                        projects,
+                        projectService.countSharedProjects()))
+                .build();
     }
 
+
+    /**
+     * Get a list of projects owned by a specific user
+     *
+     * @param sort
+     * The project field used to evaluate the sort
+     *
+     * @param order
+     * Specify the sort order - ascending or descending
+     *
+     * @param limit
+     * Specify the maximum number of rows to return
+     *
+     * @param offset
+     * Specify the beginning row to return
+     *
+     * @return
+     * Return a response object that contains either the data requested
+     * or a JSON string containing the error details
+     */
     @GET
     @Path("/list/user/{id}")
     @Detail("Get shared projects by user")
@@ -183,25 +217,63 @@ public class RestSharedProject {
             @QueryParam("offset") Integer offset, 
             @PathParam("id") Long idUser) {
 
-        LOG.info("REST:/shared/project/list/user/ Get request received for user '{}'", idUser);
+        RestProjectUtils restProjectUtils = new RestProjectUtils();
 
-        List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
-        int projectCount = projectService.countSharedProjectsByUser(idUser);
+        String endPoint = "REST:/shared/project/list/user/";
+        LOG.info("{} Get request received for user '{}'", endPoint, idUser);
 
-        JsonObject result = new JsonObject();
-        JsonArray jsonProjects = new JsonArray();
-        
-        for (ProjectRecord project : projects) {
-            jsonProjects.add(projectConverter.toListJson(project));
+        // Sort flag evaluation
+        if (!restProjectUtils.ValidateSortType(sort)) {
+            LOG.warn("{} Sort parameter failed", endPoint);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
 
-        result.add("rows", jsonProjects);
-        result.addProperty("total", projectCount);
+        // Sort order evaluation
+        if (!restProjectUtils.ValidateSortOrder(order)) {
+            LOG.warn("{} Sort order parameter failed", endPoint);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
 
-        return Response.ok(result.toString()).build();
+        // Limit result set value
+        if ( (limit == null) || (limit > REQUEST_LIMIT)) {
+            LOG.info("{} Limit throttle to {} entries", endPoint, REQUEST_LIMIT);
+            limit = REQUEST_LIMIT;
+        }
+
+        // Check ofset from the beginning of the record set
+        if ((offset == null) || (offset < 0)) {
+            offset = 0;
+        }
+
+        List<ProjectRecord> projects = projectService.getSharedProjectsByUser(sort, order, limit, offset, idUser);
+
+        // Tell the caller that there is nothing to see here
+        if (projects == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(
+                returnProjectsJson(
+                        projects,
+                        projectService.countSharedProjectsByUser(idUser)))
+                .build();
     }
 
 
+    /**
+     *
+     * @param authorization
+     * Authorization header token
+     *
+     * @param timestamp
+     * A timestamp
+     *
+     * @param idProject
+     * The project key ID
+     *
+     * @return
+     * Returns a Json string containing the project details
+     */
     @GET
     @Path("/get/{id}")
     @Detail("Get project by id")
@@ -212,10 +284,10 @@ public class RestSharedProject {
             @HeaderParam("X-Timestamp") Long timestamp, 
             @PathParam("id") Long idProject) {
 
-        LOG.info("REST:/rest/shared/project/get/ Get request received for projecet '{}'", idProject);
+        String endPoint = "REST:/rest/shared/project/get/";
+        LOG.info("{} Get request received for project '{}'", endPoint, idProject);
         
         try {
-            LOG.info("Getting project record.");
             ProjectRecord project = projectService.getProject(idProject);
             
             if (project == null) {
@@ -223,9 +295,11 @@ public class RestSharedProject {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
 
-            LOG.info("Converting project to JSON string");
+            LOG.info("Converting project {} to JSON string", idProject);
+
             JsonObject result = projectConverter.toJson(project, false);
-            LOG.info("REST: /get/" + idProject.toString() + "/ returning project {}.", project.getId());
+
+            LOG.info("{}" + idProject.toString() + "/ returning project {}.", endPoint, project.getId());
 
             return Response.ok(result.toString()).build();
         }
@@ -235,6 +309,22 @@ public class RestSharedProject {
         }
     }
 
+
+    /**
+     * Get project details, including the project code payload
+     *
+     * @param authorization
+     * Request authorization header
+     *
+     * @param timestamp
+     * A timestamp
+     *
+     * @param idProject
+     * The project key ID
+     *
+     * @return
+     * A string containing a Json object representing the requested project
+     */
     @GET
     @Path("/editor/{id}")
     @Detail("Get project by id for editor")
@@ -265,6 +355,34 @@ public class RestSharedProject {
             LOG.error("Exception in {} detected. Message is: {}", e.getClass(), e.getLocalizedMessage());
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+
+    /**
+     * Iterate a list of projects into an array of Json objects
+     *
+     * @param projects
+     * A List of ProjectRecord objects
+     *
+     * @param projectCount
+     * The number of projects available. This may not be the same value as
+     * the number of records contained in the passed list of ProjectRecords.
+     *
+     * @return
+     * A String containing the array of the converted Json objects
+     */
+    private String returnProjectsJson(@NotNull List<ProjectRecord> projects, int projectCount) {
+        JsonObject result = new JsonObject();
+        JsonArray jsonProjects = new JsonArray();
+
+        for (ProjectRecord project : projects) {
+            jsonProjects.add(projectConverter.toListJson(project));
+        }
+
+        result.add("rows", jsonProjects);
+        result.addProperty("total", projectCount);
+
+        return result.toString();
     }
 
 }

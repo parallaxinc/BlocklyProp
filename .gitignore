@@ -12,6 +12,9 @@ nb*
 # /src/main/java/com/parallax/server/blocklyprop/db/generated/*
 #
 
+*.sh
+
+
 #################
 ## NetBeans
 #################

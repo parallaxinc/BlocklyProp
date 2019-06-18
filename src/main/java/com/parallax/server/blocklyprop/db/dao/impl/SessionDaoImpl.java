@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.db.dao.impl;
 
 import com.google.inject.Inject;
@@ -24,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ *  This is the session database layer.
  *
  * @author Michel
  */
@@ -32,37 +49,43 @@ public class SessionDaoImpl implements SessionDao {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(SessionDaoImpl.class);
 
-    /**
-     * 
-     */
+    // Database connection
     private DSLContext create;
 
-    /**
-     * An instance of the application configuration settings
-     */
+    //An instance of the application configuration settings
     private Configuration configuration;
 
+
+    /**
+     * Get a copy of the database context
+     *
+     * @param dsl is the context provided by JooQ
+     */
     @Inject
     public void setDSLContext(DSLContext dsl) {
         this.create = dsl;
     }
 
+
     /**
-     * 
-     * @param configuration 
+     * Get a copy of the application configuration
+     *
+     * @param configuration is the context provided by the configuration manager
      */
     @Inject
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+
     /**
-     * 
-     * @param session 
+     * Create a new session
+     *
+     * @param session is a initialized SessrionRecord object
      */
     @Override
     public void create(SessionRecord session) {
-        LOG.info("Create a session. Timeout set to: {}", session.getTimeout());
+        LOG.debug("Create a session. Timeout set to: {}", session.getTimeout());
         
         // Log session details if the configuration file permits it
         printSessionInfo("create", session);
@@ -91,47 +114,53 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     /**
-     * 
-     * @param idSession
-     * @return
-     * @throws NullPointerException 
+     * Retrieve a session
+     *
+     * @param idSession is the unique identifier for the requested session
+     *
+     * @return a SessionRecord, otherwise throws a NullPointerException
+     *
+     * @throws NullPointerException raise an NPE if the session is not found,
+     * otherwise the caller expects to receive a valid session record
      */
     @Override
     public SessionRecord readSession(String idSession) throws NullPointerException {
-        LOG.debug("Getting session details");
-        SessionRecord sessionRecord = null;
-        
+        LOG.debug("Getting session {} details", idSession);
+
         try {
-            sessionRecord = create.selectFrom(Tables.SESSION)
+            SessionRecord sessionRecord = create
+                    .selectFrom(Tables.SESSION)
                     .where(Tables.SESSION.IDSESSION.eq(idSession))
                     .fetchOne();
 
             // Log session details if the configuration file permits it
             printSessionInfo("read", sessionRecord);
+            return sessionRecord;
         }
         catch (org.jooq.exception.DataAccessException sqex) {
             LOG.error("Database exception {}", sqex.getMessage());
-        }
-        finally {
-            return sessionRecord;
+            throw new NullPointerException("Session not found");
         }
    }
 
     /**
-     * 
-     * @param session
-     * @throws NullPointerException 
+     * Update an existing session
+     *
+     * @param session is the unique identifier for the requested session
+     *
+     * @throws NullPointerException raise an NPE if the session yo be updated
+     * is not found
      */
     @Override
     public void updateSession(SessionRecord session) throws NullPointerException {
-        LOG.debug("Update a session");
+        LOG.debug("Update session {}", session.getIdsession());
 
         try {
             // Get the current session record
             SessionRecord dbRecord = readSession(session.getIdsession());
             
             if (dbRecord == null) {
-                throw new NullPointerException("Session not found");
+                throw new NullPointerException("Invalid session");
             }
       
             dbRecord.setStarttimestamp(session.getStarttimestamp());
@@ -148,30 +177,44 @@ public class SessionDaoImpl implements SessionDao {
         }
         catch (org.jooq.exception.DataAccessException sqex) {
             LOG.error("Database exception {}", sqex.getMessage());
-            throw new NullPointerException("Database error");
+            throw new NullPointerException("Session not found");
         }
     }
 
+
     /**
-     * 
-     * @param idSession 
+     * Remove a session record from the backing store
+     *
+     * @param idSession is the unique identifier for the requested session
      */
     @Override
     public void deleteSession(String idSession) {
         LOG.info("Deleting session {}", idSession);
-        create.deleteFrom(Tables.SESSION).where(Tables.SESSION.IDSESSION.eq(idSession)).execute();
+
+        create.deleteFrom(Tables.SESSION)
+                .where(Tables.SESSION.IDSESSION.eq(idSession))
+                .execute();
     }
 
+
     /**
-     * 
-     * @return 
+     *  Get a list of all active (unexpired) sessions
+     *
+     * @return a collection of session records
      */
     @Override
     public Collection<SessionRecord> getActiveSessions() {
         return Arrays.asList(create.selectFrom(Tables.SESSION).fetchArray());
     }
 
-    
+
+    /**
+     * Provide detailed logging for the specified session
+     *
+     * @param action is a message that is embedded in the log record
+     *
+     * @param session is the session record to to log.
+     */
     private void printSessionInfo(String action, SessionRecord session) {
         if (configuration.getBoolean("debug.session", false)) {
             try {
@@ -183,9 +226,11 @@ public class SessionDaoImpl implements SessionDao {
                     HashMap attributes = (HashMap) in.readObject();
                     LOG.info("Session info: {}:{}", action, attributes);
                 }
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 LOG.error("I/O error. {}",ex.getMessage());
-            } catch (ClassNotFoundException cnfe) {
+            }
+            catch (ClassNotFoundException cnfe) {
                 LOG.error("Class not found. {}", cnfe.getMessage());
             }
         }

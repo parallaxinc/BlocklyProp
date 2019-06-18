@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.db.dao.impl;
 
 import com.google.inject.Inject;
@@ -24,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Blockly user
  *
  * @author Michel
  */
@@ -125,18 +142,29 @@ public class UserDaoImpl implements UserDao {
         return record;
     }
     
-    
 
     @Override
     public List<UserRecord> getAll() {
-        return create.selectFrom(Tables.USER).fetch();
+        return create
+                .selectFrom(Tables.USER)
+                .fetch();
     }
 
+    /**
+     * Get a Blockly UserRecord
+     *
+     * @param idUser
+     * Long integer ID of the user record to retrieve
+     *
+     * @return
+     * Returns a UserRecord object if successful, otherwise returns a null
+     */
     @Override
     public UserRecord getUser(Long idUser) {
         return create
                 .selectFrom(Tables.USER)
-                .where(Tables.USER.ID.equal(idUser))
+                .where(Tables.USER.ID
+                        .equal(idUser))
                 .fetchOne();
     }
 
@@ -145,8 +173,10 @@ public class UserDaoImpl implements UserDao {
         // Obtain the BP user id from the CS user id
         return create
                 .selectFrom(Tables.USER)
-                .where(Tables.USER.IDCLOUDSESSION.eq(idCloudSession))
-                .and(Tables.USER.SCREENNAME.eq(screenName))
+                .where(Tables.USER.IDCLOUDSESSION
+                        .eq(idCloudSession))
+                .and(Tables.USER.SCREENNAME
+                        .eq(screenName))
                 .fetchOne();
     }
     
@@ -167,30 +197,45 @@ public class UserDaoImpl implements UserDao {
             if (!roles.contains(roleRecord.getName())) {
                 create
                     .delete(Tables.SEC_USER_ROLE)
-                    .where(Tables.SEC_USER_ROLE.ID_USER.equal(idUser))
-                    .and(Tables.SEC_USER_ROLE.ID_ROLE.equal(roleRecord.getId()))
+                    .where(Tables.SEC_USER_ROLE.ID_USER
+                            .equal(idUser))
+                    .and(Tables.SEC_USER_ROLE.ID_ROLE
+                            .equal(roleRecord.getId()))
                     .execute();
             }
         }
         for (Role role : roles) {
             if (!currentAssignedRoles.getValues(Tables.SEC_ROLE.NAME).contains(role)) {
 
-                Long idRole = create.select(Tables.SEC_ROLE.ID).from(Tables.SEC_ROLE).where(Tables.SEC_ROLE.NAME.equal(role)).fetchOne(Tables.SEC_ROLE.ID);
+                Long idRole = create
+                        .select(Tables.SEC_ROLE.ID)
+                        .from(Tables.SEC_ROLE)
+                        .where(Tables.SEC_ROLE.NAME.equal(role))
+                        .fetchOne(Tables.SEC_ROLE.ID);
+
                 if (idRole == null || idRole == 0) {
                     SecRoleRecord roleRecord = createRole(role);
                     idRole = roleRecord.getId();
                 }
-                create.insertInto(Tables.SEC_USER_ROLE, Tables.SEC_USER_ROLE.ID_USER, Tables.SEC_USER_ROLE.ID_ROLE)
-                        .values(idUser, idRole).execute();
 
+                create.insertInto(Tables.SEC_USER_ROLE, Tables.SEC_USER_ROLE.ID_USER, Tables.SEC_USER_ROLE.ID_ROLE)
+                        .values(idUser, idRole)
+                        .execute();
             }
         }
     }
 
     private Result<SecRoleRecord> getRawRoles(Long idUser) {
-        Result<SecRoleRecord> currentAssignedRoles = create.select(Tables.SEC_ROLE.ID, Tables.SEC_ROLE.NAME).from(Tables.SEC_ROLE)
-                .join(Tables.SEC_USER_ROLE).on(Tables.SEC_USER_ROLE.ID_ROLE.equal(Tables.SEC_ROLE.ID))
-                .where(Tables.SEC_USER_ROLE.ID_USER.equal(idUser)).fetch().into(Tables.SEC_ROLE);
+        Result<SecRoleRecord> currentAssignedRoles = create
+                .select(Tables.SEC_ROLE.ID, Tables.SEC_ROLE.NAME)
+                .from(Tables.SEC_ROLE)
+                .join(Tables.SEC_USER_ROLE)
+                .on(Tables.SEC_USER_ROLE.ID_ROLE
+                        .equal(Tables.SEC_ROLE.ID))
+                .where(Tables.SEC_USER_ROLE.ID_USER
+                        .equal(idUser))
+                .fetch()
+                .into(Tables.SEC_ROLE);
 
         return currentAssignedRoles;
     }
@@ -201,8 +246,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     private SecRoleRecord createRole(Role role) {
-        SecRoleRecord record = create.insertInto(Tables.SEC_ROLE, Tables.SEC_ROLE.NAME)
-                .values(role).returning().fetchOne();
+        SecRoleRecord record = create
+                .insertInto(Tables.SEC_ROLE, Tables.SEC_ROLE.NAME)
+                .values(role)
+                .returning()
+                .fetchOne();
         return record;
     }
 
@@ -216,14 +264,14 @@ public class UserDaoImpl implements UserDao {
      * @return The BP user id
      */
     @Override
-    @Deprecated
     public Long getUserIdForCloudSessionUserId(Long id) {
         
         // Obtain the BP user id from the CS user id
         Long idUser = create
                 .select(Tables.USER.ID)
                 .from(Tables.USER)
-                .where(Tables.USER.IDCLOUDSESSION.eq(id))
+                .where(Tables.USER.IDCLOUDSESSION
+                        .eq(id))
                 .fetchOneInto(Long.class);
         
         if (idUser == null) {
@@ -234,22 +282,39 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+
+    /**
+     * Replace the blockly user screen name
+     *
+     * @param idUser - is the long integer id for the blockly user record
+     * @param screenName - is ghe new screen name to store in the user record
+     */
     @Override
-    @Deprecated
-    public void updateScreenname(Long idUser, String screenname) {
+    public void updateScreenName(Long idUser, String screenName) {
         LOG.info("Attempting to update screen name for user: {} ", idUser);
-        
-        UserRecord user = create.selectFrom(Tables.USER)
-                .where(Tables.USER.ID.eq(idUser))
+
+        // Fetch the blockly user record
+        UserRecord user = create
+                .selectFrom(Tables.USER)
+                .where(Tables.USER.ID
+                        .eq(idUser))
                 .fetchOne();
         
         if (user != null) {
-            if ( ! Objects.equals(user.getScreenname(), screenname)) {
-                LOG.info("Changing screen name from {} to {}", user.getScreenname(), screenname);
+            // Compare the existing screen name with the proposed screen name
+            if ( ! Objects.equals(user.getScreenname(), screenName)) {
+                LOG.info("Changing screen name from {} to {}", user.getScreenname(), screenName);
 
-                user.setScreenname(screenname);
-                user.update();
+                create.update(Tables.USER)
+                        .set(Tables.USER.SCREENNAME, screenName)
+                        .where(Tables.USER.ID.eq(idUser))
+                        .execute();
+
+                LOG.info("The screen name is now {}", user.getScreenname());
             }
+        }
+        else {
+            LOG.warn("Unable to locate a blockly user record for blockly id {}", idUser);
         }
     }
 

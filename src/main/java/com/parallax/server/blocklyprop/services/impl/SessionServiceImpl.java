@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.services.impl;
 
 import com.google.inject.Inject;
@@ -11,7 +27,6 @@ import com.google.inject.persist.Transactional;
 import com.parallax.server.blocklyprop.db.dao.SessionDao;
 import com.parallax.server.blocklyprop.db.generated.tables.records.SessionRecord;
 import com.parallax.server.blocklyprop.services.SessionService;
-//import java.util.Arrays;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +45,7 @@ public class SessionServiceImpl implements SessionService {
     // Retain session state
     private static SessionService sessionService;
 
-    // Session database acceess object
+    // Session database access object
     private SessionDao sessionDao;
 
     public SessionServiceImpl() {
@@ -44,8 +59,8 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void create(SessionRecord session) {
-        log.info("Creating a new user session with timeout set to {}", session.getTimeout());
-
+        log.debug("Creating a new user session");
+        //TODO: Verify session attributes element has data when saving.
         sessionDao.create(session);
     }
 
@@ -77,10 +92,10 @@ public class SessionServiceImpl implements SessionService {
         return sessionDao.getActiveSessions();
     }
 
+
     public static SessionService getSessionService() {
         log.debug("Get current session service instance");
 
         return sessionService;
     }
-
 }

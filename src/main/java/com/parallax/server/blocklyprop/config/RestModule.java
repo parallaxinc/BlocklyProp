@@ -25,10 +25,13 @@ import com.parallax.server.blocklyprop.rest.RestCompile;
 import com.parallax.server.blocklyprop.rest.RestMotd;
 import com.parallax.server.blocklyprop.rest.RestProfile;
 import com.parallax.server.blocklyprop.rest.RestProject;
+import com.parallax.server.blocklyprop.rest.RestV2Project;
 import com.parallax.server.blocklyprop.rest.RestSharedProject;
 import com.parallax.server.blocklyprop.rest.RestUser;
+
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
+
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
@@ -45,6 +48,8 @@ public class RestModule extends JerseyServletModule {
         bind(RestCompile.class);
         bind(RestUser.class);
         bind(RestProject.class);
+        bind(RestV2Project.class);
+
         bind(RestSharedProject.class);
         bind(RestProfile.class);
         bind(RestMotd.class);

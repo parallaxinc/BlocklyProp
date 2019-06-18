@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Parallax Inc.
+ * Copyright (c) 2019 Parallax Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the “Software”), to deal in the Software without
@@ -66,10 +66,9 @@ import org.slf4j.LoggerFactory;
  */
 public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
-    /**
-     * Class logging handle
-     */
+    // Get a handle to a logger for this class
     private static Logger LOG = LoggerFactory.getLogger(CloudSessionAuthenticationRealm.class);
+
 
     /**
      * Convenience implementation that returns 
@@ -89,6 +88,7 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
     public boolean supports(AuthenticationToken token) {
         return true;
     }
+
 
     /**
      * Retrieves the AuthorizationInfo for the given principals from the
@@ -111,6 +111,7 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
         LOG.info("AuthInfo() details: {}", authorizationInfo.getRoles().size());
         return authorizationInfo;
     }
+
 
     /**
      * Retrieves authentication data from an implementation-specific data source
@@ -141,12 +142,11 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
             throws AuthenticationException {
 
-        /*
-         * Any leading and/or trailing white space contained in the credentials
+        LOG.info("Obtaining authentication info");
+
+        /*  Any leading and/or trailing white space contained in the credentials
          * (password) has been stripped out before it gets here.
          */
-        LOG.info("Obtaining authentication info");
-        
         try {
             if (token instanceof OAuthToken) {
                 // Principal = email
@@ -157,7 +157,6 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                         token.getCredentials(), 
                         "CloudSession");
             } else {
-
                 LOG.info("Authentication is using local login authority");
 
                 // Principal = login
@@ -165,6 +164,8 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
                 // Credentials = password
                 String credentials = new String((char[]) token.getCredentials());
+
+                LOG.info("Authenticating user '{}'", principal);
 
                 // Thia can throw a NullPointerException
                 User user = SecurityServiceImpl.authenticateLocalUserStatic(
@@ -176,6 +177,8 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                     return null;
                 }
 
+                LOG.info("User {} is authenticated", principal);
+
                 try {
                     return new SimpleAccount(
                             token.getPrincipal(), 
@@ -185,32 +188,34 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                     LOG.error("Unexpected exception creating account object", t);
                 }
             }
-            return null;
-        } catch (UnknownUserException ex) {
+            throw new AuthenticationException("Unable to authenticate token");
+        }
+        catch (UnknownUserException ex) {
             LOG.warn("Authentication failed. Message: {}", ex.getMessage());
             throw new AuthenticationException(ex.getMessage());
-
-        } catch (UserBlockedException ex) {
+        }
+        catch (UserBlockedException ex) {
             LOG.warn("Blocked user {}", ex);
             throw new AuthenticationException(ex.getMessage());
-
-        } catch (EmailNotConfirmedException ex) {
+        }
+        catch (EmailNotConfirmedException ex) {
             LOG.warn("Authentication failed. Message: {}", ex.getMessage());
             throw new AuthenticationException("EmailNotConfirmed");
-
-        } catch (InsufficientBucketTokensException ex) {
+        }
+        catch (InsufficientBucketTokensException ex) {
             LOG.info("Insufficient bucket tokens: {}", ex.getMessage());
             throw new AuthenticationException(ex.getMessage());
-
-        } catch (NullPointerException npe) {
+        }
+        catch (NullPointerException npe) {
             LOG.warn("NullPointer", npe);
             throw new AuthenticationException(npe.getMessage());
-
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             // This is a catchall exception handler that kicks the can back
             // to the caller
             LOG.warn("Throwable", t);
         }
+
         return null;
     }
 
