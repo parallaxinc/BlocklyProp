@@ -1,14 +1,31 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.servlets;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.parallax.client.cloudsession.CloudSessionLocalUserService;
+import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
 import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensException;
 import com.parallax.client.cloudsession.exceptions.ServerException;
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
@@ -68,11 +85,15 @@ public class PasswordResetRequestServlet extends HttpServlet {
                     "WEB-INF/servlet/password-reset/reset-request.jsp"
             ).forward(req, resp);
         } else {
+            LOG.info("Calling cloud session password reset");
+            
             try {
                 if (cloudSessionLocalUserService.requestPasswordReset(email)) {
+                    LOG.info("Password restset request successful");
                     showTextilePage(req, resp, PasswordResetPage.RESET_REQUESTED);
                     // req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-requested.jsp").forward(req, resp);
                 } else {
+                    LOG.info("Password reset request was not succesful");
                     req.setAttribute("error", true);
                     req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
                 }
@@ -89,6 +110,10 @@ public class PasswordResetRequestServlet extends HttpServlet {
                 LOG.info("Trying to request password reset of non local user!");
                 req.setAttribute("wrongAuthenticationSource", true);
                 req.getRequestDispatcher("WEB-INF/servlet/password-reset/reset-request.jsp").forward(req, resp);
+            } catch (EmailNotConfirmedException ex) {
+                LOG.warn("Cannot change password when email has not been verified.");
+                req.setAttribute("EmailUnconfirmed", "Cannot change password for unconfirmed email");
+                req.getRequestDispatcher("WEB-INF/servlet/password-reset/do-reset.jsp").forward(req, resp);
             } catch (Exception ex) {
                 LOG.error("Unhandled exception while resetting user password. Message: {}"
                         ,ex.getMessage());

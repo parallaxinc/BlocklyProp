@@ -1,8 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2019 Parallax Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the “Software”), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
+
 package com.parallax.server.blocklyprop.security;
 
 import com.parallax.client.cloudsession.exceptions.EmailNotConfirmedException;
@@ -10,7 +26,9 @@ import com.parallax.client.cloudsession.exceptions.InsufficientBucketTokensExcep
 import com.parallax.client.cloudsession.exceptions.UnknownUserException;
 import com.parallax.client.cloudsession.exceptions.UserBlockedException;
 import com.parallax.client.cloudsession.objects.User;
+
 import com.parallax.server.blocklyprop.services.impl.SecurityServiceImpl;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,6 +36,7 @@ import org.apache.shiro.authc.SimpleAccount;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,10 +66,9 @@ import org.slf4j.LoggerFactory;
  */
 public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
 
-    /**
-     * Class logging handle
-     */
+    // Get a handle to a logger for this class
     private static Logger LOG = LoggerFactory.getLogger(CloudSessionAuthenticationRealm.class);
+
 
     /**
      * Convenience implementation that returns 
@@ -71,6 +89,7 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
         return true;
     }
 
+
     /**
      * Retrieves the AuthorizationInfo for the given principals from the
      * underlying data store.
@@ -84,13 +103,15 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
      * @return the AuthorizationInfo associated with this principals.
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals){
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         
         LOG.debug("Authorization info");
         AuthorizationInfo authorizationInfo = new SimpleAccount();
 
+        LOG.info("AuthInfo() details: {}", authorizationInfo.getRoles().size());
         return authorizationInfo;
     }
+
 
     /**
      * Retrieves authentication data from an implementation-specific data source
@@ -105,19 +126,27 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
      * A null return value means that no account could be associated with the
      * specified token.
 
-     * @param token  the authentication token containing the user's principal and credentials.
-     * @return an AuthenticationInfo object containing account data resulting
+     * @param token
+     * The authentication token containing the user's principal and credentials.
+     *
+     * @return
+     * Returns an AuthenticationInfo object containing account data resulting
      * from the authentication ONLY if the lookup is successful (i.e. account
      * exists and is valid, etc.)
-     * @throws AuthenticationException  if there is an error acquiring data or
-     * performing realm-specific authentication logic for the specified token
+     *
+     * @throws AuthenticationException
+     * if there is an error acquiring data or  performing realm-specific
+     * authentication logic for the specified token
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(
-            AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
+            throws AuthenticationException {
 
         LOG.info("Obtaining authentication info");
-        
+
+        /*  Any leading and/or trailing white space contained in the credentials
+         * (password) has been stripped out before it gets here.
+         */
         try {
             if (token instanceof OAuthToken) {
                 // Principal = email
@@ -128,14 +157,15 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                         token.getCredentials(), 
                         "CloudSession");
             } else {
-
-                LOG.info("Authentication is using local login and password");
+                LOG.info("Authentication is using local login authority");
 
                 // Principal = login
                 String principal = (String) token.getPrincipal();
 
                 // Credentials = password
                 String credentials = new String((char[]) token.getCredentials());
+
+                LOG.info("Authenticating user '{}'", principal);
 
                 // Thia can throw a NullPointerException
                 User user = SecurityServiceImpl.authenticateLocalUserStatic(
@@ -147,6 +177,8 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                     return null;
                 }
 
+                LOG.info("User {} is authenticated", principal);
+
                 try {
                     return new SimpleAccount(
                             token.getPrincipal(), 
@@ -156,22 +188,34 @@ public class CloudSessionAuthenticationRealm extends AuthorizingRealm {
                     LOG.error("Unexpected exception creating account object", t);
                 }
             }
-            return null;
-        } catch (UnknownUserException ex) {
-            LOG.info("Unknown user", ex);
-        } catch (UserBlockedException ex) {
-            LOG.info("Blocked user", ex);
-        } catch (EmailNotConfirmedException ex) {
-            LOG.info("Email not confirmed", ex);
-        } catch (InsufficientBucketTokensException ibte) {
-            LOG.info("Insufficient bucken tokens", ibte);
-        } catch (NullPointerException npe) {
+            throw new AuthenticationException("Unable to authenticate token");
+        }
+        catch (UnknownUserException ex) {
+            LOG.warn("Authentication failed. Message: {}", ex.getMessage());
+            throw new AuthenticationException(ex.getMessage());
+        }
+        catch (UserBlockedException ex) {
+            LOG.warn("Blocked user {}", ex);
+            throw new AuthenticationException(ex.getMessage());
+        }
+        catch (EmailNotConfirmedException ex) {
+            LOG.warn("Authentication failed. Message: {}", ex.getMessage());
+            throw new AuthenticationException("EmailNotConfirmed");
+        }
+        catch (InsufficientBucketTokensException ex) {
+            LOG.info("Insufficient bucket tokens: {}", ex.getMessage());
+            throw new AuthenticationException(ex.getMessage());
+        }
+        catch (NullPointerException npe) {
             LOG.warn("NullPointer", npe);
-        } catch (Throwable t) {
+            throw new AuthenticationException(npe.getMessage());
+        }
+        catch (Throwable t) {
             // This is a catchall exception handler that kicks the can back
             // to the caller
             LOG.warn("Throwable", t);
         }
+
         return null;
     }
 

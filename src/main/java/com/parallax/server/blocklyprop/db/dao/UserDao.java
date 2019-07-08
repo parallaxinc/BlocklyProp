@@ -18,8 +18,23 @@ public interface UserDao {
 
     @Deprecated
     UserRecord create(Long idCloudSession);
-    
+
+    /**
+     * Update the blockly user screen name
+     *
+     * @param idUser - is the long integer id for the blockly user record
+     * @param screenName - is ghe new screen name to store in the user record
+     */
+    void updateScreenName(Long idUser, String screenName);
+
+    /**
+     *
+     * @param idCloudSession
+     * @param screenName
+     * @return
+     */
     UserRecord create(Long idCloudSession, String screenName);
+
 
     /**
      * Retrieve a BP user record
@@ -38,16 +53,34 @@ public interface UserDao {
      */
     UserRecord getUser(Long idCloudSession, String screenName);
 
-    
+    /**
+     *
+      * @return
+     */
     List<UserRecord> getAll();
 
+    /**
+     *
+     * @param idUser
+     * @param roles
+     */
     void setRoles(Long idUser, Set<Role> roles);
 
+    /**
+     *
+     * @param idUser
+     * @return
+     */
     List<Role> getRoles(Long idUser);
 
-    Long getUserIdForCloudSessionUserId(Long id);
-
-    @Deprecated
-    public void updateScreenname(Long idUser, String screenname);
-
+    /**
+     * Obtain the blocklyprop user ID from the supplied cloud session user id
+     *
+     * @param idCloudSession
+     * The user profile ID
+     *
+     * @return
+     * Returns a Long integer blocklyprop user ID if successful, otherwise returns zero
+     */
+    Long getUserIdForCloudSessionUserId(Long idCloudSession);
 }

@@ -5,6 +5,7 @@
     <artifactId>BlocklyProp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -16,18 +17,11 @@
 
         <!-- jOOQ version 3.7 and above requires Java 1.8.x JDK -->
         <jooq-version>3.7.4</jooq-version>
-
+        <gson.version>2.8.5</gson.version>
         <shiro-version>1.3.2</shiro-version>
         <metrics-version>3.1.0</metrics-version>
         <jersey.version>1.19</jersey.version>
     </properties>
-    
-    <repositories>
-        <repository>
-            <id>netbeans.maven2.repository</id>
-            <url>http://bits.netbeans.org/maven2/</url>
-        </repository>
-    </repositories>
 
     <build>
         <resources>
@@ -40,29 +34,30 @@
         </resources>
         
         <plugins>
-            <!--
-                codehaus.org shut down on 6/2015.
-                This is now the MojoHaus Project  http://www.mojohaus.org/
-            -->
             <plugin>
+                <!-- Read external property resource files -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
+                <version>1.0.0</version>
                 <executions>
                     <execution>
                         <phase>initialize</phase>
                         <goals>
+                            <!-- Reads property files or properties from URLs as Project properties -->
                             <goal>read-project-properties</goal>
                         </goals>
+                        <configuration>
+                            <files>
+                                <!-- Location of the property file(s) -->
+                                <file>build.properties</file>
+                            </files>
+                            <!--
+                            <properties combine.self="append" />
+                            <outputFile combine.self="append" />
+                            -->
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <files>
-                        <file>build.properties</file>
-                    </files>
-                    <properties combine.self="append" />
-                    <outputFile combine.self="append" />
-                </configuration>
             </plugin>
 
             <plugin>
@@ -101,7 +96,9 @@
                 <!-- Include the <execution> element to generate a new set of -->
                 <!-- source files that represent the current state of the     --> 
                 <!-- target database schema.                                  -->
-<!--                <executions>
+
+                <!--
+                <executions>
                     <execution>
                         <id>jooq-codegen</id>
                         <phase>generate-sources</phase>
@@ -110,11 +107,11 @@
                         </goals>
                     </execution>
                 </executions>
--->
+                -->
+
                 <!-- Comment out the <executions> block to disable jooq  -->
                 <!-- from generating database code                       -->
-                
-                
+
                 <dependencies>
                     <dependency>
                         <groupId>mysql</groupId>
@@ -201,6 +198,14 @@
                     </generator>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -223,6 +228,12 @@
     </profiles>
 
     <dependencies>
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- Servlet and jsp libs provided by tomcat -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -253,31 +264,23 @@
         </dependency>
 
         <!-- Dependencies for logging -->
-        <!-- sl4fj is a facade for various logging frameworks -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
+            <version>1.7.25</version>
         </dependency>
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.3</version>
         </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.3</version>
         </dependency>
-            
-        <!--        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        -->
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -293,13 +296,11 @@
             <version>4.0</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-persist</artifactId>
             <version>4.0</version>
         </dependency>
-
         <!-- END Guice Dependencies -->
 
         <!-- Dependencies for JOOQ -->
@@ -308,12 +309,6 @@
             <artifactId>jooq</artifactId>
             <version>${jooq-version}</version>
         </dependency>
-
-        <!--<dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-meta</artifactId>
-            <version>${jooq-version}</version>
-        </dependency>-->
 
         <dependency>
             <groupId>com.adamlewis</groupId>
@@ -327,7 +322,6 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
-        
         <!-- END JOOQ Dependencies -->
 
         <!-- Dependencies for Shiro -->
@@ -360,10 +354,23 @@
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.2</version>
         </dependency>
 
-        <!-- -->
+        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
@@ -388,7 +395,6 @@
             <artifactId>commons-validator</artifactId>
             <version>1.6</version>
         </dependency>
-
         <!-- END Apache commons Dependencies -->
 
         <!-- Rest API -->
@@ -397,21 +403,25 @@
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-jaxrs</artifactId>
@@ -429,21 +439,7 @@
             <artifactId>cuubez-api-visualizer</artifactId>
             <version>1.0.1</version>
         </dependency>
-
         <!-- END Rest API -->
-
-        <!-- Raven / Sentry API -->
-        <dependency>
-            <groupId>com.getsentry.raven</groupId>
-            <artifactId>raven</artifactId>
-            <version>7.8.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.getsentry.raven</groupId>
-            <artifactId>raven-logback</artifactId>
-            <version>7.8.1</version>
-        </dependency>
 
         <!-- Lucene search engine -->
         <dependency>
@@ -497,13 +493,6 @@
             <version>3.1.2</version>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-log4j</artifactId>
-            <version>${metrics-version}</version>
-        </dependency>
--->
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>
@@ -519,7 +508,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.3.1</version>
+            <version>${gson.version}</version>
         </dependency>
 
         <dependency>
@@ -557,23 +546,15 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
-    
-        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-nbjunit -->
-    <!--    <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-nbjunit</artifactId>
-            <version>RELEASE801</version>
+
+        <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>17.0.0</version>
         </dependency>
-    -->
-        <!-- https://mvnrepository.com/artifact/org.netbeans.api/org-netbeans-modules-jellytools-platform -->
-    <!--    <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-modules-jellytools-platform</artifactId>
-            <version>RELEASE801</version>
-        </dependency>
-    -->
     </dependencies>
 </project>

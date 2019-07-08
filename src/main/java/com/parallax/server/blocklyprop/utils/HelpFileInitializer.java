@@ -37,7 +37,10 @@ import org.jsoup.nodes.Element;
 /**
  *
  * @author Michel
+ *
+ * @deprecated The help system has been moved to learn.parallax.com
  */
+@Deprecated
 @Singleton
 public class HelpFileInitializer {
 
@@ -70,12 +73,41 @@ public class HelpFileInitializer {
     }
 
     protected boolean checkSourceFilesPresent() {
+        // ------------------------------------------------------------------------------------
+        // Get the source help files from the location specified by the help.source setting
+        // in the application configuration file. If the setting is not supplied, use the
+        // default setting as specified in the constant DEFAULT_SOURCE_DIRECTORY
+        // ------------------------------------------------------------------------------------
         String sourceDirectory = configuration.getString("help.source", DEFAULT_SOURCE_DIRECTORY);
-        sourceDirectoryFile = new File(sourceDirectory);
-        System.out.println("Looking for help files in: " + sourceDirectoryFile.getAbsolutePath());
-        if (sourceDirectoryFile.exists() && sourceDirectoryFile.isDirectory()) {
-            return true;
+        System.out.println("Configuration file says help files are located at: " + sourceDirectory);
+
+        try {
+            System.out.println("Opening the source directory.");
+            sourceDirectoryFile = new File(sourceDirectory);
+
+            if (sourceDirectoryFile.exists()) {
+                System.out.println("The path: " + sourceDirectoryFile.getAbsolutePath() + " exists.");
+
+                if (sourceDirectoryFile.isDirectory()) {
+                    System.out.println("The path: " + sourceDirectoryFile.getAbsolutePath() + " is a directory.");
+                }
+
+            } else {
+                System.out.println("The path does not exist or permission is denied.");
+            }
+
+            if (sourceDirectoryFile.exists() && sourceDirectoryFile.isDirectory()) {
+                return true;
+            }
+
         }
+        catch (Exception ex) {
+            System.out.println("Error encounted while looking for help files.");
+            System.out.println("Error message is: " + ex.getMessage());
+        }
+
+
+
         sourceDirectoryFile = new File(new File(System.getProperty("user.home")), sourceDirectory);
         System.out.println("Looking for help files in: " + sourceDirectoryFile.getAbsolutePath());
         if (sourceDirectoryFile.exists() && sourceDirectoryFile.isDirectory()) {

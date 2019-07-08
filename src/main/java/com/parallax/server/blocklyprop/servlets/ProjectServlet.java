@@ -31,74 +31,118 @@ public class ProjectServlet extends HttpServlet {
     // Get a logger instance
     private static final Logger LOG = LoggerFactory.getLogger(ProjectServlet.class);
 
+    // Object to store the injected project service object
     private ProjectService projectService;
-    
 
+
+    /**
+     * Inject  project services access
+     *
+     * @param projectService - object to hold injected service class
+     */
     @Inject
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
     }
 
+
     /**
-     * 
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException 
+     * Process an HTTP GET request
+     *
+     * @param request is an HttpServlet Request object
+     * @param response is an HttpServlet Response object
+     *
+     * @throws ServletException panic if something goes wrong in the servlet code
+     * @throws IOException - Really panic if there is an I/O issue.
      */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         LOG.info("REST:/project/ Get request received");
-        
-        String clone = req.getParameter("clone");
+
+        /* -----------------------------------------------------
+         * The request object holds parameters that indicate the
+         * action that is to be taken in this call. Each key is
+         * paired with a value that contains the id of the project
+         * to at upon.
+         *
+         * 'clone' - create a copy of the project specified
+         * 'delete' - destroy the project specified. Note that this
+         *            is only allowed if the currently logged in
+         *            user owns the project to be destroyed.
+         * ------------------------------------------------------*/
+        String clone = request.getParameter("clone");
+
         if (!Strings.isNullOrEmpty(clone)) {
-            clone(Long.parseLong(clone), req, resp);
+            clone(Long.parseLong(clone), request, response);
         }
 
-        String delete = req.getParameter("delete");
+        String delete = request.getParameter("delete");
+
         if (!Strings.isNullOrEmpty(delete)) {
-            delete(Long.parseLong(delete), req, resp);
+            delete(Long.parseLong(delete), request, response);
         }
     }
 
-    private void clone(Long idProject, HttpServletRequest req, HttpServletResponse resp)
+
+    /**
+     * Create a copy of an existing project and assign it to the currently logged in user
+     *
+     * @param idProject The primary key id of the project to copy
+     * @param request   is an HttpServlet Request object
+     * @param response  is an HttpServlet Response object
+     *
+     * @throws ServletException panic if something goes wrong in the servlet code
+     * @throws IOException Really panic if there is an I/O issue.
+     */
+    private void clone(Long idProject, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         LOG.info("Cloning project {}", idProject);
         
         try {
             ProjectRecord clonedProject = projectService.cloneProject(idProject);
+
             if (clonedProject == null) {
-                req.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(req, resp);
+                request.getRequestDispatcher(
+                        "WEB-INF/servlet/project/not-authorized.jsp").forward(request, response);
             } else {
-                resp.sendRedirect("my/projects.jsp#" + clonedProject.getId());
+                response.sendRedirect("my/projects.jsp#" + clonedProject.getId());
             }
         } catch (NullPointerException npe) {
-            req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
+            request.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(request, response);
         }
     }
 
-    private void delete(Long idProject, HttpServletRequest req, HttpServletResponse resp)
+
+    /**
+     * Destroy an existing project only when the currently logged in user owns the target project
+     *
+     * @param idProject The primary key id of the project to copy
+     * @param request is an HttpServlet Request object
+     * @param response is an HttpServlet Response object
+     * @throws ServletException panic if something goes wrong in the servlet code
+     * @throws IOException Really panic if there is an I/O issue.
+     */
+    private void delete(Long idProject, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
        LOG.info("Deleting project {}", idProject);
         
-        try {
-            try {
-                ProjectRecord project = projectService.getProjectOwnedByThisUser(idProject);
-                if (project == null) {
-                    req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
-                }
-                projectService.deleteProject(idProject);
-                resp.sendRedirect("my/projects.jsp");
-            } catch (UnauthorizedException ue) {
-                req.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(req, resp);
-            }
-        } catch (NullPointerException npe) {
-            req.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(req, resp);
-        }
-    }
+       try {
+           ProjectRecord project = projectService.getProjectOwnedByThisUser(idProject);
 
+           if (project == null) {
+               request.getRequestDispatcher("WEB-INF/servlet/project/not-found.jsp").forward(request, response);
+           }
+
+           projectService.deleteProject(idProject);
+           response.sendRedirect("my/projects.jsp");
+
+       }
+       catch (UnauthorizedException ue) {
+           request.getRequestDispatcher("WEB-INF/servlet/project/not-authorized.jsp").forward(request, response);
+       }
+    }
 }

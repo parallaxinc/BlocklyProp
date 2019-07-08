@@ -7,9 +7,11 @@ package com.parallax.server.blocklyprop.db.dao.impl;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import com.parallax.server.blocklyprop.db.dao.ProjectSharingDao;
 import com.parallax.server.blocklyprop.db.generated.Tables;
 import com.parallax.server.blocklyprop.db.generated.tables.records.ProjectSharingRecord;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,7 +63,8 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
 
     
     /**
-     * 
+     * Create a project sharing record
+     *
      * @param idProject
      * @param shareKey
      * @return 
@@ -176,6 +179,34 @@ public class ProjectSharingDaoImpl implements ProjectSharingDao {
                 .where(Tables.PROJECT_SHARING.ID_PROJECT.equal(idProject))
                 .execute() > 0;
 
+    }
+
+
+    /**
+     * Determine the on/off state of the project's shared link URL
+     *
+     * @param idProject
+     * @return
+     */
+    @Override
+    public boolean isProjectSharingActive(Long idProject) {
+
+        LOG.info("Retrieving sharing record for project {}", idProject);
+
+        ProjectSharingRecord project = create
+                .selectFrom(Tables.PROJECT_SHARING)
+                .where((Tables.PROJECT_SHARING.ID_PROJECT
+                        .equal(idProject)))
+                .fetchOne();
+
+        if (project == null) {
+            LOG.info("The sharing record for project {} was not found", idProject);
+            // Record not found
+            return false;
+        }
+
+        LOG.info("Project {} sharing is {}", idProject, project.getActive());
+        return project.getActive();
     }
 
 }
