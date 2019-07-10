@@ -25,20 +25,20 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
-
 import com.parallax.server.blocklyprop.jsp.Properties;
 import com.parallax.server.blocklyprop.monitoring.Monitor;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.DefaultConfigurationBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletContextEvent;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
-import javax.servlet.ServletContextEvent;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.DefaultConfigurationBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 
@@ -49,7 +49,8 @@ import org.slf4j.LoggerFactory;
 public class SetupConfig extends GuiceServletContextListener {
 
     // Application logging connector
-    private final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SetupConfig.class);
+
 
     // Application-specific configuration options
     private Configuration configuration;
