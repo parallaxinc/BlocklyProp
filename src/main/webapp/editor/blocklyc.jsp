@@ -167,7 +167,7 @@
                                                     <li><a href="https://learn.parallax.com/ab-blocks" target="_blank"><span class="keyed-lang-string" data-key="menu_help_reference"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;"/>
                                                     <li><a id="download-side" href="#" onclick="downloadPropC()"><span class="keyed-lang-string" data-key="menu_download_simpleide"></span></a></li>
-                                                    <li><a id="download-project" href="#"><span class="keyed-lang-string" data-key="editor_download"></span></a></li>
+                                                    <li class="online-only divider" data-displayas="list-item"><a id="download-project" href="#"><span class="keyed-lang-string" data-key="editor_download"></span></a></li>
                                                     <li class="auth-true" data-displayas="list-item"><a id="upload-project" href="#"><span class="keyed-lang-string" data-key="editor_upload"></span></a></li>
                                                     <hr style="line-height:5px; margin:5px;" class="auth-true" data-displayas="list-item"/>
                                                     <li class="auth-true" data-displayas="list-item"><a href="#" onclick="configure_client()"><span class="keyed-lang-string" data-key="editor_run_configure"></span></a></li>
