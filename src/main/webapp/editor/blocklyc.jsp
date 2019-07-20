@@ -180,10 +180,10 @@
                                                     <li class="auth-true online-only" data-displayas="list-item"><a href="my/projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_my_projects"></span></a></li>
                                                     <li class="online-only"><a href="projects.jsp" class="url-prefix"><span class="keyed-lang-string" data-key="menu_community_projects"></span></a></li>
                                                     <li class="online-only divider"></li>
-                                                    <li><a href="public/help" target="_blank" class="url-prefix"><span class="keyed-lang-string" data-key="menu_help_reference"></span></a></li>
+                                                    <li><a href="https://learn.parallax.com/ab-blocks" target="_blank" class="url-prefix"><span class="keyed-lang-string" data-key="menu_help_reference"></span></a></li>
                                                     <li class="divider"></li>
                                                     <li><a id="download-side" href="#"><span class="keyed-lang-string" data-key="menu_download_simpleide"></span></a></li>
-                                                    <li><a id="download-project" href="#"><span class="keyed-lang-string" data-key="editor_download"></span></a></li>
+                                                    <li class="online-only divider" data-displayas="list-item"><a id="download-project" href="#"><span class="keyed-lang-string" data-key="editor_download"></span></a></li>
                                                     <li class="auth-true" data-displayas="list-item"><a id="upload-project"><span class="keyed-lang-string" data-key="editor_upload"></span></a></li>
                                                     <li class="auth-true divider" data-displayas="list-item"></li>
                                                     <li class="auth-true" data-displayas="list-item"><a id="client-setup"><span class="keyed-lang-string" data-key="editor_run_configure"></span></a></li>
