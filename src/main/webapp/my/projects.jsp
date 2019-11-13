@@ -29,6 +29,8 @@
         <script src="<url:getCdnUrl url="/lib/bootstrap/core/js/bootstrap.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/bootstrap/plugins/bootstrap-table.min.js"/>" ></script>
         <script src="<url:getCdnUrl url="/lib/simplemde.min.js"/>" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.2.2/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
         <script src="<url:getCdnUrl url="/project.js"/>" ></script>
         <title>My Projects</title>
     </head>
