@@ -32,7 +32,7 @@
                 <directory>src/main/config/${environment}</directory>
             </resource>
         </resources>
-        
+
         <plugins>
             <plugin>
                 <!-- Read external property resource files -->
@@ -69,12 +69,12 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
@@ -87,14 +87,14 @@
                     <update>true</update>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq-version}</version>
-                
+
                 <!-- Include the <execution> element to generate a new set of -->
-                <!-- source files that represent the current state of the     --> 
+                <!-- source files that represent the current state of the     -->
                 <!-- target database schema.                                  -->
 
                 <!--
@@ -127,7 +127,7 @@
                         <user>${mysql.username}</user>
                         <password>${mysql.password}</password>
                     </jdbc>
-                    
+
                     <generator>
                         <name>org.jooq.util.DefaultGenerator</name>
                         <database>
@@ -135,7 +135,7 @@
                             <includes>.*</includes>
                             <excludes></excludes>
                             <inputSchema>blocklyprop</inputSchema>
-                            
+
                             <customTypes>
                                 <customType>
                                     <name>GregorianCalendar</name>
@@ -281,6 +281,14 @@
             <artifactId>logback-core</artifactId>
             <version>1.2.3</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/log4j/log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
         <!-- END Logging Dependencies -->
 
         <!-- Dependencies for Guice -->
@@ -363,7 +371,7 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.2</version>
         </dependency>
-        
+
         <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
         <dependency>
             <groupId>commons-logging</groupId>
@@ -474,7 +482,7 @@
             <artifactId>metrics-core</artifactId>
             <version>${metrics-version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-graphite</artifactId>
@@ -541,7 +549,7 @@
             <artifactId>Cloud-Compiler-java-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        
+
         <!-- Unit Testing -->
         <dependency>
             <groupId>junit</groupId>
