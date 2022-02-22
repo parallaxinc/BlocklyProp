@@ -94,3 +94,13 @@ Example projects
 9. Musical Instrument control of something
 10. RF tilt video game controller ( mx2125 )
 11. Light sensor
+
+
+zefi@mac-2272 cs-server % catalina run
+Using CATALINA_BASE:   /usr/local/Cellar/tomcat/9.0.38/libexec
+Using CATALINA_HOME:   /usr/local/Cellar/tomcat/9.0.38/libexec
+Using CATALINA_TMPDIR: /usr/local/Cellar/tomcat/9.0.38/libexec/temp
+Using JRE_HOME:        /usr/local/opt/openjdk
+Using CLASSPATH:       /usr/local/Cellar/tomcat/9.0.38/libexec/bin/bootstrap.jar:/usr/local/Cellar/tomcat/9.0.38/libexec/bin/tomcat-juli.jar
+Using CATALINA_OPTS:
+NOTE: Picked up JDK_JAVA_OPTIONS:  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED

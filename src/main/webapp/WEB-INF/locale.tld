@@ -7,6 +7,7 @@
 
     <display-name>BlocklyProp locale</display-name>
     <tlib-version>1.0</tlib-version>
+    <short-name>blockly_locale</short-name>
     <uri>http://blocklyprop.parallax.com/locale</uri>
 
     <tag>
@@ -17,7 +18,6 @@
             <name>locale</name>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
-            <required>true</required>
         </attribute>
     </tag>
 </taglib>
