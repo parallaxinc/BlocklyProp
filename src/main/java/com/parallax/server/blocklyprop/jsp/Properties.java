@@ -49,13 +49,12 @@ public class Properties {
      * <p>
      * This method supports the "offline" mode which assumes that there is
      * no Internet connectivity available.
-     * 
-     * @param file
      *
-     * @return 
+     * @param file - Find a file
+     * @return string
      */
     public static String getDownloadFilesBaseUrl(String file) {
-        if (configuration.getBoolean("offline.enabled") == true) {
+        if (configuration.getBoolean("offline.enabled")) {
             return configuration.getString("offline.downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
         } else {
             return configuration.getString("downloadfiles.baseurl") + (file.startsWith("/") ? "" : "/") + file;
@@ -64,15 +63,15 @@ public class Properties {
 
     public static boolean isOauthEnabled(String oauthProvider) {
         // Disable Oauth if we are running offline
-        if (configuration.getBoolean("offline.enabled") == true) {
-           return false; 
+        if (configuration.getBoolean("offline.enabled")) {
+           return false;
         } else {
         return configuration.getBoolean("oauth." + oauthProvider + ".enabled", true);
         }
     }
-    
+
     //
-    
+
     /**
      * Obtain the state of experimental menu items.
      * <p>
@@ -81,25 +80,25 @@ public class Properties {
      * contained in the application properties file will trigger the menu
      * system to expose experimental menu items. If this option is off or
      * missing, the experimental menu items will be disabled.
-     * 
-     * @param state
-     * @return 
+     *
+     * @param state - True if experimental menu is enabled
+     * @return boolean
      */
     public static boolean isExperimentalMenu(Boolean state) {
         try {
-            if (configuration.getBoolean("experimental.menu") == true) {
+            if (state && configuration.getBoolean("experimental.menu")) {
                 return true;
             }
         } catch (java.util.NoSuchElementException ex) {
             return false;
         }
-        
+
         return false;
     }
 
      public static boolean isCoppaRestricted() {
         LoggerFactory.getLogger(Properties.class).info("Checking for COPPA restrictions");
-        
+
         // Get the current user context
         User user = BlocklyPropSecurityUtils.getUserInfo();
         LoggerFactory.getLogger(Properties.class).info("Completed call to getUserInfo()");
@@ -110,12 +109,12 @@ public class Properties {
             LoggerFactory.getLogger(Properties.class).info("Anonymous user. No COPPA restrictions");
             return false;
         }
-        
-//        LoggerFactory.getLogger(Properties.class).info("User screen name is: {}.", user.getScreenname());
-//        LoggerFactory.getLogger(Properties.class).info("User COPPA requirement: {}.", user.isCoppaEligible());
-//        LoggerFactory.getLogger(Properties.class).info("User COPPA month: {}.", user.getBirthMonth());
-//        LoggerFactory.getLogger(Properties.class).info("User COPPA year: {}.", user.getBirthYear());
-        
+
+        LoggerFactory.getLogger(Properties.class).info("User screen name is: {}.", user.getScreenname());
+        LoggerFactory.getLogger(Properties.class).info("User COPPA requirement: {}.", user.isCoppaEligible());
+        LoggerFactory.getLogger(Properties.class).info("User COPPA month: {}.", user.getBirthMonth());
+        LoggerFactory.getLogger(Properties.class).info("User COPPA year: {}.", user.getBirthYear());
+
         return user.isCoppaEligible();
      }
 }

@@ -29,6 +29,7 @@
 
     <display-name>BlocklyProp properties</display-name>
     <tlib-version>1.0</tlib-version>
+    <short-name>blockly-properties</short-name>
     <uri>http://blocklyprop.parallax.com/properties</uri>
 
     <!-- Return the base uri for downloadable files such as BlocklyProp clients -->

@@ -5,6 +5,11 @@
  */
 package com.parallax.server.blocklyprop.utils;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,12 +17,6 @@ import java.security.Principal;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 /**
  *
  * @author Michel
@@ -153,7 +152,7 @@ public class HttpServletRequestImpl implements HttpServletRequest {
     }
 
     /*
-     * Depricated as of Java Servlet API version 2.1
+     * Deprecated as of Java Servlet API version 2.1
      */
     @Override
     public boolean isRequestedSessionIdFromUrl() {

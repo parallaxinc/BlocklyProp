@@ -50,7 +50,12 @@
                     <%
                         }
                     %>
+
+                    <%--
+                    New accounts are no longer supported
                     <p><a href="register" ><fmt:message key="login.registerlink" /></a></p>
+                    --%>
+
                     <p><a href="resetrequest"><fmt:message key="login.forgotlink" /></a></p>
                     <p><a href="confirmrequest"><fmt:message key="login.notconfirmedlink" /></a></p>
 

@@ -29,8 +29,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/includes/include.jsp"%>
 
-<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
 <c:set var="copparestricted" scope="page" value="${properties:copparestricted()}" />
+<c:set var="experimental" scope="page" value="${properties:experimentalmenu(false)}" />
 <!DOCTYPE html>
 <html>
     <!-- manifest=node.manifest> -->
@@ -104,7 +104,7 @@
                         <div class="col-sm-5 col-sm-offset-1">
                             <div class="form-group">
                                 <label for="sharing"><fmt:message key="project.sharing" /></label><br/>
-                            
+
                             <c:if test="${copparestricted == true}">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-default active">
@@ -127,7 +127,7 @@
                                 </div>
                             </c:if>
                             </div>
-                                
+
                         </div>
                         <div class="col-sm-5">
                             <div class="form-group">
